@@ -1,0 +1,72 @@
+﻿@page
+@model SGID.Pages.Relatorios.Controladoria.InfCirurgiaInterModel
+@{
+    ViewData["Title"] = "Relatorio Inf Cirurgia Inter";
+    Layout = "_LayoutGeral";
+}
+
+@using(@Html.BeginForm(FormMethod.Post)){
+    <div class="row">
+        <div class="form-group mx-sm-3 mb-2 col-lg-2">
+            <input type="text" class="form-control" id="Numage" name="Numage" value="@Model.Nmage" placeholder="NUMAGE">
+        </div>
+
+        <div class="form-group mx-sm-3 mb-2 col-lg-1">
+            <button type="submit" class="btn btn-primary mb-2">Pesquisar</button>
+        </div>
+
+        <div class="form-group mx-sm-3 mb-2 col-lg-1">
+            <button type="submit" class="btn btn-secondary mb-2" asp-page-handler="Export"><i class="fa-solid fa-file-excel"></i> Exportar Excel</button>
+        </div>
+    </div>
+}
+
+<div class="panel">
+    <div class="panel-body">
+        <table id="demo-dt-addrow" class="table table-striped table-bordered" cellspacing="0" width="100%">
+            <thead>
+                <tr>
+                    <th class="text-center">
+                        PAC_NMPAC
+                    </th>
+                    <th class="text-center">
+                        PAC_DTCIR
+                    </th>
+                    <th class="text-center">
+                        PAC_CLIENT
+                    </th>
+                    <th class="text-center">
+                        PAC_LOJENT
+                    </th>
+                    <th class="text-center">
+                        A1_NOME
+                    </th>
+                    <th class="text-center">
+                        C5_NUM
+                    </th>
+                    <th class="text-center">
+                        C5_UTPOPER
+                    </th>
+                    <th class="text-center">
+                        C5_NOTA
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach(var data in Model.Relatorio)
+                {
+                <tr>
+                    <td>@Html.DisplayFor(model=> data.PacNmPac)</td>
+                    <td>@Html.DisplayFor(model=> data.PacDtCir)</td>
+                    <td>@Html.DisplayFor(model=> data.PacClient)</td>
+                    <td>@Html.DisplayFor(model=> data.PacLojent)</td>
+                    <td>@Html.DisplayFor(model=> data.A1Nome)</td>
+                    <td>@Html.DisplayFor(model=> data.C5Num)</td>
+                    <td>@Html.DisplayFor(model=> data.C5Utpoper)</td>
+                    <td>@Html.DisplayFor(model=> data.C5Nota)</td>
+                </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

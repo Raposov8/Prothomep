@@ -1,0 +1,137 @@
+﻿@page "{id}"
+@model SGID.Pages.Instrumentador.DadosCirurgiaModel
+@{
+    ViewData["Title"] = "Dados Cirurgia";
+    Layout = "_LayoutGeral";
+}
+
+<div class="row">
+    <h2 style="padding-left:20px;">DADOS CIRURGIA</h2>
+</div>
+
+
+<div class="card" style="padding:10px;">
+    @using (@Html.BeginForm(FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        <input hidden id="Id" name="Id" value="@Model.Agendamento.Id"/>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="row">
+                    <div class="form-group col-md-3">
+                        <label>Codigo</label>
+                        <input type="text" class="form-control" id="Codigo" name="Codigo"  />
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label>Nome Paciente</label>
+                        <input type="text" class="form-control" id="NomePaciente" name="NomePaciente" value="@Model.Agendamento.Paciente" />
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label>Nome Médico</label>
+                        <input type="text" class="form-control" id="NomeMedico" name="NomeMedico" value="@Model.Agendamento.Medico" />
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label>Cliente</label>
+                        <input type="text" class="form-control" id="NomeCliente" name="NomeCliente" value="@Model.Agendamento.Cliente" />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-md-3">
+                        <label>Status</label>
+                        <select type="text" class="form-control" id="Status" name="Status">
+                            <option value="1">CONCLUÍDA</option>
+                            <option value="2">INTERROMPIDA</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label>Data da Cirurgia</label>
+                        <input type="date" class="form-control" id="DataCirurgia" name="DataCirurgia" value="@Model.Agendamento.DataCirurgia.Value.ToString("yyyy-MM-dd")" />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-md-6">
+                        <label>Procedimento Executados</label>
+                        <textarea type="text" class="form-control" id="Procedimento" name="Procedimento"></textarea>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label>Observação de Intercorrência</label>
+                        <textarea type="text" class="form-control" id="Obs" name="Obs"></textarea>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12 Titulo">
+                        <span>Anexo(s)</span>
+                    </div>
+                    <div class="custom-file" style="margin-top:10px;">
+                        <label class="col-md-2" for="Anexos01" style="padding-top:10px;">
+                            <i id="IconAnexo" class="fa-solid fa-file-lines fa-4x Vermelho"></i>
+                        </label>
+                        <input hidden type="file" class="custom-file-input" id="Anexos01" name="Anexos01" />
+
+                        <label class="col-md-2" for="Anexos02" style="padding-top:10px;">
+                            <i id="IconAnexo" class="fa-solid fa-file-lines fa-4x Vermelho"></i>
+                        </label>
+                        <input hidden type="file" class="custom-file-input" id="Anexos02" name="Anexos02" />
+
+                        <label class="col-md-2" for="Anexos03" style="padding-top:10px;">
+                            <i id="IconAnexo" class="fa-solid fa-file-lines fa-4x Vermelho"></i>
+                        </label>
+                        <input hidden type="file" class="custom-file-input" id="Anexos03" name="Anexos03" />
+
+                        <label class="col-md-2" for="Anexos04" style="padding-top:10px;">
+                            <i id="IconAnexo" class="fa-solid fa-file-lines fa-4x Vermelho"></i>
+                        </label>
+                        <input hidden type="file" class="custom-file-input" id="Anexos04" name="Anexos04" />
+
+                        <label class="col-md-2" for="Anexos05" style="padding-top:10px;">
+                            <i id="IconAnexo" class="fa-solid fa-file-lines fa-4x Vermelho"></i>
+                        </label>
+                        <input hidden type="file" class="custom-file-input" id="Anexos05" name="Anexos05" />
+                    </div>
+                </div>
+            </div>
+            <div class="row" style="margin-top:10px;">
+                <div class="col-md-12">
+                    <a class="btn btn-button btn-danger" href="/instrumentador/dashboardinstrumentador">Cancelar</a>
+                    <button class="btn btn-button btn-success float-end" type="submit">Adicionar</button>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+@section scripts{
+    <script>
+        $(document).ready(function(){
+            //Inicializador
+            $("#Hora").mask("00:00");
+
+            $("#Anexos01").change(function(){
+                $("#IconAnexo01").removeClass("Vermelho")
+                $("#IconAnexo01").addClass("Verde");
+            })
+
+            $("#Anexos02").change(function(){
+                $("#IconAnexo02").removeClass("Vermelho")
+                $("#IconAnexo02").addClass("Verde");
+            })
+
+            $("#Anexos03").change(function(){
+                $("#IconAnexo03").removeClass("Vermelho")
+                $("#IconAnexo03").addClass("Verde");
+            })
+
+            $("#Anexos04").change(function(){
+                $("#IconAnexo04").removeClass("Vermelho")
+                $("#IconAnexo04").addClass("Verde");
+            })
+
+            $("#Anexos05").change(function(){
+                $("#IconAnexo05").removeClass("Vermelho")
+                $("#IconAnexo05").addClass("Verde");
+            })
+
+
+        })
+    </script>
+    
+}

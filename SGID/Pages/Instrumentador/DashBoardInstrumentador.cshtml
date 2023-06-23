@@ -1,0 +1,123 @@
+﻿@page
+@model SGID.Pages.Instrumentador.DashBoardInstrumentadorModel
+@{
+    ViewData["Title"] = "DashBoard Instrumendador";
+    Layout = "_LayoutGeral";
+}
+
+@Html.AntiForgeryToken()
+<div class="row">
+    <h4>AGENDAMENTO</h4>
+</div>
+<div class="row">
+    <div class="col-md-4">
+        <div class="row">
+            <div class="col-sm-6 col-md-6">
+                <div class="panel panel-colorful" style="background-color:lightgray">
+                    <div class="panel-heading">
+                        <h2 style="margin:0%;color:#00b050" class="panel-title text-center">AGENDADAS</h2>
+                    </div>
+                    <div class="panel-body" style="padding-top:0px;">
+                        <h3 class="text-center" style="margin-top:0%; color:#00b050;font-size:80px">@Model.MeusAgendamentos</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6 col-md-6">
+                <div class="panel panel-colorful" style="background-color:lightgray">
+                    <div class="panel-heading">
+                        <h2 style="margin:0%;color:#c00000" class="panel-title text-center">REPROVADAS</h2>
+                    </div>
+                    <div class="panel-body" style="padding-top:0px;">
+                        <h3 class="text-center" style="margin-top:0%; color:#c00000;font-size:80px">@Model.Recusados</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12" id="BoxDados">
+            <div class="panel panel-colorful" style="background-color:#3e85ad">
+                <div class="panel-heading">
+                    <h2 style="margin:0%;color:#d6d9d2" class="panel-title text-center">DADOS DA CIRURGIA:</h2>
+                </div>
+                <div class="panel-body" style="padding-top:0px;">
+                    <div style="color:#d6d9d2" id="Cliente"></div>
+                    <div style="color:#d6d9d2" id="End"></div>
+                    <div style="color:#d6d9d2" id="Paciente"></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12" id="BoxObs">
+            <div class="panel panel-colorful" style="background-color:#00b152">
+                <div class="panel-heading">
+                    <h2 style="margin:0%;color:#d6d9d2" class="panel-title text-center">OBSERVAÇÃO:</h2>
+                </div>
+                <div class="panel-body" style="padding-top:0px;">
+                    <div style="color:#d6d9d2" id="Obs"></div>
+                    <a id="Dados"></a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-8">
+        <div id="calendar"></div>
+    </div>
+</div>
+
+@section Scripts
+    {
+    <link href="~/lib/fullcalendar/fullcalendar.min.css" rel='stylesheet' />
+    <script src="~/lib/moment.js/moment.min.js"></script>
+    <script src="~/lib/fullcalendar/fullcalendar.min.js"></script>
+    <script src='~/lib/fullcalendar/locale-all.min.js'></script>
+    <script>
+        $(function () {
+            $("#BoxDados").hide();
+            $("#BoxObs").hide();
+
+            //defaultView: 'basicWeek'
+            $('#calendar').fullCalendar({
+                locale: 'pt-br',
+                header: {
+                    left: 'prev,today,next',
+                    center: 'title',
+                    right: 'agendaDay,agendaWeek,month'
+                },
+                initialView: 'agendaDay',
+                events: '/instrumentador/dashboardinstrumentador?handler=events',
+                eventLimit: true,
+                eventClick: function (info) {
+
+                    $('#loading-modal').modal('show');
+                    var chamadaUrl = `/instrumentador/dashboardinstrumentador?handler=details&&id=${info.id}`
+                    $.ajax({
+                        url: chamadaUrl,
+                        type: "GET",
+                        contentType: "application/json;",
+                        dataType: 'json',
+                        headers: {
+                            "RequestVerificationToken": $('input:hidden[name="__RequestVerificationToken"]').val()
+                        },
+                        success: function (data) {
+
+                            $("#BoxDados").show();
+                            $("#BoxObs").show();
+                            $("#Cliente").html(`Cliente: ${data.agendamento.cliente}`);
+                            $("#End").html(`End: ${data.agendamento.loja}`);
+                            $("#Paciente").html(`Paciente: ${data.agendamento.paciente}`);
+                            $("#Obs").html(`Obs: ${data.agendamento.observacao}`);
+                            $("#Dados").html("Reportar Cirurgia")
+                            $("#Dados").attr("href",`/instrumentador/dadoscirurgia/${data.agendamento.id}`)
+                        }
+                    })
+                }
+            });
+
+            $('a.close').on('click', function () {
+                $('#details-modal').modal('hide');
+                $('#loading-modal').modal('hide');
+            })
+            //eventRender: function eventRender( event, element, view ) {
+            //    return ['all', event.school].indexOf($('#school_selector').val()) >= 0
+            //}
+        })
+    </script>
+}

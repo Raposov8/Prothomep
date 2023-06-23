@@ -1,0 +1,136 @@
+﻿@page
+@model SGID.Pages.Relatorios.Comissoes.ComissaoInterModel
+@{
+    ViewData["Title"] = "Relatorio Comissões Inter";
+    Layout = "_LayoutGeral";
+}
+
+@using (@Html.BeginForm(FormMethod.Post))
+{
+    <div class="row">
+        <div class="form-group mx-sm-3 mb-2 col-lg-2">
+            <input type="date" class="form-control" id="DataInicio" name="DataInicio" value="@Model.Inicio.ToString("yyyy-MM-dd")" placeholder="Data Inicio">
+        </div>
+        <div class="form-group mx-sm-3 mb-2 col-lg-2">
+            <input type="date" class="form-control" id="DataFim" name="DataFim" value="@Model.Fim.ToString("yyyy-MM-dd")" placeholder="Data Fim">
+        </div>
+
+        <div class="form-group mx-sm-3 mb-2 col-lg-1">
+            <button type="submit" class="btn btn-primary mb-2">Pesquisar</button>
+        </div>
+
+        <div class="form-group mx-sm-3 mb-2 col-lg-1">
+            <button type="submit" class="btn btn-secondary mb-2" asp-page-handler="Export"><i class="fa-solid fa-file-excel"></i> Exportar Excel</button>
+        </div>
+    </div>
+}
+
+<div class="panel">
+    <div class="panel-body">
+        <table id="demo-dt-addrow" class="table table-striped table-bordered" cellspacing="0" width="100%">
+            <thead>
+                <tr>
+                    <th class="text-center">
+                        Filial
+                    </th>
+                    <th class="text-center">
+                        Pedido
+                    </th>
+                    <th class="text-center">
+                        Cliente
+                    </th>
+                    <th class="text-center">
+                        Loja
+                    </th>
+                    <th class="text-center">
+                        ItemPV
+                    </th>
+                    <th class="text-center">
+                        Cod
+                    </th>
+                    <th class="text-center">
+                        XGrinte
+                    </th>
+                    <th class="text-center">
+                        Grupo Cli
+                    </th>
+                    <th class="text-center">
+                        Tipo Cli Int
+                    </th>
+                    <th class="text-center">
+                        Analista
+                    </th>
+                    <th class="text-center">
+                        Empresa
+                    </th>
+                    <th class="text-center">
+                        Total Fat
+                    </th>
+                    <th class="text-center">
+                        Valipi
+                    </th>
+                    <th class="text-center">
+                        Valicm
+                    </th>
+                    <th class="text-center">
+                        Descon
+                    </th>
+                    <th class="text-center">
+                        DTEmisNF
+                    </th>
+                    <th class="text-center">
+                        AnoMesFat
+                    </th>
+                    <th class="text-center">
+                        AGPrinc
+                    </th>
+                    <th class="text-center">
+                        Fabric
+                    </th>
+                    <th class="text-center">
+                        XUNNEGO
+                    </th>
+                    <th class="text-center">
+                        UNNEGO
+                    </th>
+                    <th class="text-center">
+                        TipoPV
+                    </th>
+                    <th class="text-center">
+                        CF
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var data in Model.Relatorio)
+                {
+                    <tr>
+                        <td>@Html.DisplayFor(model=> data.Filial)</td>
+                        <td>@Html.DisplayFor(model=> data.Pedido)</td>
+                        <td>@Html.DisplayFor(model=> data.Cliente)</td>
+                        <td>@Html.DisplayFor(model=> data.Loja)</td>
+                        <td>@Html.DisplayFor(model=> data.ItemPv)</td>
+                        <td>@Html.DisplayFor(model=> data.Cod)</td>
+                        <td>@Html.DisplayFor(model=> data.XGrinte)</td>
+                        <td>@Html.DisplayFor(model=> data.GrupoCli)</td>
+                        <td>@Html.DisplayFor(model=> data.TipoCliInt)</td>
+                        <td>@Html.DisplayFor(model=> data.Analista)</td>
+                        <td>@Html.DisplayFor(model=> data.Empresa)</td>
+                        <td>@string.Format("{0:N2}", data.TotalFat)</td>
+                        <td>@string.Format("{0:N2}", data.Valipi)</td>
+                        <td>@string.Format("{0:N2}", data.Valicm)</td>
+                        <td>@string.Format("{0:N2}", data.Descon)</td>
+                        <td>@Html.DisplayFor(model=> data.DTEmisNF)</td>
+                        <td>@Html.DisplayFor(model=> data.AnoMesFat)</td>
+                        <td>@Html.DisplayFor(model=> data.AGPrinc)</td>
+                        <td>@Html.DisplayFor(model=> data.Fabric)</td>
+                        <td>@Html.DisplayFor(model=> data.Xunnego)</td>
+                        <td>@Html.DisplayFor(model=> data.Unnego)</td>
+                        <td>@Html.DisplayFor(model=> data.TipoPV)</td>
+                        <td>@Html.DisplayFor(model=> data.CF)</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

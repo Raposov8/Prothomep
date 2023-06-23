@@ -1,0 +1,61 @@
+﻿@page
+@model SGID.Pages.Relatorios.Estoque.PA3Model
+@{
+    ViewData["Title"] = "Relatorio PA3 Inter";
+    Layout = "_LayoutGeral";
+}
+
+@using(@Html.BeginForm(FormMethod.Post)){
+    <div class="row">
+        <div class="form-group mx-sm-3 mb-2 col-lg-2">
+            <input type="text" class="form-control" id="Patrimonio" name="Patrimonio" value="@Model.Patrimonio" placeholder="Patrimonio">
+        </div>
+
+        <div class="form-group mx-sm-3 mb-2 col-lg-1">
+            <button type="submit" class="btn btn-primary mb-2">Pesquisar</button>
+        </div>
+
+        <div class="form-group mx-sm-3 mb-2 col-lg-1">
+           <button type="submit" class="btn btn-secondary mb-2" asp-page-handler="Export"><i class="fa-solid fa-file-excel"></i> Exportar Excel</button>
+        </div>
+    </div>
+}
+
+
+<div class="panel">
+    <div class="panel-body">
+        <table id="demo-dt-addrow" class="table table-striped table-bordered" cellspacing="0" width="100%">
+            <thead>
+                <tr>
+                    <th class="text-center">
+                        Produto
+                    </th>
+                    <th class="text-center">
+                        Descrição
+                    </th>
+                    <th class="text-center">
+                        Qtde Patrim.
+                    </th>
+                    <th class="text-center">
+                        Qtde Lote
+                    </th>
+                    <th class="text-center">
+                        Lote
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach(var data in Model.Relatorio)
+                {
+                <tr>
+                    <td>@Html.DisplayFor(model=> data.Produto)</td>
+                    <td>@Html.DisplayFor(model=> data.Descricao)</td>
+                    <td>@Html.DisplayFor(model=> data.QtdePatrim)</td>
+                    <td>@Html.DisplayFor(model=> data.QtdeLote)</td>
+                    <td>@Html.DisplayFor(model=> data.Lote)</td>
+                </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

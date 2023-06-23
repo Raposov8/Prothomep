@@ -1,0 +1,125 @@
+﻿@page "{id}"
+@model SGID.Pages.Formularios.RelatorioPatrimonioTodosModel
+@{
+    ViewData["Title"] = "Consulta Todos Patrimônios ";
+    Layout = "_LayoutForm";
+}
+
+@using (@Html.BeginForm(FormMethod.Post))
+{
+    <div class="form-group mx-sm-3 mb-2 col-lg-1">
+        <button type="submit" class="btn btn-secondary mb-2" asp-page-handler="Export"><i class="fa-solid fa-file-excel"></i> Exportar Excel</button>
+    </div>
+}
+
+<div class="panel">
+    <div class="panel-body">
+        <table id="demo-dt-addrow" class="table table-striped table-bordered" cellspacing="0" width="100%">
+            <thead>
+                <tr>
+                    <th colspan="4">
+                        Total de Patrimônios: @if (Model.Total != null)
+                        {
+                            <span>@Model.Total</span>
+                        }
+                    </th>
+                    <th colspan="4">
+                        Em Estoque: @if (Model.Estoque != null)
+                        {
+                            <span>@Model.Estoque</span>
+                        }
+                    </th>
+
+                </tr>
+                <tr>
+                    <th class="text-center">
+                        Completo
+                    </th>
+                    <th class="text-center">
+                        Codigo
+                    </th>
+                    <th class="text-center">
+                        Patrimonio
+                    </th>
+                    <th class="text-center">
+                        Status
+                    </th>
+                    <th class="text-center">
+                        Cliente
+                    </th>
+                    <th class="text-center">
+                        Paciente
+                    </th>
+                    <th class="text-center">
+                        DT. Cir.
+                    </th>
+                    <th class="text-center">
+                        Agend
+                    </th>
+                    <th class="text-center">
+                        Oper.
+                    </th>
+                    <th class="text-center">
+                        Valid PA
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var data in Model.Relatorio)
+                {
+                    <tr>
+                        <td>
+                            @if (data.QTDFALT > 0)
+                            {
+                                <a href="/formularios/patrimonio/relatoriopatrimonioincompleto/@data.Empresa/@data.Filial/@data.Codigo" target="_blank"><div style="background-color:red;width:10px;">&nbsp;</div></a>
+                            }
+                            else
+                            {
+                                <div style="background-color:green;width:10px;">&nbsp;</div>
+                            }
+                        </td>
+                        <td>@data.Codigo</td>
+                        <td>@data.DesPat</td>
+                        <td>@data.Status</td>
+                        <td>
+                            @if (data.Status == "EM USO")
+                            {
+                                @data.Cliente
+                            }
+                        </td>
+                        <td>
+                            @if (data.Status == "EM USO")
+                            {
+                                @data.NMPac
+                            }
+                        </td>
+                        <td>
+                            @if (data.Status == "EM USO")
+                            {
+                                @data.DTCirurgia
+                            }
+                        </td>
+                        <td>
+                            @if (data.Status == "EM USO")
+                            {
+                                @data.Agend
+                            }
+                        </td>
+                        <td>
+                            @if (data.Status == "EM USO")
+                            {
+                                @data.Oper
+                            }
+                        </td>
+                        <td>
+                            @if (data.Valid != "" && data.Valid != null)
+                            {
+                                @data.Valid
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

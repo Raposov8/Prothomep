@@ -1,0 +1,37 @@
+﻿@page
+@model ErrorModel
+<!DOCTYPE html>
+<html lang="en">
+@{
+    Layout = "_Layout";
+    ViewData["Title"] = "Error";
+}
+
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+        <title>Maintenance | Error</title>
+
+        <!--Open Sans Font [ OPTIONAL ]-->
+        <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700' rel='stylesheet' type='text/css'>
+
+    </head>
+
+    <body>
+        <div id="container" class="cls-container">
+
+            <div class="cls-content">
+                <h1 class="error-code text-muted"><i class="demo-psi-gear icon-2x"></i></h1>
+                <p class="h3 text-bold" style="text-transform:uppercase;font-weight:700">Oops........</p>
+                <div class="pad-btm">
+                    Alguma coisa aconteceu de errado, a equipe Intermedic/Denuo esta trabalhando para<br>
+                    corrigir o mais rapido este problema.<br />
+                    A Equipe Intermedic/Denuo Agradece . <br /><br />
+                </div>
+            </div>
+        
+        </div>
+    </body>
+</html>

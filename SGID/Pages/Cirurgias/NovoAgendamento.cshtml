@@ -1,0 +1,1168 @@
+﻿@page "{id}"
+@model SGID.Pages.Cirurgias.NovoAgendamentoModel
+@{
+    ViewData["Title"] = "Orçamento";
+    Layout = "_LayoutGeral";
+}
+
+<div class="row">
+    <div class="col-md-6">
+        <h2 style="padding-left:20px;">Novo Orçamento</h2>
+    </div>
+    <div class="col-md-6" style="text-align: right;">
+        <a class="consultaCliente" onClick="MyWindow=window.open('/clientes/listarclientes','MyWindow','width=900,height=600'); return false;"><i class="fa-regular fa-user"></i> Consulta Cliente</a> |
+        <a class="pedidos" onClick="MyWindow=window.open('/pedidos/listarpedidos','MyWindow','width=900,height=600'); return false;"><i class="fa-solid fa-clipboard-list"></i> Consulta Pedido</a> |
+        <a class="produto" onClick="MyWindow=window.open('/produtos/listarprodutos','MyWindow','width=900,height=600'); return false;"><i class="fa-solid fa-money-bills"></i> Consulta Produtos</a>
+    </div>
+</div>
+
+@Html.AntiForgeryToken()
+
+ @using(@Html.BeginForm(FormMethod.Post,new { enctype = "multipart/form-data" })){
+        <div class="row">
+            <div class="card" style="padding:10px;">
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="form-group col-sm-2 col-md-2">
+                            <label class="Label">Empresa</label>
+                            <select class="form-control" id="Empresa" name="Empresa">
+                                <option value="03">Denuo</option>
+                                <option value="01">Intermedic</option>
+                            </select>
+                        </div>
+                        <div class="form-group col-sm-2 col-md-2">
+                            <label class="Label">Tipo</label>
+                        <select class="form-control" id="Tipo" name="Tipo">
+                                <option value="2">ELETIVA</option>
+                                <option value="1">URGENTE</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-sm-4 col-md-4">
+                            <label class="Label">Cliente Faturamento </label>
+                            <input class="form-control" id="Cliente" name="Cliente" oninput="this.value = this.value.toUpperCase()" required >
+                        </div>
+                        <div class="form-group col-sm-3 col-md-3">
+                            <label class="Label">Codigo Cond. Pag.</label>
+                            <input class="form-control" id="CodCondPag" name="CodCondPag" oninput="this.value = this.value.toUpperCase()" required/>
+                        </div>
+                        <div class="form-group col-sm-3 col-md-3">
+                            <label class="Label">Condições de Pagto.</label>
+                            <input type="text" class="form-control" id="CondPag" name="CondPag" oninput="this.value = this.value.toUpperCase()" required />
+                        </div>
+                        <div class="form-group col-sm-2 col-md-2">
+                            <label class="Label">Codigo Tabela</label>
+                            <input class="form-control" id="CodTabela" name="CodTabela" oninput="this.value = this.value.toUpperCase()" required />
+                        </div>
+                        <div class="form-group col-sm-4 col-md-4">
+                            <label class="Label">Tabela (R$)</label>
+                            <input class="form-control" id="Tabela" name="Tabela" oninput="this.value = this.value.toUpperCase()" required />
+                        </div>
+                        <div class="form-group col-sm-4 col-md-4">
+                            <label class="Label">Médico</label>
+                            <div class="autocomplete col-md-12"  >
+                              <input type="text" class="form-control" id="Medico" name="Medico" oninput="this.value = this.value.toUpperCase()" required />
+                            </div>
+                            
+                        </div>
+                        <div class="form-group col-sm-2 col-md-2">
+                            <label class="Label">Vendedor</label>
+                            <input type="text" class="form-control" id="Vendedor" name="Vendedor" oninput="this.value = this.value.toUpperCase()" required />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-sm-2 col-md-2">
+                            <label class="Label">Matricula</label>
+                            <input type="text" class="form-control" id="Matricula" name="Matricula" oninput="this.value = this.value.toUpperCase()" />
+                        </div>
+                        <div class="form-group col-sm-4 col-md-4">
+                            <label class="Label">Paciente</label>
+                            <input type="text" class="form-control" id="Paciente" name="Paciente" oninput="this.value = this.value.toUpperCase()" required/>
+                        </div>
+                        <div class="form-group col-sm-2 col-md-2">
+                            <label class="Label">Codigo Hospital</label>
+                        <input type="text" class="form-control" id="CodHospital" name="CodHospital" oninput="this.value = this.value.toUpperCase()" required/>
+                        </div>
+                        <div class="form-group col-sm-4 col-md-4">
+                            <label class="Label">Hospital</label>
+                            <div class="autocomplete col-md-12">
+                                <input type="text" class="form-control" id="Hospital" name="Hospital" oninput="this.value = this.value.toUpperCase()" required/>
+                            </div>
+                        </div>
+                        <div class="form-group col-sm-2 col-md-2">
+                            <label class="Label">Codigo</label>
+                        <input type="text" class="form-control" id="CodConvenio" name="CodConvenio"  required />
+                        </div>
+                        <div class="form-group col-sm-4 col-md-4">
+                            <label class="Label">Convênio</label>
+                            <div class="autocomplete col-md-12">
+                                <input type="text" class="form-control" id="Convenio" name="Convenio" oninput="this.value = this.value.toUpperCase()" required/>
+                            </div>
+                        </div>
+                        <div class="form-group col-sm-4 col-md-4">
+                            <label class="Label">Instrumentador</label>
+                            <select class="form-control" id="Instrumentador" name="Instrumentador">
+                            @foreach (var data in Model.Novo.Intrumentador)
+                            {
+                                <option value="@data">@data</option>
+                            }
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-sm-3 col-md-3">
+                            <label class="Label">Data Cirurgia</label>
+                            <input type="datetime-local" class="form-control" id="DataAgendamento" name="DataAgendamento"  oninput="this.value = this.value.toUpperCase()" />
+                        </div>
+                        <div class="form-group col-sm-2 col-md-2">
+                            <label class="Label">Data Autorização</label>
+                            <input type="date" class="form-control" id="DataAutorizacao" name="DataAutorizacao"  oninput="this.value = this.value.toUpperCase()" />
+                        </div>
+                        <div class="form-group col-sm-4 col-md-4">
+                            <label class="Label">Procedimento</label>
+                            <select class="form-control" id="Procedimento" name="Procedimento">
+                                @foreach(var data in Model.Novo.Procedimentos)
+                                {
+                                    <option value="@data.Nome">@data.Nome</option>
+                                }
+                            </select>
+                        </div>
+                        <div class="form-group col-sm-2 col-md-2">
+                            <label class="Label">Autorizado ?</label>
+                            <select class="form-control" id="Autorizado" name="Autorizado">
+                                <option value="1">SIM</option>
+                                <option value="2">NÃO</option>
+                            </select>
+                        </div>
+                        <div class="form-group col-sm-2 col-md-2">
+                            <label style="font-size:10px;">Nº Autorização</label>
+                            <input type="text" class="form-control" id="NumAutorizacao" name="NumAutorizacao"  oninput="this.value = this.value.toUpperCase()" />
+                        </div>
+                        <div class="form-group col-sm-2 col-md-2">
+                            <label class="Label">Senha</label>
+                            <input type="text" class="form-control" id="Senha" name="Senha"  oninput="this.value = this.value.toUpperCase()" />
+                        </div>
+                        <div class="form-group col-sm-2 col-md-2">
+                            <label class="Label">Indicação</label>
+                            <select class="form-control" id="Indicacao" name="Indicacao">
+                                <option value="1ª opção">1ª opção</option>
+                                <option value="2ª opção">2ª opção</option>
+                                <option value="3ª opção">3ª opção</option>
+                                <option value="NÃO INFORMADO">NÃO INFORMADO</option>
+                                <option value="Indicação do cliente">Indicação do cliente</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-sm-12 col-md-12">
+                            <label class="Label">Observação</label>
+                        <input type="text" class="form-control" id="Obs" name="Obs" oninput="this.value = this.value.toUpperCase()" />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 Titulo">
+                            <span>Anexo(s)</span>
+                        </div>
+                        <div class="custom-file" style="margin-top:10px;">
+                            <label class="col-md-1" for="Anexos01" style="padding-top:10px;">
+                                <i id="AnexosIcon01" class="fa-solid fa-file-lines fa-3x Vermelho"></i>
+                                <span id="Anexo01Nome"></span>
+                            </label>
+                            <input hidden type="file" class="custom-file-input" id="Anexos01" name="Anexos01" />
+
+                            <label class="col-md-1" for="Anexos02" style="padding-top:10px;">
+                                <i id="AnexosIcon02" class="fa-solid fa-file-lines fa-3x Vermelho"></i>
+                                <span id="Anexo02Nome"></span>
+                            </label>
+                            <input hidden type="file" class="custom-file-input" id="Anexos02" name="Anexos02" />
+
+                            <label class="col-md-1" for="Anexos03" style="padding-top:10px;">
+                                <i id="AnexosIcon03" class="fa-solid fa-file-lines fa-3x Vermelho"></i>
+                                <span id="Anexo03Nome"></span>
+                            </label>
+                            <input hidden type="file" class="custom-file-input" id="Anexos03" name="Anexos03" />
+
+                            <label class="col-md-1" for="Anexos04" style="padding-top:10px;">
+                                <i id="AnexosIcon04" class="fa-solid fa-file-lines fa-3x Vermelho"></i>
+                                <span id="Anexo04Nome"></span>
+                            </label>
+                            <input hidden type="file" class="custom-file-input" id="Anexos04" name="Anexos04" />
+
+                            <label class="col-md-1" for="Anexos05" style="padding-top:10px;">
+                                <i id="AnexosIcon05" class="fa-solid fa-file-lines fa-3x Vermelho"></i>
+                            <span id="Anexo05Nome"></span>
+                            </label>
+                            <input hidden type="file" class="custom-file-input" id="Anexos05" name="Anexos05" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="panel">
+                <div class="panel-body">
+                    <table id="Produto" name="Produto" class="table table-striped table-bordered" cellspacing="0" width="100%">
+                        <thead>
+                            <tr>
+                                <th class="text-center">
+                                    Item
+                                </th>
+                                <th class="text-center">
+                                    Licit.
+                                </th>
+                                <th class="text-center">
+                                    Produto
+                                </th>
+                                <th class="text-center">
+                                    Tuss
+                                </th>
+                                <th class="text-center">
+                                    Anvisa
+                                </th>
+                                <th class="text-center">
+                                    Marca
+                                </th>
+                                <th class="text-center">
+                                    Qtd.
+                                </th>
+                                <th class="text-center">
+                                    UM
+                                </th>
+                                <th class="text-center">
+                                    Prc. Unit.
+                                </th>
+                                <th class="text-center">
+                                    Vlr.Total
+                                </th>
+                                <th class="text-center">
+                                    Tp. Op.
+                                </th>
+                                <th class="text-center">
+                                    Lote
+                                </th>
+                                <th class="text-center">
+                                    <a class="details" data-id="10" data-toggle="modal" data-target="#details-modal"><i class="fa-solid fa-circle-plus" style="color:green"></i></a>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <br/>
+            <div class="panel">
+                <div class="panel-body">
+                    <table id="Patrimonio" name="Patrimonio" class="table table-striped table-bordered" cellspacing="0" width="100%">
+                        <thead>
+                            <tr>
+                                <th class="text-center">
+                                    Descri
+                                </th>
+                                <th class="text-center">
+                                    KitBas
+                                </th>
+                                <th class="text-center">
+                                    <a class="patri" data-id="10" data-toggle="modal" data-target="#patri-modal"><i class="fa-solid fa-circle-plus" style="color:green"></i></a>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="row justify-content-center">
+                <div style="color:#00b050" class="col-md-2"><button class="btn btn-button btn-success float-end" style="font-size:12px;" type="submit"><i class="fa-solid fa-thumbs-up"></i> Salvar</button></div> |
+                <div style="color:#c00000" class="col-md-2"><a class="btn btn-button btn-danger" style="font-size:12px;" href="/cirurgias/agendamentos"><i class="fa-solid fa-xmark"></i> Cancelar</a></div>
+            </div>
+        </div>
+    }
+
+
+
+<div class="modal fade" id="details-modal" role="dialog" tabindex="-1" aria-labelledby="demo-default-modal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <!--Modal header-->
+            <div class="modal-header">
+                 <div class="col-md-12">
+                     <h4>Buscar Item</h4>
+                 </div>
+            </div>
+            
+            <!--Modal body-->
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <label>Codigo Produto</label>
+                        <input type="text" class="form-control" id="CodProd" name="CodProd" />
+                    </div>
+
+                </div>
+            </div>
+
+            <!--Modal footer-->
+            <div class="modal-footer">
+                <div class="col-md-12">
+                    <button class="btn btn-button btn-success float-end" id="Adicionar">
+                        Adicionar Item
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="patri-modal" role="dialog" tabindex="-1" aria-labelledby="demo-default-modal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <!--Modal header-->
+            <div class="modal-header">
+                 <div class="col-md-12">
+                     <h4>Buscar Item</h4>
+                 </div>
+            </div>
+
+            <!--Modal body-->
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <label>Codigo Produto</label>
+                        <div class="autocomplete" >
+                            <input type="text" class="form-control" id="CodPatri" name="CodPatri" oninput="this.value = this.value.toUpperCase()" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!--Modal footer-->
+            <div class="modal-footer">
+                <div class="col-md-12">
+                    <button class="btn btn-button btn-success float-end" id="AdicionarPatri">
+                        Adicionar Item
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="loading-modal" role="dialog" tabindex="-1" aria-labelledby="demo-default-modal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <!--Modal body-->
+            <div class="modal-body">
+                <div style="display:flex; justify-content: center;">
+                    <i class="fa-solid fa-spinner fa-50x fa-spin-pulse"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+<script>
+    var count = 0;
+    var countPatri = 0;
+    $(document).ready(function() {
+        $('#Empresa').val(`@ViewContext.RouteData.Values["id"]`)
+        $("#Instrumentador").val("** NENHUM **                            ")
+
+        //Inicializador
+        $("#Hora").mask("00:00");
+
+        $("#HoraFinal").mask("00:00");
+
+        remove = function(item) {
+              
+              var tr = $(item).closest('tr');
+
+              tr.fadeOut(400, function() {
+                tr.remove();  
+
+                count = 0;
+
+                 var valor = $("#Produto>tbody").find("tr");
+
+                 valor.each(function(){
+                
+                    var tds = $(this).find("td");
+                
+                    tds.each(function(){
+                       var input = $(this).find("input")[0];
+                       if (input != undefined) {
+                       
+                           var id = input.id.split('.')[1];
+                           var name = input.name.split('.')[1];
+
+                           input.id = `Produtos[${count}].${id}`;
+                           input.name = `Produtos[${count}].${name}`;
+                       }
+                    })
+                    count++
+                 })
+              });
+
+              return false;
+        }
+
+        removePatri = function(item) {
+              
+              var tr = $(item).closest('tr');
+
+              tr.fadeOut(400, function() {
+                tr.remove();  
+
+                countPatri = 0
+
+                 var valor = $("#Patrimonio>tbody").find("tr");
+
+                 valor.each(function(){
+                
+                    var tds = $(this).find("td");
+                
+                    tds.each(function(){
+                       var input = $(this).find("input")[0];
+                       if (input != undefined) {
+                       
+                           var id = input.id.split('.')[1];
+                           var name = input.name.split('.')[1];
+
+                           input.id = `Patris[${count}].${id}`;
+                           input.name = `Patris[${count}].${name}`;
+                       }
+                    })
+                    count++
+                 })
+              });
+
+              return false;
+        }
+
+        $("#CodProd").keydown(function (e) {
+                var key = e.which;
+                if (key == 13) {
+                    var codigo = $("#CodProd").val();
+                    var empresa =$("#Empresa").val();
+                    var tabela = $("#CodTabela").val();
+                    var chamadaUrl = `/cirurgias/novoagendamento/01?handler=AdicionarProd&&Codigo=${codigo}&&Empresa=${empresa}&&CodTab=${tabela}`
+                    $.ajax({
+                        url: chamadaUrl,
+                        type: "POST",
+                        contentType: "application/json;",
+                        dataType: 'json',
+                        headers: {
+                            "RequestVerificationToken": $('input:hidden[name="__RequestVerificationToken"]').val()
+                        },
+                            success: function (data) {
+
+                            if (data != "") {
+
+                                if (typeof data === 'string' || data instanceof String) {
+                                    alert(data)
+                                }
+                                else {
+
+                                    var linha = `<tr>
+                                                    <td>
+                                                    ${data.item}
+                                                    <input type="hidden" id="Produtos[${count}].Item" name="Produtos[${count}].Item" value="${data.item}" />
+                                                    </td>
+                                                    <td>
+                                                    ${data.licit}
+                                                    <input type="hidden" id="Produtos[${count}].Licit" name="Produtos[${count}].Licit" value="${data.licit}" />
+                                                    </td>
+                                                    <td>
+                                                    ${data.produtos}
+                                                    <input type="hidden" id="Produtos[${count}].Produtos" name="Produtos[${count}].Produtos" value="${data.produtos}" />
+                                                    </td>
+                                                    <td>
+                                                    ${data.tuss}
+                                                    <input type="hidden" id="Produtos[${count}].Tuss" name="Produtos[${count}].Tuss" value="${data.tuss}" />
+                                                    </td>
+                                                    <td>
+                                                    ${data.anvisa}
+                                                    <input type="hidden" id="Produtos[${count}].Anvisa" name="Produtos[${count}].Anvisa" value="${data.anvisa}" />
+                                                    </td>
+                                                    <td>
+                                                    ${data.marca}
+                                                    <input type="hidden" id="Produtos[${count}].Marca" name="Produtos[${count}].Marca" value="${data.marca}" />
+                                                    </td>
+                                                    <td>
+                                                    <input type="number" style="Width:60px;" class="teste" id="Produtos[${count}].Und" min="0" name="Produtos[${count}].Und" value="${data.und}" />
+                                                    </td>
+                                                    <td>
+                                                    ${data.segUnd}
+                                                    <input type="hidden" id="Produtos[${count}].SegUnd" name="Produtos[${count}].SegUnd" value="${data.segUnd}" />
+                                                    </td>
+                                                    <td>
+                                                    ${data.prcUnid}
+                                                    <input class="unid${count}" type="hidden" id="Produtos[${count}].PrcUnid" name="Produtos[${count}].PrcUnid" value="${data.prcUnid}" />
+                                                    </td>
+                                                    <td>
+                                                    <input  class="total${count}" id="Produtos[${count}].VlrTotal" name="Produtos[${count}].VlrTotal" value="${data.vlrTotal}"/>
+                                                    </td>
+                                                    <td>
+                                                    ${data.tipoOp}
+                                                    <input type="hidden" id="Produtos[${count}].TipoOp" name="Produtos[${count}].TipoOp" value="${data.tipoOp}" />
+                                                    </td>
+                                                    <td>
+                                                    ${data.lote}
+                                                    <input type="hidden" id="Produtos[${count}].Lote" name="Produtos[${count}].Lote" value="${data.lote}" />
+                                                    </td>
+                                                    <td>
+                                                        <a class="fas fa-eye add-tooltip" style="text-decoration:none;" data-container="body" data-placement="top" data-original-title="Visualizar Recurso" aria-hidden="true"></a>
+
+                                                        <a class="fa-regular fa-trash-can add-tooltip" onclick="remove(this)" style="text-decoration:none;" id="Excluir" data-container="body" data-placement="top" data-original-title="Excluir Recurso" aria-hidden="true"></a>
+                                                    </td>
+                                                    </tr>`;
+
+                                    $("#Produto>tbody").append(linha);
+
+                                   $('input.teste').on('change', function () {
+                                        var unidade = $(this).val();
+                                        var count = $(this).attr("id").split(".")[0].substring(9, 10);
+                                        var id = `input.unid${count}`;
+                                        var valor = $(id).val();
+                                        var valorTotal = valor * unidade;
+                                        var id2 = $(`input.total${count}`).val(valorTotal.toFixed(2));
+                                        $(id2).val(valorTotal.toFixed(2));
+                                    })
+
+                                    $("#CodProd").val("");
+                                    count++;
+                                }
+                            }
+                            else {
+                                var tabela = $("#CodTabela").val();
+                                alert(`Produto não existe ou está bloqueado`)
+                            }
+                        }
+                    })
+                }
+            })
+
+        $("#Adicionar").click(function () {
+                var codigo = $("#CodProd").val();
+                var empresa = $("#Empresa").val();
+                var tabela = $("#CodTabela").val();
+                var chamadaUrl = `/cirurgias/novoagendamento/01?handler=AdicionarProd&&Codigo=${codigo}&&Empresa=${empresa}&&CodTab=${tabela}`
+                $.ajax({
+                    url: chamadaUrl,
+                    type: "POST",
+                    contentType: "application/json;",
+                    dataType: 'json',
+                    headers: {
+                        "RequestVerificationToken": $('input:hidden[name="__RequestVerificationToken"]').val()
+                    },
+                    success: function (data) {
+
+                        if (data != "") {
+
+                            if (typeof data === 'string' || data instanceof String) {
+                                alert(data)
+                            }
+                            else {
+
+                                var linha = `<tr>
+                                            <td>
+                                            ${data.item}
+                                            <input type="hidden" id="Produtos[${count}].Item" name="Produtos[${count}].Item" value="${data.item}" />
+                                            </td>
+                                            <td>
+                                            ${data.licit}
+                                            <input type="hidden" id="Produtos[${count}].Licit" name="Produtos[${count}].Licit" value="${data.licit}" />
+                                            </td>
+                                            <td>
+                                            ${data.produtos}
+                                            <input type="hidden" id="Produtos[${count}].Produtos" name="Produtos[${count}].Produtos" value="${data.produtos}" />
+                                            </td>
+                                            <td>
+                                            ${data.tuss}
+                                            <input type="hidden" id="Produtos[${count}].Tuss" name="Produtos[${count}].Tuss" value="${data.tuss}" />
+                                            </td>
+                                            <td>
+                                            ${data.anvisa}
+                                            <input type="hidden" id="Produtos[${count}].Anvisa" name="Produtos[${count}].Anvisa" value="${data.anvisa}" />
+                                            </td>
+                                            <td>
+                                            ${data.marca}
+                                            <input type="hidden" id="Produtos[${count}].Marca" name="Produtos[${count}].Marca" value="${data.marca}" />
+                                            </td>
+                                            <td>
+                                            <input type="number" style="Width:60px;" class="teste" id="Produtos[${count}].Und" min="0" name="Produtos[${count}].Und" value="${data.und}" />
+                                            </td>
+                                            <td>
+                                            ${data.segUnd}
+                                            <input type="hidden" id="Produtos[${count}].SegUnd" name="Produtos[${count}].SegUnd" value="${data.segUnd}" />
+                                            </td>
+                                            <td>
+                                            ${data.prcUnid}
+                                            <input class="unid${count}" type="hidden" id="Produtos[${count}].PrcUnid" name="Produtos[${count}].PrcUnid" value="${data.prcUnid}" />
+                                            </td>
+                                            <td>
+                                            <input  class="total${count}" id="Produtos[${count}].VlrTotal" name="Produtos[${count}].VlrTotal" value="${data.vlrTotal}"/>
+                                            </td>
+                                            <td>
+                                            ${data.tipoOp}
+                                            <input type="hidden" id="Produtos[${count}].TipoOp" name="Produtos[${count}].TipoOp" value="${data.tipoOp}" />
+                                            </td>
+                                            <td>
+                                            ${data.lote}
+                                            <input type="hidden" id="Produtos[${count}].Lote" name="Produtos[${count}].Lote" value="${data.lote}" />
+                                            </td>
+                                            <td>
+                                                <a  class="fas fa-eye add-tooltip" style="text-decoration:none;" data-container="body" data-placement="top" data-original-title="Visualizar Recurso" aria-hidden="true"></a>
+
+                                                <a class="fa-regular fa-trash-can add-tooltip" onclick="remove(this)" style="text-decoration:none;" id="Excluir" data-container="body" data-placement="top" data-original-title="Excluir Recurso" aria-hidden="true"></a>
+                                            </td>
+                                            </tr>`;
+
+                                $("#Produto>tbody").append(linha);
+
+                                $('input.teste').on('change', function () {
+                                    var unidade = $(this).val();
+                                    var count = $(this).attr("id").split(".")[0].substring(9, 10);
+                                    var id = `input.unid${count}`;
+                                    var valor = $(id).val();
+                                    var valorTotal = valor * unidade;
+                                    var id2 = $(`input.total${count}`).val(valorTotal.toFixed(2));
+                                    $(id2).val(valorTotal.toFixed(2));
+                                })
+
+                                $("#CodProd").val("");
+                                count++;
+                                
+                            }
+                        }
+                        else 
+                        {
+                            var tabela = $("#CodTabela").val();
+                            alert(`Produto não existe ou está bloqueado`)
+                        }
+                    }
+                })
+         })
+
+        $("#CodPatri").keydown(function (e) {
+                var key = e.which;
+                if (key == 13) {
+
+                    var codigo = $("#CodPatri").val();
+                    var empresa = $("#Empresa").val();
+                    var chamadaUrl = `/cirurgias/novoagendamento/01?handler=AdicionarPatri&&Empresa=${empresa}&&Codigo=${codigo}`
+                    $.ajax({
+                        url: chamadaUrl,
+                        type: "POST",
+                        contentType: "application/json;",
+                        dataType: 'json',
+                        headers: {
+                            "RequestVerificationToken": $('input:hidden[name="__RequestVerificationToken"]').val()
+                        },
+                        success: function (data) {
+
+                            if (data != "") {
+                                if (typeof data === 'string' || data instanceof String) {
+                                    alert(data)
+                                }
+                                else {
+                                    var linha = `<tr>
+                                                                     <td>
+                                                                     ${data.descri}
+                                                                     <input type="hidden" id="Patris[${countPatri}].Descri" name="Patris[${countPatri}].Descri" value="${data.descri}" />
+                                                                     </td>
+                                                                     <td>
+                                                                     ${data.kitBas}
+                                                                     <input type="hidden" id="Patris[${countPatri}].KitBas" name="Patris[${countPatri}].KitBas" value="${data.kitBas}" />
+                                                                     </td>
+                                                                     <td>
+                                                                         <a class="fas fa-eye add-tooltip" style="text-decoration:none;" data-container="body" data-placement="top" data-original-title="Visualizar Recurso" aria-hidden="true"></a>
+
+                                                                         <a class="fa-regular fa-trash-can add-tooltip" onclick="removePatri(this)" style="text-decoration:none;" id="Excluir" data-container="body" data-placement="top" data-original-title="Excluir Recurso" aria-hidden="true"></a>
+                                                                     </td>
+                                                                     </tr>`;
+                                    countPatri++;
+                                    $("#Patrimonio>tbody").append(linha);
+                                    $("#CodPatri").val("");
+                                }
+                            }
+                            else {
+
+                                alert(`Patrimonio não existe ou está bloqueado`)
+                            }
+                        }
+
+                    })
+                }
+            })
+
+        $("#AdicionarPatri").click(function () {
+                var codigo = $("#CodPatri").val();
+                var empresa = $("#Empresa").val();
+                var chamadaUrl = `/cirurgias/novoagendamento/01?handler=AdicionarPatri&&Empresa=${empresa}&&Codigo=${codigo}`
+                $.ajax({
+                    url: chamadaUrl,
+                    type: "POST",
+                    contentType: "application/json;",
+                    dataType: 'json',
+                    headers: {
+                        "RequestVerificationToken": $('input:hidden[name="__RequestVerificationToken"]').val()
+                    },
+                    success: function (data) {
+
+                        if (data != "") {
+                            if (typeof data === 'string' || data instanceof String) {
+                                alert(data)
+                            }
+                            else {
+                                var linha = `<tr>
+                                                         <td>
+                                                         ${data.descri}
+                                                         <input type="hidden" id="Patris[${countPatri}].Descri" name="Patris[${countPatri}].Descri" value="${data.descri}" />
+                                                         </td>
+                                                         <td>
+                                                         ${data.kitBas}
+                                                         <input type="hidden" id="Patris[${countPatri}].KitBas" name="Patris[${countPatri}].KitBas" value="${data.kitBas}" />
+                                                         </td>
+                                                         <td>
+                                                             <a class="fas fa-eye add-tooltip" style="text-decoration:none;" data-container="body" data-placement="top" data-original-title="Visualizar Recurso" aria-hidden="true"></a>
+
+                                                             <a class="fa-regular fa-trash-can add-tooltip" onclick="removePatri(this)" style="text-decoration:none;" id="Excluir" data-container="body" data-placement="top" data-original-title="Excluir Recurso" aria-hidden="true"></a>
+                                                         </td>
+                                                         </tr>`;
+                                countPatri++;
+                                $("#Patrimonio>tbody").append(linha);
+                                $("#CodPatri").val("");
+                            }
+                        }
+                        else {
+
+                            alert(`Patrimonio não existe ou está bloqueado`)
+                        }
+                    }
+                })
+            })
+
+        
+        $('#CodCondPag').on('change',function(){
+            var codigo =  $("#CodCondPag").val();
+            var empresa = $("#Empresa").val();
+            var chamadaUrl = `/cirurgias/novoagendamento/01?handler=Condicoes&&Codigo=${codigo}&&Empresa=${empresa}`;
+            $.ajax({
+                url: chamadaUrl,
+                type: "GET",
+                contentType: "application/json;",
+                dataType: 'json',
+                headers: {
+                    "RequestVerificationToken": $('input:hidden[name="__RequestVerificationToken"]').val()
+                },
+                success: function(data) {
+
+                    if(data!=null){
+                        $("#CondPag").val(data);
+                    }else{
+                        alert("CodCond não existe")
+                    }
+                }
+            })
+        });
+
+        $('#CodTabela').on('change',function(){
+            var codigo =  $("#CodTabela").val();
+            var empresa = $("#Empresa").val();
+            var chamadaUrl = `/cirurgias/novoagendamento/01?handler=Tabela&&Codigo=${codigo}&&Empresa=${empresa}`;
+            $.ajax({
+                url: chamadaUrl,
+                type: "GET",
+                contentType: "application/json;",
+                dataType: 'json',
+                headers: {
+                    "RequestVerificationToken": $('input:hidden[name="__RequestVerificationToken"]').val()
+                },
+                success: function(data) {
+
+                    if(data!=null){
+                        $("#Tabela").val(data);
+                    }else{
+                        alert("CodTabela não existe")
+                    }
+                }
+            })
+        });
+
+        $('#CodHospital').on('change', function () {
+            var hospital = $("#CodHospital").val();
+            var empresa = $("#Empresa").val();
+            var chamadaUrl = `/cirurgias/novoagendamento/01?handler=Hospital&&Codigo=${hospital}&&Empresa=${empresa}`;
+            $.ajax({
+                url: chamadaUrl,
+                type: "GET",
+                contentType: "application/json;",
+                dataType: 'json',
+                headers: {
+                    "RequestVerificationToken": $('input:hidden[name="__RequestVerificationToken"]').val()
+                },
+                success: function (data) {
+
+                    $("#Hospital").val(data);
+                }
+            })
+        })
+
+        $('#Hospital').keydown(function (e) {
+            var key = e.which;
+            if(key == 13)
+            {
+                var hospital = $("#Hospital").val();
+                var empresa = $("#Empresa").val();
+                var chamadaUrl = `/cirurgias/novoagendamento/01?handler=CodHospital&&Codigo=${hospital}&&Empresa=${empresa}`;
+                $.ajax({
+                    url: chamadaUrl,
+                    type: "GET",
+                    contentType: "application/json;",
+                    dataType: 'json',
+                    headers: {
+                        "RequestVerificationToken": $('input:hidden[name="__RequestVerificationToken"]').val()
+                    },
+                    success: function (data) {
+
+                        $("#CodHospital").val(data);
+                    }
+                })
+            }
+        })
+
+        $('#CodConvenio').on('change',function(){
+            var codigo = $("#CodConvenio").val();
+            var empresa = $("#Empresa").val();
+            var chamadaUrl = `/cirurgias/novoagendamento/01?handler=Convenio&&Codigo=${codigo}&&Empresa=${empresa}`;
+            $.ajax({
+                url: chamadaUrl,
+                type: "GET",
+                contentType: "application/json;",
+                dataType: 'json',
+                headers: {
+                    "RequestVerificationToken": $('input:hidden[name="__RequestVerificationToken"]').val()
+                },
+                success: function (data) {
+
+                    $("#Convenio").val(data);
+                }
+            })
+        })
+
+        $('#Convenio').keydown(function (e) {
+            var key = e.which;
+            if(key == 13)
+            {
+                var codigo = $("#Convenio").val();
+                var empresa = $("#Empresa").val();
+                var chamadaUrl = `/cirurgias/novoagendamento/01?handler=CodConvenio&&Codigo=${codigo}&&Empresa=${empresa}`;
+                $.ajax({
+                    url: chamadaUrl,
+                    type: "GET",
+                    contentType: "application/json;",
+                    dataType: 'json',
+                    headers: {
+                        "RequestVerificationToken": $('input:hidden[name="__RequestVerificationToken"]').val()
+                    },
+                    success: function (data) {
+
+                        $("#CodConvenio").val(data);
+                    }
+                })
+            }
+        })
+       
+        $('#Cliente').keydown(function(e){
+            var key = e.which;
+            if(key == 13)
+            {
+                var cliente = $('#Cliente').val();
+                var empresa = $("#Empresa").val();
+                var chamadaUrl = `/cirurgias/novoagendamento/01?handler=Cliente&&Codigo=${cliente}&&Empresa=${empresa}`;
+                $.ajax({
+                    url: chamadaUrl,
+                    type: "POST",
+                    contentType: "application/json;",
+                    dataType: 'json',
+                    headers: {
+                        "RequestVerificationToken": $('input:hidden[name="__RequestVerificationToken"]').val()
+                    },
+                    success: function (data) {
+                        if(data.codigo != null){
+                            $("#Cliente").val(`${data.codigo} ${data.nreduz}`);
+                            $("#CodCondPag").val(data.cond);
+                            $("#CondPag").val(data.descon);
+                            $("#CodTabela").val(data.tabela);
+                            $("#Tabela").val(data.condTabela);
+                            $("#cliente-modal").modal('hide')
+                        }
+                        else
+                        {
+                            
+                        }
+                    }
+                })
+            }
+        })
+        
+    });
+</script>
+
+<script>
+    $(document).ready(function(){
+        
+            $('#Empresa').on('change', function () {
+                var empresa = $(this).val();
+                $("#loading-modal").modal('show')
+                window.location.href = `/cirurgias/novoagendamento/${empresa}`
+            })
+
+        $('#Tipo').on('change',function(){
+            var tipo = $("#Tipo").val()
+            if(tipo == 1){
+                var data = new Date($.now());
+                //yyyy-MM-dd'T'HH:mm
+                data.setMinutes(data.getMinutes() - data.getTimezoneOffset());
+                $("#DataAgendamento").val(data.toISOString().slice(0, 16))
+            }
+        })
+
+        $('a.cliente').on('click',function (){
+            $("#cliente-modal").modal('show')
+        })
+
+            $("#Anexos01").on('change', function () {
+                $("#AnexosIcon01").removeClass('Vermelho');
+                $("#AnexosIcon01").addClass('Verde');
+                var teste = this.value.replace('C:\\fakepath\\', '');
+                $("#Anexo01Nome").html(teste)
+            });
+
+            $("#Anexos02").on('change', function () {
+                $("#AnexosIcon02").removeClass('Vermelho');
+                $("#AnexosIcon02").addClass('Verde');
+                var teste = this.value.replace('C:\\fakepath\\', '');
+                $("#Anexo02Nome").html(teste)
+            });
+
+            $("#Anexos03").on('change', function () {
+                $("#AnexosIcon03").removeClass('Vermelho');
+                $("#AnexosIcon03").addClass('Verde');
+                var teste = this.value.replace('C:\\fakepath\\', '');
+                $("#Anexo03Nome").html(teste)
+            });
+
+            $("#Anexos04").on('change', function () {
+                $("#AnexosIcon04").removeClass('Vermelho');
+                $("#AnexosIcon04").addClass('Verde');
+                var teste = this.value.replace('C:\\fakepath\\', '');
+                $("#Anexo04Nome").html(teste)
+            });
+
+            $("#Anexos05").on('change', function () {
+                $("#AnexosIcon05").removeClass('Vermelho');
+                $("#AnexosIcon05").addClass('Verde');
+                var teste = this.value.replace('C:\\fakepath\\', '');
+                $("#Anexo05Nome").html(teste)
+            });
+
+        $('a.details').on('click', function () {
+           $('#details-modal').modal('show')
+        });
+
+        $('a.patri').on('click', function () {
+           $('#patri-modal').modal('show')
+        });
+
+        $('a.close').on('click',function(){
+            $('#details-modal').modal('hide')
+                $('#patri-modal').modal('hide')
+        })
+    })
+</script>
+
+<script>
+    var Patri = [];
+    var Medicos = [];
+    var Hospital = [];
+    var Convenio = [];
+    var Clientes = [];
+
+    @foreach (var data in Model.Novo.Clientes)
+    {
+        @:Clientes.push("@data")
+    }
+
+    @foreach (var d in Model.Novo.Patrimonios)
+    {
+        @:Patri.push("@d");
+    }
+
+    @foreach (var data in Model.Novo.Medico)
+    {
+        @:Medicos.push("@data");
+    }
+
+    @foreach (var data in Model.Novo.Hospital)
+    {
+        @:Hospital.push("@data")
+    }
+
+    @foreach (var data in Model.Novo.Convenio)
+    {
+        @:Convenio.push("@data")
+    }
+
+    $(document).ready(function()
+    {
+
+        function autocomplete(inp, arr) {
+              /*the autocomplete function takes two arguments,
+              the text field element and an array of possible autocompleted values:*/
+              var currentFocus;
+              /*execute a function when someone writes in the text field:*/
+              inp.addEventListener("input", function(e) {
+                  var a, b, i, val = this.value;
+                  /*close any already open lists of autocompleted values*/
+                  closeAllLists();
+                  if (!val) { return false;}
+                  currentFocus = -1;
+                  /*create a DIV element that will contain the items (values):*/
+                  a = document.createElement("DIV");
+                  a.setAttribute("id", this.id + "autocomplete-list");
+                  a.setAttribute("class", "autocomplete-items form-control");
+                  /*append the DIV element as a child of the autocomplete container:*/
+                  this.parentNode.appendChild(a);
+                  /*for each item in the array...*/
+                  for (i = 0; i < arr.length; i++) {
+                    /*check if the item starts with the same letters as the text field value:*/
+                    if (arr[i].substr(0, val.length).toUpperCase() == val.toUpperCase()) {
+                      /*create a DIV element for each matching element:*/
+                      b = document.createElement("DIV");
+                      /*make the matching letters bold:*/
+                      b.innerHTML = "<strong>" + arr[i].substr(0, val.length) + "</strong>";
+                      b.innerHTML += arr[i].substr(val.length);
+                      /*insert a input field that will hold the current array item's value:*/
+                      b.innerHTML += "<input type='hidden' value='" + arr[i] + "'>";
+                      /*execute a function when someone clicks on the item value (DIV element):*/
+                          b.addEventListener("click", function(e) {
+                          /*insert the value for the autocomplete text field:*/
+                          inp.value = this.getElementsByTagName("input")[0].value;
+                          /*close the list of autocompleted values,
+                          (or any other open lists of autocompleted values:*/
+                          closeAllLists();
+                      });
+                      a.appendChild(b);
+                    }
+                  }
+              });
+              /*execute a function presses a key on the keyboard:*/
+              inp.addEventListener("keydown", function(e) {
+                  var x = document.getElementById(this.id + "autocomplete-list");
+                  if (x) x = x.getElementsByTagName("div");
+                  if (e.keyCode == 40) {
+                    /*If the arrow DOWN key is pressed,
+                    increase the currentFocus variable:*/
+                    currentFocus++;
+                    /*and and make the current item more visible:*/
+                    addActive(x);
+                  } else if (e.keyCode == 38) { //up
+                    /*If the arrow UP key is pressed,
+                    decrease the currentFocus variable:*/
+                    currentFocus--;
+                    /*and and make the current item more visible:*/
+                    addActive(x);
+                  } else if (e.keyCode == 13) {
+                    /*If the ENTER key is pressed, prevent the form from being submitted,*/
+                    e.preventDefault();
+                    if (currentFocus > -1) {
+                      /*and simulate a click on the "active" item:*/
+                      if (x) x[currentFocus].click();
+                    }
+                  }
+              });
+              function addActive(x) {
+                /*a function to classify an item as "active":*/
+                if (!x) return false;
+                /*start by removing the "active" class on all items:*/
+                removeActive(x);
+                if (currentFocus >= x.length) currentFocus = 0;
+                if (currentFocus < 0) currentFocus = (x.length - 1);
+                /*add class "autocomplete-active":*/
+                x[currentFocus].classList.add("autocomplete-active");
+              }
+              function removeActive(x) {
+                /*a function to remove the "active" class from all autocomplete items:*/
+                for (var i = 0; i < x.length; i++) {
+                  x[i].classList.remove("autocomplete-active");
+                }
+              }
+            function closeAllLists(elmnt) {
+                /*close all autocomplete lists in the document,
+                except the one passed as an argument:*/
+                var x = document.getElementsByClassName("autocomplete-items");
+              for (var i = 0; i < x.length; i++) {
+                  if (elmnt != x[i] && elmnt != inp) 
+                  {
+                    x[i].parentNode.removeChild(x[i]);
+                  }
+              }
+            }
+            /*execute a function when someone clicks in the document:*/
+            document.addEventListener("click", function (e) {
+                closeAllLists(e.target);
+            });
+        }
+
+        autocomplete(document.getElementById("CodPatri"), Patri);
+        autocomplete(document.getElementById("Medico"),Medicos);
+        autocomplete(document.getElementById("Hospital"), Hospital);
+        autocomplete(document.getElementById("Convenio"),Convenio);
+        autocomplete(document.getElementById("Cliente"),Clientes);
+
+        $('#Medico').keydown(function (e) {
+            var key = e.which;
+            if (key == 13) {
+                var codigo = $("#Medico").val();
+
+                console.log(codigo)
+
+                var teste = Medicos.find(function(lon){
+                    return lon == codigo
+                });
+
+                console.log(teste)
+
+                if (teste != undefined) {
+
+                    var empresa = $("#Empresa").val();
+                    var chamadaUrl = `/cirurgias/novoagendamento/01?handler=Vendedor&&Codigo=${codigo}&&Empresa=${empresa}`;
+                    $.ajax({
+                        url: chamadaUrl,
+                        type: "GET",
+                        contentType: "application/json;",
+                        dataType: 'json',
+                        headers: {
+                            "RequestVerificationToken": $('input:hidden[name="__RequestVerificationToken"]').val()
+                        },
+                        success: function (data) {
+
+                            $("#Vendedor").val(data);
+                        }
+                    })
+                }
+                else 
+                {
+                    $("#Medico").val("");
+                    alert("Médico está sem CRM Favor contatar Adm Vendas")
+                    
+                }
+            }
+        });
+    })
+</script>
+}
+

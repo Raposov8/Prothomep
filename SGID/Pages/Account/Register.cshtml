@@ -1,0 +1,60 @@
+﻿@page
+@model SGID.Pages.Account.RegisterModel
+@{
+    Layout = "_LayoutGeral";
+    ViewData["Title"] = "Register";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<div class="card" style="padding:10px;">
+    <div class="row">
+        <div class="col-md-12">
+            @using (Html.BeginForm(FormMethod.Post)){
+            <form method="post">
+                <div asp-validation-summary="All" class="text-danger"></div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Input.Email, new { @class = "col-md-2 control-label" })
+                    <div class="col-md-10">
+                        @Html.TextBoxFor(model => model.Input.Email, new { @class = "form-control", @required = "required",@placehold="Email" })
+                    </div>
+                </div>
+    
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Input.Password, new { @class = "col-md-2 control-label" })
+                    <div class="col-md-10">
+                        @Html.PasswordFor(model => model.Input.Password, new { @class = "form-control", @required = "required",@placehold="Senha" })
+                    </div>
+                </div>
+    
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Input.ConfirmPassword, new { @class = "col-md-2 control-label" })
+                    <div class="col-md-10">
+                        @Html.PasswordFor(model => model.Input.ConfirmPassword, new { @class = "form-control", @required = "required",@placehold="Confirmar Senha" })
+                    </div>
+                </div>
+    
+                 <div class="form-group">
+                    <label class="col-md-12 control-label">
+                         Selecione as Roles para este usuário
+                    </label>
+                    <div class="row">
+                       @foreach (var item in (SelectList)ViewData["RoleId"])
+                       {
+                         <div class="col-md-4 text-left">
+                            <input type="checkbox" id="SelectedRoles" name="SelectedRoles" value="@item.Value" class="checkbox-inline" />
+                            @Html.Label(item.Value, item.Value , new { @class = "control-label" })
+                         </div>
+                       }
+                    </div>
+                 </div>
+                <div class="form-group">
+                    <div class="offset-10 col-md-2">
+                        <button type="submit" class="btn-primary">Register</button>
+                    </div>
+                </div>
+            </form>
+            }
+        </div>
+    </div>
+</div>

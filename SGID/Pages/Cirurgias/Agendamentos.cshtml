@@ -1,0 +1,425 @@
+﻿@page
+@model SGID.Pages.Cirurgias.AgendamentosModel
+@{
+    ViewData["Title"] = "Agendamento";
+    Layout = "_LayoutGeral";
+}
+
+@Html.AntiForgeryToken()
+<div class="row">
+    <div class="offset-md-2 col-md-4">
+        <h4>AGENDAMENTO</h4>
+    </div>
+    <div class="col-md-6">
+        <a href="/cirurgias/novoagendamento/01" class="float-end" style="text-decoration:none;"><i class="fa-regular fa-calendar-days"></i> Novo Agendamento</a>
+    </div>
+</div>
+<div class="row">
+
+    <div class="col-md-2">
+        <div class="panel">
+            <div class="panel-body">
+                <table id="demo-dt-addrow" class="table table-striped table-bordered" cellspacing="0" width="100%">
+                    <thead>
+                        <tr>
+                            <th class="text-center">
+                                Cirurgias sem data
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach(var data in Model.CirurgiasSemData)
+                        {
+                            <tr>
+                                <td><a class="cirurgia" style="text-decoration-line:none" data-id="@data.Id"> @Html.DisplayFor(model=> data.Paciente)</a></td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-10">
+        <div id="calendar"></div>
+    </div>
+</div>
+
+<div class="modal fade" id="loading-modal" role="dialog" tabindex="-1" aria-labelledby="demo-default-modal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <!--Modal body-->
+            <div class="modal-body">
+                <div style="display:flex; justify-content: center;">
+                    <i class="fa-solid fa-spinner fa-10x fa-spin-pulse"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="details-modal" role="dialog" tabindex="-1" aria-labelledby="demo-default-modal" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <!--Modal header-->
+            <div class="modal-header">
+                 <div class="col-md-1">
+                     <a class="close" data-dismiss="modal"><i class="fa-regular fa-circle-xmark" style="color:red"></i></a>
+                 </div>
+            </div>
+            <!--Modal body-->
+            <div class="modal-body">
+                <div class="row">
+                    <div class="card" style="padding:10px;">
+                        <div class="col-md-12">
+                            <div class="row">
+                                <div class="form-group col-md-3">
+                                    <label class="Label">Empresa</label>
+                                    <select class="form-control" id="Empresa" name="Empresa">
+                                        <option value="03">Denuo</option>
+                                        <option value="01">Intermedic</option>
+                                    </select>
+                                </div>
+                                <div class="form-group col-md-3">
+                                    <label class="Label">Cliente Faturamento</label>
+                                    <input class="form-control" id="Cliente" name="Cliente" />
+                                </div>
+                                <div class="form-group col-md-3">
+                                    <label class="Label">Condições de Pagto.</label>
+                                    <input type="text" class="form-control" id="CondPag" name="CondPag"/>
+                                </div>
+                                <div class="form-group col-md-3">
+                                    <label class="Label">Tabela (R$)</label>
+                                    <input class="form-control" id="Tabela" name="Tabela" />
+                                </div>
+                                <div class="form-group col-md-3">
+                                    <label class="Label">Médico</label>
+                                    <input type="text" class="form-control" id="Medico" name="Medico" />
+                                </div>
+                                <div class="form-group col-md-3">
+                                    <label class="Label">Vendedor</label>
+                                    <input type="text" class="form-control" id="Vendedor" name="Vendedor" />
+                                </div>
+                                <div class="form-group col-md-3">
+                                    <label class="Label">Matricula</label>
+                                    <input type="text" class="form-control" id="Matricula" name="Matricula" />
+                                </div>
+                                <div class="form-group col-md-3">
+                                    <label class="Label">Paciente</label>
+                                    <input type="text" class="form-control" id="Paciente" name="Paciente" />
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group col-md-3">
+                                    <label class="Label">Hospital</label>
+                                    <input type="text" class="form-control" id="Hospital" name="Hospital" />
+                                </div>
+                                <div class="form-group col-md-3">
+                                    <label class="Label">Convênio</label>
+                                    <input type="text" class="form-control" id="Convenio" name="Convenio" />
+                                </div>
+                                <div class="form-group col-md-3">
+                                    <label class="Label">Instrumentador</label>
+                                    <input class="form-control" id="Instrumentador" name="Instrumentador" />
+                                </div>
+                                <div class="form-group col-md-3">
+                                    <label class="Label">Procedimento</label>
+                                    <input class="form-control" id="Procedimento" name="Procedimento" />
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group col-md-2">
+                                    <label class="Label">Autorizado ?</label>
+                                    <select class="form-control" id="Autorizado" name="Autorizado">
+                                        <option value="1">SIM</option>
+                                        <option value="2">NÃO</option>
+                                    </select>
+                                </div>
+                                <div class="form-group col-md-2">
+                                    <label class="Label">Data Cirurgia</label>
+                                    <input type="text" class="form-control" id="DataAgendamento" name="DataAgendamento" />
+                                </div>
+                                <div class="form-group col-md-2">
+                                    <label class="Label">Data Autorização</label>
+                                    <input type="text" class="form-control" id="DataAutorizacao" name="DataAutorizacao" />
+                                </div>
+                                <div class="form-group col-md-2">
+                                    <label style="font-size:10px;">Nº Autorização</label>
+                                    <input type="text" class="form-control" id="NumAutorizacao" name="NumAutorizacao" />
+                                </div>
+                                <div class="form-group col-md-2">
+                                    <label class="Label">Senha</label>
+                                    <input type="text" class="form-control" id="Senha" name="Senha" />
+                                </div>
+                                <div class="form-group col-md-2">
+                                    <label class="Label">Tipo</label>
+                                    <select class="form-control" id="Tipo" name="Tipo">
+                                        <option value="2">ELETIVA</option>
+                                        <option value="1">URGENTE</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row">
+
+                                <div class="form-group col-md-12">
+                                    <label class="Label">Observação</label>
+                                    <input type="text" class="form-control" id="Obs" name="Obs" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--Modal footer-->
+                <div class="modal-footer" style="padding-left:20px;">
+                    <div class="panel">
+                        <div class="panel-body">
+                            <table id="Produto" name="Produto" class="table-striped table-bordered" cellspacing="0" width="100%" >
+                                <thead>
+                                    <tr>
+                                        <th class="text-center">
+                                            Item
+                                        </th>
+                                        <th class="text-center">
+                                            Licit.
+                                        </th>
+                                        <th class="text-center">
+                                            Produto
+                                        </th>
+                                        <th class="text-center">
+                                            Tuss
+                                        </th>
+                                        <th class="text-center">
+                                            Anvisa
+                                        </th>
+                                        <th class="text-center">
+                                            Marca
+                                        </th>
+                                        <th class="text-center">
+                                            Qtd.
+                                        </th>
+                                        <th class="text-center">
+                                            UM
+                                        </th>
+                                        <th class="text-center">
+                                            Prc. Unit.
+                                        </th>
+                                        <th class="text-center">
+                                            Vlr.Total
+                                        </th>
+                                        <th class="text-center">
+                                            Tp. Op.
+                                        </th>
+                                        <th class="text-center">
+                                            Lote
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="panel">
+                        <div class="panel-body">
+                            <table id="Patrimonio" name="Patrimonio" class="table table-striped table-bordered" cellspacing="0" width="100%">
+                                <thead>
+                                    <tr>
+                                        <th class="text-center">
+                                            Descri
+                                        </th>
+                                        <th class="text-center">
+                                            KitBas
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>    
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--DATA Cirurgia-->
+<div class="modal fade" id="cirurgia-modal" role="dialog" tabindex="-1" aria-labelledby="demo-default-modal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <!--Modal header-->
+            <div class="modal-header">
+                <div class="col-md-12">
+                    <h4>Confirmar Data Cirurgia</h4>
+                </div>
+            </div>
+
+            <!--Modal body-->
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <input hidden id="CirurgiaId" name="CirurgiaId"/>
+                        <label>Data Cirurgia</label>
+                        <input type="datetime-local" class="form-control" id="DataCirurgia" name="DataCirurgia" />
+                    </div>
+                </div>
+            </div>
+
+            <!--Modal footer-->
+            <div class="modal-footer">
+                <div class="col-md-12">
+                    <button class="btn btn-button btn-success float-end" id="ConfirmarData">
+                        OK
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts
+{
+    <link href="~/lib/fullcalendar/fullcalendar.min.css" rel='stylesheet' />
+    <script src="~/lib/moment.js/moment.min.js" ></script>
+    <script src="~/lib/fullcalendar/fullcalendar.min.js"></script>
+    <script src='~/lib/fullcalendar/locale-all.min.js'></script>
+        <script>
+        $(document).ready(function() {
+            
+            $("a.cirurgia").on('click',function(){
+                var id = $(this).data('id')
+                $("#CirurgiaId").val(id)
+                $('#cirurgia-modal').modal('show')
+            })
+
+            $('#ConfirmarData').on('click',function () {
+                //$('.modal-body').load(`/masterdetails/product?id=${$(this).data('id')}`);
+
+                var id = $("#CirurgiaId").val();
+                var data = $("#DataCirurgia").val();
+
+                var chamadaUrl = `/cirurgias/agendamentos?handler=SetDataCirurgia&&DataCirurgia=${data}&&CirurgiaId=${id}`
+                $.ajax({
+                    url: chamadaUrl,
+                    type: "POST",
+                    contentType: "application/json;",
+                    dataType: 'json',
+                    headers: {
+                        "RequestVerificationToken": $('input:hidden[name="__RequestVerificationToken"]').val()
+                    },
+                    success: function (data) {
+
+                        location.reload();
+
+                    }
+                })
+                return true;
+            });
+
+        })
+    </script>
+    <script>
+        $(function () {
+            //defaultView: 'basicWeek'
+            $('#calendar').fullCalendar({
+                locale:'pt-br',
+                header: {
+                    left: 'prev,today,next',
+                    center: 'title',
+                    right: 'month,agendaWeek,agendaDay,'
+                },
+                initialView:'agendaDay',
+                events: '/cirurgias/agendamentos?handler=events',
+                eventLimit: true,
+                eventClick: function(info) {
+                    
+                    $('#loading-modal').modal('show');
+                    var chamadaUrl = `/cirurgias/agendamentos?handler=details&&id=${info.id}`
+                    $.ajax({
+                        url: chamadaUrl,
+                        type: "GET",
+                        contentType: "application/json;",
+                        dataType: 'json',
+                        headers: {
+                            "RequestVerificationToken": $('input:hidden[name="__RequestVerificationToken"]').val()
+                        },
+                        success: function(data) {
+                            
+
+                            $("#Empresa").val(data.agendamento.empresa);
+                            $("#Tipo").val(data.agendamento.tipo);
+                            $("#Cliente").val(data.agendamento.cliente);
+                            $("#CondPag").val(data.agendamento.condPag);
+                            $("#Tabela").val(data.agendamento.tabela);
+                            $("#Vendedor").val(data.agendamento.vendedor);
+                            $("#Medico").val(data.agendamento.medico);
+                            $("#Hospital").val(data.agendamento.hospital)
+                            $("#Matricula").val(data.agendamento.matricula);
+                            $("#Paciente").val(data.agendamento.paciente);
+                            $("#Convenio").val(data.agendamento.convenio);
+                            $("#Instrumentador").val(data.agendamento.instrumentador);
+                            $("#DataAgendamento").val(data.agendamento.dataCirurgia);
+                            $("#DataAutorizacao").val(data.agendamento.dataAutorizacao);
+                            $("#NumAutorizacao").val(data.agendamento.numAutorizacao);
+                            $("#Procedimento").val(data.agendamento.procedimento)
+                            $("#Senha").val(data.agendamento.senha);
+                            $("#Obs").val(data.agendamento.observacao);
+                            $("#Autorizado").val(data.agendamento.autorizado)
+
+                            var produtos = data.produtos;
+                            var patris = data.patris;
+                            setTimeout(function(){
+                                $('#loading-modal').modal('hide');
+                            },2000)
+                           
+
+                            $("#Produto>tbody>tr").detach()
+                            produtos.forEach(function(produto) {
+                                var linha = `
+                                <tr>
+                                    <td>${produto.item}</td>
+                                    <td>${produto.licit}</td>
+                                    <td>${produto.produtos}</td>
+                                    <td>${produto.tuss}</td>
+                                    <td>${produto.anvisa}</td>
+                                    <td>${produto.marca}</td>
+                                    <td>${produto.und}</td>
+                                    <td>${produto.prcUnid}</td>
+                                    <td>${produto.segUnd}</td>
+                                    <td>${produto.tipoOp}</td>
+                                    <td>${produto.vlrTotal}</td>
+                                    <td>${produto.lote}</td>
+                                </tr>
+                                `;
+                                $("#Produto>tbody").append(linha);
+                            })
+
+                            $("#Patrimonio>tbody>tr").detach()
+                            patris.forEach(function(patri){
+                                var linha = `<tr>
+                                                <td> ${patri.descri}</td>
+                                                <td> ${patri.kitBas}</td>
+                                    </tr>`
+                                $("#Patrimonio>tbody").append(linha);
+                            })
+
+
+                            setTimeout(function(){
+                                $('#details-modal').modal('show');
+                            },2000)
+                            
+                        }
+                    })
+                }
+            });
+
+            $('a.close').on('click',function(){
+                $('#details-modal').modal('hide');
+                $('#cirurgia-modal').modal('hide');
+                $('#loading-modal').modal('hide');
+            })
+            //eventRender: function eventRender( event, element, view ) {
+            //    return ['all', event.school].indexOf($('#school_selector').val()) >= 0
+            //}
+        })
+    </script>
+
+}

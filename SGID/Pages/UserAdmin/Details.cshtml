@@ -1,0 +1,79 @@
+﻿@page "{id}"
+@model SGID.Pages.UserAdmin.DetailsModel
+@{
+    ViewBag.Title = "Detalhes";
+    Layout = "_LayoutGeral";
+}
+
+<h2>Detalhes</h2>
+
+<div>
+    <h4>Usuário</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model._details.UserName)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model._details.UserName)
+        </dd>
+    </dl>
+</div>
+<h4>Lista de Roles para este usuário</h4>
+@if (Model._details.Roles.Count == 0)
+{
+    <hr />
+    <p>Usuário não pertence a nenhuma Role.</p>
+}
+else
+{
+    <table class="table">
+
+        @foreach (var item in Model._details.Roles)
+        {
+            <tr>
+                <td>
+                    @item
+                </td>
+            </tr>
+        }
+    </table>
+}
+
+<h4>Lista de Claims para este usuário</h4>
+
+@if (Model._details.Claims.Count == 0)
+{
+    <hr />
+    <p>Usuário não possui nenhum Claim.</p>
+}
+else
+{
+    <table class="table">
+        <tr class="table-bordered">
+            <td>
+                <b>Nome da Claim</b>
+            </td>
+            <td>
+                <b>Valor da Claim</b>
+            </td>
+        </tr>
+
+        @foreach (var item in Model._details.Claims)
+        {
+            <tr>
+                <td>
+                    @item.Type
+                </td>
+                <td>
+                    @item.Value
+                </td>
+            </tr>
+        }
+    </table>
+}
+
+<p>
+    <a href="/UserAdmin/Edit/@Model._details.Id">Editar</a>
+    <a href="/UserAdmin/ListarUsuarios/1">Voltar para a lista</a>
+</p>

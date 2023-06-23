@@ -1,0 +1,77 @@
+﻿@page
+@model SGID.Pages.Estoque.ListarFormulariosAvulsosModel
+@{
+    ViewData["Title"] = "Listar Formularios Avulsos";
+    Layout = "_LayoutGeral";
+}
+
+<div class="row">
+
+    <div class="col-md-4">
+        <h2 style="padding-left:20px;">Produtos</h2>
+    </div>
+    @Html.AntiForgeryToken()
+</div>
+
+@using (@Html.BeginForm(FormMethod.Post))
+{
+    <div class="row">
+        <div class="form-group mx-sm-3 mb-2 col-lg-2">
+            <input type="date" class="form-control" id="Cirurgia" name="Cirurgia" placeholder="Data Cirurgia">
+        </div>
+        <div class="form-group mx-sm-3 mb-2 col-lg-2">
+            <input type="text" class="form-control" id="NumAgendamento" name="NumAgendamento">
+        </div>
+
+        <div class="form-group mx-sm-3 mb-2 col-lg-1">
+            <button type="submit" class="btn btn-primary mb-2">Pesquisar</button>
+        </div>
+    </div>
+}
+
+<div class="panel">
+    <div class="panel-body">
+        <table id="demo-dt-addrow" class="table table-striped table-bordered" cellspacing="0" width="100%">
+            <thead>
+                <tr>
+                    <th class="text-center">
+                        Nº Agendamento
+                    </th>
+                    <th class="text-center">
+                        Data Cirurgia
+                    </th>
+                    <th class="text-center">
+                        Cliente
+                    </th>
+                    <th class="text-center">
+                        Paciente
+                    </th>
+                    <th class="text-center">
+                        Representatante
+                    </th>
+                    <th class="text-center">
+                        Responsável
+                    </th>
+                    <th class="text-center">
+                        Ações
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach(var data in Model.Formularios)
+                {
+                    <tr>
+                        <td>@data.NumAgendamento</td>
+                        <td>@data.DataCirurgia.ToString("dd/MM/yyyy HH:mm")</td>
+                        <td>@data.Cliente</td>
+                        <td>@data.Paciente</td>
+                        <td>@data.Representante</td>
+                        <td>@data.Usuario.ToUpper().Replace("."," ")</td>
+                        <td><!-- Editar | Visualizar | Excluir --></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+

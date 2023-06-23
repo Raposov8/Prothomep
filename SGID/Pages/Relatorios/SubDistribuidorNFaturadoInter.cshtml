@@ -1,0 +1,113 @@
+﻿@page
+@model SGID.Pages.Relatorios.SubDistribuidorNFaturadoInterModel
+@{
+    ViewData["Title"] = "Relatorio SD Não Faturado Intermedic";
+    Layout = "_LayoutGeral";
+}
+
+
+
+<div class="row">
+    @using(@Html.BeginForm(FormMethod.Post)){
+            <div class="form-group mx-sm-3 mb-2 col-lg-3">
+                <select type="text" class="form-control" id="NReduz" name="NReduz"  placeholder="Cliente">
+                    <option value="">Todos...</option>
+                    @foreach (var data in Model.Relatorio.Select(x => x.Nreduz).Distinct().ToList()){
+                        <option value="@data">@data</option>
+                    }
+                </select>
+            </div>
+
+            <div class="form-group mx-sm-3 mb-2 col-lg-1">
+                <button type="submit" class="btn btn-primary mb-2">Pesquisar</button>
+            </div>
+
+        <div class="form-group mx-sm-3 mb-2 col-lg-1">
+           <button type="submit" class="btn btn-secondary mb-2" asp-page-handler="Export"><i class="fa-solid fa-file-excel"></i> Exportar Excel</button>
+        </div>
+    }
+</div>
+
+
+
+
+
+<div class="panel">
+    <div class="panel-body">
+        <table id="demo-dt-addrow" class="table table-striped table-bordered" cellspacing="0" width="100%">
+            <thead>
+                <tr>
+                    <th class="text-center">
+                        Nome
+                    </th>
+                    <th class="text-center">
+                        Nome Cliente
+                    </th>
+                    <th class="text-center">
+                        DOC
+                    </th>
+                    <th class="text-center">
+                        Produto
+                    </th>
+                    <th class="text-center">
+                        QTD
+                    </th>
+                    <th class="text-center">
+                        Valor
+                    </th>
+                    <th class="text-center">
+                        Desconto
+                    </th>
+                    <th class="text-center">
+                        Emissao
+                    </th>
+                    <th class="text-center">
+                        Num
+                    </th>
+                    <th class="text-center">
+                        UTPOPER
+                    </th>
+                    <th class="text-center">
+                        Fabricante
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach(var data in Model.Relatorio)
+                {
+                <tr>
+                    <td>@Html.DisplayFor(model=> data.Nome)</td>
+                    <td>@Html.DisplayFor(model=> data.Nreduz)</td>
+                    <td>@Html.DisplayFor(model=> data.Doc)</td>
+                    <td>@Html.DisplayFor(model=> data.Desc)</td>
+                    <td>@Html.DisplayFor(model=> data.Quant)</td>
+                    <td>@string.Format("{0:N2}", data.Total)</td>
+                    <td>@string.Format("{0:N2}", data.Descon)</td>
+                    <td>@Html.DisplayFor(model=> data.Emissao)</td>
+                    <td>@Html.DisplayFor(model=> data.Num)</td>
+                    <td>@Html.DisplayFor(model=> data.Utpoper)</td>
+                    <td>@Html.DisplayFor(model=> data.Fabricante)</td>
+                </tr>
+                }
+            </tbody>
+            <tfoot>
+                @if (Model.Relatorio.Count > 0)
+                {
+                    <tr>
+                        <td colspan="5">Total Geral</td>
+                        <td class="text-center">@string.Format("{0:N2}", Model.Total)</td>
+                        <td class="text-center">@string.Format("{0:N2}", Model.Desc)</td>
+                    </tr>
+                }
+            </tfoot>
+        </table>
+    </div>
+</div>
+
+
+@section scripts{
+<script>
+    $("#NReduz").val("@Model.Nreduz").change();
+    //$("#NReduz option[value=val2]").attr('selected','selected');
+</script>
+}

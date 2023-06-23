@@ -1,0 +1,56 @@
+﻿@page
+@model LoginModel
+@{
+    ViewData["Title"] = "Login";
+    Layout = "_Layout";
+}
+
+
+<div class="row">
+      <div class="col-md-6 offset-md-3">
+        <div class="text-center mb-5" style="font-weight:700">SGID - SISTEMA DE GESTÃO INTERMEDIC E DENUO</div>
+        <div class="card my-5">
+           @using (Html.BeginForm(FormMethod.Post,new { @class = "card-body cardbody-color p-lg-5" })){
+                    <div class="mb-3">
+              <div class="text-center mb-5" style="font-weight:400">Faça login em sua conta</div>
+              @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+              @Html.TextBoxFor(model=> model.Input.Login,"",new { @id = "Username",@class="form-control",@type="text",@placeholder="Usuário" })
+              @Html.ValidationMessageFor(model => model.Input.Login, "", new { @class = "text-danger" })
+            </div>
+            <div class="mb-3">
+               @Html.PasswordFor(model=> model.Input.Password,new { @id="password", @class="form-control",@placeholder="Senha"})
+               @Html.ValidationMessageFor(model => model.Input.Password, "", new { @class = "text-danger" })
+            </div>
+            <div class="checkbox">
+                @Html.CheckBoxFor(model=>model.Input.RememberMe) Lembre de mim
+            </div>
+            <br />
+            <div class="text-center"><button type="submit" class="btn btn-color px-5 mb-5 w-100">Entrar</button></div>
+            }  
+        </div>
+
+      </div>
+</div>
+
+<style>
+.btn-color{
+        background-color: #0e1c36;
+        color: #fff;
+}
+
+.profile-image-pic{
+  height: 200px;
+  width: 200px;
+  object-fit: cover;
+}
+
+
+
+.cardbody-color{
+  background-color: #ebf2fa;
+}
+
+a{
+  text-decoration: none;
+}
+</style>

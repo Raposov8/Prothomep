@@ -1,0 +1,477 @@
+﻿@page
+@model SGID.Pages.Agendamento.VisitasModel
+@{
+    ViewData["Title"] = "Agendamento Visitas";
+    Layout = "_LayoutGeral";
+}
+
+@Html.AntiForgeryToken()
+<div class="row">
+    <div class="offset-md-2 col-md-4">
+        <h4>AGENDA DE @User.Identity.Name.Split("@")[0].ToUpper().Replace("."," ")</h4>
+    </div>
+    <div class="col-md-6">
+        <a id="novavistab" class="float-end" style="text-decoration:none;"><i class="fa-regular fa-calendar-days"></i> Novas Visita</a>
+    </div>
+</div>
+<br />
+<div class="row">
+    <div class="col-md-12">
+        <div id="calendar"></div>
+    </div>
+</div>
+
+<div class="modal fade" id="loading-modal" role="dialog" tabindex="-1" aria-labelledby="demo-default-modal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <!--Modal body-->
+            <div class="modal-body">
+                <div style="display:flex; justify-content: center;">
+                    <i class="fa-solid fa-spinner fa-10x fa-spin-pulse"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="novavisita-modal" role="dialog" tabindex="-1" aria-labelledby="demo-default-modal" aria-hidden="true">
+    @using (@Html.BeginForm(FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <!--Modal header-->
+                <div class="modal-header">
+                    <div class="col-md-11">
+                        <h4>Nova Visita</h4>
+                    </div>
+                    <div class="col-md-1">
+                        <a class="close" data-dismiss="modal"><i class="fa-regular fa-circle-xmark" style="color:red"></i></a>
+                    </div>
+                </div>
+    
+                <!--Modal body-->
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="card" style="padding:10px;">
+                            <div class="col-md-12">
+                                <div class="row">
+                                    <div class="form-group col-sm-6 col-md-6">
+                                        <label class="Label">Nome do Médico </label>
+                                        <div class="autocomplete col-md-12">
+                                            <input class="form-control" id="Medico" name="Medico" oninput="this.value = this.value.toUpperCase()" required>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-sm-4 col-md-4">
+                                        <label class="Label">Ultima Visita</label>
+                                        <input type="date" class="form-control" id="DataUltima" name="DataUltima" required />
+                                    </div>
+                                    <div class="form-group col-sm-4 col-md-4">
+                                        <label class="Label">Data & Hora</label>
+                                        <input type="datetime-local" class="form-control" id="Data" name="Data" required />
+                                    </div>
+                                    <div class="form-group col-sm-6 col-md-6">
+                                        <label class="Label">Tipo</label>
+                                        <select class="form-control" id="Local" name="Local" oninput="this.value = this.value.toUpperCase()" required>
+                                            @foreach (var data in Model.Locais)
+                                            {
+                                                <option value="@data">@data</option>
+                                            }
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="form-group col-sm-8 col-md-8">
+                                        <label class="Label">Endereço</label>
+                                        <input type="text" class="form-control" id="Endereco" name="Endereco" oninput="this.value = this.value.toUpperCase()" required />
+                                    </div>
+                                    <div class="form-group col-sm-4 col-md-4">
+                                        <label class="Label">Bairro</label>
+                                        <input type="text" class="form-control" id="Bairro" name="Bairro" oninput="this.value = this.value.toUpperCase()" required />
+                                        <div class="autocomplete">
+                                            <div style="color:#c00000" id="Quant" name="Quant">
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="form-group col-sm-3 col-md-3">
+                                        <label class="Label">Assunto</label>
+                                        <input class="form-control" id="Assunto" name="Assunto" oninput="this.value = this.value.toUpperCase()" required />
+                                    </div>
+                                    <div class="form-group col-sm-9 col-md-9">
+                                        <label class="Label">Motivo da visita</label>
+                                        <div class="row">
+                                            <div class="col-sm-2 col-md-2">
+                                                <input hidden type="radio" class="btn-check" name="MotVis" id="MotVis1" value="VENDA" autocomplete="off"  required>
+                                                <label class="btn btn-outline-primary" for="MotVis1">VENDA</label>
+                                            </div>
+                                            <div class="col-sm-3 col-md-3">
+                                                <input hidden type="radio" class="btn-check" name="MotVis" id="MotVis2" value="INDICAÇÃO" autocomplete="off"  required>
+                                                <label class="btn btn-outline-primary" for="MotVis2">INDICAÇÃO</label>
+                                            </div>
+                                            <div class="col-sm-4 col-md-4">
+                                                <input hidden type="radio" class="btn-check" name="MotVis" id="MotVis3" value="ACOMPANHAMENTO" autocomplete="off"  required>
+                                                <label class="btn btn-outline-primary" for="MotVis3">ACOMPANHAMENTO</label>
+                                            </div>
+                                            <div class="col-sm-3 col-md-3">
+                                                <input hidden type="radio" class="btn-check" name="MotVis" id="MotVis4" value="RECLAMAÇÃO" autocomplete="off" required>
+                                                <label class="btn btn-outline-primary" for="MotVis4">RECLAMAÇÃO</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-sm-12 col-md-12">
+                                        <label class="Label">Observação</label>
+                                        <textarea type="text" class="form-control" id="Obs" name="Obs" oninput="this.value = this.value.toUpperCase()"></textarea>
+                                    </div>
+                                    <div class="form-group col-sm-12 col-md-12">
+                                        <label class="Label">Resumo da visita</label>
+                                        <textarea type="text" class="form-control" id="ResuVisi" name="ResuVisi" oninput="this.value = this.value.toUpperCase()"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--Modal footer-->
+                <div class="modal-footer">
+                    <div class="col-md-12">
+                        <div class="row justify-content-center">
+                            <div style="color:#00b050" class="col-md-2"><button class="btn btn-button btn-success float-end" style="font-size:12px;" type="submit"><i class="fa-solid fa-thumbs-up"></i> Salvar</button></div> |
+                            <div style="color:#c00000" class="col-md-2"><a class="btn btn-button btn-danger" style="font-size:12px;" ><i class="fa-solid fa-xmark"></i> Cancelar</a></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+<div class="modal fade" id="details-modal" role="dialog" tabindex="-1" aria-labelledby="demo-default-modal" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <!--Modal header-->
+                <div class="modal-header">
+                    <div class="col-md-10">
+                        <h4 id="Vendedor"></h4>
+                    </div>
+                    <div class="col-md-1">
+                        <a class="close" data-dismiss="modal"><i class="fa-regular fa-circle-xmark" style="color:red"></i></a>
+                    </div>
+                </div>
+                <!--Modal body-->
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="card" style="padding:10px;">
+                            <div class="row">
+                                <input type="hidden" id="id" name="id"/>
+                                <div class="col-md-6">
+                                    <label>Médico</label>
+                                    <div id="MedicoView"></div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label>Local</label>
+                                    <div id="LocalView"></div>
+                                </div>
+                                <br />
+                                <div class="col-md-6">
+                                    <label>Data & Hora</label>
+                                    <div id="DataHoraView"></div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label>Ultima Visita</label>
+                                    <div id="DataUltimaView"></div>
+                                </div>
+                                <br />
+                                <div class="col-md-6">
+                                    <label>Endereço</label>
+                                    <div id="EnderecoView"></div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label>Bairro</label>
+                                    <div id="BairroView"></div>
+                                </div>
+                                <br />
+                                <div class="col-md-6">
+                                    <label>Assunto</label>
+                                    <div id="AssuntoView"></div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label>Motivo da Visita</label>
+                                    <div id="MotVisView"></div>
+                                </div>
+                                <br />
+                                <div class="col-md-12">
+                                    <label>Observação</label>
+                                    <input class="col-md-12" id="Observacao" oninput="this.value = this.value.toUpperCase()" />
+                                </div>
+                                <div class="col-md-12">
+                                    <label>Resumo Visita</label>
+                                    <input class="col-md-12" id="Resumo" oninput="this.value = this.value.toUpperCase()" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--Modal footer-->
+                    <div class="modal-footer" style="padding-left:20px;">
+                        <div class="offset-9 col-md-2">
+                        <div style="color:#00b050" id="Salvar"><button class="btn btn-button btn-success float-end" style="font-size:12px;" type="submit"><i class="fa-solid fa-thumbs-up"></i> Salvar</button></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+</div>
+
+@section Scripts
+    {
+    <link href="~/lib/fullcalendar/fullcalendar.min.css" rel='stylesheet' />
+    <script src="~/lib/moment.js/moment.min.js"></script>
+    <script src="~/lib/fullcalendar/fullcalendar.min.js"></script>
+    <script src='~/lib/fullcalendar/locale-all.min.js'></script>
+    <script>
+        $(function () {
+            //defaultView: 'basicWeek'
+            $('#calendar').fullCalendar({
+                locale: 'pt-br',
+                header: {
+                    left: 'prev,today,next',
+                    center: 'title',
+                    right: 'month,agendaWeek,agendaDay,'
+                },
+                initialView: 'agendaDay',
+                events: '/agendamento/visitas?handler=events',
+                eventLimit: true,
+                eventClick: function (info) {
+
+                    $('#loading-modal').modal('show');
+                    var chamadaUrl = `/agendamento/visitas?handler=details&&id=${info.id}`
+                    $.ajax({
+                        url: chamadaUrl,
+                        type: "GET",
+                        contentType: "application/json;",
+                        dataType: 'json',
+                        headers: {
+                            "RequestVerificationToken": $('input:hidden[name="__RequestVerificationToken"]').val()
+                        },
+                        success: function (data) {
+
+                            $("#id").val(info.id);
+                            $("#Vendedor").html(`Vendedor: ${data.vendedor}`);
+                            $("#MedicoView").html(data.medico);
+                            $("#LocalView").html(data.local);
+                            $("#DataHoraView").html(data.dataHora);
+                            $("#AssuntoView").html(data.assunto);
+                            $("#EnderecoView").html(data.endereco);
+                            $("#MotVisView").html(data.motvisita);
+                            $("#DataUltimaView").html(data.dataUltima);
+                            $("#BairroView").html(data.bairro);
+                            $("#Observacao").val(data.observacao);
+                            $("#Resumo").val(data.resuVi);
+                            
+
+                            setTimeout(function () {
+                                $('#details-modal').modal('show');
+                            }, 2000)
+
+                        }
+                    })
+                }
+            });
+
+            $('#novavistab').on('click', function () 
+            {
+                $("#novavisita-modal").modal('show');
+            })
+
+            $('a.close').on('click', function () 
+            {
+                $("#novavisita-modal").modal('hide');
+                $('#details-modal').modal('hide');
+                $('#loading-modal').modal('hide');
+            })
+
+            $("#Salvar").on('click',function ()
+            {
+                var Id = $("#id").val();
+                var Obs = $("#Observacao").val();
+                var Resu = $("#Resumo").val();
+
+                var chamadaUrl = `/agendamento/visitas?handler=Resumo&&id=${Id}&&Observacao=${Obs}&&Resumo=${Resu}`;
+                $.ajax({
+                    url: chamadaUrl,
+                    type: "POST",
+                    contentType: "application/json;",
+                    dataType: 'json',
+                    headers: {
+                        "RequestVerificationToken": $('input:hidden[name="__RequestVerificationToken"]').val()
+                    },
+                    success: function () {
+
+                        location.reload();
+                    }
+                })
+            })
+
+            /*$("#Quant").on('click',function()
+            {
+
+                var bairro = $("#Bairro").val();
+
+                var chamadaUrl = `/agendamento/visitas?handler=Medico&&Bairro=${bairro}`
+                $.ajax({
+                    url: chamadaUrl,
+                    type: "GET",
+                    contentType: "application/json;",
+                    dataType: 'json',
+                    headers: {
+                        "RequestVerificationToken": $('input:hidden[name="__RequestVerificationToken"]').val()
+                    },
+                    success: function (data) {
+
+                        
+                    }
+                })
+
+            })*/
+
+        })
+
+    </script>
+    <script>
+
+        var Medicos = [];
+
+        @foreach (var data in Model.Medicos)
+        {
+            @:Medicos.push("@data");
+        }
+
+        $(document).ready(function () {
+
+            function autocomplete(inp, arr) {
+                /*the autocomplete function takes two arguments,
+                the text field element and an array of possible autocompleted values:*/
+                var currentFocus;
+                /*execute a function when someone writes in the text field:*/
+                inp.addEventListener("input", function (e) {
+                    var a, b, i, val = this.value;
+                    /*close any already open lists of autocompleted values*/
+                    closeAllLists();
+                    if (!val) { return false; }
+                    currentFocus = -1;
+                    /*create a DIV element that will contain the items (values):*/
+                    a = document.createElement("DIV");
+                    a.setAttribute("id", this.id + "autocomplete-list");
+                    a.setAttribute("class", "autocomplete-items form-control");
+                    /*append the DIV element as a child of the autocomplete container:*/
+                    this.parentNode.appendChild(a);
+                    /*for each item in the array...*/
+                    for (i = 0; i < arr.length; i++) {
+                        /*check if the item starts with the same letters as the text field value:*/
+                        if (arr[i].substr(0, val.length).toUpperCase() == val.toUpperCase()) {
+                            /*create a DIV element for each matching element:*/
+                            b = document.createElement("DIV");
+                            /*make the matching letters bold:*/
+                            b.innerHTML = "<strong>" + arr[i].substr(0, val.length) + "</strong>";
+                            b.innerHTML += arr[i].substr(val.length);
+                            /*insert a input field that will hold the current array item's value:*/
+                            b.innerHTML += "<input type='hidden' value='" + arr[i] + "'>";
+                            /*execute a function when someone clicks on the item value (DIV element):*/
+                            b.addEventListener("click", function (e) {
+                                /*insert the value for the autocomplete text field:*/
+                                inp.value = this.getElementsByTagName("input")[0].value;
+                                /*close the list of autocompleted values,
+                                (or any other open lists of autocompleted values:*/
+                                
+                    
+                                
+                                var chamadaUrl = `/agendamento/visitas?handler=Endereco&&Medico=${inp.value}`
+                                $.ajax({
+                                    url: chamadaUrl,
+                                    type: "GET",
+                                    contentType: "application/json;",
+                                    dataType: 'json',
+                                    headers: {
+                                        "RequestVerificationToken": $('input:hidden[name="__RequestVerificationToken"]').val()
+                                    },
+                                    success: function(data) {
+                                        
+                                        $("#Endereco").val(data.endereco)
+                                        $("#Bairro").val(data.bairro)
+                                        if(data.quant > 0)
+                                        {
+                                            $("#Quant").html(`Há ${data.quant} outros medicos neste bairro`);
+                                        }   
+                                        $("#DataUltima").val(data.ultima)
+                                    }                                 
+                                })   
+                            });
+                            a.appendChild(b);
+                                
+                        }
+                    }
+                });
+                /*execute a function presses a key on the keyboard:*/
+                inp.addEventListener("keydown", function (e) {
+                    var x = document.getElementById(this.id + "autocomplete-list");
+                    if (x) x = x.getElementsByTagName("div");
+                    if (e.keyCode == 40) {
+                        /*If the arrow DOWN key is pressed,
+                        increase the currentFocus variable:*/
+                        currentFocus++;
+                        /*and and make the current item more visible:*/
+                        addActive(x);
+                    } else if (e.keyCode == 38) { //up
+                        /*If the arrow UP key is pressed,
+                        decrease the currentFocus variable:*/
+                        currentFocus--;
+                        /*and and make the current item more visible:*/
+                        addActive(x);
+                    } else if (e.keyCode == 13) {
+                        /*If the ENTER key is pressed, prevent the form from being submitted,*/
+                        e.preventDefault();
+                        if (currentFocus > -1) {
+                            /*and simulate a click on the "active" item:*/
+                            if (x) x[currentFocus].click();
+                        }
+                    }
+                });
+                function addActive(x) {
+                    /*a function to classify an item as "active":*/
+                    if (!x) return false;
+                    /*start by removing the "active" class on all items:*/
+                    removeActive(x);
+                    if (currentFocus >= x.length) currentFocus = 0;
+                    if (currentFocus < 0) currentFocus = (x.length - 1);
+                    /*add class "autocomplete-active":*/
+                    x[currentFocus].classList.add("autocomplete-active");
+                }
+                function removeActive(x) {
+                    /*a function to remove the "active" class from all autocomplete items:*/
+                    for (var i = 0; i < x.length; i++) {
+                        x[i].classList.remove("autocomplete-active");
+                    }
+                }
+                function closeAllLists(elmnt) {
+                    /*close all autocomplete lists in the document,
+                    except the one passed as an argument:*/
+                    var x = document.getElementsByClassName("autocomplete-items");
+                    for (var i = 0; i < x.length; i++) {
+                        if (elmnt != x[i] && elmnt != inp) {
+                            x[i].parentNode.removeChild(x[i]);
+                        }
+                    }
+                }
+                /*execute a function when someone clicks in the document:*/
+                document.addEventListener("click", function (e) {
+                    closeAllLists(e.target);
+                });
+            }
+
+            autocomplete(document.getElementById("Medico"), Medicos);
+
+        })
+    </script>
+
+}

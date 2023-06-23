@@ -1,0 +1,88 @@
+﻿@page
+@model SGID.Pages.Relatorios.Vexpenses.RelatorioDespesasModel
+@{
+    ViewData["Title"] = "Relatorio Despesas";
+    Layout = "_LayoutGeral";
+}
+
+@using (@Html.BeginForm(FormMethod.Post))
+{
+    <div class="row">
+        <div class="form-group mx-sm-3 mb-2 col-lg-2">
+            <input type="date" class="form-control" id="Inicio" name="Inicio" value="@Model.Inicio.ToString("yyyy-MM-dd")" placeholder="Data Inicio">
+        </div>
+        <div class="form-group mx-sm-3 mb-2 col-lg-2">
+            <input type="date" class="form-control" id="Fim" name="Fim" value="@Model.Fim.ToString("yyyy-MM-dd")" placeholder="Data Fim">
+        </div>
+
+        <div class="form-group mx-sm-3 mb-2 col-lg-1">
+            <button type="submit" class="btn btn-primary mb-2">Pesquisar</button>
+        </div>
+
+        <div class="form-group mx-sm-3 mb-2 col-lg-1">
+            <button type="submit" class="btn btn-secondary mb-2" asp-page-handler="Export"><i class="fa-solid fa-file-excel"></i> Exportar Excel</button>
+        </div>
+    </div>
+}
+
+<div class="panel">
+    <div class="panel-body">
+        <table id="demo-dt-addrow" class="table table-striped table-bordered" cellspacing="0" width="100%">
+            <thead>
+                <tr>
+                    <th class="text-center">
+                        Data Despesa
+                    </th>
+                    <th class="text-center">
+                        Informada a Despesa em:
+                    </th>
+                    <th class="text-center">
+                        Alterada a Despesa em:
+                    </th>
+                    <th class="text-center">
+                        Titulo
+                    </th>
+                    <th class="text-center">
+                        Status Relatorio
+                    </th>
+                    <th class="text-center">
+                        Tipo Despesa
+                    </th>
+                    <th class="text-center">
+                        Centro de Custo
+                    </th>
+                    <th class="text-center">
+                        Valor
+                    </th>
+                    <th class="text-center">
+                        Moeda
+                    </th>
+                    <th class="text-center">
+                        Nome Funcionario
+                    </th>
+                    <th class="text-center">
+                        Ações
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var data in Model.Despecas)
+                {
+                    <tr>
+                        <td>@Html.DisplayFor(model=> data.date)</td>
+                        <td>@Html.DisplayFor(model=> data.created_at)</td>
+                        <td>@Html.DisplayFor(model=> data.updated_at)</td>
+                        <td>@Html.DisplayFor(model=> data.title)</td>
+                        <td>@Html.DisplayFor(model=> data.report.data.status)</td>
+                        <td>@Html.DisplayFor(model=> data.expense_type.data.description)</td>
+                        <td>@Html.DisplayFor(model=> data.costs_center.data.name)</td>
+                        <td>@string.Format("{0:N2}", data.value)</td>
+                        <td>@Html.DisplayFor(model=> data.original_currency_iso)</td>
+                        <td>@Html.DisplayFor(model=> data.user.data.name)</td>
+                        <td><a href="@data.reicept_url" target="_blank"><i class="fa-solid fa-receipt"></i></a></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

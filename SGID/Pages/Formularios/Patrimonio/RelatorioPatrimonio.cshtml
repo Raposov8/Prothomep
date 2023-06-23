@@ -1,0 +1,114 @@
+﻿@page "{id}"
+@model SGID.Pages.Formularios.Patrimonio.RelatorioPatrimonioModel
+@{
+    ViewData["Title"] = "Consulta Por Kit Base";
+    Layout = "_LayoutGeral";
+}
+
+@using (@Html.BeginForm(FormMethod.Post))
+{
+    <div class="row">
+        <div class="form-group mx-sm-3 mb-2 col-lg-3">
+            <select type="text" class="form-control" id="Patrimonio" name="Patrimonio">
+                @foreach (var data in Model.Patrimonios){
+                    <option value="@data.Trim()">@data</option>
+                }
+            </select>
+        </div>
+
+        <div class="form-group mx-sm-3 mb-2 col-lg-1">
+            <button type="submit" class="btn btn-primary mb-2">Pesquisar</button>
+        </div>
+        <div class="form-group mx-sm-3 mb-2 col-lg-2">
+            <input class="form-control" hidden id="Empresa" name="Empresa" value="@Model.Empresa" />
+        </div>
+        <!--<div class="form-group mx-sm-3 mb-2 col-lg-1">
+           <button type="submit" class="btn btn-secondary mb-2" asp-page-handler="Export"><i class="fa-solid fa-file-excel"></i> Exportar Excel</button>
+        </div>-->
+    </div>
+}
+
+
+<div class="panel">
+    <div class="panel-body">
+        <table id="demo-dt-addrow" class="table table-striped table-bordered" cellspacing="0" width="100%">
+            <thead>
+                <tr>
+                    <th colspan="4">Total de Patrimônios: @if (Model.Total != null)
+                        {
+                            <span>@Model.Total</span>
+                        }
+                    </th>
+                    <th colspan="4">Em Estoque: @if (Model.Estoque != null)
+                            {
+                                <span>@Model.Estoque</span>
+                            }
+                    </th>
+
+                </tr>
+                <tr>
+                    <th class="text-center">
+                        Completo
+                    </th>
+                    <th class="text-center">
+                        Codigo
+                    </th>
+                    <th class="text-center">
+                        Kitbas
+                    </th>
+                    <th class="text-center">
+                        Status
+                    </th>
+                    <th class="text-center">
+                        Cliente
+                    </th>
+                    <th class="text-center">
+                        NMPac
+                    </th>
+                    <th class="text-center">
+                        DTCir
+                    </th>
+                    <th class="text-center">
+                        Agend
+                    </th>
+                    <th class="text-center">
+                        QTDFalt
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach(var data in Model.Relatorio)
+                {
+                    <tr>
+                        <td>
+                            @if(data.QTDFALT > 0)
+                            {
+                                <a href="/formularios/patrimonio/relatoriopatrimonioincompleto/@data.Empresa/@data.Filial/@data.Codigo" target="_blank" ><div style="background-color:red;width:10px;">&nbsp;</div></a>
+                            }
+                            else
+                            {
+                                <div style ="background-color:green;width:10px;">&nbsp;</div>
+                            }
+                        </td>
+                        <td><a href="/formularios/patrimonio/relatoriopatrimoniocompleto/@data.Empresa/@data.Filial/@data.Codigo" target="_blank">@data.Codigo</a></td>
+                        <td>@data.KitBas</td>
+                        <td>@data.Status</td>
+                        <td>@data.Cliente</td>
+                        <td>@data.NMPac</td>
+                        <td>@data.DTCirurgia</td>
+                        <td>@data.Agend</td>
+                        <td>@data.QTDFALT</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+            $('#Patrimonio').val('@Model.Patrimonio');
+        })
+    </script>
+}

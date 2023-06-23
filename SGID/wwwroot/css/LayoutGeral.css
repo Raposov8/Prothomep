@@ -1,0 +1,33 @@
+﻿body {
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    display: flex;
+    flex-direction: row;
+    margin-left:0px;
+    margin-right:0px;
+}
+
+.sidebar,
+.content {
+    display: flex;
+    flex-direction: column;
+    min-height: 200px;
+    border-radius: 4px;
+    margin: 0px;
+}
+
+.sidebar {
+    flex-grow: 1;
+    min-width: 200px;
+}
+
+.content {
+    flex-grow: 5;
+    min-width: 630px;
+}
+
+
+

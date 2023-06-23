@@ -1,0 +1,307 @@
+﻿@page
+@model SGID.Pages.Relatorios.Controladoria.FaturamentoNFBRUTOInterModel
+@{
+    ViewData["Title"] = "Relatorio Faturamento NF Bruto Inter";
+    Layout = "_LayoutGeral";
+}
+
+@using(@Html.BeginForm(FormMethod.Post)){
+    <div class="row">
+        <div class="form-group mx-sm-3 mb-2 col-lg-2">
+            <input type="text" class="form-control" id="Ano" name="Ano" value="@Model.Ano" placeholder="ANO">
+        </div>
+
+        <div class="form-group mx-sm-3 mb-2 col-lg-1">
+            <button type="submit" class="btn btn-primary mb-2">Pesquisar</button>
+        </div>
+
+        <div class="form-group mx-sm-3 mb-2 col-lg-1">
+            <button type="submit" class="btn btn-secondary mb-2" asp-page-handler="Export"><i class="fa-solid fa-file-excel"></i> Exportar Excel</button>
+        </div>
+    </div>
+}
+
+
+<div class="panel">
+    <div class="panel-body">
+        <table id="demo-dt-addrow" class="table table-striped table-bordered" cellspacing="0" width="100%">
+            <thead>
+                <tr>
+                    <th class="text-center">
+                        Tipo
+                    </th>
+                    <th class="text-center">
+                        Janeiro
+                    </th>
+                    <th class="text-center">
+                        Fevereiro
+                    </th>
+                    <th class="text-center">
+                        Março
+                    </th>
+                    <th class="text-center">
+                        Abril
+                    </th>
+                    <th class="text-center">
+                        Maio
+                    </th>
+                    <th class="text-center">
+                        Junho
+                    </th>
+                    <th class="text-center">
+                        Julho
+                    </th>
+                    <th class="text-center">
+                        Agosto
+                    </th>
+                    <th class="text-center">
+                        Setembro
+                    </th>
+                    <th class="text-center">
+                        Outubro
+                    </th>
+                    <th class="text-center">
+                        Novembro
+                    </th>
+                    <th class="text-center">
+                        Dezembro
+                    </th>
+                    <th class="text-center">
+                        Total
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var data in Model.Relatorio)
+                {
+                    <tr>
+                    
+                        <td>@Html.DisplayFor(model => data.Tipo)</td>
+                        <td>@string.Format("{0:N2}",data.Janeiro)</td>
+                        <td>@string.Format("{0:N2}",data.Fevereiro)</td>
+                        <td>@string.Format("{0:N2}",data.Marco)</td>
+                        <td>@string.Format("{0:N2}",data.Abril)</td>
+                        <td>@string.Format("{0:N2}",data.Maio)</td>
+                        <td>@string.Format("{0:N2}",data.Junho)</td>
+                        <td>@string.Format("{0:N2}",data.Julho)</td>
+                        <td>@string.Format("{0:N2}",data.Agosto)</td>
+                        <td>@string.Format("{0:N2}",data.Setembro)</td>
+                        <td>@string.Format("{0:N2}",data.Outubro)</td>
+                        <td>@string.Format("{0:N2}",data.Novembro)</td>
+                        <td>@string.Format("{0:N2}",data.Dezembro)</td>
+                        <td>@string.Format("{0:N2}",data.Total)</td>
+                    
+                    </tr>
+                }
+                <tr>
+                    <td>TOTAL:</td>
+                    <td>@string.Format("{0:N2}",Model.Relatorio.Sum(x=>x.Janeiro))</td>
+                    <td>@string.Format("{0:N2}",Model.Relatorio.Sum(x=>x.Fevereiro))</td>
+                    <td>@string.Format("{0:N2}",Model.Relatorio.Sum(x=>x.Marco))</td>
+                    <td>@string.Format("{0:N2}",Model.Relatorio.Sum(x=>x.Abril))</td>
+                    <td>@string.Format("{0:N2}",Model.Relatorio.Sum(x=>x.Maio))</td>
+                    <td>@string.Format("{0:N2}",Model.Relatorio.Sum(x=>x.Junho))</td>
+                    <td>@string.Format("{0:N2}",Model.Relatorio.Sum(x=>x.Julho))</td>
+                    <td>@string.Format("{0:N2}",Model.Relatorio.Sum(x=>x.Agosto))</td>
+                    <td>@string.Format("{0:N2}",Model.Relatorio.Sum(x=>x.Setembro))</td>
+                    <td>@string.Format("{0:N2}",Model.Relatorio.Sum(x=>x.Outubro))</td>
+                    <td>@string.Format("{0:N2}",Model.Relatorio.Sum(x=>x.Novembro))</td>
+                    <td>@string.Format("{0:N2}",Model.Relatorio.Sum(x=>x.Dezembro))</td>
+                    <td>@string.Format("{0:N2}",Model.Relatorio.Sum(x=>x.Total))</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+<div class="panel">
+    <div class="panel-body">
+        <table id="demo-dt-addrow" class="table table-striped table-bordered" cellspacing="0" width="100%">
+            <thead>
+                <tr>
+                    <th colspan="14" class="text-center">
+                        NF Faturamento
+                    </th>
+                </tr>
+                <tr>
+                    <th class="text-center">
+                        Tipo
+                    </th>
+                    <th class="text-center">
+                        Janeiro
+                    </th>
+                    <th class="text-center">
+                        Fevereiro
+                    </th>
+                    <th class="text-center">
+                        Março
+                    </th>
+                    <th class="text-center">
+                        Abril
+                    </th>
+                    <th class="text-center">
+                        Maio
+                    </th>
+                    <th class="text-center">
+                        Junho
+                    </th>
+                    <th class="text-center">
+                        Julho
+                    </th>
+                    <th class="text-center">
+                        Agosto
+                    </th>
+                    <th class="text-center">
+                        Setembro
+                    </th>
+                    <th class="text-center">
+                        Outubro
+                    </th>
+                    <th class="text-center">
+                        Novembro
+                    </th>
+                    <th class="text-center">
+                        Dezembro
+                    </th>
+                    <th class="text-center">
+                        Total
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var data in Model.Faturamento)
+                {
+                    <tr>
+                        <td>@Html.DisplayFor(model=> data.Tipo)</td>
+                        <td>@string.Format("{0:N2}",data.Janeiro)</td>
+                        <td>@string.Format("{0:N2}",data.Fevereiro)</td>
+                        <td>@string.Format("{0:N2}",data.Marco)</td>
+                        <td>@string.Format("{0:N2}",data.Abril)</td>
+                        <td>@string.Format("{0:N2}",data.Maio)</td>
+                        <td>@string.Format("{0:N2}",data.Junho)</td>
+                        <td>@string.Format("{0:N2}",data.Julho)</td>
+                        <td>@string.Format("{0:N2}",data.Agosto)</td>
+                        <td>@string.Format("{0:N2}",data.Setembro)</td>
+                        <td>@string.Format("{0:N2}",data.Outubro)</td>
+                        <td>@string.Format("{0:N2}",data.Novembro)</td>
+                        <td>@string.Format("{0:N2}",data.Dezembro)</td>
+                        <td>@string.Format("{0:N2}",data.Total)</td>
+                    </tr>
+                }
+                <tr>
+                    <td>TOTAL:</td>
+                    <td>@string.Format("{0:N2}",Model.Faturamento.Sum(x=>x.Janeiro))</td>
+                    <td>@string.Format("{0:N2}",Model.Faturamento.Sum(x=>x.Fevereiro))</td>
+                    <td>@string.Format("{0:N2}",Model.Faturamento.Sum(x=>x.Marco))</td>
+                    <td>@string.Format("{0:N2}",Model.Faturamento.Sum(x=>x.Abril))</td>
+                    <td>@string.Format("{0:N2}",Model.Faturamento.Sum(x=>x.Maio))</td>
+                    <td>@string.Format("{0:N2}",Model.Faturamento.Sum(x=>x.Junho))</td>
+                    <td>@string.Format("{0:N2}",Model.Faturamento.Sum(x=>x.Julho))</td>
+                    <td>@string.Format("{0:N2}",Model.Faturamento.Sum(x=>x.Agosto))</td>
+                    <td>@string.Format("{0:N2}",Model.Faturamento.Sum(x=>x.Setembro))</td>
+                    <td>@string.Format("{0:N2}",Model.Faturamento.Sum(x=>x.Outubro))</td>
+                    <td>@string.Format("{0:N2}",Model.Faturamento.Sum(x=>x.Novembro))</td>
+                    <td>@string.Format("{0:N2}",Model.Faturamento.Sum(x=>x.Dezembro))</td>
+                    <td>@string.Format("{0:N2}",Model.Faturamento.Sum(x=>x.Total))</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="panel">
+    <div class="panel-body">
+        <table id="demo-dt-addrow" class="table table-striped table-bordered" cellspacing="0" width="100%">
+            <thead>
+                <tr>
+                    <th colspan="14" class="text-center">
+                        NF Devolução
+                    </th>
+                </tr>
+                <tr>
+                    <th class="text-center">
+                        Tipo
+                    </th>
+                    <th class="text-center">
+                        Janeiro
+                    </th>
+                    <th class="text-center">
+                        Fevereiro
+                    </th>
+                    <th class="text-center">
+                        Março
+                    </th>
+                    <th class="text-center">
+                        Abril
+                    </th>
+                    <th class="text-center">
+                        Maio
+                    </th>
+                    <th class="text-center">
+                        Junho
+                    </th>
+                    <th class="text-center">
+                        Julho
+                    </th>
+                    <th class="text-center">
+                        Agosto
+                    </th>
+                    <th class="text-center">
+                        Setembro
+                    </th>
+                    <th class="text-center">
+                        Outubro
+                    </th>
+                    <th class="text-center">
+                        Novembro
+                    </th>
+                    <th class="text-center">
+                        Dezembro
+                    </th>
+                    <th class="text-center">
+                        Total
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var data in Model.Devolucao)
+                {
+                    <tr>
+                        <td>@Html.DisplayFor(model=> data.Tipo)</td>
+                        <td>@string.Format("{0:N2}",data.Janeiro)</td>
+                        <td>@string.Format("{0:N2}",data.Fevereiro)</td>
+                        <td>@string.Format("{0:N2}",data.Marco)</td>
+                        <td>@string.Format("{0:N2}",data.Abril)</td>
+                        <td>@string.Format("{0:N2}",data.Maio)</td>
+                        <td>@string.Format("{0:N2}",data.Junho)</td>
+                        <td>@string.Format("{0:N2}",data.Julho)</td>
+                        <td>@string.Format("{0:N2}",data.Agosto)</td>
+                        <td>@string.Format("{0:N2}",data.Setembro)</td>
+                        <td>@string.Format("{0:N2}",data.Outubro)</td>
+                        <td>@string.Format("{0:N2}",data.Novembro)</td>
+                        <td>@string.Format("{0:N2}",data.Dezembro)</td>
+                        <td>@string.Format("{0:N2}",data.Total)</td>
+                    </tr>
+                }
+                <tr>
+                    <td>TOTAL:</td>
+                    <td>@string.Format("{0:N2}",Model.Devolucao.Sum(x=>x.Janeiro))</td>
+                    <td>@string.Format("{0:N2}",Model.Devolucao.Sum(x=>x.Fevereiro))</td>
+                    <td>@string.Format("{0:N2}",Model.Devolucao.Sum(x=>x.Marco))</td>
+                    <td>@string.Format("{0:N2}",Model.Devolucao.Sum(x=>x.Abril))</td>
+                    <td>@string.Format("{0:N2}",Model.Devolucao.Sum(x=>x.Maio))</td>
+                    <td>@string.Format("{0:N2}",Model.Devolucao.Sum(x=>x.Junho))</td>
+                    <td>@string.Format("{0:N2}",Model.Devolucao.Sum(x=>x.Julho))</td>
+                    <td>@string.Format("{0:N2}",Model.Devolucao.Sum(x=>x.Agosto))</td>
+                    <td>@string.Format("{0:N2}",Model.Devolucao.Sum(x=>x.Setembro))</td>
+                    <td>@string.Format("{0:N2}",Model.Devolucao.Sum(x=>x.Outubro))</td>
+                    <td>@string.Format("{0:N2}",Model.Devolucao.Sum(x=>x.Novembro))</td>
+                    <td>@string.Format("{0:N2}",Model.Devolucao.Sum(x=>x.Dezembro))</td>
+                    <td>@string.Format("{0:N2}",Model.Devolucao.Sum(x=>x.Total))</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+

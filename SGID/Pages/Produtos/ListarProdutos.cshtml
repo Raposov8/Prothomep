@@ -1,0 +1,113 @@
+﻿@page
+@model SGID.Pages.Produtos.ListarProdutosModel
+@{
+    ViewData["Title"] = "Buscar Produtos";
+    Layout = "_LayoutPopup";
+}
+
+<div class="row">
+    <div class="col-md-6">
+        <h4>Buscar Produto</h4>
+    </div>
+</div>
+
+@using (@Html.BeginForm(FormMethod.Post))
+{
+    <div class="row">
+        <div class="form-group mx-sm-3 mb-2 col-lg-3">
+            <input type="text" class="form-control" id="Produto" name="Produto" onkeyup="this.value = this.value.toUpperCase();" placeholder="Produto">
+        </div>
+        <div class="form-group mx-sm-3 mb-2 col-lg-3">
+            <input type="text" class="form-control" id="Anvisa" name="Anvisa" placeholder="Cod. Anvisa">
+        </div>
+        <div class="form-group mx-sm-3 mb-2 col-lg-3">
+            <input type="text" class="form-control" id="Fabricante" name="Fabricante" placeholder="Fabricante">
+        </div>
+        <div class="form-group mx-sm-3 mb-2 col-lg-3">
+            <select class="form-control" id="Empresa" name="Empresa">
+                <option value="01">Intermedic</option>
+                <option value="03">Denuo</option>
+            </select>
+        </div>
+
+        
+    </div>
+    <div class="row">
+        <div class="form-group mx-sm-3 mb-2 col-lg-1">
+            <button type="submit" class="btn btn-primary mb-2">Pesquisar</button>
+        </div>
+    </div>
+}
+
+<div class="panel">
+    <div class="panel-body">
+        <table id="Produtos" name="Produtos" class="table table-striped table-bordered" cellspacing="0" width="100%">
+            <thead>
+                <tr>
+                    <th class="text-center">
+                        Item
+                    </th>
+                    <th class="text-center">
+                        Licit.
+                    </th>
+                    <th class="text-center">
+                        Produto
+                    </th>
+                    <th class="text-center">
+                        Tuss
+                    </th>
+                    <th class="text-center">
+                        Anvisa
+                    </th>
+                    <th class="text-center">
+                        Marca
+                    </th>
+                    <th class="text-center">
+                        UM
+                    </th>
+                    <th class="text-center">
+                        Prc. Unit.
+                    </th>
+                    <th class="text-center">
+                        Tp. Op.
+                    </th>
+                    <th class="text-center">
+                        Lote
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach(var data in Model.DenuoProdutos){
+                   <tr>
+                        <td>@data.B1Cod</td>
+                        <td>@data.B1Solicit</td>
+                        <td>@data.B1Desc</td>
+                        <td>@data.B1Xtuss</td>
+                        <td>@data.B1Reganvi</td>
+                        <td>@data.B1Fabric</td>
+                        <td>@data.B1Um</td>
+                        <td>@data.B1Uprc</td>
+                        <td>@data.B1Tipo</td>
+                        <td>@data.B1Lotesbp</td>
+                   </tr>
+                }
+                @foreach (var data in Model.InterProdutos)
+                {
+                    <tr>
+                        <td>@data.B1Cod</td>
+                        <td>@data.B1Solicit</td>
+                        <td>@data.B1Desc</td>
+                        <td>@data.B1Xtuss</td>
+                        <td>@data.B1Reganvi</td>
+                        <td>@data.B1Fabric</td>
+                        <td>@data.B1Um</td>
+                        <td>@data.B1Uprc</td>
+                        <td>@data.B1Tipo</td>
+                        <td>@data.B1Lotesbp</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+

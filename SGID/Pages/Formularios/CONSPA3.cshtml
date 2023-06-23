@@ -1,0 +1,74 @@
+﻿@page "{id}"
+@model SGID.Pages.Formularios.CONSPA3Model
+@{
+    ViewData["Title"] = "Consulta Por Patrimônio";
+    Layout = "_LayoutForm";
+}
+
+
+@if (Model.Relatorio == null)
+{
+    <div class="row">
+        <div class="col-md-6 offset-md-3">
+            <div class="card my-5">
+                @using (Html.BeginForm(FormMethod.Post, new { @class = "card-body cardbody-color p-lg-5" }))
+                {
+                    <div class="mb-3">
+                        <div class="text-center mb-5" style="font-weight:400">Consulta Patrimônio</div>
+                        <input type="text" class="form-control" id="Patrimonio" name="Patrimonio" />
+                        <input class="form-control" hidden id="Empresa" name="Empresa" value="@Model.Empresa" />
+                    </div>
+                    <br />
+                    <div class="text-center"><button type="submit" class="btn btn-color px-5 mb-5 w-100">Pesquisar</button></div>
+                }
+            </div>
+        </div>
+    </div>
+}
+
+<style>
+    .btn-color {
+        background-color: #0e1c36;
+        color: #fff;
+    }
+
+    .cardbody-color {
+        background-color: #ebf2fa;
+    }
+</style>
+
+
+@if (Model.Relatorio != null)
+{
+        <div class="panel">
+            <div class="panel-body">
+                <table id="demo-dt-addrow" class="table table-striped table-bordered" cellspacing="0" width="100%">
+                    <thead>
+                        <tr>
+                            <th>Codigo</th>
+                            <th>Produto</th>
+                            <th>Descrição</th>
+                            <th>Qtde Patrim.</th>
+                            <th>Qtde Lote</th>
+                            <th>Lote</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var data in Model.Relatorio)
+                        {
+                            <tr style="background-color:#ffffff">
+                                <td>@data.Codigo</td>
+                                <td>@data.Produto</td>
+                                <td>@data.Descricao</td>
+                                <td>@data.QtdPat</td>
+                                <td>@data.QtdLot</td>
+                                <td>@data.Lote</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+}
+
+

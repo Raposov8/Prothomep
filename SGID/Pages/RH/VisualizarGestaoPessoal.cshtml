@@ -1,0 +1,106 @@
+﻿@page "{id}"
+@model SGID.Pages.RH.VisualizarGestaoPessoalModel
+@{
+    ViewData["Title"] = "Visualização de Acesso";
+    Layout = "_LayoutGeral";
+}
+
+<div class="row">
+    <h2 style="padding-left:20px;">Visualização de Acesso</h2>
+</div>
+
+<div class="row">
+    <h3 id="Error" class="invisivel" style="padding-left:20px;color:red">Data Evento deve ter 3 dias uteis ou mais</h3>
+</div>
+
+<div class="card" style="padding:10px;">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="row">
+                    <div class="form-group col-md-2">
+                        <label>Data Evento</label>
+                        <input type="date" class="form-control" id="DataEvento" name="DataEvento" value="@Model.Acesso.DataEvento.ToString("yyyy-MM-dd")" />
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label>Empresa</label>
+                        <select class="form-control" id="Empresa" name="Empresa">
+                            <option value="Intermedic">Intermedic</option>
+                            <option value="Denuo">Denuo</option>
+                            <option value="DDental">DDental</option>
+                            <option value="IDLog">ID Log</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label>Nome Colaborador</label>
+                        <input type="text" class="form-control" id="Nome" name="Nome" value="@Model.Acesso.Nome" />
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label>Tipo</label>
+                        <select type="text" class="form-control" id="Tipo" name="Tipo">
+                            <option value="Contratação">Contratação</option>
+                            <option value="Desligamento">Desligamento</option>
+                            <option value="Ferias">Férias</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-md-4">
+                        <label>Email</label>
+                        <input type="text" class="form-control" id="Email" name="Email" value="@Model.Acesso.Email" />
+                    </div>
+                    <div class="form-group col-md-2">
+                        <label>Ramal</label>
+                        <input type="text" class="form-control" id="Ramal" name="Ramal" value="@Model.Acesso.Ramal" />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-md-12">
+                        <label>Observação</label>
+                        <textarea type="text" class="form-control" id="Obs" name="Obs"></textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-2 control-label">
+                    Solicitações
+                </label>
+                <div class="col-md-10">
+                    <input type="checkbox" id="SelectedRoles" name="SelectedRoles" value="Protheus" class="checkbox-inline" />
+                    <label class="control-label" for="Protheus">Protheus</label>
+
+                    <input type="checkbox" id="SelectedRoles" name="SelectedRoles" value="Ramal" class="checkbox-inline" />
+                    <label class="control-label" for="Ramal">Ramal</label>
+
+                    <input type="checkbox" id="SelectedRoles" name="SelectedRoles" value="Maquina" class="checkbox-inline" />
+                    <label class="control-label" for="Maquina">Maquina</label>
+
+                    <input type="checkbox" id="SelectedRoles" name="SelectedRoles" value="Celular" class="checkbox-inline" />
+                    <label class="control-label" for="Celular">Celular</label>
+
+                    <input type="checkbox" id="SelectedRoles" name="SelectedRoles" value="Impressora" class="checkbox-inline" />
+                    <label class="control-label" for="Impressora">Impressora</label>
+                </div>
+            </div>
+        </div>
+</div>
+
+
+@section scripts{
+    <script>
+        $(document).ready(function(){
+
+            $('#Empresa').val('@Model.Acesso.Empresa');
+            
+            $("#Obs").val('@Model.Acesso.Obs');
+
+            var code = '@Model.Acesso.Tipo'.replace("&#xE7;","ç").replace("&#xE3;","ã")
+            $('#Tipo').val(code);
+
+            $('input:checkbox[value="Protheus"]').prop('checked', @Model.Acesso.Protheus.ToString().ToLower());
+            $('input:checkbox[value="Ramal"]').prop('checked', @Model.Acesso.IsRamal.ToString().ToLower());
+            $('input:checkbox[value="Impressora"]').prop('checked', @Model.Acesso.Impressora.ToString().ToLower());
+            $('input:checkbox[value="Maquina"]').prop('checked', @Model.Acesso.Maquina.ToString().ToLower());
+            $('input:checkbox[value="Celular"]').prop('checked', @Model.Acesso.Celular.ToString().ToLower());
+        })
+    </script>
+}

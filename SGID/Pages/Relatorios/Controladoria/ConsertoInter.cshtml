@@ -1,0 +1,65 @@
+﻿@page
+@model SGID.Pages.Relatorios.Controladoria.ConsertoInterModel
+@{
+    ViewData["Title"] = "Relatorio Conserto Inter";
+    Layout = "_LayoutGeral";
+}
+
+@using (@Html.BeginForm(FormMethod.Post))
+{
+    <div class="row">
+        <div class="form-group mx-sm-3 mb-2 col-lg-1">
+            <button type="submit" class="btn btn-secondary mb-2" asp-page-handler="Export"><i class="fa-solid fa-file-excel"></i> Exportar Excel</button>
+        </div>
+    </div>
+}
+
+<div class="panel">
+    <div class="panel-body">
+        <table id="demo-dt-addrow" class="table table-striped table-bordered" cellspacing="0" width="100%">
+            <thead>
+                <tr>
+                    <th class="text-center">
+                        DIAS
+                    </th>
+                    <th class="text-center">
+                        FILIAL
+                    </th>
+                    <th class="text-center">
+                        NF
+                    </th>
+                    <th class="text-center">
+                        SERIE
+                    </th>
+                    <th class="text-center">
+                        EMISSAO
+                    </th>
+                    <th class="text-center">
+                        COD. CLIENTE
+                    </th>
+                    <th class="text-center">
+                        LOJA
+                    </th>
+                    <th class="text-center">
+                        CLIENTE
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach(var data in Model.Relatorio)
+                {
+                <tr>
+                    <td>@Html.DisplayFor(model=> data.Dias)</td>
+                    <td>@Html.DisplayFor(model=> data.Filial)</td>
+                    <td>@Html.DisplayFor(model=> data.Nf)</td>
+                    <td>@Html.DisplayFor(model=> data.Serie)</td>
+                    <td>@data.Emissao.Value.ToString("dd/MM/yyyy")</td>
+                    <td>@Html.DisplayFor(model=> data.CodCli)</td>
+                    <td>@Html.DisplayFor(model=> data.Loja)</td>
+                    <td>@Html.DisplayFor(model=> data.Cliente)</td>
+                </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

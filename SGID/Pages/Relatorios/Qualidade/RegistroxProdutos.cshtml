@@ -1,0 +1,71 @@
+﻿@page
+@model SGID.Pages.Relatorios.Qualidade.RegistroxProdutosModel
+@{
+    ViewData["Title"] = "Relatorio Registro X Produtos Denuo";
+    Layout = "_LayoutGeral";
+}
+
+@using(@Html.BeginForm(FormMethod.Post)){
+    <div class="row">
+        <div class="form-group mx-sm-3 mb-2 col-lg-2">
+            <input type="text" class="form-control" id="Registro" name="Registro" value="@Model.Registro" placeholder="Registro">
+        </div>
+
+        <div class="form-group mx-sm-3 mb-2 col-lg-1">
+            <button type="submit" class="btn btn-primary mb-2">Pesquisar</button>
+        </div>
+
+        <div class="form-group mx-sm-3 mb-2 col-lg-1">
+           <button type="submit" class="btn btn-secondary mb-2" asp-page-handler="Export"><i class="fa-solid fa-file-excel"></i> Exportar Excel</button>
+        </div>
+    </div>
+}
+
+
+<div class="panel">
+    <div class="panel-body">
+        <table id="demo-dt-addrow" class="table table-striped table-bordered" cellspacing="0" width="100%">
+            <thead>
+                <tr>
+                    <th class="text-center">
+                        Cod. Produto
+                    </th>
+                    <th class="text-center">
+                        Desc. Produto
+                    </th>
+                    <th class="text-center">
+                        Reg. ANVISA
+                    </th>
+                    <th class="text-center">
+                        Valid. Registro
+                    </th>
+                    <th class="text-center">
+                        Valid. Anterior
+                    </th>
+                    <th class="text-center">
+                        Vigente
+                    </th>
+                    <th class="text-center">
+                        Bloqueado
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach(var data in Model.Relatorios)
+                {
+                <tr>
+                    <td>@Html.DisplayFor(model=> data.CodProd)</td>
+                    <td>@Html.DisplayFor(model=> data.Descricao)</td>
+                    <td>@Html.DisplayFor(model=> data.RegAnvisa)</td>
+                    <td>@Html.DisplayFor(model=> data.ValidRegis)</td>
+                    <td>@Html.DisplayFor(model=> data.ValidAntes)</td>
+                    <td>@Html.DisplayFor(model=> data.Vigente)</td>
+                    <td>@Html.DisplayFor(model=> data.Bloqueado)</td>
+                </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+

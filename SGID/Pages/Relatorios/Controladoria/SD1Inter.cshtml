@@ -1,0 +1,112 @@
+﻿@page
+@model SGID.Pages.Relatorios.Controladoria.SD1InterModel
+@{
+    ViewData["Title"] = "Relatorio SD1 Inter";
+    Layout = "_LayoutGeral";
+}
+
+@using (@Html.BeginForm(FormMethod.Post))
+{
+    <div class="row">
+        <div class="form-group mx-sm-3 mb-2 col-lg-2">
+            <input type="date" class="form-control" id="DataInicio" name="DataInicio" value="@Model.Inicio.ToString("yyyy-MM-dd")" placeholder="Data Inicio">
+        </div>
+        <div class="form-group mx-sm-3 mb-2 col-lg-2">
+            <input type="date" class="form-control" id="DataFim" name="DataFim" value="@Model.Fim.ToString("yyyy-MM-dd")" placeholder="Data Fim">
+        </div>
+        <div class="form-group mx-sm-3 mb-2 col-lg-1">
+            <button type="submit" class="btn btn-primary mb-2">Pesquisar</button>
+        </div>
+        <div class="form-group mx-sm-3 mb-2 col-lg-1">
+            <button type="submit" class="btn btn-secondary mb-2" asp-page-handler="Export"><i class="fa-solid fa-file-excel"></i> Exportar Excel</button>
+        </div>
+    </div>
+}
+
+
+<div class="panel">
+    <div class="panel-body">
+        <table id="demo-dt-addrow" class="table table-striped table-bordered" cellspacing="0" width="100%">
+            <thead>
+                <tr>
+                    <th class="text-center">
+                        FILIAL
+                    </th>
+                    <th class="text-center">
+                        COD. PROD.
+                    </th>
+                    <th class="text-center">
+                        PRODUTO
+                    </th>
+                    <th class="text-center">
+                        QTDE
+                    </th>
+                    <th class="text-center">
+                        VL UNIT
+                    </th>
+                    <th class="text-center">
+                        TOTAL
+                    </th>
+                    <th class="text-center">
+                        IPI
+                    </th>
+                    <th class="text-center">
+                        ICMS
+                    </th>
+                    <th class="text-center">
+                        TES
+                    </th>
+                    <th class="text-center">
+                        COD FIS
+                    </th>
+                    <th class="text-center">
+                        COD. FOR
+                    </th>
+                    <th class="text-center">
+                        FORNECEDOR
+                    </th>
+                    <th class="text-center">
+                        DOCUMENTO
+                    </th>
+                    <th class="text-center">
+                        DIGITAÇÃO
+                    </th>
+                    <th class="text-center">
+                        OPERAÇÃO
+                    </th>
+                    <th class="text-center">
+                        NF ORIG
+                    </th>
+                    <th class="text-center">
+                        SERIE ORIG
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var data in Model.Relatorio)
+                {
+                    <tr>
+                        <td>@Html.DisplayFor(model=> data.Filial)</td>
+                        <td>@Html.DisplayFor(model=> data.Produto)</td>
+                        <td>@Html.DisplayFor(model=> data.DescProd)</td>
+                        <td>@Html.DisplayFor(model=> data.QTDE)</td>
+                        <td>@string.Format("{0:N2}",data.VLUnit)</td>
+                        <td>@string.Format("{0:N2}",data.Total)</td>
+                        <td>@string.Format("{0:N2}",data.IPI)</td>
+                        <td>@string.Format("{0:N2}",data.ICMS)</td>
+                        <td>@Html.DisplayFor(model=> data.TES)</td>
+                        <td>@Html.DisplayFor(model=> data.CodFis)</td>
+                        <td>@Html.DisplayFor(model=> data.Fornecedor)</td>
+                        <td>@Html.DisplayFor(model=> data.NomFor)</td>
+                        <td>@Html.DisplayFor(model=> data.Documento)</td>
+                        <td>@Html.DisplayFor(model=> data.Digitacao)</td>
+                        <td>@Html.DisplayFor(model=> data.Operacao)</td>
+                        <td>@Html.DisplayFor(model=> data.NFOrig)</td>
+                        <td>@Html.DisplayFor(model=> data.SerieOrig)</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+

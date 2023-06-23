@@ -1,0 +1,167 @@
+﻿@page
+@model SGID.Pages.Relatorios.Comercial.NFSInterModel
+@{
+    ViewData["Title"] = "Relatorio NFS Inter";
+    Layout = "_LayoutGeral";
+}
+
+@using(@Html.BeginForm(FormMethod.Post)){
+    <div class="row">
+        <div class="form-group mx-sm-3 mb-2 col-lg-2">
+            <input type="text" class="form-control" id="Cliente" name="Cliente" value="@Model.CodCli" placeholder="Codigo Cliente">
+        </div>
+
+        <div class="form-group mx-sm-3 mb-2 col-lg-1">
+            <button type="submit" class="btn btn-primary mb-2">Pesquisar</button>
+        </div>
+        <div class="form-group mx-sm-3 mb-2 col-lg-1">
+            <button type="submit" class="btn btn-secondary mb-2" asp-page-handler="Export"><i class="fa-solid fa-file-excel"></i> Exportar Excel</button>
+        </div>
+    </div>
+}
+
+<div class="panel">
+    <div class="panel-body">
+        <table id="demo-dt-addrow" class="table table-striped table-bordered" cellspacing="0" width="100%">
+            <thead>
+                <tr>
+                    <th class="text-center">
+                        Filial
+                    </th>
+                    <th class="text-center">
+                        NF
+                    </th>
+                    <th class="text-center">
+                        Serie
+                    </th>
+                    <th class="text-center">
+                        DT Emissão
+                    </th>
+                    <th class="text-center">
+                        Cod. Cliente
+                    </th>
+                    <th class="text-center">
+                        Loja
+                    </th>
+                    <th class="text-center">
+                        Cod. Prod.
+                    </th>
+                    <th class="text-center">
+                        Produto
+                    </th>
+                    <th class="text-center">
+                        QTDE
+                    </th>
+                    <th class="text-center">
+                        Val. Unit.
+                    </th>
+                    <th class="text-center">
+                        Total
+                    </th>
+                    <th class="text-center">
+                        CFOP
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach(var data in Model.Relatorios)
+                {
+                <tr>
+                    <td>@Html.DisplayFor(model=> data.Filial)</td>
+                    <td>@Html.DisplayFor(model=> data.NF)</td>
+                    <td>@Html.DisplayFor(model=> data.Serie)</td>
+                    <td>@Html.DisplayFor(model=> data.DTEmissao)</td>
+                    <td>@Html.DisplayFor(model=> data.CodCliente)</td>
+                    <td>@Html.DisplayFor(model=> data.Loja)</td>
+                    <td>@Html.DisplayFor(model=> data.CodProd)</td>
+                    <td>@Html.DisplayFor(model=> data.Produto)</td>
+                    <td>@Html.DisplayFor(model=> data.QTDE)</td>
+                    <td>@string.Format("{0:N2}", data.ValUnit)</td>
+                    <td>@string.Format("{0:N2}", data.Total)</td>
+                    <td>@Html.DisplayFor(model=> data.CFOP)</td>
+                </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@if (Model.TotalPages > 1)
+{
+    <nav>
+        <ul class="pagination" style="justify-content:center">
+            <li class="@(Model.CurrentPage <= 1 ? "isDisabled" : "")">
+                @using (@Html.BeginForm(FormMethod.Post))
+                {
+                    <input type="hidden" class="form-control" id="Cliente" name="Cliente" value="@Model.CodCli">
+                    <input type="hidden" class="form-control" id="Pagina" name="Pagina" value="@(Model.CurrentPage-1)">
+                    <button type="submit" class="page-link" aria-label="Previous"><span aria-hidden="true">&laquo;</span></button>
+                } 
+
+            </li>
+            @if (Model.CurrentPage != 1)
+            {
+                <li class="page-item">
+                    @using (@Html.BeginForm(FormMethod.Post))
+                {
+                    <input type="hidden" class="form-control" id="Cliente" name="Cliente" value="@Model.CodCli">
+                    <input type="hidden" class="form-control" id="Pagina" name="Pagina" value="1">
+                    <button type="submit" class="page-link" aria-label="Previous">1</button>
+                } 
+
+                </li>
+            }
+            @if (Model.CurrentPage > 3)
+            {
+                <li class="page-item isDisabled">
+                    <a href="" class="page-link">...</a>
+                </li>
+            }
+            @for (var i = Model.CurrentPage - 1; i <= Model.CurrentPage + 2; i++)
+            {
+                if (Model.CurrentPage == 1 && i == 0) i++;
+                else if (i == 1) i++;
+
+                @if (i<Model.TotalPages) {
+                    <li class="page-item @(i == Model.CurrentPage ? "active" : "")">
+                        @using (@Html.BeginForm(FormMethod.Post))
+                        {
+                            <input type="hidden" class="form-control" id="Cliente" name="Cliente" value="@Model.CodCli">
+                            <input type="hidden" class="form-control" id="Pagina" name="Pagina" value="@i">
+                            <button type="submit" class="page-link" aria-label="Next">@i</button>
+                        }
+                    </li>
+                }
+            }
+            @if (Model.CurrentPage + 3 < Model.TotalPages)
+            {
+                <li class="page-item isDisabled">
+                    <a href="" class="page-link">...</a>
+                </li>
+            }
+            @if (Model.CurrentPage != Model.TotalPages)
+            {
+                <li class="page-item">
+                    @using (@Html.BeginForm(FormMethod.Post))
+                    {
+                        <input type="hidden" class="form-control" id="Cliente" name="Cliente" value="@Model.CodCli">
+                        <input type="hidden" class="form-control" id="Pagina" name="Pagina" value="@Model.TotalPages">
+                        <button type="submit" class="page-link" aria-label="Next">@Model.TotalPages</button>
+                    }
+                </li>
+            }
+            <li class="@(Model.CurrentPage >= Model.TotalPages ? "isDisabled" : "")">
+
+                <li class="page-item">
+                    @using (@Html.BeginForm(FormMethod.Post))
+                    {
+                        <input type="hidden" class="form-control" id="Cliente" name="Cliente" value="@Model.CodCli">
+                        <input type="hidden" class="form-control" id="Pagina" name="Pagina" value="@(Model.CurrentPage+1)">
+                        <button type="submit" class="page-link" aria-label="Next"><span aria-hidden="true">&raquo;</span></button>
+                    } 
+                </li>
+
+            </li>
+        </ul>
+    </nav>
+}

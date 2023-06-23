@@ -1,0 +1,104 @@
+﻿@page "{Id}"
+@model SGID.Pages.Account.RH.DetailsTimeModel
+@{
+    ViewBag.Title = "Detalhes";
+    Layout = "_LayoutGeral";
+}
+
+<h2>Detalhes</h2>
+
+<div>
+    <h4>Usuário</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model._details.UserName)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model._details.UserName)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model._details.GestorName)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model._details.GestorName)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model=> model._details.Meta)
+        </dt>
+        <dd>
+            @string.Format("{0:N2}", Model._details.Meta)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model=> model._details.Porcentagem)
+        </dt>
+        <dd>
+            @string.Format("{0:N2}", Model._details.Porcentagem)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model=> model._details.PorcentagemSegun)
+        </dt>
+        <dd>
+            @string.Format("{0:N2}", Model._details.PorcentagemSegun)
+        </dd>
+    </dl>
+</div>
+<h4>Lista de Roles para este usuário</h4>
+@if (Model._details.Roles.Count == 0)
+{
+    <hr />
+    <p>Usuário não pertence a nenhuma Role.</p>
+}
+else
+{
+    <table class="table">
+
+        @foreach (var item in Model._details.Roles)
+        {
+            <tr>
+                <td>
+                    @item
+                </td>
+            </tr>
+        }
+    </table>
+}
+
+<h4>Lista de Claims para este usuário</h4>
+
+@if (Model._details.Claims.Count == 0)
+{
+    <hr />
+    <p>Usuário não possui nenhum Claim.</p>
+}
+else
+{
+    <table class="table">
+        <tr class="table-bordered">
+            <td>
+                <b>Nome da Claim</b>
+            </td>
+            <td>
+                <b>Valor da Claim</b>
+            </td>
+        </tr>
+
+        @foreach (var item in Model._details.Claims)
+        {
+            <tr>
+                <td>
+                    @item.Type
+                </td>
+                <td>
+                    @item.Value
+                </td>
+            </tr>
+        }
+    </table>
+}
+
+<p>
+    <a href="/account/rh/editartime/@Model._details.Id">Editar</a>
+    <a href="/account/rh/listartime">Voltar para a lista</a>
+</p>
+

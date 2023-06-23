@@ -1,0 +1,67 @@
+﻿@page
+@model SGID.Pages.RH.ListarGestaoPessoalModel
+@{
+    ViewData["Title"] = "Solicitação de Acesso";
+    Layout = "_LayoutGeral";
+}
+
+<div class="row">
+
+    <div class="col-md-4">
+        <h2 style="padding-left:20px;">Solicitações</h2>
+    </div>
+
+    <div class="offset-md-6 col-md-2">
+        <a style="text-decoration:none;" href="/rh/gestaopessoal"><i class="fa-solid fa-user-plus"></i>Nova Solicitação</a>
+    </div>
+    @Html.AntiForgeryToken()
+</div>
+
+<div class="panel">
+    <div class="panel-body">
+        <table id="demo-dt-addrow" class="table table-striped table-bordered" cellspacing="0" width="100%">
+            <thead>
+                <tr>
+                    <th class="text-center">
+                        Data Envio
+                    </th>
+                    <th class="text-center">
+                        Data Evento
+                    </th>
+                    <th class="text-center">
+                        Nome Colaborador
+                    </th>
+                    <th class="text-center">
+                        Email
+                    </th>
+                    <th class="text-center">
+                        Tipo
+                    </th>
+                    <th class="text-center">
+                        Ações
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var data in Model.Acessos)
+                {
+                    <tr>
+                        <td>@data.DataCriacao.ToString("dd/MM/yyyy")</td>
+                        <td>@data.DataEvento.ToString("dd/MM/yyyy")</td>
+                        <td>@data.Nome</td>
+                        <td>@data.Email</td>
+                        <td>@data.Tipo</td>
+                        <td>
+                            <a href="/rh/editargestaopessoal/@data.Id" class="fa-solid fa-pen add-tooltip" style="text-decoration:none;" data-container="body" data-placement="top" data-original-title="Editar Solicitacao" aria-hidden="true"></a>
+                            |
+                            <a href="/rh/visualizargestaopessoal/@data.Id" class="fas fa-eye add-tooltip" style="text-decoration:none;" data-container="body" data-placement="top" data-original-title="Visualizar Solicitacao" aria-hidden="true"></a>
+                            |
+                            <a href="/rh/ListarGestaoPessoal?handler=Cancelar&&Id=@data.Id" class="fa-solid fa-trash add-tooltip" style="text-decoration:none;" data-container="body" data-placement="top" data-original-title="Cancelar Solicitacao" aria-hidden="true"></a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+

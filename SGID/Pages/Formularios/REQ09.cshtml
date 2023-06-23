@@ -1,0 +1,158 @@
+﻿@page "{id}"
+@model SGID.Pages.Formularios.REQ09Model
+@{
+    ViewData["Title"] = "REQ 09";
+    Layout = "_LayoutForm";
+}
+
+
+@if (Model.Relatorio == null)
+{
+    <div class="row">
+        <div class="col-md-6 offset-md-3">
+            <div class="card my-5">
+                @using (Html.BeginForm(FormMethod.Post, new { @class = "card-body cardbody-color p-lg-5" }))
+                {
+					<div class="mb-3">
+						<div class="text-center">
+							@if (Model.Empresa == "01")
+							{
+								<img src="/imagens/logoIntermedic.jpg">
+							}
+							else{
+								<img src="/imagens/logoDenuo.png">
+							}
+						</div>
+						<div class="text-center mb-5" style="font-weight:400">Impressão de Formulário - REQ09</div>
+                        <input type="text" class="form-control" id="CirPrin" name="CirPrin" placeholder="No. Agendamento:"/>
+						<br/>
+						<input type="text" class="form-control" id="CirCompl1" name="CirCompl1" placeholder="Complemento Agendamento 1" />
+						<br/>
+						<input type="text" class="form-control" id="CirCompl2" name="CirCompl2" placeholder="Complemento Agendamento 2"/>
+                        <input class="form-control" hidden id="Empresa" name="Empresa" value="@Model.Empresa" />
+                    </div>
+                    <br />
+                    <div class="text-center"><button type="submit" class="btn btn-color px-5 mb-5 w-100">Pesquisar</button></div>
+                }
+            </div>
+        </div>
+    </div>
+}
+
+
+
+<style>
+    .btn-color {
+        background-color: #0e1c36;
+        color: #fff;
+    }
+
+    .cardbody-color {
+        background-color: #ebf2fa;
+    }
+</style>
+
+
+@if (Model.Relatorio != null)
+{
+    <table border="1" width="90%" align="center" cellpadding="3" cellspacing="0">
+		<tr>
+			<TH rowspan="3">@if(@Model.Empresa=="01"){
+                            <img src="/imagens/logoIntermedic.jpg" alt="Intermedic"/>
+                            }
+                            else{
+                            <img src="/imagens/logoDenuo.png" alt="Denuo"/>
+                            }</TH>
+			<TD align="center" class="title">REGISTRO DA QUALIDADE</TD>
+			<td colspan="2" class="smaller">Ref   : REQ 09<br>Data  : 26/07/18<br>Página: 1 de 1</td>
+		</tr>
+		<tr>
+			<TD rowspan="2" align="center" class="title">Agendamento da Cirurgia</td>
+			<td colspan="2" class="smaller">EFETIVAÇÃO <br>Versão:&nbsp;&nbsp;&nbsp;&nbsp;07</td>
+		</tr>
+		<tr>
+			<td>Data<br><img src="/imagens/dataag.jpg"  border="0"></td>
+			<td>Visto<br><img src="/imagens/vistoag.jpg" border="0"></td>
+		</tr>
+	</table>
+	<br>
+	<table border="1" width="90%" align="center" cellpadding="3" cellspacing="0">
+		<tr>
+			<td><font class="title3">No. Atendimento/Cotação: </font>@Model.Relatorio.NumProc</td>
+			<td><font class="title3">No. Agendamento: </font>@Model.Relatorio.Cirurgia</td>
+		</tr>
+	</table>
+	<br>
+	<table border="1" width="90%" align="center" cellpadding="3" cellspacing="0">
+		<tr>
+			<td width="20%" class="title3">Tipo de Cirurgia:</td>
+			<td class="smaller">( @if(Model.Relatorio.TipoCir=="EL"){ <span>X</span>} ) Eletiva&nbsp;&nbsp;&nbsp;( @if(Model.Relatorio.TipoCir=="EM"){ <span>X</span>} )Emergência</td>
+		</tr>
+		<tr>
+			<td width="20%" class="title3">Hospital:</td>
+			<td class="smaller">@Model.Relatorio.Codcli-@Model.Relatorio.LojaCli &nbsp; @Model.Relatorio.Cliente</td>
+		</tr>
+		<tr>
+			<td width="20%" class="title3">Data Cirurgia:</td>
+			<td class="smaller">@Model.Relatorio.DtCir</td>
+		</tr>
+		<tr>
+			<td width="20%" class="title3">Horário:</td>
+			<td class="smaller">@Model.Relatorio.HrCir</td>
+		</tr>
+	</table>
+	<br>
+	<table border="1" width="90%" align="center" cellpadding="3" cellspacing="0">
+		<tr>
+			<td width="20%" class="title3">Paciente:</td>
+			<td class="smaller">@Model.Relatorio.Paciente</td>
+		</tr>
+		<tr>
+			<td width="20%" class="title3">Convênio:</td>
+			<td class="smaller">@Model.Relatorio.Convenio</td>
+		</tr>
+	</table>
+	<br>
+	<table border="1" width="90%" align="center" cellpadding="3" cellspacing="0">
+		<tr>
+			<td width="20%" class="title3">Médico:</td>
+			<td class="smaller">@Model.Relatorio.Medico</td>
+		</tr>
+		<tr>
+			<td width="20%" class="title3">Procedimento:</td>
+			<td class="smaller">@Model.Relatorio.Procedimento</td>
+		</tr>
+	</table>
+	<br>
+	<table border="1" width="90%" align="center" cellpadding="3" cellspacing="0">
+		<tr>
+			<td width="20%" class="title3">Representante:</td>
+			<td class="smaller">@Model.Relatorio.Vendedor</td>
+		</tr>
+	</table>
+	<br>
+	<table border="1" width="90%" align="center" cellpadding="3" cellspacing="0">
+		<tr>
+			<td align="center" class="title3">MATERIAL SOLICITADO</td>
+		</tr>
+		<tr>
+			<td class="smaller">@Model.Relatorio.Material</td>
+		</tr>
+		<tr>
+			<td class="title3">MATERIAL PERMANENTE: ( ) SIM  -  ( ) NÃO<BR>QUAL:__________________________________________
+		</tr>
+	</table>
+	<br>
+	<table border="1" width="90%" align="center" cellpadding="3" cellspacing="0">
+		<tr>
+			<td align="center" class="title3">OBSERVAÇÕES</td>
+		</tr>
+		<tr>
+			<td class="smaller">@Model.Relatorio.Obs</td>
+		</tr>
+		<tr>
+			<td class="title3">INSTRUMENTADOR:&nbsp;&nbsp;@Model.Relatorio.NomInst</TD>
+		</tr>
+	</table>
+}
+

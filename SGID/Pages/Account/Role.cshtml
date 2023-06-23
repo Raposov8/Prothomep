@@ -1,0 +1,33 @@
+﻿@page
+@model SGID.Pages.Account.RoleModel
+@{
+    ViewData["Title"] = "Role";
+    Layout = "_Layout";
+}
+
+@using (Html.BeginForm(FormMethod.Post)) {
+    <div class="form-horizontal">
+        <h4>Role</h4>
+        <hr />
+        @Html.ValidationSummary(true)
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Input.Name, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(model => model.Input.Name, new { @class = "form-control", @required = "required" })
+                @Html.ValidationMessageFor(model => model.Input.Name)
+            </div>
+        </div>
+        <br/>
+        <div class="form-group">
+            <div class="offset-10 col-md-2">
+                <input type="submit" value="Criar" class="btn btn-primary" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    <a href="/dashboard/3">Voltar</a>
+</div>
+

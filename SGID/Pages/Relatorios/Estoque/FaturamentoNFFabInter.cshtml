@@ -1,0 +1,388 @@
+﻿@page
+@model SGID.Pages.Relatorios.Estoque.FaturamentoNFFabInterModel
+@{
+    int count = 0;
+    int countGrand = 0;
+    ViewData["Title"] = "Relatorio Faturamento NF Fabricante Inter";
+    Layout = "_LayoutGeral";
+}
+
+@using(@Html.BeginForm(FormMethod.Post)){
+    <div class="row">
+        <div class="form-group mx-sm-3 mb-2 col-lg-2">
+            <input type="text" class="form-control" id="Ano" name="Ano" value="@Model.Ano" placeholder="Ano">
+            <span>Exemplo: 2022</span>
+        </div>
+
+        <div class="form-group mx-sm-3 mb-2 col-lg-1">
+            <button type="submit" class="btn btn-primary mb-2">Pesquisar</button>
+        </div>
+
+        <div class="form-group mx-sm-3 mb-2 col-lg-1">
+           <button type="submit" class="btn btn-secondary mb-2" asp-page-handler="Export"><i class="fa-solid fa-file-excel"></i> Exportar Excel</button>
+        </div>
+    </div>
+}
+
+
+<div class="panel">
+    <div class="panel-body">
+        <table id="demo-dt-addrow" class="table table-striped table-bordered" cellspacing="0" width="100%">
+            <thead>
+                <tr>
+                    <th class="text-center">
+                        Fabricante
+                    </th>
+                    <th>
+                        Janeiro
+                    </th>
+                    <th>
+                        Fevereiro
+                    </th>
+                    <th>
+                        Março
+                    </th>
+                    <th>
+                        Abril
+                    </th>
+                    <th>
+                        Maio
+                    </th>
+                    <th>
+                        Junho
+                    </th>
+                    <th>
+                        Julho
+                    </th>
+                    <th>
+                        Agosto
+                    </th>
+                    <th>
+                        Setembro
+                    </th>
+                    <th>
+                        Outubro
+                    </th>
+                    <th>
+                        Novembro
+                    </th>
+                    <th>
+                        Dezembro
+                    </th>
+                    <th>
+                        Total
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach(var data in Model.RelatorioFabricante)
+                {
+                <tr>
+                    <td>@Html.DisplayFor(model=> data.Nome)</td>
+                    <td>@string.Format("{0:N2}", data.Janeiro)</td>
+                    <td>@string.Format("{0:N2}", data.Fevereiro)</td>
+                    <td>@string.Format("{0:N2}", data.Marco)</td>
+                    <td>@string.Format("{0:N2}", data.Abril)</td>
+                    <td>@string.Format("{0:N2}", data.Maio)</td>
+                    <td>@string.Format("{0:N2}", data.Junho)</td>
+                    <td>@string.Format("{0:N2}", data.Julho)</td>
+                    <td>@string.Format("{0:N2}", data.Agosto)</td>
+                    <td>@string.Format("{0:N2}", data.Setembro)</td>
+                    <td>@string.Format("{0:N2}", data.Outubro)</td>
+                    <td>@string.Format("{0:N2}", data.Novembro)</td>
+                    <td>@string.Format("{0:N2}", data.Dezembro)</td>
+                    <td>@string.Format("{0:N2}", data.Total)</td>
+                </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+<div class="panel">
+    <div class="panel-body">
+        <table id="demo-dt-addrow" class="table table-striped table-bordered" cellspacing="0" width="100%">
+            <thead>
+                <tr>
+                    <th colspan="17" class="text-center">
+                        NF Devolução Fab
+                    </th>
+                </tr>
+                <tr>
+                    <th class="text-center">
+                        Nome
+                    </th>
+                    <th>
+                        NF
+                    </th>
+                    <th>
+                        Serie
+                    </th>
+                    <th>
+                        Emissao
+                    </th>
+                    <th>
+                        Janeiro
+                    </th>
+                    <th>
+                        Fevereiro
+                    </th>
+                    <th>
+                        Março
+                    </th>
+                    <th>
+                        Abril
+                    </th>
+                    <th>
+                        Maio
+                    </th>
+                    <th>
+                        Junho
+                    </th>
+                    <th>
+                        Julho
+                    </th>
+                    <th>
+                        Agosto
+                    </th>
+                    <th>
+                        Setembro
+                    </th>
+                    <th>
+                        Outubro
+                    </th>
+                    <th>
+                        Novembro
+                    </th>
+                    <th>
+                        Dezembro
+                    </th>
+                    <th>
+                        Total
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach(var data in Model.RelatorioDevolucao)
+                {
+                    countGrand++;
+                    <tr class="grandparent" id="@countGrand" title="Click to expand/collapse" style="cursor: pointer;">
+                    <td colspan="4">@Html.DisplayFor(model=> data.Nome)</td>
+                    <td>@string.Format("{0:N2}", data.Janeiro)</td>
+                    <td>@string.Format("{0:N2}", data.Fevereiro)</td>
+                    <td>@string.Format("{0:N2}", data.Marco)</td>
+                    <td>@string.Format("{0:N2}", data.Abril)</td>
+                    <td>@string.Format("{0:N2}", data.Maio)</td>
+                    <td>@string.Format("{0:N2}", data.Junho)</td>
+                    <td>@string.Format("{0:N2}", data.Julho)</td>
+                    <td>@string.Format("{0:N2}", data.Agosto)</td>
+                    <td>@string.Format("{0:N2}", data.Setembro)</td>
+                    <td>@string.Format("{0:N2}", data.Outubro)</td>
+                    <td>@string.Format("{0:N2}", data.Novembro)</td>
+                    <td>@string.Format("{0:N2}", data.Dezembro)</td>
+                    <td>@string.Format("{0:N2}", data.Total)</td>
+                </tr>
+                    @foreach (var item in data.Clientes)
+                    {
+                        count++;
+                        <tr class="parent parent-@countGrand" id="@count" title="Click to expand/collapse" style="cursor: pointer; background-color:#6495ed; color:white;">
+                            <td colspan="4">@Html.DisplayFor(model=> item.Nome)</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        @foreach (var nota in item.Notas)
+                        {
+                            <tr class="child-@count" style="display: none;">
+                                <td>@Html.DisplayFor(model=> nota.Nome)</td>
+                                <td>@Html.DisplayFor(model=> nota.NF)</td>
+                                <td>@Html.DisplayFor(model=> nota.Serie)</td>
+                                <td>@Html.DisplayFor(model=> nota.Emissao)</td>
+                                <td>@string.Format("{0:N2}", nota.Janeiro)</td>
+                                <td>@string.Format("{0:N2}", nota.Fevereiro)</td>
+                                <td>@string.Format("{0:N2}", nota.Marco)</td>
+                                <td>@string.Format("{0:N2}", nota.Abril)</td>
+                                <td>@string.Format("{0:N2}", nota.Maio)</td>
+                                <td>@string.Format("{0:N2}", nota.Junho)</td>
+                                <td>@string.Format("{0:N2}", nota.Julho)</td>
+                                <td>@string.Format("{0:N2}", nota.Agosto)</td>
+                                <td>@string.Format("{0:N2}", nota.Setembro)</td>
+                                <td>@string.Format("{0:N2}", nota.Outubro)</td>
+                                <td>@string.Format("{0:N2}", nota.Novembro)</td>
+                                <td>@string.Format("{0:N2}", nota.Dezembro)</td>
+                                <td>@string.Format("{0:N2}", nota.Total)</td>
+                            </tr>
+                        }
+                    }
+                
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+<div class="panel">
+    <div class="panel-body">
+        <table id="demo-dt-addrow" class="table table-striped table-bordered" cellspacing="0" width="100%">
+            <thead>
+                <tr>
+                    <th colspan="17" class="text-center">
+                        NF Faturado Fab
+                    </th>
+                </tr>
+                <tr>
+                    <th class="text-center">
+                        Nome
+                    </th>
+                    <th>
+                        NF
+                    </th>
+                    <th>
+                        Serie
+                    </th>
+                    <th>
+                        Emissao
+                    </th>
+                    <th>
+                        Janeiro
+                    </th>
+                    <th>
+                        Fevereiro
+                    </th>
+                    <th>
+                        Março
+                    </th>
+                    <th>
+                        Abril
+                    </th>
+                    <th>
+                        Maio
+                    </th>
+                    <th>
+                        Junho
+                    </th>
+                    <th>
+                        Julho
+                    </th>
+                    <th>
+                        Agosto
+                    </th>
+                    <th>
+                        Setembro
+                    </th>
+                    <th>
+                        Outubro
+                    </th>
+                    <th>
+                        Novembro
+                    </th>
+                    <th>
+                        Dezembro
+                    </th>
+                    <th>
+                        Total
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach(var data in Model.RelatorioFaturamento)
+                {
+                    countGrand++;
+                    <tr class="grandparent" id="@countGrand" title="Click to expand/collapse" style="cursor: pointer;">
+                    <td colspan="4">@Html.DisplayFor(model=> data.Nome)</td>
+                    <td>@string.Format("{0:N2}", data.Janeiro)</td>
+                    <td>@string.Format("{0:N2}", data.Fevereiro)</td>
+                    <td>@string.Format("{0:N2}", data.Marco)</td>
+                    <td>@string.Format("{0:N2}", data.Abril)</td>
+                    <td>@string.Format("{0:N2}", data.Maio)</td>
+                    <td>@string.Format("{0:N2}", data.Junho)</td>
+                    <td>@string.Format("{0:N2}", data.Julho)</td>
+                    <td>@string.Format("{0:N2}", data.Agosto)</td>
+                    <td>@string.Format("{0:N2}", data.Setembro)</td>
+                    <td>@string.Format("{0:N2}", data.Outubro)</td>
+                    <td>@string.Format("{0:N2}", data.Novembro)</td>
+                    <td>@string.Format("{0:N2}", data.Dezembro)</td>
+                    <td>@string.Format("{0:N2}", data.Total)</td>
+                </tr>
+                    @foreach (var item in data.Clientes)
+                    {      
+                        count++;
+                        <tr class="parent parent-@countGrand" id="@count" title="Click to expand/collapse" style="cursor: pointer; background-color:#6495ed; color:white;">
+                        <td colspan="4">@Html.DisplayFor(model=> item.Nome)</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                        @foreach (var nota in item.Notas)
+                        {
+                            <tr class="child-@count" style="display: none;">
+                                <td>@Html.DisplayFor(model=> nota.Nome)</td>
+                                <td>@Html.DisplayFor(model=> nota.NF)</td>
+                                <td>@Html.DisplayFor(model=> nota.Serie)</td>
+                                <td>@Html.DisplayFor(model=> nota.Emissao)</td>
+                                <td>@string.Format("{0:N2}", nota.Janeiro)</td>
+                                <td>@string.Format("{0:N2}", nota.Fevereiro)</td>
+                                <td>@string.Format("{0:N2}", nota.Marco)</td>
+                                <td>@string.Format("{0:N2}", nota.Abril)</td>
+                                <td>@string.Format("{0:N2}", nota.Maio)</td>
+                                <td>@string.Format("{0:N2}", nota.Junho)</td>
+                                <td>@string.Format("{0:N2}", nota.Julho)</td>
+                                <td>@string.Format("{0:N2}", nota.Agosto)</td>
+                                <td>@string.Format("{0:N2}", nota.Setembro)</td>
+                                <td>@string.Format("{0:N2}", nota.Outubro)</td>
+                                <td>@string.Format("{0:N2}", nota.Novembro)</td>
+                                <td>@string.Format("{0:N2}", nota.Dezembro)</td>
+                                <td>@string.Format("{0:N2}", nota.Total)</td>
+                            </tr>
+                        }
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+@section scripts{
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>  
+	<script type="text/javascript">  
+	    $(document).ready(function () {  
+
+	            $('tr.parent')  
+	                .css("cursor", "pointer")  
+	                .attr("title", "Click to expand/collapse")  
+	                .click(function () {  
+	                    $(this).siblings('.child-' + this.id).toggle();  
+	                });  
+	            $('tr[class^=child-]').hide().children('td');  
+                $('tr.grandparent')  
+	                .css("cursor", "pointer")  
+	                .attr("title", "Click to expand/collapse")  
+	                .click(function () {  
+	                    $(this).siblings('.parent-' + this.id).toggle();
+                        $('tr[class^=child-]').hide().children('td'); 
+	                });  
+	            $('tr[class^=parent]').hide().children('td');  
+	    });  
+	    </script>  
+}

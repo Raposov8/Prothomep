@@ -1,0 +1,113 @@
+﻿@page
+@model SGID.Pages.Relatorios.Estoque.ExpedicaoRetiradaModel
+@{
+    ViewData["Title"] = "Relatorio Expedição Retirada Denuo";
+    Layout = "_LayoutGeral";
+}
+
+@using(@Html.BeginForm(FormMethod.Post)){
+    <div class="row">
+        <div class="form-group mx-sm-3 mb-2 col-lg-2">
+            <input type="date" class="form-control" id="DataInicio" name="DataInicio" value="@Model.Inicio.ToString("yyyy-MM-dd")" placeholder="Data Inicio">
+        </div>
+        <div class="form-group mx-sm-3 mb-2 col-lg-2">
+            <input type="date" class="form-control" id="DataFim" name="DataFim" value="@Model.Fim.ToString("yyyy-MM-dd")" placeholder="Data Fim">
+        </div>
+
+        <div class="form-group mx-sm-3 mb-2 col-lg-1">
+            <button type="submit" class="btn btn-primary mb-2">Pesquisar</button>
+        </div>
+
+        <div class="form-group mx-sm-3 mb-2 col-lg-1">
+           <button type="submit" class="btn btn-secondary mb-2" asp-page-handler="Export"><i class="fa-solid fa-file-excel"></i> Exportar Excel</button>
+        </div>
+    </div>
+}
+
+
+<div class="panel">
+    <div class="panel-body">
+        <table id="demo-dt-addrow" class="table table-striped table-bordered" cellspacing="0" width="100%">
+            <thead>
+                <tr>
+                    <th class="text-center">
+                        Agendamento
+                    </th>
+                    <th class="text-center">
+                        Ag. Principal
+                    </th>
+                    <th class="text-center">
+                        Cod. Cliente
+                    </th>
+                    <th class="text-center">
+                        Loja Cliente
+                    </th>
+                    <th class="text-center">
+                        Nome
+                    </th>
+                    <th class="text-center">
+                        Tipo Oper.
+                    </th>
+                    <th class="text-center">
+                        Data Cirurgia
+                    </th>
+                    <th class="text-center">
+                        Hora Cirurgia
+                    </th>
+                    <th class="text-center">
+                        Status
+                    </th>
+                    <th class="text-center">
+                        Cod. Canc.
+                    </th>
+                    <th class="text-center">
+                        Motivo Canc.
+                    </th>
+                    <th class="text-center">
+                        DT. Expedição
+                    </th>
+                    <th class="text-center">
+                        HR Expedição
+                    </th>
+                    <th class="text-center">
+                        Mot. Entrega
+                    </th>
+                    <th class="text-center">
+                        DT Retirada
+                    </th>
+                    <th class="text-center">
+                        HR Retirada
+                    </th>
+                    <th class="text-center">
+                        Mot. Retirada
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach(var data in Model.Relatorio)
+                {
+                <tr>
+                    <td>@Html.DisplayFor(model=> data.Agendamento)</td>
+                    <td>@Html.DisplayFor(model=> data.AgPrincipal)</td>
+                    <td>@Html.DisplayFor(model=> data.CodCliente)</td>
+                    <td>@Html.DisplayFor(model=> data.LojaCliente)</td>
+                    <td>@Html.DisplayFor(model=> data.Nome)</td>
+                    <td>@Html.DisplayFor(model=> data.TipoOper)</td>
+                    <td>@Html.DisplayFor(model=> data.DTCirurgia)</td>
+                    <td>@Html.DisplayFor(model=> data.HoraCirurgia)</td>
+                    <td>@Html.DisplayFor(model=> data.Status)</td>
+                    <td>@Html.DisplayFor(model=> data.CodCanc)</td>
+                    <td>@Html.DisplayFor(model=> data.MotivoCanc)</td>
+                    <td>@Html.DisplayFor(model=> data.DTExpedicao)</td>
+                    <td>@Html.DisplayFor(model=> data.HRExpedicao)</td>
+                    <td>@Html.DisplayFor(model=> data.MotEntrega)</td>
+                    <td>@Html.DisplayFor(model=> data.DTRetirada)</td>
+                    <td>@Html.DisplayFor(model=> data.HRRetirada)</td>
+                    <td>@Html.DisplayFor(model=> data.MotRetirada)</td>
+                </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+

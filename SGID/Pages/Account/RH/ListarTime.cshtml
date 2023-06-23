@@ -1,0 +1,115 @@
+﻿@page
+@model SGID.Pages.Account.RH.ListarTimeModel
+@{
+    ViewData["Title"] = "Time";
+    Layout = "_LayoutGeral";
+}
+
+<h2>Time</h2>
+
+<div class="row">
+    <div class="offset-4 col-md-3">
+        
+    </div>
+    <div class="offset-2 col-md-3">
+        <a href="/account/rh/cadastrotime" class="float-end" style="text-decoration:none;"><i class="fa-solid fa-user-plus"></i> Novo Integrante</a>
+    </div>
+</div>
+@using (@Html.BeginForm(FormMethod.Post))
+{
+    <div class="row">
+        <div class="form-group mx-sm-3 mb-2 col-lg-2">
+            <label>Mês</label>
+            <input type="text" class="form-control" id="Mes" name="Mes" placeholder="Mês" value="@Model.MesAno" />
+        </div>
+        <div class="form-group mx-sm-3 mb-2 col-lg-2">
+            <label>Ano</label>
+            <input type="text" class="form-control" id="Ano" name="Ano" placeholder="Ano" value="@Model.Ano" />
+        </div>
+        <div class="form-group mx-sm-3 mb-2 col-lg-2">
+            <label>Empresa</label>
+            <select type="text" class="form-control" id="Empresa" name="Empresa">
+                <option value="">TODOS...</option>
+                <option value="DENUO.COM.BR">DENUO</option>
+                <option value="INTERMEDIC.COM.BR">INTERMEDIC</option>
+            </select>
+        </div>
+        <div class="form-group mx-sm-3 mb-2 col-lg-1">
+            <label></label>
+            <button type="submit" class="btn btn-primary mb-2">Pesquisar</button>
+        </div>
+        <div class="form-group mx-sm-3 mb-2 col-lg-1">
+            <button type="submit" class="btn btn-secondary mb-2" asp-page-handler="Export"><i class="fa-solid fa-file-excel"></i> Exportar Excel</button>
+        </div>
+    </div>
+}
+<br />
+<div class="panel">
+    <div class="panel-body">
+        <table id="demo-dt-addrow" class="table table-striped table-bordered" cellspacing="0" width="100%">
+            <thead>
+                <tr>
+                    <th class="text-center">Representantes</th>
+                    <th class="text-center">Faturado @Model.Mes</th>
+                    <th class="text-center">Comissão @Model.Mes</th>
+                    <th class="text-center">Faturado Equipe @Model.Mes</th>
+                    <th class="text-center">Comissão sobre a Equipe @Model.Mes</th>
+                    <th class="text-center">Faturado Sobre Linha @Model.Mes</th>
+                    <th class="text-center">Comissão Sobre Linha @Model.Mes</th>
+                    <th class="text-center">Opções</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.Usuarios)
+                {
+                    <tr>
+                        <td class="text-center">
+                             @item.User.Integrante.ToUpper().Split("@")[0].Replace("."," ")
+                        </td>
+                        <td class="text-center">
+                            R$ @string.Format("{0:N2}", item.Faturado)
+                        </td>
+                        <td class="text-center">
+                            R$ @string.Format("{0:N2}", item.Comissao)
+                        </td>
+                        <td class="text-center">
+                            R$ @string.Format("{0:N2}", item.FaturadoEquipe)
+                        </td>
+                        <td class="text-center">
+                            R$ @string.Format("{0:N2}", item.ComissaoEquipe)
+                        </td>
+                        <td class="text-center">
+                            R$ @string.Format("{0:N2}", item.FaturadoProduto)
+                        </td>
+                        <td class="text-center">
+                            R$ @string.Format("{0:N2}", item.ComissaoProduto)
+                        </td>
+                        <td class="text-center">
+                            <a href="/account/rh/editartime/@item.User.Id">Editar</a> |
+                            <a href="/account/rh/detailstime/@item.User.Id">Detalhes</a> |
+                            <a href="/account/rh/deletetime/@item.User.Id">Desativar</a> |
+                            <a href="/account/rh/RelatorioComissao?IdTime=@item.User.Id&&Mes=@Model.MesAno&&Ano=@Model.Ano">Relatorio</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+@section Scripts{
+    <script>
+
+        $(document).ready(function () {
+
+            @if (Model.TextoMensagem != "")
+            {
+                @:alert(`@Model.TextoMensagem`)
+            }
+
+            $("#Empresa").val("@Model.Empresa1")
+        })
+
+    </script>
+}

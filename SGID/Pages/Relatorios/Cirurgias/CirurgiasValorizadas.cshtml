@@ -1,0 +1,135 @@
+﻿@page
+@model SGID.Pages.Relatorios.Cirurgias.CirurgiasValorizadasModel
+@{
+    ViewData["Title"] = "Relatorio Cirurgias Valorizadas Denuo";
+    Layout = "_LayoutGeral";
+}
+
+
+
+
+@using(@Html.BeginForm(FormMethod.Post)){
+        <div class="row">
+        <div class="form-group mx-sm-3 mb-2 col-lg-2">
+            <input type="date" class="form-control" id="DataInicio" name="DataInicio" value="@Model.Inicio.ToString("yyyy-MM-dd")" placeholder="Data Inicio">
+        </div>
+        <div class="form-group mx-sm-3 mb-2 col-lg-2">
+            <input type="date" class="form-control" id="DataFim" name="DataFim" value="@Model.Fim.ToString("yyyy-MM-dd")" placeholder="Data Fim">
+        </div>
+
+            <div class="form-group mx-sm-3 mb-2 col-lg-1">
+                <button type="submit" class="btn btn-primary mb-2">Pesquisar</button>
+            </div>
+
+            <div class="form-group mx-sm-3 mb-2 col-lg-1">
+               <button type="submit" class="btn btn-secondary mb-2" asp-page-handler="Export"><i class="fa-solid fa-file-excel"></i> Exportar Excel</button>
+            </div>
+        </div>
+    }
+
+<div class="panel">
+    <div class="panel-body">
+        <table id="demo-dt-addrow" class="table table-striped table-bordered" cellspacing="0" width="100%">
+            <thead>
+                <tr>
+                    <th class="text-center">
+                        Data Cirurgia
+                    </th>
+                    <th class="text-center">
+                        Filial
+                    </th>
+                    <th class="text-center">
+                        Num. Pedido
+                    </th>
+                    <th class="text-center">
+                        Agendamento
+                    </th>
+                    <th class="text-center">
+                        Tipo
+                    </th>
+                    <th class="text-center">
+                        Vendedor
+                    </th>
+                    <th class="text-center">
+                        Médico
+                    </th>
+                    <th class="text-center">
+                        Paciente
+                    </th>
+                    <th class="text-center">
+                        Cliente Entrega
+                    </th>
+                    <th class="text-center">
+                        Convênio
+                    </th>
+                    <th class="text-center">
+                        Num. Patrim.
+                    </th>
+                    <th class="text-center">
+                        Patrimonio
+                    </th>
+                    <th class="text-center">
+                        Produto
+                    </th>
+                    <th class="text-center">
+                        Desc. Produto
+                    </th>
+                    <th class="text-center">
+                        Qtd Pedido
+                    </th>
+                    <th class="text-center">
+                        Qtd Faturada
+                    </th>
+                    <th class="text-center">
+                        Vl. Unitario
+                    </th>
+                    <th class="text-center">
+                        Total Pedido
+                    </th>
+                    <th class="text-center">
+                        Total Fat.
+                    </th>
+                    <th class="text-center">
+                        FATURADO
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var data in Model.Relatorio)
+                {
+                    <tr>
+                        <td>@Html.DisplayFor(model=> data.C5XDtCir)</td>
+                        <td>@Html.DisplayFor(model=> data.C5Filial)</td>
+                        <td>@Html.DisplayFor(model=> data.C5Num)</td>
+                        <td>@Html.DisplayFor(model=> data.UAUnumage)</td>
+                        <td>@Html.DisplayFor(model=> data.TipoOper)</td>
+                        <td>@Html.DisplayFor(model=> data.C5NomVend)</td>
+                        <td>@Html.DisplayFor(model=> data.C5XNMMed)</td>
+                        <td>@Html.DisplayFor(model=> data.C5XNmPac)</td>
+                        <td>@Html.DisplayFor(model=> data.C5NomClie)</td>
+                        <td>@Html.DisplayFor(model=> data.C5XNmPla)</td>
+                        <td>@Html.DisplayFor(model=> data.C6Upatrim)</td>
+                        <td>@Html.DisplayFor(model=> data.Patrimonio)</td>
+                        <td>@Html.DisplayFor(model=> data.C6Produto)</td>
+                        <td>@Html.DisplayFor(model=> data.B1Desc)</td>
+                        <td>@Html.DisplayFor(model=> data.C6QtdVen)</td>
+                        <td>@Html.DisplayFor(model=> data.C6QtdEnt)</td>
+                        <td>@string.Format("{0:N2}", data.C6PrcVen)</td>
+                        <td>@string.Format("{0:N2}", data.C6Valor)</td>
+                        <td>@string.Format("{0:N2}", data.Total)</td>
+                        <td>@Html.DisplayFor(model=> data.Faturado)</td>
+                    </tr>
+                }
+                <tr>
+                    <td colspan="13"></td>
+                    <td>TOTAL: </td>
+                    <td>@Model.Pedido</td>
+                    <td>@Model.QtdFaturada</td>
+                    <td>@string.Format("{0:N2}", Model.VlUnitario)</td>
+                    <td>@string.Format("{0:N2}", Model.TotalPedido)</td>
+                    <td>@string.Format("{0:N2}", Model.TotalFat)</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

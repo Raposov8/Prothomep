@@ -1,0 +1,63 @@
+﻿@page "{id}"
+@model SGID.Pages.UserAdmin.AlterarSenhaModel
+@{
+    ViewBag.Title = "Alterar senha";
+
+    Layout = "_LayoutGeral";
+}
+
+<h2>@ViewBag.Title.</h2>
+
+
+@using(Html.BeginForm(FormMethod.Post)){
+<h4>Formulário de Alteração de Senha</h4>
+<hr />
+<div class="form-group row">
+    <h5 class="col-md-2 control-label">Email</h5>
+    <div class="col-md-6">
+        <h4 class="col-md-12 text-left form-control">@Model.Senha.Email</h4>
+    </div>
+</div>
+<div class="form-group row">
+    <h5 class="col-md-2 control-label">Password</h5>
+    <div class="col-md-6">
+        @Html.PasswordFor(model=>model.Senha.Password,new {@class="text-left form-control",@style="display:inline"})
+        @Html.HiddenFor(model => model.Senha.Id)
+        @Html.HiddenFor(model => model.Senha.Email)
+    </div>
+</div>
+
+<div class="form-group mt-1">
+    <div class="col-md-offset-2 col-md-10">
+        <button type="submit" id="AlterarSenha" onclick="myFunction()" class="btn btn-primary"> Alterar Senha</button>
+    </div>
+</div>
+}
+
+@section Scripts {
+    <script>
+        /*function myFunction() {
+            var url = "/UsersAdmin/AlterarSenhaAsync/";
+            var parametros = {
+                id: $('#Id').val(),
+                Password: $('#Password').val()
+            };
+            $.ajax({
+                type: "POST",
+                url: url,
+                contentType: "application/json; charset=utf-8",
+                data: JSON.stringify(parametros),
+                dataType: 'json',
+                success: function (data) {
+                    if (data) {
+                        alert("Senha Alterada !!")
+                    }
+                    else {
+                        alert("Erro ao Alterar a Senha !!")
+                    }
+                }
+            });
+        };*/
+    </script>
+
+}

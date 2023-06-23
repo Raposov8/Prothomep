@@ -1,0 +1,100 @@
+﻿@page
+@model SGID.Pages.Relatorios.SubDistribuidor.SubDistribuidorPorFabricanteModel
+@{
+    ViewData["Title"] = "Relatorio SubDistribuidor Por Fabricante Denuo";
+    Layout = "_LayoutGeral";
+}
+
+@using (@Html.BeginForm(FormMethod.Post))
+{
+    <div class="row">
+        <div class="form-group mx-sm-3 mb-2 col-lg-2">
+            <input type="date" class="form-control" id="DataInicio" name="DataInicio" value="@Model.Inicio.ToString("yyyy-MM-dd")" placeholder="Data Inicio">
+        </div>
+        <div class="form-group mx-sm-3 mb-2 col-lg-2">
+            <input type="date" class="form-control" id="DataFim" name="DataFim" value="@Model.Fim.ToString("yyyy-MM-dd")" placeholder="Data Fim">
+        </div>
+        <div class="form-group mx-sm-3 mb-2 col-lg-3">
+            <select type="text" class="form-control" id="Fabricante" name="Fabricante" placeholder="Cliente">
+                @foreach(var data in Model.Fabricantes){
+                    <option value="@data">@data</option>
+                }
+            </select>
+        </div>
+
+        <div class="form-group mx-sm-3 mb-2 col-lg-1">
+            <button type="submit" class="btn btn-primary mb-2">Pesquisar</button>
+        </div>
+
+        <div class="form-group mx-sm-3 mb-2 col-lg-1">
+            <button type="submit" class="btn btn-secondary mb-2" asp-page-handler="Export"><i class="fa-solid fa-file-excel"></i> Exportar Excel</button>
+        </div>
+    </div>
+}
+
+
+<div class="panel">
+    <div class="panel-body">
+        <table id="demo-dt-addrow" class="table table-striped table-bordered" cellspacing="0" width="100%">
+            <thead>
+                <tr>
+                    <th class="text-center">
+                        Cod.
+                    </th>
+                    <th class="text-center">
+                        Nome
+                    </th>
+                    <th class="text-center">
+                        NF
+                    </th>
+                    <th class="text-center">
+                        Emissao
+                    </th>
+                    <th class="text-center">
+                        Fabricante
+                    </th>
+                    <th class="text-center">
+                        Cod. Produto
+                    </th>
+                    <th class="text-center">
+                        Quant.
+                    </th>
+                    <th class="text-center">
+                        Prc. Ven
+                    </th>
+                    <th class="text-center">
+                        Total
+                    </th>
+                    <th class="text-center">
+                        Vendedor
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var data in Model.Relatorio)
+                {
+                    <tr>
+                        <td>@Html.DisplayFor(model=> data.Codigo)</td>
+                        <td>@Html.DisplayFor(model=> data.Nome)</td>
+                        <td>@Html.DisplayFor(model=> data.NF)</td>
+                        <td>@Html.DisplayFor(model=> data.Emissao)</td>
+                        <td>@Html.DisplayFor(model=> data.Fabricante)</td>
+                        <td>@Html.DisplayFor(model=> data.CodProduto)</td>
+                        <td>@Html.DisplayFor(model=> data.Quant)</td>
+                        <td>@string.Format("{0:N2}", data.PrcVen)</td>
+                        <td>@string.Format("{0:N2}", data.Total)</td>
+                        <td>@Html.DisplayFor(model=> data.NomeVendedor)</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@section Scripts{
+    <script>
+        $(document).ready(function(){
+            $("#Fabricante").val('@Model.Fabricante')
+        })
+    </script>
+}

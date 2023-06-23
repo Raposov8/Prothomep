@@ -1,0 +1,127 @@
+﻿@page "{id}"
+@model SGID.Pages.Formularios.REQ30Model
+@{
+    ViewData["Title"] = "Itens Faltantes";
+    Layout = "_LayoutForm";
+}
+
+
+@if (Model.Relatorio == null)
+{
+    <div class="row">
+        <div class="col-md-6 offset-md-3">
+            <div class="card my-5">
+                @using (Html.BeginForm(FormMethod.Post, new { @class = "card-body cardbody-color p-lg-5" }))
+                {
+                    <div class="mb-3">
+                        <div class="text-center mb-5" style="font-weight:400">Informe o Patrimônio</div>
+                            <input type="text" class="form-control" id="Patrimonio" name="Patrimonio" />
+                        <input class="form-control" hidden id="Empresa" name="Empresa" value="@Model.Empresa" />
+                        <br />
+                        @if (Model.Empresa != "01")
+                        {
+                            <select type="text" class="form-control" id="Filial" name="Filial">
+                                <option value="03">Denuo Morumbi Matriz</option>
+                                <option value="02">Denuo Matriz</option>
+                            </select>
+                        }
+                    </div>
+                    <br />
+                    <div class="text-center"><button type="submit" class="btn btn-color px-5 mb-5 w-100">Pesquisar</button></div>
+                }
+            </div>
+        </div>
+    </div>
+}
+
+
+
+<style>
+    .btn-color {
+      background-color: #0e1c36;
+      color: #fff;
+    }
+
+    .cardbody-color {
+      background-color: #ebf2fa;
+    }
+</style>
+
+
+@if (Model.Relatorio != null)
+{
+    <div class="panel" width="100%">
+        <div class="panel-body" width="100%">
+            <table id="demo-dt-addrow" class="table table-striped table-bordered" cellspacing="0" width="100%">
+                <thead>
+                    <tr>
+                        <th rowspan="3">
+                            @if(@Model.Empresa=="01"){
+                            <img src="/imagens/logoIntermedic.jpg" alt="Intermedic"/>
+                            }
+                            else{
+                            <img src="/imagens/logoDenuo.png" alt="Denuo"/>
+                            }
+                        </th>
+                        <th colspan="2" align="center" class="text-center">
+                            REGISTRO DA QUALIDADE
+                        </th>
+                        <th colspan="2" class="text-center">
+                            @if (Model.Empresa == "01") {
+                                <span>Ref: REQ 30 <br>Data: 29/04/2021 <br> Página: 1 de 1</span>
+                            }
+                            else
+                            {
+                                <span>Ref: REQ 30 <br>Data: 08/03/2023 <br> Página: 1 de 1</span>
+                            }
+                        </th>
+                    </tr>
+                    <tr>
+                        <th rowspan="2" colspan="2" align="center" class="text-center">
+                            Itens Faltantes no Patrimônio
+                        </th>
+                        <th rowspan="2" colspan="2" class="text-center">
+                            EFETIVAÇÂO<br>Versão:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;@if (Model.Empresa == "01")
+                            {
+                                <span>6.000</span>
+                            }
+                            else
+                            {
+                                <span>6.000</span>
+                            }
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="title3" colspan="2">1. Data: @Model.Data.ToString("dd/MM/yyyy HH:mm:ss")</td>
+                        <td class="title3" colspan="3">2. Patrimônio No: @Model.NumPatri - @Model.NomPatri</td>
+                    </tr>
+                    <tr>
+                        <td colspan="5" class="title3">3. Descrição dos Itens Faltantes</td>
+                    </tr>
+                    <tr>
+                        <td class="title3">3.1 CODIGO(S):</td>
+                        <td class="title3">3.2 DESCRIÇÃO:</td>
+                        <td class="title3"><center>3.3 QUANTIDADE<BR>/LOTE VIRTUAL</center></td>
+                        <td class="title3"><center>3.4 QUANTIDADE<BR>/LOTE FISICO</center></td>
+                        <td class="title3">3.5 OBSERVAÇÃO</td>
+                    </tr>
+                    @foreach (var data in Model.Relatorio)
+                    {
+                        <tr>
+                            <td>@data.CodProd</td>
+                            <td>@data.DescProd</td>
+                            <td>@data.QtdKit</td>
+                            <td>@data.QtdPat</td>
+                            <td>&nbsp;</td>
+                        </tr>
+                    }
+                    <tr>
+                        <td colspan="5" class="title3">Responsável:</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+}

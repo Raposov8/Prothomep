@@ -1,0 +1,139 @@
+﻿@page "{id}"
+@model SGID.Pages.Estoque.FormularioAvulsoPdfModel
+@{
+	ViewData["Title"] = "Agendamento";
+	Layout = "_LayoutForm";
+	int count = 1;
+}
+
+<div class="row">
+	<div class="offset-1 col-md-10">
+		<table border="1" width="100%" align="center" cellpadding="3" cellspacing="0">
+			<tr>
+				<th>@if(Model.Formulario.Empresa == "01"){
+	                <img src="/imagens/logoIntermedic.jpg" alt="Intermedic"/>
+	                }
+	                else{
+	                <img src="/imagens/logoDenuo.png" alt="Denuo"/>
+	                }
+				</th>
+				<th align="center" class="title">@if (Model.Formulario.Empresa == "01")
+				{
+					<span>INTERMEDIC TECHNOLOGY IMP. E EXP. LTDA</span>
+					<br />
+					<span>ROMANEIO DE ENTREGA (1a. Via)</span>
+				}
+				else
+				{
+					<span>DENUO MEDIC IMP. E EXP. LTDA</span>
+					<br />
+					<span>ROMANEIO DE ENTREGA (1a. Via)</span>
+				}
+				</th>
+				<th class="smaller">
+				@if(Model.Formulario.Empresa == "01")
+				{
+					<span>Rua Enxovia, 472 - Vila Sao Francisco (Zona Sul) </span>
+					<br />
+					<span>São Paulo - SP, 04711-030 CJ 1605 a 1608</span>
+					<br />
+					<span>Fone: (11) 3503-2000</span>
+				}
+				else
+				{
+					<span>Rua Enxovia, 472 - Vila Sao Francisco (Zona Sul)</span>
+					<br />
+					<span>São Paulo - SP, 04711-030 CJ 1613</span>
+					<br />
+					<span>Fone: (11) 4122-7910</span>
+				}
+			</th>
+			</tr>
+		</table>
+	</div>
+</div>
+	<br>
+<div class="row">
+	<div class="offset-1 col-md-5">
+		<table border="1" width="100%" align="center" cellpadding="3" cellspacing="0">
+			<tr>
+				<td>CLIENTE: </td>
+				<td>@Model.Formulario.Cliente</td>
+			</tr>
+			<tr>
+				<td>DATA CIRURGIA: </td>
+				<td>@Model.Formulario.DataCirurgia.ToString("dd/MM/yyyy HH:mm")</td>
+			</tr>
+			<tr>
+				<td>PACIENTE: </td>
+				<td>@Model.Formulario.Cirurgiao</td>
+			</tr>
+			<tr>
+				<td>CIRURGIÃO: </td>
+				<td>@Model.Formulario.Cirurgiao</td>
+			</tr>
+			<tr>
+				<td>CONVENIO: </td>
+				<td>@Model.Formulario.Convenio</td>
+			</tr>
+			<tr>
+				<td>REPRESENTANTE: </td>
+				<td>@Model.Formulario.Representante</td>
+			</tr>
+			<tr>
+				<td>Nº AGENDAMENTO:</td>
+				<td>@Model.Formulario.NumAgendamento</td>
+			</tr>
+			<tr>
+				<td>Impresso em:</td>
+				<td>@DateTime.Now.ToString("dd/MM/yyyy HH:mm")</td>
+			</tr>
+			<tr>
+				<td>Por:</td>
+				<td>@User.Identity.Name.ToUpper().Replace("."," ")</td>
+			</tr>
+		</table>
+	</div>
+	<div class="col-md-5">
+		<div class="card">
+			<h3>Vale Material</h3>
+		</div>
+	</div>
+</div>
+	<br>
+	<br>
+<div class="row">
+	<div class="offset-1 col-md-10">
+		<table border="1" width="100%" align="center" cellpadding="3" cellspacing="0">
+			<thead>
+				<tr>
+					<th>ITEM</th>
+					<th>PRODUTO</th>
+					<th>DESCRIÇÃO</th>
+					<th>QTDE</th>
+					<th>LOTE</th>
+				</tr>
+			</thead>
+			<tbody>
+				@foreach(var data in Model.Produtos)
+				{
+					<tr>
+						<td>@count</td>
+						<td>@data.Produto</td>
+						<td>@data.Descricao</td>
+						<td>@data.Quantidade</td>
+						<td>@data.Lote</td>
+					</tr>
+					count++;
+				}
+			</tbody>
+		</table>
+	</div>
+</div>
+@section scripts{
+	<script>
+		$(document).ready(function(){
+			window.print();
+		})
+	</script>
+}

@@ -1,0 +1,76 @@
+﻿@page
+@model SGID.Pages.Relatorios.Financeiro.AReceberModel
+@{
+    ViewData["Title"] = "Relatorio A Receber Baixa Denuo";
+    Layout = "_LayoutGeral";
+}
+
+
+@using (@Html.BeginForm(FormMethod.Post))
+{
+    <div class="row">
+        <div class="form-group mx-sm-3 mb-2 col-lg-2">
+            <input type="date" class="form-control" id="DataInicio" name="DataInicio" value="@Model.Inicio.ToString("yyyy-MM-dd")" placeholder="Data Inicio">
+        </div>
+        <div class="form-group mx-sm-3 mb-2 col-lg-2">
+            <input type="date" class="form-control" id="DataFim" name="DataFim" value="@Model.Fim.ToString("yyyy-MM-dd")" placeholder="Data Fim">
+        </div>
+        <div class="form-group mx-sm-3 mb-2 col-lg-1">
+            <button type="submit" class="btn btn-primary mb-2">Pesquisar</button>
+        </div>
+        <div class="form-group mx-sm-3 mb-2 col-lg-1">
+            <button type="submit" class="btn btn-secondary mb-2" asp-page-handler="Export"><i class="fa-solid fa-file-excel"></i> Exportar Excel</button>
+        </div>
+    </div>
+}
+
+
+<div class="panel">
+    <div class="panel-body">
+        <table id="demo-dt-addrow" class="table table-striped table-bordered" cellspacing="0" width="100%">
+            <thead>
+                <tr>
+                    <th class="text-center">
+                        NUMERO
+                    </th>
+                    <th class="text-center">
+                        PARCELA
+                    </th>
+                    <th class="text-center">
+                        TIPO
+                    </th>
+                    <th class="text-center">
+                        NATUREZ
+                    </th>
+                    <th class="text-center">
+                        NOME CLIENTE
+                    </th>
+                    <th class="text-center">
+                        EMISSAO
+                    </th>
+                    <th class="text-center">
+                        VALOR
+                    </th>
+                    <th class="text-center">
+                        NOME VENDEDOR
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var data in Model.Relatorio)
+                {
+                    <tr>
+                        <td>@Html.DisplayFor(model=> data.Num)</td>
+                        <td>@Html.DisplayFor(model=> data.Parcela)</td>
+                        <td>@Html.DisplayFor(model=> data.Tipo)</td>
+                        <td>@Html.DisplayFor(model=> data.Naturez)</td>
+                        <td>@Html.DisplayFor(model=> data.NomCli)</td>
+                        <td>@Html.DisplayFor(model=> data.Emissao)</td>
+                        <td>@string.Format("{0:N2}", data.Valor)</td>
+                        <td>@Html.DisplayFor(model=> data.NomeVende)</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

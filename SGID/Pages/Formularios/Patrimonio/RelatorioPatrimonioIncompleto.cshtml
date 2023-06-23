@@ -1,0 +1,52 @@
+﻿@page "{Empresa}/{Filial}/{Id}"
+@model SGID.Pages.Formularios.Patrimonio.RelatorioPatrimonioIncompletoModel
+@{
+    ViewData["Title"] = "Relatorio Patrimonio Incompleto";
+    Layout = "_LayoutGeral";
+}
+
+<div class="panel">
+    <div class="panel-body">
+        <table id="demo-dt-addrow" class="table table-striped table-bordered" cellspacing="0" width="100%">
+            <thead>
+                <tr>
+                    <th colspan="2"> Data: @Model.Data.ToString("dd/MM/yyyy HH:mm:ss") </th>
+                    <th colspan="3"> Patrimonio: @Model.Id - @Model.Codigo </th>
+                </tr>
+                <tr>
+                    <th colspan="5"> Descrição dos Itens Faltantes</th>
+                </tr>
+                <tr>
+                    <th class="text-center">
+                        CODIGO(S):
+                    </th>
+                    <th class="text-center">
+                        DESCRIÇÃO:
+                    </th>
+                    <th class="text-center">
+                        QUANTIDADE / LOTE VIRTUAL
+                    </th>
+                    <th class="text-center">
+                        QUANTIDADE / LOTE FISICO
+                    </th>
+                    <th class="text-center">
+                        OBSERVAÇÃO
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var data in Model.Relatorio)
+                {
+                    <tr>
+                        <td>@data.CodProd</td>
+                        <td>@data.DescProd</td>
+                        <td>@data.QtdKit</td>
+                        <td>@data.QtdPat</td>
+                        <td>&nbsp;</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+

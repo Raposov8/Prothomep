@@ -1,0 +1,111 @@
+﻿@page "{Id}"
+@model SGID.Pages.DashBoards.DashBoardComercialModel
+@{
+    ViewData["Title"] = "DASHBOARD";
+    Layout = "_LayoutGeral";
+}
+
+<!--<div id="piechart" style="width: 900px; height: 500px;"></div>-->
+@Html.AntiForgeryToken()
+
+<div class="row justify-content-center">
+    <div class="col-xs-12 col-sm-4 col-md-4">
+        <div class="panel panel-colorful" style="background-color:lightgray">
+            <div class="panel-heading">
+                <h2 style="margin:0%;color:black;font-size:25px" class="panel-title text-center">Cirurgias Valorizadas</h2>
+            </div>
+            @if (User.Identity.Name.Split('@')[1] == "intermedic.com.br")
+            {
+                <div class="panel-body" style="padding-top:0px;">
+                    <a class="produto" href="/relatorios/cirurgias/cirurgiasvalorizadasinter/"><h3 class="text-center" style="margin-top:0%; color:black;font-size:50px">@Model.CirurgiasValorizadas</h3></a>
+                </div>
+            }
+            else
+            {
+                <div class="panel-body" style="padding-top:0px;">
+                    <a class="produto" href="/relatorios/cirurgias/cirurgiasvalorizadas/"><h3 class="text-center" style="margin-top:0%; color:black;font-size:50px">@Model.CirurgiasValorizadas</h3></a>
+                </div>
+            }
+        </div>
+        <div class="panel panel-colorful" style="background-color:lightgray">
+            <div class="panel-heading">
+                <h2 style="margin:0%;color:black" class="panel-title text-center"></h2>
+            </div>
+            <div class="panel-body" style="padding-top:0px;">
+                <a class="produto" href=""><h3 class="text-center" style="margin-top:0%; color:black;font-size:50px">R$ @string.Format("{0:N2}",Model.CirurgiasValorizadasValor)</h3></a>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-4 col-md-4">
+        <div class="panel panel-colorful" style="background-color:lightgray">
+            <div class="panel-heading">
+                <h2 style="margin:0%;color:#00b050;font-size:25px" class="panel-title text-center">Faturado Mês</h2>
+            </div>
+            @if (User.Identity.Name.Split('@')[1] == "intermedic.com.br")
+            {
+                <div class="panel-body" style="padding-top:0px;">
+                    <a class="produto" href="/relatorios/cirurgias/cirurgiasfaturadasinter/"><h3 class="text-center" style="margin-top:0%; color:#00b050;font-size:50px">@Model.FaturadoMes</h3></a>
+                </div>
+            }
+            else
+            {
+                <div class="panel-body" style="padding-top:0px;">
+                    <a class="produto" href="/relatorios/cirurgias/cirurgiasfaturadas/"><h3 class="text-center" style="margin-top:0%; color:#00b050;font-size:50px">@Model.FaturadoMes</h3></a>
+                </div>
+            }
+        </div>
+        <div class="panel panel-colorful" style="background-color:lightgray">
+            <div class="panel-heading">
+                <h2 style="margin:0%;color:#00b050" class="panel-title text-center"></h2>
+            </div>
+            <div class="panel-body" style="padding-top:0px;">
+                <a class="produto" href=""><h3 class="text-center" style="margin-top:0%; color:#00b050;font-size:50px">R$ @string.Format("{0:N2}",Model.FaturadoMesValor)</h3></a>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-4 col-md-4">
+        <div class="panel panel-colorful" style="background-color:lightgray">
+            <div class="panel-heading">
+                <h2 style="margin:0%;color:#fafa00;font-size:25px" class="panel-title text-center">Cirurgias Em Aberto</h2>
+            </div>
+            @if (User.Identity.Name.Split('@')[1] == "intermedic.com.br") 
+            {
+                <div class="panel-body" style="padding-top:0px;">
+                    <a class="produto" href="/relatorios/cirurgias/cirurgiasafaturarinter/"><h3 class="text-center" style="margin-top:0%; color:#fafa00;font-size:50px">@Model.CirurgiasEmAberto</h3></a>
+                </div>
+            }
+            else
+            {
+                <div class="panel-body" style="padding-top:0px;">
+                    <a class="produto" href="/relatorios/cirurgias/cirurgiasafaturar/"><h3 class="text-center" style="margin-top:0%; color:#fafa00;font-size:50px">@Model.CirurgiasEmAberto</h3></a>
+                </div>
+            }
+        </div>
+        <div class="panel panel-colorful" style="background-color:lightgray">
+            <div class="panel-heading">
+                <h2 style="margin:0%;color:#fafa00" class="panel-title text-center"></h2>
+            </div>
+            <div class="panel-body" style="padding-top:0px;">
+                <a class="produto" href=""><h3 class="text-center" style="margin-top:0%; color:#fafa00;font-size:50px">R$ @string.Format("{0:N2}",Model.CirurgiasEmAbertoValor)</h3></a>
+            </div>
+        </div>
+    </div>
+    <div class="col-xs-12 col-sm-4 col-md-4">
+        <div class="panel panel-colorful" style="background-color:lightgray">
+            <div class="panel-heading">
+                <h2 style="margin:0%;color:#0099ff" class="panel-title text-center">Meta</h2>
+            </div>
+            <div class="panel-body" style="padding-top:0px;">
+                <a class="produto" href=""><h3 class="text-center" style="margin-top:0%; color:#0099ff;font-size:50px">R$ @string.Format("{0:N2}",Model.Meta)</h3></a>
+            </div>
+        </div>
+        <div class="panel panel-colorful" style="background-color:lightgray">
+            <div class="panel-heading">
+                <h2 style="margin:0%;color:#0099ff" class="panel-title text-center">Comissão</h2>
+            </div>
+            <div class="panel-body" style="padding-top:0px;">
+                <a class="produto" href=""><h3 class="text-center" style="margin-top:0%; color:#0099ff;font-size:50px">R$ @string.Format("{0:N2}",Model.Comissao)</h3></a>
+            </div>
+        </div>
+    </div>
+</div>

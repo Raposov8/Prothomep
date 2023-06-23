@@ -1,0 +1,109 @@
+﻿@page
+@model SGID.Pages.Pedidos.ListarPedidosModel
+@{
+    ViewData["Title"] = "Buscar Pedidos";
+    Layout = "_LayoutPopup";
+}
+
+<div class="row">
+    <div class="col-md-6">
+        <h4>Buscar Pedidos</h4>
+    </div>
+</div>
+
+@using (@Html.BeginForm(FormMethod.Post))
+{
+    <div class="row">
+        <div class="form-group mx-sm-3 mb-2 col-lg-3">
+            <input type="text" class="form-control" id="NumPedido" name="NumPedido" onkeyup="this.value = this.value.toUpperCase();" placeholder="Nº Pedido">
+        </div>
+        <div class="form-group mx-sm-3 mb-2 col-lg-3">
+            <input type="text" class="form-control" id="DTEmissao" name="DTEmissao"  placeholder="Data Emissao">
+        </div>
+        <div class="form-group mx-sm-3 mb-2 col-lg-3">
+            <select class="form-control" id="Empresa" name="Empresa">
+                <option value="01">Intermedic</option>
+                <option value="03">Denuo</option>
+            </select>
+        </div>
+    </div>
+    <div class="row">
+        <div class="form-group mx-sm-3 mb-2 col-lg-1">
+            <button type="submit" class="btn btn-primary mb-2">Pesquisar</button>
+        </div>
+    </div>
+}
+
+<div class="panel">
+    <div class="panel-body">
+        <table id="Pedidos" name="Pedidos" class="table table-striped table-bordered" cellspacing="0" width="100%">
+            <thead>
+                <tr>
+                    <th class="text-center">
+                        Numero
+                    </th>
+                    <th class="text-center">
+                        Nome Cliente
+                    </th>
+                    <th class="text-center">
+                        Endereço
+                    </th>
+                    <th class="text-center">
+                        Cod. CondPag
+                    </th>
+                    <th class="text-center">
+                        Desc. CondPag
+                    </th>
+                    <th class="text-center">
+                        Cod. Tabela
+                    </th>
+                    <th class="text-center">
+                        Nome Tabela
+                    </th>
+                    <th class="text-center">
+                        Nome Vendedor
+                    </th>
+                    <th class="text-center">
+                        Nome Medico
+                    </th>
+                    <th class="text-center">
+                        Nome Paciente
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var data in Model.PedidosDenuo)
+                {
+                    <tr>
+                        <td>@data.C5Num</td>
+                        <td>@data.C5Nomcli</td>
+                        <td>@data.C5Endclie</td>
+                        <td>@data.C5Condpag</td>
+                        <td>@data.C5Descond</td>
+                        <td>@data.C5Tabela</td>
+                        <td>@data.C5Nomtabe</td>
+                        <td>@data.C5Nomvend</td>
+                        <td>@data.C5XNmmed</td>
+                        <td>@data.C5XNmpac</td>
+                    </tr>
+                }
+                @foreach (var data in Model.PedidosInter)
+                {
+                    <tr>
+                        <td>@data.C5Num</td>
+                        <td>@data.C5Nomcli</td>
+                        <td>@data.C5Endclie</td>
+                        <td>@data.C5Condpag</td>
+                        <td>@data.C5Descond</td>
+                        <td>@data.C5Tabela</td>
+                        <td>@data.C5Nomtabe</td>
+                        <td>@data.C5Nomvend</td>
+                        <td>@data.C5XNmmed</td>
+                        <td>@data.C5XNmpac</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
