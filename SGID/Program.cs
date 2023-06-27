@@ -8,6 +8,8 @@ using SGID.Models.Relatorio;
 using SGID.Hubs;
 using System.Globalization;
 
+var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -53,6 +55,18 @@ builder.Services.Configure<IdentityOptions>(options =>
 builder.Services.AddRazorPages();
 builder.Services.AddSignalR();
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: MyAllowSpecificOrigins,
+                      policy =>
+                      {
+                          policy.WithOrigins("http://192.168.2.9",
+                                              "https://gidd.com.br",
+                                              "http://gidd.com.br",
+                                              "http://200.170.251.206");
+                      });
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -81,6 +95,7 @@ var webSocketOptions = new WebSocketOptions
 
 webSocketOptions.AllowedOrigins.Add("https://gidd.com.br");
 webSocketOptions.AllowedOrigins.Add("http://200.170.251.206");
+webSocketOptions.AllowedOrigins.Add("http://192.168.2.9");
 
 app.UseWebSockets(webSocketOptions);
 
@@ -94,5 +109,7 @@ app.UseAuthorization();
 
 app.MapRazorPages();
 app.MapHub<LogisticaHub>("/Logisticahub");
+
+app.UseCors(MyAllowSpecificOrigins);
 
 app.Run();

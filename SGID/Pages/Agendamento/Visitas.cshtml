@@ -223,6 +223,8 @@
         </div>
 </div>
 
+
+
 @section Scripts
     {
     <link href="~/lib/fullcalendar/fullcalendar.min.css" rel='stylesheet' />
@@ -401,7 +403,7 @@
                                         $("#Bairro").val(data.bairro)
                                         if(data.quant > 0)
                                         {
-                                            $("#Quant").html(`Há ${data.quant} outros medicos neste bairro`);
+                                                $("#Quant").html(`<a href="/clientes/medicosarea/${data.bairro}" target="_blank" style="color:#c00000;text-decoration:none">Há ${data.quant} outros medicos neste bairro</a>`);
                                         }   
                                         $("#DataUltima").val(data.ultima)
                                     }                                 

@@ -2,7 +2,7 @@
 "use strict";
 
 $(document).ready(function () {
-    var connection = new signalR.HubConnectionBuilder().withUrl("/Logisticahub").build();
+    var connection = new signalR.HubConnectionBuilder().withUrl("http://192.168.2.9/Logisticahub").build();
 
     //Disable the send button until connection is established.
     document.getElementById("sendButton").disabled = true;

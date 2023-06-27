@@ -1,0 +1,75 @@
+﻿@page "{Bairro}"
+@model SGID.Pages.Clientes.MedicosAreaModel
+@{
+    ViewData["Title"] = "Buscar Medicos";
+    Layout = "_LayoutPopup";
+}
+
+<div class="row">
+    <div class="col-md-6">
+        <h4>Médicos em @Model.Bairro</h4>
+    </div>
+</div>
+
+<div class="panel">
+    <div class="panel-body">
+        <table id="Clientes" name="Clientes" class="table table-striped table-bordered" cellspacing="0" width="100%">
+            <thead>
+                <tr>
+                    <th class="text-center">
+                        NOME
+                    </th>
+                    <th class="text-center">
+                        CEP
+                    </th>
+                    <th class="text-center">
+                        ENDEREÇO
+                    </th>
+                    <th class="text-center">
+                        MUNICIPIO
+                    </th>
+                    <th class="text-center">
+                        BAIRRO
+                    </th>
+                    <th class="text-center">
+                        DDD
+                    </th>
+                    <th class="text-center">
+                        TELEFONE
+                    </th>
+                    <th class="text-center">
+                        CELULAR
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var data in Model.ClientesDenuo)
+                {
+                    <tr>
+                        <td>@data.A1Nome</td>
+                        <td>@data.A1Cep</td>
+                        <td>@data.A1End</td>
+                        <td>@data.A1Mun</td>
+                        <td>@data.A1Bairro</td>
+                        <td>@data.A1Ddd</td>
+                        <td>@data.A1Tel</td>
+                        <td>@data.A1Celular</td>
+                    </tr>
+                }
+                @foreach (var data in Model.ClientesInter)
+                {
+                    <tr>
+                        <td>@data.A1Nome</td>
+                        <td>@data.A1Cep</td>
+                        <td>@data.A1End</td>
+                        <td>@data.A1Mun</td>
+                        <td>@data.A1Bairro</td>
+                        <td>@data.A1Ddd</td>
+                        <td>@data.A1Tel</td>
+                        <td>@data.A1Celular</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

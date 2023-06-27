@@ -2406,7 +2406,7 @@ class HttpConnection {
         this._negotiateVersion = 1;
         Arg.isRequired(url, "url");
         this._logger = createLogger(options.logger);
-        this.baseUrl = this._resolveUrl(url);
+        this.baseUrl = url;
         options = options || {};
         options.logMessageContent = options.logMessageContent === undefined ? false : options.logMessageContent;
         if (typeof options.withCredentials === "boolean" || options.withCredentials === undefined) {
