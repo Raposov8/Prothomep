@@ -1,0 +1,93 @@
+﻿@page
+@model SGID.Pages.Relatorios.Estoque.OcorrenciasModel
+@{
+    ViewData["Title"] = "Relatorio Cirurgias Faturadas Denuo";
+    Layout = "_LayoutGeral";
+}
+
+
+
+
+@using (@Html.BeginForm(FormMethod.Post))
+{
+    <div class="row">
+        <div class="form-group mx-sm-3 mb-2 col-lg-2">
+            <input type="date" class="form-control" id="DataInicio" name="DataInicio" value="@Model.Inicio.ToString("yyyy-MM-dd")" placeholder="Data Inicio">
+        </div>
+        <div class="form-group mx-sm-3 mb-2 col-lg-2">
+            <input type="date" class="form-control" id="DataFim" name="DataFim" value="@Model.Fim.ToString("yyyy-MM-dd")" placeholder="Data Fim">
+        </div>
+
+        <div class="form-group mx-sm-3 mb-2 col-lg-1">
+            <button type="submit" class="btn btn-primary mb-2">Pesquisar</button>
+        </div>
+
+        <div class="form-group mx-sm-3 mb-2 col-lg-1">
+            <button type="submit" class="btn btn-secondary mb-2" asp-page-handler="Export"><i class="fa-solid fa-file-excel"></i> Exportar Excel</button>
+        </div>
+    </div>
+}
+
+
+
+<div class="panel">
+    <div class="panel-body">
+        <table id="demo-dt-addrow" class="table table-striped table-bordered" cellspacing="0" width="100%">
+            <thead>
+                <tr>
+                    <th class="text-center">
+                        EMPRESA
+                    </th>
+                    <th class="text-center">
+                        DATA DA INCLUSÃO
+                    </th>
+                    <th class="text-center">
+                        CODIGO DA OCORRENCIA
+                    </th>
+                    <th class="text-center">
+                        AGENDAMENTO
+                    </th>
+                    <th class="text-center">
+                        PACIENTE
+                    </th>
+                    <th class="text-center">
+                        MEDICO
+                    </th>
+                    <th class="text-center">
+                        CODIGO DO PRODUTO
+                    </th>
+                    <th class="text-center">
+                        PRODUTO
+                    </th>
+                    <th class="text-center">
+                        PROBLEMA
+                    </th>
+                    <th class="text-center">
+                        AÇÕES
+                    </th>
+                    <th class="text-center">
+                        VENDEDOR
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var data in Model.Relatorio)
+                {
+                    <tr>
+                        <td>@Html.DisplayFor(model=> data.Empresa)</td>
+                        <td>@data.DataCriacao.ToString("dd/MM/yyyy HH:mm")</td>
+                        <td>@Html.DisplayFor(model=> data.Id)</td>
+                        <td>@Html.DisplayFor(model=> data.Agendamento) </td>
+                        <td>@Html.DisplayFor(model=> data.Paciente)</td>
+                        <td>@Html.DisplayFor(model=> data.Medico)</td>
+                        <td>@Html.DisplayFor(model=> data.Produto)</td>
+                        <td>@Html.DisplayFor(model=> data.Descricao)</td>
+                        <td>@Html.DisplayFor(model=> data.Problema)</td>
+                        <td>@Html.DisplayFor(model=> data.Acao)</td>
+                        <td>@Html.DisplayFor(model=> data.Vendedor)</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

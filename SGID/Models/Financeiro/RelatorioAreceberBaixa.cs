@@ -26,5 +26,6 @@
         public string Orig { get; set; }
         public string Vendedor { get; set; }
         public string TipoCliente { get; set; }
+        public string CodigoCliente { get; set; }
     }
 }

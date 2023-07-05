@@ -3,21 +3,21 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using OfficeOpenXml;
 using SGID.Data;
 using SGID.Data.Models;
-using SGID.Models.Inter;
+using SGID.Models.Denuo;
 using SGID.Models.Financeiro;
 
 namespace SGID.Pages.Relatorios.RH
 {
-    public class BaixaSubDistribuidorInterModel : PageModel
+    public class BaixaLicitacoesModel : PageModel
     {
-        private TOTVSINTERContext Protheus { get; set; }
+        private TOTVSDENUOContext Protheus { get; set; }
         private ApplicationDbContext SGID { get; set; }
         public List<RelatorioAreceberBaixa> Relatorio { get; set; } = new List<RelatorioAreceberBaixa>();
 
         public DateTime Inicio { get; set; }
         public DateTime Fim { get; set; }
 
-        public BaixaSubDistribuidorInterModel(TOTVSINTERContext denuo, ApplicationDbContext sgid)
+        public BaixaLicitacoesModel(TOTVSDENUOContext denuo, ApplicationDbContext sgid)
         {
             Protheus = denuo;
             SGID = sgid;
@@ -45,7 +45,7 @@ namespace SGID.Pages.Relatorios.RH
                              && (SE50.E5Banco == "001" || SE50.E5Banco == "237" || SE50.E5Banco == "341")
                              && (int)(object)SE50.E5Data >= (int)(object)Datainicio.ToString("yyyy/MM/dd").Replace("/", "")
                              && (int)(object)SE50.E5Data <= (int)(object)Datafim.ToString("yyyy/MM/dd").Replace("/", "")
-                             && SA10.A1Clinter == "S"
+                             && (SA10.A1Xgrinte == "000011" || SA10.A1Xgrinte == "000012")
                              select new RelatorioAreceberBaixa
                              {
                                  Prefixo = SE50.E5Prefixo,
@@ -78,7 +78,7 @@ namespace SGID.Pages.Relatorios.RH
             catch (Exception e)
             {
                 string user = User.Identity.Name.Split("@")[0].ToUpper();
-                Logger.Log(e, SGID, "Relatorio BaixaSubDistribuidor Inter", user);
+                Logger.Log(e, SGID, "Relatorio BaixaLicitacoes Denuo", user);
             }
 
             return Page();
@@ -105,7 +105,7 @@ namespace SGID.Pages.Relatorios.RH
                              && (SE50.E5Banco == "001" || SE50.E5Banco == "237" || SE50.E5Banco == "341")
                              && (int)(object)SE50.E5Data >= (int)(object)Datainicio.ToString("yyyy/MM/dd").Replace("/", "")
                              && (int)(object)SE50.E5Data <= (int)(object)Datafim.ToString("yyyy/MM/dd").Replace("/", "")
-                             && SA10.A1Clinter == "S"
+                             && (SA10.A1Xgrinte == "000011" || SA10.A1Xgrinte == "000012")
                              select new RelatorioAreceberBaixa
                              {
                                  Prefixo = SE50.E5Prefixo,
@@ -215,12 +215,12 @@ namespace SGID.Pages.Relatorios.RH
                 sheet.Cells[sheet.Dimension.Address].AutoFitColumns();
                 using MemoryStream stream = new MemoryStream();
                 package.SaveAs(stream);
-                return File(stream.ToArray(), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "BaixaSubDistribuidorInter.xlsx");
+                return File(stream.ToArray(), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "BaixaSubDistribuidorDenuo.xlsx");
             }
             catch (Exception e)
             {
                 string user = User.Identity.Name.Split("@")[0].ToUpper();
-                Logger.Log(e, SGID, "Relatorio BaixaSubDistribuidor Inter Excel", user);
+                Logger.Log(e, SGID, "Relatorio BaixaLicitacoes Denuo Excel", user);
 
                 return LocalRedirect("/error");
             }

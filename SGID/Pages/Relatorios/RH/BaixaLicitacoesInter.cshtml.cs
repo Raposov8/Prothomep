@@ -3,12 +3,12 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using OfficeOpenXml;
 using SGID.Data;
 using SGID.Data.Models;
-using SGID.Models.Inter;
 using SGID.Models.Financeiro;
+using SGID.Models.Inter;
 
 namespace SGID.Pages.Relatorios.RH
 {
-    public class BaixaSubDistribuidorInterModel : PageModel
+    public class BaixaLicitacoesInterModel : PageModel
     {
         private TOTVSINTERContext Protheus { get; set; }
         private ApplicationDbContext SGID { get; set; }
@@ -17,7 +17,7 @@ namespace SGID.Pages.Relatorios.RH
         public DateTime Inicio { get; set; }
         public DateTime Fim { get; set; }
 
-        public BaixaSubDistribuidorInterModel(TOTVSINTERContext denuo, ApplicationDbContext sgid)
+        public BaixaLicitacoesInterModel(TOTVSINTERContext denuo, ApplicationDbContext sgid)
         {
             Protheus = denuo;
             SGID = sgid;
@@ -45,7 +45,7 @@ namespace SGID.Pages.Relatorios.RH
                              && (SE50.E5Banco == "001" || SE50.E5Banco == "237" || SE50.E5Banco == "341")
                              && (int)(object)SE50.E5Data >= (int)(object)Datainicio.ToString("yyyy/MM/dd").Replace("/", "")
                              && (int)(object)SE50.E5Data <= (int)(object)Datafim.ToString("yyyy/MM/dd").Replace("/", "")
-                             && SA10.A1Clinter == "S"
+                             && (SA10.A1Xgrinte == "000011" || SA10.A1Xgrinte == "000012")
                              select new RelatorioAreceberBaixa
                              {
                                  Prefixo = SE50.E5Prefixo,
@@ -78,7 +78,7 @@ namespace SGID.Pages.Relatorios.RH
             catch (Exception e)
             {
                 string user = User.Identity.Name.Split("@")[0].ToUpper();
-                Logger.Log(e, SGID, "Relatorio BaixaSubDistribuidor Inter", user);
+                Logger.Log(e, SGID, "Relatorio BaixaLicitacoes Inter", user);
             }
 
             return Page();
@@ -105,7 +105,7 @@ namespace SGID.Pages.Relatorios.RH
                              && (SE50.E5Banco == "001" || SE50.E5Banco == "237" || SE50.E5Banco == "341")
                              && (int)(object)SE50.E5Data >= (int)(object)Datainicio.ToString("yyyy/MM/dd").Replace("/", "")
                              && (int)(object)SE50.E5Data <= (int)(object)Datafim.ToString("yyyy/MM/dd").Replace("/", "")
-                             && SA10.A1Clinter == "S"
+                             && (SA10.A1Xgrinte == "000011" || SA10.A1Xgrinte == "000012")
                              select new RelatorioAreceberBaixa
                              {
                                  Prefixo = SE50.E5Prefixo,
@@ -220,7 +220,7 @@ namespace SGID.Pages.Relatorios.RH
             catch (Exception e)
             {
                 string user = User.Identity.Name.Split("@")[0].ToUpper();
-                Logger.Log(e, SGID, "Relatorio BaixaSubDistribuidor Inter Excel", user);
+                Logger.Log(e, SGID, "Relatorio BaixaLicitacoes Inter Excel", user);
 
                 return LocalRedirect("/error");
             }

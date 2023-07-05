@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Identity;
+ï»¿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -63,7 +63,8 @@ namespace SGID.Pages.Account.RH
                 {
                     var user = new UserInter { UserName = Input.Email, Email = Input.Email, EmailConfirmed = true };
                     var usuariop = await _userManager.FindByEmailAsync(user.Email);
-                    if (usuariop == null) {
+                    if (usuariop == null)
+                    {
                         var result = await _userManager.CreateAsync(user, "GID@Acess@");
                         if (result.Succeeded)
                         {
@@ -134,7 +135,7 @@ namespace SGID.Pages.Account.RH
                             mail.From = new MailAddress("ti@intermedic.com.br", "ENVIADOR");
                             mail.To.Add(new MailAddress(Input.Email, "RECEBEDOR"));
                             mail.CC.Add(new MailAddress("ti@intermedic.com.br"));
-                            mail.Subject = "Solicitação de Acesso";
+                            mail.Subject = "Solicitaï¿½ï¿½o de Acesso";
                             mail.Body = mensagem;
                             mail.IsBodyHtml = true;
                             mail.Priority = MailPriority.High;
@@ -150,6 +151,7 @@ namespace SGID.Pages.Account.RH
                     }
                     else
                     {
+
                         var lider = Input.GestorEmail.Split("@")[0];
                         var integrante = Input.Email.Split("@")[0];
 
@@ -164,7 +166,6 @@ namespace SGID.Pages.Account.RH
                             PorcentagemSeg = Input.PorcentagemSegun,
                             GerenProd = Input.GerenProd,
                             PorcentagemGenProd = Input.PorcentagemProd,
-
                             IdUsuario = usuariop.Id
                         };
 
@@ -215,7 +216,7 @@ namespace SGID.Pages.Account.RH
             public double PorcentagemSegun { get; set; } = 0.0;
             [Display(Name = "% Sobre Linha")]
             public double PorcentagemProd { get; set; } = 0.0;
-            [Display(Name = "É Gestor de Produtos")]
+            [Display(Name = "Ã‰ Gestor de Produtos")]
             public string GerenProd { get; set; }
         }
     }

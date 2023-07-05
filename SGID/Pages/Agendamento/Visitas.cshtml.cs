@@ -166,8 +166,8 @@ namespace SGID.Pages.Agendamento
                     .Select(x=> new
                     {
                         x.Id,
-                        DataHora = x.DataHora.ToString("yyyy/MM/dd HH:mm"),
-                        DataUltima = x.DataUltima != null ? x.DataUltima.Value.ToString("yyyy/MM/dd"):"Não há registro",
+                        DataHora = x.DataHora.ToString("dd/MM/yyyy HH:mm"),
+                        DataUltima = x.DataUltima != null ? x.DataUltima.Value.ToString("dd/MM/yyyy") :"Não há registro",
                         x.Local,
                         x.Assunto,
                         x.Observacao,
@@ -218,44 +218,49 @@ namespace SGID.Pages.Agendamento
 
                 if (User.Identity.Name.Split("@")[1].ToUpper() == "INTERMEDIC.COM.BR")
                 {
-                    if (ProtheusInter.Sa1010s.FirstOrDefault(x => x.DELET != "*" && x.A1Clinter == "M" && x.A1Msblql != "1" && !string.IsNullOrWhiteSpace(x.A1Vend) && x.A1Nome == Medico) == null)
+                    if (ProtheusInter.Sa1010s.Any(x => x.DELET != "*" && x.A1Clinter == "M" && x.A1Msblql != "1" && !string.IsNullOrWhiteSpace(x.A1Vend) && x.A1Nome == Medico))
                     {
-
-                        var VisitaCliente = new VisitaCliente
+                        if (SGID.VisitaClientes.Any(x => x.Medico == Medico && x.Empresa == "INTERMEDIC"))
                         {
-                            DataCriacao = DateTime.Now,
-                            Medico = Medico,
-                            Local = Local,
-                            Assunto = Assunto,
-                            Endereco = Endereco,
-                            Bairro = Bairro,
-                            Vendedor = User.Identity.Name.Split("@")[0].ToUpper(),
-                            Empresa = "INTERMEDIC"
-                        };
+                            var VisitaCliente = new VisitaCliente
+                            {
+                                DataCriacao = DateTime.Now,
+                                Medico = Medico,
+                                Local = Local,
+                                Assunto = Assunto,
+                                Endereco = Endereco,
+                                Bairro = Bairro,
+                                Vendedor = User.Identity.Name.Split("@")[0].ToUpper(),
+                                Empresa = "INTERMEDIC"
+                            };
 
 
-                        SGID.VisitaClientes.Add(VisitaCliente);
-                        SGID.SaveChanges();
+                            SGID.VisitaClientes.Add(VisitaCliente);
+                            SGID.SaveChanges();
+                        }
                     }
                 }
                 else
                 {
                     if (ProtheusDenuo.Sa1010s.FirstOrDefault(x => x.DELET != "*" && x.A1Clinter == "M" && x.A1Msblql != "1" && !string.IsNullOrWhiteSpace(x.A1Vend) && x.A1Nome == Medico) == null)
                     {
-                        var VisitaCliente = new VisitaCliente
+                        if (SGID.VisitaClientes.Any(x => x.Medico == Medico && x.Empresa == "DENUO"))
                         {
-                            DataCriacao = DateTime.Now,
-                            Medico = Medico,
-                            Local = Local,
-                            Assunto = Assunto,
-                            Endereco = Endereco,
-                            Bairro = Bairro,
-                            Vendedor = User.Identity.Name.Split("@")[0].ToUpper(),
-                            Empresa = "DENUO"
-                        };
+                            var VisitaCliente = new VisitaCliente
+                            {
+                                DataCriacao = DateTime.Now,
+                                Medico = Medico,
+                                Local = Local,
+                                Assunto = Assunto,
+                                Endereco = Endereco,
+                                Bairro = Bairro,
+                                Vendedor = User.Identity.Name.Split("@")[0].ToUpper(),
+                                Empresa = "DENUO"
+                            };
 
-                        SGID.VisitaClientes.Add(VisitaCliente);
-                        SGID.SaveChanges();
+                            SGID.VisitaClientes.Add(VisitaCliente);
+                            SGID.SaveChanges();
+                        }
                     }
                 }
 
