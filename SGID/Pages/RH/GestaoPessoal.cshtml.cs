@@ -13,7 +13,7 @@ using System.ServiceModel.Channels;
 
 namespace SGID.Pages.RH
 {
-    [Authorize(Roles = "Admin,RH")]
+    [Authorize(Roles = "Admin,RH,Diretoria")]
     public class GestaoPessoalModel : PageModel
     {
         private ApplicationDbContext SGID { get; set; }

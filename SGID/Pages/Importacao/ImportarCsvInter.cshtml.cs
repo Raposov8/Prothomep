@@ -74,13 +74,56 @@ namespace SGID.Pages.Importacao
                             if (values[0] == "1")
                             {
                                 Cabecalho.RECNO = RecnoSw0010 + 1;
-                                Cabecalho.W0Cc = values[1];
+
+                                var CC = "";
+                                if (values[1].Length != 4)
+                                {
+                                    if (values[1].Length != 3)
+                                    {
+                                        if (values[1].Length != 2)
+                                        {
+                                            CC = $"000{values[1]}";
+                                        }
+                                        else
+                                        {
+                                            CC = $"00{values[1]}";
+                                        }
+                                    }
+                                    else
+                                    {
+                                        CC = $"0{values[1]}";
+                                    }
+                                }
+
+                                Cabecalho.W0Cc = CC;
                                 Cabecalho.W0Num = values[2];
 
                                 var data = values[3].Split("/");
-                                var dataformat = $"20{data[2]}{data[1]}{data[0]}";
+
+                                var datafor = $"{data[2]}";
+
+                                if (datafor.Length != 4)
+                                {
+                                    datafor = $"20{datafor}";
+                                }
+
+                                var dataformat = $"{datafor}{data[1]}{data[0]}";
                                 Cabecalho.W0Dt = dataformat;
-                                Cabecalho.W0Compra = values[4];
+
+                                var compra = "";
+                                if (values[4].Length != 3)
+                                {
+                                    if (values[4].Length != 2)
+                                    {
+                                        compra = $"00{values[4]}";
+                                    }
+                                    else
+                                    {
+                                        compra = $"0{values[4]}";
+                                    }
+                                }
+
+                                Cabecalho.W0Compra = compra;
                                 Cabecalho.W0Moeda = values[5];
                                 Cabecalho.W0Pole = "01";
                                 Cabecalho.DELET = "";
@@ -115,9 +158,9 @@ namespace SGID.Pages.Importacao
                                     W1CodI = values[1],
                                     W1Fabr = values[2],
                                     W1Forn = values[3],
-                                    W1Qtde = Convert.ToDouble(values[4].Replace(",", ".")),
-                                    W1SaldoQ = Convert.ToDouble(values[4].Replace(",", ".")),
-                                    W1Preco = Convert.ToDouble(values[5].Replace(",", ".")),
+                                    W1Qtde = Convert.ToDouble(values[4].Replace(",", ".").Replace("$", "")),
+                                    W1SaldoQ = Convert.ToDouble(values[4].Replace(",", ".").Replace("$", "")),
+                                    W1Preco = Convert.ToDouble(values[5].Replace(",", ".").Replace("$", "")),
                                     W1SiNum = Sw0,
                                     W1Fabloj = "01",
                                     W1Forloj = "01",
@@ -159,13 +202,23 @@ namespace SGID.Pages.Importacao
                 Protheus.SaveChanges();
 
                 TextoResposta = $"Valor Total Da SI: {string.Format("{0:N2}", valorTotal).Replace(",","").Replace(".",",")}";
+
+            }
+            catch (FormatException e)
+            {
+                TextoResposta = "Error: Erro de formatação, favor corrigir e tentar novamente";
+
+                string user = User.Identity.Name.Split("@")[0].ToUpper();
+                Logger.Log(e, SGID, "ImportarCSV Inter", user);
+
+                return Page();
             }
             catch (Exception e)
             {
                 TextoResposta = "Error: Contate o TI";
 
                 string user = User.Identity.Name.Split("@")[0].ToUpper();
-                Logger.Log(e, SGID, "ImportarSI Inter", user);
+                Logger.Log(e, SGID, "ImportarCSV Inter", user);
 
                 return Page();
             }

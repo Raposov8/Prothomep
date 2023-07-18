@@ -20,9 +20,17 @@ var connectionRelatorio = builder.Configuration.GetConnectionString("Relatorios"
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString, options => options.EnableRetryOnFailure()));
 builder.Services.AddDbContext<TOTVSDENUOContext>(options =>
-    options.UseSqlServer(connectionProtheus, options => options.EnableRetryOnFailure()));
+    options.UseSqlServer(connectionProtheus, ops => 
+    {
+        ops.EnableRetryOnFailure();
+        ops.CommandTimeout(600);
+    }));
 builder.Services.AddDbContext<TOTVSINTERContext>(options =>
-    options.UseSqlServer(connectionProtheusInter,options => options.EnableRetryOnFailure()));
+    options.UseSqlServer(connectionProtheusInter,ops =>
+    {
+        ops.EnableRetryOnFailure();
+        ops.CommandTimeout(600);
+    }));
 builder.Services.AddDbContext<RelatorioContext>(options =>
     options.UseSqlServer(connectionRelatorio, options => options.EnableRetryOnFailure()));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();

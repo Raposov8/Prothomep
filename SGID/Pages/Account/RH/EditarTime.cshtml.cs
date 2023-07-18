@@ -13,7 +13,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace SGID.Pages.Account.RH
 {
-    [Authorize(Roles = "Admin,RH")]
+    [Authorize(Roles = "Admin,RH,Diretoria")]
     public class EditarTimeModel : PageModel
     {
         private readonly ApplicationDbContext _db;

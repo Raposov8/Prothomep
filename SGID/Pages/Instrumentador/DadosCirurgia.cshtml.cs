@@ -7,7 +7,7 @@ using SGID.Models.DTO;
 
 namespace SGID.Pages.Instrumentador
 {
-    [Authorize(Roles = "Admin,Instrumentador")]
+    [Authorize(Roles = "Admin,Instrumentador,Diretoria")]
     public class DadosCirurgiaModel : PageModel
     {
         private ApplicationDbContext SGID { get; set; }

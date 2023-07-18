@@ -45,7 +45,7 @@ namespace SGID.Pages.Relatorios.RH
                              && (SE50.E5Banco == "001" || SE50.E5Banco == "237" || SE50.E5Banco == "341")
                              && (int)(object)SE50.E5Data >= (int)(object)Datainicio.ToString("yyyy/MM/dd").Replace("/", "")
                              && (int)(object)SE50.E5Data <= (int)(object)Datafim.ToString("yyyy/MM/dd").Replace("/", "")
-                             && SA10.A1Clinter == "S"
+                             && SA10.A1Clinter == "S" 
                              select new RelatorioAreceberBaixa
                              {
                                  Prefixo = SE50.E5Prefixo,
@@ -65,7 +65,7 @@ namespace SGID.Pages.Relatorios.RH
                                  Abatimento = 0,
                                  Imposto = 0,
                                  ValorAcess = 0,
-                                 TotalBaixado = SE50.E5Valor - SE50.E5Vldesco - SE50.E5Vljuros - SE50.E5Vlmulta,
+                                 TotalBaixado = SE50.E5Valor,
                                  Banco = SE50.E5Banco,
                                  DtDigi = SE50.E5Dtdigit,
                                  Mot = SE50.E5Motbx,
@@ -125,7 +125,7 @@ namespace SGID.Pages.Relatorios.RH
                                  Abatimento = 0,
                                  Imposto = 0,
                                  ValorAcess = 0,
-                                 TotalBaixado = SE50.E5Valor - SE50.E5Vldesco - SE50.E5Vljuros - SE50.E5Vlmulta,
+                                 TotalBaixado = SE50.E5Valor,
                                  Banco = SE50.E5Banco,
                                  DtDigi = SE50.E5Dtdigit,
                                  Mot = SE50.E5Motbx,

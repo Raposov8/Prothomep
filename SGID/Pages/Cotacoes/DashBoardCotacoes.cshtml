@@ -55,13 +55,13 @@
         <table id="demo-dt-addrow" class="table table-striped table-bordered" cellspacing="0" width="100%">
             <thead>
                 <tr>
-                    @if (User.IsInRole("Admin"))
+                    @if (User.IsInRole("Admin") || User.IsInRole("Diretoria"))
                     {
                         <th class="text-center">
                             Empresa
                         </th>
                     }
-                    @if (User.IsInRole("Admin") || User.IsInRole("GestorComercial"))
+                    @if (User.IsInRole("Admin") || User.IsInRole("GestorComercial") || User.IsInRole("Diretoria"))
                     {
                         <th class="text-center">
                             Vendedor
@@ -106,7 +106,7 @@
                 @foreach (var data in Model.Agendamentos)
                 {
                     <tr>
-                        @if (User.IsInRole("Admin"))
+                        @if (User.IsInRole("Admin") || User.IsInRole("Diretoria"))
                         {
                             <td>
                                 @if (data.Empresa == "01")
@@ -119,7 +119,7 @@
                                 }
                             </td>
                         }
-                        @if (User.IsInRole("Admin") || User.IsInRole("GestorComercial"))
+                        @if (User.IsInRole("Admin") || User.IsInRole("GestorComercial") || User.IsInRole("Diretoria"))
                         {
                             <td>
                                 @data.Vendedor
@@ -165,16 +165,16 @@
                             <td>Confirmado</td>
                         }
                         <td>
-                            @if (User.IsInRole("Admin") || (User.Identity.Name.Split("@")[0] == data.VendedorLogin && data.DataCriacao <= data.DataCriacao.AddHours(2))) 
+
+                            @if (User.IsInRole("Admin") || User.IsInRole("Diretoria") || (User.Identity.Name.Split("@")[0].ToUpper() == data.VendedorLogin))
                             {
                                 @if (data.StatusCotacao == 0)
                                 {
                                     <a class="details" href="/cotacoes/aceitarcotacoes/@data.Id"><i class="fa-solid fa-circle-plus" style="color:green"></i></a>
                                     <a class="rejeicao" data-id="@data.Id"><i class="fa-regular fa-circle-xmark" style="color:red"></i></a>
                                 }
-                                
                             }
-                            else if (User.IsInRole("Admin") || User.IsInRole("GestorComercial") || (data.DataCriacao >= data.DataCriacao.AddHours(2) && data.DataCriacao <= data.DataCriacao.AddHours(3)))
+                            else if (User.IsInRole("Admin") || User.IsInRole("Diretoria") || (User.IsInRole("GestorComercial")))
                             {
                                 @if (data.StatusCotacao == 0)
                                 {

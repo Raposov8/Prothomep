@@ -6,16 +6,21 @@ using SGID.Data.ViewModel;
 
 namespace SGID.Pages.Cotacoes
 {
-    [Authorize(Roles = "Admin,GestorComercial,Comercial")]
+    [Authorize(Roles = "Admin,GestorComercial,Comercial,Diretoria")]
     public class DashBoardCotacoesModel : PageModel
     {
         private ApplicationDbContext SGID { get; set; }
         public List<Agendamentos> Agendamentos { get; set; }
         public List<RejeicaoMotivos> Rejeicoes { get; set; }
 
+        public int Aprovadas { get; set; }
         public int Respondidas { get; set; }
         public int NRespondidas { get; set; }
+        public int Canceladas { get; set; }
 
+        //&& data.DataCriacao <= data.DataCriacao.AddHours(2)
+        //&& data.DataCriacao <= data.DataCriacao.AddHours(3)
+        //&& data.DataCriacao <= data.DataCriacao.AddHours(2)
         public DashBoardCotacoesModel(ApplicationDbContext sgid)
         {
             SGID = sgid;
@@ -23,25 +28,39 @@ namespace SGID.Pages.Cotacoes
 
         public void OnGet(int id)
         {
-            if (User.IsInRole("Admin"))
+            if (User.IsInRole("Admin") || User.IsInRole("Diretoria"))
             {
                 if (id == 0)
                 {
                     Agendamentos = SGID.Agendamentos.Where(x => x.StatusCotacao == 0 && x.StatusPedido == 2).ToList();
+                    Aprovadas = SGID.Agendamentos.Where(x => x.StatusCotacao == 1 && x.StatusPedido == 3).Count();
                     Respondidas = SGID.Agendamentos.Where(x => x.StatusCotacao == 1).Count();
                     NRespondidas = SGID.Agendamentos.Where(x => x.StatusCotacao == 0 && x.StatusPedido == 2).Count();
+                    Canceladas = SGID.Agendamentos.Where(x => x.StatusCotacao == 1 && x.StatusPedido == 4).Count();
                 }
                 else if (id == 1)
                 {
                     Agendamentos = SGID.Agendamentos.Where(x => x.StatusCotacao == 1).ToList();
+                    Aprovadas = SGID.Agendamentos.Where(x => x.StatusCotacao == 1 && x.StatusPedido == 3).Count();
                     Respondidas = SGID.Agendamentos.Where(x => x.StatusCotacao == 1).Count();
                     NRespondidas = SGID.Agendamentos.Where(x => x.StatusCotacao == 0 && x.StatusPedido == 2).Count();
+                    Canceladas = SGID.Agendamentos.Where(x => x.StatusCotacao == 1 && x.StatusPedido == 4).Count();
                 }
-                else if (id == 2)
+                else if (id == 3)
                 {
-                    Agendamentos = SGID.Agendamentos.Where(x => x.StatusCotacao == 2).ToList();
+                    Agendamentos = SGID.Agendamentos.Where(x => x.StatusCotacao == 1 && x.StatusPedido == 3).ToList();
+                    Aprovadas = SGID.Agendamentos.Where(x => x.StatusCotacao == 1 && x.StatusPedido == 3).Count();
                     Respondidas = SGID.Agendamentos.Where(x => x.StatusCotacao == 1).Count();
                     NRespondidas = SGID.Agendamentos.Where(x => x.StatusCotacao == 0 && x.StatusPedido == 2).Count();
+                    Canceladas = SGID.Agendamentos.Where(x => x.StatusCotacao == 1 && x.StatusPedido == 4).Count();
+                }
+                else
+                {
+                    Agendamentos = SGID.Agendamentos.Where(x => x.StatusCotacao == 1 && x.StatusPedido == 4).ToList();
+                    Aprovadas = SGID.Agendamentos.Where(x => x.StatusCotacao == 1 && x.StatusPedido == 3).Count();
+                    Respondidas = SGID.Agendamentos.Where(x => x.StatusCotacao == 1).Count();
+                    NRespondidas = SGID.Agendamentos.Where(x => x.StatusCotacao == 0 && x.StatusPedido == 2).Count();
+                    Canceladas = SGID.Agendamentos.Where(x => x.StatusCotacao == 1 && x.StatusPedido == 4).Count();
                 }
             }
             else if (User.IsInRole("GestorComercial"))

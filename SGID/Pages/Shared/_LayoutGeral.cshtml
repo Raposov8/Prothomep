@@ -66,7 +66,8 @@
                 <li>
                     <a class="nav-link" href="/dashboard/3"><i class="fa-solid fa-house"></i>Home</a>
                 </li>
-                @if(User.IsInRole("Admin") || User.IsInRole("GestorComercial") || User.IsInRole("Comercial")){
+                @if (User.IsInRole("Admin") || User.IsInRole("GestorComercial") || User.IsInRole("Comercial") )
+                {
                     if (User.Identity.Name.Split("@")[1].ToUpper() == "INTERMEDIC.COM.BR")
                     {
                         <li>
@@ -92,7 +93,13 @@
                     </li>
                     
                 }
-                @if(User.IsInRole("Admin") || User.IsInRole("GestorVenda") || User.IsInRole("Venda"))
+                @if (User.IsInRole("Admin")|| User.IsInRole("Diretoria"))
+                {
+                     <li>
+                        <a class="nav-link" href="/dashboards/DashBoardDiretorio2"><i class="fa-solid fa-clipboard-user"></i>DashBoard Diretoria</a>
+                     </li>
+                }
+                @if(User.IsInRole("Admin") || User.IsInRole("GestorVenda") || User.IsInRole("Venda") || User.IsInRole("Diretoria"))
                 {
                     
                     <li class="nav-item dropdown">
@@ -148,7 +155,7 @@
                     </li>-->
                     
                 }
-                @if(User.IsInRole("Admin") || User.IsInRole("Comercial") || User.IsInRole("GestorComercial"))
+                @if(User.IsInRole("Admin") || User.IsInRole("Comercial") || User.IsInRole("GestorComercial") || User.IsInRole("Diretoria"))
                 {
                     <li class="nav-item dropdown">
                         <a class="nav-link align-items-center rounded dropdown-toggle" data-bs-toggle="collapse" 
@@ -190,7 +197,7 @@
                         </div>
                     </li>-->
                 }
-                @if(User.IsInRole("Admin") || User.IsInRole("Financeiro"))
+                @if(User.IsInRole("Admin") || User.IsInRole("Financeiro") || User.IsInRole("Diretoria"))
                 {
                     <li class="nav-item dropdown">
                         <a class="nav-link align-items-center rounded dropdown-toggle" data-bs-toggle="collapse"
@@ -220,7 +227,7 @@
                         </div>
                     </li>
                 }
-                @if(User.IsInRole("Admin") || User.IsInRole("Instrumentador"))
+                @if(User.IsInRole("Admin") || User.IsInRole("Instrumentador") || User.IsInRole("Diretoria"))
                 {
                     <li class="nav-item dropdown">
                         <a class="nav-link align-items-center rounded dropdown-toggle" data-bs-toggle="collapse" 
@@ -235,7 +242,7 @@
                         </div>
                     </li>
                 }
-                @if(User.IsInRole("Admin") || User.IsInRole("RH"))
+                @if(User.IsInRole("Admin") || User.IsInRole("RH") || User.IsInRole("Diretoria"))
                 {
                     <li class="nav-item dropdown">
                         <a class="nav-link align-items-center rounded dropdown-toggle" data-bs-toggle="collapse" 
@@ -265,7 +272,8 @@
                     </li>
                     
                 }
-                @if(User.IsInRole("Admin") || User.IsInRole("GestorEstoque")){
+                @if(User.IsInRole("Admin") || User.IsInRole("Estoque") || User.IsInRole("Diretoria"))
+                {
                     <li class="nav-item dropdown">
                         <a class="nav-link align-items-center rounded dropdown-toggle" data-bs-toggle="collapse" 
                         data-bs-target="#estoque-collapse" aria-expanded="false">
@@ -275,7 +283,10 @@
                             <ul class="list-unstyled fw-normal pb-1 small">
                                 <li><a class="nav-link" href="/estoque/formularioavulso/01">Vale Material Intermedic</a></li>
                                 <li><a class="nav-link" href="/estoque/formularioavulso/03">Vale Material Denuo</a></li>
-                                @if (User.IsInRole("Admin") || User.IsInRole("GestorEstoque")) { <li><a class="nav-link" href="/estoque/listarformularioavulso/">Listar Vales Materiais</a></li> }
+                                @if (User.IsInRole("Admin") || User.IsInRole("GestorEstoque") || User.IsInRole("Diretoria"))
+                                {
+                                    <li><a class="nav-link" href="/estoque/listarformulariosavulsos/">Listar Vales Materiais</a></li>
+                                }
                             </ul>
                         </div>
                     </li>
@@ -315,9 +326,7 @@
                              </ul>
                          </div>
                      </li>
-                }
-                @if(User.IsInRole("Admin") || User.IsInRole("Estoque"))
-                {
+                
                     <li class="nav-item dropdown">
                         <a class="nav-link align-items-center rounded dropdown-toggle" data-bs-toggle="collapse"
                            data-bs-target="#ocorrencias-collapse" aria-expanded="false">
@@ -331,8 +340,19 @@
                             </ul>
                         </div>
                     </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link align-items-center rounded dropdown-toggle" data-bs-toggle="collapse"
+                           data-bs-target="#cirurgias-collapse" aria-expanded="false">
+                            <i class="fa-solid fa-heart-pulse"></i>Cirurgias
+                        </a>
+                        <div class="collapse" id="cirurgias-collapse">
+                            <ul class="list-unstyled fw-normal pb-1 small">
+                                <li><a class="nav-link" href="/cirurgias/agendamentos">Painel Cirurgias</a></li>
+                            </ul>
+                        </div>
+                    </li>
                 }
-                @if(User.IsInRole("Admin") )
+                @if(User.IsInRole("Admin"))
                 {
                     <li class="nav-item dropdown">
                         <a class="nav-link align-items-center rounded dropdown-toggle" data-bs-toggle="collapse"
@@ -347,7 +367,7 @@
                         </div>
                     </li> 
                 }
-                @if(User.IsInRole("Admin") )
+                @if(User.IsInRole("Admin"))
                 {
                     <li class="nav-item dropdown">
                         <a class="nav-link align-items-center rounded dropdown-toggle" data-bs-toggle="collapse"
@@ -411,9 +431,9 @@
                                     </li>
                                 }
                             }
-                            @if (User.IsInRole("Admin") || User.IsInRole("GestorComercial"))
+                            @if (User.IsInRole("Admin") || User.IsInRole("GestorComercial") || User.IsInRole("Diretoria"))
                             {
-                                @if (User.Identity.Name.Split("@")[1] == "denuo.com.br" || User.IsInRole("Admin"))
+                                @if (User.Identity.Name.Split("@")[1] == "denuo.com.br" || User.IsInRole("Admin") || User.IsInRole("Diretoria"))
                                 {
                                     <li class="nav-item dropdown">
                                         <a class="nav-link align-items-center rounded dropdown-toggle" data-bs-toggle="collapse"
@@ -429,7 +449,7 @@
                                         </div>
                                     </li>
                                 }
-                                @if (User.Identity.Name.Split("@")[1] == "intermedic.com.br" || User.IsInRole("Admin"))
+                                @if (User.Identity.Name.Split("@")[1] == "intermedic.com.br" || User.IsInRole("Admin") || User.IsInRole("Diretoria"))
                                 {
                                     <li class="nav-item dropdown">
                                         <a class="nav-link align-items-center rounded dropdown-toggle" data-bs-toggle="collapse"
@@ -446,7 +466,7 @@
                                     </li>
                                 }
                             }
-                            @if (User.IsInRole("Admin") || User.IsInRole("Controladoria"))
+                            @if (User.IsInRole("Admin") || User.IsInRole("Controladoria") || User.IsInRole("Diretoria"))
                             {
                                 <li class="nav-item dropdown">
                                     <a class="nav-link align-items-center rounded dropdown-toggle" data-bs-toggle="collapse"
@@ -492,7 +512,7 @@
                                     </div>
                                 </li>
                             }
-                            @if (User.IsInRole("Admin") || User.IsInRole("GestorVenda") || User.IsInRole("Venda"))
+                            @if (User.IsInRole("Admin") || User.IsInRole("GestorVenda") || User.IsInRole("Venda") || User.IsInRole("Diretoria"))
                             {
                                 <li class="nav-item dropdown">
                                     <a class="nav-link align-items-center rounded dropdown-toggle" data-bs-toggle="collapse"
@@ -511,7 +531,7 @@
                                     </div>
                                 </li>
                             }
-                            @if (User.IsInRole("Admin") || User.IsInRole("RH"))
+                            @if (User.IsInRole("Admin") || User.IsInRole("RH") || User.IsInRole("Diretoria"))
                             {
                                 <li class="nav-item dropdown">
                                     <a class="nav-link align-items-center rounded dropdown-toggle" data-bs-toggle="collapse"
@@ -553,7 +573,7 @@
                                     </div>
                                 </li>
                             }
-                            @if (User.IsInRole("Admin") || User.IsInRole("Estoque") || User.IsInRole("GestorEstoque"))
+                            @if (User.IsInRole("Admin") || User.IsInRole("Estoque") || User.IsInRole("GestorEstoque") || User.IsInRole("Diretoria"))
                             {
                                 <li class="nav-item dropdown">
                                     <a class="nav-link align-items-center rounded dropdown-toggle" data-bs-toggle="collapse"
@@ -574,7 +594,7 @@
                                     </div>
                                 </li>
                             }
-                            @if (User.IsInRole("Admin") || User.IsInRole("Financeiro"))
+                            @if (User.IsInRole("Admin") || User.IsInRole("Financeiro") || User.IsInRole("Diretoria"))
                             {
                                 <li class="nav-item dropdown">
                                     <a class="nav-link align-items-center rounded dropdown-toggle" data-bs-toggle="collapse"
@@ -590,12 +610,11 @@
                                             <li><a class="nav-link" href="/relatorios/financeiro/apagarmesinter">A Pagar Mes Inter</a></li>
                                             <li><a class="nav-link" href="/relatorios/financeiro/apagarmesp">A Pagar Mes P Denuo</a></li>
                                             <li><a class="nav-link" href="/relatorios/financeiro/apagarmespinter">A Pagar Mes P Inter</a></li>
-
                                         </ul>
                                     </div>
                                 </li>
                             }
-                            @if (User.IsInRole("Admin") || User.IsInRole("Qualidade"))
+                            @if (User.IsInRole("Admin") || User.IsInRole("Qualidade") || User.IsInRole("Diretoria"))
                             {
                                 <li class="nav-item dropdown">
                                     <a class="nav-link align-items-center rounded dropdown-toggle" data-bs-toggle="collapse"
@@ -612,7 +631,7 @@
                                     </div>
                                 </li>
                             }
-                            @if (User.IsInRole("Admin") || User.IsInRole("Financeiro"))
+                            @if (User.IsInRole("Admin") || User.IsInRole("Financeiro") || User.IsInRole("Diretoria"))
                             {
                                 <li class="nav-item dropdown">
                                     <a class="nav-link align-items-center rounded dropdown-toggle" data-bs-toggle="collapse"
@@ -641,7 +660,7 @@
                                     </div>
                                 </li>
                             }
-                            @if (User.IsInRole("Admin") || User.IsInRole("SubDistribuidor"))
+                            @if (User.IsInRole("Admin") || User.IsInRole("SubDistribuidor") || User.IsInRole("Diretoria"))
                             {
                                 <li class="nav-item dropdown">
                                     <a class="nav-link align-items-center rounded dropdown-toggle" data-bs-toggle="collapse"
@@ -663,7 +682,7 @@
                      </ul>
                   </div>
                </li>
-               @if (User.IsInRole("Admin") || User.IsInRole("Patrimonio"))
+               @if (User.IsInRole("Admin") || User.IsInRole("Patrimonio") || User.IsInRole("Diretoria"))
                {
                    <li class="nav-item dropdown">
                        <a class="nav-link align-items-center rounded dropdown-toggle" data-bs-toggle="collapse" 
@@ -736,7 +755,7 @@
                        </div>
                    </li>
                }
-               @if (User.IsInRole("Admin")|| User.IsInRole("RH"))
+                @if (User.IsInRole("Admin") || User.IsInRole("RH") || User.IsInRole("Diretoria"))
                {
                   <li>
                      <a class="nav-link" href="/account/RH/listartime"><i class="fa-solid fa-user"></i>Time</a>
@@ -748,7 +767,7 @@
                      <a class="nav-link" href="/useradmin/listarusuarios/1"><i class="fa-solid fa-user"></i>Usuários</a>
                   </li>
                }
-               @if (User.IsInRole("Admin")|| User.IsInRole("GestorComercial") || User.IsInRole("Venda"))
+               @if (User.IsInRole("Admin")|| User.IsInRole("GestorComercial") || User.IsInRole("Venda") || User.IsInRole("Diretoria"))
                 {
                     <li class="nav-item dropdown">
                         <a class="nav-link align-items-center rounded dropdown-toggle" data-bs-toggle="collapse"

@@ -1,0 +1,111 @@
+﻿@page "{id}"
+@model SGID.Pages.Logistica.PickListLogisticaModel
+@{
+    ViewData["Title"] = "PDF Agendamento";
+    Layout = "_LayoutForm";
+}
+
+<div class="row">
+    <div class="card" style="padding:10px;">
+        <div class="col-md-12">
+            <div class="row">
+                <div class="form-group col-md-12">
+                    @if (Model.Agendamento.Empresa == "01")
+                    {
+                        <img src="/imagens/logoIntermedic.jpg">
+                    }
+                    else
+                    {
+                        <img src="/imagens/logoDenuo.png">
+                    }
+                </div>
+                <br />
+                <div class="form-group col-md-3">
+                    Hospital de Entrega: @Model.Agendamento.Hospital
+                </div>
+                <div class="form-group col-md-3">
+                    Data Agendamento: @Model.Agendamento.DataAutorizacao.ToString("dd/MM/yyyy")
+                </div>
+                <br />
+                <div class="form-group col-md-3">
+                    Data Cirurgia: @Model.Agendamento.DataCirurgia.Value.ToString("dd/MM/yyyy HH:mm")
+                </div>
+                <br />
+                <div class="form-group col-md-3">
+                    Representante: @Model.Agendamento.Vendedor
+                </div>
+
+            </div>
+            <br />
+            <div class="row">
+                <div class="form-group col-md-6">
+                    Paciente: @Model.Agendamento.Paciente
+                </div>
+                <div class="form-group col-md-6">
+                    Medico: @Model.Agendamento.Medico
+                </div>
+                <div class="form-group col-md-6">
+                    Operador: @Model.Agendamento.UsuarioCriacao.Replace("."," ").ToUpper()
+                </div>
+                <div class="form-group col-md-6">
+                    Operador: @Model.Agendamento.Convenio
+                </div>
+                <br />
+            </div>
+            <br />
+        </div>
+    </div>
+    <div class="panel">
+        <div class="panel-body">
+            <table id="Produto" name="Produto" class="table table-striped table-bordered" cellspacing="0" width="100%">
+                <thead>
+                    <tr>
+                        <th class="text-center" colspan="3">
+                            Procedimentos Cirurgicos
+                        </th>
+                    </tr>
+                    <tr>
+                        <th class="text-center">
+                            Produto
+                        </th>
+                        <th class="text-center">
+                            Descricao
+                        </th>
+                        <th class="text-center">
+                            Quantidade
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var data in Model.Produtos)
+                    {
+
+                        <tr>
+                            <td> @data.Item </td>
+                            <td> @data.Produtos </td>
+                            <td> @data.Und</td>
+                        </tr>
+                    }
+                    @foreach(var data in Model.Patrimonios)
+                    {
+                        <tr>
+                            <td> @data.KitBas </td>
+                            <td> @data.Descri </td>
+                            <td> @data.Quantidade</td>
+                        </tr>
+                    }
+                    @foreach(var data in Model.Avulsos)
+                    {
+                        <tr>
+                            <td> @data.Item </td>
+                            <td> @data.Produtos </td>
+                            <td> @data.Und</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+

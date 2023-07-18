@@ -9,7 +9,7 @@ using System.Net.Mail;
 
 namespace SGID.Pages.RH
 {
-    [Authorize (Roles = "Admin,RH")]
+    [Authorize (Roles = "Admin,RH,Diretoria")]
     public class ListarGestaoPessoalModel : PageModel
     {
 

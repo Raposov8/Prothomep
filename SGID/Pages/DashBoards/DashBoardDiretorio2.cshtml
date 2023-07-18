@@ -1,0 +1,325 @@
+﻿@page
+@model SGID.Pages.DashBoards.DashBoardDiretorio2Model
+@{
+    ViewData["Title"] = "DASHBOARD";
+    Layout = "_LayoutGeral";
+}
+
+
+@Html.AntiForgeryToken()
+
+
+<div class="row">
+    <div class="col-sm-4 col-md-4">
+        <input hidden type="radio" class="btn-check" name="Tipo" id="Tipo1" value="90+" autocomplete="off" >
+        <label class="btn btn-outline-primary" for="Tipo1">90+</label>
+
+        <input hidden type="radio" class="btn-check" name="Tipo" id="Tipo2" value="90" autocomplete="off">
+        <label class="btn btn-outline-primary" for="Tipo2">90</label>
+
+        <input hidden type="radio" class="btn-check" name="Tipo" id="Tipo3" value="60" autocomplete="off">
+        <label class="btn btn-outline-primary" for="Tipo3">60</label>
+
+        <input hidden type="radio" class="btn-check" name="Tipo" id="Tipo4" value="30" autocomplete="off">
+        <label class="btn btn-outline-primary" for="Tipo4">30</label>
+
+        <i id="Refresh" class="fa-solid fa-rotate fa-xl"></i>
+    </div>
+</div>
+
+
+<div style="height:100%">
+    <div class="row">
+    <div class="col-md-4" style="border-right-style:solid;border-right-width:1px;height:400px;">
+        <br />
+        <i id="RefreshAberto" class="fa-solid fa-rotate fa-xl"></i>
+        <br />
+        <div id="piechart" style="height:100%"></div>
+        <div class="row justify-content-center">
+            <div class="col-md-6" id="TotalAberto">
+                 Por favor, selecionar um range
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4" style="border-right-style:solid;border-right-width:1px;height:400px;">
+        <br />
+        <i id="RefreshFaturado" class="fa-solid fa-rotate fa-xl"></i>
+        <br />
+        <div class="panel">
+            <div class="panel-body">
+                <table id="Faturado" class="table-striped table-bordered" cellspacing="0" width="100%">
+                    <thead>
+                        <tr>
+                            <th colspan="2">
+                                Faturado
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                            <tr>
+                                <td colspan="2">
+                                    Por favor, selecionar um range
+                                </td>
+                            </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <br />
+        <i id="RefreshBaixa" class="fa-solid fa-rotate fa-xl"></i>
+        <br />
+        <div class="panel">
+            <div class="panel-body">
+                <table id="Baixa" class="table-striped table-bordered" cellspacing="0" width="100%">
+                    <thead>
+                        <tr>
+                            <th colspan="2">
+                                Baixa(Caixa)
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td colspan="2">
+                                Por favor, selecionar um range
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+<div class="modal fade" id="loading-modal" role="dialog" tabindex="-1" aria-labelledby="demo-default-modal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <!--Modal body-->
+            <div class="modal-body">
+                <div style="display:flex; justify-content: center;">
+                    <i class="fa-solid fa-spinner fa-50x fa-spin-pulse"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts
+{
+    <script type="text/javascript">
+        google.charts.load('current', { 'packages': ['corechart'] });
+        google.charts.setOnLoadCallback(drawChart);
+
+        var formato = { minimumFractionDigits: 2, style: 'currency', currency: 'BRL' }
+
+        var grafico = [];
+
+        grafico.push(['Areas','Valores']);
+
+        @foreach(var cata in Model.ValoresEmAberto)
+        {
+            @:grafico.push(['@cata.Nome',@cata.Valor]);
+        }
+
+        function drawChart() {
+
+            var data = google.visualization.arrayToDataTable(
+                    grafico
+            );
+
+            var options = {
+                title: 'Valor em Aberto',
+                pieHole: 0.2,
+                legend: 'none'
+            };
+
+            var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+
+            chart.draw(data, options);
+        }
+
+    </script>
+    <script>
+        $(document).ready(function()
+        {
+
+            $("#RefreshAberto").on('click',function (e) {
+
+
+                var Data = $('input[name=Tipo]:checked').val();
+
+
+
+                if(Data == null || Data == "")
+                {
+                    alert("Selecione uma periodo 30,60,90");
+                }
+                else
+                {
+
+                    var chamadaUrl = `/dashboards/dashboarddiretorio2?handler=EmAberto&&Tipo=${Data}`
+                    $.ajax({
+                        url: chamadaUrl,
+                        type: "POST",
+                        contentType: "application/json;",
+                        dataType: 'json',
+                        headers: {
+                            "RequestVerificationToken": $('input:hidden[name="__RequestVerificationToken"]').val()
+                        },
+                        success: function (data) {
+
+                            grafico = [];
+
+                            grafico.push(['Areas', 'Valores']);
+
+
+                            data.valores.forEach(x => {
+
+                                grafico.push([x.nome, x.valor])
+                            })
+
+                            drawChart()
+
+
+                            $('#TotalAberto').html(`Total: ${data.valorTotal.toLocaleString('pt-BR', formato)}`);
+                        }
+                    })
+
+                }
+                
+                
+            })
+
+            $("#RefreshBaixa").on('click', function (e) {
+
+
+                var Data = $('input[name=Tipo]:checked').val();
+
+
+
+                if (Data == null || Data == "") {
+                    alert("Selecione uma periodo 30,60,90");
+                }
+                else {
+
+                    var chamadaUrl = `/dashboards/dashboarddiretorio2?handler=Baixa&&Tipo=${Data}`
+                    $.ajax({
+                        url: chamadaUrl,
+                        type: "POST",
+                        contentType: "application/json;",
+                        dataType: 'json',
+                        headers: {
+                            "RequestVerificationToken": $('input:hidden[name="__RequestVerificationToken"]').val()
+                        },
+                        success: function (data) {
+
+                            $("#Baixa>tbody>tr").remove();
+
+                            data.valores.forEach(x => {
+                                var linha = `<tr>
+                                                 <td>
+                                                 ${x.nome}
+                                                 </td>
+                                                 <td>
+                                                 ${x.valor.toLocaleString('pt-BR', formato)}
+                                                 </td>
+                                             </tr>`;
+
+                                $("#Baixa>tbody").append(linha);
+                            })
+
+
+                            var linha = `<tr>
+                                             <td>
+                                              TOTAL
+                                             </td>
+                                             <td>
+                                              ${data.valorTotal.toLocaleString('pt-BR', formato)}
+                                             </td>
+                                         </tr>`;
+
+                            $("#Baixa>tbody").append(linha);
+                        }
+                    })
+
+                }
+
+
+            })
+
+            $("#RefreshFaturado").on('click', function (e) {
+
+
+                var Data = $('input[name=Tipo]:checked').val();
+
+
+
+                if (Data == null || Data == "") {
+                    alert("Selecione uma periodo 30,60,90");
+                }
+                else {
+
+                    var chamadaUrl = `/dashboards/dashboarddiretorio2?handler=Faturado&&Tipo=${Data}`
+                    $.ajax({
+                        url: chamadaUrl,
+                        type: "POST",
+                        contentType: "application/json;",
+                        dataType: 'json',
+                        headers: {
+                            "RequestVerificationToken": $('input:hidden[name="__RequestVerificationToken"]').val()
+                        },
+                        success: function (data) {
+
+                            $("#Faturado>tbody>tr").remove();
+
+                            data.valores.forEach(x => {
+                                var linha = `<tr>
+                                                 <td>
+                                                 ${x.nome}
+                                                 </td>
+                                                 <td>
+                                                 ${x.valor.toLocaleString('pt-BR', formato)}
+                                                 </td>
+                                             </tr>`;
+
+                                $("#Faturado>tbody").append(linha);
+                            })
+
+
+                            var linha = `<tr>
+                                             <td>
+                                              TOTAL
+                                             </td>
+                                             <td>
+                                              ${data.valorTotal.toLocaleString('pt-BR', formato)}
+                                             </td>
+                                         </tr>`;
+
+                            $("#Faturado>tbody").append(linha);
+
+                            $("#loading-modal").modal('hide')
+                        }
+                    })
+
+                }
+            })
+
+            $('#Refresh').on('click',function(e){
+
+                $("#loading-modal").modal('show')
+
+                $("#RefreshAberto").click();
+
+                $("#RefreshBaixa").click();
+
+                $("#RefreshFaturado").click();
+
+                $("#loading-modal").modal('hide')
+            })
+        })
+        
+    </script>
+}

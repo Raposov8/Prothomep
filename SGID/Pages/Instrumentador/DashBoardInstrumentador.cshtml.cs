@@ -8,7 +8,7 @@ using SGID.Models.DTO;
 
 namespace SGID.Pages.Instrumentador
 {
-    [Authorize(Roles = "Admin,Instrumentador")]
+    [Authorize(Roles = "Admin,Instrumentador,Diretoria")]
     public class DashBoardInstrumentadorModel : PageModel
     {
         public ApplicationDbContext SGID { get; set; }
@@ -24,7 +24,7 @@ namespace SGID.Pages.Instrumentador
 
         public void OnGet()
         {
-            if (User.IsInRole("Admin"))
+            if (User.IsInRole("Admin") || User.IsInRole("Diretoria"))
             {
                 MeusAgendamentos = SGID.Agendamentos.Count();
             }
@@ -39,7 +39,7 @@ namespace SGID.Pages.Instrumentador
         {
             try
             {
-                if (User.IsInRole("Admin"))
+                if (User.IsInRole("Admin") || User.IsInRole("Diretoria"))
                 {
 
                     var agendamentos = SGID.Agendamentos.ToList();

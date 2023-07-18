@@ -43,11 +43,16 @@ namespace SGID.Pages
         }
         public IActionResult OnGet(int id)
         {
+           
             if (User.IsInRole("Instrumentador"))
             {
                 return LocalRedirect("/instrumentador/dashboardinstrumentador");
             }
-            else if (User.IsInRole("Financeiro"))
+            else if (User.IsInRole("Diretoria"))
+            {
+                return LocalRedirect("/dashboards/DashBoardDiretorio2");
+            }
+            else if (User.IsInRole("Financeiro") || User.IsInRole("Diretoria"))
             {
                 return LocalRedirect("/relatorios/vexpenses/relatoriodespesas");
             }
@@ -55,7 +60,7 @@ namespace SGID.Pages
             {
                 return LocalRedirect("/dashboards/DashBoardSubDistribuidor");
             }
-            else if (User.IsInRole("Admin")|| User.IsInRole("GestorVenda") || User.IsInRole("Venda"))
+            else if (User.IsInRole("Admin") || User.IsInRole("GestorVenda") || User.IsInRole("Venda") || User.IsInRole("Diretoria"))
             {
                 Total = SGID.Agendamentos.Count();
 
@@ -106,17 +111,7 @@ namespace SGID.Pages
                 else
                 {
                     return LocalRedirect("/dashboards/DashBoardGestorComercial/03");
-                }
-
-                /*if (User.Identity.Name.Split("@")[1].ToUpper()=="INTERMEDIC.COM.BR")
-                {
-                    return LocalRedirect("/relatorios/rh/cirurgiasfaturadasinter");
-                }
-                else
-                {
-                    return LocalRedirect("/relatorios/rh/cirurgiasfaturadas");
-                }*/
-               
+                }       
                 
             }
             else if (User.IsInRole("Comercial"))
@@ -129,15 +124,6 @@ namespace SGID.Pages
                 {
                     return LocalRedirect("/dashboards/DashBoardComercial/03");
                 }
-
-                /*if (User.Identity.Name.Split("@")[1].ToUpper() == "INTERMEDIC.COM.BR")
-                {
-                    return LocalRedirect("/relatorios/cirurgias/cirurgiasfaturadasinter");
-                }
-                else
-                {
-                    return LocalRedirect("/relatorios/cirurgias/cirurgiasfaturadas");
-                }*/
 
             }
             else if (User.IsInRole("RH"))

@@ -24,11 +24,37 @@
                    @Html.CheckBoxFor(model=>model.Input.RememberMe) Lembre de mim
                </div>
                <br />
-               <div class="text-center"><button type="submit" class="btn btn-color px-5 mb-5 w-100">Entrar</button></div>
+               <div class="text-center"><button type="submit" id="Sub" class="btn btn-color px-5 mb-5 w-100">Entrar</button></div>
              }  
          </div>
       </div>
 </div>
+
+
+<div class="modal fade" id="loading-modal" role="dialog" tabindex="-1" aria-labelledby="demo-default-modal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <!--Modal body-->
+            <div class="modal-body">
+                <div style="display:flex; justify-content: center;">
+                    <i class="fa-solid fa-spinner fa-50x fa-spin-pulse"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+<script>
+        $('#password').bind("enterKey", function (e) {
+            $("#loading-modal").modal('show')
+        });
+
+        $('#Sub').on('click', function () {
+            $("#loading-modal").modal('show')
+        })
+</script>
+}
 
 <style>
 .btn-color {

@@ -12,7 +12,7 @@ using OPMEnexo;
 
 namespace SGID.Pages.Cotacoes
 {
-    [Authorize(Roles = "Admin,GestorComercial,Comercial")]
+    [Authorize(Roles = "Admin,GestorComercial,Comercial,Diretoria")]
     public class AceitarCotacoesModel : PageModel
     {
         private ApplicationDbContext SGID { get; set; }

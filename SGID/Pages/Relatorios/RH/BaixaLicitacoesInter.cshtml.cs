@@ -39,6 +39,8 @@ namespace SGID.Pages.Relatorios.RH
                              equals new { PRE = SE10.E1Prefixo, Num = SE10.E1Num, Par = SE10.E1Parcela, Tipo = SE10.E1Tipo, Cliente = SE10.E1Cliente, Loja = SE10.E1Loja }
                              join SA10 in Protheus.Sa1010s on SE50.E5Cliente equals SA10.A1Cod
                              join SC50 in Protheus.Sc5010s on SE10.E1Pedido equals SC50.C5Num
+                             join SD20 in Protheus.Sd2010s on new { Filial = SC50.C5Filial, Num = SC50.C5Num } equals new { Filial = SD20.D2Filial, Num = SD20.D2Pedido }
+                             where SE50.DELET != "*" && SE10.DELET != "*" && SE50.E5Recpag == "R"
                              where SE50.DELET != "*" && SE10.DELET != "*" && SE50.E5Recpag == "R"
                              && (SE50.E5Tipodoc == "VL" || SE50.E5Tipodoc == "RA")
                              && (SE50.E5Naturez == "111001" || SE50.E5Naturez == "111004" || SE50.E5Naturez == "111006")
@@ -65,13 +67,14 @@ namespace SGID.Pages.Relatorios.RH
                                  Abatimento = 0,
                                  Imposto = 0,
                                  ValorAcess = 0,
-                                 TotalBaixado = SE50.E5Valor - SE50.E5Vldesco - SE50.E5Vljuros - SE50.E5Vlmulta,
+                                 TotalBaixado = SE50.E5Valor,
                                  Banco = SE50.E5Banco,
                                  DtDigi = SE50.E5Dtdigit,
                                  Mot = SE50.E5Motbx,
                                  Orig = SE50.E5Filorig,
                                  Vendedor = SC50.C5Nomvend,
-                                 TipoCliente = SA10.A1Clinter
+                                 TipoCliente = SA10.A1Clinter,
+                                 DataPedido = SD20.D2Emissao
                              }
                              ).ToList();
             }
@@ -99,6 +102,8 @@ namespace SGID.Pages.Relatorios.RH
                              equals new { PRE = SE10.E1Prefixo, Num = SE10.E1Num, Par = SE10.E1Parcela, Tipo = SE10.E1Tipo, Cliente = SE10.E1Cliente, Loja = SE10.E1Loja }
                              join SA10 in Protheus.Sa1010s on SE50.E5Cliente equals SA10.A1Cod
                              join SC50 in Protheus.Sc5010s on SE10.E1Pedido equals SC50.C5Num
+                             join SD20 in Protheus.Sd2010s on new { Filial = SC50.C5Filial, Num = SC50.C5Num } equals new { Filial = SD20.D2Filial, Num = SD20.D2Pedido }
+                             where SE50.DELET != "*" && SE10.DELET != "*" && SE50.E5Recpag == "R"
                              where SE50.DELET != "*" && SE10.DELET != "*" && SE50.E5Recpag == "R"
                              && (SE50.E5Tipodoc == "VL" || SE50.E5Tipodoc == "RA")
                              && (SE50.E5Naturez == "111001" || SE50.E5Naturez == "111004" || SE50.E5Naturez == "111006")
@@ -125,13 +130,14 @@ namespace SGID.Pages.Relatorios.RH
                                  Abatimento = 0,
                                  Imposto = 0,
                                  ValorAcess = 0,
-                                 TotalBaixado = SE50.E5Valor - SE50.E5Vldesco - SE50.E5Vljuros - SE50.E5Vlmulta,
+                                 TotalBaixado = SE50.E5Valor,
                                  Banco = SE50.E5Banco,
                                  DtDigi = SE50.E5Dtdigit,
                                  Mot = SE50.E5Motbx,
                                  Orig = SE50.E5Filorig,
                                  Vendedor = SC50.C5Nomvend,
-                                 TipoCliente = SA10.A1Clinter
+                                 TipoCliente = SA10.A1Clinter,
+                                 DataPedido = SD20.D2Emissao
                              }
                              ).ToList();
 
@@ -165,7 +171,7 @@ namespace SGID.Pages.Relatorios.RH
                 sheet.Cells[1, 22].Value = "ORIG";
                 sheet.Cells[1, 23].Value = "VENDEDOR";
                 sheet.Cells[1, 24].Value = "TIPOCLIENTE";
-
+                sheet.Cells[1, 25].Value = "DATA FATURAMENTO";
 
                 int i = 2;
 
@@ -203,8 +209,7 @@ namespace SGID.Pages.Relatorios.RH
                     sheet.Cells[i, 22].Value = Pedido.Orig;
                     sheet.Cells[i, 23].Value = Pedido.Vendedor;
                     sheet.Cells[i, 24].Value = Pedido.TipoCliente;
-
-
+                    sheet.Cells[i, 25].Value = Pedido.DataPedido;
 
                     i++;
                 });

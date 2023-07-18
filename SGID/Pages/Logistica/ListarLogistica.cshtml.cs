@@ -48,7 +48,7 @@ namespace SGID.Pages.Logistica
                     3 => SGID.Agendamentos.Where(x => (x.StatusLogistica == 2 || x.StatusLogistica == 3) && x.Empresa == "01")
                          .OrderBy(x => x.Tipo).ThenBy(x => x.DataCirurgia).ToList(),
                     //Retorno
-                    4 => Agendamentos = SGID.Agendamentos.Where(x => x.StatusLogistica == 4 && x.Empresa == "01")
+                    4 => SGID.Agendamentos.Where(x => x.StatusLogistica == 4 && x.Empresa == "01")
                         .OrderBy(x => x.Tipo).ThenBy(x => x.DataCirurgia).ToList(),
                     _ => new List<Agendamentos>()
                 };
@@ -75,7 +75,7 @@ namespace SGID.Pages.Logistica
                     3 => SGID.Agendamentos.Where(x => (x.StatusLogistica == 2 || x.StatusLogistica == 3) && x.Empresa == "03")
                          .OrderBy(x => x.Tipo).ThenBy(x => x.DataCirurgia).ToList(),
                     //Retorno
-                    4 => Agendamentos = SGID.Agendamentos.Where(x => x.StatusLogistica == 4 && x.Empresa == "03")
+                    4 => SGID.Agendamentos.Where(x => x.StatusLogistica == 4 && x.Empresa == "03")
                         .OrderBy(x => x.Tipo).ThenBy(x => x.DataCirurgia).ToList(),
                     _ => new List<Agendamentos>()
                 };

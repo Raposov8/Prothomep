@@ -33,7 +33,7 @@ namespace SGID.Pages.Agendamento
 
             string usuario = User.Identity.Name.Split("@")[0].ToUpper();
 
-            if (User.IsInRole("Admin"))
+            if (User.IsInRole("Admin") || User.IsInRole("Diretoria"))
             {
                 Medicos = ProtheusInter.Sa1010s.Where(x => x.DELET != "*" && x.A1Clinter == "M" && x.A1Msblql != "1" && !string.IsNullOrWhiteSpace(x.A1Vend)).OrderBy(x => x.A1Nome).Select(x => x.A1Nome).ToList();
                 var medicos = SGID.VisitaClientes.Where(x => x.Empresa == "INTERMEDIC").Select(x => x.Medico).ToList();
@@ -91,7 +91,7 @@ namespace SGID.Pages.Agendamento
                 string usuario = User.Identity.Name.Split("@")[0].ToUpper();
 
                 List<Visitas> visitas = new List<Visitas>();
-                if (User.IsInRole("Admin"))
+                if (User.IsInRole("Admin") || User.IsInRole("Diretoria"))
                 {
                     visitas = SGID.Visitas.ToList();
                 }
@@ -302,7 +302,7 @@ namespace SGID.Pages.Agendamento
         public JsonResult OnGetEndereco(string Medico)
         {
 
-            if (User.IsInRole("Admin"))
+            if (User.IsInRole("Admin") || User.IsInRole("Diretoria"))
             {
                 var endereco = ProtheusInter.Sa1010s.FirstOrDefault(x => x.DELET != "*" && x.A1Clinter == "M" && x.A1Msblql != "1" && !string.IsNullOrWhiteSpace(x.A1Vend) && x.A1Nome == Medico);
 
@@ -399,7 +399,7 @@ namespace SGID.Pages.Agendamento
 
         public JsonResult OnGetMedico(string Bairro)
         {
-            if (User.IsInRole("Admin"))
+            if (User.IsInRole("Admin") || User.IsInRole("Diretoria"))
             {
                 var medicos = ProtheusInter.Sa1010s.Where(x => x.DELET != "*" && x.A1Clinter == "M" && x.A1Msblql != "1" && !string.IsNullOrWhiteSpace(x.A1Vend) && x.A1Bairro == Bairro).ToList();
 

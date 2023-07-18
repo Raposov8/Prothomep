@@ -14,7 +14,7 @@ namespace SGID.Models.Inter
         public TOTVSINTERContext(DbContextOptions<TOTVSINTERContext> options)
             : base(options)
         {
-            this.Database.SetCommandTimeout(300);
+            
         }
 
         public virtual DbSet<Da0010> Da0010s { get; set; } = null!;

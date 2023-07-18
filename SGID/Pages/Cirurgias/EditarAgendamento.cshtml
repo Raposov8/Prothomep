@@ -157,7 +157,7 @@
                             <option value="INDICAÇÃO DO CLIENTE">Indicação do cliente</option>
                         </select>
                     </div>
-                    @if (User.IsInRole("Admin") || User.IsInRole("Estoque"))
+                    @if (User.IsInRole("Admin") || User.IsInRole("Estoque") || User.IsInRole("Diretoria"))
                     {
                         <div class="form-group col-md-2">
                             <label class="Label">Data de Entrega</label>

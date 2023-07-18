@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace SGID.Pages.Account.RH
 {
-    [Authorize(Roles = "Admin,RH")]
+    [Authorize(Roles = "Admin,RH,Diretoria")]
     public class DeleteTimeModel : PageModel
     {
         private readonly UserManager<UserInter> _userManager;

@@ -10,7 +10,7 @@ using SGID.Models.Inter;
 
 namespace SGID.Pages.Cirurgias
 {
-    [Authorize(Roles = "Admin,GestorVenda,Venda")]
+    [Authorize(Roles = "Admin,GestorVenda,Venda,Diretoria")]
     public class ListarRecursosModel : PageModel
     {
         private ApplicationDbContext SGID { get; set; }

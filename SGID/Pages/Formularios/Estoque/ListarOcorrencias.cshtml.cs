@@ -32,7 +32,6 @@ namespace SGID.Pages.Formularios.Estoque
 
         public void OnGet()
         {
-
             Ocorrencias = SGID.Ocorrencias.ToList();
         }
 
@@ -41,7 +40,6 @@ namespace SGID.Pages.Formularios.Estoque
             try
             {
                 var Ocorrencia = SGID.Ocorrencias.FirstOrDefault(x => x.Id == Id);
-
 
                 var DataCirurgia = "";
                 var DataOcorrencia = "";
@@ -118,12 +116,25 @@ namespace SGID.Pages.Formularios.Estoque
                 mail.Sender = new MailAddress("ti@intermedic.com.br", "ENVIADOR");
                 mail.From = new MailAddress("ti@intermedic.com.br", "ENVIADOR");
                 mail.To.Add(new MailAddress(email, "RECEBEDOR"));
-                mail.CC.Add(new MailAddress("estoque@intermedic.com.br","estoque"));
-                mail.CC.Add(new MailAddress("estoque@denuo.com.br", "Estoque Denuo")); 
+
+                if(Ocorrencia.Empresa == "01")
+                {
+                    mail.CC.Add(new MailAddress("estoque@intermedic.com.br", "estoque"));
+                    mail.CC.Add(new MailAddress("qualidade@intermedic.com.br", "qualidade"));
+                    mail.CC.Add(new MailAddress("comercial@intermedic.com.br", "comercial"));
+
+                }
+                else
+                {
+                    mail.CC.Add(new MailAddress("estoque@denuo.com.br", "Estoque Denuo"));
+                    mail.CC.Add(new MailAddress("qualidade@denuo.com.br", "qualidade"));
+                    mail.CC.Add(new MailAddress("comercial@denuo.com.br", "comercial"));
+                }
+                
+                
                 mail.CC.Add(new MailAddress("agendamento@intermedic.com.br", "Agendamento Intermedic"));
-                mail.CC.Add(new MailAddress("qualidade@intermedic.com.br","qualidade"));
                 mail.CC.Add(new MailAddress("admvendas@intermedic.com.br", "Adm Vendas"));
-                mail.CC.Add(new MailAddress("comercial@denuo.com.br", "comercial")); 
+                
                 mail.Subject = $"Ocorrência Nº {Id}";
                 mail.Body = mensagem;
                 mail.IsBodyHtml = true;
@@ -132,6 +143,7 @@ namespace SGID.Pages.Formularios.Estoque
                 client.Send(mail);
 
                 return new JsonResult("E-mail enviado com sucesso");
+
             }catch(Exception e)
             {
                 return new JsonResult("Error: E-mail não enviado");

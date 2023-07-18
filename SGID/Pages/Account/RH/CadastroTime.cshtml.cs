@@ -17,7 +17,7 @@ using SGID.Models.Inter;
 
 namespace SGID.Pages.Account.RH
 {
-    [Authorize(Roles = "Admin,RH")]
+    [Authorize(Roles = "Admin,RH,Diretoria")]
     public class CadastroTimeModel : PageModel
     {
         private readonly ILogger<RegisterModel> _logger;

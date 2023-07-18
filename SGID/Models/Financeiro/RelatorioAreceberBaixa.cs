@@ -27,5 +27,9 @@
         public string Vendedor { get; set; }
         public string TipoCliente { get; set; }
         public string CodigoCliente { get; set; }
+        public string Login { get; set; }
+        public string DataPedido { get; set; }
+        public string Gestor { get; set; }
+        public string Linha { get; set; }
     }
 }

@@ -14,7 +14,7 @@ using System.Net.Mail;
 
 namespace SGID.Pages.Cirurgias
 {
-    [Authorize(Roles = "Admin,GestorVenda,Venda,Comercial,GestorComercial")]
+    [Authorize]
     public class NovoAgendamentoModel : PageModel
     {
         private ApplicationDbContext SGID { get; set; }
@@ -43,11 +43,11 @@ namespace SGID.Pages.Cirurgias
                 //Intermedic
                 Novo = new NovoAgendamento
                 {
-                    Clientes = ProtheusInter.Sa1010s.Where(x => x.DELET != "*"  && x.A1Msblql != "1" && (x.A1Clinter == "C" || x.A1Clinter == "H" || x.A1Clinter == "M")).OrderBy(x => x.A1Nome).Select(x => x.A1Nome).ToList(),
+                    Clientes = ProtheusInter.Sa1010s.Where(x => x.DELET != "*"  && x.A1Msblql != "1" && (x.A1Clinter == "C" || x.A1Clinter == "H" || x.A1Clinter == "M")).OrderBy(x => x.A1Nome).Select(x => x.A1Nreduz).ToList(),
                     Convenio = ProtheusInter.Sa1010s.Where(x => x.DELET != "*" && x.A1Clinter == "C" && x.A1Msblql != "1").OrderBy(x => x.A1Nome).Select(x=>x.A1Nome).ToList(),
                     Medico = ProtheusInter.Sa1010s.Where(x => x.DELET != "*" && x.A1Clinter == "M" && x.A1Msblql != "1" && !string.IsNullOrWhiteSpace(x.A1Vend) && x.A1Crm != "" ).OrderBy(x => x.A1Nome).Select(x => x.A1Nome).ToList(),
                     Intrumentador = ProtheusInter.Pah010s.Where(x => x.DELET != "*" && x.PahMsblql != "1").OrderBy(x => x.PahNome).Select(x => x.PahNome).ToList(),
-                    Hospital = ProtheusInter.Sa1010s.Where(x => x.DELET != "*" && x.A1Clinter == "H" && x.A1Msblql != "1").OrderBy(x => x.A1Nome).Select(x => x.A1Nome).ToList(),
+                    Hospital = ProtheusInter.Sa1010s.Where(x => x.DELET != "*" && x.A1Clinter == "H" && x.A1Msblql != "1").OrderBy(x => x.A1Nome).Select(x => x.A1Nreduz).ToList(),
                     Procedimentos = SGID.Procedimentos.Where(x => x.Bloqueado == 0 && x.Empresa == "01").ToList(),
                     Patrimonios = ProtheusInter.Pa1010s.Where(x=> x.DELET != "*" && x.Pa1Msblql != "1").Select(x=> x.Pa1Despat).Distinct().ToList()
                 };
@@ -57,11 +57,11 @@ namespace SGID.Pages.Cirurgias
                 //Denuo
                 Novo = new NovoAgendamento 
                 {
-                    Clientes = ProtheusDenuo.Sa1010s.Where(x => x.DELET != "*"  && x.A1Msblql != "1" && (x.A1Clinter == "C" || x.A1Clinter == "H" || x.A1Clinter == "M")).OrderBy(x => x.A1Nome).Select(x => x.A1Nome).ToList(),
+                    Clientes = ProtheusDenuo.Sa1010s.Where(x => x.DELET != "*"  && x.A1Msblql != "1" && (x.A1Clinter == "C" || x.A1Clinter == "H" || x.A1Clinter == "M")).OrderBy(x => x.A1Nome).Select(x => x.A1Nreduz).ToList(),
                     Convenio = ProtheusDenuo.Sa1010s.Where(x => x.DELET != "*" && x.A1Clinter == "C" && x.A1Msblql != "1").OrderBy(x => x.A1Nome).Select(x => x.A1Nome).ToList(),
                     Medico = ProtheusDenuo.Sa1010s.Where(x => x.DELET != "*" && x.A1Clinter == "M" && x.A1Msblql != "1" && !string.IsNullOrWhiteSpace(x.A1Vend) && x.A1Crm != "").OrderBy(x => x.A1Nome).Select(x => x.A1Nome).ToList(),
                     Intrumentador = ProtheusDenuo.Pah010s.Where(x => x.DELET != "*" && x.PahMsblql != "1").OrderBy(x => x.PahNome).Select(x => x.PahNome).ToList(),
-                    Hospital = ProtheusDenuo.Sa1010s.Where(x => x.DELET != "*" && x.A1Clinter == "H" && x.A1Msblql != "1").OrderBy(x => x.A1Nome).Select(x => x.A1Nome).ToList(),
+                    Hospital = ProtheusDenuo.Sa1010s.Where(x => x.DELET != "*" && x.A1Clinter == "H" && x.A1Msblql != "1").OrderBy(x => x.A1Nome).Select(x => x.A1Nreduz).ToList(),
                     Procedimentos = SGID.Procedimentos.Where(x => x.Bloqueado == 0 && x.Empresa == "03").ToList(),
                     Patrimonios = (from PA10 in ProtheusDenuo.Pa1010s
                                    join PAC in ProtheusDenuo.Pac010s on PA10.Pa1Numage equals PAC.PacNumage into sr
@@ -256,6 +256,17 @@ namespace SGID.Pages.Cirurgias
                     string user = User.Identity.Name.Split("@")[0].ToUpper();
                     Logger.Log(e, SGID, "NovoAgendamento", user);
                 }
+
+                if (User.IsInRole("Estoque"))
+                {
+                    agendamento.Autorizado = 1;
+                    agendamento.StatusPedido = 3;
+                    agendamento.Tipo = 1;
+
+                    SGID.Agendamentos.Update(agendamento);
+                    SGID.SaveChanges();
+                }
+
                 return LocalRedirect("/dashboard/0");
             }
             catch (Exception e)
@@ -442,7 +453,7 @@ namespace SGID.Pages.Cirurgias
                     var Cliente = ProtheusInter.Sa1010s.Select(x => new
                     {
                         Codigo = x.A1Cod,
-                        Nreduz = x.A1Nome,
+                        Nreduz = x.A1Nreduz,
                         Cond = x.A1Cond,
                         Descon = x.A1Desccon,
                         Tabela = x.A1Tabela,
@@ -474,7 +485,7 @@ namespace SGID.Pages.Cirurgias
                     var Cliente = ProtheusDenuo.Sa1010s.Select(x => new
                     {
                         Codigo = x.A1Cod,
-                        Nreduz = x.A1Nome,
+                        Nreduz = x.A1Nreduz,
                         Cond = x.A1Cond,
                         Descon = x.A1Desccon,
                         Tabela = x.A1Tabela,
@@ -598,7 +609,7 @@ namespace SGID.Pages.Cirurgias
                 if (Empresa == "01")
                 {
                     //Intermedic
-                    var Cliente = ProtheusInter.Sa1010s.FirstOrDefault(x => x.A1Cod == Codigo && x.A1Clinter == "H" && x.DELET != "*" && x.A1Msblql != "1").A1Nome;
+                    var Cliente = ProtheusInter.Sa1010s.FirstOrDefault(x => x.A1Cod == Codigo && x.A1Clinter == "H" && x.DELET != "*" && x.A1Msblql != "1").A1Nreduz;
 
                     return new JsonResult(Cliente);
 
@@ -606,7 +617,7 @@ namespace SGID.Pages.Cirurgias
                 else
                 {
                     //Denuo
-                    var Cliente = ProtheusDenuo.Sa1010s.FirstOrDefault(x => x.A1Cod == Codigo && x.A1Clinter == "H" && x.DELET != "*" && x.A1Msblql != "1").A1Nome;
+                    var Cliente = ProtheusDenuo.Sa1010s.FirstOrDefault(x => x.A1Cod == Codigo && x.A1Clinter == "H" && x.DELET != "*" && x.A1Msblql != "1").A1Nreduz;
 
                     return new JsonResult(Cliente);
                 }
@@ -626,7 +637,7 @@ namespace SGID.Pages.Cirurgias
                 if (Empresa == "01")
                 {
                     //Intermedic
-                    var Cliente = ProtheusInter.Sa1010s.FirstOrDefault(x => x.A1Nome == Codigo && x.A1Clinter == "H" && x.DELET != "*" && x.A1Msblql != "1").A1Cod;
+                    var Cliente = ProtheusInter.Sa1010s.FirstOrDefault(x => x.A1Nreduz == Codigo && x.A1Clinter == "H" && x.DELET != "*" && x.A1Msblql != "1").A1Cod;
 
                     return new JsonResult(Cliente);
 
@@ -634,7 +645,7 @@ namespace SGID.Pages.Cirurgias
                 else
                 {
                     //Denuo
-                    var Cliente = ProtheusDenuo.Sa1010s.FirstOrDefault(x => x.A1Nome == Codigo && x.A1Clinter == "H" && x.DELET != "*" && x.A1Msblql != "1").A1Cod;
+                    var Cliente = ProtheusDenuo.Sa1010s.FirstOrDefault(x => x.A1Nreduz == Codigo && x.A1Clinter == "H" && x.DELET != "*" && x.A1Msblql != "1").A1Cod;
 
                     return new JsonResult(Cliente);
                 }

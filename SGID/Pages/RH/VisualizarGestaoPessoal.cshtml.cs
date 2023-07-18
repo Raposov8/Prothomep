@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace SGID.Pages.RH
 {
-    [Authorize (Roles = "Admin,RH")]
+    [Authorize (Roles = "Admin,RH,Diretoria")]
     public class VisualizarGestaoPessoalModel : PageModel
     {
         private ApplicationDbContext SGID { get; set; }

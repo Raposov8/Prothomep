@@ -10,7 +10,7 @@ using SGID.Data.Migrations;
 
 namespace SGID.Pages.RH
 {
-    [Authorize(Roles = "Admin,RH")]
+    [Authorize(Roles = "Admin,RH,Diretoria")]
     public class EditarGestaoPessoalModel : PageModel
     {
 

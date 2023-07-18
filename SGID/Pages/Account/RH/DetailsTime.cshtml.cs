@@ -9,7 +9,7 @@ using System.Security.Claims;
 
 namespace SGID.Pages.Account.RH
 {
-    [Authorize(Roles = "Admin,RH")]
+    [Authorize(Roles = "Admin,RH,Diretoria")]
     public class DetailsTimeModel : PageModel
     {
         private UserManager<UserInter> _userManager;

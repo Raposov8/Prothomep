@@ -11,7 +11,7 @@ using System;
 
 namespace SGID.Pages.Relatorios.Vexpenses
 {
-    [Authorize(Roles = "Admin,Financeiro")]
+    [Authorize(Roles = "Admin,Financeiro,Diretoria")]
     public class RelatorioDespesasModel : PageModel
     {
         private Expenses VExpenseDespesa { get; set; } = new Expenses();

@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using SGID.Data;
 using SGID.Data.Models;
@@ -32,10 +33,12 @@ namespace SGID.Pages.DashBoards
             SGID = sgid;
         }
 
-        public void OnGet(string Id)
+        public IActionResult OnGet(string Id)
         {
             try
             {
+                if(User.IsInRole("Diretoria")) return LocalRedirect("/dashboards/DashBoardDiretoria");
+
                 string user = User.Identity.Name.Split("@")[0].ToUpper();
                 string data = DateTime.Now.ToString("yyyy/MM").Replace("/", "");
                 string DataInicio = data + "01";
@@ -233,6 +236,7 @@ namespace SGID.Pages.DashBoards
                     Comissao = FaturadoMesValor * (time.Porcentagem / 100);
 
                     Meta = time.Meta - FaturadoMesValor;
+                    return Page();
                 }
                 else
                 {
@@ -312,6 +316,7 @@ namespace SGID.Pages.DashBoards
                                  && ((int)(object)SD20.D2Cf >= 5102 && (int)(object)SD20.D2Cf <= 5114 || (int)(object)SD20.D2Cf >= 6102 && (int)(object)SD20.D2Cf <= 6114 ||
                                  (int)(object)SD20.D2Cf >= 7102 && (int)(object)SD20.D2Cf <= 7114 || CF.Contains((int)(object)SD20.D2Cf)) && ((int)(object)SD20.D2Emissao >= (int)(object)DataInicio && (int)(object)SD20.D2Emissao <= (int)(object)DataFim)
                                  && SD20.D2Quant != 0 && SC50.C5Utpoper == "F" && SA10.A1Clinter != "S" && SA10.A1Cgc != "04715053000140" && SA10.A1Cgc != "04715053000220" && SA10.A1Cgc != "01390500000140" && (int)(object)SD20.D2Emissao >= 20200701
+                                 && SA10.A1Xgrinte != "000011" && SA10.A1Xgrinte != "000012"
                                  && SA30.A3Xlogin == user
                                  select new
                                  {
@@ -425,15 +430,14 @@ namespace SGID.Pages.DashBoards
                     Comissao = FaturadoMesValor * (time.Porcentagem / 100);
 
                     Meta = time.Meta - FaturadoMesValor;
+                    return Page();
                 }
-                if(Meta < 0)
-                {
-                    Meta = 0.0;
-                }
-            }catch(Exception ex)
+            }
+            catch(Exception ex)
             {
                 string user = User.Identity.Name.Split("@")[0].ToUpper();
                 Logger.Log(ex, SGID, "DashBoardComercial", user);
+                return Page();
             }
         }
     }

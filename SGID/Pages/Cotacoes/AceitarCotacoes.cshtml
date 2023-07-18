@@ -572,23 +572,20 @@
                                             </td>
                                             <td class="text-center">
                                             ${data.produtos}
-                                            <input type="hidden" id="Produtos[${count}].Produtos" name="Produtos[${count}].Produto" value="${data.produtos}" />
+                                            <input type="hidden" id="Produtos[${count}].Produtos" name="Produtos[${count}].Produtos" value="${data.produtos}" />
                                             </td>
                                             <td class="text-center">
                                                 <input type="number" id="Produtos[${count}].Und" name="Produtos[${count}].Und" value="${data.und}" />
                                                 <input type="hidden" id="Produtos[${count}].PrcUnid" name="Produtos[${count}].PrcUnid" value="${data.prcUnid}" />
                                             </td>
                                             <td class="text-center">
-                                                <a class="fas fa-eye add-tooltip" style="text-decoration:none;" data-container="body" data-placement="top" data-original-title="Visualizar Recurso" aria-hidden="true"></a>
 
                                                 <a class="fa-regular fa-trash-can add-tooltip" onclick="remove(this)" style="text-decoration:none;" id="Excluir" data-container="body" data-placement="top" data-original-title="Excluir Recurso" aria-hidden="true"></a>
                                             </td>
                                             </tr>`;
 
                                 $("#Produto>tbody").append(linha);
-                                var teste = $(`#Produtos[${count}].PrcUnid`).val().toFixed(2).replace(',', '.')
-
-                                $(`#Produtos[${count}].PrcUnid`).val(teste)
+                                
                                 $("#CodProd").val("")
                                 count++;
                             }
@@ -624,23 +621,20 @@
                                 </td>
                                 <td class="text-center">
                                 ${data.produtos}
-                                <input type="hidden" id="Produtos[${count}].Produtos" name="Produtos[${count}].Produto" value="${data.produtos}" />
+                                <input type="hidden" id="Produtos[${count}].Produtos" name="Produtos[${count}].Produtos" value="${data.produtos}" />
                                 </td>
                                 <td class="text-center">
                                     <input type="number" id="Produtos[${count}].Und" name="Produtos[${count}].Und" value="${data.und}" />
                                     <input type="hidden" id="Produtos[${count}].PrcUnid" name="Produtos[${count}].PrcUnid" value="${data.prcUnid}" />
                                 </td>
                                 <td class="text-center">
-                                    <a class="fas fa-eye add-tooltip" style="text-decoration:none;" data-container="body" data-placement="top" data-original-title="Visualizar Recurso" aria-hidden="true"></a>
                                     
                                     <a class="fa-regular fa-trash-can add-tooltip" onclick="remove(this)" style="text-decoration:none;" id="Excluir" data-container="body" data-placement="top" data-original-title="Excluir Recurso" aria-hidden="true"></a>
                                 </td>
                                 </tr>`;
 
                             $("#Produto>tbody").append(linha);
-                            var teste = $(`#Produtos[${count}].PrcUnid`).val().toFixed(2).replace(',', '.')
-
-                            $(`#Produtos[${count}].PrcUnid`).val(teste)
+                            
                             count++;
                         }
                         else
