@@ -5,17 +5,19 @@
     <meta name="viewport" content="user-scalable = yes" />
     <link rel="icon" href="~/favicon.ico"/>
     <title>SGID - @ViewData["Title"]</title>
+
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700&amp;subset=latin" rel="stylesheet">
     <!--<script src="https://kit.fontawesome.com/dd769b6891.js" crossorigin="anonymous"></script>-->
-    <link rel="stylesheet" href="~/css/fontawesome/css/all.css" />
+    <link rel="stylesheet" href="~/css/fontawesome/css/all.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/nifty.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/LayoutGeral.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap-grid.css" />
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap-grid.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/SGID.styles.css" asp-append-version="true" />
+
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-    
+
     <link href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.6.1/fullcalendar.min.css" type="text/css" rel="stylesheet"/>
 </head>
 <body>
@@ -367,7 +369,7 @@
                         </div>
                     </li> 
                 }
-                @if(User.IsInRole("Admin"))
+                @if(User.IsInRole("Admin") || User.IsInRole("Qualidade"))
                 {
                     <li class="nav-item dropdown">
                         <a class="nav-link align-items-center rounded dropdown-toggle" data-bs-toggle="collapse"
@@ -789,12 +791,11 @@
         </div>
     </div>
 
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/lib/jquery.mask/jquery.mask.min.js"></script>
+    <script src="~/lib/jquery/dist/jquery.min.js" asp-append-version="true"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js" asp-append-version="true"></script>
+    <script src="~/lib/jquery.mask/jquery.mask.min.js" asp-append-version="true"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script>
-        
         $("#check").on('change',function (){
                document.getElementById("mySidenav").style.width = "250px";
         });

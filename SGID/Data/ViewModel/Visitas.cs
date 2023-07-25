@@ -20,5 +20,8 @@ namespace SGID.Data.ViewModel
         public string? ResumoVisita { get; set; }
         public string Empresa { get; set; }
         public DateTime? DataAlteracao { get; set; }
+        public int Status { get; set; }
+        public string? MotivoRej { get; set; }
+        public int? IdRemarcar { get; set; }
     }
 }

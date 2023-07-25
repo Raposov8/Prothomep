@@ -30,82 +30,133 @@
 
 <div style="height:100%">
     <div class="row">
-    <div class="col-md-4" style="border-right-style:solid;border-right-width:1px;height:400px;">
-        <br />
-        <i id="RefreshAberto" class="fa-solid fa-rotate fa-xl"></i>
-        <br />
-        <div id="piechart" style="height:100%"></div>
-        <div class="row justify-content-center">
-            <div class="col-md-6" id="TotalAberto">
-                 Por favor, selecionar um range
+        <div class="col-md-4" style="border-right-style:solid;border-right-width:1px;height:400px;">
+            <br />
+            <div class="row justify-content-center">
+                <div class="col-md-6"><b> VALORES EM ABERTO</b></div>
+            </div>
+            <br />
+            <div id="piechart" style="height:100%"></div>
+            <div class="row justify-content-center">
+                <div class="col-md-6" id="TotalAberto">
+                     Por favor, selecionar um range
+                </div>
             </div>
         </div>
-    </div>
-    <div class="col-md-4" style="border-right-style:solid;border-right-width:1px;height:400px;">
-        <br />
-        <i id="RefreshFaturado" class="fa-solid fa-rotate fa-xl"></i>
-        <br />
-        <div class="panel">
-            <div class="panel-body">
-                <table id="Faturado" class="table-striped table-bordered" cellspacing="0" width="100%">
-                    <thead>
-                        <tr>
-                            <th colspan="2">
-                                Faturado
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
+        <div class="col-md-4" style="border-right-style:solid;border-right-width:1px;height:400px;">
+            <br />
+            <div class="row justify-content-center">
+                <div class="col-md-6"><b> POSIONAMENTO FINANCEIRO</b></div>
+            </div>
+            <br />
+            <div class="panel">
+                <div class="panel-body">
+                    <table id="Faturado" class="table-striped table-bordered" cellspacing="0" width="100%">
+                        <thead>
+                            <tr>
+                                <th colspan="2">
+                                    Faturado
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                                <tr>
+                                    <td colspan="2">
+                                        Por favor, selecionar um range
+                                    </td>
+                                </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <br />
+            <div class="panel">
+                <div class="panel-body">
+                    <table id="Baixa" class="table-striped table-bordered" cellspacing="0" width="100%">
+                        <thead>
+                            <tr>
+                                <th colspan="2">
+                                    Baixa(Caixa)
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
                             <tr>
                                 <td colspan="2">
                                     Por favor, selecionar um range
                                 </td>
                             </tr>
-                    </tbody>
-                </table>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
-    </div>
-    <div class="col-md-4">
-        <br />
-        <i id="RefreshBaixa" class="fa-solid fa-rotate fa-xl"></i>
-        <br />
-        <div class="panel">
-            <div class="panel-body">
-                <table id="Baixa" class="table-striped table-bordered" cellspacing="0" width="100%">
-                    <thead>
-                        <tr>
-                            <th colspan="2">
-                                Baixa(Caixa)
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td colspan="2">
-                                Por favor, selecionar um range
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+        <div class="col-md-4">
+            <br />
+            <div class="row justify-content-center">
+                <div class="col-md-6"><b>TITULOS VENCIDOS/INADIMPLENTES</b></div>
             </div>
-        </div>
-    </div>
-</div>
-</div>
-
-<div class="modal fade" id="loading-modal" role="dialog" tabindex="-1" aria-labelledby="demo-default-modal" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <!--Modal body-->
-            <div class="modal-body">
-                <div style="display:flex; justify-content: center;">
-                    <i class="fa-solid fa-spinner fa-50x fa-spin-pulse"></i>
+            <br />
+            <div class="panel">
+                <div class="panel-body">
+                    <table id="Vencidos" class="table-striped table-bordered" cellspacing="0" width="100%">
+                        <thead>
+                            <tr>
+                                <th colspan="2">
+                                    Titulos Vencidos Denuo
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td colspan="2">
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <a href="/relatorios/diretoria/TitulosVencidos" target="_blank">Saiba Mais...</a>
+                </div>
+            </div>
+            <div class="panel">
+                <div class="panel-body">
+                    <table id="VencidosInter" class="table-striped table-bordered" cellspacing="0" width="100%">
+                        <thead>
+                            <tr>
+                                <th colspan="2">
+                                    Titulos Vencidos Intermedic
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td colspan="2">
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <a href="/relatorios/diretoria/TitulosVencidosInter" target="_blank">Saiba Mais...</a>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+
+<div class="modal fade" id="loading-modal" role="dialog" tabindex="-1" aria-labelledby="demo-default-modal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <!--Modal body style="display:flex; justify-content: center;"-->
+            <div class="modal-body ">
+                <div >
+                    <div class="progressbarWrapper">
+                        <span id="greenBar"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 @section scripts
 {
@@ -123,6 +174,17 @@
         {
             @:grafico.push(['@cata.Nome',@cata.Valor]);
         }
+        
+        function move(obj) 
+        {
+            let elem = document.getElementById("greenBar");
+            var width = obj;
+            
+            elem.style.width = width + '%';
+            elem.style.backgroundColor = '#00e600';
+            elem.innerHTML = width * 1 + '%';
+        }
+
 
         function drawChart() {
 
@@ -146,179 +208,230 @@
         $(document).ready(function()
         {
 
-            $("#RefreshAberto").on('click',function (e) {
-
-
-                var Data = $('input[name=Tipo]:checked').val();
-
-
-
-                if(Data == null || Data == "")
-                {
-                    alert("Selecione uma periodo 30,60,90");
-                }
-                else
-                {
-
-                    var chamadaUrl = `/dashboards/dashboarddiretorio2?handler=EmAberto&&Tipo=${Data}`
-                    $.ajax({
-                        url: chamadaUrl,
-                        type: "POST",
-                        contentType: "application/json;",
-                        dataType: 'json',
-                        headers: {
-                            "RequestVerificationToken": $('input:hidden[name="__RequestVerificationToken"]').val()
-                        },
-                        success: function (data) {
-
-                            grafico = [];
-
-                            grafico.push(['Areas', 'Valores']);
-
-
-                            data.valores.forEach(x => {
-
-                                grafico.push([x.nome, x.valor])
-                            })
-
-                            drawChart()
-
-
-                            $('#TotalAberto').html(`Total: ${data.valorTotal.toLocaleString('pt-BR', formato)}`);
-                        }
-                    })
-
-                }
-                
-                
-            })
-
-            $("#RefreshBaixa").on('click', function (e) {
-
-
-                var Data = $('input[name=Tipo]:checked').val();
-
-
-
-                if (Data == null || Data == "") {
-                    alert("Selecione uma periodo 30,60,90");
-                }
-                else {
-
-                    var chamadaUrl = `/dashboards/dashboarddiretorio2?handler=Baixa&&Tipo=${Data}`
-                    $.ajax({
-                        url: chamadaUrl,
-                        type: "POST",
-                        contentType: "application/json;",
-                        dataType: 'json',
-                        headers: {
-                            "RequestVerificationToken": $('input:hidden[name="__RequestVerificationToken"]').val()
-                        },
-                        success: function (data) {
-
-                            $("#Baixa>tbody>tr").remove();
-
-                            data.valores.forEach(x => {
-                                var linha = `<tr>
-                                                 <td>
-                                                 ${x.nome}
-                                                 </td>
-                                                 <td>
-                                                 ${x.valor.toLocaleString('pt-BR', formato)}
-                                                 </td>
-                                             </tr>`;
-
-                                $("#Baixa>tbody").append(linha);
-                            })
-
-
-                            var linha = `<tr>
-                                             <td>
-                                              TOTAL
-                                             </td>
-                                             <td>
-                                              ${data.valorTotal.toLocaleString('pt-BR', formato)}
-                                             </td>
-                                         </tr>`;
-
-                            $("#Baixa>tbody").append(linha);
-                        }
-                    })
-
-                }
-
-
-            })
-
-            $("#RefreshFaturado").on('click', function (e) {
-
-
-                var Data = $('input[name=Tipo]:checked').val();
-
-
-
-                if (Data == null || Data == "") {
-                    alert("Selecione uma periodo 30,60,90");
-                }
-                else {
-
-                    var chamadaUrl = `/dashboards/dashboarddiretorio2?handler=Faturado&&Tipo=${Data}`
-                    $.ajax({
-                        url: chamadaUrl,
-                        type: "POST",
-                        contentType: "application/json;",
-                        dataType: 'json',
-                        headers: {
-                            "RequestVerificationToken": $('input:hidden[name="__RequestVerificationToken"]').val()
-                        },
-                        success: function (data) {
-
-                            $("#Faturado>tbody>tr").remove();
-
-                            data.valores.forEach(x => {
-                                var linha = `<tr>
-                                                 <td>
-                                                 ${x.nome}
-                                                 </td>
-                                                 <td>
-                                                 ${x.valor.toLocaleString('pt-BR', formato)}
-                                                 </td>
-                                             </tr>`;
-
-                                $("#Faturado>tbody").append(linha);
-                            })
-
-
-                            var linha = `<tr>
-                                             <td>
-                                              TOTAL
-                                             </td>
-                                             <td>
-                                              ${data.valorTotal.toLocaleString('pt-BR', formato)}
-                                             </td>
-                                         </tr>`;
-
-                            $("#Faturado>tbody").append(linha);
-
-                            $("#loading-modal").modal('hide')
-                        }
-                    })
-
-                }
-            })
-
             $('#Refresh').on('click',function(e){
 
                 $("#loading-modal").modal('show')
 
-                $("#RefreshAberto").click();
+               var Data = $('input[name=Tipo]:checked').val();
 
-                $("#RefreshBaixa").click();
+                move(0)
 
-                $("#RefreshFaturado").click();
+                    if (Data == null || Data == "") {
+                        alert("Selecione uma periodo 30,60,90");
+                    }
+                    else {
+
+                        var chamadaUrl = `/dashboards/dashboarddiretorio2?handler=EmAberto&&Tipo=${Data}`
+                        $.ajax({
+                            url: chamadaUrl,
+                            type: "POST",
+                            contentType: "application/json;",
+                            dataType: 'json',
+                            headers: {
+                                "RequestVerificationToken": $('input:hidden[name="__RequestVerificationToken"]').val()
+                            },
+                            success: function (data) {
+
+                                grafico = [];
+
+                                grafico.push(['Areas', 'Valores']);
+
+
+                                data.valores.forEach(x => {
+
+                                    grafico.push([x.nome, x.valor])
+                                })
+
+                                drawChart()
+
+
+                                $('#TotalAberto').html(`<div style="color:#3366cc"><b>Total: ${data.valorTotal.toLocaleString('pt-BR', formato)}</b></div>`);
+
+                                move(33)
+                            }
+                        })
+
+                    
+
+                        var chamadaUrl = `/dashboards/dashboarddiretorio2?handler=Baixa&&Tipo=${Data}`
+                        $.ajax({
+                            url: chamadaUrl,
+                            type: "POST",
+                            contentType: "application/json;",
+                            dataType: 'json',
+                            headers: {
+                                "RequestVerificationToken": $('input:hidden[name="__RequestVerificationToken"]').val()
+                            },
+                            success: function (data) {
+
+                                $("#Baixa>tbody>tr").remove();
+
+                                data.valores.forEach(x => {
+                                    var linha = `<tr>
+                                                         <td>
+                                                         ${x.nome}
+                                                         </td>
+                                                         <td>
+                                                         ${x.valor.toLocaleString('pt-BR', formato)}
+                                                         </td>
+                                                     </tr>`;
+
+                                    $("#Baixa>tbody").append(linha);
+                                })
+
+
+                                var linha = `<tr>
+                                                     <td>
+                                                        <div style="color:#ff3333"><b>TOTAL</b></div>
+                                                     </td>
+                                                     <td>
+                                                        <div style="color:#ff3333"><b>${data.valorTotal.toLocaleString('pt-BR', formato)}</b></div>
+                                                     </td>
+                                                 </tr>`;
+
+                                $("#Baixa>tbody").append(linha);
+
+                                move(66)
+                            }
+                        })
+
+                        var chamadaUrl = `/dashboards/dashboarddiretorio2?handler=Faturado&&Tipo=${Data}`
+                        $.ajax({
+                            url: chamadaUrl,
+                            type: "POST",
+                            contentType: "application/json;",
+                            dataType: 'json',
+                            headers: {
+                                "RequestVerificationToken": $('input:hidden[name="__RequestVerificationToken"]').val()
+                            },
+                            success: function (data) {
+
+                                $("#Faturado>tbody>tr").remove();
+
+                                data.valores.forEach(x => {
+                                    var linha = `<tr>
+                                                         <td>
+                                                         ${x.nome}
+                                                         </td>
+                                                         <td>
+                                                         ${x.valor.toLocaleString('pt-BR', formato)}
+                                                         </td>
+                                                     </tr>`;
+
+                                    $("#Faturado>tbody").append(linha);
+                                })
+
+
+                                var linha = `<tr>
+                                                     <td>
+                                                         <div style="color:#ff3333"><b>TOTAL</b></div>
+                                                     </td>
+                                                     <td>
+                                                         <div style="color:#ff3333"><b>${data.valorTotal.toLocaleString('pt-BR', formato)}</b></div>
+                                                     </td>
+                                                 </tr>`;
+
+                                $("#Faturado>tbody").append(linha);
+
+                                move(100)
+
+                                $("#loading-modal").modal('hide')
+
+                                
+
+                            }
+                        })
+
+                    }
+                
 
                 $("#loading-modal").modal('hide')
             })
+
+
+            var chamadaUrl = `/dashboards/dashboarddiretorio2?handler=Vencidos`
+            $.ajax({
+                url: chamadaUrl,
+                type: "POST",
+                contentType: "application/json;",
+                dataType: 'json',
+                headers: {
+                    "RequestVerificationToken": $('input:hidden[name="__RequestVerificationToken"]').val()
+                },
+                success: function (data) {
+
+                    $("#Vencidos>tbody>tr").remove();
+
+                    data.valores.forEach(x => {
+                        var linha = `<tr>
+                                                         <td>
+                                                                 ${x.cliente}
+                                                         </td>
+                                                         <td>
+                                                         ${x.valor.toLocaleString('pt-BR', formato)}
+                                                         </td>
+                                                     </tr>`;
+
+                        $("#Vencidos>tbody").append(linha);
+                    })
+
+
+                    var linha = `<tr>
+                                    <td>
+                                     <b>TOTAL</b>
+                                    </td>
+                                    <td>
+                                     <b>${data.valorTotal.toLocaleString('pt-BR', formato)}</b>
+                                    </td>
+                                </tr>`;
+
+                    $("#Vencidos>tbody").append(linha);
+
+                }
+            })
+
+            var chamadaUrl2 = `/dashboards/dashboarddiretorio2?handler=VencidosInter`
+            $.ajax({
+                url: chamadaUrl2,
+                type: "POST",
+                contentType: "application/json;",
+                dataType: 'json',
+                headers: {
+                    "RequestVerificationToken": $('input:hidden[name="__RequestVerificationToken"]').val()
+                },
+                success: function (data) {
+
+                    $("#VencidosInter>tbody>tr").remove();
+
+                    data.valores.forEach(x => {
+                        var linha = `<tr>
+                                                                 <td>
+                                                                         ${x.cliente}
+                                                                 </td>
+                                                                 <td>
+                                                                 ${x.valor.toLocaleString('pt-BR', formato)}
+                                                                 </td>
+                                                             </tr>`;
+
+                        $("#VencidosInter>tbody").append(linha);
+                    })
+
+
+                    var linha = `<tr>
+                                     <td>
+                                      <b>TOTAL</b>
+                                     </td>
+                                     <td>
+                                      <b>${data.valorTotal.toLocaleString('pt-BR', formato)}</b>
+                                     </td>
+                                 </tr>`;
+
+                    $("#VencidosInter>tbody").append(linha);
+
+                    
+                }
+            })
+
         })
         
     </script>

@@ -888,7 +888,6 @@ namespace SGID.Pages.DashBoards
                         }
                 }
 
-
                 #region Baixa(Caixa)
 
                 #region Intermedic
@@ -1028,6 +1027,88 @@ namespace SGID.Pages.DashBoards
                 Logger.Log(ex, SGID, "DashBoardDiretoria2", user);
                 return new JsonResult("");
             }
+        }
+
+        public JsonResult OnPostVencidos()
+        {
+            string user = User.Identity.Name.Split("@")[0].ToUpper();
+            DateTime data = DateTime.Now.AddMonths(9);
+            string mesInicio = data.Month.ToString("D2");
+            string anoInicio = (data.Year - 1).ToString();
+            string DataInicio = $"{data.Year - 1}{data.Month.ToString("D2")}{data.Day.ToString("D2")}";
+
+            var NaoBaixados = (from  SE10 in ProtheusDenuo.Se1010s  
+                               join SA10 in ProtheusDenuo.Sa1010s on SE10.E1Cliente equals SA10.A1Cod
+                               where  SE10.DELET != "*" 
+                               && (int)(object)SE10.E1Vencrea <= (int)(object)DataInicio
+                               && SA10.A1Clinter != "G" && SA10.A1Msblql != "1" && SE10.E1Baixa == ""
+                               select new TitulosVencidos
+                               {
+                                   CodCliente = SE10.E1Cliente,
+                                   Cliente = SE10.E1Nomcli,
+                                   Valor = SE10.E1Valor
+                               }
+                            )
+                            .GroupBy(x=> new
+                            {
+                                x.CodCliente,
+                                x.Cliente,
+                            })
+                            .Select(x=> new TitulosVencidos
+                            {
+                                CodCliente = x.Key.CodCliente,
+                                Cliente = x.Key.Cliente,
+                                Valor = x.Sum(c=>c.Valor)
+                            }).OrderByDescending(x => x.Valor).Take(5).ToList();
+
+                var valores = new
+                {
+                    Valores = NaoBaixados,
+                    ValorTotal = NaoBaixados.Sum(x => x.Valor)
+                };
+
+            return new JsonResult(valores);
+        }
+
+        public JsonResult OnPostVencidosInter()
+        {
+            string user = User.Identity.Name.Split("@")[0].ToUpper();
+            DateTime data = DateTime.Now.AddMonths(9);
+            string mesInicio = data.Month.ToString("D2");
+            string anoInicio = (data.Year - 1).ToString();
+            string DataInicio = $"{data.Year - 1}{data.Month.ToString("D2")}{data.Day.ToString("D2")}";
+
+            var NaoBaixados = (from SE10 in ProtheusInter.Se1010s
+                               join SA10 in ProtheusInter.Sa1010s on SE10.E1Cliente equals SA10.A1Cod
+                               where SE10.DELET != "*"
+                               && (int)(object)SE10.E1Vencrea <= (int)(object)DataInicio
+                               && SA10.A1Clinter != "G" && SA10.A1Msblql != "1" && SE10.E1Baixa == ""
+                               select new TitulosVencidos
+                               {
+                                   CodCliente = SE10.E1Cliente,
+                                   Cliente = SE10.E1Nomcli,
+                                   Valor = SE10.E1Valor
+                               }
+                            )
+                            .GroupBy(x => new
+                            {
+                                x.CodCliente,
+                                x.Cliente,
+                            })
+                            .Select(x => new TitulosVencidos
+                            {
+                                CodCliente = x.Key.CodCliente,
+                                Cliente = x.Key.Cliente,
+                                Valor = x.Sum(c => c.Valor)
+                            }).OrderByDescending(x => x.Valor).Take(5).ToList();
+
+            var valores = new
+            {
+                Valores = NaoBaixados,
+                ValorTotal = NaoBaixados.Sum(x => x.Valor)
+            };
+
+            return new JsonResult(valores);
         }
         
     }

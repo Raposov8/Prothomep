@@ -14,7 +14,6 @@ namespace SGID.Models.Denuo
         public TOTVSDENUOContext(DbContextOptions<TOTVSDENUOContext> options)
             : base(options)
         {
-            
         }
 
         public virtual DbSet<Da0010> Da0010s { get; set; } = null!;

@@ -59,6 +59,7 @@
                                         <label class="Label">Nome do Médico </label>
                                         <div class="autocomplete col-md-12">
                                             <input class="form-control" id="Medico" name="Medico" oninput="this.value = this.value.toUpperCase()" required>
+                                            <input id="Id2" type="hidden">
                                         </div>
                                     </div>
                                     <div class="form-group col-sm-4 col-md-4">
@@ -168,33 +169,38 @@
                                 <div class="col-md-6">
                                     <label>Médico</label>
                                     <div id="MedicoView"></div>
+                                    <input id="MedicoProxima"  type="hidden"/>
                                 </div>
                                 <div class="col-md-6">
                                     <label>Local</label>
                                     <div id="LocalView"></div>
+                                    <input id="LocalProxima" type="hidden" />
                                 </div>
                                 <br />
                                 <div class="col-md-6">
                                     <label>Data & Hora</label>
                                     <div id="DataHoraView"></div>
+                                    <input id="DataHoraProxima"  type="hidden"/>
                                 </div>
                                 <div class="col-md-6">
                                     <label>Ultima Visita</label>
-                                    <div id="DataUltimaView"></div>
                                 </div>
                                 <br />
                                 <div class="col-md-6">
                                     <label>Endereço</label>
                                     <div id="EnderecoView"></div>
+                                    <input id="EnderecoProxima" type="hidden" />
                                 </div>
                                 <div class="col-md-6">
                                     <label>Bairro</label>
                                     <div id="BairroView"></div>
+                                    <input id="BairroProxima"  type="hidden"/>
                                 </div>
                                 <br />
                                 <div class="col-md-6">
                                     <label>Assunto</label>
                                     <div id="AssuntoView"></div>
+                                    <input id="AssuntoProxima" type="hidden" />
                                 </div>
                                 <div class="col-md-6">
                                     <label>Motivo da Visita</label>
@@ -209,13 +215,41 @@
                                     <label>Resumo Visita</label>
                                     <input class="col-md-12" id="Resumo" oninput="this.value = this.value.toUpperCase()" />
                                 </div>
+                                <div class="col-md-12">
+                                    <label>Resumo Visita <span id="ResumoVisi2"></span></label>
+                                    <div id="Resumo2"></div>
+                                </div>
+                                <div class="col-md-12">
+                                    <label>Resumo Visita <span id="ResumoVisi3"></span></label>
+                                    <div id="Resumo3"></div>
+                                </div>
                             </div>
                         </div>
                     </div>
                     <!--Modal footer-->
-                    <div class="modal-footer" style="padding-left:20px;">
-                        <div class="offset-9 col-md-2">
-                        <div style="color:#00b050" id="Salvar"><button class="btn btn-button btn-success float-end" style="font-size:12px;" type="submit"><i class="fa-solid fa-thumbs-up"></i> Salvar</button></div>
+                    <div  class="modal-footer" style="padding-left:20px;">
+                        <div class="row col-md-12">
+                            <div class="col-md-3">
+                                <div style="color:#ffff00" id="Cancelada">
+                                <button class="btn btn-button float-end" style="font-size:12px;background-color:#ffff00;color:#ffffff;text-shadow: 1px 1px 2px black;" type="submit">
+                                    <i class="fa-solid fa-calendar-xmark"></i> Remarcar/Cancelar
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div style="color:#3566fd" id="Proxima">
+                                <button class="btn btn-button float-end" style="font-size:12px;background-color:#3566fd;color:#ffffff" type="submit">
+                                        <i class="fa-solid fa-calendar-plus"></i> Proxima visita
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div style="color:#00b050" id="Salvar">
+                                    <button class="btn btn-button btn-success float-end" style="font-size:12px;" type="submit">
+                                        <i class="fa-solid fa-thumbs-up"></i> Salvar
+                                    </button>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -224,6 +258,195 @@
 </div>
 
 
+<div class="modal fade" id="PopupCancelada-modal" role="dialog" tabindex="-1" aria-labelledby="demo-default-modal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <!--Modal body-->
+            <div class="modal-header">
+                <div class="row">
+                    <div class="col-md-11">
+                        Cancelar/Remarcar
+                    </div>
+                    <div class="col-md-1">
+                        <a class="close" data-dismiss="modal"><i class="fa-regular fa-circle-xmark" style="color:red"></i></a>
+                    </div>
+                </div>
+            </div>
+
+            <!--Modal body-->
+            <div class="modal-body">
+                Favor selecionar uma das opções
+                <input id="IdCancelar" type="hidden"/>
+            </div>
+            <!--Modal footer-->
+            <div class="modal-footer">
+                <div class="row col-md-12">
+                    <div class="col-md-3">
+                        <div style="color:red" id="Cancelar">
+                            <button class="btn btn-button float-end" style="font-size:12px;background-color:red;color:#ffffff;text-shadow: 1px 1px 2px black;" type="submit">
+                                <i class="fa-solid fa-calendar-xmark"></i> Cancelar
+                            </button>
+                        </div>
+                    </div>
+                    <div class="offset-md-6 col-md-3">
+                        <div style="color:#00b050" id="Remarcar">
+                            <button class="btn btn-button btn-success float-end" style="font-size:12px;" type="submit">
+                                <i class="fa-solid fa-thumbs-up"></i> Remarcar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="PopupCancelar-modal" role="dialog" tabindex="-1" aria-labelledby="demo-default-modal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <!--Modal body-->
+            <div class="modal-header">
+                <div class="row">
+                    <div class="col-md-11">
+                        Cancelar
+                    </div>
+                    <div class="col-md-1">
+                        <a class="close" data-dismiss="modal"><i class="fa-regular fa-circle-xmark" style="color:red"></i></a>
+                    </div>
+                </div>
+            </div>
+
+            <!--Modal body-->
+            <div class="modal-body">
+                <div class="col-md-12">
+                    <label>Motivo Cancelamento</label>
+                    <textarea type="text" class="form-control" id="MotivoRejeicao" name="MotivoRejeicao">
+                    </textarea>
+                </div>
+            </div>
+            <!--Modal footer-->
+            <div class="modal-footer">
+                <div class="row col-md-12">
+                    <div class="col-md-3">
+                        <div id="Cancelar2">
+                            <button class="btn btn-button btn-success float-end" style="font-size:12px;" type="submit">
+                                <i class="fa-solid fa-calendar-xmark"></i> Cancelar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="Remarcar-modal" role="dialog" tabindex="1" aria-labelledby="demo-default-modal" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <!--Modal header-->
+                <div class="modal-header">
+                    <div class="col-md-11">
+                        <h4>Remarcar Visita</h4>
+                    </div>
+                    <div class="col-md-1">
+                        <a class="close" data-dismiss="modal"><i class="fa-regular fa-circle-xmark" style="color:red"></i></a>
+                    </div>
+                </div>
+
+                <!--Modal body-->
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="card" style="padding:10px;">
+                            <div class="col-md-12">
+                                <div class="row">
+                                    <div class="form-group col-sm-6 col-md-6">
+                                        <label class="Label">Nome do Médico </label>
+                                        <div class="autocomplete col-md-12">
+                                            <input class="form-control" id="Medico2" name="Medico2" oninput="this.value = this.value.toUpperCase()" required>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-sm-4 col-md-4">
+                                        <label class="Label">Ultima Visita</label>
+                                        <input type="date" class="form-control" id="DataUltima2" name="DataUltima2" required />
+                                    </div>
+                                    <div class="form-group col-sm-4 col-md-4">
+                                        <label class="Label">Data & Hora</label>
+                                        <input type="datetime-local" class="form-control" id="Data2" name="Data2" required />
+                                    </div>
+                                    <div class="form-group col-sm-6 col-md-6">
+                                        <label class="Label">Tipo</label>
+                                        <select class="form-control" id="Local2" name="Local2" oninput="this.value = this.value.toUpperCase()" required>
+                                            @foreach (var data in Model.Locais)
+                                            {
+                                                <option value="@data">@data</option>
+                                            }
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="form-group col-sm-8 col-md-8">
+                                        <label class="Label">Endereço</label>
+                                        <input type="text" class="form-control" id="Endereco2" name="Endereco2" oninput="this.value = this.value.toUpperCase()" required />
+                                    </div>
+                                    <div class="form-group col-sm-4 col-md-4">
+                                        <label class="Label">Bairro</label>
+                                        <input type="text" class="form-control" id="Bairro2" name="Bairro2" oninput="this.value = this.value.toUpperCase()" required />
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="form-group col-sm-3 col-md-3">
+                                        <label class="Label">Assunto</label>
+                                        <input class="form-control" id="Assunto2" name="Assunto2" oninput="this.value = this.value.toUpperCase()" required />
+                                    </div>
+                                    <div class="form-group col-sm-9 col-md-9">
+                                        <label class="Label">Motivo da visita</label>
+                                        <div class="row">
+                                            <div class="col-sm-2 col-md-2">
+                                                <input hidden type="radio" class="btn-check" name="MotVis2" id="MotVis5" value="VENDA" autocomplete="off" required>
+                                                <label class="btn btn-outline-primary" for="MotVis5">VENDA</label>
+                                            </div>
+                                            <div class="col-sm-3 col-md-3">
+                                                <input hidden type="radio" class="btn-check" name="MotVis2" id="MotVis6" value="INDICAÇÃO" autocomplete="off" required>
+                                                <label class="btn btn-outline-primary" for="MotVis6">INDICAÇÃO</label>
+                                            </div>
+                                            <div class="col-sm-4 col-md-4">
+                                                <input hidden type="radio" class="btn-check" name="MotVis2" id="MotVis7" value="ACOMPANHAMENTO" autocomplete="off" required>
+                                                <label class="btn btn-outline-primary" for="MotVis7">ACOMPANHAMENTO</label>
+                                            </div>
+                                            <div class="col-sm-3 col-md-3">
+                                                <input hidden type="radio" class="btn-check" name="MotVis2" id="MotVis8" value="RECLAMAÇÃO" autocomplete="off" required>
+                                                <label class="btn btn-outline-primary" for="MotVis8">RECLAMAÇÃO</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-sm-12 col-md-12">
+                                        <label class="Label">Observação</label>
+                                        <textarea type="text" class="form-control" id="Obs2" name="Obs2" oninput="this.value = this.value.toUpperCase()"></textarea>
+                                    </div>
+                                    <div class="form-group col-sm-12 col-md-12">
+                                        <label class="Label">Resumo da visita</label>
+                                        <textarea type="text" class="form-control" id="ResuVisi2" name="ResuVisi2" oninput="this.value = this.value.toUpperCase()"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--Modal footer-->
+                <div class="modal-footer">
+                    <div class="col-md-12">
+                        <div class="row justify-content-center">
+                        <div id="RemarcarEnviar" style="color:#00b050" class="col-md-2">
+                                <button class="btn btn-button btn-success float-end" style="font-size:12px;" type="submit">
+                                    <i class="fa-solid fa-thumbs-up"></i> Salvar
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+</div>
 
 @section Scripts
     {
@@ -270,7 +493,32 @@
                             $("#BairroView").html(data.bairro);
                             $("#Observacao").val(data.observacao);
                             $("#Resumo").val(data.resuVi);
-                            
+
+                            $("#Resumo2").html(data.ultimaResp1);
+                            $("#ResumoVisi2").html(data.dataResp1);
+                            $("#Resumo3").html(data.ultimaResp2);
+                            $("#ResumoVisi3").html(data.dataResp2);
+
+
+                            $("#MedicoProxima").val(data.medico);
+                            $("#LocalProxima").val(data.local)
+                            $("#DataHoraProxima").val(data.dataProxima)
+                            $("#AssuntoProxima").val(data.assunto)
+                            $("#EnderecoProxima").val(data.endereco)
+                            $("#BairroProxima").val(data.bairro)
+
+                            if(data.status != 0)
+                            {
+                                $('#Cancelada').css('display', 'none')
+                                $('#Salvar').css('display', 'none')
+                            }
+                            else
+                            {
+                                $('#Cancelada').css('display', 'block')
+                                $('#Salvar').css('display', 'block')
+                            }
+
+                            $('#loading-modal').modal('hide');
 
                             setTimeout(function () {
                                 $('#details-modal').modal('show');
@@ -291,6 +539,7 @@
                 $("#novavisita-modal").modal('hide');
                 $('#details-modal').modal('hide');
                 $('#loading-modal').modal('hide');
+                $("#PopupCancelada-modal").modal('hide')
             })
 
             $("#Salvar").on('click',function ()
@@ -315,12 +564,17 @@
                 })
             })
 
-            /*$("#Quant").on('click',function()
-            {
+            $("#Proxima").on('click', function () {
 
-                var bairro = $("#Bairro").val();
+                var teste = $("#MedicoProxima").val();
 
-                var chamadaUrl = `/agendamento/visitas?handler=Medico&&Bairro=${bairro}`
+                $("#Medico").val(teste);
+
+                setTimeout(function () {
+                    $('#details-modal').modal('hide');
+                }, 1000)
+
+                var chamadaUrl = `/agendamento/visitas?handler=Endereco&&Medico=${teste}`
                 $.ajax({
                     url: chamadaUrl,
                     type: "GET",
@@ -331,11 +585,133 @@
                     },
                     success: function (data) {
 
-                        
+                        $("#Endereco").val(data.endereco)
+                        $("#Bairro").val(data.bairro)
+                        $("#DataUltima").val(data.ultima)
                     }
                 })
 
-            })*/
+                
+
+
+                setTimeout(function () {
+                    $('#novavisita-modal').modal('show');
+                }, 2000)
+                
+            })
+
+            $("#Cancelada").on('click', function () {
+
+                $("#novavisita-modal").modal('hide');
+                $('#details-modal').modal('hide');
+                $('#loading-modal').modal('hide');
+
+                $("#IdCancelar").val($("#id").val())
+
+                setTimeout(function () {
+                    $("#PopupCancelada-modal").modal('show')
+                }, 2000)
+
+            })
+
+
+            $("#Cancelar").on('click',function (){
+
+                $("#PopupCancelada-modal").modal('hide')
+
+                setTimeout(function () {
+                    $("#PopupCancelar-modal").modal('show')
+                }, 2000)
+                
+
+            })
+
+            $("#Cancelar2").on('click',function (){
+
+                var Id = $("#IdCancelar").val()
+                var motivo = $("#MotivoRejeicao").val()
+
+                var chamadaUrl = `/agendamento/visitas?handler=Cancelar&&Id=${Id}&&MotivoRej=${motivo}`
+                $.ajax({
+                    url: chamadaUrl,
+                    type: "POST",
+                    contentType: "application/json;",
+                    dataType: 'json',
+                    headers: {
+                        "RequestVerificationToken": $('input:hidden[name="__RequestVerificationToken"]').val()
+                    },
+                    success: function (data) 
+                    {
+                        location.reload();
+                    }
+                })
+
+            })
+
+            $("#Remarcar").on('click',function(){
+
+                $("#Id2").val($("#IdCancelar").val())
+                $("#Medico2").val($("#MedicoProxima").val())
+                $("#DataUltima2").val($("#DataHoraProxima").val())
+                $("#Local2").val($("#LocalProxima").val())
+                $("#Endereco2").val($("#EnderecoProxima").val())
+                $("#Bairro2").val($("#BairroProxima").val())
+                $("#Assunto2").val($("#AssuntoProxima").val())
+
+                setTimeout(function () {
+                    $("#PopupCancelada-modal").modal('hide')
+                }, 2000)
+
+                
+
+                setTimeout(function () {
+                    $("#Remarcar-modal").modal('show')
+                }, 2000)
+
+            })
+
+
+            $("#RemarcarEnviar").on('click',function(){
+
+
+                   var Id = $("#Id2").val()
+                   var Medico = $("#Medico2").val()        
+                   var DataUltima = $("#DataUltima2").val()                       
+                   var Data = $("#Data2").val()     
+                   var Local = $("#Local2").val()
+                   var Endereco = $("#Endereco2").val()            
+                   var Bairro = $("#Bairro2").val()      
+                   var Assunto = $("#Assunto2").val()
+                   var MotVis = $('input[name=MotVis2]:checked').val();
+                   var Obs = $("#Obs2").val()                                                                            
+                   var Resu = $("#ResuVisi2").val()
+
+
+
+
+                var chamadaUrl = `/agendamento/visitas?handler=Remarcar&&id=${Id}&&Medico=${Medico}&&Local=${Local}&&Data=${Data}&&DataUltima=${DataUltima}&&Assunto=${Assunto}&&Endereco=${Endereco}&&Bairro=${Bairro}&&MotVis=${MotVis}&&Obs=${Obs}&&ResuVisi=${Resu}`
+                $.ajax({
+                    url: chamadaUrl,
+                    type: "POST",
+                    contentType: "application/json;",
+                    dataType: 'json',
+                    headers: {
+                        "RequestVerificationToken": $('input:hidden[name="__RequestVerificationToken"]').val()
+                    },
+                    success: function (data) {
+
+                        if (data == "Sucesso")
+                        {
+                            location.reload()
+                        }
+                    }
+                })
+
+            })
+
+
+
+            
 
         })
 
@@ -385,8 +761,6 @@
                                 inp.value = this.getElementsByTagName("input")[0].value;
                                 /*close the list of autocompleted values,
                                 (or any other open lists of autocompleted values:*/
-                                
-                    
                                 
                                 var chamadaUrl = `/agendamento/visitas?handler=Endereco&&Medico=${inp.value}`
                                 $.ajax({

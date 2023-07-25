@@ -16,6 +16,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Pages\Relatorios\Diretoria\NovaPasta\**" />
+    <Content Remove="Pages\Relatorios\Diretoria\NovaPasta\**" />
+    <EmbeddedResource Remove="Pages\Relatorios\Diretoria\NovaPasta\**" />
+    <None Remove="Pages\Relatorios\Diretoria\NovaPasta\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Include="..\.editorconfig" Link=".editorconfig" />
   </ItemGroup>
 

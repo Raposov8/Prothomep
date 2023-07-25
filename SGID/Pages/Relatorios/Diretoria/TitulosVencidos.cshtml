@@ -1,0 +1,40 @@
+﻿@page
+@model SGID.Pages.Relatorios.Diretoria.TitulosVencidosModel
+@{
+    ViewData["Title"] = "Titulos Vencidos Denuo";
+    Layout = "_LayoutGeral";
+}
+
+<div class="panel">
+    <div class="panel-body">
+        <table id="demo-dt-addrow" class="table table-striped table-bordered" cellspacing="0" width="100%">
+            <thead>
+                <tr>
+                    <th class="text-center">
+                        Cliente
+                    </th>
+                    <th class="text-center">
+                        Data Emissão
+                    </th>
+                    <th class="text-center">
+                        Data de Vencimento
+                    </th>
+                    <th class="text-center">
+                        Valor
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var data in Model.Relatorio)
+                {
+                    <tr>
+                        <td>@Html.DisplayFor(model=> data.Cliente)</td>
+                        <td>@Html.DisplayFor(model=> data.DataEmissao)</td>
+                        <td>@Html.DisplayFor(model=> data.DataVencimento)</td>
+                        <td>@string.Format("{0:N2}", data.Valor)</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
