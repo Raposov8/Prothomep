@@ -1,0 +1,49 @@
+﻿@page
+@model SGID.Pages.DashBoards.DashBoardADMModel
+@{
+    ViewData["Title"] = "DASHBOARD ADM";
+    Layout = "_LayoutGeral";
+}
+
+<!--<div id="piechart" style="width: 900px; height: 500px;"></div>-->
+@Html.AntiForgeryToken()
+
+<div class="row justify-content-center">
+    <div class="col-sm-6 col-md-6">
+        <div class="panel panel-colorful" style="background-color:lightgray">
+            <div class="panel-heading">
+                <h2 style="margin:0%;color:#00b050;font-size:25px" class="panel-title text-center">Faturado Mês Denuo</h2>
+            </div>
+            <div class="panel-body" style="padding-top:0px;">
+                <a class="produto"><h3 class="text-center" style="margin-top:0%; color:#00b050;font-size:50px">R$ @string.Format("{0:N2}",Model.FaturadoMesDenuoValor)</h3></a>
+            </div>
+        </div>
+        <div class="panel panel-colorful" style="background-color:lightgray">
+            <div class="panel-heading">
+                <h2 style="margin:0%;color:#00b050;font-size:25px" class="panel-title text-center">Faturado Mês Intermedic</h2>
+            </div>
+            <div class="panel-body" style="padding-top:0px;">
+                <a class="produto"><h3 class="text-center" style="margin-top:0%; color:#00b050;font-size:50px">R$ @string.Format("{0:N2}",Model.FaturadoMesInterValor)</h3></a>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6 col-md-6">
+        <div class="panel panel-colorful" style="background-color:lightgray">
+            <div class="panel-heading">
+                <h2 style="margin:0%;color:#fafa00;font-size:25px" class="panel-title text-center">Meta Mês Denuo</h2>
+            </div>
+            <div class="panel-body" style="padding-top:0px;">
+                <a class="produto"><h3 class="text-center" style="margin-top:0%; color:#fafa00;font-size:50px">R$ @string.Format("{0:N2}",Model.MetaDenuo)</h3></a>
+            </div>
+        </div>
+        <div class="panel panel-colorful" style="background-color:lightgray">
+            <div class="panel-heading">
+                <h2 style="margin:0%;color:#fafa00;font-size:25px" class="panel-title text-center">Meta Mês Intermedic</h2>
+            </div>
+            <div class="panel-body" style="padding-top:0px;">
+                <a class="produto"><h3 class="text-center" style="margin-top:0%; color:#fafa00;font-size:50px">R$ @string.Format("{0:N2}",Model.MetaInter)</h3></a>
+            </div>
+        </div>
+    </div>
+</div>
+

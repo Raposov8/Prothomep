@@ -42,6 +42,8 @@ namespace SGID.Pages.Relatorios.RH
                 var DataI = DataInicio.ToString("yyyy/MM/dd").Replace("/", "");
                 var DataF = DataFim.ToString("yyyy/MM/dd").Replace("/", "");
 
+                //&& (SA10.A1Xgrinte != "000011" || SA10.A1Xgrinte != "000012")
+
                 var query = (from SD20 in Protheus.Sd2010s
                              join SA10 in Protheus.Sa1010s on new { Cod = SD20.D2Cliente, Loja = SD20.D2Loja } equals new { Cod = SA10.A1Cod, Loja = SA10.A1Loja }
                              join SB10 in Protheus.Sb1010s on SD20.D2Cod equals SB10.B1Cod
@@ -53,6 +55,7 @@ namespace SGID.Pages.Relatorios.RH
                              ((int)(object)SD20.D2Cf >= 7102 && (int)(object)SD20.D2Cf <= 7114) || CF.Contains(SD20.D2Cf)) && ((int)(object)SD20.D2Emissao >= (int)(object)DataI && (int)(object)SD20.D2Emissao <= (int)(object)DataF)
                              && SD20.D2Quant != 0 && SC50.C5Utpoper == "F" && SA10.A1Clinter != "S" && SA10.A1Cgc != "04715053000140" && SA10.A1Cgc != "04715053000220" && SA10.A1Cgc != "01390500000140" && (int)(object)SD20.D2Emissao >= 20200701
                              && SB10.B1Ugrpint != "082"
+                             
                              select new
                              {
                                  Filial = SD20.D2Filial,
@@ -162,6 +165,8 @@ namespace SGID.Pages.Relatorios.RH
                 var DataI = DataInicio.ToString("yyyy/MM/dd").Replace("/", "");
                 var DataF = DataFim.ToString("yyyy/MM/dd").Replace("/", "");
 
+                //&& (SA10.A1Xgrinte != "000011" || SA10.A1Xgrinte != "000012")
+
                 var query = (from SD20 in Protheus.Sd2010s
                              join SA10 in Protheus.Sa1010s on new { Cod = SD20.D2Cliente, Loja = SD20.D2Loja } equals new { Cod = SA10.A1Cod, Loja = SA10.A1Loja }
                              join SB10 in Protheus.Sb1010s on SD20.D2Cod equals SB10.B1Cod
@@ -173,6 +178,7 @@ namespace SGID.Pages.Relatorios.RH
                              ((int)(object)SD20.D2Cf >= 7102 && (int)(object)SD20.D2Cf <= 7114) || CF.Contains(SD20.D2Cf)) && ((int)(object)SD20.D2Emissao >= (int)(object)DataI && (int)(object)SD20.D2Emissao <= (int)(object)DataF)
                              && SD20.D2Quant != 0 && SC50.C5Utpoper == "F" && SA10.A1Clinter != "S" && SA10.A1Cgc != "04715053000140" && SA10.A1Cgc != "04715053000220" && SA10.A1Cgc != "01390500000140" && (int)(object)SD20.D2Emissao >= 20200701
                              && SB10.B1Ugrpint != "082"
+                             
                              select new
                              {
                                  Filial = SD20.D2Filial,

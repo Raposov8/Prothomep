@@ -1037,7 +1037,7 @@ namespace SGID.Pages.DashBoards
             string anoInicio = (data.Year - 1).ToString();
             string DataInicio = $"{data.Year - 1}{data.Month.ToString("D2")}{data.Day.ToString("D2")}";
 
-            var NaoBaixados = (from  SE10 in ProtheusDenuo.Se1010s  
+            var NaoBaixados = (from SE10 in ProtheusDenuo.Se1010s  
                                join SA10 in ProtheusDenuo.Sa1010s on SE10.E1Cliente equals SA10.A1Cod
                                where  SE10.DELET != "*" 
                                && (int)(object)SE10.E1Vencrea <= (int)(object)DataInicio

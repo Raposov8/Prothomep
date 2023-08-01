@@ -70,24 +70,25 @@ namespace SGID.Pages.Relatorios.Financeiro
                 //join SC50 in Protheus.Sc5010s on SD10.D1Pedido equals SC50.C5Num into Se
                 //from c in Se.DefaultIfEmpty()
 
-                var teste = (from SF20 in Protheus.Sf2010s
-                             join SD10 in Protheus.Sd1010s on SF20.F2Doc equals SD10.D1Nfori
+                var teste = (from SD10 in Protheus.Sd1010s
+                             join SF20 in Protheus.Sf2010s on SD10.D1Nfori equals SF20.F2Doc into Sm
+                             from c in Sm.DefaultIfEmpty()
                              join SB10 in Protheus.Sb1010s on SD10.D1Cod equals SB10.B1Cod
-                             join SA10 in Protheus.Sa1010s on SF20.F2Cliente equals SA10.A1Cod into Sr
+                             join SA10 in Protheus.Sa1010s on c.F2Cliente equals SA10.A1Cod into Sr
                              from m in Sr.DefaultIfEmpty()
-                             where (int)(object)SD10.D1Emissao >= (int)(object)DataInicio.ToString("yyyy/MM/dd").Replace("/", "")
-                             && (int)(object)SD10.D1Emissao <= (int)(object)DataFim.ToString("yyyy/MM/dd").Replace("/", "")
+                             where (int)(object)SD10.D1Dtdigit >= (int)(object)DataInicio.ToString("yyyy/MM/dd").Replace("/", "")
+                             && (int)(object)SD10.D1Dtdigit <= (int)(object)DataFim.ToString("yyyy/MM/dd").Replace("/", "")
                              && CfNe.Contains((int)(object)SD10.D1Cf)
-                             && SF20.DELET != "*" && SD10.DELET != "*"
+                             && c.DELET != "*" && SD10.DELET != "*"
                              select new ReceitaBruta
                              {
                                  Produto = SB10.B1Cod,
                                  Descricao = SB10.B1Desc,
-                                 NFSaida = SF20.F2Doc,
+                                 NFSaida = SD10.D1Doc,
                                  CFOP = SD10.D1Cf,
                                  Cliente = m.A1Nome,
                                  Tipo = m.A1Clinter,
-                                 Bruta = -SD10.D1Total,
+                                 Bruta = -(SD10.D1Total - SD10.D1Valdesc + SD10.D1Valipi + SD10.D1Despesa),
                                  Qtde = SD10.D1Quant,
                                  Parcelas = "1",
                                  CondPag = "",
@@ -154,24 +155,25 @@ namespace SGID.Pages.Relatorios.Financeiro
                                   Fabricante = SB10.B1Fabric
                               }).ToList();
 
-                var teste = (from SF20 in Protheus.Sf2010s
-                             join SD10 in Protheus.Sd1010s on SF20.F2Doc equals SD10.D1Nfori
+                var teste = (from SD10 in Protheus.Sd1010s
+                             join SF20 in Protheus.Sf2010s on SD10.D1Nfori equals SF20.F2Doc into Sm
+                             from c in Sm.DefaultIfEmpty()
                              join SB10 in Protheus.Sb1010s on SD10.D1Cod equals SB10.B1Cod
-                             join SA10 in Protheus.Sa1010s on SF20.F2Cliente equals SA10.A1Cod into Sr
+                             join SA10 in Protheus.Sa1010s on c.F2Cliente equals SA10.A1Cod into Sr
                              from m in Sr.DefaultIfEmpty()
-                             where (int)(object)SD10.D1Emissao >= (int)(object)DataInicio.ToString("yyyy/MM/dd").Replace("/", "")
-                             && (int)(object)SD10.D1Emissao <= (int)(object)DataFim.ToString("yyyy/MM/dd").Replace("/", "")
+                             where (int)(object)SD10.D1Dtdigit >= (int)(object)DataInicio.ToString("yyyy/MM/dd").Replace("/", "")
+                             && (int)(object)SD10.D1Dtdigit <= (int)(object)DataFim.ToString("yyyy/MM/dd").Replace("/", "")
                              && CfNe.Contains((int)(object)SD10.D1Cf)
-                             && SF20.DELET != "*" && SD10.DELET != "*"
+                             && c.DELET != "*" && SD10.DELET != "*"
                              select new ReceitaBruta
                              {
                                  Produto = SB10.B1Cod,
                                  Descricao = SB10.B1Desc,
-                                 NFSaida = SF20.F2Doc,
+                                 NFSaida = SD10.D1Doc,
                                  CFOP = SD10.D1Cf,
                                  Cliente = m.A1Nome,
                                  Tipo = m.A1Clinter,
-                                 Bruta = -SD10.D1Total,
+                                 Bruta = -(SD10.D1Total - SD10.D1Valdesc + SD10.D1Valipi + SD10.D1Despesa),
                                  Qtde = SD10.D1Quant,
                                  Parcelas = "1",
                                  CondPag = "",

@@ -1,7 +1,7 @@
 ﻿@page "{Id}"
 @model SGID.Pages.Account.RH.DetailsTimeModel
 @{
-    ViewBag.Title = "Detalhes";
+    ViewBag.Title = "Detalhes Comercial";
     Layout = "_LayoutGeral";
 }
 
@@ -43,59 +43,7 @@
         </dd>
     </dl>
 </div>
-<h4>Lista de Roles para este usuário</h4>
-@if (Model._details.Roles.Count == 0)
-{
-    <hr />
-    <p>Usuário não pertence a nenhuma Role.</p>
-}
-else
-{
-    <table class="table">
 
-        @foreach (var item in Model._details.Roles)
-        {
-            <tr>
-                <td>
-                    @item
-                </td>
-            </tr>
-        }
-    </table>
-}
-
-<h4>Lista de Claims para este usuário</h4>
-
-@if (Model._details.Claims.Count == 0)
-{
-    <hr />
-    <p>Usuário não possui nenhum Claim.</p>
-}
-else
-{
-    <table class="table">
-        <tr class="table-bordered">
-            <td>
-                <b>Nome da Claim</b>
-            </td>
-            <td>
-                <b>Valor da Claim</b>
-            </td>
-        </tr>
-
-        @foreach (var item in Model._details.Claims)
-        {
-            <tr>
-                <td>
-                    @item.Type
-                </td>
-                <td>
-                    @item.Value
-                </td>
-            </tr>
-        }
-    </table>
-}
 
 <p>
     <a href="/account/rh/editartime/@Model._details.Id">Editar</a>

@@ -757,11 +757,20 @@
                        </div>
                    </li>
                }
-                @if (User.IsInRole("Admin") || User.IsInRole("RH") || User.IsInRole("Diretoria"))
+               @if (User.IsInRole("Admin") || User.IsInRole("RH") || User.IsInRole("Diretoria"))
                {
-                  <li>
-                     <a class="nav-link" href="/account/RH/listartime"><i class="fa-solid fa-user"></i>Time</a>
-                  </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link align-items-center rounded dropdown-toggle" data-bs-toggle="collapse"
+                           data-bs-target="#rhcomissoes-collapse" aria-expanded="false">
+                            Comissões
+                        </a>
+                        <div class="collapse" id="rhcomissoes-collapse">
+                            <ul class="list-unstyled fw-normal pb-1 small">
+                                <a class="nav-link" href="/account/RH/listartime">Comissões Comercial</a>
+                                <a class="nav-link" href="/account/RH/listaradm">Comissões ADM</a>
+                            </ul>
+                        </div>
+                    </li>
                }
                @if (User.IsInRole("Admin"))
                {
