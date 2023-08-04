@@ -40,71 +40,52 @@ namespace SGID.Pages.Relatorios.Controladoria
             var DataI = DataInicio.ToString("yyyy/MM/dd").Replace("/", "");
             var DataF = DataFim.ToString("yyyy/MM/dd").Replace("/", "");
 
-            var query = (from SD20 in Protheus.Sd2010s
-                         join SF20 in Protheus.Sf2010s on new { Filial = SD20.D2Filial, Doc = SD20.D2Doc, Serie = SD20.D2Serie, Cliente = SD20.D2Cliente, Loja = SD20.D2Loja } equals new { Filial = SF20.F2Filial, Doc = SF20.F2Doc, Serie = SF20.F2Serie, Cliente = SF20.F2Cliente, Loja = SF20.F2Loja }
-                         join SB10 in Protheus.Sb1010s on SD20.D2Cod equals SB10.B1Cod
-                         join SA10 in Protheus.Sa1010s on new { Cliente = SD20.D2Cliente, Loja = SD20.D2Loja } equals new { Cliente = SA10.A1Cod, Loja = SA10.A1Loja }
-                         where SD20.DELET != "*" && SF20.DELET != "*" && SB10.DELET != "*" && SA10.DELET != "*"
-                         && !Tipo.Contains(SF20.F2Tipo) && (int)(object)SD20.D2Emissao >= (int)(object)DataI && (int)(object)SD20.D2Emissao <= (int)(object)DataF
-                         select new SD2
-                         {
-                             Filial = SD20.D2Filial,
-                             Produto = SD20.D2Cod,
-                             DescProd = SB10.B1Desc,
-                             QTDE = SD20.D2Quant,
-                             VLUnit = SD20.D2Prcven,
-                             Total = SD20.D2Total,
-                             IPI = SD20.D2Valipi,
-                             ICMS = SD20.D2Valicm,
-                             TES = SD20.D2Tes,
-                             CodFis = SD20.D2Cf,
-                             Cliente = SD20.D2Cliente,
-                             NomCli = SA10.A1Nome,
-                             Documento = SD20.D2Doc,
-                             Serie = SD20.D2Serie,
-                             Custo = SD20.D2Custo1,
-                             VALIMP5 = SD20.D2Valimp5,
-                             VALIMP6 = SD20.D2Valimp6,
-                             ICMSDIF = SD20.D2Icmsdif,
-                             VALFECP = SD20.D2Valfecp,
-                             OPERACAO = "SAIDA"
-                         })
-                         .Union(
-                (from SD20 in Protheus.Sd2010s
-                join SF20 in Protheus.Sf2010s on new {Filial=SD20.D2Filial,Doc=SD20.D2Doc,Serie=SD20.D2Serie,Cliente=SD20.D2Cliente,Loja=SD20.D2Loja} equals new { Filial = SF20.F2Filial, Doc = SF20.F2Doc, Serie = SF20.F2Serie, Cliente = SF20.F2Cliente, Loja = SF20.F2Loja }
-                join SB10 in Protheus.Sb1010s on SD20.D2Cod equals SB10.B1Cod
-                join SA20 in Protheus.Sa2010s on new {Cliente=SD20.D2Cliente,Loja=SD20.D2Loja} equals new { Cliente = SA20.A2Cod, Loja = SA20.A2Loja }
-                where SD20.DELET != "*" && SF20.DELET != "*" && SB10.DELET != "*" && SA20.DELET != "*" && Tipo.Contains(SF20.F2Tipo)
-                && (int)(object)SD20.D2Emissao >= (int)(object)DataI && (int)(object)SD20.D2Emissao <= (int)(object)DataF
-                 select new SD2
-                 {
-                     Filial = SD20.D2Filial,
-                     Produto = SD20.D2Cod,
-                     DescProd = SB10.B1Desc,
-                     QTDE = SD20.D2Quant,
-                     VLUnit = SD20.D2Prcven,
-                     Total = SD20.D2Total,
-                     IPI = SD20.D2Valipi,
-                     ICMS = SD20.D2Valicm,
-                     TES = SD20.D2Tes,
-                     CodFis = SD20.D2Cf,
-                     Cliente = SD20.D2Cliente,
-                     NomCli = SA20.A2Nome,
-                     Documento = SD20.D2Doc,
-                     Serie = SD20.D2Serie,
-                     Custo = SD20.D2Custo1,
-                     VALIMP5 = SD20.D2Valimp5,
-                     VALIMP6 = SD20.D2Valimp6,
-                     ICMSDIF = SD20.D2Icmsdif,
-                     VALFECP = SD20.D2Valfecp,
-                     OPERACAO = "SAIDA"
-                 }));
+            try
+            {
+                var query = (from SD20 in Protheus.Sd2010s
+                             join SF20 in Protheus.Sf2010s on new { Filial = SD20.D2Filial, Doc = SD20.D2Doc, Serie = SD20.D2Serie, Cliente = SD20.D2Cliente, Loja = SD20.D2Loja } equals new { Filial = SF20.F2Filial, Doc = SF20.F2Doc, Serie = SF20.F2Serie, Cliente = SF20.F2Cliente, Loja = SF20.F2Loja }
+                             join SB10 in Protheus.Sb1010s on SD20.D2Cod equals SB10.B1Cod
+                             join SA10 in Protheus.Sa1010s on new { Cliente = SD20.D2Cliente, Loja = SD20.D2Loja } equals new { Cliente = SA10.A1Cod, Loja = SA10.A1Loja }
+                             where SD20.DELET != "*" && SF20.DELET != "*" && SB10.DELET != "*" && SA10.DELET != "*"
+                             && !Tipo.Contains(SF20.F2Tipo) && (int)(object)SD20.D2Emissao >= (int)(object)DataI && (int)(object)SD20.D2Emissao <= (int)(object)DataF
+                             select new SD2
+                             {
+                                 Filial = SD20.D2Filial,
+                                 Produto = SD20.D2Cod,
+                                 DescProd = SB10.B1Desc,
+                                 QTDE = SD20.D2Quant,
+                                 VLUnit = SD20.D2Prcven,
+                                 Total = SD20.D2Total,
+                                 IPI = SD20.D2Valipi,
+                                 ICMS = SD20.D2Valicm,
+                                 TES = SD20.D2Tes,
+                                 CodFis = SD20.D2Cf,
+                                 Cliente = SD20.D2Cliente,
+                                 NomCli = SA10.A1Nome,
+                                 Documento = SD20.D2Doc,
+                                 Serie = SD20.D2Serie,
+                                 Custo = SD20.D2Custo1,
+                                 VALIMP5 = SD20.D2Valimp5,
+                                 VALIMP6 = SD20.D2Valimp6,
+                                 ICMSDIF = SD20.D2Icmsdif,
+                                 VALFECP = SD20.D2Valfecp,
+                                 OPERACAO = "SAIDA"
+                             })
+                            ;
 
 
-            Relatorio = query.ToList();
+                Relatorio = query.ToList();
 
 
-            return Page();
+                return Page();
+            }
+            catch (Exception e)
+            {
+                string user = User.Identity.Name.Split("@")[0].ToUpper();
+                Logger.Log(e, SGID, "SD2 Denuo", user);
+
+                return LocalRedirect("/error");
+            }
         }
 
         public IActionResult OnPostExport(DateTime DataInicio,DateTime DataFim)

@@ -141,6 +141,28 @@
     </div>
 </div>
 
+<div>
+    <div class="panel">
+        <div class="panel-body">
+            <table id="Linhas" class="table-striped table-bordered" cellspacing="0" width="100%">
+                <thead>
+                    <tr>
+                        <th colspan="3">
+                            Faturamento Por Linha
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td colspan="3">
+
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
 
 <div class="modal fade" id="loading-modal" role="dialog" tabindex="-1" aria-labelledby="demo-default-modal" aria-hidden="true">
     <div class="modal-dialog">
@@ -185,7 +207,6 @@
             elem.innerHTML = width * 1 + '%';
         }
 
-
         function drawChart() {
 
             var data = google.visualization.arrayToDataTable(
@@ -212,7 +233,7 @@
 
                 $("#loading-modal").modal('show')
 
-               var Data = $('input[name=Tipo]:checked').val();
+                var Data = $('input[name=Tipo]:checked').val();
 
                 move(0)
 
@@ -253,9 +274,9 @@
 
                     
 
-                        var chamadaUrl = `/dashboards/dashboarddiretorio2?handler=Baixa&&Tipo=${Data}`
+                        var chamadaUrl2 = `/dashboards/dashboarddiretorio2?handler=Baixa&&Tipo=${Data}`
                         $.ajax({
-                            url: chamadaUrl,
+                            url: chamadaUrl2,
                             type: "POST",
                             contentType: "application/json;",
                             dataType: 'json',
@@ -295,9 +316,9 @@
                             }
                         })
 
-                        var chamadaUrl = `/dashboards/dashboarddiretorio2?handler=Faturado&&Tipo=${Data}`
+                        var chamadaUrl3 = `/dashboards/dashboarddiretorio2?handler=Faturado&&Tipo=${Data}`
                         $.ajax({
-                            url: chamadaUrl,
+                            url: chamadaUrl3,
                             type: "POST",
                             contentType: "application/json;",
                             dataType: 'json',
@@ -342,6 +363,38 @@
                             }
                         })
 
+                        var chamadaUrl4 = `/dashboards/dashboarddiretorio2?handler=FaturamentoPorLinha&&Tipo=${Data}`
+                        $.ajax({
+                            url: chamadaUrl4,
+                            type: "POST",
+                            contentType: "application/json;",
+                            dataType: 'json',
+                            headers: {
+                                "RequestVerificationToken": $('input:hidden[name="__RequestVerificationToken"]').val()
+                            },
+                            success: function (data) {
+
+                                $("#Linhas>tbody>tr").remove();
+
+                                data.forEach(x => {
+                                    var linha = `<tr>
+                                                     <td>
+                                                     ${x.nome}
+                                                     </td>
+                                                     <td>
+                                                     ${x.quant}
+                                                     </td>
+                                                     <td>
+                                                        ${x.faturamento.toLocaleString('pt-BR', formato)}
+                                                     </td>
+                                                 </tr>`;
+
+                                    $("#Linhas>tbody").append(linha);
+                                })
+
+                                move(75)
+                            }
+                        })
                     }
                 
 

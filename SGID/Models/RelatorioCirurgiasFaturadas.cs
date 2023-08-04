@@ -28,5 +28,6 @@
         public string C5NomClien { get; set; }
         public double QTDE { get; set; }
         public double D2Prcven { get; set; }
+        public string Linha { get; set; }
     }
 }

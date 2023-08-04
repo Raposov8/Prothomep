@@ -65,31 +65,7 @@ namespace SGID.Pages.Relatorios.Controladoria
                                  Agend = SC50.C5Unumage,
                                  ValSaida = SD20.D2Total
                              }
-                             ).Concat(
-                            from SD20 in Protheus.Sd2010s
-                            join SF20 in Protheus.Sf2010s on new { Filial = SD20.D2Filial, Doc = SD20.D2Doc, Serie = SD20.D2Serie, Cliente = SD20.D2Cliente, Loja = SD20.D2Loja } equals new { Filial = SF20.F2Filial, Doc = SF20.F2Doc, Serie = SF20.F2Serie, Cliente = SF20.F2Cliente, Loja = SF20.F2Loja }
-                            join SA20 in Protheus.Sa2010s on new { Cod = SD20.D2Cliente, Loja = SD20.D2Loja } equals new { Cod = SA20.A2Cod, Loja = SA20.A2Loja }
-                            join SC50 in Protheus.Sc5010s on new { Filial = SD20.D2Filial, Num = SD20.D2Pedido } equals new { Filial = SC50.C5Filial, Num = SC50.C5Num }
-                            where SD20.DELET != "*" && SF20.DELET != "*" && SA20.DELET != "*" && SC50.DELET != "*" && (SF20.F2Tipo == "B"
-                            || SF20.F2Tipo == "D") && (int)(object)SD20.D2Emissao >= (int)(object)DataInicio.ToString("yyyy/MM/dd").Replace("/", "") && (int)(object)SD20.D2Emissao <= (int)(object)DataFim.ToString("yyyy/MM/dd").Replace("/", "") &&
-                            (SD20.D2Cf == "5908" || SD20.D2Cf == "5949" || SD20.D2Cf == "6908" || SD20.D2Cf == "6949")
-                            select new SINIEF
-                            {
-                                Filial = SD20.D2Filial,
-                                Doc = SD20.D2Doc,
-                                Serie = SD20.D2Serie,
-                                Emissao = SD20.D2Emissao,
-                                Clifor = SD20.D2Cliente,
-                                Loja = SD20.D2Loja,
-                                NomCliFor = SA20.A2Nome,
-                                Paciente = SC50.C5XNmpac,
-                                Valicm = SD20.D2Valicm,
-                                Operacao = "SAIDA",
-                                Pedido = SD20.D2Pedido,
-                                Agend = SC50.C5Unumage,
-                                ValSaida = SD20.D2Total
-                            }
-                            ).GroupBy(x => new
+                             ).GroupBy(x => new
                             {
                                 x.Filial,
                                 x.Doc,
@@ -247,31 +223,7 @@ namespace SGID.Pages.Relatorios.Controladoria
                                  Agend = SC50.C5Unumage,
                                  ValSaida = SD20.D2Total
                              }
-                             ).Concat(
-                            from SD20 in Protheus.Sd2010s
-                            join SF20 in Protheus.Sf2010s on new { Filial = SD20.D2Filial, Doc = SD20.D2Doc, Serie = SD20.D2Serie, Cliente = SD20.D2Cliente, Loja = SD20.D2Loja } equals new { Filial = SF20.F2Filial, Doc = SF20.F2Doc, Serie = SF20.F2Serie, Cliente = SF20.F2Cliente, Loja = SF20.F2Loja }
-                            join SA20 in Protheus.Sa2010s on new { Cod = SD20.D2Cliente, Loja = SD20.D2Loja } equals new { Cod = SA20.A2Cod, Loja = SA20.A2Loja }
-                            join SC50 in Protheus.Sc5010s on new { Filial = SD20.D2Filial, Num = SD20.D2Pedido } equals new { Filial = SC50.C5Filial, Num = SC50.C5Num }
-                            where SD20.DELET != "*" && SF20.DELET != "*" && SA20.DELET != "*" && SC50.DELET != "*" && (SF20.F2Tipo == "B"
-                            || SF20.F2Tipo == "D") && (int)(object)SD20.D2Emissao >= (int)(object)DataInicio.ToString("yyyy/MM/dd").Replace("/", "") && (int)(object)SD20.D2Emissao <= (int)(object)DataFim.ToString("yyyy/MM/dd").Replace("/", "") &&
-                            (SD20.D2Cf == "5908" || SD20.D2Cf == "5949" || SD20.D2Cf == "6908" || SD20.D2Cf == "6949")
-                            select new SINIEF
-                            {
-                                Filial = SD20.D2Filial,
-                                Doc = SD20.D2Doc,
-                                Serie = SD20.D2Serie,
-                                Emissao = SD20.D2Emissao,
-                                Clifor = SD20.D2Cliente,
-                                Loja = SD20.D2Loja,
-                                NomCliFor = SA20.A2Nome,
-                                Paciente = SC50.C5XNmpac,
-                                Valicm = SD20.D2Valicm,
-                                Operacao = "SAIDA",
-                                Pedido = SD20.D2Pedido,
-                                Agend = SC50.C5Unumage,
-                                ValSaida = SD20.D2Total
-                            }
-                            ).GroupBy(x => new
+                             ).GroupBy(x => new
                             {
                                 x.Filial,
                                 x.Doc,

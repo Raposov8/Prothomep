@@ -4,5 +4,6 @@
     {
         public string Nome { get; set; }
         public double Faturamento { get; set; }
+        public double Quant { get; set; }
     }
 }

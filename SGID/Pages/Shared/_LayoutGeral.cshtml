@@ -15,6 +15,8 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap-grid.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/SGID.styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/loading-bar.css" asp-append-version="true"/>
+    
 
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 
@@ -68,18 +70,18 @@
                 <li>
                     <a class="nav-link" href="/dashboard/3"><i class="fa-solid fa-house"></i>Home</a>
                 </li>
-                @if (User.IsInRole("Admin") || User.IsInRole("GestorComercial") || User.IsInRole("Comercial") )
+                @if(User.IsInRole("Admin") || User.IsInRole("GestorComercial") || User.IsInRole("Comercial") )
                 {
                     if (User.Identity.Name.Split("@")[1].ToUpper() == "INTERMEDIC.COM.BR")
                     {
                         <li>
-                            <a class="nav-link" href="/dashboards/DashBoardComercial/01"><i class="fa-solid fa-clipboard-user"></i>DashBoard Pessoal</a>
+                            <a class="nav-link" href="/dashboards/DashBoardComercial/01"><i class="fa-solid fa-id-badge"></i>DashBoard Pessoal</a>
                         </li>
                     }
                     else
                     {
                         <li>
-                            <a class="nav-link" href="/dashboards/DashBoardComercial/03"><i class="fa-solid fa-clipboard-user"></i>DashBoard Pessoal</a>
+                            <a class="nav-link" href="/dashboards/DashBoardComercial/03"><i class="fa-solid fa-id-badge"></i>DashBoard Pessoal</a>
                         </li>
                     }
                     <li class="nav-item dropdown">
@@ -95,7 +97,7 @@
                     </li>
                     
                 }
-                @if (User.IsInRole("Admin")|| User.IsInRole("Diretoria"))
+                @if(User.IsInRole("Admin")|| User.IsInRole("Diretoria"))
                 {
                      <li>
                         <a class="nav-link" href="/dashboards/DashBoardDiretorio2"><i class="fa-solid fa-clipboard-user"></i>DashBoard Diretoria</a>
@@ -115,47 +117,6 @@
                             </ul>
                         </div>
                     </li>
-                    <!--<li class="nav-item dropdown">
-                        <a class="nav-link align-items-center rounded dropdown-toggle" data-bs-toggle="collapse" 
-                        data-bs-target="#cotacoes-collapse" aria-expanded="false"> 
-                            <i class="fa-solid fa-money-bill-1-wave"></i>Cotações
-                        </a>
-                        <div class="collapse" id="cotacoes-collapse">
-                            <ul class="list-unstyled fw-normal pb-1 small">
-                                <li><a class="nav-link" href="/cotacoes/dashboardcotacoes/0">Em Aberto</a></li>
-                                <li><a class="nav-link" href="/cotacoes/dashboardcotacoes/1">Aprovadas</a></li>
-                                <li><a class="nav-link" href="/cotacoes/dashboardcotacoes/2">Reprovadas</a></li>
-                                <li><a class="nav-link" href="/cotacoes/dashboardcotacoes/3">Respondidas</a></li>
-                                <li><a class="nav-link" href="/cotacoes/dashboardcotacoes/4">Emergência</a></li>
-                            </ul>
-                        </div>
-                    </li>-->
-                    <li class="nav-item dropdown">
-                        <a class="nav-link align-items-center rounded dropdown-toggle" data-bs-toggle="collapse" 
-                        data-bs-target="#recursos-collapse" aria-expanded="false">
-                            <i class="fa-solid fa-user-tie"></i>Recursos
-                        </a>
-                        <div class="collapse" id="recursos-collapse">
-                            <ul class="list-unstyled fw-normal pb-1 small">
-                                <li><a class="nav-link" href="/cirurgias/listarrecursos">Listar Recursos</a></li>
-                                <li><a class="nav-link" href="#">Procedimentos</a></li>
-                            </ul>
-                        </div>
-                    </li>
-                    <!--<li class="nav-item dropdown">
-                        <a class="nav-link align-items-center rounded dropdown-toggle" data-bs-toggle="collapse"
-                       data-bs-target="#logistica-collapse" aria-expanded="false">
-                            <i class="fa-solid fa-truck"></i>Logística
-                        </a>
-                        <div class="collapse" id="logistica-collapse">
-                            <ul class="list-unstyled fw-normal pb-1 small">
-                                <li><a class="nav-link" href="/logistica/LogisticaVendas/1">Dashboard</a></li>
-                                <li><a class="nav-link" href="/logistica/LogisticaVendas/2">Entregas</a></li>
-                                <li><a class="nav-link" href="#">Estoques</a></li>
-                            </ul>
-                        </div>
-                    </li>-->
-                    
                 }
                 @if(User.IsInRole("Admin") || User.IsInRole("Comercial") || User.IsInRole("GestorComercial") || User.IsInRole("Diretoria"))
                 {
@@ -684,7 +645,7 @@
                      </ul>
                   </div>
                </li>
-               @if (User.IsInRole("Admin") || User.IsInRole("Patrimonio") || User.IsInRole("Diretoria"))
+               @if(User.IsInRole("Admin") || User.IsInRole("Patrimonio") || User.IsInRole("Diretoria"))
                {
                    <li class="nav-item dropdown">
                        <a class="nav-link align-items-center rounded dropdown-toggle" data-bs-toggle="collapse" 
@@ -757,12 +718,12 @@
                        </div>
                    </li>
                }
-               @if (User.IsInRole("Admin") || User.IsInRole("RH") || User.IsInRole("Diretoria"))
+               @if(User.IsInRole("Admin") || User.IsInRole("RH") || User.IsInRole("Diretoria"))
                {
                     <li class="nav-item dropdown">
                         <a class="nav-link align-items-center rounded dropdown-toggle" data-bs-toggle="collapse"
                            data-bs-target="#rhcomissoes-collapse" aria-expanded="false">
-                            Comissões
+                            <i class="fa-solid fa-money-bill-transfer"></i> Comissões
                         </a>
                         <div class="collapse" id="rhcomissoes-collapse">
                             <ul class="list-unstyled fw-normal pb-1 small">
@@ -772,18 +733,18 @@
                         </div>
                     </li>
                }
-               @if (User.IsInRole("Admin"))
+               @if(User.IsInRole("Admin"))
                {
                   <li>
                      <a class="nav-link" href="/useradmin/listarusuarios/1"><i class="fa-solid fa-user"></i>Usuários</a>
                   </li>
                }
-               @if (User.IsInRole("Admin")|| User.IsInRole("GestorComercial") || User.IsInRole("Venda") || User.IsInRole("Diretoria"))
+               @if(User.IsInRole("Admin")|| User.IsInRole("GestorComercial") || User.IsInRole("Venda") || User.IsInRole("Diretoria"))
                 {
                     <li class="nav-item dropdown">
                         <a class="nav-link align-items-center rounded dropdown-toggle" data-bs-toggle="collapse"
                         data-bs-target="#Medicos-collapse" aria-expanded="false">
-                           Medicos
+                           <i class="fa-solid fa-user-doctor"></i> Medicos
                         </a>
                         <div class="collapse" id="Medicos-collapse">
                             <ul class="list-unstyled fw-normal pb-1 small">
@@ -804,6 +765,7 @@
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js" asp-append-version="true"></script>
     <script src="~/lib/jquery.mask/jquery.mask.min.js" asp-append-version="true"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/js/loading-bar.js" asp-append-version="true"></script>
     <script>
         $("#check").on('change',function (){
                document.getElementById("mySidenav").style.width = "250px";

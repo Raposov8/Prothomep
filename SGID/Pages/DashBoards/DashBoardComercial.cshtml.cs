@@ -233,9 +233,13 @@ namespace SGID.Pages.DashBoards
 
                     var time = SGID.Times.FirstOrDefault(x => x.Integrante == user);
 
-                    Comissao = FaturadoMesValor * (time.Porcentagem / 100);
+                    if (time != null)
+                    {
 
-                    Meta = time.Meta - FaturadoMesValor;
+                        Comissao = FaturadoMesValor * (time.Porcentagem / 100);
+
+                        Meta = time.Meta - FaturadoMesValor;
+                    }
                     return Page();
                 }
                 else
@@ -427,9 +431,13 @@ namespace SGID.Pages.DashBoards
 
                     var time = SGID.Times.FirstOrDefault(x => x.Integrante == user);
 
-                    Comissao = FaturadoMesValor * (time.Porcentagem / 100);
+                    if (time != null)
+                    {
 
-                    Meta = time.Meta - FaturadoMesValor;
+                        Comissao = FaturadoMesValor * (time.Porcentagem / 100);
+
+                        Meta = time.Meta - FaturadoMesValor;
+                    }
                     return Page();
                 }
             }

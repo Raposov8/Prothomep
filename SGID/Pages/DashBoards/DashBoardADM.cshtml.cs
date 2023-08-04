@@ -38,8 +38,9 @@ namespace SGID.Pages.DashBoards
                 string data = DateTime.Now.ToString("yyyy/MM").Replace("/", "");
                 string DataInicio = data + "01";
                 string DataFim = data + "31";
-                int[] CF = new int[] { 5551, 6551, 6107, 6109 };
-
+                string[] CF = new string[] { "5551", "6551", "6107", "6109" };
+                //&& SD20.D2Quant != 0 
+                //&& SD20.D2Quant != 0
 
                 #region INTERMEDIC
 
@@ -50,48 +51,34 @@ namespace SGID.Pages.DashBoards
                              join SF20 in ProtheusInter.Sf2010s on new { Filial = SD20.D2Filial, Doc = SD20.D2Doc, Serie = SD20.D2Serie, Cliente = SD20.D2Cliente, Loja = SD20.D2Loja } equals new { Filial = SF20.F2Filial, Doc = SF20.F2Doc, Serie = SF20.F2Serie, Cliente = SF20.F2Cliente, Loja = SF20.F2Loja }
                              join SC50 in ProtheusInter.Sc5010s on new { Filial = SD20.D2Filial, Num = SD20.D2Pedido } equals new { Filial = SC50.C5Filial, Num = SC50.C5Num }
                              join SA30 in ProtheusInter.Sa3010s on SC50.C5Vend1 equals SA30.A3Cod
-                             join SC60 in ProtheusInter.Sc6010s on new { Filial = SD20.D2Filial, Pedido = SD20.D2Pedido, Cliente = SD20.D2Cliente, Loja = SD20.D2Loja, Item = SD20.D2Itempv, Cod = SD20.D2Cod } equals new { Filial = SC60.C6Filial, Pedido = SC60.C6Num, Cliente = SC60.C6Cli, Loja = SC60.C6Loja, Item = SC60.C6Item, Cod = SC60.C6Produto }
-                             where SD20.DELET != "*" && SA10.DELET != "*" && SB10.DELET != "*" && SF20.DELET != "*" && SC50.DELET != "*" && SC60.DELET != "*"
-                             && (((int)(object)SD20.D2Cf >= 5102 && (int)(object)SD20.D2Cf <= 5114) || ((int)(object)SD20.D2Cf >= 6102 && (int)(object)SD20.D2Cf <= 6114) ||
-                             ((int)(object)SD20.D2Cf >= 7102 && (int)(object)SD20.D2Cf <= 7114) || CF.Contains((int)(object)SD20.D2Cf)) && ((int)(object)SD20.D2Emissao >= (int)(object)DataInicio && (int)(object)SD20.D2Emissao <= (int)(object)DataFim)
-                             && SD20.D2Quant != 0 && SC50.C5Utpoper == "F" && SA10.A1Clinter != "S" && SA10.A1Cgc != "04715053000140" && SA10.A1Cgc != "04715053000220" && SA10.A1Cgc != "01390500000140" && (int)(object)SD20.D2Emissao >= 20200701
+                             where SD20.DELET != "*" && SA10.DELET != "*" && SB10.DELET != "*" && SF20.DELET != "*" && SC50.DELET != "*" && SA30.DELET != "*"
+                             && ((int)(object)SD20.D2Cf >= 5102 && (int)(object)SD20.D2Cf <= 5114 || (int)(object)SD20.D2Cf >= 6102 && (int)(object)SD20.D2Cf <= 6114 ||
+                             (int)(object)SD20.D2Cf >= 7102 && (int)(object)SD20.D2Cf <= 7114 || CF.Contains(SD20.D2Cf)) && ((int)(object)SD20.D2Emissao >= (int)(object)DataInicio && (int)(object)SD20.D2Emissao <= (int)(object)DataFim)
+                             && SC50.C5Utpoper == "F" && SA10.A1Cgc != "04715053000140" && SA10.A1Cgc != "04715053000220" && SA10.A1Cgc != "01390500000140" && (int)(object)SD20.D2Emissao >= 20200701
                              select new
                              {
+                                 Login = SA30.A3Xlogin,
                                  NF = SD20.D2Doc,
                                  Total = SD20.D2Total,
-                                 Data = SD20.D2Emissao,
-                                 Login = SA30.A3Xlogin,
-                                 Gestor = SA30.A3Xlogsup,
-                                 Linha = SA30.A3Xdescun,
-                                 DOR = SB10.B1Ugrpint,
-                                 Codigo = SA10.A1Xgrinte
+
                              });
 
                 var resultadoInter = query.GroupBy(x => new
                 {
-                    x.NF,
-                    x.Data,
                     x.Login,
-                    x.Gestor,
-                    x.Linha,
-                    x.DOR,
-                    x.Codigo
-                }).Select(x => new
+                    x.NF,
+                    x.Total
+                }).Select(x => new RelatorioCirurgiasFaturadas
                 {
+                    A3Nome = x.Key.Login,
                     Nf = x.Key.NF,
                     Total = x.Sum(c => c.Total),
-                    Data = x.Key.Data,
-                    Login = x.Key.Login.Trim(),
-                    Gestor = x.Key.Gestor.Trim(),
-                    Linha = x.Key.Linha.Trim(),
-                    DOR = x.Key.DOR,
-                    Codigo = x.Key.Codigo
                 }).ToList();
                 #endregion
 
                 #region Devolucao
 
-                var DevolucaoInter = new List<RelatorioDevolucaoFat>();
+                /*var DevolucaoInter = new List<RelatorioDevolucaoFat>();
 
                 var teste = (from SD10 in ProtheusInter.Sd1010s
                              join SF20 in ProtheusInter.Sf2010s on new { Filial = SD10.D1Filial, Doc = SD10.D1Nfori, Serie = SD10.D1Seriori, Forn = SD10.D1Fornece, Loja = SD10.D1Loja } equals new { Filial = SF20.F2Filial, Doc = SF20.F2Doc, Serie = SF20.F2Serie, Forn = SF20.F2Cliente, Loja = SF20.F2Loja }
@@ -182,7 +169,7 @@ namespace SGID.Pages.DashBoards
                             });
                         }
                     });
-                }
+                }*/
 
                 #endregion
 
@@ -191,50 +178,39 @@ namespace SGID.Pages.DashBoards
                 #region DENUO
 
                 #region Faturado
+                var queryDenuo = (from SD20 in ProtheusDenuo.Sd2010s
+                                  join SA10 in ProtheusDenuo.Sa1010s on new { Cod = SD20.D2Cliente, Loja = SD20.D2Loja } equals new { Cod = SA10.A1Cod, Loja = SA10.A1Loja }
+                                  join SB10 in ProtheusDenuo.Sb1010s on SD20.D2Cod equals SB10.B1Cod
+                                  join SF20 in ProtheusDenuo.Sf2010s on new { Filial = SD20.D2Filial, Doc = SD20.D2Doc, Serie = SD20.D2Serie, Cliente = SD20.D2Cliente, Loja = SD20.D2Loja } equals new { Filial = SF20.F2Filial, Doc = SF20.F2Doc, Serie = SF20.F2Serie, Cliente = SF20.F2Cliente, Loja = SF20.F2Loja }
+                                  join SC50 in ProtheusDenuo.Sc5010s on new { Filial = SD20.D2Filial, Num = SD20.D2Pedido } equals new { Filial = SC50.C5Filial, Num = SC50.C5Num }
+                                  join SA30 in ProtheusDenuo.Sa3010s on SC50.C5Vend1 equals SA30.A3Cod
+                                  where SD20.DELET != "*" && SA10.DELET != "*" && SB10.DELET != "*" && SF20.DELET != "*" && SC50.DELET != "*" && SA30.DELET != "*"
+                                  && ((int)(object)SD20.D2Cf >= 5102 && (int)(object)SD20.D2Cf <= 5114 || (int)(object)SD20.D2Cf >= 6102 && (int)(object)SD20.D2Cf <= 6114 ||
+                                  (int)(object)SD20.D2Cf >= 7102 && (int)(object)SD20.D2Cf <= 7114 || CF.Contains(SD20.D2Cf)) && ((int)(object)SD20.D2Emissao >= (int)(object)DataInicio && (int)(object)SD20.D2Emissao <= (int)(object)DataFim)
+                                  && SD20.D2Quant != 0 && SC50.C5Utpoper == "F" && SA10.A1Clinter != "S" && SA10.A1Cgc != "04715053000140" && SA10.A1Cgc != "04715053000220" && SA10.A1Cgc != "01390500000140" && (int)(object)SD20.D2Emissao >= 20200701
+                                  select new
+                                  {
+                                      Login = SA30.A3Xlogin,
+                                      NF = SD20.D2Doc,
+                                      Total = SD20.D2Total,
 
-                var query2 = (from SD20 in ProtheusDenuo.Sd2010s
-                              join SA10 in ProtheusDenuo.Sa1010s on new { Cod = SD20.D2Cliente, Loja = SD20.D2Loja } equals new { Cod = SA10.A1Cod, Loja = SA10.A1Loja }
-                              join SB10 in ProtheusDenuo.Sb1010s on SD20.D2Cod equals SB10.B1Cod
-                              join SF20 in ProtheusDenuo.Sf2010s on new { Filial = SD20.D2Filial, Doc = SD20.D2Doc, Serie = SD20.D2Serie, Cliente = SD20.D2Cliente, Loja = SD20.D2Loja } equals new { Filial = SF20.F2Filial, Doc = SF20.F2Doc, Serie = SF20.F2Serie, Cliente = SF20.F2Cliente, Loja = SF20.F2Loja }
-                              join SC50 in ProtheusDenuo.Sc5010s on new { Filial = SD20.D2Filial, Num = SD20.D2Pedido } equals new { Filial = SC50.C5Filial, Num = SC50.C5Num }
-                              join SA30 in ProtheusDenuo.Sa3010s on SC50.C5Vend1 equals SA30.A3Cod
-                              where SD20.DELET != "*" && SA10.DELET != "*" && SB10.DELET != "*" && SF20.DELET != "*" && SC50.DELET != "*" && SA30.DELET != "*"
-                                 && ((int)(object)SD20.D2Cf >= 5102 && (int)(object)SD20.D2Cf <= 5114 || (int)(object)SD20.D2Cf >= 6102 && (int)(object)SD20.D2Cf <= 6114 ||
-                                 (int)(object)SD20.D2Cf >= 7102 && (int)(object)SD20.D2Cf <= 7114 || CF.Contains((int)(object)SD20.D2Cf)) && ((int)(object)SD20.D2Emissao >= (int)(object)DataInicio && (int)(object)SD20.D2Emissao <= (int)(object)DataFim)
-                                 && SD20.D2Quant != 0 && SC50.C5Utpoper == "F" && SC50.C5Xtipopv != "D" && SA10.A1Clinter != "S" && SA10.A1Cgc != "04715053000140" && SA10.A1Cgc != "04715053000220" && SA10.A1Cgc != "01390500000140" && (int)(object)SD20.D2Emissao >= 20200801
-                              select new
-                              {
-                                  NF = SD20.D2Doc,
-                                  Total = SD20.D2Total,
-                                  Login = SA30.A3Xlogin,
-                                  Data = SD20.D2Emissao,
-                                  Gestor = SA30.A3Xlogsup,
-                                  Linha = SA30.A3Xdescun,
-                                  Codigo = SA10.A1Xgrinte
-                              });
+                                  });
 
-                var resultadoDenuo = query2.GroupBy(x => new
+                var resultadoDenuo = queryDenuo.GroupBy(x => new
                 {
-                    x.NF,
                     x.Login,
-                    x.Gestor,
-                    x.Data,
-                    x.Linha,
-                    x.Codigo
-                }).Select(x => new
+                    x.NF,
+                    x.Total
+                }).Select(x => new RelatorioCirurgiasFaturadas
                 {
+                    A3Nome = x.Key.Login,
                     Nf = x.Key.NF,
                     Total = x.Sum(c => c.Total),
-                    Login = x.Key.Login.Trim(),
-                    Data = x.Key.Data,
-                    Gestor = x.Key.Gestor.Trim(),
-                    Linha = x.Key.Linha.Trim(),
-                    Codigo = x.Key.Codigo
                 }).ToList();
                 #endregion
 
                 #region Devolucao
-                var DevolucaoDenuo = new List<RelatorioDevolucaoFat>();
+                /*var DevolucaoDenuo = new List<RelatorioDevolucaoFat>();
 
                 var teste2 = (from SD10 in ProtheusDenuo.Sd1010s
                               join SF20 in ProtheusDenuo.Sf2010s on new { Filial = SD10.D1Filial, Doc = SD10.D1Nfori, Serie = SD10.D1Seriori, Forn = SD10.D1Fornece, Loja = SD10.D1Loja } equals new { Filial = SF20.F2Filial, Doc = SF20.F2Doc, Serie = SF20.F2Serie, Forn = SF20.F2Cliente, Loja = SF20.F2Loja }
@@ -323,13 +299,13 @@ namespace SGID.Pages.DashBoards
                             });
                         }
                     });
-                }
+                }*/
                 #endregion
 
                 #endregion
 
-                FaturadoMesDenuoValor = resultadoDenuo.Sum(x => x.Total) - DevolucaoDenuo.Sum(x => x.Total);
-                FaturadoMesInterValor = resultadoInter.Sum(x => x.Total) - DevolucaoInter.Sum(x => x.Total);
+                FaturadoMesDenuoValor = resultadoDenuo.Sum(x => x.Total); //- DevolucaoDenuo.Sum(x => x.Total);
+                FaturadoMesInterValor = resultadoInter.Sum(x => x.Total); //- DevolucaoInter.Sum(x => x.Total);
                 MetaInter = 2750000;
                 MetaDenuo = 2750000;
 

@@ -48,16 +48,19 @@ namespace SGID.Pages.Relatorios.RH
                     {
                         #region Gestor
 
+
                         var teste = (from SD10 in Protheus.Sd1010s
                                      join SF20 in Protheus.Sf2010s on new { Filial = SD10.D1Filial, Doc = SD10.D1Nfori, Serie = SD10.D1Seriori, Forn = SD10.D1Fornece, Loja = SD10.D1Loja } equals new { Filial = SF20.F2Filial, Doc = SF20.F2Doc, Serie = SF20.F2Serie, Forn = SF20.F2Cliente, Loja = SF20.F2Loja }
                                      join SA30 in Protheus.Sa3010s on SF20.F2Vend1 equals SA30.A3Cod
+                                     join SC50 in Protheus.Sc5010s on new { Filial = SD10.D1Filial, Nota = SD10.D1Nfori } equals new { Filial = SC50.C5Filial, Nota = SC50.C5Nota }
                                      join SA10 in Protheus.Sa1010s on new { Forn = SD10.D1Fornece, Loja = SD10.D1Loja } equals new { Forn = SA10.A1Cod, Loja = SA10.A1Loja }
                                      join SB10 in Protheus.Sb1010s on SD10.D1Cod equals SB10.B1Cod
                                      where SD10.DELET != "*" && SF20.DELET != "*" && SA10.DELET != "*" && SB10.DELET != "*" && SA30.DELET != "*"
                                      && SA30.A3Xunnego != "000008" && (SD10.D1Cf == "1202" || SD10.D1Cf == "2202" || SD10.D1Cf == "3202" || SD10.D1Cf == "1553" || SD10.D1Cf == "2553")
                                      && (int)(object)SD10.D1Dtdigit >= (int)(object)DataInicio.ToString("yyyy/MM/dd").Replace("/", "") && (int)(object)SD10.D1Dtdigit <= (int)(object)DataFim.ToString("yyyy/MM/dd").Replace("/", "")
+                                     && SC50.C5Utpoper == "F"
                                      && (int)(object)SD10.D1Dtdigit >= 20200801 && (SA30.A3Xlogin == user || SA30.A3Xlogsup == user)
-                                     orderby SA30.A3Nome
+                                    orderby SA30.A3Nome
                                      select new
                                      {
                                          SD10.D1Filial,
@@ -77,8 +80,7 @@ namespace SGID.Pages.Relatorios.RH
                                          SD10.D1Seriori,
                                          SD10.D1Datori,
                                          SD10.D1Emissao
-                                     }
-                             ).ToList();
+                                     }) .ToList();
 
                         if (teste.Count != 0)
                         {
@@ -138,11 +140,13 @@ namespace SGID.Pages.Relatorios.RH
                         var teste = (from SD10 in Protheus.Sd1010s
                                      join SF20 in Protheus.Sf2010s on new { Filial = SD10.D1Filial, Doc = SD10.D1Nfori, Serie = SD10.D1Seriori, Forn = SD10.D1Fornece, Loja = SD10.D1Loja } equals new { Filial = SF20.F2Filial, Doc = SF20.F2Doc, Serie = SF20.F2Serie, Forn = SF20.F2Cliente, Loja = SF20.F2Loja }
                                      join SA30 in Protheus.Sa3010s on SF20.F2Vend1 equals SA30.A3Cod
+                                     join SC50 in Protheus.Sc5010s on new { Filial = SD10.D1Filial, Nota = SD10.D1Nfori } equals new { Filial = SC50.C5Filial, Nota = SC50.C5Nota }
                                      join SA10 in Protheus.Sa1010s on new { Forn = SD10.D1Fornece, Loja = SD10.D1Loja } equals new { Forn = SA10.A1Cod, Loja = SA10.A1Loja }
                                      join SB10 in Protheus.Sb1010s on SD10.D1Cod equals SB10.B1Cod
                                      where SD10.DELET != "*" && SF20.DELET != "*" && SA10.DELET != "*" && SB10.DELET != "*" && SA30.DELET != "*"
                                      && SA30.A3Xunnego != "000008" && (SD10.D1Cf == "1202" || SD10.D1Cf == "2202" || SD10.D1Cf == "3202" || SD10.D1Cf == "1553" || SD10.D1Cf == "2553")
                                      && (int)(object)SD10.D1Dtdigit >= (int)(object)DataInicio.ToString("yyyy/MM/dd").Replace("/", "") && (int)(object)SD10.D1Dtdigit <= (int)(object)DataFim.ToString("yyyy/MM/dd").Replace("/", "")
+                                     && SC50.C5Utpoper == "F"
                                      && (int)(object)SD10.D1Dtdigit >= 20200801 && SA30.A3Xlogsup != "ANDRE.SALES"
                                      orderby SA30.A3Nome
                                      select new
@@ -224,12 +228,13 @@ namespace SGID.Pages.Relatorios.RH
                     var teste = (from SD10 in Protheus.Sd1010s
                                  join SF20 in Protheus.Sf2010s on new { Filial = SD10.D1Filial, Doc = SD10.D1Nfori, Serie = SD10.D1Seriori, Forn = SD10.D1Fornece, Loja = SD10.D1Loja } equals new { Filial = SF20.F2Filial, Doc = SF20.F2Doc, Serie = SF20.F2Serie, Forn = SF20.F2Cliente, Loja = SF20.F2Loja }
                                  join SA30 in Protheus.Sa3010s on SF20.F2Vend1 equals SA30.A3Cod
+                                 join SC50 in Protheus.Sc5010s on new { Filial = SD10.D1Filial, Nota = SD10.D1Nfori } equals new { Filial = SC50.C5Filial, Nota = SC50.C5Nota }
                                  join SA10 in Protheus.Sa1010s on new { Forn = SD10.D1Fornece, Loja = SD10.D1Loja } equals new { Forn = SA10.A1Cod, Loja = SA10.A1Loja }
                                  join SB10 in Protheus.Sb1010s on SD10.D1Cod equals SB10.B1Cod
                                  where SD10.DELET != "*" && SF20.DELET != "*" && SA10.DELET != "*" && SB10.DELET != "*" && SA30.DELET != "*"
                                  && SA30.A3Xunnego != "000008" && (SD10.D1Cf == "1202" || SD10.D1Cf == "2202" || SD10.D1Cf == "3202" || SD10.D1Cf == "1553" || SD10.D1Cf == "2553")
                                  && (int)(object)SD10.D1Dtdigit >= (int)(object)DataInicio.ToString("yyyy/MM/dd").Replace("/", "") && (int)(object)SD10.D1Dtdigit <= (int)(object)DataFim.ToString("yyyy/MM/dd").Replace("/", "")
-                                 && (int)(object)SD10.D1Dtdigit >= 20200801
+                                 && (int)(object)SD10.D1Dtdigit >= 20200801 && SC50.C5Utpoper == "F"
                                  orderby SA30.A3Nome
                                  select new
                                  {
@@ -327,85 +332,184 @@ namespace SGID.Pages.Relatorios.RH
 
                 if (User.IsInRole("GestorComercial"))
                 {
-                    var teste = (from SD10 in Protheus.Sd1010s
-                                 join SF20 in Protheus.Sf2010s on new { Filial = SD10.D1Filial, Doc = SD10.D1Nfori, Serie = SD10.D1Seriori, Forn = SD10.D1Fornece, Loja = SD10.D1Loja } equals new { Filial = SF20.F2Filial, Doc = SF20.F2Doc, Serie = SF20.F2Serie, Forn = SF20.F2Cliente, Loja = SF20.F2Loja }
-                                 join SA30 in Protheus.Sa3010s on SF20.F2Vend1 equals SA30.A3Cod
-                                 join SA10 in Protheus.Sa1010s on new { Forn = SD10.D1Fornece, Loja = SD10.D1Loja } equals new { Forn = SA10.A1Cod, Loja = SA10.A1Loja }
-                                 join SB10 in Protheus.Sb1010s on SD10.D1Cod equals SB10.B1Cod
-                                 where SD10.DELET != "*" && SF20.DELET != "*" && SA10.DELET != "*" && SB10.DELET != "*" && SA30.DELET != "*"
-                                 && SA30.A3Xunnego != "000008" && (SD10.D1Cf == "1202" || SD10.D1Cf == "2202" || SD10.D1Cf == "3202" || SD10.D1Cf == "1553" || SD10.D1Cf == "2553")
-                                 && (int)(object)SD10.D1Dtdigit >= (int)(object)DataInicio.ToString("yyyy/MM/dd").Replace("/", "") && (int)(object)SD10.D1Dtdigit <= (int)(object)DataFim.ToString("yyyy/MM/dd").Replace("/", "")
-                                 && (int)(object)SD10.D1Dtdigit >= 20200801 && (SA30.A3Xlogin == user || SA30.A3Xlogsup == user)
-                                 orderby SA30.A3Nome
-                                 select new
-                                 {
-                                     SD10.D1Filial,
-                                     SD10.D1Fornece,
-                                     SD10.D1Loja,
-                                     SA10.A1Nome,
-                                     SA10.A1Clinter,
-                                     SD10.D1Doc,
-                                     SD10.D1Serie,
-                                     SD10.D1Dtdigit,
-                                     SD10.D1Total,
-                                     SD10.D1Valdesc,
-                                     SD10.D1Valipi,
-                                     SD10.D1Valicm,
-                                     SA30.A3Nome,
-                                     SD10.D1Nfori,
-                                     SD10.D1Seriori,
-                                     SD10.D1Datori,
-                                     SD10.D1Emissao
-                                 }
+
+                    if (user != "TIAGO.FONSECA")
+                    {
+                        #region Gestor
+
+
+                        var teste = (from SD10 in Protheus.Sd1010s
+                                     join SF20 in Protheus.Sf2010s on new { Filial = SD10.D1Filial, Doc = SD10.D1Nfori, Serie = SD10.D1Seriori, Forn = SD10.D1Fornece, Loja = SD10.D1Loja } equals new { Filial = SF20.F2Filial, Doc = SF20.F2Doc, Serie = SF20.F2Serie, Forn = SF20.F2Cliente, Loja = SF20.F2Loja }
+                                     join SA30 in Protheus.Sa3010s on SF20.F2Vend1 equals SA30.A3Cod
+                                     join SC50 in Protheus.Sc5010s on new { Filial = SD10.D1Filial, Nota = SD10.D1Nfori } equals new { Filial = SC50.C5Filial, Nota = SC50.C5Nota }
+                                     join SA10 in Protheus.Sa1010s on new { Forn = SD10.D1Fornece, Loja = SD10.D1Loja } equals new { Forn = SA10.A1Cod, Loja = SA10.A1Loja }
+                                     join SB10 in Protheus.Sb1010s on SD10.D1Cod equals SB10.B1Cod
+                                     where SD10.DELET != "*" && SF20.DELET != "*" && SA10.DELET != "*" && SB10.DELET != "*" && SA30.DELET != "*"
+                                     && SA30.A3Xunnego != "000008" && (SD10.D1Cf == "1202" || SD10.D1Cf == "2202" || SD10.D1Cf == "3202" || SD10.D1Cf == "1553" || SD10.D1Cf == "2553")
+                                     && (int)(object)SD10.D1Dtdigit >= (int)(object)DataInicio.ToString("yyyy/MM/dd").Replace("/", "") && (int)(object)SD10.D1Dtdigit <= (int)(object)DataFim.ToString("yyyy/MM/dd").Replace("/", "")
+                                     && SC50.C5Utpoper == "F"
+                                     && (int)(object)SD10.D1Dtdigit >= 20200801 && (SA30.A3Xlogin == user || SA30.A3Xlogsup == user)
+                                     orderby SA30.A3Nome
+                                     select new
+                                     {
+                                         SD10.D1Filial,
+                                         SD10.D1Fornece,
+                                         SD10.D1Loja,
+                                         SA10.A1Nome,
+                                         SA10.A1Clinter,
+                                         SD10.D1Doc,
+                                         SD10.D1Serie,
+                                         SD10.D1Dtdigit,
+                                         SD10.D1Total,
+                                         SD10.D1Valdesc,
+                                         SD10.D1Valipi,
+                                         SD10.D1Valicm,
+                                         SA30.A3Nome,
+                                         SD10.D1Nfori,
+                                         SD10.D1Seriori,
+                                         SD10.D1Datori,
+                                         SD10.D1Emissao
+                                     }).ToList();
+
+                        if (teste.Count != 0)
+                        {
+                            teste.ForEach(x =>
+                            {
+                                if (!Relatorio.Any(d => d.Nome == x.A1Nome && d.Nf == x.D1Doc))
+                                {
+
+                                    var Iguais = teste
+                                    .Where(c => c.A1Nome == x.A1Nome && c.A3Nome == x.A3Nome && c.D1Filial == x.D1Filial
+                                    && c.D1Fornece == x.D1Fornece && c.D1Loja == x.D1Loja && c.A1Clinter == x.A1Clinter
+                                    && c.D1Doc == x.D1Doc && c.D1Serie == x.D1Serie && c.D1Emissao == x.D1Emissao && c.D1Dtdigit == x.D1Dtdigit
+                                    && c.D1Nfori == x.D1Nfori && c.D1Seriori == x.D1Seriori && c.D1Datori == x.D1Datori).ToList();
+
+                                    double desconto = 0;
+                                    double valipi = 0;
+                                    double total = 0;
+                                    double valicm = 0;
+                                    Iguais.ForEach(x =>
+                                    {
+                                        desconto += x.D1Valdesc;
+                                        valipi += x.D1Valipi;
+                                        total += x.D1Total;
+                                        valicm += x.D1Valicm;
+                                    });
+
+                                    Relatorio.Add(new RelatorioDevolucaoFat
+                                    {
+                                        Filial = x.D1Filial,
+                                        Clifor = x.D1Fornece,
+                                        Loja = x.D1Loja,
+                                        Nome = x.A1Nome,
+                                        Tipo = x.A1Clinter,
+                                        Nf = x.D1Doc,
+                                        Serie = x.D1Serie,
+                                        Digitacao = x.D1Dtdigit,
+                                        Total = total - desconto,
+                                        Valipi = valipi,
+                                        Valicm = valicm,
+                                        Descon = desconto,
+                                        TotalBrut = total - desconto + valipi,
+                                        A3Nome = x.A3Nome,
+                                        D1Nfori = x.D1Nfori,
+                                        D1Seriori = x.D1Seriori,
+                                        D1Datori = x.D1Datori
+                                    });
+                                }
+                            });
+                        }
+
+                        #endregion
+                    }
+                    else
+                    {
+                        #region Tiago
+
+                        var teste = (from SD10 in Protheus.Sd1010s
+                                     join SF20 in Protheus.Sf2010s on new { Filial = SD10.D1Filial, Doc = SD10.D1Nfori, Serie = SD10.D1Seriori, Forn = SD10.D1Fornece, Loja = SD10.D1Loja } equals new { Filial = SF20.F2Filial, Doc = SF20.F2Doc, Serie = SF20.F2Serie, Forn = SF20.F2Cliente, Loja = SF20.F2Loja }
+                                     join SA30 in Protheus.Sa3010s on SF20.F2Vend1 equals SA30.A3Cod
+                                     join SC50 in Protheus.Sc5010s on new { Filial = SD10.D1Filial, Nota = SD10.D1Nfori } equals new { Filial = SC50.C5Filial, Nota = SC50.C5Nota }
+                                     join SA10 in Protheus.Sa1010s on new { Forn = SD10.D1Fornece, Loja = SD10.D1Loja } equals new { Forn = SA10.A1Cod, Loja = SA10.A1Loja }
+                                     join SB10 in Protheus.Sb1010s on SD10.D1Cod equals SB10.B1Cod
+                                     where SD10.DELET != "*" && SF20.DELET != "*" && SA10.DELET != "*" && SB10.DELET != "*" && SA30.DELET != "*"
+                                     && SA30.A3Xunnego != "000008" && (SD10.D1Cf == "1202" || SD10.D1Cf == "2202" || SD10.D1Cf == "3202" || SD10.D1Cf == "1553" || SD10.D1Cf == "2553")
+                                     && (int)(object)SD10.D1Dtdigit >= (int)(object)DataInicio.ToString("yyyy/MM/dd").Replace("/", "") && (int)(object)SD10.D1Dtdigit <= (int)(object)DataFim.ToString("yyyy/MM/dd").Replace("/", "")
+                                     && SC50.C5Utpoper == "F"
+                                     && (int)(object)SD10.D1Dtdigit >= 20200801 && SA30.A3Xlogsup != "ANDRE.SALES"
+                                     orderby SA30.A3Nome
+                                     select new
+                                     {
+                                         SD10.D1Filial,
+                                         SD10.D1Fornece,
+                                         SD10.D1Loja,
+                                         SA10.A1Nome,
+                                         SA10.A1Clinter,
+                                         SD10.D1Doc,
+                                         SD10.D1Serie,
+                                         SD10.D1Dtdigit,
+                                         SD10.D1Total,
+                                         SD10.D1Valdesc,
+                                         SD10.D1Valipi,
+                                         SD10.D1Valicm,
+                                         SA30.A3Nome,
+                                         SD10.D1Nfori,
+                                         SD10.D1Seriori,
+                                         SD10.D1Datori,
+                                         SD10.D1Emissao
+                                     }
                              ).ToList();
 
-                    if (teste.Count != 0)
-                    {
-                        teste.ForEach(x =>
+                        if (teste.Count != 0)
                         {
-                            if (!Relatorio.Any(d => d.Nome == x.A1Nome && d.Nf == x.D1Doc))
+                            teste.ForEach(x =>
                             {
-
-                                var Iguais = teste
-                                .Where(c => c.A1Nome == x.A1Nome && c.A3Nome == x.A3Nome && c.D1Filial == x.D1Filial
-                                && c.D1Fornece == x.D1Fornece && c.D1Loja == x.D1Loja && c.A1Clinter == x.A1Clinter
-                                && c.D1Doc == x.D1Doc && c.D1Serie == x.D1Serie && c.D1Emissao == x.D1Emissao && c.D1Dtdigit == x.D1Dtdigit
-                                && c.D1Nfori == x.D1Nfori && c.D1Seriori == x.D1Seriori && c.D1Datori == x.D1Datori).ToList();
-
-                                double desconto = 0;
-                                double valipi = 0;
-                                double total = 0;
-                                double valicm = 0;
-                                Iguais.ForEach(x =>
+                                if (!Relatorio.Any(d => d.Nome == x.A1Nome && d.Nf == x.D1Doc))
                                 {
-                                    desconto += x.D1Valdesc;
-                                    valipi += x.D1Valipi;
-                                    total += x.D1Total;
-                                    valicm += x.D1Valicm;
-                                });
 
-                                Relatorio.Add(new RelatorioDevolucaoFat
-                                {
-                                    Filial = x.D1Filial,
-                                    Clifor = x.D1Fornece,
-                                    Loja = x.D1Loja,
-                                    Nome = x.A1Nome,
-                                    Tipo = x.A1Clinter,
-                                    Nf = x.D1Doc,
-                                    Serie = x.D1Serie,
-                                    Digitacao = x.D1Dtdigit,
-                                    Total = total - desconto,
-                                    Valipi = valipi,
-                                    Valicm = valicm,
-                                    Descon = desconto,
-                                    TotalBrut = total - desconto + valipi,
-                                    A3Nome = x.A3Nome,
-                                    D1Nfori = x.D1Nfori,
-                                    D1Seriori = x.D1Seriori,
-                                    D1Datori = x.D1Datori
-                                });
-                            }
-                        });
+                                    var Iguais = teste
+                                    .Where(c => c.A1Nome == x.A1Nome && c.A3Nome == x.A3Nome && c.D1Filial == x.D1Filial
+                                    && c.D1Fornece == x.D1Fornece && c.D1Loja == x.D1Loja && c.A1Clinter == x.A1Clinter
+                                    && c.D1Doc == x.D1Doc && c.D1Serie == x.D1Serie && c.D1Emissao == x.D1Emissao && c.D1Dtdigit == x.D1Dtdigit
+                                    && c.D1Nfori == x.D1Nfori && c.D1Seriori == x.D1Seriori && c.D1Datori == x.D1Datori).ToList();
+
+                                    double desconto = 0;
+                                    double valipi = 0;
+                                    double total = 0;
+                                    double valicm = 0;
+                                    Iguais.ForEach(x =>
+                                    {
+                                        desconto += x.D1Valdesc;
+                                        valipi += x.D1Valipi;
+                                        total += x.D1Total;
+                                        valicm += x.D1Valicm;
+                                    });
+
+                                    Relatorio.Add(new RelatorioDevolucaoFat
+                                    {
+                                        Filial = x.D1Filial,
+                                        Clifor = x.D1Fornece,
+                                        Loja = x.D1Loja,
+                                        Nome = x.A1Nome,
+                                        Tipo = x.A1Clinter,
+                                        Nf = x.D1Doc,
+                                        Serie = x.D1Serie,
+                                        Digitacao = x.D1Dtdigit,
+                                        Total = total - desconto,
+                                        Valipi = valipi,
+                                        Valicm = valicm,
+                                        Descon = desconto,
+                                        TotalBrut = total - desconto + valipi,
+                                        A3Nome = x.A3Nome,
+                                        D1Nfori = x.D1Nfori,
+                                        D1Seriori = x.D1Seriori,
+                                        D1Datori = x.D1Datori
+                                    });
+                                }
+                            });
+                        }
+
+                        #endregion
                     }
                 }
                 else
@@ -413,12 +517,13 @@ namespace SGID.Pages.Relatorios.RH
                     var teste = (from SD10 in Protheus.Sd1010s
                                  join SF20 in Protheus.Sf2010s on new { Filial = SD10.D1Filial, Doc = SD10.D1Nfori, Serie = SD10.D1Seriori, Forn = SD10.D1Fornece, Loja = SD10.D1Loja } equals new { Filial = SF20.F2Filial, Doc = SF20.F2Doc, Serie = SF20.F2Serie, Forn = SF20.F2Cliente, Loja = SF20.F2Loja }
                                  join SA30 in Protheus.Sa3010s on SF20.F2Vend1 equals SA30.A3Cod
+                                 join SC50 in Protheus.Sc5010s on new { Filial = SD10.D1Filial, Nota = SD10.D1Nfori } equals new { Filial = SC50.C5Filial, Nota = SC50.C5Nota }
                                  join SA10 in Protheus.Sa1010s on new { Forn = SD10.D1Fornece, Loja = SD10.D1Loja } equals new { Forn = SA10.A1Cod, Loja = SA10.A1Loja }
                                  join SB10 in Protheus.Sb1010s on SD10.D1Cod equals SB10.B1Cod
                                  where SD10.DELET != "*" && SF20.DELET != "*" && SA10.DELET != "*" && SB10.DELET != "*" && SA30.DELET != "*"
                                  && SA30.A3Xunnego != "000008" && (SD10.D1Cf == "1202" || SD10.D1Cf == "2202" || SD10.D1Cf == "3202" || SD10.D1Cf == "1553" || SD10.D1Cf == "2553")
                                  && (int)(object)SD10.D1Dtdigit >= (int)(object)DataInicio.ToString("yyyy/MM/dd").Replace("/", "") && (int)(object)SD10.D1Dtdigit <= (int)(object)DataFim.ToString("yyyy/MM/dd").Replace("/", "")
-                                 && (int)(object)SD10.D1Dtdigit >= 20200801
+                                 && (int)(object)SD10.D1Dtdigit >= 20200801 && SC50.C5Utpoper == "F"
                                  orderby SA30.A3Nome
                                  select new
                                  {

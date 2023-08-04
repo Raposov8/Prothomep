@@ -87,6 +87,7 @@ namespace SGID.Pages.Account.RH
                                 GerenProd = Input.GerenProd,
                                 PorcentagemGenProd = Input.PorcentagemProd,
                                 IdUsuario = usuario.Id
+                                
                             };
 
                             _db.Times.Add(time);

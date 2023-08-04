@@ -37,64 +37,49 @@ namespace SGID.Pages.Relatorios.Controladoria
             var DataI = DataInicio.ToString("yyyy/MM/dd").Replace("/", "");
             var DataF = DataFim.ToString("yyyy/MM/dd").Replace("/", "");
 
-            var query = (from SD10 in Protheus.Sd1010s
-                         join SF10 in Protheus.Sf1010s on new { Filial = SD10.D1Filial, Doc = SD10.D1Doc, Serie = SD10.D1Serie, Fornece = SD10.D1Fornece, Loja = SD10.D1Loja } equals new { Filial = SF10.F1Filial, Doc = SF10.F1Doc, Serie = SF10.F1Serie, Fornece = SF10.F1Fornece, Loja = SF10.F1Loja }
-                         join SB10 in Protheus.Sb1010s on SD10.D1Cod equals SB10.B1Cod
-                         join SA20 in Protheus.Sa2010s on new { Fornece = SD10.D1Fornece, Loja = SD10.D1Loja } equals new { Fornece = SA20.A2Cod, Loja = SA20.A2Loja }
-                         where SD10.DELET != "*" && SF10.DELET != "*" && SB10.DELET != "*" && SA20.DELET != "*"
-                         && !Tipo.Contains(SF10.F1Tipo) && (int)(object)SD10.D1Dtdigit >= (int)(object)DataI && (int)(object)SD10.D1Dtdigit <= (int)(object)DataF
-                         select new SD1
-                         {
-                             Filial = SD10.D1Filial,
-                             Produto = SD10.D1Cod,
-                             DescProd = SB10.B1Desc,
-                             QTDE = SD10.D1Quant,
-                             VLUnit = SD10.D1Vunit,
-                             Total = SD10.D1Total,
-                             IPI = SD10.D1Valipi,
-                             ICMS = SD10.D1Valicm,
-                             TES = SD10.D1Tes,
-                             CodFis = SD10.D1Cf,
-                             Fornecedor = SD10.D1Fornece,
-                             NomFor = SA20.A2Nome,
-                             Documento = SD10.D1Doc,
-                             Digitacao = SD10.D1Dtdigit,
-                             Operacao = "ENTRADA",
-                             NFOrig = SD10.D1Nfori,
-                             SerieOrig = SD10.D1Seriori
-                         }).Union(
-                from SD10 in Protheus.Sd1010s
-                join SF10 in Protheus.Sf1010s on new { Filial = SD10.D1Filial, Doc = SD10.D1Doc, Serie = SD10.D1Serie, Fornece = SD10.D1Fornece, Loja = SD10.D1Loja } equals new { Filial = SF10.F1Filial, Doc = SF10.F1Doc, Serie = SF10.F1Serie, Fornece = SF10.F1Fornece, Loja = SF10.F1Loja }
-                join SB10 in Protheus.Sb1010s on SD10.D1Cod equals SB10.B1Cod
-                join SA10 in Protheus.Sa1010s on new { Fornece = SD10.D1Fornece, Loja = SD10.D1Loja } equals new { Fornece = SA10.A1Cod, Loja = SA10.A1Loja }
-                where SD10.DELET != "*" && SF10.DELET != "*" && SB10.DELET != "*" && SA10.DELET != "*"
-                && Tipo.Contains(SF10.F1Tipo) && (int)(object)SD10.D1Dtdigit >= (int)(object)DataI && (int)(object)SD10.D1Dtdigit <= (int)(object)DataF
-                select new SD1
-                {
-                    Filial = SD10.D1Filial,
-                    Produto = SD10.D1Cod,
-                    DescProd = SB10.B1Desc,
-                    QTDE = SD10.D1Quant,
-                    VLUnit = SD10.D1Vunit,
-                    Total = SD10.D1Total,
-                    IPI = SD10.D1Valipi,
-                    ICMS = SD10.D1Valicm,
-                    TES = SD10.D1Tes,
-                    CodFis = SD10.D1Cf,
-                    Fornecedor = SD10.D1Fornece,
-                    NomFor = SA10.A1Nome,
-                    Documento = SD10.D1Doc,
-                    Digitacao = SD10.D1Dtdigit,
-                    Operacao = "ENTRADA",
-                    NFOrig = SD10.D1Nfori,
-                    SerieOrig = SD10.D1Seriori
-                });
+            try
+            {
+                var query = (
+                    from SD10 in Protheus.Sd1010s
+                    join SF10 in Protheus.Sf1010s on new { Filial = SD10.D1Filial, Doc = SD10.D1Doc, Serie = SD10.D1Serie, Fornece = SD10.D1Fornece, Loja = SD10.D1Loja } equals new { Filial = SF10.F1Filial, Doc = SF10.F1Doc, Serie = SF10.F1Serie, Fornece = SF10.F1Fornece, Loja = SF10.F1Loja }
+                    join SB10 in Protheus.Sb1010s on SD10.D1Cod equals SB10.B1Cod
+                    join SA10 in Protheus.Sa1010s on new { Fornece = SD10.D1Fornece, Loja = SD10.D1Loja } equals new { Fornece = SA10.A1Cod, Loja = SA10.A1Loja }
+                    where SD10.DELET != "*" && SF10.DELET != "*" && SB10.DELET != "*" && SA10.DELET != "*"
+                    && Tipo.Contains(SF10.F1Tipo) && (int)(object)SD10.D1Dtdigit >= (int)(object)DataI && (int)(object)SD10.D1Dtdigit <= (int)(object)DataF
+                    select new SD1
+                    {
+                        Filial = SD10.D1Filial,
+                        Produto = SD10.D1Cod,
+                        DescProd = SB10.B1Desc,
+                        QTDE = SD10.D1Quant,
+                        VLUnit = SD10.D1Vunit,
+                        Total = SD10.D1Total,
+                        IPI = SD10.D1Valipi,
+                        ICMS = SD10.D1Valicm,
+                        TES = SD10.D1Tes,
+                        CodFis = SD10.D1Cf,
+                        Fornecedor = SD10.D1Fornece,
+                        NomFor = SA10.A1Nome,
+                        Documento = SD10.D1Doc,
+                        Digitacao = SD10.D1Dtdigit,
+                        Operacao = "ENTRADA",
+                        NFOrig = SD10.D1Nfori,
+                        SerieOrig = SD10.D1Seriori
+                    });
 
 
-            Relatorio = query.ToList();
+                Relatorio = query.ToList();
 
 
-            return Page();
+                return Page();
+            }
+            catch (Exception e)
+            {
+                string user = User.Identity.Name.Split("@")[0].ToUpper();
+                Logger.Log(e, SGID, "SD1 Inter", user);
+
+                return LocalRedirect("/error");
+            }
         }
 
         public IActionResult OnPostExport(DateTime DataInicio, DateTime DataFim)
