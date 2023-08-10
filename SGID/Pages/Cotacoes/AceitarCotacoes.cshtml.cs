@@ -29,6 +29,8 @@ namespace SGID.Pages.Cotacoes
         public List<ObsAgendamento> Observacoes { get; set; } = new List<ObsAgendamento>();
 
         public List<string> SearchPatri { get; set; } = new List<string>();
+        public List<string> SearchProduto { get; set; } = new List<string>();
+
         private readonly IWebHostEnvironment _WEB;
         public AceitarCotacoesModel(ApplicationDbContext sgid, IWebHostEnvironment wEB, TOTVSDENUOContext denuo, TOTVSINTERContext inter)
         {
@@ -84,7 +86,7 @@ namespace SGID.Pages.Cotacoes
             if (Agendamento.Empresa == "01")
             {
                 //Intermedic
-                Crm = ProtheusInter.Sa1010s.FirstOrDefault(x => x.A1Nreduz == Agendamento.Medico).A1Crm;
+                Crm = ProtheusInter.Sa1010s.FirstOrDefault(x => x.A1Nome == Agendamento.Medico).A1Crm;
                 codigos.ForEach(x =>
                 {
                     var produto = (from SB10 in ProtheusInter.Sb1010s
@@ -187,11 +189,13 @@ namespace SGID.Pages.Cotacoes
                 });
 
                 SearchPatri = ProtheusInter.Pa1010s.Where(x => x.DELET != "*" && x.Pa1Msblql != "1").Select(x => x.Pa1Despat).Distinct().ToList();
+
+                SearchProduto = ProtheusInter.Sb1010s.Where(x => x.DELET != "*" && x.B1Msblql != "1").Select(x => x.B1Desc).Distinct().ToList();
             }
             else
             {
                 //Denuo
-                Crm = ProtheusDenuo.Sa1010s.FirstOrDefault(x => x.A1Nreduz == Agendamento.Medico).A1Crm;
+                Crm = ProtheusDenuo.Sa1010s.FirstOrDefault(x => x.A1Nome == Agendamento.Medico).A1Crm;
                 codigos.ForEach(x =>
                 {
                     var produto = (from SB10 in ProtheusDenuo.Sb1010s
@@ -263,6 +267,9 @@ namespace SGID.Pages.Cotacoes
                                && ((int)(object)c.PacDtcir >= 20200701 || c.PacDtcir == null)
                                select PA10.Pa1Despat
                                    ).Distinct().ToList();
+
+                SearchProduto = ProtheusDenuo.Sb1010s.Where(x => x.DELET != "*" && x.B1Msblql != "1").Select(x => x.B1Desc).Distinct().ToList();
+                
                 avulsos.ForEach(x =>
                 {
                     var produto = (from SB10 in ProtheusDenuo.Sb1010s
@@ -390,7 +397,6 @@ namespace SGID.Pages.Cotacoes
 
                     if (Avulso != null)
                     {
-
                         avus.Quantidade = Avulso.Und;
 
                         SGID.AvulsosAgendamento.Update(avus);

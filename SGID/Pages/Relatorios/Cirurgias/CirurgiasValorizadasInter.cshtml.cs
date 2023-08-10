@@ -21,8 +21,8 @@ namespace SGID.Pages.Relatorios.Cirurgias
 
         public CirurgiasValorizadasInterModel(TOTVSINTERContext protheus) => Protheus = protheus;
 
-        public DateTime Inicio { get; set; }
-        public DateTime Fim { get; set; }
+        public DateTime Inicio { get; set; } = DateTime.Now;
+        public DateTime Fim { get; set; } = DateTime.Now;
         public double Pedido { get; set; }
         public double QtdFaturada { get; set; }
         public double VlUnitario { get; set; }

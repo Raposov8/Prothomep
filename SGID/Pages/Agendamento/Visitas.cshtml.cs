@@ -20,7 +20,7 @@ namespace SGID.Pages.Agendamento
         public string BaseUrl { get; set; }
 
         public List<string> Medicos { get; set; } = new List<string>();
-        public List<string> Locais { get; set; } = new List<string> { "HOSPITAL","CLINICA","CONSULTORIO","CASA","HOTEL","LOCAL PUBLICO" };
+        public List<string> Locais { get; set; } = new List<string> { "HOSPITAL","CLINICA","ESCRITORIO","CONSULTORIO","CASA","HOTEL","LOCAL PUBLICO" };
 
         public VisitasModel(TOTVSDENUOContext protheusDenuo, TOTVSINTERContext protheusInter, ApplicationDbContext sGID)
         {
@@ -222,7 +222,7 @@ namespace SGID.Pages.Agendamento
         }
 
         public IActionResult OnPost(string Medico, string Local, DateTime Data, DateTime DataUltima, string Assunto,
-            string Endereco,string Bairro, string MotVis, string Obs,string ResuVisi)
+            string Endereco,string Bairro,string Email,string Telefone, string MotVis, string Obs,string ResuVisi)
         {
             try
             {
@@ -233,6 +233,8 @@ namespace SGID.Pages.Agendamento
                     Local = Local,
                     DataHora = Data,
                     DataUltima = DataUltima,
+                    Telefone = Telefone,
+                    Email = Email,
                     Assunto = Assunto,
                     Endereco = Endereco,
                     Bairro = Bairro,
@@ -351,7 +353,9 @@ namespace SGID.Pages.Agendamento
                         Endereco = endereco.A1End,
                         Bairro = endereco.A1Bairro,
                         Quant = Quants,
-                        Ultima = Data.ToString("yyyy-MM-dd")
+                        Ultima = Data.ToString("yyyy-MM-dd"),
+                        Telefone = $"{endereco.A1Ddd}{endereco.A1Tel}",
+                        Email = endereco.A1Email
                     };
 
                     return new JsonResult(End);
@@ -370,7 +374,9 @@ namespace SGID.Pages.Agendamento
                             Endereco = endereco.A1End,
                             Bairro = endereco.A1Bairro,
                             Quant = Quants,
-                            Ultima = Data.ToString("yyyy-MM-dd")
+                            Ultima = Data.ToString("yyyy-MM-dd"),
+                            Telefone = $"{endereco.A1Ddd}{endereco.A1Tel}",
+                            Email = endereco.A1Email
                         };
 
                         return new JsonResult(End);
@@ -388,7 +394,9 @@ namespace SGID.Pages.Agendamento
                             Endereco = endereco.A1End,
                             Bairro = endereco.A1Bairro,
                             Quant = Quants,
-                            Ultima = Data.ToString("yyyy-MM-dd")
+                            Ultima = Data.ToString("yyyy-MM-dd"),
+                            Telefone = $"{endereco.A1Ddd}{endereco.A1Tel}",
+                            Email = endereco.A1Email
                         };
 
                         return new JsonResult(End);

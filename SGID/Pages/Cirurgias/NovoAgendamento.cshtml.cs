@@ -302,6 +302,23 @@ namespace SGID.Pages.Cirurgias
                                            SB10.B1Xtuss
                                        }).FirstOrDefault();
 
+                        produto ??= (from SB10 in ProtheusInter.Sb1010s
+                                           where SB10.B1Desc == Codigo.ToUpper() && SB10.B1Msblql != "1"
+                                           && SB10.DELET != "*"
+                                           select new
+                                           {
+                                               SB10.B1Cod,
+                                               SB10.B1Msblql,
+                                               SB10.B1Solicit,
+                                               SB10.B1Desc,
+                                               SB10.B1Fabric,
+                                               SB10.B1Tipo,
+                                               SB10.B1Lotesbp,
+                                               SB10.B1Um,
+                                               SB10.B1Reganvi,
+                                               SB10.B1Xtuss
+                                           }).FirstOrDefault();
+
 
                         if (produto != null)
                         {
@@ -331,27 +348,42 @@ namespace SGID.Pages.Cirurgias
                 else
                 {
                     //Denuo
-                        var produto = (from SB10 in ProtheusDenuo.Sb1010s
-                                       where SB10.B1Cod == Codigo.ToUpper() && SB10.B1Msblql != "1"
-                                       && SB10.DELET != "*"
-                                       select new
-                                       {
-                                           SB10.B1Cod,
-                                           SB10.B1Msblql,
-                                           SB10.B1Solicit,
-                                           SB10.B1Desc,
-                                           SB10.B1Fabric,
-                                           SB10.B1Tipo,
-                                           SB10.B1Lotesbp,
-                                           SB10.B1Um,
-                                           SB10.B1Reganvi,
-                                           SB10.B1Xtuss
-                                       }).FirstOrDefault();
+                    var produto = (from SB10 in ProtheusDenuo.Sb1010s
+                                   where SB10.B1Cod == Codigo.ToUpper() && SB10.B1Msblql != "1"
+                                   && SB10.DELET != "*"
+                                   select new
+                                   {
+                                       SB10.B1Cod,
+                                       SB10.B1Msblql,
+                                       SB10.B1Solicit,
+                                       SB10.B1Desc,
+                                       SB10.B1Fabric,
+                                       SB10.B1Tipo,
+                                       SB10.B1Lotesbp,
+                                       SB10.B1Um,
+                                       SB10.B1Reganvi,
+                                       SB10.B1Xtuss
+                                   }).FirstOrDefault();
 
+                    produto ??= (from SB10 in ProtheusDenuo.Sb1010s
+                                  where SB10.B1Desc == Codigo.ToUpper() && SB10.B1Msblql != "1"
+                                  && SB10.DELET != "*"
+                                  select new
+                                  {
+                                      SB10.B1Cod,
+                                      SB10.B1Msblql,
+                                      SB10.B1Solicit,
+                                      SB10.B1Desc,
+                                      SB10.B1Fabric,
+                                      SB10.B1Tipo,
+                                      SB10.B1Lotesbp,
+                                      SB10.B1Um,
+                                      SB10.B1Reganvi,
+                                      SB10.B1Xtuss
+                                  }).FirstOrDefault();
 
-
-                        if (produto != null)
-                        {
+                    if (produto != null)
+                    {
                             var preco = (from DA10 in ProtheusDenuo.Da1010s
                                          where DA10.DELET != "*" && DA10.Da1Codtab == CodTab && DA10.Da1Codpro == Codigo.ToUpper()
                                          select DA10.Da1Prcven).FirstOrDefault();
@@ -374,7 +406,7 @@ namespace SGID.Pages.Cirurgias
 
                                 return new JsonResult(ViewProduto);
                             
-                        }
+                    }
                     
                 }
             }
@@ -461,6 +493,20 @@ namespace SGID.Pages.Cirurgias
                         x.A1Msblql
                     }).FirstOrDefault(x => x.Nreduz == Codigo && x.DELET != "*" && x.A1Msblql != "1");
 
+                    if(Cliente == null)
+                    {
+                        Cliente = ProtheusInter.Sa1010s.Select(x => new
+                        {
+                            Codigo = x.A1Cod,
+                            Nreduz = x.A1Nreduz,
+                            Cond = x.A1Cond,
+                            Descon = x.A1Desccon,
+                            Tabela = x.A1Tabela,
+                            x.DELET,
+                            x.A1Msblql
+                        }).FirstOrDefault(x => x.Codigo == Codigo && x.DELET != "*" && x.A1Msblql != "1");
+                    }
+
                     //&& (int)(object)x.Da0Datate >= data
 
                     var Tabela = ProtheusInter.Da0010s.FirstOrDefault(x => x.Da0Codtab == Cliente.Tabela && x.DELET != "*" )?.Da0Descri;
@@ -493,6 +539,20 @@ namespace SGID.Pages.Cirurgias
                         x.A1Msblql
                     }).FirstOrDefault(x => x.Nreduz == Codigo && x.DELET != "*" && x.A1Msblql != "1");
 
+                    if (Cliente == null)
+                    {
+                        Cliente = ProtheusDenuo.Sa1010s.Select(x => new
+                        {
+                            Codigo = x.A1Cod,
+                            Nreduz = x.A1Nreduz,
+                            Cond = x.A1Cond,
+                            Descon = x.A1Desccon,
+                            Tabela = x.A1Tabela,
+                            x.DELET,
+                            x.A1Msblql
+                        }).FirstOrDefault(x => x.Codigo == Codigo && x.DELET != "*" && x.A1Msblql != "1");
+                    }
+
                     var Tabela = ProtheusDenuo.Da0010s.FirstOrDefault(x => x.Da0Codtab == Cliente.Tabela && x.DELET != "*" && (int)(object)x.Da0Datate >= data)?.Da0Descri;
 
 
@@ -524,7 +584,7 @@ namespace SGID.Pages.Cirurgias
                 if (Empresa == "01")
                 {
                     //Intermedic
-                    var Cliente = ProtheusInter.Sa1010s.FirstOrDefault(x => x.A1Nreduz == Codigo && x.DELET != "*" && x.A1Msblql != "1")?.A1Nvend;
+                    var Cliente = ProtheusInter.Sa1010s.FirstOrDefault(x => x.A1Nome == Codigo && x.DELET != "*" && x.A1Msblql != "1")?.A1Nvend;
 
 
                     return new JsonResult(Cliente);
@@ -533,7 +593,7 @@ namespace SGID.Pages.Cirurgias
                 else
                 {
                     //Denuo
-                    var Cliente = ProtheusDenuo.Sa1010s.FirstOrDefault(x => x.A1Nreduz == Codigo && x.DELET != "*" && x.A1Msblql != "1")?.A1Nvend;
+                    var Cliente = ProtheusDenuo.Sa1010s.FirstOrDefault(x => x.A1Nome == Codigo && x.DELET != "*" && x.A1Msblql != "1")?.A1Nvend;
 
 
                     return new JsonResult(Cliente);

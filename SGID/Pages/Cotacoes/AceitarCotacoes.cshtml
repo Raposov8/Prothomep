@@ -591,7 +591,7 @@
                             }
                             else {
                                 var tabela = $("#CodTabela").val();
-                                alert(`Produto não existe ou está bloqueado`)
+                                alert(`Produto não existe ou está bloqueado ou não esta homologa para essa empresa`)
                             }
                         }
                     })
@@ -640,7 +640,7 @@
                         else
                         {
                             var tabela = $("#CodTabela").val();
-                            alert(`Produto não existe ou está bloqueado`)
+                            alert(`Produto não existe ou está bloqueado ou não esta homologa para essa empresa`)
                         }
                     }
                 })
@@ -751,7 +751,7 @@
             $("#CodProd2").keydown(function (e) {
                 var key = e.which;
                 if (key == 13) {
-                    var codigo = $("#CodProd").val();
+                    var codigo = $("#CodProd2").val();
                     var empresa = $("#Empresa").val();
                     var tabela = $("#CodTabela").val();
                     var chamadaUrl = `/cirurgias/novoagendamento/01?handler=AdicionarProd&&Codigo=${codigo}&&Empresa=${empresa}&&CodTab=${tabela}`
@@ -792,7 +792,7 @@
                             }
                             else {
                                 var tabela = $("#CodTabela").val();
-                                alert(`Produto não existe ou está bloqueado`)
+                                alert(`Produto não existe ou está bloqueado ou não esta homologa para essa empresa`)
                             }
                         }
                     })
@@ -841,7 +841,7 @@
                         else
                         {
                             var tabela = $("#CodTabela").val();
-                            alert(`Produto não existe ou está bloqueado`)
+                            alert(`Produto não existe ou está bloqueado ou não esta homologa para essa empresa`)
                         }
                     }
                 })
@@ -851,10 +851,16 @@
 
     <script>
     var Patri = [];
+    var Produto = [];
 
     @foreach (var d in Model.SearchPatri)
     {
             @:Patri.push("@d");
+    }
+
+        @foreach (var d in Model.SearchProduto)
+    {
+        @:Produto.push("@d");
     }
 
     $(document).ready(function(){
@@ -959,6 +965,7 @@
 
 
         autocomplete(document.getElementById("CodPatri"), Patri);
+        autocomplete(document.getElementById("CodProd2"), Produto)
     })
 </script>
 }

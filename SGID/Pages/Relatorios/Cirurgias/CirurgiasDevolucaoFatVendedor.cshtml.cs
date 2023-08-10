@@ -17,8 +17,8 @@ namespace SGID.Pages.Relatorios.Cirurgias
 
         public List<RelatorioDevolucaoFat> Relatorio { get; set; } = new List<RelatorioDevolucaoFat>();
 
-        public DateTime Inicio { get; set; }
-        public DateTime Fim { get; set; }
+        public DateTime Inicio { get; set; } = DateTime.Now;
+        public DateTime Fim { get; set; } = DateTime.Now;
 
         public CirurgiasDevolucaoFatVendedorModel(TOTVSDENUOContext context,ApplicationDbContext sgid)
         {

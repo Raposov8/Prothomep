@@ -606,7 +606,7 @@
                 @:$("#DataEntrega").val(data)
             }
 
-        @if (Model.Agendamento.DataRetirada != null)
+            @if (Model.Agendamento.DataRetirada != null)
             {
                 @:data = "@Model.Agendamento.DataRetirada.Value.ToString("yyyy-MM-dd'T'HH:mm")"
                 @:$("#DataRetirada").val(data)
@@ -812,7 +812,7 @@
                             }
                             else {
                                 var tabela = $("#CodTabela").val();
-                                alert(`Produto não existe ou está bloqueado`)
+                                alert(`Produto não existe ou está bloqueado ou não esta homologa para essa empresa`)
                             }
                         }
                     })
@@ -913,7 +913,7 @@
                         }
                         else {
                             var tabela = $("#CodTabela").val();
-                            alert(`Produto não existe ou está bloqueado`)
+                            alert(`Produto não existe ou está bloqueado ou não esta homologa para essa empresa`)
                         }
                     }
                 })

@@ -115,6 +115,11 @@
                         <td>@Html.DisplayFor(model=> data.B1Desc)</td>
                     </tr>
                 }
+                <tr>
+                    <td colspan="6"></td>
+                    <td>TOTAL: </td>
+                    <td>@string.Format("{0:N2}", Model.Relatorio.Sum(x=>x.Total))</td>
+                </tr>
             </tbody>
         </table>
     </div>

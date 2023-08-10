@@ -24,9 +24,9 @@ namespace SGID.Pages.Relatorios.Cirurgias
             SGID = sgid;
         }
 
-        public DateTime Inicio { get; set; }
-        public DateTime Fim { get; set; }
-        
+        public DateTime Inicio { get; set; } = DateTime.Now;
+        public DateTime Fim { get; set; } = DateTime.Now;
+
         public void OnGet()
         {
         }

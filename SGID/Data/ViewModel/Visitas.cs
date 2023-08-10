@@ -12,6 +12,8 @@ namespace SGID.Data.ViewModel
         public string? Local { get; set; }
         public DateTime DataHora { get; set; }
         public DateTime? DataUltima { get; set; }
+        public string? Telefone { get; set; }
+        public string? Email { get; set; }
         public string? Assunto { get; set; }
         public string? Endereco { get; set; }
         public string? Bairro { get; set; }

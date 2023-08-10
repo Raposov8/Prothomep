@@ -22,6 +22,7 @@
     <None Remove="Pages\Relatorios\Diretoria\NovaPasta\**" />
   </ItemGroup>
 
+
   <ItemGroup>
     <None Include="..\.editorconfig" Link=".editorconfig" />
   </ItemGroup>
@@ -63,5 +64,7 @@
   </ItemGroup>
 
   <ProjectExtensions><VisualStudio><UserProperties appsettings_1json__JsonSchema="" libman_1json__JsonSchema="" /></VisualStudio></ProjectExtensions>
+
+
 
 </Project>

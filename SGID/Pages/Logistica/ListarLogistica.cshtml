@@ -198,7 +198,7 @@
                             @if (Pedido.StatusLogistica == 0)
                             {
                                 <a onclick="dados(@Pedido.Id)" class="details"><i class="fa-solid fa-truck-arrow-right" style="color:green"></i></a>
-                                <a class="produto" href="/cirurgias/editaragendamento/@Pedido.Id"><i class="fa-solid fa-pen"></i></a>
+                                <!--<a class="produto" href="/cirurgias/editaragendamento/@Pedido.Id"><i class="fa-solid fa-pen"></i></a>-->
                                 <a class="rejeicao" data-id="@Pedido.Id"><i class="fa-regular fa-circle-xmark" style="color:red"></i></a>
                                 <a href="/logistica/PickListLogistica/@Pedido.Id" target="_blank" class="details"><i class="fa-solid fa-list-check"></i></a>
                                 <!--<a class="MotivoRej" data-id="@Pedido.Id"><i class="fa-solid fa-bars" style="text-decoration:none;" data-container="body" data-placement="top" data-original-title="Motivo Rejeição" aria-hidden="true"></i></a>-->

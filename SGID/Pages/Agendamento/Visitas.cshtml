@@ -96,6 +96,16 @@
                                     </div>
                                 </div>
                                 <div class="row">
+                                    <div class="form-group col-sm-6 col-md-6">
+                                        <label class="Label">Email</label>
+                                        <input type="text" class="form-control" id="Email" name="Email" required />
+                                    </div>
+                                    <div class="form-group col-sm-6 col-md-6">
+                                        <label class="Label">Telefone</label>
+                                        <input type="text" class="form-control" id="Telefone" name="Telefone" required />
+                                    </div>
+                                </div>
+                                <div class="row">
                                     <div class="form-group col-sm-3 col-md-3">
                                         <label class="Label">Assunto</label>
                                         <input class="form-control" id="Assunto" name="Assunto" oninput="this.value = this.value.toUpperCase()" required />
@@ -139,7 +149,8 @@
                     <div class="col-md-12">
                         <div class="row justify-content-center">
                             <div style="color:#00b050" class="col-md-2"><button class="btn btn-button btn-success float-end" style="font-size:12px;" type="submit"><i class="fa-solid fa-thumbs-up"></i> Salvar</button></div> |
-                            <div style="color:#c00000" class="col-md-2"><a class="btn btn-button btn-danger" style="font-size:12px;" ><i class="fa-solid fa-xmark"></i> Cancelar</a></div>
+                            <div style="color:#c00000" class="col-md-2">
+                                <div class="close"><a class="btn btn-button btn-danger" style="font-size:12px;"><i class="fa-solid fa-xmark"></i> Cancelar</a></div></div>
                         </div>
                     </div>
                 </div>
@@ -195,6 +206,17 @@
                                     <label>Bairro</label>
                                     <div id="BairroView"></div>
                                     <input id="BairroProxima"  type="hidden"/>
+                                </div>
+                                <br />
+                                <div class="col-md-6">
+                                    <label>Email</label>
+                                    <div id="EmailView"></div>
+                                    <input id="EmailProxima" type="hidden" />
+                                </div>
+                                <div class="col-md-6">
+                                    <label>Telefone</label>
+                                    <div id="TelefoneView"></div>
+                                    <input id="TelefoneProxima" type="hidden" />
                                 </div>
                                 <br />
                                 <div class="col-md-6">
@@ -393,6 +415,16 @@
                                         <input type="text" class="form-control" id="Bairro2" name="Bairro2" oninput="this.value = this.value.toUpperCase()" required />
                                     </div>
                                 </div>
+                            <div class="row">
+                                <div class="form-group col-sm-6 col-md-6">
+                                    <label class="Label">Email</label>
+                                    <input type="text" class="form-control" id="Email2" name="Email2"  required />
+                                </div>
+                                <div class="form-group col-sm-6 col-md-6">
+                                    <label class="Label">Telefone</label>
+                                    <input type="text" class="form-control" id="Telefone2" name="Telefone2" required />
+                                </div>
+                            </div>
                                 <div class="row">
                                     <div class="form-group col-sm-3 col-md-3">
                                         <label class="Label">Assunto</label>
@@ -493,6 +525,8 @@
                             $("#BairroView").html(data.bairro);
                             $("#Observacao").val(data.observacao);
                             $("#Resumo").val(data.resuVi);
+                            $("#TelefoneView").html(data.telefone);
+                            $("#EmailView").html(data.email);
 
                             $("#Resumo2").html(data.ultimaResp1);
                             $("#ResumoVisi2").html(data.dataResp1);
@@ -506,6 +540,8 @@
                             $("#AssuntoProxima").val(data.assunto)
                             $("#EnderecoProxima").val(data.endereco)
                             $("#BairroProxima").val(data.bairro)
+                            $("#TelefoneProxima").val(data.telefone)
+                            $("#EmailProxima").val(data.email)
 
                             if(data.status != 0)
                             {
@@ -588,6 +624,8 @@
                         $("#Endereco").val(data.endereco)
                         $("#Bairro").val(data.bairro)
                         $("#DataUltima").val(data.ultima)
+                        $("#Email").val(data.email)
+                        $("#Telefone").val(data.telefone)
                     }
                 })
 
@@ -657,6 +695,8 @@
                 $("#Endereco2").val($("#EnderecoProxima").val())
                 $("#Bairro2").val($("#BairroProxima").val())
                 $("#Assunto2").val($("#AssuntoProxima").val())
+                $("#Email2").val($("#EmailProxima").val())
+                $("#Telefone2").val($("#TelefoneProxima").val())
 
                 setTimeout(function () {
                     $("#PopupCancelada-modal").modal('hide')
@@ -679,8 +719,10 @@
                    var DataUltima = $("#DataUltima2").val()                       
                    var Data = $("#Data2").val()     
                    var Local = $("#Local2").val()
-                   var Endereco = $("#Endereco2").val()            
+                   var Endereco = $("#Endereco2").val()   
                    var Bairro = $("#Bairro2").val()      
+                   var Email = $("#Email2").val()
+                   var Telefone = $("#Telefone2").val()
                    var Assunto = $("#Assunto2").val()
                    var MotVis = $('input[name=MotVis2]:checked').val();
                    var Obs = $("#Obs2").val()                                                                            
@@ -689,7 +731,7 @@
 
 
 
-                var chamadaUrl = `/agendamento/visitas?handler=Remarcar&&id=${Id}&&Medico=${Medico}&&Local=${Local}&&Data=${Data}&&DataUltima=${DataUltima}&&Assunto=${Assunto}&&Endereco=${Endereco}&&Bairro=${Bairro}&&MotVis=${MotVis}&&Obs=${Obs}&&ResuVisi=${Resu}`
+                var chamadaUrl = `/agendamento/visitas?handler=Remarcar&&id=${Id}&&Medico=${Medico}&&Local=${Local}&&Data=${Data}&&DataUltima=${DataUltima}&&Assunto=${Assunto}&&Endereco=${Endereco}&&Bairro=${Bairro}&&MotVis=${MotVis}&&Obs=${Obs}&&ResuVisi=${Resu}&&Telefone=${Telefone}&&Email=${Email}`
                 $.ajax({
                     url: chamadaUrl,
                     type: "POST",
@@ -780,6 +822,8 @@
                                                 $("#Quant").html(`<a href="/clientes/medicosarea/${data.bairro}" target="_blank" style="color:#c00000;text-decoration:none">Há ${data.quant} outros medicos neste bairro</a>`);
                                         }   
                                         $("#DataUltima").val(data.ultima)
+                                        $("#Telefone").val(data.telefone)
+                                        $("#Email").val(data.email)
                                     }                                 
                                 })   
                             });

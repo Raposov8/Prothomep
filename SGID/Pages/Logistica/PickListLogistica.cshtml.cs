@@ -38,13 +38,13 @@ namespace SGID.Pages.Logistica
         {
             Agendamento = SGID.Agendamentos.FirstOrDefault(x => x.Id == id);
 
-            var codigos = SGID.ProdutosAgendamentos.Where(x => x.AgendamentoId == Agendamento.Id)
+            /*var codigos = SGID.ProdutosAgendamentos.Where(x => x.AgendamentoId == Agendamento.Id)
                 .Select(x => new
                 {
                     produto = x.CodigoProduto,
                     unidade = x.Quantidade,
                     valor = x.ValorTotal
-                }).ToList();
+                }).ToList();*/
 
             var patrimonios = SGID.PatrimoniosAgendamentos.Where(x => x.AgendamentoId == Agendamento.Id).ToList();
 
@@ -52,7 +52,7 @@ namespace SGID.Pages.Logistica
 
             if (Agendamento.Empresa == "01")
             {
-                codigos.ForEach(x =>
+                /*codigos.ForEach(x =>
                 {
                     var produto = ProtheusInter.Sb1010s.Where(c => c.B1Cod == x.produto).Select(c => new Produto
                     {
@@ -70,7 +70,7 @@ namespace SGID.Pages.Logistica
                     }).First();
 
                     Produtos.Add(produto);
-                });
+                });*/
 
                 patrimonios.ForEach(x =>
                 {
@@ -112,7 +112,7 @@ namespace SGID.Pages.Logistica
             }
             else
             {
-                codigos.ForEach(x =>
+                /*codigos.ForEach(x =>
                 {
                     var produto = ProtheusDenuo.Sb1010s.Where(c => c.B1Cod == x.produto).Select(c => new Produto
                     {
@@ -129,7 +129,7 @@ namespace SGID.Pages.Logistica
                     }).First();
 
                     Produtos.Add(produto);
-                });
+                });*/
 
                 patrimonios.ForEach(x =>
                 {

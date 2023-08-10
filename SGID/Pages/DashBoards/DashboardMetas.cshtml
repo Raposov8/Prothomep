@@ -1,0 +1,185 @@
+﻿@page
+@model SGID.Pages.DashBoards.DashBoardMetasModel
+@{
+    ViewData["Title"] = "DASHBOARD";
+    Layout = "_LayoutGeral";
+}
+
+@Html.AntiForgeryToken()
+
+<div class="row">
+    <div class="col-sm-10 col-md-10">
+        <input hidden type="radio" class="btn-check" name="Tipo" id="Tipo13" value="13" autocomplete="off">
+        <label class="btn btn-outline-primary" for="Tipo13">TODO</label>
+
+        <input hidden type="radio" class="btn-check" name="Tipo" id="Tipo1" value="01" autocomplete="off">
+        <label class="btn btn-outline-primary" for="Tipo1">JAN</label>
+
+        <input hidden type="radio" class="btn-check" name="Tipo" id="Tipo2" value="02" autocomplete="off">
+        <label class="btn btn-outline-primary" for="Tipo2">FEV</label>
+
+        <input hidden type="radio" class="btn-check" name="Tipo" id="Tipo3" value="03" autocomplete="off">
+        <label class="btn btn-outline-primary" for="Tipo3">MAR</label>
+
+        <input hidden type="radio" class="btn-check" name="Tipo" id="Tipo4" value="04" autocomplete="off">
+        <label class="btn btn-outline-primary" for="Tipo4">ABR</label>
+
+        <input hidden type="radio" class="btn-check" name="Tipo" id="Tipo5" value="05" autocomplete="off">
+        <label class="btn btn-outline-primary" for="Tipo5">MAI</label>
+
+        <input hidden type="radio" class="btn-check" name="Tipo" id="Tipo6" value="06" autocomplete="off">
+        <label class="btn btn-outline-primary" for="Tipo6">JUN</label>
+
+        <input hidden type="radio" class="btn-check" name="Tipo" id="Tipo7" value="07" autocomplete="off">
+        <label class="btn btn-outline-primary" for="Tipo7">JUL</label>
+
+        <input hidden type="radio" class="btn-check" name="Tipo" id="Tipo8" value="08" autocomplete="off">
+        <label class="btn btn-outline-primary" for="Tipo8">AGO</label>
+
+        <input hidden type="radio" class="btn-check" name="Tipo" id="Tipo9" value="09" autocomplete="off">
+        <label class="btn btn-outline-primary" for="Tipo9">SET</label>
+
+        <input hidden type="radio" class="btn-check" name="Tipo" id="Tipo10" value="10" autocomplete="off">
+        <label class="btn btn-outline-primary" for="Tipo10">OUT</label>
+
+        <input hidden type="radio" class="btn-check" name="Tipo" id="Tipo11" value="11" autocomplete="off">
+        <label class="btn btn-outline-primary" for="Tipo11">NOV</label>
+
+        <input hidden type="radio" class="btn-check" name="Tipo" id="Tipo12" value="12" autocomplete="off">
+        <label class="btn btn-outline-primary" for="Tipo12">DEZ</label>
+    </div>
+    <div class="col-sm-2 col-md-2">
+         <input type="text" class="form-control" id="Ano" name="Ano" placeholder="Ano" value="@Model.Ano" />
+    </div>
+</div>
+<div class="row">
+    <div id="Tipos" class="col-xs-8 col-sm-8 col-md-8 col-xl-8" >
+        
+    </div>
+    <div class="col-xs-4 col-sm-4 col-md-4 col-xl-4">
+
+    </div>
+</div>
+
+
+
+
+<div class="modal fade" id="loading-modal" role="dialog" tabindex="-1" aria-labelledby="demo-default-modal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <!--Modal body style="display:flex; justify-content: center;"-->
+            <div class="modal-body ">
+                <div>
+                    <div class="progressbarWrapper">
+                        <span id="greenBar"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section scripts
+    {
+    <script type="text/javascript">
+        var formato = { minimumFractionDigits: 2, style: 'currency', currency: 'BRL' }
+        /*google.charts.load('current', { 'packages': ['corechart'] });
+          google.charts.setOnLoadCallback(drawChart);
+
+          var formato = { minimumFractionDigits: 2, style: 'currency', currency: 'BRL' }
+
+          var grafico = [];
+
+          grafico.push(['Areas', 'Valores']);
+
+
+          function move(obj) {
+          let elem = document.getElementById("greenBar");
+          var width = obj;
+
+          elem.style.width = width + '%';
+          elem.style.backgroundColor = '#00e600';
+          elem.innerHTML = width * 1 + '%';
+          }
+
+          function drawChart() {
+
+              var data = google.visualization.arrayToDataTable(
+                  grafico
+              );
+
+              var options = {
+                  title: 'Valor em Aberto',
+                  pieHole: 0.2,
+                  legend: 'none'
+              };
+
+              var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+
+              chart.draw(data, options);
+          }*/
+
+    </script>
+    <script>
+        $(document).ready(function () {
+
+            $('input[name=Tipo]').on('change', function (e) {
+
+                $("#loading-modal").modal('show')
+
+                $("#Tipos").remove();
+
+                var Ano = $("#Ano").val();
+                var Mes = $('input[name=Tipo]:checked').val();
+
+                var chamadaUrl = `/dashboards/dashboardmetas?handler=Faturados&&Mes=${Mes}&&Ano=${Ano}`
+                $.ajax({
+                    url: chamadaUrl,
+                    type: "POST",
+                    contentType: "application/json;",
+                    dataType: 'json',
+                    headers: {
+                        "RequestVerificationToken": $('input:hidden[name="__RequestVerificationToken"]').val()
+                    },
+                    success: function (data) {
+                        
+                        data.forEach(x => 
+                        {
+                            var linha = `<div class="row justify-content-center">
+                                            <h2 class="text-center">${x.nome}</h2>
+                                            <div class="col-xs-6 col-sm-6 col-md-6 col-xl-6">
+                                                <div class="panel panel-colorful" style="background-color:lightgray">
+                                                    <div class="panel-heading">
+                                                        <h2 style="margin:0%;color:black" class="panel-title text-center">QTDE FATURADA</h2>
+                                                    </div>
+                                                    <div class="panel-body" style="padding-top:0px;">
+                                                                <a class="produto"><h3 class="text-center" style="margin-top:0%; color:black;font-size:40px">${x.quant}</h3></a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-xs-6 col-sm-6 col-md-6 col-xl-6">
+                                                <div class="panel panel-colorful" style="background-color:lightgray">
+                                                    <div class="panel-heading">
+                                                        <h2 style="margin:0%;color:black;" class="panel-title text-center">TOTAL FATURADO</h2>
+                                                    </div>
+                                                    <div class="panel-body" style="padding-top:0px;">
+                                                        <a class="produto"><h3 class="text-center" style="margin-top:0%;color:black;font-size:40px">${x.faturamento.toLocaleString('pt-BR', formato)}</h3></a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                         </div>`
+
+                            $("#Tipos").append(linha);
+                        })
+
+                        $("#loading-modal").modal('hide')
+                    }
+                })
+
+            })
+
+        })
+
+    </script>
+}
