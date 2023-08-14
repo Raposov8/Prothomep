@@ -233,16 +233,15 @@
                                         @foreach (var data in Model.Patrimonios)
                                         {
                                             <tr>
-                                                <td>
+                                                <td class="text-center">
                                                     @data.Descri
                                                     <input type="hidden" id="Patris[@countPatri].Descri" name="Patris[@countPatri].Descri" value="@data.Descri" />
                                                 </td>
-                                                <td>
+                                                <td class="text-center">
                                                     @data.KitBas
                                                     <input type="hidden" id="Patris[@countPatri].KitBas" name="Patris[@countPatri].KitBas" value="@data.KitBas" />
                                                 </td>
-                                                <td>
-                                                    <!--<a href="/" class="fas fa-eye add-tooltip" style="text-decoration:none;" data-container="body" data-placement="top" data-original-title="Visualizar Recurso" aria-hidden="true"></a>-->
+                                                <td class="text-center">
 
                                                     <a class="fa-regular fa-trash-can add-tooltip" onclick="removePatri(this)" style="text-decoration:none;" id="Excluir" data-container="body" data-placement="top" data-original-title="Excluir Recurso" aria-hidden="true"></a>
                                                 </td>
@@ -291,7 +290,7 @@
                                                     <input type="number" id="Avulsos[@countAvulso].Und" name="Avulsos[@countAvulso].Und" value="@data.Und" />
                                                 </td>
                                                 <td class="text-center">
-                                                    <!--<a class="fas fa-eye add-tooltip" style="text-decoration:none;" data-container="body" data-placement="top" data-original-title="Visualizar Recurso" aria-hidden="true"></a>-->
+                                                    
 
                                                     <a class="fa-regular fa-trash-can add-tooltip" onclick="removeAvulso(this)" style="text-decoration:none;" id="Excluir" data-container="body" data-placement="top" data-original-title="Excluir Recurso" aria-hidden="true"></a>
                                                 </td>
@@ -679,7 +678,7 @@
                                                              <input type="hidden" id="Patris[${countPatri}].KitBas" name="Patris[${countPatri}].KitBas" value="${data.kitBas}" />
                                                              </td>
                                                              <td>
-                                                                 <a class="fas fa-eye add-tooltip" style="text-decoration:none;" data-container="body" data-placement="top" data-original-title="Visualizar Recurso" aria-hidden="true"></a>
+                                                                 
 
                                                                  <a class="fa-regular fa-trash-can add-tooltip" onclick="removePatri(this)" style="text-decoration:none;" id="Excluir" data-container="body" data-placement="top" data-original-title="Excluir Recurso" aria-hidden="true"></a>
                                                              </td>
@@ -728,7 +727,7 @@
                                                  <input type="hidden" id="Patris[${countPatri}].KitBas" name="Patris[${countPatri}].KitBas" value="${data.kitBas}" />
                                                  </td>
                                                  <td>
-                                                     <a class="fas fa-eye add-tooltip" style="text-decoration:none;" data-container="body" data-placement="top" data-original-title="Visualizar Recurso" aria-hidden="true"></a>
+                                                    
 
                                                      <a class="fa-regular fa-trash-can add-tooltip" onclick="removePatri(this)" style="text-decoration:none;" id="Excluir" data-container="body" data-placement="top" data-original-title="Excluir Recurso" aria-hidden="true"></a>
                                                  </td>
@@ -779,7 +778,6 @@
                                                 <input type="number" id="Avulsos[${countAvulso}].Und" name="Avulsos[${countAvulso}].Und" value="${data.und}" />
                                             </td>
                                             <td class="text-center">
-                                                <a class="fas fa-eye add-tooltip" style="text-decoration:none;" data-container="body" data-placement="top" data-original-title="Visualizar Recurso" aria-hidden="true"></a>
 
                                                 <a class="fa-regular fa-trash-can add-tooltip" onclick="removeAvulso(this)" style="text-decoration:none;" id="Excluir" data-container="body" data-placement="top" data-original-title="Excluir Recurso" aria-hidden="true"></a>
                                             </td>
@@ -828,7 +826,6 @@
                                     <input type="number" id="Avulsos[${countAvulso}].Und" name="Avulsos[${countAvulso}].Und" value="${data.und}" />
                                 </td>
                                 <td class="text-center">
-                                    <a class="fas fa-eye add-tooltip" style="text-decoration:none;" data-container="body" data-placement="top" data-original-title="Visualizar Recurso" aria-hidden="true"></a>
 
                                     <a class="fa-regular fa-trash-can add-tooltip" onclick="removeAvulso(this)" style="text-decoration:none;" id="Excluir" data-container="body" data-placement="top" data-original-title="Excluir Recurso" aria-hidden="true"></a>
                                 </td>

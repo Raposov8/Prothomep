@@ -57,7 +57,7 @@
             </div>
         </nav>
     </header>
-    <div class="container-lg" style="margin-left:0px;margin-right:0px;">
+    <div class="container-lg container-xl container-xxl" style="margin-left:0px;margin-right:0px;">
         <div class="sidenav" id="mySidenav">
             <ul style="padding-left:0%;">
                 <li>
@@ -100,7 +100,7 @@
                 @if(User.IsInRole("Admin")|| User.IsInRole("Diretoria"))
                 {
                      <li>
-                        <a class="nav-link" href="/dashboards/DashBoardDiretorio2"><i class="fa-solid fa-clipboard-user"></i>DashBoard Diretoria</a>
+                        <a class="nav-link" href="/dashboards/DashBoardMetas"><i class="fa-solid fa-clipboard-user"></i>DashBoard Diretoria</a>
                      </li>
                 }
                 @if(User.IsInRole("Admin") || User.IsInRole("GestorVenda") || User.IsInRole("Venda") || User.IsInRole("Diretoria"))

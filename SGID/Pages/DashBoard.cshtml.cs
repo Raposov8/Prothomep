@@ -50,7 +50,7 @@ namespace SGID.Pages
             }
             else if (User.IsInRole("Diretoria"))
             {
-                return LocalRedirect("/dashboards/DashBoardDiretorio2");
+                return LocalRedirect("/dashboards/DashBoardMetas");
             }
             else if (User.IsInRole("Financeiro") || User.IsInRole("Diretoria"))
             {

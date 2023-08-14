@@ -52,12 +52,123 @@
          <input type="text" class="form-control" id="Ano" name="Ano" placeholder="Ano" value="@Model.Ano" />
     </div>
 </div>
-<div class="row">
-    <div id="Tipos" class="col-xs-8 col-sm-8 col-md-8 col-xl-8" >
-        
-    </div>
-    <div class="col-xs-4 col-sm-4 col-md-4 col-xl-4">
+<br />
+<div id="Tipos" class="row justify-content-center">
 
+    <div class="col-xs-2 col-sm-2 col-md-2 col-xl-2">
+        <div class="panel panel-colorful" style="background-color:#203864">
+            <div class="panel-heading">
+                <h2 style="margin:0%;color:#ffffff;font-size:20px;" class="panel-title text-center">QTDA. CIRURGIA</h2>
+            </div>
+            <div class="panel-body" style="padding-top:0px;">
+                <a class="produto"><h3 class="text-center" style="margin-top:0%; color:#ffffff;font-size:20px">0</h3></a>
+            </div>
+        </div>
+    </div>
+    <div class="col-xs-2 col-sm-2 col-md-2 col-xl-2">
+        <div class="panel panel-colorful" style="background-color:#8faadc">
+            <div class="panel-heading">
+                <h2 style="margin:0%;color:#ffffff;font-size:20px;" class="panel-title text-center">BUCOMAXILO</h2>
+            </div>
+            <div class="panel-body" style="padding-top:0px;">
+                <a class="produto"><h3 class="text-center" style="margin-top:0%; color:#ffffff;font-size:20px">0</h3></a>
+            </div>
+        </div>
+    </div>
+    <div class="col-xs-2 col-sm-2 col-md-2 col-xl-2">
+        <div class="panel panel-colorful" style="background-color:#8faadc">
+            <div class="panel-heading">
+                <h2 style="margin:0%;color:#ffffff;font-size:20px;" class="panel-title text-center">NEURO</h2>
+            </div>
+            <div class="panel-body" style="padding-top:0px;">
+                <a class="produto"><h3 class="text-center" style="margin-top:0%; color:#ffffff;font-size:20px">0</h3></a>
+            </div>
+        </div>
+    </div>
+    <div class="col-xs-2 col-sm-2 col-md-2 col-xl-2">
+        <div class="panel panel-colorful" style="background-color:#8faadc">
+            <div class="panel-heading">
+                <h2 style="margin:0%;color:#ffffff;font-size:20px;" class="panel-title text-center">ORTOPEDIA</h2>
+            </div>
+            <div class="panel-body" style="padding-top:0px;">
+                <a class="produto"><h3 class="text-center" style="margin-top:0%; color:#ffffff;font-size:20px">0</h3></a>
+            </div>
+        </div>
+    </div>
+    <div class="col-xs-2 col-sm-2 col-md-2 col-xl-2">
+        <div class="panel panel-colorful" style="background-color:#8faadc">
+            <div class="panel-heading">
+                <h2 style="margin:0%;color:#ffffff;font-size:20px;" class="panel-title text-center">TORAX</h2>
+            </div>
+            <div class="panel-body" style="padding-top:0px;">
+                <a class="produto"><h3 class="text-center" style="margin-top:0%; color:#ffffff;font-size:20px">0</h3></a>
+            </div>
+        </div>
+    </div>
+    <div class="col-xs-2 col-sm-2 col-md-2 col-xl-2">
+        <div class="panel panel-colorful" style="background-color:#203864">
+            <div class="panel-heading">
+                <h2 style="margin:0%;color:#ffffff;font-size:20px;" class="panel-title text-center"> VALOR CIRURGIAS</h2>
+            </div>
+            <div class="panel-body" style="padding-top:0px;">
+                <a class="produto"><h3 class="text-center" style="margin-top:0%; color:#ffffff;font-size:20px">0</h3></a>
+            </div>
+        </div>
+    </div>
+</div>
+<br />
+<div class="row">
+    <div class="col-md-4">
+        <div id="GraficoAberto" style="height:100%"></div>
+    </div>
+    <div class="col-md-4">
+        <div id="GraficoFatu" style="height:100%"></div>
+    </div>
+    <div class="col-md-4">
+        <div class="row justify-content-center">
+            <div class="col-md-6"><b>TITULOS VENCIDOS/INADIMPLENTES</b></div>
+        </div>
+        <br />
+        <div class="panel">
+            <div class="panel-body">
+                <table id="Vencidos" class="table-striped table-bordered" cellspacing="0" width="100%">
+                    <thead>
+                        <tr>
+                            <th colspan="2">
+                                Titulos Vencidos Denuo
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td colspan="2">
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <a href="/relatorios/diretoria/TitulosVencidos" target="_blank">Saiba Mais...</a>
+            </div>
+        </div>
+        <div class="panel">
+            <div class="panel-body">
+                <table id="VencidosInter" class="table-striped table-bordered" cellspacing="0" width="100%">
+                    <thead>
+                        <tr>
+                            <th colspan="2">
+                                Titulos Vencidos Intermedic
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td colspan="2">
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <a href="/relatorios/diretoria/TitulosVencidosInter" target="_blank">Saiba Mais...</a>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -83,55 +194,115 @@
 @section scripts
     {
     <script type="text/javascript">
+        google.charts.load('current', { 'packages': ['bar'] });
+        google.charts.setOnLoadCallback(drawChart);
+
         var formato = { minimumFractionDigits: 2, style: 'currency', currency: 'BRL' }
-        /*google.charts.load('current', { 'packages': ['corechart'] });
-          google.charts.setOnLoadCallback(drawChart);
 
-          var formato = { minimumFractionDigits: 2, style: 'currency', currency: 'BRL' }
+        var grafico = [];
+        var grafico2 = [];
 
-          var grafico = [];
-
-          grafico.push(['Areas', 'Valores']);
+        grafico.push(['Areas', 'Valores', { role: 'style' }]);
+        grafico2.push(['Areas', 'Valor']);
 
 
-          function move(obj) {
-          let elem = document.getElementById("greenBar");
-          var width = obj;
+        function move(obj) {
+            let elem = document.getElementById("greenBar");
+            var width = obj;
 
-          elem.style.width = width + '%';
-          elem.style.backgroundColor = '#00e600';
-          elem.innerHTML = width * 1 + '%';
-          }
+            elem.style.width = width + '%';
+            elem.style.backgroundColor = '#00e600';
+            elem.innerHTML = width * 1 + '%';
+        }
 
-          function drawChart() {
+        function drawChart() {
 
-              var data = google.visualization.arrayToDataTable(
-                  grafico
-              );
+            var data = google.visualization.arrayToDataTable(
+                grafico
+            );
 
-              var options = {
-                  title: 'Valor em Aberto',
-                  pieHole: 0.2,
-                  legend: 'none'
-              };
+            var options = {
+                title: 'Valor em Aberto',
+                legend: { position: "none" },
+                bar:{ groupWidth: '50%' },
+                vAxis: { format: 'short' },
+                colors: ['#ffcc00']
+            };
 
-              var chart = new google.visualization.PieChart(document.getElementById('piechart'));
 
-              chart.draw(data, options);
-          }*/
+            var chart = new google.charts.Bar(document.getElementById('GraficoAberto'));
+
+            chart.draw(data, google.charts.Bar.convertOptions(options));
+        }
+
+        function drawChart2() {
+
+            var data = google.visualization.arrayToDataTable(
+                grafico2
+            );
+
+            var options = {
+                title: 'POSICIONAMENTO FINANCEIRO',
+                legend: { position: "none" },
+                bar: { groupWidth: '50%' },
+                vAxis: { format: 'short' },
+            };
+
+
+            var chart = new google.charts.Bar(document.getElementById('GraficoFatu'));
+
+            chart.draw(data, google.charts.Bar.convertOptions(options));
+        }
 
     </script>
     <script>
         $(document).ready(function () {
 
+            var count = 0;
+
             $('input[name=Tipo]').on('change', function (e) {
 
+                move(0)
                 $("#loading-modal").modal('show')
 
-                $("#Tipos").remove();
+                
 
                 var Ano = $("#Ano").val();
                 var Mes = $('input[name=Tipo]:checked').val();
+
+                count = 0;
+
+                var chamadaUrl2 = `/dashboards/dashboardmetas?handler=EmAberto&&Mes=${Mes}&&Ano=${Ano}`
+
+                $.ajax({
+                    url: chamadaUrl2,
+                    type: "POST",
+                    contentType: "application/json;",
+                    dataType: 'json',
+                    headers: {
+                        "RequestVerificationToken": $('input:hidden[name="__RequestVerificationToken"]').val()
+                    },
+                    success: function (data) {
+
+                        grafico = [];
+
+                        grafico.push(['Areas', 'Valor']);
+
+
+                        data.valores.forEach(x => {
+
+                            grafico.push([x.nome, x.valor])
+                        })
+
+                        drawChart()
+
+
+                        //$('#TotalAberto').html(`<div style="color:#3366cc"><b>Total: ${data.valorTotal.toLocaleString('pt-BR', formato)}</b></div>`);
+
+                        move(50)
+
+                    }
+                })
 
                 var chamadaUrl = `/dashboards/dashboardmetas?handler=Faturados&&Mes=${Mes}&&Ano=${Ano}`
                 $.ajax({
@@ -143,40 +314,160 @@
                         "RequestVerificationToken": $('input:hidden[name="__RequestVerificationToken"]').val()
                     },
                     success: function (data) {
-                        
-                        data.forEach(x => 
+
+                        $("#Tipos>div").remove();
+
+                        data.linhas.forEach(x => 
                         {
-                            var linha = `<div class="row justify-content-center">
-                                            <h2 class="text-center">${x.nome}</h2>
-                                            <div class="col-xs-6 col-sm-6 col-md-6 col-xl-6">
-                                                <div class="panel panel-colorful" style="background-color:lightgray">
-                                                    <div class="panel-heading">
-                                                        <h2 style="margin:0%;color:black" class="panel-title text-center">QTDE FATURADA</h2>
-                                                    </div>
-                                                    <div class="panel-body" style="padding-top:0px;">
-                                                                <a class="produto"><h3 class="text-center" style="margin-top:0%; color:black;font-size:40px">${x.quant}</h3></a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-xs-6 col-sm-6 col-md-6 col-xl-6">
-                                                <div class="panel panel-colorful" style="background-color:lightgray">
-                                                    <div class="panel-heading">
-                                                        <h2 style="margin:0%;color:black;" class="panel-title text-center">TOTAL FATURADO</h2>
-                                                    </div>
-                                                    <div class="panel-body" style="padding-top:0px;">
-                                                        <a class="produto"><h3 class="text-center" style="margin-top:0%;color:black;font-size:40px">${x.faturamento.toLocaleString('pt-BR', formato)}</h3></a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                         </div>`
+                            var linha = '';
+
+                            if(count == 5)
+                            {
+                                linha = ` <div class="col-xs-2 col-sm-2 col-md-2 col-xl-2">
+                                                      <div class="panel panel-colorful" style="background-color:#203864">
+                                                  <div class="panel-heading">
+                                                              <h2 style="margin:0%;color:#ffffff;font-size:20px;" class="panel-title text-center"> ${x.nome}</h2>
+                                                  </div>
+                                                  <div class="panel-body" style="padding-top:0px;">
+                                                              <a class="produto"><h3 class="text-center" style="margin-top:0%; color:#ffffff;font-size:20px">${x.quant.toLocaleString('pt-BR', formato)}</h3></a>
+                                                  </div>
+                                              </div>
+                                          </div>`
+                            }
+                            else if(count == 0)
+                            {
+                                linha = ` <div class="col-xs-2 col-sm-2 col-md-2 col-xl-2">
+                                                              <div class="panel panel-colorful" style="background-color:#203864">
+                                                          <div class="panel-heading">
+                                                                      <h2 style="margin:0%;color:#ffffff;font-size:20px;" class="panel-title text-center"> ${x.nome}</h2>
+                                                          </div>
+                                                          <div class="panel-body" style="padding-top:0px;">
+                                                                      <a class="produto"><h3 class="text-center" style="margin-top:0%; color:#ffffff;font-size:20px">${x.quant}</h3></a>
+                                                          </div>
+                                                      </div>
+                                                  </div>`
+                            }
+                            else
+                            {
+                                linha = ` <div class="col-xs-2 col-sm-2 col-md-2 col-xl-2">
+                                                      <div class="panel panel-colorful" style="background-color:#8faadc">
+                                                  <div class="panel-heading">
+                                                              <h2 style="margin:0%;color:#ffffff;font-size:20px;" class="panel-title text-center"> ${x.nome}</h2>
+                                                  </div>
+                                                  <div class="panel-body" style="padding-top:0px;">
+                                                              <a class="produto"><h3 class="text-center" style="margin-top:0%; color:#ffffff;font-size:20px">${x.quant}</h3></a>
+                                                  </div>
+                                              </div>
+                                          </div>`
+                            }
+                            count++;
 
                             $("#Tipos").append(linha);
                         })
 
+                        move(70)
+
+                        grafico2 = [];
+
+                        grafico2.push(['Areas', 'Valores']);
+
+                        data.valores.valores.forEach(x=>
+                        {
+
+                            grafico2.push([x.nome, x.valor])
+                            
+                        })
+
+                        drawChart2()
+
+                        move(100)
+
                         $("#loading-modal").modal('hide')
                     }
                 })
+            })
 
+            var chamadaUrl = `/dashboards/dashboarddiretorio2?handler=Vencidos`
+            $.ajax({
+                url: chamadaUrl,
+                type: "POST",
+                contentType: "application/json;",
+                dataType: 'json',
+                headers: {
+                    "RequestVerificationToken": $('input:hidden[name="__RequestVerificationToken"]').val()
+                },
+                success: function (data) {
+
+                    $("#Vencidos>tbody>tr").remove();
+
+                    data.valores.forEach(x => {
+                        var linha = `<tr>
+                                                                 <td>
+                                                                         ${x.cliente}
+                                                                 </td>
+                                                                 <td>
+                                                                 ${x.valor.toLocaleString('pt-BR', formato)}
+                                                                 </td>
+                                                             </tr>`;
+
+                        $("#Vencidos>tbody").append(linha);
+                    })
+
+
+                    var linha = `<tr>
+                                            <td>
+                                             <b>TOTAL</b>
+                                            </td>
+                                            <td>
+                                             <b>${data.valorTotal.toLocaleString('pt-BR', formato)}</b>
+                                            </td>
+                                        </tr>`;
+
+                    $("#Vencidos>tbody").append(linha);
+
+                }
+            })
+
+            var chamadaUrl2 = `/dashboards/dashboarddiretorio2?handler=VencidosInter`
+            $.ajax({
+                url: chamadaUrl2,
+                type: "POST",
+                contentType: "application/json;",
+                dataType: 'json',
+                headers: {
+                    "RequestVerificationToken": $('input:hidden[name="__RequestVerificationToken"]').val()
+                },
+                success: function (data) {
+
+                    $("#VencidosInter>tbody>tr").remove();
+
+                    data.valores.forEach(x => {
+                        var linha = `<tr>
+                                                                         <td>
+                                                                                 ${x.cliente}
+                                                                         </td>
+                                                                         <td>
+                                                                         ${x.valor.toLocaleString('pt-BR', formato)}
+                                                                         </td>
+                                                                     </tr>`;
+
+                        $("#VencidosInter>tbody").append(linha);
+                    })
+
+
+                    var linha = `<tr>
+                                             <td>
+                                              <b>TOTAL</b>
+                                             </td>
+                                             <td>
+                                              <b>${data.valorTotal.toLocaleString('pt-BR', formato)}</b>
+                                             </td>
+                                         </tr>`;
+
+                    $("#VencidosInter>tbody").append(linha);
+
+
+                }
             })
 
         })
