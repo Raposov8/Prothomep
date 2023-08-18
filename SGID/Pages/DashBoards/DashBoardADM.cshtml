@@ -1,84 +1,341 @@
 ﻿@page
 @model SGID.Pages.DashBoards.DashBoardADMModel
 @{
-    ViewData["Title"] = "DASHBOARD ADM";
+    ViewData["Title"] = "DASHBOARD";
     Layout = "_LayoutGeral";
 }
 
-<!--<div id="piechart" style="width: 900px; height: 500px;"></div>-->
 @Html.AntiForgeryToken()
 
-
-<div class="row justify-content-center">
-    <div class="col-sm-6 col-md-6">
-        <div class="panel panel-colorful" style="background-color:lightgray">
-            <div class="panel-heading">
-                <h2 style="margin:0%;color:#00b050;font-size:25px" class="panel-title text-center">Faturado Mês Denuo</h2>
-            </div>
-            <div class="panel-body" style="padding-top:0px;">
-                <a class="produto"><h3 class="text-center" style="margin-top:0%; color:#00b050;font-size:50px">R$ @string.Format("{0:N2}",Model.FaturadoMesDenuoValor)</h3></a>
-            </div>
-        </div>
-        <div class="panel panel-colorful" style="background-color:lightgray">
-            <div class="panel-heading">
-                <h2 style="margin:0%;color:#00b050;font-size:25px" class="panel-title text-center">Faturado Mês Intermedic</h2>
-            </div>
-            <div class="panel-body" style="padding-top:0px;">
-                <a class="produto"><h3 class="text-center" style="margin-top:0%; color:#00b050;font-size:50px">R$ @string.Format("{0:N2}",Model.FaturadoMesInterValor)</h3></a>
-            </div>
-        </div>
-    </div>
-    <div class="col-sm-6 col-md-6">
-        <div class="panel panel-colorful" style="background-color:lightgray">
-            <div class="panel-heading">
-                <h2 style="margin:0%;color:#fafa00;font-size:25px" class="panel-title text-center">Meta Mês Denuo</h2>
-            </div>
-            <div class="panel-body" style="padding-top:0px;">
-                <a class="produto"><h3 class="text-center" style="margin-top:0%; color:#fafa00;font-size:50px">R$ @string.Format("{0:N2}",Model.MetaDenuo)</h3></a>
-            </div>
-        </div>
-        <div class="panel panel-colorful" style="background-color:lightgray">
-            <div class="panel-heading">
-                <h2 style="margin:0%;color:#fafa00;font-size:25px" class="panel-title text-center">Meta Mês Intermedic</h2>
-            </div>
-            <div class="panel-body" style="padding-top:0px;">
-                <a class="produto"><h3 class="text-center" style="margin-top:0%; color:#fafa00;font-size:50px">R$ @string.Format("{0:N2}",Model.MetaInter)</h3></a>
-            </div>
-        </div>
-    </div>
-</div>
-
 <div class="row">
-    <div id="chart_div" class="col-md-12" style="width: 900px; height: 500px;"></div>
+    <div class="col-sm-10 col-md-10">
+        <input hidden type="radio" class="btn-check" name="Tipo" id="Tipo13" value="13" autocomplete="off">
+        <label class="btn btn-outline-primary" for="Tipo13">TODO</label>
+
+        <input hidden type="radio" class="btn-check" name="Tipo" id="Tipo1" value="01" autocomplete="off">
+        <label class="btn btn-outline-primary" for="Tipo1">JAN</label>
+
+        <input hidden type="radio" class="btn-check" name="Tipo" id="Tipo2" value="02" autocomplete="off">
+        <label class="btn btn-outline-primary" for="Tipo2">FEV</label>
+
+        <input hidden type="radio" class="btn-check" name="Tipo" id="Tipo3" value="03" autocomplete="off">
+        <label class="btn btn-outline-primary" for="Tipo3">MAR</label>
+
+        <input hidden type="radio" class="btn-check" name="Tipo" id="Tipo4" value="04" autocomplete="off">
+        <label class="btn btn-outline-primary" for="Tipo4">ABR</label>
+
+        <input hidden type="radio" class="btn-check" name="Tipo" id="Tipo5" value="05" autocomplete="off">
+        <label class="btn btn-outline-primary" for="Tipo5">MAI</label>
+
+        <input hidden type="radio" class="btn-check" name="Tipo" id="Tipo6" value="06" autocomplete="off">
+        <label class="btn btn-outline-primary" for="Tipo6">JUN</label>
+
+        <input hidden type="radio" class="btn-check" name="Tipo" id="Tipo7" value="07" autocomplete="off">
+        <label class="btn btn-outline-primary" for="Tipo7">JUL</label>
+
+        <input hidden type="radio" class="btn-check" name="Tipo" id="Tipo8" value="08" autocomplete="off">
+        <label class="btn btn-outline-primary" for="Tipo8">AGO</label>
+
+        <input hidden type="radio" class="btn-check" name="Tipo" id="Tipo9" value="09" autocomplete="off">
+        <label class="btn btn-outline-primary" for="Tipo9">SET</label>
+
+        <input hidden type="radio" class="btn-check" name="Tipo" id="Tipo10" value="10" autocomplete="off">
+        <label class="btn btn-outline-primary" for="Tipo10">OUT</label>
+
+        <input hidden type="radio" class="btn-check" name="Tipo" id="Tipo11" value="11" autocomplete="off">
+        <label class="btn btn-outline-primary" for="Tipo11">NOV</label>
+
+        <input hidden type="radio" class="btn-check" name="Tipo" id="Tipo12" value="12" autocomplete="off">
+        <label class="btn btn-outline-primary" for="Tipo12">DEZ</label>
+    </div>
+    <div class="col-sm-2 col-md-2">
+        <input type="text" class="form-control" id="Ano" name="Ano" placeholder="Ano" value="@Model.Ano" />
+    </div>
+</div>
+<br />
+<div id="Tipos" class="row justify-content-center">
+
+    <div class="col-xs-2 col-sm-2 col-md-2 col-xl-2">
+        <div class="panel panel-colorful" style="background-color:#203864">
+            <div class="panel-heading">
+                <h2 style="margin:0%;color:#ffffff;font-size:20px;" class="panel-title text-center">QTDA. CIRURGIA</h2>
+            </div>
+            <div class="panel-body" style="padding-top:0px;">
+                <a class="produto"><h3 class="text-center" style="margin-top:0%; color:#ffffff;font-size:20px">0</h3></a>
+            </div>
+        </div>
+    </div>
+    <div class="col-xs-2 col-sm-2 col-md-2 col-xl-2">
+        <div class="panel panel-colorful" style="background-color:#8faadc">
+            <div class="panel-heading">
+                <h2 style="margin:0%;color:#ffffff;font-size:20px;" class="panel-title text-center">BUCOMAXILO</h2>
+            </div>
+            <div class="panel-body" style="padding-top:0px;">
+                <a class="produto"><h3 class="text-center" style="margin-top:0%; color:#ffffff;font-size:20px">0</h3></a>
+            </div>
+        </div>
+    </div>
+    <div class="col-xs-2 col-sm-2 col-md-2 col-xl-2">
+        <div class="panel panel-colorful" style="background-color:#8faadc">
+            <div class="panel-heading">
+                <h2 style="margin:0%;color:#ffffff;font-size:20px;" class="panel-title text-center">NEURO</h2>
+            </div>
+            <div class="panel-body" style="padding-top:0px;">
+                <a class="produto"><h3 class="text-center" style="margin-top:0%; color:#ffffff;font-size:20px">0</h3></a>
+            </div>
+        </div>
+    </div>
+    <div class="col-xs-2 col-sm-2 col-md-2 col-xl-2">
+        <div class="panel panel-colorful" style="background-color:#8faadc">
+            <div class="panel-heading">
+                <h2 style="margin:0%;color:#ffffff;font-size:20px;" class="panel-title text-center">ORTOPEDIA</h2>
+            </div>
+            <div class="panel-body" style="padding-top:0px;">
+                <a class="produto"><h3 class="text-center" style="margin-top:0%; color:#ffffff;font-size:20px">0</h3></a>
+            </div>
+        </div>
+    </div>
+    <div class="col-xs-2 col-sm-2 col-md-2 col-xl-2">
+        <div class="panel panel-colorful" style="background-color:#8faadc">
+            <div class="panel-heading">
+                <h2 style="margin:0%;color:#ffffff;font-size:20px;" class="panel-title text-center">TORAX</h2>
+            </div>
+            <div class="panel-body" style="padding-top:0px;">
+                <a class="produto"><h3 class="text-center" style="margin-top:0%; color:#ffffff;font-size:20px">0</h3></a>
+            </div>
+        </div>
+    </div>
+    <div class="col-xs-2 col-sm-2 col-md-2 col-xl-2">
+        <div class="panel panel-colorful" style="background-color:#203864">
+            <div class="panel-heading">
+                <h2 style="margin:0%;color:#ffffff;font-size:20px;" class="panel-title text-center"> VALOR CIRURGIAS</h2>
+            </div>
+            <div class="panel-body" style="padding-top:0px;">
+                <a class="produto"><h3 class="text-center" style="margin-top:0%; color:#ffffff;font-size:20px">0</h3></a>
+            </div>
+        </div>
+    </div>
+</div>
+<br />
+<div class="row justify-content-center">
+    <div class="col-md-4">
+        <div id="Empresas">
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div id="GraficoFatu" style="height:100%"></div>
+        <div id="TOTAL"></div>
+    </div>
 </div>
 
 
 
 
-@section scripts{
-<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-<script type="text/javascript">
-    google.charts.load('current', { 'packages': ['corechart'] });
-    google.charts.setOnLoadCallback(drawVisualization);
+<div class="modal fade" id="loading-modal" role="dialog" tabindex="-1" aria-labelledby="demo-default-modal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <!--Modal body style="display:flex; justify-content: center;"-->
+            <div class="modal-body ">
+                <div>
+                    <div class="progressbarWrapper">
+                        <span id="greenBar"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
-    function drawVisualization() {
-        // Some raw data (not necessarily accurate)
-        var data = google.visualization.arrayToDataTable([
-            ['Metas', 'Denuo','Intermedic','Meta'],
-            ['AGO', @Model.FaturadoMesDenuoValor, @Model.FaturadoMesInterValor, @Model.MetaInter],
-        ]);
 
-        var options = {
-            title: 'Quadro de Metas',
-            vAxis: { title: 'Valor' },
-            hAxis: { title: 'Mes' },
-            seriesType: 'bars',
-            series: { 5: { type: 'line' } }
-        };
+@section scripts
+    {
+    <script type="text/javascript">
+        google.charts.load('current', { 'packages': ['corechart'] });
+        google.charts.setOnLoadCallback(drawChart2);
 
-        var chart = new google.visualization.ComboChart(document.getElementById('chart_div'));
-        chart.draw(data, options);
-    }
-</script>
+        var formato = { minimumFractionDigits: 2, style: 'currency', currency: 'BRL' }
+
+        var grafico2 = [];
+
+        grafico2.push(['Areas', 'Valor']);
+
+
+        function move(obj) {
+            let elem = document.getElementById("greenBar");
+            var width = obj;
+
+            elem.style.width = width + '%';
+            elem.style.backgroundColor = '#00e600';
+            elem.innerHTML = width * 1 + '%';
+        }
+
+
+        function drawChart2() {
+
+            var data = google.visualization.arrayToDataTable(
+                grafico2
+            );
+
+            var options = {
+                title: 'FATURAMENTO',
+                legend:  "none" ,
+            };
+
+
+            var chart = new google.visualization.PieChart(document.getElementById('GraficoFatu'));
+
+            chart.draw(data,options);
+        }
+
+    </script>
+    <script>
+        $(document).ready(function () {
+
+            var count = 0;
+
+            $('input[name=Tipo]').on('change', function (e) {
+
+                move(0)
+                $("#loading-modal").modal('show')
+
+
+
+                var Ano = $("#Ano").val();
+                var Mes = $('input[name=Tipo]:checked').val();
+
+                count = 0;
+
+                var chamadaUrl = `/dashboards/dashboardadm?handler=Faturados&&Mes=${Mes}&&Ano=${Ano}`
+                $.ajax({
+                    url: chamadaUrl,
+                    type: "POST",
+                    contentType: "application/json;",
+                    dataType: 'json',
+                    headers: {
+                        "RequestVerificationToken": $('input:hidden[name="__RequestVerificationToken"]').val()
+                    },
+                    success: function (data) {
+
+                        $("#Tipos>div").remove();
+                        
+                        var linha = '';
+
+                        data.linhas.forEach(x => {
+                            
+
+                            if (count == 5) {
+                                linha = ` <div class="col-xs-2 col-sm-2 col-md-2 col-xl-2">
+                                                              <div class="panel panel-colorful" style="background-color:#203864">
+                                                          <div class="panel-heading">
+                                                                      <h2 style="margin:0%;color:#ffffff;font-size:20px;" class="panel-title text-center"> ${x.nome}</h2>
+                                                          </div>
+                                                          <div class="panel-body" style="padding-top:0px;">
+                                                                      <a class="produto"><h3 class="text-center" style="margin-top:0%; color:#ffffff;font-size:20px">${x.quant.toLocaleString('pt-BR', formato)}</h3></a>
+                                                          </div>
+                                                      </div>
+                                                  </div>`
+                            }
+                            else if (count == 0) {
+                                linha = ` <div class="col-xs-2 col-sm-2 col-md-2 col-xl-2">
+                                                                      <div class="panel panel-colorful" style="background-color:#203864">
+                                                                  <div class="panel-heading">
+                                                                              <h2 style="margin:0%;color:#ffffff;font-size:20px;" class="panel-title text-center"> ${x.nome}</h2>
+                                                                  </div>
+                                                                  <div class="panel-body" style="padding-top:0px;">
+                                                                              <a class="produto"><h3 class="text-center" style="margin-top:0%; color:#ffffff;font-size:20px">${x.quant}</h3></a>
+                                                                  </div>
+                                                              </div>
+                                                          </div>`
+                            }
+                            else {
+                                linha = ` <div class="col-xs-2 col-sm-2 col-md-2 col-xl-2">
+                                                              <div class="panel panel-colorful" style="background-color:#8faadc">
+                                                          <div class="panel-heading">
+                                                                      <h2 style="margin:0%;color:#ffffff;font-size:20px;" class="panel-title text-center"> ${x.nome}</h2>
+                                                          </div>
+                                                          <div class="panel-body" style="padding-top:0px;">
+                                                                      <a class="produto"><h3 class="text-center" style="margin-top:0%; color:#ffffff;font-size:20px">${x.quant}</h3></a>
+                                                          </div>
+                                                      </div>
+                                                  </div>`
+                            }
+                            count++;
+
+                            $("#Tipos").append(linha);
+                        })
+
+                        move(30)
+
+                        grafico2 = [];
+
+                        grafico2.push(['Areas', 'Valores']);
+
+                        var Valor = 0;
+
+                        data.valores.valores.forEach(x => {
+
+                            grafico2.push([x.nome, x.valor])
+
+                            Valor += x.valor
+                        })
+
+                        $("#Empresas>div").remove();
+
+                        var Meta = @Model.MetaDenuo + @Model.MetaInter
+
+                        linha = ` <div class="col-xs-12 col-sm-12 col-md-12 col-xl-12">
+                                      <div class="panel panel-colorful" style="background-color:#8faadc">
+                                          <div class="panel-heading">
+                                              <h2 style="margin:0%;color:#ffffff;font-size:20px;" class="panel-title text-center"> META</h2>
+                                          </div>
+                                          <div class="panel-body" style="padding-top:0px;">
+                                             <a class="produto"><h3 class="text-center" style="margin-top:0%; color:#ffffff;font-size:20px">${Meta.toLocaleString('pt-BR', formato)}</h3></a>
+                                          </div>
+                                      </div>
+                                  </div>`
+
+                        $("#Empresas").append(linha)
+
+                        move(60)
+
+                        linha = ` <div class="col-xs-12 col-sm-12 col-md-12 col-xl-12">
+                                              <div class="panel panel-colorful" style="background-color:#8faadc">
+                                          <div class="panel-heading">
+                                              <h2 style="margin:0%;color:#ffffff;font-size:20px;" class="panel-title text-center">TOTAL FATURADO</h2>
+                                          </div>
+                                          <div class="panel-body" style="padding-top:0px;">
+                                                     <a class="produto"><h3 class="text-center" style="margin-top:0%; color:#ffffff;font-size:20px">${Valor.toLocaleString('pt-BR', formato)}</h3></a>
+                                          </div>
+                                      </div>
+                                  </div>`
+
+                        $("#Empresas").append(linha)
+
+                        linha = ` <div class="col-xs-12 col-sm-12 col-md-12 col-xl-12">
+                                                      <div class="panel panel-colorful" style="background-color:#203864">
+                                          <div class="panel-heading">
+                                              <h2 style="margin:0%;color:#ffffff;font-size:20px;" class="panel-title text-center"> STATUS META</h2>
+                                          </div>
+                                          <div class="panel-body" style="padding-top:0px;">
+                                             <a class="produto"><h3 class="text-center" style="margin-top:0%; color:#ffffff;font-size:20px">${(Valor - Meta).toLocaleString('pt-BR', formato)}</h3></a>
+                                          </div>
+                                      </div>
+                                  </div>`
+
+                        $("#Empresas").append(linha)
+
+                        move(80)
+
+                        drawChart2()
+
+                        move(100)
+
+                        $("#loading-modal").modal('hide')
+                    }
+                })
+            })
+
+        })
+
+    </script>
 }
-

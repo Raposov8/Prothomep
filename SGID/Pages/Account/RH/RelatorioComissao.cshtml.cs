@@ -1,6 +1,7 @@
 using DocumentFormat.OpenXml.Vml.Office;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using SGID.Models.Inter;
 using OfficeOpenXml;
 using SGID.Data;
 using SGID.Models;
@@ -8,7 +9,6 @@ using SGID.Models.Account.RH;
 using SGID.Models.Controladoria.FaturamentoNF;
 using SGID.Models.Denuo;
 using SGID.Models.Estoque.RelatorioFaturamentoNFFab;
-using SGID.Models.Inter;
 using System.Linq;
 
 namespace SGID.Pages.Account.RH

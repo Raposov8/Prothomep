@@ -22,11 +22,12 @@
             <button type="submit" class="btn btn-primary mb-2">Pesquisar</button>
         </div>
 
-        <div class="form-group mx-sm-3 mb-2 col-lg-1">
-            <button type="submit" class="btn btn-secondary mb-2" asp-page-handler="Export"><i class="fa-solid fa-file-excel"></i> Exportar Excel</button>
-        </div>
     </div>
 }
+
+<div>
+    <div id="piechart" style="height:100%"></div>
+</div>
 
 
 
@@ -74,7 +75,14 @@
                 @foreach (var data in Model.Relatorio)
                 {
                     <tr>
-                        <td>@Html.DisplayFor(model=> data.Empresa)</td>
+                        @if (data.Empresa == "01")
+                        {
+                            <td>INTERMEDIC</td>
+                        }
+                        else
+                        {
+                            <td>DENUO</td>
+                        }
                         <td>@data.DataCriacao.ToString("dd/MM/yyyy HH:mm")</td>
                         <td>@Html.DisplayFor(model=> data.Id)</td>
                         <td>@Html.DisplayFor(model=> data.Agendamento) </td>
@@ -91,3 +99,46 @@
         </table>
     </div>
 </div>
+
+
+<script type="text/javascript">
+    google.charts.load('current', { 'packages': ['corechart'] });
+    google.charts.setOnLoadCallback(drawChart);
+
+    var formato = { minimumFractionDigits: 2, style: 'currency', currency: 'BRL' }
+
+    var grafico = [];
+
+    grafico.push(['Medicos', 'Ocorrencias']);
+
+    @foreach (var cata in Model.relatorioOcorrencias)
+    {
+        @:grafico.push(['@cata.Nome', @cata.Quant]);
+    }
+
+    function move(obj) {
+            let elem = document.getElementById("greenBar");
+            var width = obj;
+
+            elem.style.width = width + '%';
+            elem.style.backgroundColor = '#00e600';
+            elem.innerHTML = width * 1 + '%';
+        }
+
+    function drawChart() {
+
+        var data = google.visualization.arrayToDataTable(
+            grafico
+        );
+
+        var options = {
+            title: 'Ocorrências',
+            legend: 'none'
+        };
+
+        var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+
+        chart.draw(data, options);
+    }
+
+</script>

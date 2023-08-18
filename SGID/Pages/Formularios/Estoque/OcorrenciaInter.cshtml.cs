@@ -1,8 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using SGID.Models.Inter;
 using SGID.Data;
 using SGID.Data.ViewModel;
-using SGID.Models.Inter;
+using SGID.Models.Cirurgias;
 
 namespace SGID.Pages.Formularios.Estoque
 {
@@ -13,6 +14,8 @@ namespace SGID.Pages.Formularios.Estoque
 
         public List<string> Vendedores { get; set; }
 
+        public NovoAgendamento Novo { get; set; } = new NovoAgendamento();
+
         public OcorrenciaInterModel(ApplicationDbContext sgid, TOTVSINTERContext inter)
         {
             SGID = sgid;
@@ -21,10 +24,17 @@ namespace SGID.Pages.Formularios.Estoque
 
         public void OnGet()
         {
+            Novo = new NovoAgendamento
+            {
+                Clientes = ProtheusInter.Sa1010s.Where(x => x.DELET != "*" && x.A1Msblql != "1" && (x.A1Clinter == "C" || x.A1Clinter == "H" || x.A1Clinter == "M")).OrderBy(x => x.A1Nome).Select(x => x.A1Nreduz).ToList(),
+                Medico = ProtheusInter.Sa1010s.Where(x => x.DELET != "*" && x.A1Clinter == "M" && x.A1Msblql != "1" && !string.IsNullOrWhiteSpace(x.A1Vend) && x.A1Crm != "").OrderBy(x => x.A1Nome).Select(x => x.A1Nome).ToList(),
+                Hospital = ProtheusInter.Sa1010s.Where(x => x.DELET != "*" && x.A1Clinter == "H" && x.A1Msblql != "1").OrderBy(x => x.A1Nome).Select(x => x.A1Nreduz).ToList(),
+            };
+
             Vendedores = ProtheusInter.Sa3010s.Where(x => x.DELET != "*" && x.A3Msblql != "1").Select(x => x.A3Nome).ToList();
         }
 
-        public IActionResult OnPost(string Cliente, string Medico, string Paciente, string Agendamento, DateTime? Cirurgia,
+        public IActionResult OnPost(string Cliente,string Hospital, string Medico, string Paciente, string Agendamento, DateTime? Cirurgia,
             string Produto, string Descricao, string Ocorrencia, string Acao, string Procedente, string Cobrado, string Reposto,
             string Patrimonio, string DescPatri, string Vendedor, string Obs, DateTime? DataOcorrencia, int Quantidade)
         {
@@ -34,6 +44,7 @@ namespace SGID.Pages.Formularios.Estoque
                 DataCriacao = DateTime.Now,
                 DataOcorrencia = DataOcorrencia,
                 Cliente = Cliente,
+                Hospital = Hospital,
                 Medico = Medico,
                 Paciente = Paciente,
                 Patrimonio = Patrimonio,
@@ -49,7 +60,8 @@ namespace SGID.Pages.Formularios.Estoque
                 Cobrado = Cobrado,
                 Reposto = Reposto,
                 Vendedor = Vendedor,
-                Obs = Obs
+                Obs = Obs,
+                UsuarioCriacao = User.Identity.Name.Split("@")[0].ToUpper()
             };
 
 

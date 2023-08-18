@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using SGID.Models.Denuo;
 using SGID.Models.Inter;
+using SGID.Models.Denuo;
 
 namespace SGID.Pages.Clientes
 {

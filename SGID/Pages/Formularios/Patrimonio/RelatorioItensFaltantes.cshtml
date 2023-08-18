@@ -1,0 +1,48 @@
+﻿@page "{Empresa}"
+@model SGID.Pages.Formularios.Patrimonio.RelatorioItensFaltantesModel
+@{
+    ViewData["Title"] = "Relatorio Itens Faltantes";
+    Layout = "_LayoutGeral";
+}
+
+<div class="row">
+    @using (@Html.BeginForm(FormMethod.Post))
+    {
+        <input hidden id="Empresa" name="Empresa" value="@Model.Empresa" />
+
+        <div class="form-group mx-sm-3 mb-2 col-lg-1">
+            <button type="submit" class="btn btn-secondary mb-2" asp-page-handler="Export"><i class="fa-solid fa-file-excel"></i> Exportar Excel</button>
+        </div>
+    }
+</div>
+
+
+<div class="panel">
+    <div class="panel-body">
+        <table id="demo-dt-addrow" class="table table-striped table-bordered" cellspacing="0" width="100%">
+            <thead>
+                <tr>
+                    <th class="text-center">
+                        NUMERO
+                    </th>
+                    <th class="text-center">
+                        CODIGO
+                    </th>
+                    <th class="text-center">
+                        QUANT. FALTANTE
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var data in Model.Relatorio)
+                {
+                    <tr>
+                        <td>@data.CodPatri</td>
+                        <td>@data.CodProd</td>
+                        <td>@data.QuantFalt</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

@@ -5,10 +5,10 @@ using SGID.Data;
 using SGID.Data.ViewModel;
 using SGID.Models.DTO;
 using SGID.Models.Denuo;
-using SGID.Models.Inter;
 using SGID.Data.Models;
 using SGID.Models.Email;
 using System.Net.Mail;
+using SGID.Models.Inter;
 
 namespace SGID.Pages
 {

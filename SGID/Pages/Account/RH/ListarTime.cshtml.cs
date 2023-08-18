@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Data.SqlClient;
+using SGID.Models.Inter;
 using OfficeOpenXml;
 using SGID.Data;
 using SGID.Data.Models;
@@ -10,7 +11,6 @@ using SGID.Models;
 using SGID.Models.Account.RH;
 using SGID.Models.Denuo;
 using SGID.Models.Financeiro;
-using SGID.Models.Inter;
 
 namespace SGID.Pages.Account.RH
 {
@@ -2575,8 +2575,6 @@ namespace SGID.Pages.Account.RH
                     }
                 });
 
-                
-
                 sheet.Cells[sheet.Dimension.Address].AutoFitColumns();
                 using MemoryStream stream = new MemoryStream();
                 package.SaveAs(stream);
@@ -2599,5 +2597,6 @@ namespace SGID.Pages.Account.RH
                 return LocalRedirect("/error");
             }
         }
+
     }
 }

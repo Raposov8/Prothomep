@@ -3,8 +3,8 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using OfficeOpenXml;
 using SGID.Data;
 using SGID.Data.Models;
-using SGID.Models.Inter;
 using SGID.Models.Financeiro;
+using SGID.Models.Inter;
 
 namespace SGID.Pages.Relatorios.RH
 {

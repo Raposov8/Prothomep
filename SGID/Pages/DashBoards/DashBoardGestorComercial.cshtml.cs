@@ -1,13 +1,13 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using SGID.Models.Inter;
 using SGID.Data;
 using SGID.Data.Migrations;
 using SGID.Data.Models;
 using SGID.Models;
 using SGID.Models.Comercial;
 using SGID.Models.Denuo;
-using SGID.Models.Inter;
 using System.Linq;
 
 namespace SGID.Pages.DashBoards

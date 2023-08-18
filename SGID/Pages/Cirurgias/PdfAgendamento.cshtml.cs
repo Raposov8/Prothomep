@@ -4,9 +4,9 @@ using SGID.Data;
 using SGID.Data.ViewModel;
 using SGID.Models.DTO;
 using SGID.Models.Denuo;
-using SGID.Models.Inter;
 using SGID.Models.Services;
 using Microsoft.AspNetCore.Authorization;
+using SGID.Models.Inter;
 
 namespace SGID.Pages.Cirurgias
 {

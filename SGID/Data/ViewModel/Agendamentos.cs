@@ -44,8 +44,13 @@ namespace SGID.Data.ViewModel
 
         public DateTime? DataCotacao { get; set; } 
 
+        //ADM
         public string? UsuarioCriacao { get; set; }
         public string? UsuarioAlterar { get; set; }
+
+
+        //COMERCIAL
+        public string? UsuarioComercial { get; set; }
 
         //Rejeição
         public string? UsuarioRejeicao { get; set; }
@@ -53,6 +58,7 @@ namespace SGID.Data.ViewModel
         public string? ObsRejeicao { get; set; }
 
         //Logistica
+        public string? UsuarioLogistica { get; set; } 
         public int StatusLogistica { get; set; }
         public string? MediaEntrega { get; set; }
         public DateTime? DataEntrega { get; set; }

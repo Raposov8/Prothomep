@@ -5,6 +5,7 @@
     Layout = "_LayoutGeral";
 }
 
+
 @using (@Html.BeginForm(FormMethod.Post))
 {
     <div class="row">
@@ -108,7 +109,8 @@
 @section Scripts{
     <script>
         $(document).ready(function () {
-            $('#Patrimonio').val('@Model.Patrimonio');
+            var patri = '@Model.Patrimonio'.replace('&#xC7;', 'Ç').replace('&#xC3;', 'Ã')
+            $('#Patrimonio').val(patri);
         })
     </script>
 }

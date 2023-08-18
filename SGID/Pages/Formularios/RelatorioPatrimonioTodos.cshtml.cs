@@ -1,12 +1,12 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using SGID.Models.Inter;
 using OfficeOpenXml;
 using OfficeOpenXml.Style;
 using SGID.Data;
 using SGID.Data.Models;
 using SGID.Models.Denuo;
-using SGID.Models.Inter;
 using SGID.Models.Patrimonio;
 using System.Drawing;
 

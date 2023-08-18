@@ -2,10 +2,10 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using OfficeOpenXml;
 using SGID.Data;
-using SGID.Models.Inter;
 using SGID.Models;
 using SGID.Data.Models;
 using Microsoft.AspNetCore.Authorization;
+using SGID.Models.Inter;
 
 namespace SGID.Pages.Relatorios.Avanos
 {

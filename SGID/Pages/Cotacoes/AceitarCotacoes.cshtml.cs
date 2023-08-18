@@ -7,8 +7,8 @@ using SGID.Data.ViewModel;
 using SGID.Models.Cirurgias;
 using SGID.Models.DTO;
 using SGID.Models.Denuo;
-using SGID.Models.Inter;
 using OPMEnexo;
+using SGID.Models.Inter;
 
 namespace SGID.Pages.Cotacoes
 {
@@ -329,7 +329,7 @@ namespace SGID.Pages.Cotacoes
                     SGID.SaveChanges();
                 }
 
-                AgendamentoProduto.ForEach(produto =>
+                AgendamentoProduto.ForEach(produto => 
                 {
                     var produtoUpdate = Produtos.FirstOrDefault(x => x.Item == produto.CodigoProduto);
 
@@ -351,7 +351,7 @@ namespace SGID.Pages.Cotacoes
                     }
                 });
 
-                Produtos.ForEach(produto =>
+                Produtos.ForEach(produto => 
                 {
                     var ProdXAgenda = new ProdutosAgendamentos
                     {
@@ -391,7 +391,7 @@ namespace SGID.Pages.Cotacoes
 
                 var AgendamentoAvulsos = SGID.AvulsosAgendamento.Where(x => x.AgendamentoId == id).ToList();
 
-                AgendamentoAvulsos.ForEach(avus =>
+                AgendamentoAvulsos.ForEach(avus => 
                 {
                     var Avulso = Avulsos.FirstOrDefault(c => c.Item == avus.Produto);
 
@@ -410,7 +410,7 @@ namespace SGID.Pages.Cotacoes
                     }
                 });
 
-                Avulsos.ForEach(avulso =>
+                Avulsos.ForEach(avulso => 
                 {
                     var agendamento = new AvulsosAgendamento
                     {
@@ -435,7 +435,10 @@ namespace SGID.Pages.Cotacoes
                 {
                     Agendamento.StatusCotacao = 1;
                     Agendamento.StatusPedido = 5;
+                    Agendamento.UsuarioComercial = User.Identity.Name.Split("@")[0].ToUpper();
                 }
+
+
 
                 SGID.Agendamentos.Update(Agendamento);
                 SGID.SaveChanges();

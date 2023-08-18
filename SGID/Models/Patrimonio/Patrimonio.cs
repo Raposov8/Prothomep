@@ -6,5 +6,9 @@
         public string DescProd { get; set; }
         public double QtdKit { get; set; }
         public double QtdPat { get; set; }
+
+        //Itens Faltantes
+        public string CodPatri { get; set; }
+        public double QuantFalt { get; set; }
     }
 }

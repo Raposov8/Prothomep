@@ -3,12 +3,12 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
+using SGID.Models.Inter;
 using OfficeOpenXml;
 using SGID.Data;
 using SGID.Data.Models;
 using SGID.Models;
 using SGID.Models.DTO;
-using SGID.Models.Inter;
 using SGID.Models.Relatorio;
 
 namespace SGID.Pages.Relatorios.Controladoria

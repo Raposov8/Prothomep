@@ -1,9 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
+using SGID.Models.Inter;
 using SGID.Data;
 using SGID.Data.Models;
-using SGID.Models.Inter;
 
 namespace SGID.Pages.Qualidade
 {

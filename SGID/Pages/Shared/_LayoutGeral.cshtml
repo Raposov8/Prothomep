@@ -105,7 +105,12 @@
                 }
                 @if(User.IsInRole("Admin") || User.IsInRole("GestorVenda") || User.IsInRole("Venda") || User.IsInRole("Diretoria"))
                 {
-                    
+                    @if (User.IsInRole("Admin") || User.IsInRole("GestorVenda"))
+                    {
+                        <li>
+                            <a class="nav-link" href="/dashboards/DashBoardadm"><i class="fa-solid fa-chart-pie"></i>Metas ADM</a>
+                        </li>
+                    }
                     <li class="nav-item dropdown">
                         <a class="nav-link align-items-center rounded dropdown-toggle" data-bs-toggle="collapse" 
                       data-bs-target="#cirurgias-collapse" aria-expanded="false"> 
@@ -129,7 +134,7 @@
                             <ul class="list-unstyled fw-normal pb-1 small">
                                 <li><a class="nav-link" href="/cotacoes/dashboardcotacoes/0">Em Aberto</a></li>
                                 <li><a class="nav-link" href="/cotacoes/dashboardcotacoes/1">Aprovadas</a></li>
-                                 <li><a class="nav-link" href="/cotacoes/dashboardcotacoes/2">Reprovadas</a></li>
+                                <li><a class="nav-link" href="/cotacoes/dashboardcotacoes/2">Reprovadas</a></li>
                                 <li><a class="nav-link" href="/cotacoes/dashboardcotacoes/3">Respondidas</a></li>
                                 <!--User.IsInRole("GestorComercial") || User.IsInRole("Comercial") ||-->
                             </ul>
@@ -555,6 +560,8 @@
                                             <li><a class="nav-link" href="/relatorios/estoque/saldoestoque/1">Saldo Estoque Denuo</a></li>
                                             <li><a class="nav-link" href="/relatorios/estoque/faturamentonffab">Faturamento NF Fabricante Denuo</a></li>
                                             <li><a class="nav-link" href="/relatorios/estoque/faturamentonffabinter">Faturamento NF Fabricante Inter</a></li>
+                                            <li><a class="nav-link" href="/relatorios/estoque/Armazem10">Armazem 10 Denuo</a></li>
+                                            <li><a class="nav-link" href="/relatorios/estoque/Armazem10Inter">Armazem 10 Inter</a></li>
                                         </ul>
                                     </div>
                                 </li>
@@ -647,7 +654,7 @@
                      </ul>
                   </div>
                </li>
-               @if(User.IsInRole("Admin") || User.IsInRole("Patrimonio") || User.IsInRole("Diretoria"))
+                @if(User.IsInRole("Admin") || User.IsInRole("Patrimonio") || User.IsInRole("Diretoria"))
                {
                    <li class="nav-item dropdown">
                        <a class="nav-link align-items-center rounded dropdown-toggle" data-bs-toggle="collapse" 
@@ -680,18 +687,7 @@
                                         </ul>
                                     </div>
                                 </li>
-                               <!--<li class="nav-item dropdown">
-                                    <a class="nav-link align-items-center rounded dropdown-toggle" data-bs-toggle="collapse"
-                                   data-bs-target="#req09-collapse" aria-expanded="false">
-                                        REQ09
-                                    </a>
-                                    <div class="collapse" id="req09-collapse">
-                                        <ul class="list-unstyled fw-normal pb-1 small">
-                                            <li><a class="nav-link" href="/formularios/req09/03" target="_blank">REQ09 Denuo</a></li>
-                                            <li><a class="nav-link" href="/formularios/req09/01" target="_blank">REQ09 Intermedic</a></li>
-                                        </ul>
-                                    </div>
-                                </li>-->
+                               
                                <li class="nav-item dropdown">
                                     <a class="nav-link align-items-center rounded dropdown-toggle" data-bs-toggle="collapse"
                                    data-bs-target="#conspa3-collapse" aria-expanded="false">
@@ -716,11 +712,23 @@
                                         </ul>
                                     </div>
                                 </li>
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link align-items-center rounded dropdown-toggle" data-bs-toggle="collapse"
+                                   data-bs-target="#req09-collapse" aria-expanded="false">
+                                        Todos Itens Faltantes Patrimonios
+                                    </a>
+                                    <div class="collapse" id="req09-collapse">
+                                        <ul class="list-unstyled fw-normal pb-1 small">
+                                            <li><a class="nav-link" href="/formularios/patrimonio/RelatorioItensFaltantes/03" target="_blank">Relatorio Itens Faltantes Denuo</a></li>
+                                            <li><a class="nav-link" href="/formularios/patrimonio/RelatorioItensFaltantes/01" target="_blank">Relatorio Itens Faltantes Intermedic</a></li>
+                                        </ul>
+                                    </div>
+                                </li>
                            </ul>
                        </div>
                    </li>
                }
-               @if(User.IsInRole("Admin") || User.IsInRole("RH") || User.IsInRole("Diretoria"))
+                @if(User.IsInRole("Admin") || User.IsInRole("RH") || User.IsInRole("Diretoria"))
                {
                     <li class="nav-item dropdown">
                         <a class="nav-link align-items-center rounded dropdown-toggle" data-bs-toggle="collapse"
@@ -735,13 +743,13 @@
                         </div>
                     </li>
                }
-               @if(User.IsInRole("Admin"))
+                @if(User.IsInRole("Admin"))
                {
                   <li>
                      <a class="nav-link" href="/useradmin/listarusuarios/1"><i class="fa-solid fa-user"></i>Usuários</a>
                   </li>
                }
-               @if(User.IsInRole("Admin")|| User.IsInRole("GestorComercial") || User.IsInRole("Venda") || User.IsInRole("Diretoria"))
+                @if(User.IsInRole("Admin")|| User.IsInRole("GestorComercial") || User.IsInRole("Venda") || User.IsInRole("Diretoria"))
                 {
                     <li class="nav-item dropdown">
                         <a class="nav-link align-items-center rounded dropdown-toggle" data-bs-toggle="collapse"

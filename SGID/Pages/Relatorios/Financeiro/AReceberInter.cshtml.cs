@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using SGID.Models.Financeiro;
 using SGID.Models.Inter;
+using SGID.Models.Financeiro;
 
 namespace SGID.Pages.Relatorios.Financeiro
 {

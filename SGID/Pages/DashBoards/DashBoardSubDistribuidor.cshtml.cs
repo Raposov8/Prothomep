@@ -1,11 +1,11 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using SGID.Models.Inter;
 using SGID.Data;
 using SGID.Data.Models;
 using SGID.Models;
 using SGID.Models.Controladoria;
 using SGID.Models.Denuo;
-using SGID.Models.Inter;
 using System;
 
 namespace SGID.Pages.DashBoards
@@ -38,8 +38,8 @@ namespace SGID.Pages.DashBoards
             {
                 string user = User.Identity.Name.Split("@")[0].ToUpper();
                 string data = DateTime.Now.ToString("yyyy/MM").Replace("/", "");
-                string DataInicio = "20230401"; //data + "01";
-                string DataFim = "20230431";    //data + "31";
+                string DataInicio = data + "01";
+                string DataFim =  data + "31";
                 int[] CF = new int[] { 5551, 6551, 6107, 6109 };
 
                 var time = SGID.Times.FirstOrDefault(x => x.Integrante == user.ToLower());
@@ -183,7 +183,7 @@ namespace SGID.Pages.DashBoards
                                  SA3.A3Nome,
                                  SA3.A3Xlogin,
                                  SA3.A3Cod
-                             }).ToList();
+                             }).OrderBy(x=>x.E1Num).ToList();
 
                 var baixaInter = (from SE1 in ProtheusInter.Se1010s
                              join SA3 in ProtheusInter.Sa3010s on SE1.E1Vend1 equals SA3.A3Cod
@@ -203,7 +203,7 @@ namespace SGID.Pages.DashBoards
                                  SA3.A3Nome,
                                  SA3.A3Xlogin,
                                  SA3.A3Cod
-                             }).ToList();
+                             }).OrderBy(x => x.E1Num).ToList();
 
                 #endregion
 
@@ -213,7 +213,7 @@ namespace SGID.Pages.DashBoards
                 EmAberto = EmAbertoInter.DistinctBy(x => x.Num).Count() + EmAbertoDenuo.DistinctBy(x => x.Num).Count();
                 EmAbertoValor = EmAbertoInter.Sum(x => x.Total) + EmAbertoDenuo.Sum(x => x.Total);
 
-                Baixado = baixa.Count + baixaInter.Count;
+                Baixado = baixa.DistinctBy(x => x.E1Num).Count() + baixaInter.DistinctBy(x => x.E1Num).Count();
                 ValorBaixado = baixa.Sum(x => x.E1Valor) + baixaInter.Sum(x => x.E1Valor);
 
                 Meta = time.Meta;

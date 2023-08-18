@@ -1,12 +1,12 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using SGID.Models.Inter;
 using SGID.Data;
 using SGID.Data.Models;
 using SGID.Data.ViewModel;
 using SGID.Models.Denuo;
 using SGID.Models.DTO;
-using SGID.Models.Inter;
 using System.Globalization;
 
 namespace SGID.Pages.Agendamento
@@ -182,7 +182,7 @@ namespace SGID.Pages.Agendamento
                         Observacao = x.Observacao,
                         Endereco = x.Endereco,
                         Medico = x.Medico,
-                        Motvisita = x.Motvisita,
+                        Motvisita = x.Motvisita ?? "",
                         Bairro = x.Bairro,
                         ResuVi = x.ResumoVisita,
                         Vendedor = x.Vendedor.Replace("."," "),
@@ -190,6 +190,8 @@ namespace SGID.Pages.Agendamento
                        DataProxima = x.DataHora.ToString("yyyy-MM-dd"),
                        UltimaResp1 = "",
                        UltimaResp2 = "",
+                       Email = x.Email ?? "",
+                       Telefone = x.Telefone ?? ""
                     }).FirstOrDefault(x=> x.Id == id);
 
 
@@ -199,12 +201,12 @@ namespace SGID.Pages.Agendamento
                 {
                     if(visita.UltimaResp1 == "")
                     {
-                        visita.UltimaResp1 = data.ResumoVisita == null ? "Não Há Resumo" : data.ResumoVisita;
+                        visita.UltimaResp1 = data.ResumoVisita ?? "Não Há Resumo";
                         visita.DataResp1 = data.DataHora.ToString("dd/MM/yyyy HH:mm");
                     }
                     else
                     {
-                        visita.UltimaResp2 = data.ResumoVisita == null ? "Não Há Resumo" : data.ResumoVisita;
+                        visita.UltimaResp2 = data.ResumoVisita ?? "Não Há Resumo";
                         visita.DataResp2 = data.DataHora.ToString("dd/MM/yyyy HH:mm");
                     }
                 }

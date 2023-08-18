@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using SGID.Models.Inter;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Math;
 using SGID.Data;
 using SGID.Data.Migrations;
@@ -7,7 +8,6 @@ using SGID.Data.ViewModel;
 using SGID.Models.Denuo;
 using SGID.Models.DTO;
 using SGID.Models.Email;
-using SGID.Models.Inter;
 using System.Net.Mail;
 
 namespace SGID.Pages.Formularios.Estoque
@@ -66,6 +66,7 @@ namespace SGID.Pages.Formularios.Estoque
                     Agendamento = Ocorrencia.Agendamento,
                     Cirurgia = DataCirurgia,
                     Cliente = Ocorrencia.Cliente,
+                    Hospital = Ocorrencia.Hospital,
                     Medico = Ocorrencia.Medico,
                     Paciente = Ocorrencia.Paciente,
 

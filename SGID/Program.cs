@@ -3,10 +3,10 @@ using Microsoft.EntityFrameworkCore;
 using SGID.Data;
 using SGID.Data.ViewModel;
 using SGID.Models.Denuo;
-using SGID.Models.Inter;
 using SGID.Models.Relatorio;
 using SGID.Hubs;
 using System.Globalization;
+using SGID.Models.Inter;
 
 var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 

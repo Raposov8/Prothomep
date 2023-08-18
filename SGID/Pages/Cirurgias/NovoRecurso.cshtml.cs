@@ -3,11 +3,11 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using SGID.Models.Inter;
 using SGID.Data;
 using SGID.Data.Models;
 using SGID.Data.ViewModel;
 using SGID.Models.Denuo;
-using SGID.Models.Inter;
 
 namespace SGID.Pages.Cirurgias
 {

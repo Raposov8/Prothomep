@@ -1,8 +1,8 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using SGID.Models.Denuo;
 using SGID.Models.Inter;
+using SGID.Models.Denuo;
 using SGID.Models.Patrimonio;
 
 namespace SGID.Pages.Formularios.Patrimonio

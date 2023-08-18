@@ -21,5 +21,8 @@
         public string DataResp1 { get; set; }
         public string UltimaResp2 { get; set; }
         public string DataResp2 { get; set; }
+
+        public string Email { get; set; }
+        public string Telefone { get; set; }
     }
 }

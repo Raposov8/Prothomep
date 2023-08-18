@@ -1,10 +1,11 @@
+using DocumentFormat.OpenXml.Bibliography;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using SGID.Models.Inter;
 using SGID.Data;
 using SGID.Data.ViewModel;
 using SGID.Models.Denuo;
-using SGID.Models.Inter;
 
 namespace SGID.Pages.Logistica
 {
@@ -98,6 +99,7 @@ namespace SGID.Pages.Logistica
         {
             var agendamento = SGID.Agendamentos.FirstOrDefault(x => x.Id == IdA);
 
+            agendamento.UsuarioLogistica = User.Identity.Name.Split("@")[0].ToUpper();
             agendamento.StatusLogistica = 1;
 
             SGID.Agendamentos.Update(agendamento);

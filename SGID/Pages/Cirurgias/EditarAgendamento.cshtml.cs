@@ -3,13 +3,13 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using SGID.Data.ViewModel;
 using SGID.Data;
 using SGID.Models.Cirurgias;
-using SGID.Models.Inter;
 using SGID.Models.DTO;
 using SGID.Data.Models;
 using SGID.Models.Denuo;
 using Microsoft.AspNetCore.Authorization;
 using OfficeOpenXml.FormulaParsing.Utilities;
 using System.Data;
+using SGID.Models.Inter;
 
 namespace SGID.Pages.Cirurgias
 {

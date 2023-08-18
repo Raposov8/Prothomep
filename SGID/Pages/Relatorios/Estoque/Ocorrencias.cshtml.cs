@@ -4,6 +4,7 @@ using OfficeOpenXml;
 using SGID.Data;
 using SGID.Data.Models;
 using SGID.Data.ViewModel;
+using SGID.Models.Estoque;
 
 namespace SGID.Pages.Relatorios.Estoque
 {
@@ -11,10 +12,14 @@ namespace SGID.Pages.Relatorios.Estoque
     {
         private ApplicationDbContext SGID { get; set; }
 
+        
         public List<Ocorrencia> Relatorio { get; set; } = new List<Ocorrencia>();
 
+        public List<RelatorioOcorrencia> relatorioOcorrencias { get; set; } = new List<RelatorioOcorrencia>();
         public DateTime Inicio { get; set; } 
         public DateTime Fim { get; set; }
+
+
 
         public OcorrenciasModel(ApplicationDbContext sgid)
         {
@@ -34,6 +39,18 @@ namespace SGID.Pages.Relatorios.Estoque
                 Fim = DataFim;
 
                 Relatorio = SGID.Ocorrencias.Where(x => x.DataOcorrencia >= DataInicio && x.DataOcorrencia <= DataFim).ToList();
+
+
+                relatorioOcorrencias = Relatorio.GroupBy(x => new
+                {
+                    x.Medico
+                })
+                .Select(x => new RelatorioOcorrencia
+                {
+                    Nome = x.Key.Medico,
+                    Quant = x.Count()
+                }).OrderByDescending(x=> x.Quant).ToList();
+
 
                 return Page();
             }
@@ -74,7 +91,7 @@ namespace SGID.Pages.Relatorios.Estoque
 
                 Relatorio.ForEach(Pedido =>
                 {
-                    sheet.Cells[i, 1].Value = Pedido.Empresa;
+                    sheet.Cells[i, 1].Value = Pedido.Empresa == "01" ? "INTERMEDIC" : "DENUO";
                     sheet.Cells[i, 2].Value = Pedido.DataCriacao.ToString("dd/MM/yyyy HH:mm");
                     sheet.Cells[i, 3].Value = Pedido.Id;
                     sheet.Cells[i, 4].Value = Pedido.Agendamento;

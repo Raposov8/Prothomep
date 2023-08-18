@@ -9,6 +9,7 @@ namespace SGID.Data.ViewModel
         public DateTime DataCriacao { get; set; }
         public string? Empresa { get; set; }
         public string? Cliente { get; set; }
+        public string? Hospital { get; set; }
         public string? Medico { get; set; }
         public string? Paciente { get; set; }
         public string? Agendamento { get; set; }
@@ -27,5 +28,7 @@ namespace SGID.Data.ViewModel
         public string? Vendedor { get; set; }
         public string? Motorista { get; set; }
         public string? Obs { get; set; }
+
+        public string? UsuarioCriacao { get; set; }
     }
 }
