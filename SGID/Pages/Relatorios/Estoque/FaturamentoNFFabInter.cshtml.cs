@@ -5,7 +5,9 @@ using OfficeOpenXml;
 using OfficeOpenXml.Style;
 using SGID.Data;
 using SGID.Data.Models;
+using SGID.Models.Estoque;
 using SGID.Models.Estoque.RelatorioFaturamentoNFFab;
+using SGID.Models.Inter;
 using SGID.Models.Relatorio;
 
 namespace SGID.Pages.Relatorios.Estoque
@@ -13,8 +15,8 @@ namespace SGID.Pages.Relatorios.Estoque
     [Authorize]
     public class FaturamentoNFFabInterModel : PageModel
     {
-        private RelatorioContext Protheus { get; set; }
         private ApplicationDbContext SGID { get; set; }
+        private TOTVSINTERContext Protheus { get; set; }
 
         public List<Tipo> RelatorioFaturamento { get; set; } = new List<Tipo>();
 
@@ -22,10 +24,10 @@ namespace SGID.Pages.Relatorios.Estoque
 
         public List<Fabricante> RelatorioFabricante { get; set; } = new List<Fabricante>();
 
-        public FaturamentoNFFabInterModel(RelatorioContext context,ApplicationDbContext sgid)
+        public FaturamentoNFFabInterModel(ApplicationDbContext sgid,TOTVSINTERContext inter)
         {
-            Protheus = context;
             SGID = sgid;
+            Protheus = inter;
         }
         public string Ano { get; set; }
         public void OnGet()
@@ -41,96 +43,73 @@ namespace SGID.Pages.Relatorios.Estoque
                 int Inicio = Convert.ToInt32($"{Ano}0101");
                 int Fim = Convert.ToInt32($"{Ano}1231");
 
-                #region Fabricante
-                var query = Protheus.Fatnffabs.Where(x => x.Empresa == "I" && (((int)(object)x.Emissao >= Inicio && (int)(object)x.Emissao <= Fim && x.Tipofd == "F")
-                || ((int)(object)x.Dtdigit >= Inicio && (int)(object)x.Dtdigit <= Fim && x.Tipofd != "F")))
-                    .
-                    Select(novo => new
-                    {
-                        novo.Empresa,
-                        novo.Filial,
-                        novo.Fabricante,
-                        Mest = novo.Tipofd == "F" ? novo.Emissao.Substring(4, 2) : novo.Dtdigit.Substring(4, 2),
-                        novo.Total
-                    })
-                    .GroupBy(x => new
-                    {
-                        x.Empresa,
-                        x.Filial,
-                        x.Fabricante,
-                        x.Mest
-                    })
-                    .Select(x => new
-                    {
-                        x.Key.Empresa,
-                        x.Key.Filial,
-                        x.Key.Fabricante,
-                        x.Key.Mest,
-                        Total = x.Sum(c => c.Total)
-                    }).OrderBy(x => x.Fabricante).ToList();
-
-
-                query.ForEach(c =>
-                {
-
-                    if (!RelatorioFabricante.Any(x => x.Nome == c.Fabricante))
-                    {
-                        var Todos = query.Where(x => x.Fabricante == c.Fabricante).ToList();
-
-                        var NovoRelatorio = new Fabricante { Nome = c.Fabricante };
-
-                        Todos.ForEach(x =>
-                        {
-                            switch (x.Mest)
-                            {
-                                case "01": NovoRelatorio.Janeiro += x.Total.Value; break;
-                                case "02": NovoRelatorio.Fevereiro += x.Total.Value; break;
-                                case "03": NovoRelatorio.Marco += x.Total.Value; break;
-                                case "04": NovoRelatorio.Abril += x.Total.Value; break;
-                                case "05": NovoRelatorio.Maio += x.Total.Value; break;
-                                case "06": NovoRelatorio.Junho += x.Total.Value; break;
-                                case "07": NovoRelatorio.Julho += x.Total.Value; break;
-                                case "08": NovoRelatorio.Agosto += x.Total.Value; break;
-                                case "09": NovoRelatorio.Setembro += x.Total.Value; break;
-                                case "10": NovoRelatorio.Outubro += x.Total.Value; break;
-                                case "11": NovoRelatorio.Novembro += x.Total.Value; break;
-                                case "12": NovoRelatorio.Dezembro += x.Total.Value; break;
-                            }
-
-                            NovoRelatorio.Total += x.Total.Value;
-                        });
-
-                        RelatorioFabricante.Add(NovoRelatorio);
-                    }
-
-                });
-
-                #endregion
+                var CF = new int[] { 5551, 6551, 6107, 6109, 5117, 6117 };
+                var CfNe = new int[] { 1202, 1553, 2202, 2553 };
 
                 #region Faturado
 
-                var queryFaturado = Protheus.Fatnffabs.Where(x => x.Empresa == "I" && x.Tipofd == "F"
-                && (int)(object)x.Emissao >= Inicio && (int)(object)x.Emissao <= Fim)
-                    .Select(x => new
-                    {
-                        x.Empresa,
-                        x.Filial,
-                        x.Clifor,
-                        x.Loja,
-                        x.Nome,
-                        Tipo = x.Tipo == "H" ? "HOSPITAL" : x.Tipo == "M" ? "MEDICO" : x.Tipo == "I" ? "INSTRUMENTAL" : x.Tipo == "N" ? "NORMAL" : x.Tipo == "C" ? "CONVENIO" : x.Tipo == "P" ? "PARTICULAR" : x.Tipo == "S" ? "SUB-DISTRIBUIDOR" : "OUTROS",
-                        x.Est,
-                        x.Mun,
-                        x.Nf,
-                        x.Serie,
-                        x.Emissao,
-                        x.Fabricante,
-                        x.Total,
-                        x.Valipi,
-                        x.Valicm,
-                        x.Descon,
-                        Mes = x.Emissao.Substring(4, 2)
-                    }).OrderBy(x => x.Fabricante).ToList();
+                var queryFaturado = (from SD20 in Protheus.Sd2010s
+                                     join SA10 in Protheus.Sa1010s on new { Cliente = SD20.D2Cliente, Loja = SD20.D2Loja } equals new { Cliente = SA10.A1Cod, Loja = SA10.A1Loja }
+                                     join SB10 in Protheus.Sb1010s on SD20.D2Cod equals SB10.B1Cod
+                                     join SF20 in Protheus.Sf2010s on new { Filial = SD20.D2Filial, Doc = SD20.D2Doc, Serie = SD20.D2Serie, Cliente = SD20.D2Cliente, Loja = SD20.D2Loja } equals new { Filial = SF20.F2Filial, Doc = SF20.F2Doc, Serie = SF20.F2Serie, Cliente = SF20.F2Cliente, Loja = SF20.F2Loja }
+                                     join SC50 in Protheus.Sc5010s on new { Pedido = SD20.D2Pedido, Filial = SD20.D2Filial, Cliente = SD20.D2Cliente, Loja = SD20.D2Loja } equals new { Pedido = SC50.C5Num, Filial = SC50.C5Filial, Cliente = SC50.C5Cliente, Loja = SC50.C5Lojacli }
+                                     where SD20.DELET != "*" && SA10.DELET != "*" && SB10.DELET != "*" && SF20.DELET != "*" && SC50.DELET != "*" &&
+                                     (((int)(object)SD20.D2Cf >= 5102 && (int)(object)SD20.D2Cf <= 5114) || ((int)(object)SD20.D2Cf >= 6102 && (int)(object)SD20.D2Cf <= 6114)
+                                     || ((int)(object)SD20.D2Cf >= 7102 && (int)(object)SD20.D2Cf <= 7114) || CF.Contains((int)(object)SD20.D2Cf))
+                                     && (int)(object)SD20.D2Emissao >= Inicio && (int)(object)SD20.D2Emissao <= Fim && SD20.D2Quant != 0
+                                     select new
+                                     {
+                                         Filial = SD20.D2Filial,
+                                         Cliente = SD20.D2Cliente,
+                                         Loja = SD20.D2Loja,
+                                         Nome = SA10.A1Nome,
+                                         Tipo = SA10.A1Clinter,
+                                         Est = SA10.A1Est,
+                                         Mun = SA10.A1Mun,
+                                         NF = SD20.D2Doc,
+                                         Serie = SD20.D2Serie,
+                                         Emissao = SD20.D2Emissao,
+                                         Total = SD20.D2Total,
+                                         Valipi = SD20.D2Valipi,
+                                         Valicm = SD20.D2Valicm,
+                                         Descon = SD20.D2Descon,
+                                         TotalBrut = SD20.D2Valbrut,
+                                         Fabricante = SB10.B1Fabric
+                                     })
+                                     .GroupBy(x => new
+                                     {
+                                         x.Filial,
+                                         x.Cliente,
+                                         x.Loja,
+                                         x.Nome,
+                                         x.Tipo,
+                                         x.Est,
+                                         x.Mun,
+                                         x.NF,
+                                         x.Serie,
+                                         x.Emissao,
+                                         x.Fabricante
+                                     })
+                                     .Select(x => new FaturamentoNFFAB
+                                     {
+                                         Filial = x.Key.Filial,
+                                         Cliente = x.Key.Cliente,
+                                         Loja = x.Key.Loja,
+                                         Nome = x.Key.Nome,
+                                         Tipo = x.Key.Tipo == "H" ? "HOSPITAL" : x.Key.Tipo == "M" ? "MEDICO" : x.Key.Tipo == "I" ? "INSTRUMENTAL" : x.Key.Tipo == "N" ? "NORMAL" : x.Key.Tipo == "C" ? "CONVENIO" : x.Key.Tipo == "P" ? "PARTICULAR" : x.Key.Tipo == "S" ? "SUB-DISTRIBUIDOR" : "OUTROS",
+                                         Est = x.Key.Est,
+                                         Mun = x.Key.Mun,
+                                         NF = x.Key.NF,
+                                         Serie = x.Key.Serie,
+                                         Emissao = x.Key.Emissao,
+                                         Fabricante = x.Key.Fabricante,
+                                         Total = x.Sum(c => c.Total),
+                                         Valipi = x.Sum(c => c.Valipi),
+                                         Valicm = x.Sum(c => c.Valicm),
+                                         Descon = x.Sum(c => c.Descon),
+                                         Mes = x.Key.Emissao.Substring(4, 2)
+                                     }).OrderBy(x => x.Fabricante).ToList();
+
 
 
                 var hospital = queryFaturado.Where(x => x.Tipo == "HOSPITAL").ToList();
@@ -164,7 +143,7 @@ namespace SGID.Pages.Relatorios.Estoque
                                 {
                                     Nome = nota.Nome,
                                     Serie = nota.Serie,
-                                    NF = nota.Nf,
+                                    NF = nota.NF,
                                     Emissao = nota.Emissao
                                 };
 
@@ -172,68 +151,68 @@ namespace SGID.Pages.Relatorios.Estoque
                                 {
                                     case "01":
                                         {
-                                            tipo.Janeiro += nota.Total.Value;
-                                            NotaFiscal.Janeiro += nota.Total.Value; break;
+                                            tipo.Janeiro += nota.Total;
+                                            NotaFiscal.Janeiro += nota.Total; break;
                                         }
                                     case "02":
                                         {
-                                            tipo.Fevereiro += nota.Total.Value;
-                                            NotaFiscal.Fevereiro += nota.Total.Value; break;
+                                            tipo.Fevereiro += nota.Total;
+                                            NotaFiscal.Fevereiro += nota.Total; break;
                                         }
                                     case "03":
                                         {
-                                            tipo.Marco += nota.Total.Value;
-                                            NotaFiscal.Marco += nota.Total.Value; break;
+                                            tipo.Marco += nota.Total;
+                                            NotaFiscal.Marco += nota.Total; break;
                                         }
                                     case "04":
                                         {
-                                            tipo.Abril += nota.Total.Value;
-                                            NotaFiscal.Abril += nota.Total.Value; break;
+                                            tipo.Abril += nota.Total;
+                                            NotaFiscal.Abril += nota.Total; break;
                                         }
                                     case "05":
                                         {
-                                            tipo.Maio += nota.Total.Value;
-                                            NotaFiscal.Maio += nota.Total.Value; break;
+                                            tipo.Maio += nota.Total;
+                                            NotaFiscal.Maio += nota.Total; break;
                                         }
                                     case "06":
                                         {
-                                            tipo.Junho += nota.Total.Value;
-                                            NotaFiscal.Junho += nota.Total.Value; break;
+                                            tipo.Junho += nota.Total;
+                                            NotaFiscal.Junho += nota.Total; break;
                                         }
                                     case "07":
                                         {
-                                            tipo.Julho += nota.Total.Value;
-                                            NotaFiscal.Julho += nota.Total.Value; break;
+                                            tipo.Julho += nota.Total;
+                                            NotaFiscal.Julho += nota.Total; break;
                                         }
                                     case "08":
                                         {
-                                            tipo.Agosto += nota.Total.Value;
-                                            NotaFiscal.Agosto += nota.Total.Value; break;
+                                            tipo.Agosto += nota.Total;
+                                            NotaFiscal.Agosto += nota.Total; break;
                                         }
                                     case "09":
                                         {
-                                            tipo.Setembro += nota.Total.Value;
-                                            NotaFiscal.Setembro += nota.Total.Value; break;
+                                            tipo.Setembro += nota.Total;
+                                            NotaFiscal.Setembro += nota.Total; break;
                                         }
                                     case "10":
                                         {
-                                            tipo.Outubro += nota.Total.Value;
-                                            NotaFiscal.Outubro += nota.Total.Value; break;
+                                            tipo.Outubro += nota.Total;
+                                            NotaFiscal.Outubro += nota.Total; break;
                                         }
                                     case "11":
                                         {
-                                            tipo.Novembro += nota.Total.Value;
-                                            NotaFiscal.Novembro += nota.Total.Value; break;
+                                            tipo.Novembro += nota.Total;
+                                            NotaFiscal.Novembro += nota.Total; break;
                                         }
                                     case "12":
                                         {
-                                            tipo.Dezembro += nota.Total.Value;
-                                            NotaFiscal.Dezembro += nota.Total.Value; break;
+                                            tipo.Dezembro += nota.Total;
+                                            NotaFiscal.Dezembro += nota.Total; break;
                                         }
                                 }
 
-                                tipo.Total += x.Total.Value;
-                                NotaFiscal.Total += x.Total.Value;
+                                tipo.Total += x.Total;
+                                NotaFiscal.Total += x.Total;
 
                                 cliente.Notas.Add(NotaFiscal);
 
@@ -267,7 +246,7 @@ namespace SGID.Pages.Relatorios.Estoque
                                 {
                                     Nome = nota.Nome,
                                     Serie = nota.Serie,
-                                    NF = nota.Nf,
+                                    NF = nota.NF,
                                     Emissao = nota.Emissao
                                 };
 
@@ -275,68 +254,68 @@ namespace SGID.Pages.Relatorios.Estoque
                                 {
                                     case "01":
                                         {
-                                            tipo.Janeiro += nota.Total.Value;
-                                            NotaFiscal.Janeiro += nota.Total.Value; break;
+                                            tipo.Janeiro += nota.Total;
+                                            NotaFiscal.Janeiro += nota.Total; break;
                                         }
                                     case "02":
                                         {
-                                            tipo.Fevereiro += nota.Total.Value;
-                                            NotaFiscal.Fevereiro += nota.Total.Value; break;
+                                            tipo.Fevereiro += nota.Total;
+                                            NotaFiscal.Fevereiro += nota.Total; break;
                                         }
                                     case "03":
                                         {
-                                            tipo.Marco += nota.Total.Value;
-                                            NotaFiscal.Marco += nota.Total.Value; break;
+                                            tipo.Marco += nota.Total;
+                                            NotaFiscal.Marco += nota.Total; break;
                                         }
                                     case "04":
                                         {
-                                            tipo.Abril += nota.Total.Value;
-                                            NotaFiscal.Abril += nota.Total.Value; break;
+                                            tipo.Abril += nota.Total;
+                                            NotaFiscal.Abril += nota.Total; break;
                                         }
                                     case "05":
                                         {
-                                            tipo.Maio += nota.Total.Value;
-                                            NotaFiscal.Maio += nota.Total.Value; break;
+                                            tipo.Maio += nota.Total;
+                                            NotaFiscal.Maio += nota.Total; break;
                                         }
                                     case "06":
                                         {
-                                            tipo.Junho += nota.Total.Value;
-                                            NotaFiscal.Junho += nota.Total.Value; break;
+                                            tipo.Junho += nota.Total;
+                                            NotaFiscal.Junho += nota.Total; break;
                                         }
                                     case "07":
                                         {
-                                            tipo.Julho += nota.Total.Value;
-                                            NotaFiscal.Julho += nota.Total.Value; break;
+                                            tipo.Julho += nota.Total;
+                                            NotaFiscal.Julho += nota.Total; break;
                                         }
                                     case "08":
                                         {
-                                            tipo.Agosto += nota.Total.Value;
-                                            NotaFiscal.Agosto += nota.Total.Value; break;
+                                            tipo.Agosto += nota.Total;
+                                            NotaFiscal.Agosto += nota.Total; break;
                                         }
                                     case "09":
                                         {
-                                            tipo.Setembro += nota.Total.Value;
-                                            NotaFiscal.Setembro += nota.Total.Value; break;
+                                            tipo.Setembro += nota.Total;
+                                            NotaFiscal.Setembro += nota.Total; break;
                                         }
                                     case "10":
                                         {
-                                            tipo.Outubro += nota.Total.Value;
-                                            NotaFiscal.Outubro += nota.Total.Value; break;
+                                            tipo.Outubro += nota.Total;
+                                            NotaFiscal.Outubro += nota.Total; break;
                                         }
                                     case "11":
                                         {
-                                            tipo.Novembro += nota.Total.Value;
-                                            NotaFiscal.Novembro += nota.Total.Value; break;
+                                            tipo.Novembro += nota.Total;
+                                            NotaFiscal.Novembro += nota.Total; break;
                                         }
                                     case "12":
                                         {
-                                            tipo.Dezembro += nota.Total.Value;
-                                            NotaFiscal.Dezembro += nota.Total.Value; break;
+                                            tipo.Dezembro += nota.Total;
+                                            NotaFiscal.Dezembro += nota.Total; break;
                                         }
                                 }
 
-                                tipo.Total += x.Total.Value;
-                                NotaFiscal.Total += x.Total.Value;
+                                tipo.Total += x.Total;
+                                NotaFiscal.Total += x.Total;
 
                                 cliente.Notas.Add(NotaFiscal);
 
@@ -370,7 +349,7 @@ namespace SGID.Pages.Relatorios.Estoque
                                 {
                                     Nome = nota.Nome,
                                     Serie = nota.Serie,
-                                    NF = nota.Nf,
+                                    NF = nota.NF,
                                     Emissao = nota.Emissao
                                 };
 
@@ -378,68 +357,68 @@ namespace SGID.Pages.Relatorios.Estoque
                                 {
                                     case "01":
                                         {
-                                            tipo.Janeiro += nota.Total.Value;
-                                            NotaFiscal.Janeiro += nota.Total.Value; break;
+                                            tipo.Janeiro += nota.Total;
+                                            NotaFiscal.Janeiro += nota.Total; break;
                                         }
                                     case "02":
                                         {
-                                            tipo.Fevereiro += nota.Total.Value;
-                                            NotaFiscal.Fevereiro += nota.Total.Value; break;
+                                            tipo.Fevereiro += nota.Total;
+                                            NotaFiscal.Fevereiro += nota.Total; break;
                                         }
                                     case "03":
                                         {
-                                            tipo.Marco += nota.Total.Value;
-                                            NotaFiscal.Marco += nota.Total.Value; break;
+                                            tipo.Marco += nota.Total;
+                                            NotaFiscal.Marco += nota.Total; break;
                                         }
                                     case "04":
                                         {
-                                            tipo.Abril += nota.Total.Value;
-                                            NotaFiscal.Abril += nota.Total.Value; break;
+                                            tipo.Abril += nota.Total;
+                                            NotaFiscal.Abril += nota.Total; break;
                                         }
                                     case "05":
                                         {
-                                            tipo.Maio += nota.Total.Value;
-                                            NotaFiscal.Maio += nota.Total.Value; break;
+                                            tipo.Maio += nota.Total;
+                                            NotaFiscal.Maio += nota.Total; break;
                                         }
                                     case "06":
                                         {
-                                            tipo.Junho += nota.Total.Value;
-                                            NotaFiscal.Junho += nota.Total.Value; break;
+                                            tipo.Junho += nota.Total;
+                                            NotaFiscal.Junho += nota.Total; break;
                                         }
                                     case "07":
                                         {
-                                            tipo.Julho += nota.Total.Value;
-                                            NotaFiscal.Julho += nota.Total.Value; break;
+                                            tipo.Julho += nota.Total;
+                                            NotaFiscal.Julho += nota.Total; break;
                                         }
                                     case "08":
                                         {
-                                            tipo.Agosto += nota.Total.Value;
-                                            NotaFiscal.Agosto += nota.Total.Value; break;
+                                            tipo.Agosto += nota.Total;
+                                            NotaFiscal.Agosto += nota.Total; break;
                                         }
                                     case "09":
                                         {
-                                            tipo.Setembro += nota.Total.Value;
-                                            NotaFiscal.Setembro += nota.Total.Value; break;
+                                            tipo.Setembro += nota.Total;
+                                            NotaFiscal.Setembro += nota.Total; break;
                                         }
                                     case "10":
                                         {
-                                            tipo.Outubro += nota.Total.Value;
-                                            NotaFiscal.Outubro += nota.Total.Value; break;
+                                            tipo.Outubro += nota.Total;
+                                            NotaFiscal.Outubro += nota.Total; break;
                                         }
                                     case "11":
                                         {
-                                            tipo.Novembro += nota.Total.Value;
-                                            NotaFiscal.Novembro += nota.Total.Value; break;
+                                            tipo.Novembro += nota.Total;
+                                            NotaFiscal.Novembro += nota.Total; break;
                                         }
                                     case "12":
                                         {
-                                            tipo.Dezembro += nota.Total.Value;
-                                            NotaFiscal.Dezembro += nota.Total.Value; break;
+                                            tipo.Dezembro += nota.Total;
+                                            NotaFiscal.Dezembro += nota.Total; break;
                                         }
                                 }
 
-                                tipo.Total += x.Total.Value;
-                                NotaFiscal.Total += x.Total.Value;
+                                tipo.Total += x.Total;
+                                NotaFiscal.Total += x.Total;
 
                                 cliente.Notas.Add(NotaFiscal);
 
@@ -473,7 +452,7 @@ namespace SGID.Pages.Relatorios.Estoque
                                 {
                                     Nome = nota.Nome,
                                     Serie = nota.Serie,
-                                    NF = nota.Nf,
+                                    NF = nota.NF,
                                     Emissao = nota.Emissao
                                 };
 
@@ -481,68 +460,68 @@ namespace SGID.Pages.Relatorios.Estoque
                                 {
                                     case "01":
                                         {
-                                            tipo.Janeiro += nota.Total.Value;
-                                            NotaFiscal.Janeiro += nota.Total.Value; break;
+                                            tipo.Janeiro += nota.Total;
+                                            NotaFiscal.Janeiro += nota.Total; break;
                                         }
                                     case "02":
                                         {
-                                            tipo.Fevereiro += nota.Total.Value;
-                                            NotaFiscal.Fevereiro += nota.Total.Value; break;
+                                            tipo.Fevereiro += nota.Total;
+                                            NotaFiscal.Fevereiro += nota.Total; break;
                                         }
                                     case "03":
                                         {
-                                            tipo.Marco += nota.Total.Value;
-                                            NotaFiscal.Marco += nota.Total.Value; break;
+                                            tipo.Marco += nota.Total;
+                                            NotaFiscal.Marco += nota.Total; break;
                                         }
                                     case "04":
                                         {
-                                            tipo.Abril += nota.Total.Value;
-                                            NotaFiscal.Abril += nota.Total.Value; break;
+                                            tipo.Abril += nota.Total;
+                                            NotaFiscal.Abril += nota.Total; break;
                                         }
                                     case "05":
                                         {
-                                            tipo.Maio += nota.Total.Value;
-                                            NotaFiscal.Maio += nota.Total.Value; break;
+                                            tipo.Maio += nota.Total;
+                                            NotaFiscal.Maio += nota.Total; break;
                                         }
                                     case "06":
                                         {
-                                            tipo.Junho += nota.Total.Value;
-                                            NotaFiscal.Junho += nota.Total.Value; break;
+                                            tipo.Junho += nota.Total;
+                                            NotaFiscal.Junho += nota.Total; break;
                                         }
                                     case "07":
                                         {
-                                            tipo.Julho += nota.Total.Value;
-                                            NotaFiscal.Julho += nota.Total.Value; break;
+                                            tipo.Julho += nota.Total;
+                                            NotaFiscal.Julho += nota.Total; break;
                                         }
                                     case "08":
                                         {
-                                            tipo.Agosto += nota.Total.Value;
-                                            NotaFiscal.Agosto += nota.Total.Value; break;
+                                            tipo.Agosto += nota.Total;
+                                            NotaFiscal.Agosto += nota.Total; break;
                                         }
                                     case "09":
                                         {
-                                            tipo.Setembro += nota.Total.Value;
-                                            NotaFiscal.Setembro += nota.Total.Value; break;
+                                            tipo.Setembro += nota.Total;
+                                            NotaFiscal.Setembro += nota.Total; break;
                                         }
                                     case "10":
                                         {
-                                            tipo.Outubro += nota.Total.Value;
-                                            NotaFiscal.Outubro += nota.Total.Value; break;
+                                            tipo.Outubro += nota.Total;
+                                            NotaFiscal.Outubro += nota.Total; break;
                                         }
                                     case "11":
                                         {
-                                            tipo.Novembro += nota.Total.Value;
-                                            NotaFiscal.Novembro += nota.Total.Value; break;
+                                            tipo.Novembro += nota.Total;
+                                            NotaFiscal.Novembro += nota.Total; break;
                                         }
                                     case "12":
                                         {
-                                            tipo.Dezembro += nota.Total.Value;
-                                            NotaFiscal.Dezembro += nota.Total.Value; break;
+                                            tipo.Dezembro += nota.Total;
+                                            NotaFiscal.Dezembro += nota.Total; break;
                                         }
                                 }
 
-                                tipo.Total += x.Total.Value;
-                                NotaFiscal.Total += x.Total.Value;
+                                tipo.Total += x.Total;
+                                NotaFiscal.Total += x.Total;
 
                                 cliente.Notas.Add(NotaFiscal);
 
@@ -576,7 +555,7 @@ namespace SGID.Pages.Relatorios.Estoque
                                 {
                                     Nome = nota.Nome,
                                     Serie = nota.Serie,
-                                    NF = nota.Nf,
+                                    NF = nota.NF,
                                     Emissao = nota.Emissao
                                 };
 
@@ -584,68 +563,68 @@ namespace SGID.Pages.Relatorios.Estoque
                                 {
                                     case "01":
                                         {
-                                            tipo.Janeiro += nota.Total.Value;
-                                            NotaFiscal.Janeiro += nota.Total.Value; break;
+                                            tipo.Janeiro += nota.Total;
+                                            NotaFiscal.Janeiro += nota.Total; break;
                                         }
                                     case "02":
                                         {
-                                            tipo.Fevereiro += nota.Total.Value;
-                                            NotaFiscal.Fevereiro += nota.Total.Value; break;
+                                            tipo.Fevereiro += nota.Total;
+                                            NotaFiscal.Fevereiro += nota.Total; break;
                                         }
                                     case "03":
                                         {
-                                            tipo.Marco += nota.Total.Value;
-                                            NotaFiscal.Marco += nota.Total.Value; break;
+                                            tipo.Marco += nota.Total;
+                                            NotaFiscal.Marco += nota.Total; break;
                                         }
                                     case "04":
                                         {
-                                            tipo.Abril += nota.Total.Value;
-                                            NotaFiscal.Abril += nota.Total.Value; break;
+                                            tipo.Abril += nota.Total;
+                                            NotaFiscal.Abril += nota.Total; break;
                                         }
                                     case "05":
                                         {
-                                            tipo.Maio += nota.Total.Value;
-                                            NotaFiscal.Maio += nota.Total.Value; break;
+                                            tipo.Maio += nota.Total;
+                                            NotaFiscal.Maio += nota.Total; break;
                                         }
                                     case "06":
                                         {
-                                            tipo.Junho += nota.Total.Value;
-                                            NotaFiscal.Junho += nota.Total.Value; break;
+                                            tipo.Junho += nota.Total;
+                                            NotaFiscal.Junho += nota.Total; break;
                                         }
                                     case "07":
                                         {
-                                            tipo.Julho += nota.Total.Value;
-                                            NotaFiscal.Julho += nota.Total.Value; break;
+                                            tipo.Julho += nota.Total;
+                                            NotaFiscal.Julho += nota.Total; break;
                                         }
                                     case "08":
                                         {
-                                            tipo.Agosto += nota.Total.Value;
-                                            NotaFiscal.Agosto += nota.Total.Value; break;
+                                            tipo.Agosto += nota.Total;
+                                            NotaFiscal.Agosto += nota.Total; break;
                                         }
                                     case "09":
                                         {
-                                            tipo.Setembro += nota.Total.Value;
-                                            NotaFiscal.Setembro += nota.Total.Value; break;
+                                            tipo.Setembro += nota.Total;
+                                            NotaFiscal.Setembro += nota.Total; break;
                                         }
                                     case "10":
                                         {
-                                            tipo.Outubro += nota.Total.Value;
-                                            NotaFiscal.Outubro += nota.Total.Value; break;
+                                            tipo.Outubro += nota.Total;
+                                            NotaFiscal.Outubro += nota.Total; break;
                                         }
                                     case "11":
                                         {
-                                            tipo.Novembro += nota.Total.Value;
-                                            NotaFiscal.Novembro += nota.Total.Value; break;
+                                            tipo.Novembro += nota.Total;
+                                            NotaFiscal.Novembro += nota.Total; break;
                                         }
                                     case "12":
                                         {
-                                            tipo.Dezembro += nota.Total.Value;
-                                            NotaFiscal.Dezembro += nota.Total.Value; break;
+                                            tipo.Dezembro += nota.Total;
+                                            NotaFiscal.Dezembro += nota.Total; break;
                                         }
                                 }
 
-                                tipo.Total += x.Total.Value;
-                                NotaFiscal.Total += x.Total.Value;
+                                tipo.Total += x.Total;
+                                NotaFiscal.Total += x.Total;
 
                                 cliente.Notas.Add(NotaFiscal);
 
@@ -679,7 +658,7 @@ namespace SGID.Pages.Relatorios.Estoque
                                 {
                                     Nome = nota.Nome,
                                     Serie = nota.Serie,
-                                    NF = nota.Nf,
+                                    NF = nota.NF,
                                     Emissao = nota.Emissao
                                 };
 
@@ -687,68 +666,68 @@ namespace SGID.Pages.Relatorios.Estoque
                                 {
                                     case "01":
                                         {
-                                            tipo.Janeiro += nota.Total.Value;
-                                            NotaFiscal.Janeiro += nota.Total.Value; break;
+                                            tipo.Janeiro += nota.Total;
+                                            NotaFiscal.Janeiro += nota.Total; break;
                                         }
                                     case "02":
                                         {
-                                            tipo.Fevereiro += nota.Total.Value;
-                                            NotaFiscal.Fevereiro += nota.Total.Value; break;
+                                            tipo.Fevereiro += nota.Total;
+                                            NotaFiscal.Fevereiro += nota.Total; break;
                                         }
                                     case "03":
                                         {
-                                            tipo.Marco += nota.Total.Value;
-                                            NotaFiscal.Marco += nota.Total.Value; break;
+                                            tipo.Marco += nota.Total;
+                                            NotaFiscal.Marco += nota.Total; break;
                                         }
                                     case "04":
                                         {
-                                            tipo.Abril += nota.Total.Value;
-                                            NotaFiscal.Abril += nota.Total.Value; break;
+                                            tipo.Abril += nota.Total;
+                                            NotaFiscal.Abril += nota.Total; break;
                                         }
                                     case "05":
                                         {
-                                            tipo.Maio += nota.Total.Value;
-                                            NotaFiscal.Maio += nota.Total.Value; break;
+                                            tipo.Maio += nota.Total;
+                                            NotaFiscal.Maio += nota.Total; break;
                                         }
                                     case "06":
                                         {
-                                            tipo.Junho += nota.Total.Value;
-                                            NotaFiscal.Junho += nota.Total.Value; break;
+                                            tipo.Junho += nota.Total;
+                                            NotaFiscal.Junho += nota.Total; break;
                                         }
                                     case "07":
                                         {
-                                            tipo.Julho += nota.Total.Value;
-                                            NotaFiscal.Julho += nota.Total.Value; break;
+                                            tipo.Julho += nota.Total;
+                                            NotaFiscal.Julho += nota.Total; break;
                                         }
                                     case "08":
                                         {
-                                            tipo.Agosto += nota.Total.Value;
-                                            NotaFiscal.Agosto += nota.Total.Value; break;
+                                            tipo.Agosto += nota.Total;
+                                            NotaFiscal.Agosto += nota.Total; break;
                                         }
                                     case "09":
                                         {
-                                            tipo.Setembro += nota.Total.Value;
-                                            NotaFiscal.Setembro += nota.Total.Value; break;
+                                            tipo.Setembro += nota.Total;
+                                            NotaFiscal.Setembro += nota.Total; break;
                                         }
                                     case "10":
                                         {
-                                            tipo.Outubro += nota.Total.Value;
-                                            NotaFiscal.Outubro += nota.Total.Value; break;
+                                            tipo.Outubro += nota.Total;
+                                            NotaFiscal.Outubro += nota.Total; break;
                                         }
                                     case "11":
                                         {
-                                            tipo.Novembro += nota.Total.Value;
-                                            NotaFiscal.Novembro += nota.Total.Value; break;
+                                            tipo.Novembro += nota.Total;
+                                            NotaFiscal.Novembro += nota.Total; break;
                                         }
                                     case "12":
                                         {
-                                            tipo.Dezembro += nota.Total.Value;
-                                            NotaFiscal.Dezembro += nota.Total.Value; break;
+                                            tipo.Dezembro += nota.Total;
+                                            NotaFiscal.Dezembro += nota.Total; break;
                                         }
                                 }
 
-                                tipo.Total += x.Total.Value;
-                                NotaFiscal.Total += x.Total.Value;
+                                tipo.Total += x.Total;
+                                NotaFiscal.Total += x.Total;
 
                                 cliente.Notas.Add(NotaFiscal);
 
@@ -782,7 +761,7 @@ namespace SGID.Pages.Relatorios.Estoque
                                 {
                                     Nome = nota.Nome,
                                     Serie = nota.Serie,
-                                    NF = nota.Nf,
+                                    NF = nota.NF,
                                     Emissao = nota.Emissao
                                 };
 
@@ -790,68 +769,68 @@ namespace SGID.Pages.Relatorios.Estoque
                                 {
                                     case "01":
                                         {
-                                            tipo.Janeiro += nota.Total.Value;
-                                            NotaFiscal.Janeiro += nota.Total.Value; break;
+                                            tipo.Janeiro += nota.Total;
+                                            NotaFiscal.Janeiro += nota.Total; break;
                                         }
                                     case "02":
                                         {
-                                            tipo.Fevereiro += nota.Total.Value;
-                                            NotaFiscal.Fevereiro += nota.Total.Value; break;
+                                            tipo.Fevereiro += nota.Total;
+                                            NotaFiscal.Fevereiro += nota.Total; break;
                                         }
                                     case "03":
                                         {
-                                            tipo.Marco += nota.Total.Value;
-                                            NotaFiscal.Marco += nota.Total.Value; break;
+                                            tipo.Marco += nota.Total;
+                                            NotaFiscal.Marco += nota.Total; break;
                                         }
                                     case "04":
                                         {
-                                            tipo.Abril += nota.Total.Value;
-                                            NotaFiscal.Abril += nota.Total.Value; break;
+                                            tipo.Abril += nota.Total;
+                                            NotaFiscal.Abril += nota.Total; break;
                                         }
                                     case "05":
                                         {
-                                            tipo.Maio += nota.Total.Value;
-                                            NotaFiscal.Maio += nota.Total.Value; break;
+                                            tipo.Maio += nota.Total;
+                                            NotaFiscal.Maio += nota.Total; break;
                                         }
                                     case "06":
                                         {
-                                            tipo.Junho += nota.Total.Value;
-                                            NotaFiscal.Junho += nota.Total.Value; break;
+                                            tipo.Junho += nota.Total;
+                                            NotaFiscal.Junho += nota.Total; break;
                                         }
                                     case "07":
                                         {
-                                            tipo.Julho += nota.Total.Value;
-                                            NotaFiscal.Julho += nota.Total.Value; break;
+                                            tipo.Julho += nota.Total;
+                                            NotaFiscal.Julho += nota.Total; break;
                                         }
                                     case "08":
                                         {
-                                            tipo.Agosto += nota.Total.Value;
-                                            NotaFiscal.Agosto += nota.Total.Value; break;
+                                            tipo.Agosto += nota.Total;
+                                            NotaFiscal.Agosto += nota.Total; break;
                                         }
                                     case "09":
                                         {
-                                            tipo.Setembro += nota.Total.Value;
-                                            NotaFiscal.Setembro += nota.Total.Value; break;
+                                            tipo.Setembro += nota.Total;
+                                            NotaFiscal.Setembro += nota.Total; break;
                                         }
                                     case "10":
                                         {
-                                            tipo.Outubro += nota.Total.Value;
-                                            NotaFiscal.Outubro += nota.Total.Value; break;
+                                            tipo.Outubro += nota.Total;
+                                            NotaFiscal.Outubro += nota.Total; break;
                                         }
                                     case "11":
                                         {
-                                            tipo.Novembro += nota.Total.Value;
-                                            NotaFiscal.Novembro += nota.Total.Value; break;
+                                            tipo.Novembro += nota.Total;
+                                            NotaFiscal.Novembro += nota.Total; break;
                                         }
                                     case "12":
                                         {
-                                            tipo.Dezembro += nota.Total.Value;
-                                            NotaFiscal.Dezembro += nota.Total.Value; break;
+                                            tipo.Dezembro += nota.Total;
+                                            NotaFiscal.Dezembro += nota.Total; break;
                                         }
                                 }
 
-                                tipo.Total += x.Total.Value;
-                                NotaFiscal.Total += x.Total.Value;
+                                tipo.Total += x.Total;
+                                NotaFiscal.Total += x.Total;
 
                                 cliente.Notas.Add(NotaFiscal);
 
@@ -885,7 +864,7 @@ namespace SGID.Pages.Relatorios.Estoque
                                 {
                                     Nome = nota.Nome,
                                     Serie = nota.Serie,
-                                    NF = nota.Nf,
+                                    NF = nota.NF,
                                     Emissao = nota.Emissao
                                 };
 
@@ -893,68 +872,68 @@ namespace SGID.Pages.Relatorios.Estoque
                                 {
                                     case "01":
                                         {
-                                            tipo.Janeiro += nota.Total.Value;
-                                            NotaFiscal.Janeiro += nota.Total.Value; break;
+                                            tipo.Janeiro += nota.Total;
+                                            NotaFiscal.Janeiro += nota.Total; break;
                                         }
                                     case "02":
                                         {
-                                            tipo.Fevereiro += nota.Total.Value;
-                                            NotaFiscal.Fevereiro += nota.Total.Value; break;
+                                            tipo.Fevereiro += nota.Total;
+                                            NotaFiscal.Fevereiro += nota.Total; break;
                                         }
                                     case "03":
                                         {
-                                            tipo.Marco += nota.Total.Value;
-                                            NotaFiscal.Marco += nota.Total.Value; break;
+                                            tipo.Marco += nota.Total;
+                                            NotaFiscal.Marco += nota.Total; break;
                                         }
                                     case "04":
                                         {
-                                            tipo.Abril += nota.Total.Value;
-                                            NotaFiscal.Abril += nota.Total.Value; break;
+                                            tipo.Abril += nota.Total;
+                                            NotaFiscal.Abril += nota.Total; break;
                                         }
                                     case "05":
                                         {
-                                            tipo.Maio += nota.Total.Value;
-                                            NotaFiscal.Maio += nota.Total.Value; break;
+                                            tipo.Maio += nota.Total;
+                                            NotaFiscal.Maio += nota.Total; break;
                                         }
                                     case "06":
                                         {
-                                            tipo.Junho += nota.Total.Value;
-                                            NotaFiscal.Junho += nota.Total.Value; break;
+                                            tipo.Junho += nota.Total;
+                                            NotaFiscal.Junho += nota.Total; break;
                                         }
                                     case "07":
                                         {
-                                            tipo.Julho += nota.Total.Value;
-                                            NotaFiscal.Julho += nota.Total.Value; break;
+                                            tipo.Julho += nota.Total;
+                                            NotaFiscal.Julho += nota.Total; break;
                                         }
                                     case "08":
                                         {
-                                            tipo.Agosto += nota.Total.Value;
-                                            NotaFiscal.Agosto += nota.Total.Value; break;
+                                            tipo.Agosto += nota.Total;
+                                            NotaFiscal.Agosto += nota.Total; break;
                                         }
                                     case "09":
                                         {
-                                            tipo.Setembro += nota.Total.Value;
-                                            NotaFiscal.Setembro += nota.Total.Value; break;
+                                            tipo.Setembro += nota.Total;
+                                            NotaFiscal.Setembro += nota.Total; break;
                                         }
                                     case "10":
                                         {
-                                            tipo.Outubro += nota.Total.Value;
-                                            NotaFiscal.Outubro += nota.Total.Value; break;
+                                            tipo.Outubro += nota.Total;
+                                            NotaFiscal.Outubro += nota.Total; break;
                                         }
                                     case "11":
                                         {
-                                            tipo.Novembro += nota.Total.Value;
-                                            NotaFiscal.Novembro += nota.Total.Value; break;
+                                            tipo.Novembro += nota.Total;
+                                            NotaFiscal.Novembro += nota.Total; break;
                                         }
                                     case "12":
                                         {
-                                            tipo.Dezembro += nota.Total.Value;
-                                            NotaFiscal.Dezembro += nota.Total.Value; break;
+                                            tipo.Dezembro += nota.Total;
+                                            NotaFiscal.Dezembro += nota.Total; break;
                                         }
                                 }
 
-                                tipo.Total += x.Total.Value;
-                                NotaFiscal.Total += x.Total.Value;
+                                tipo.Total += x.Total;
+                                NotaFiscal.Total += x.Total;
 
                                 cliente.Notas.Add(NotaFiscal);
 
@@ -970,28 +949,67 @@ namespace SGID.Pages.Relatorios.Estoque
 
                 #region Devolucao
 
-                var queryDevolucao = Protheus.Fatnffabs.Where(x => x.Empresa == "I" && x.Tipofd == "D"
-                && (int)(object)x.Emissao >= Inicio && (int)(object)x.Emissao <= Fim)
-                    .Select(x => new
-                    {
-                        x.Empresa,
-                        x.Filial,
-                        x.Clifor,
-                        x.Loja,
-                        x.Nome,
-                        Tipo = x.Tipo == "H" ? "HOSPITAL" : x.Tipo == "M" ? "MEDICO" : x.Tipo == "I" ? "INSTRUMENTAL" : x.Tipo == "N" ? "NORMAL" : x.Tipo == "C" ? "CONVENIO" : x.Tipo == "P" ? "PARTICULAR" : x.Tipo == "S" ? "SUB-DISTRIBUIDOR" : "OUTROS",
-                        x.Est,
-                        x.Mun,
-                        x.Nf,
-                        x.Serie,
-                        x.Emissao,
-                        x.Fabricante,
-                        x.Total,
-                        x.Valipi,
-                        x.Valicm,
-                        x.Descon,
-                        Mes = x.Emissao.Substring(4, 2)
-                    }).OrderBy(x => x.Fabricante).ToList();
+                var queryDevolucao = (from SD10 in Protheus.Sd1010s
+                                      join SF20 in Protheus.Sf2010s on new { Filial = SD10.D1Filial, NF = SD10.D1Nfori, Serie = SD10.D1Seriori, Forne = SD10.D1Fornece, Loja = SD10.D1Loja } equals new { Filial = SF20.F2Filial, NF = SF20.F2Doc, Serie = SF20.F2Serie, Forne = SF20.F2Cliente, Loja = SF20.F2Loja } into Sr
+                                      from A in Sr.DefaultIfEmpty()
+                                      join SA10 in Protheus.Sa1010s on new { Forne = SD10.D1Fornece, Loja = SD10.D1Loja } equals new { Forne = SA10.A1Cod, Loja = SA10.A1Loja }
+                                      join SB10 in Protheus.Sb1010s on SD10.D1Cod equals SB10.B1Cod
+                                      where SD10.DELET != "*" && A.DELET != "*" && SA10.DELET != "*" && SB10.DELET != "*"
+                                      && CfNe.Contains((int)(object)SD10.D1Cf) && (int)(object)SD10.D1Dtdigit >= Inicio && (int)(object)SD10.D1Dtdigit <= Fim
+                                      select new
+                                      {
+                                          Filial = SD10.D1Filial,
+                                          Cliente = SD10.D1Fornece,
+                                          Loja = SD10.D1Loja,
+                                          Nome = SA10.A1Nome,
+                                          Tipo = SA10.A1Clinter,
+                                          Est = SA10.A1Est,
+                                          Mun = SA10.A1Mun,
+                                          NF = SD10.D1Doc,
+                                          Serie = SD10.D1Serie,
+                                          Emissao = SD10.D1Emissao,
+                                          Total = SD10.D1Total - SD10.D1Valdesc,
+                                          Valipi = SD10.D1Valipi,
+                                          Valicm = SD10.D1Valicm,
+                                          Descon = SD10.D1Valdesc,
+                                          DTDIGIT = SD10.D1Dtdigit,
+                                          TotalBruto = SD10.D1Total - SD10.D1Valdesc + SD10.D1Valipi,
+                                          Fabricante = SB10.B1Fabric
+                                      }
+                                      ).GroupBy(x => new
+                                      {
+                                          x.Filial,
+                                          x.Cliente,
+                                          x.Loja,
+                                          x.Nome,
+                                          x.Tipo,
+                                          x.Est,
+                                          x.Mun,
+                                          x.NF,
+                                          x.Serie,
+                                          x.Emissao,
+                                          x.DTDIGIT,
+                                          x.Fabricante
+                                      }).Select(x => new FaturamentoNFFAB
+                                      {
+                                          Filial = x.Key.Filial,
+                                          Cliente = x.Key.Cliente,
+                                          Loja = x.Key.Loja,
+                                          Nome = x.Key.Nome,
+                                          Tipo = x.Key.Tipo == "H" ? "HOSPITAL" : x.Key.Tipo == "M" ? "MEDICO" : x.Key.Tipo == "I" ? "INSTRUMENTAL" : x.Key.Tipo == "N" ? "NORMAL" : x.Key.Tipo == "C" ? "CONVENIO" : x.Key.Tipo == "P" ? "PARTICULAR" : x.Key.Tipo == "S" ? "SUB-DISTRIBUIDOR" : "OUTROS",
+                                          Est = x.Key.Est,
+                                          Mun = x.Key.Mun,
+                                          NF = x.Key.NF,
+                                          Serie = x.Key.Serie,
+                                          Emissao = x.Key.Emissao,
+                                          Fabricante = x.Key.Fabricante,
+                                          Total = -x.Sum(c => c.Total),
+                                          Valipi = -x.Sum(c => c.Valipi),
+                                          Valicm = -x.Sum(c => c.Valicm),
+                                          Descon = -x.Sum(c => c.Descon),
+                                          Mes = x.Key.DTDIGIT.Substring(4, 2)
+                                      }).OrderBy(x => x.Fabricante).ToList();
+
 
                 var hospitalDev = queryDevolucao.Where(x => x.Tipo == "HOSPITAL").ToList();
                 var MedicoDev = queryDevolucao.Where(x => x.Tipo == "MEDICO").ToList();
@@ -1024,7 +1042,7 @@ namespace SGID.Pages.Relatorios.Estoque
                                 {
                                     Nome = nota.Nome,
                                     Serie = nota.Serie,
-                                    NF = nota.Nf,
+                                    NF = nota.NF,
                                     Emissao = nota.Emissao
                                 };
 
@@ -1032,68 +1050,68 @@ namespace SGID.Pages.Relatorios.Estoque
                                 {
                                     case "01":
                                         {
-                                            tipo.Janeiro += nota.Total.Value;
-                                            NotaFiscal.Janeiro += nota.Total.Value; break;
+                                            tipo.Janeiro += nota.Total;
+                                            NotaFiscal.Janeiro += nota.Total; break;
                                         }
                                     case "02":
                                         {
-                                            tipo.Fevereiro += nota.Total.Value;
-                                            NotaFiscal.Fevereiro += nota.Total.Value; break;
+                                            tipo.Fevereiro += nota.Total;
+                                            NotaFiscal.Fevereiro += nota.Total; break;
                                         }
                                     case "03":
                                         {
-                                            tipo.Marco += nota.Total.Value;
-                                            NotaFiscal.Marco += nota.Total.Value; break;
+                                            tipo.Marco += nota.Total;
+                                            NotaFiscal.Marco += nota.Total; break;
                                         }
                                     case "04":
                                         {
-                                            tipo.Abril += nota.Total.Value;
-                                            NotaFiscal.Abril += nota.Total.Value; break;
+                                            tipo.Abril += nota.Total;
+                                            NotaFiscal.Abril += nota.Total; break;
                                         }
                                     case "05":
                                         {
-                                            tipo.Maio += nota.Total.Value;
-                                            NotaFiscal.Maio += nota.Total.Value; break;
+                                            tipo.Maio += nota.Total;
+                                            NotaFiscal.Maio += nota.Total; break;
                                         }
                                     case "06":
                                         {
-                                            tipo.Junho += nota.Total.Value;
-                                            NotaFiscal.Junho += nota.Total.Value; break;
+                                            tipo.Junho += nota.Total;
+                                            NotaFiscal.Junho += nota.Total; break;
                                         }
                                     case "07":
                                         {
-                                            tipo.Julho += nota.Total.Value;
-                                            NotaFiscal.Julho += nota.Total.Value; break;
+                                            tipo.Julho += nota.Total;
+                                            NotaFiscal.Julho += nota.Total; break;
                                         }
                                     case "08":
                                         {
-                                            tipo.Agosto += nota.Total.Value;
-                                            NotaFiscal.Agosto += nota.Total.Value; break;
+                                            tipo.Agosto += nota.Total;
+                                            NotaFiscal.Agosto += nota.Total; break;
                                         }
                                     case "09":
                                         {
-                                            tipo.Setembro += nota.Total.Value;
-                                            NotaFiscal.Setembro += nota.Total.Value; break;
+                                            tipo.Setembro += nota.Total;
+                                            NotaFiscal.Setembro += nota.Total; break;
                                         }
                                     case "10":
                                         {
-                                            tipo.Outubro += nota.Total.Value;
-                                            NotaFiscal.Outubro += nota.Total.Value; break;
+                                            tipo.Outubro += nota.Total;
+                                            NotaFiscal.Outubro += nota.Total; break;
                                         }
                                     case "11":
                                         {
-                                            tipo.Novembro += nota.Total.Value;
-                                            NotaFiscal.Novembro += nota.Total.Value; break;
+                                            tipo.Novembro += nota.Total;
+                                            NotaFiscal.Novembro += nota.Total; break;
                                         }
                                     case "12":
                                         {
-                                            tipo.Dezembro += nota.Total.Value;
-                                            NotaFiscal.Dezembro += nota.Total.Value; break;
+                                            tipo.Dezembro += nota.Total;
+                                            NotaFiscal.Dezembro += nota.Total; break;
                                         }
                                 }
 
-                                tipo.Total += x.Total.Value;
-                                NotaFiscal.Total += x.Total.Value;
+                                tipo.Total += x.Total;
+                                NotaFiscal.Total += x.Total;
 
                                 cliente.Notas.Add(NotaFiscal);
 
@@ -1127,7 +1145,7 @@ namespace SGID.Pages.Relatorios.Estoque
                                 {
                                     Nome = nota.Nome,
                                     Serie = nota.Serie,
-                                    NF = nota.Nf,
+                                    NF = nota.NF,
                                     Emissao = nota.Emissao
                                 };
 
@@ -1135,68 +1153,68 @@ namespace SGID.Pages.Relatorios.Estoque
                                 {
                                     case "01":
                                         {
-                                            tipo.Janeiro += nota.Total.Value;
-                                            NotaFiscal.Janeiro += nota.Total.Value; break;
+                                            tipo.Janeiro += nota.Total;
+                                            NotaFiscal.Janeiro += nota.Total; break;
                                         }
                                     case "02":
                                         {
-                                            tipo.Fevereiro += nota.Total.Value;
-                                            NotaFiscal.Fevereiro += nota.Total.Value; break;
+                                            tipo.Fevereiro += nota.Total;
+                                            NotaFiscal.Fevereiro += nota.Total; break;
                                         }
                                     case "03":
                                         {
-                                            tipo.Marco += nota.Total.Value;
-                                            NotaFiscal.Marco += nota.Total.Value; break;
+                                            tipo.Marco += nota.Total;
+                                            NotaFiscal.Marco += nota.Total; break;
                                         }
                                     case "04":
                                         {
-                                            tipo.Abril += nota.Total.Value;
-                                            NotaFiscal.Abril += nota.Total.Value; break;
+                                            tipo.Abril += nota.Total;
+                                            NotaFiscal.Abril += nota.Total; break;
                                         }
                                     case "05":
                                         {
-                                            tipo.Maio += nota.Total.Value;
-                                            NotaFiscal.Maio += nota.Total.Value; break;
+                                            tipo.Maio += nota.Total;
+                                            NotaFiscal.Maio += nota.Total; break;
                                         }
                                     case "06":
                                         {
-                                            tipo.Junho += nota.Total.Value;
-                                            NotaFiscal.Junho += nota.Total.Value; break;
+                                            tipo.Junho += nota.Total;
+                                            NotaFiscal.Junho += nota.Total; break;
                                         }
                                     case "07":
                                         {
-                                            tipo.Julho += nota.Total.Value;
-                                            NotaFiscal.Julho += nota.Total.Value; break;
+                                            tipo.Julho += nota.Total;
+                                            NotaFiscal.Julho += nota.Total; break;
                                         }
                                     case "08":
                                         {
-                                            tipo.Agosto += nota.Total.Value;
-                                            NotaFiscal.Agosto += nota.Total.Value; break;
+                                            tipo.Agosto += nota.Total;
+                                            NotaFiscal.Agosto += nota.Total; break;
                                         }
                                     case "09":
                                         {
-                                            tipo.Setembro += nota.Total.Value;
-                                            NotaFiscal.Setembro += nota.Total.Value; break;
+                                            tipo.Setembro += nota.Total;
+                                            NotaFiscal.Setembro += nota.Total; break;
                                         }
                                     case "10":
                                         {
-                                            tipo.Outubro += nota.Total.Value;
-                                            NotaFiscal.Outubro += nota.Total.Value; break;
+                                            tipo.Outubro += nota.Total;
+                                            NotaFiscal.Outubro += nota.Total; break;
                                         }
                                     case "11":
                                         {
-                                            tipo.Novembro += nota.Total.Value;
-                                            NotaFiscal.Novembro += nota.Total.Value; break;
+                                            tipo.Novembro += nota.Total;
+                                            NotaFiscal.Novembro += nota.Total; break;
                                         }
                                     case "12":
                                         {
-                                            tipo.Dezembro += nota.Total.Value;
-                                            NotaFiscal.Dezembro += nota.Total.Value; break;
+                                            tipo.Dezembro += nota.Total;
+                                            NotaFiscal.Dezembro += nota.Total; break;
                                         }
                                 }
 
-                                tipo.Total += x.Total.Value;
-                                NotaFiscal.Total += x.Total.Value;
+                                tipo.Total += x.Total;
+                                NotaFiscal.Total += x.Total;
 
                                 cliente.Notas.Add(NotaFiscal);
 
@@ -1230,7 +1248,7 @@ namespace SGID.Pages.Relatorios.Estoque
                                 {
                                     Nome = nota.Nome,
                                     Serie = nota.Serie,
-                                    NF = nota.Nf,
+                                    NF = nota.NF,
                                     Emissao = nota.Emissao
                                 };
 
@@ -1238,68 +1256,68 @@ namespace SGID.Pages.Relatorios.Estoque
                                 {
                                     case "01":
                                         {
-                                            tipo.Janeiro += nota.Total.Value;
-                                            NotaFiscal.Janeiro += nota.Total.Value; break;
+                                            tipo.Janeiro += nota.Total;
+                                            NotaFiscal.Janeiro += nota.Total; break;
                                         }
                                     case "02":
                                         {
-                                            tipo.Fevereiro += nota.Total.Value;
-                                            NotaFiscal.Fevereiro += nota.Total.Value; break;
+                                            tipo.Fevereiro += nota.Total;
+                                            NotaFiscal.Fevereiro += nota.Total; break;
                                         }
                                     case "03":
                                         {
-                                            tipo.Marco += nota.Total.Value;
-                                            NotaFiscal.Marco += nota.Total.Value; break;
+                                            tipo.Marco += nota.Total;
+                                            NotaFiscal.Marco += nota.Total; break;
                                         }
                                     case "04":
                                         {
-                                            tipo.Abril += nota.Total.Value;
-                                            NotaFiscal.Abril += nota.Total.Value; break;
+                                            tipo.Abril += nota.Total;
+                                            NotaFiscal.Abril += nota.Total; break;
                                         }
                                     case "05":
                                         {
-                                            tipo.Maio += nota.Total.Value;
-                                            NotaFiscal.Maio += nota.Total.Value; break;
+                                            tipo.Maio += nota.Total;
+                                            NotaFiscal.Maio += nota.Total; break;
                                         }
                                     case "06":
                                         {
-                                            tipo.Junho += nota.Total.Value;
-                                            NotaFiscal.Junho += nota.Total.Value; break;
+                                            tipo.Junho += nota.Total;
+                                            NotaFiscal.Junho += nota.Total; break;
                                         }
                                     case "07":
                                         {
-                                            tipo.Julho += nota.Total.Value;
-                                            NotaFiscal.Julho += nota.Total.Value; break;
+                                            tipo.Julho += nota.Total;
+                                            NotaFiscal.Julho += nota.Total; break;
                                         }
                                     case "08":
                                         {
-                                            tipo.Agosto += nota.Total.Value;
-                                            NotaFiscal.Agosto += nota.Total.Value; break;
+                                            tipo.Agosto += nota.Total;
+                                            NotaFiscal.Agosto += nota.Total; break;
                                         }
                                     case "09":
                                         {
-                                            tipo.Setembro += nota.Total.Value;
-                                            NotaFiscal.Setembro += nota.Total.Value; break;
+                                            tipo.Setembro += nota.Total;
+                                            NotaFiscal.Setembro += nota.Total; break;
                                         }
                                     case "10":
                                         {
-                                            tipo.Outubro += nota.Total.Value;
-                                            NotaFiscal.Outubro += nota.Total.Value; break;
+                                            tipo.Outubro += nota.Total;
+                                            NotaFiscal.Outubro += nota.Total; break;
                                         }
                                     case "11":
                                         {
-                                            tipo.Novembro += nota.Total.Value;
-                                            NotaFiscal.Novembro += nota.Total.Value; break;
+                                            tipo.Novembro += nota.Total;
+                                            NotaFiscal.Novembro += nota.Total; break;
                                         }
                                     case "12":
                                         {
-                                            tipo.Dezembro += nota.Total.Value;
-                                            NotaFiscal.Dezembro += nota.Total.Value; break;
+                                            tipo.Dezembro += nota.Total;
+                                            NotaFiscal.Dezembro += nota.Total; break;
                                         }
                                 }
 
-                                tipo.Total += x.Total.Value;
-                                NotaFiscal.Total += x.Total.Value;
+                                tipo.Total += x.Total;
+                                NotaFiscal.Total += x.Total;
 
                                 cliente.Notas.Add(NotaFiscal);
 
@@ -1333,7 +1351,7 @@ namespace SGID.Pages.Relatorios.Estoque
                                 {
                                     Nome = nota.Nome,
                                     Serie = nota.Serie,
-                                    NF = nota.Nf,
+                                    NF = nota.NF,
                                     Emissao = nota.Emissao
                                 };
 
@@ -1341,68 +1359,68 @@ namespace SGID.Pages.Relatorios.Estoque
                                 {
                                     case "01":
                                         {
-                                            tipo.Janeiro += nota.Total.Value;
-                                            NotaFiscal.Janeiro += nota.Total.Value; break;
+                                            tipo.Janeiro += nota.Total;
+                                            NotaFiscal.Janeiro += nota.Total; break;
                                         }
                                     case "02":
                                         {
-                                            tipo.Fevereiro += nota.Total.Value;
-                                            NotaFiscal.Fevereiro += nota.Total.Value; break;
+                                            tipo.Fevereiro += nota.Total;
+                                            NotaFiscal.Fevereiro += nota.Total; break;
                                         }
                                     case "03":
                                         {
-                                            tipo.Marco += nota.Total.Value;
-                                            NotaFiscal.Marco += nota.Total.Value; break;
+                                            tipo.Marco += nota.Total;
+                                            NotaFiscal.Marco += nota.Total; break;
                                         }
                                     case "04":
                                         {
-                                            tipo.Abril += nota.Total.Value;
-                                            NotaFiscal.Abril += nota.Total.Value; break;
+                                            tipo.Abril += nota.Total;
+                                            NotaFiscal.Abril += nota.Total; break;
                                         }
                                     case "05":
                                         {
-                                            tipo.Maio += nota.Total.Value;
-                                            NotaFiscal.Maio += nota.Total.Value; break;
+                                            tipo.Maio += nota.Total;
+                                            NotaFiscal.Maio += nota.Total; break;
                                         }
                                     case "06":
                                         {
-                                            tipo.Junho += nota.Total.Value;
-                                            NotaFiscal.Junho += nota.Total.Value; break;
+                                            tipo.Junho += nota.Total;
+                                            NotaFiscal.Junho += nota.Total; break;
                                         }
                                     case "07":
                                         {
-                                            tipo.Julho += nota.Total.Value;
-                                            NotaFiscal.Julho += nota.Total.Value; break;
+                                            tipo.Julho += nota.Total;
+                                            NotaFiscal.Julho += nota.Total; break;
                                         }
                                     case "08":
                                         {
-                                            tipo.Agosto += nota.Total.Value;
-                                            NotaFiscal.Agosto += nota.Total.Value; break;
+                                            tipo.Agosto += nota.Total;
+                                            NotaFiscal.Agosto += nota.Total; break;
                                         }
                                     case "09":
                                         {
-                                            tipo.Setembro += nota.Total.Value;
-                                            NotaFiscal.Setembro += nota.Total.Value; break;
+                                            tipo.Setembro += nota.Total;
+                                            NotaFiscal.Setembro += nota.Total; break;
                                         }
                                     case "10":
                                         {
-                                            tipo.Outubro += nota.Total.Value;
-                                            NotaFiscal.Outubro += nota.Total.Value; break;
+                                            tipo.Outubro += nota.Total;
+                                            NotaFiscal.Outubro += nota.Total; break;
                                         }
                                     case "11":
                                         {
-                                            tipo.Novembro += nota.Total.Value;
-                                            NotaFiscal.Novembro += nota.Total.Value; break;
+                                            tipo.Novembro += nota.Total;
+                                            NotaFiscal.Novembro += nota.Total; break;
                                         }
                                     case "12":
                                         {
-                                            tipo.Dezembro += nota.Total.Value;
-                                            NotaFiscal.Dezembro += nota.Total.Value; break;
+                                            tipo.Dezembro += nota.Total;
+                                            NotaFiscal.Dezembro += nota.Total; break;
                                         }
                                 }
 
-                                tipo.Total += x.Total.Value;
-                                NotaFiscal.Total += x.Total.Value;
+                                tipo.Total += x.Total;
+                                NotaFiscal.Total += x.Total;
 
                                 cliente.Notas.Add(NotaFiscal);
 
@@ -1436,7 +1454,7 @@ namespace SGID.Pages.Relatorios.Estoque
                                 {
                                     Nome = nota.Nome,
                                     Serie = nota.Serie,
-                                    NF = nota.Nf,
+                                    NF = nota.NF,
                                     Emissao = nota.Emissao
                                 };
 
@@ -1444,68 +1462,68 @@ namespace SGID.Pages.Relatorios.Estoque
                                 {
                                     case "01":
                                         {
-                                            tipo.Janeiro += nota.Total.Value;
-                                            NotaFiscal.Janeiro += nota.Total.Value; break;
+                                            tipo.Janeiro += nota.Total;
+                                            NotaFiscal.Janeiro += nota.Total; break;
                                         }
                                     case "02":
                                         {
-                                            tipo.Fevereiro += nota.Total.Value;
-                                            NotaFiscal.Fevereiro += nota.Total.Value; break;
+                                            tipo.Fevereiro += nota.Total;
+                                            NotaFiscal.Fevereiro += nota.Total; break;
                                         }
                                     case "03":
                                         {
-                                            tipo.Marco += nota.Total.Value;
-                                            NotaFiscal.Marco += nota.Total.Value; break;
+                                            tipo.Marco += nota.Total;
+                                            NotaFiscal.Marco += nota.Total; break;
                                         }
                                     case "04":
                                         {
-                                            tipo.Abril += nota.Total.Value;
-                                            NotaFiscal.Abril += nota.Total.Value; break;
+                                            tipo.Abril += nota.Total;
+                                            NotaFiscal.Abril += nota.Total; break;
                                         }
                                     case "05":
                                         {
-                                            tipo.Maio += nota.Total.Value;
-                                            NotaFiscal.Maio += nota.Total.Value; break;
+                                            tipo.Maio += nota.Total;
+                                            NotaFiscal.Maio += nota.Total; break;
                                         }
                                     case "06":
                                         {
-                                            tipo.Junho += nota.Total.Value;
-                                            NotaFiscal.Junho += nota.Total.Value; break;
+                                            tipo.Junho += nota.Total;
+                                            NotaFiscal.Junho += nota.Total; break;
                                         }
                                     case "07":
                                         {
-                                            tipo.Julho += nota.Total.Value;
-                                            NotaFiscal.Julho += nota.Total.Value; break;
+                                            tipo.Julho += nota.Total;
+                                            NotaFiscal.Julho += nota.Total; break;
                                         }
                                     case "08":
                                         {
-                                            tipo.Agosto += nota.Total.Value;
-                                            NotaFiscal.Agosto += nota.Total.Value; break;
+                                            tipo.Agosto += nota.Total;
+                                            NotaFiscal.Agosto += nota.Total; break;
                                         }
                                     case "09":
                                         {
-                                            tipo.Setembro += nota.Total.Value;
-                                            NotaFiscal.Setembro += nota.Total.Value; break;
+                                            tipo.Setembro += nota.Total;
+                                            NotaFiscal.Setembro += nota.Total; break;
                                         }
                                     case "10":
                                         {
-                                            tipo.Outubro += nota.Total.Value;
-                                            NotaFiscal.Outubro += nota.Total.Value; break;
+                                            tipo.Outubro += nota.Total;
+                                            NotaFiscal.Outubro += nota.Total; break;
                                         }
                                     case "11":
                                         {
-                                            tipo.Novembro += nota.Total.Value;
-                                            NotaFiscal.Novembro += nota.Total.Value; break;
+                                            tipo.Novembro += nota.Total;
+                                            NotaFiscal.Novembro += nota.Total; break;
                                         }
                                     case "12":
                                         {
-                                            tipo.Dezembro += nota.Total.Value;
-                                            NotaFiscal.Dezembro += nota.Total.Value; break;
+                                            tipo.Dezembro += nota.Total;
+                                            NotaFiscal.Dezembro += nota.Total; break;
                                         }
                                 }
 
-                                tipo.Total += x.Total.Value;
-                                NotaFiscal.Total += x.Total.Value;
+                                tipo.Total += x.Total;
+                                NotaFiscal.Total += x.Total;
 
                                 cliente.Notas.Add(NotaFiscal);
 
@@ -1539,7 +1557,7 @@ namespace SGID.Pages.Relatorios.Estoque
                                 {
                                     Nome = nota.Nome,
                                     Serie = nota.Serie,
-                                    NF = nota.Nf,
+                                    NF = nota.NF,
                                     Emissao = nota.Emissao
                                 };
 
@@ -1547,68 +1565,68 @@ namespace SGID.Pages.Relatorios.Estoque
                                 {
                                     case "01":
                                         {
-                                            tipo.Janeiro += nota.Total.Value;
-                                            NotaFiscal.Janeiro += nota.Total.Value; break;
+                                            tipo.Janeiro += nota.Total;
+                                            NotaFiscal.Janeiro += nota.Total; break;
                                         }
                                     case "02":
                                         {
-                                            tipo.Fevereiro += nota.Total.Value;
-                                            NotaFiscal.Fevereiro += nota.Total.Value; break;
+                                            tipo.Fevereiro += nota.Total;
+                                            NotaFiscal.Fevereiro += nota.Total; break;
                                         }
                                     case "03":
                                         {
-                                            tipo.Marco += nota.Total.Value;
-                                            NotaFiscal.Marco += nota.Total.Value; break;
+                                            tipo.Marco += nota.Total;
+                                            NotaFiscal.Marco += nota.Total; break;
                                         }
                                     case "04":
                                         {
-                                            tipo.Abril += nota.Total.Value;
-                                            NotaFiscal.Abril += nota.Total.Value; break;
+                                            tipo.Abril += nota.Total;
+                                            NotaFiscal.Abril += nota.Total; break;
                                         }
                                     case "05":
                                         {
-                                            tipo.Maio += nota.Total.Value;
-                                            NotaFiscal.Maio += nota.Total.Value; break;
+                                            tipo.Maio += nota.Total;
+                                            NotaFiscal.Maio += nota.Total; break;
                                         }
                                     case "06":
                                         {
-                                            tipo.Junho += nota.Total.Value;
-                                            NotaFiscal.Junho += nota.Total.Value; break;
+                                            tipo.Junho += nota.Total;
+                                            NotaFiscal.Junho += nota.Total; break;
                                         }
                                     case "07":
                                         {
-                                            tipo.Julho += nota.Total.Value;
-                                            NotaFiscal.Julho += nota.Total.Value; break;
+                                            tipo.Julho += nota.Total;
+                                            NotaFiscal.Julho += nota.Total; break;
                                         }
                                     case "08":
                                         {
-                                            tipo.Agosto += nota.Total.Value;
-                                            NotaFiscal.Agosto += nota.Total.Value; break;
+                                            tipo.Agosto += nota.Total;
+                                            NotaFiscal.Agosto += nota.Total; break;
                                         }
                                     case "09":
                                         {
-                                            tipo.Setembro += nota.Total.Value;
-                                            NotaFiscal.Setembro += nota.Total.Value; break;
+                                            tipo.Setembro += nota.Total;
+                                            NotaFiscal.Setembro += nota.Total; break;
                                         }
                                     case "10":
                                         {
-                                            tipo.Outubro += nota.Total.Value;
-                                            NotaFiscal.Outubro += nota.Total.Value; break;
+                                            tipo.Outubro += nota.Total;
+                                            NotaFiscal.Outubro += nota.Total; break;
                                         }
                                     case "11":
                                         {
-                                            tipo.Novembro += nota.Total.Value;
-                                            NotaFiscal.Novembro += nota.Total.Value; break;
+                                            tipo.Novembro += nota.Total;
+                                            NotaFiscal.Novembro += nota.Total; break;
                                         }
                                     case "12":
                                         {
-                                            tipo.Dezembro += nota.Total.Value;
-                                            NotaFiscal.Dezembro += nota.Total.Value; break;
+                                            tipo.Dezembro += nota.Total;
+                                            NotaFiscal.Dezembro += nota.Total; break;
                                         }
                                 }
 
-                                tipo.Total += x.Total.Value;
-                                NotaFiscal.Total += x.Total.Value;
+                                tipo.Total += x.Total;
+                                NotaFiscal.Total += x.Total;
 
                                 cliente.Notas.Add(NotaFiscal);
 
@@ -1642,7 +1660,7 @@ namespace SGID.Pages.Relatorios.Estoque
                                 {
                                     Nome = nota.Nome,
                                     Serie = nota.Serie,
-                                    NF = nota.Nf,
+                                    NF = nota.NF,
                                     Emissao = nota.Emissao
                                 };
 
@@ -1650,68 +1668,68 @@ namespace SGID.Pages.Relatorios.Estoque
                                 {
                                     case "01":
                                         {
-                                            tipo.Janeiro += nota.Total.Value;
-                                            NotaFiscal.Janeiro += nota.Total.Value; break;
+                                            tipo.Janeiro += nota.Total;
+                                            NotaFiscal.Janeiro += nota.Total; break;
                                         }
                                     case "02":
                                         {
-                                            tipo.Fevereiro += nota.Total.Value;
-                                            NotaFiscal.Fevereiro += nota.Total.Value; break;
+                                            tipo.Fevereiro += nota.Total;
+                                            NotaFiscal.Fevereiro += nota.Total; break;
                                         }
                                     case "03":
                                         {
-                                            tipo.Marco += nota.Total.Value;
-                                            NotaFiscal.Marco += nota.Total.Value; break;
+                                            tipo.Marco += nota.Total;
+                                            NotaFiscal.Marco += nota.Total; break;
                                         }
                                     case "04":
                                         {
-                                            tipo.Abril += nota.Total.Value;
-                                            NotaFiscal.Abril += nota.Total.Value; break;
+                                            tipo.Abril += nota.Total;
+                                            NotaFiscal.Abril += nota.Total; break;
                                         }
                                     case "05":
                                         {
-                                            tipo.Maio += nota.Total.Value;
-                                            NotaFiscal.Maio += nota.Total.Value; break;
+                                            tipo.Maio += nota.Total;
+                                            NotaFiscal.Maio += nota.Total; break;
                                         }
                                     case "06":
                                         {
-                                            tipo.Junho += nota.Total.Value;
-                                            NotaFiscal.Junho += nota.Total.Value; break;
+                                            tipo.Junho += nota.Total;
+                                            NotaFiscal.Junho += nota.Total; break;
                                         }
                                     case "07":
                                         {
-                                            tipo.Julho += nota.Total.Value;
-                                            NotaFiscal.Julho += nota.Total.Value; break;
+                                            tipo.Julho += nota.Total;
+                                            NotaFiscal.Julho += nota.Total; break;
                                         }
                                     case "08":
                                         {
-                                            tipo.Agosto += nota.Total.Value;
-                                            NotaFiscal.Agosto += nota.Total.Value; break;
+                                            tipo.Agosto += nota.Total;
+                                            NotaFiscal.Agosto += nota.Total; break;
                                         }
                                     case "09":
                                         {
-                                            tipo.Setembro += nota.Total.Value;
-                                            NotaFiscal.Setembro += nota.Total.Value; break;
+                                            tipo.Setembro += nota.Total;
+                                            NotaFiscal.Setembro += nota.Total; break;
                                         }
                                     case "10":
                                         {
-                                            tipo.Outubro += nota.Total.Value;
-                                            NotaFiscal.Outubro += nota.Total.Value; break;
+                                            tipo.Outubro += nota.Total;
+                                            NotaFiscal.Outubro += nota.Total; break;
                                         }
                                     case "11":
                                         {
-                                            tipo.Novembro += nota.Total.Value;
-                                            NotaFiscal.Novembro += nota.Total.Value; break;
+                                            tipo.Novembro += nota.Total;
+                                            NotaFiscal.Novembro += nota.Total; break;
                                         }
                                     case "12":
                                         {
-                                            tipo.Dezembro += nota.Total.Value;
-                                            NotaFiscal.Dezembro += nota.Total.Value; break;
+                                            tipo.Dezembro += nota.Total;
+                                            NotaFiscal.Dezembro += nota.Total; break;
                                         }
                                 }
 
-                                tipo.Total += x.Total.Value;
-                                NotaFiscal.Total += x.Total.Value;
+                                tipo.Total += x.Total;
+                                NotaFiscal.Total += x.Total;
 
                                 cliente.Notas.Add(NotaFiscal);
 
@@ -1745,7 +1763,7 @@ namespace SGID.Pages.Relatorios.Estoque
                                 {
                                     Nome = nota.Nome,
                                     Serie = nota.Serie,
-                                    NF = nota.Nf,
+                                    NF = nota.NF,
                                     Emissao = nota.Emissao
                                 };
 
@@ -1753,68 +1771,68 @@ namespace SGID.Pages.Relatorios.Estoque
                                 {
                                     case "01":
                                         {
-                                            tipo.Janeiro += nota.Total.Value;
-                                            NotaFiscal.Janeiro += nota.Total.Value; break;
+                                            tipo.Janeiro += nota.Total;
+                                            NotaFiscal.Janeiro += nota.Total; break;
                                         }
                                     case "02":
                                         {
-                                            tipo.Fevereiro += nota.Total.Value;
-                                            NotaFiscal.Fevereiro += nota.Total.Value; break;
+                                            tipo.Fevereiro += nota.Total;
+                                            NotaFiscal.Fevereiro += nota.Total; break;
                                         }
                                     case "03":
                                         {
-                                            tipo.Marco += nota.Total.Value;
-                                            NotaFiscal.Marco += nota.Total.Value; break;
+                                            tipo.Marco += nota.Total;
+                                            NotaFiscal.Marco += nota.Total; break;
                                         }
                                     case "04":
                                         {
-                                            tipo.Abril += nota.Total.Value;
-                                            NotaFiscal.Abril += nota.Total.Value; break;
+                                            tipo.Abril += nota.Total;
+                                            NotaFiscal.Abril += nota.Total; break;
                                         }
                                     case "05":
                                         {
-                                            tipo.Maio += nota.Total.Value;
-                                            NotaFiscal.Maio += nota.Total.Value; break;
+                                            tipo.Maio += nota.Total;
+                                            NotaFiscal.Maio += nota.Total; break;
                                         }
                                     case "06":
                                         {
-                                            tipo.Junho += nota.Total.Value;
-                                            NotaFiscal.Junho += nota.Total.Value; break;
+                                            tipo.Junho += nota.Total;
+                                            NotaFiscal.Junho += nota.Total; break;
                                         }
                                     case "07":
                                         {
-                                            tipo.Julho += nota.Total.Value;
-                                            NotaFiscal.Julho += nota.Total.Value; break;
+                                            tipo.Julho += nota.Total;
+                                            NotaFiscal.Julho += nota.Total; break;
                                         }
                                     case "08":
                                         {
-                                            tipo.Agosto += nota.Total.Value;
-                                            NotaFiscal.Agosto += nota.Total.Value; break;
+                                            tipo.Agosto += nota.Total;
+                                            NotaFiscal.Agosto += nota.Total; break;
                                         }
                                     case "09":
                                         {
-                                            tipo.Setembro += nota.Total.Value;
-                                            NotaFiscal.Setembro += nota.Total.Value; break;
+                                            tipo.Setembro += nota.Total;
+                                            NotaFiscal.Setembro += nota.Total; break;
                                         }
                                     case "10":
                                         {
-                                            tipo.Outubro += nota.Total.Value;
-                                            NotaFiscal.Outubro += nota.Total.Value; break;
+                                            tipo.Outubro += nota.Total;
+                                            NotaFiscal.Outubro += nota.Total; break;
                                         }
                                     case "11":
                                         {
-                                            tipo.Novembro += nota.Total.Value;
-                                            NotaFiscal.Novembro += nota.Total.Value; break;
+                                            tipo.Novembro += nota.Total;
+                                            NotaFiscal.Novembro += nota.Total; break;
                                         }
                                     case "12":
                                         {
-                                            tipo.Dezembro += nota.Total.Value;
-                                            NotaFiscal.Dezembro += nota.Total.Value; break;
+                                            tipo.Dezembro += nota.Total;
+                                            NotaFiscal.Dezembro += nota.Total; break;
                                         }
                                 }
 
-                                tipo.Total += x.Total.Value;
-                                NotaFiscal.Total += x.Total.Value;
+                                tipo.Total += x.Total;
+                                NotaFiscal.Total += x.Total;
 
                                 cliente.Notas.Add(NotaFiscal);
 
@@ -1826,6 +1844,60 @@ namespace SGID.Pages.Relatorios.Estoque
 
                     RelatorioDevolucao.Add(tipo);
                 }
+
+                #endregion
+
+                #region Fabricante
+                var query = queryFaturado.Concat(queryDevolucao)
+                    .GroupBy(x => new
+                    {
+                        x.Filial,
+                        x.Fabricante,
+                        x.Mes
+                    })
+                    .Select(x => new
+                    {
+                        x.Key.Filial,
+                        x.Key.Fabricante,
+                        x.Key.Mes,
+                        Total = x.Sum(c => c.Total)
+                    }).OrderBy(x => x.Fabricante).ToList();
+
+
+                query.ForEach(c =>
+                {
+
+                    if (!RelatorioFabricante.Any(x => x.Nome == c.Fabricante))
+                    {
+                        var Todos = query.Where(x => x.Fabricante == c.Fabricante).ToList();
+
+                        var NovoRelatorio = new Fabricante { Nome = c.Fabricante };
+
+                        Todos.ForEach(x =>
+                        {
+                            switch (x.Mes)
+                            {
+                                case "01": NovoRelatorio.Janeiro += x.Total; break;
+                                case "02": NovoRelatorio.Fevereiro += x.Total; break;
+                                case "03": NovoRelatorio.Marco += x.Total; break;
+                                case "04": NovoRelatorio.Abril += x.Total; break;
+                                case "05": NovoRelatorio.Maio += x.Total; break;
+                                case "06": NovoRelatorio.Junho += x.Total; break;
+                                case "07": NovoRelatorio.Julho += x.Total; break;
+                                case "08": NovoRelatorio.Agosto += x.Total; break;
+                                case "09": NovoRelatorio.Setembro += x.Total; break;
+                                case "10": NovoRelatorio.Outubro += x.Total; break;
+                                case "11": NovoRelatorio.Novembro += x.Total; break;
+                                case "12": NovoRelatorio.Dezembro += x.Total; break;
+                            }
+
+                            NovoRelatorio.Total += x.Total;
+                        });
+
+                        RelatorioFabricante.Add(NovoRelatorio);
+                    }
+
+                });
 
                 #endregion
 
@@ -1847,96 +1919,73 @@ namespace SGID.Pages.Relatorios.Estoque
                 int Inicio = Convert.ToInt32($"{Ano}0101");
                 int Fim = Convert.ToInt32($"{Ano}1231");
 
-                #region Fabricante
-                var query = Protheus.Fatnffabs.Where(x => x.Empresa == "I" && (((int)(object)x.Emissao >= Inicio && (int)(object)x.Emissao <= Fim && x.Tipofd == "F")
-                || ((int)(object)x.Dtdigit >= Inicio && (int)(object)x.Dtdigit <= Fim && x.Tipofd != "F")))
-                    .
-                    Select(novo => new
-                    {
-                        novo.Empresa,
-                        novo.Filial,
-                        novo.Fabricante,
-                        Mest = novo.Tipofd == "F" ? novo.Emissao.Substring(4, 2) : novo.Dtdigit.Substring(4, 2),
-                        novo.Total
-                    })
-                    .GroupBy(x => new
-                    {
-                        x.Empresa,
-                        x.Filial,
-                        x.Fabricante,
-                        x.Mest
-                    })
-                    .Select(x => new
-                    {
-                        x.Key.Empresa,
-                        x.Key.Filial,
-                        x.Key.Fabricante,
-                        x.Key.Mest,
-                        Total = x.Sum(c => c.Total)
-                    }).OrderBy(x => x.Fabricante).ToList();
-
-
-                query.ForEach(c =>
-                {
-
-                    if (!RelatorioFabricante.Any(x => x.Nome == c.Fabricante))
-                    {
-                        var Todos = query.Where(x => x.Fabricante == c.Fabricante).ToList();
-
-                        var NovoRelatorio = new Fabricante { Nome = c.Fabricante };
-
-                        Todos.ForEach(x =>
-                        {
-                            switch (x.Mest)
-                            {
-                                case "01": NovoRelatorio.Janeiro += x.Total.Value; break;
-                                case "02": NovoRelatorio.Fevereiro += x.Total.Value; break;
-                                case "03": NovoRelatorio.Marco += x.Total.Value; break;
-                                case "04": NovoRelatorio.Abril += x.Total.Value; break;
-                                case "05": NovoRelatorio.Maio += x.Total.Value; break;
-                                case "06": NovoRelatorio.Junho += x.Total.Value; break;
-                                case "07": NovoRelatorio.Julho += x.Total.Value; break;
-                                case "08": NovoRelatorio.Agosto += x.Total.Value; break;
-                                case "09": NovoRelatorio.Setembro += x.Total.Value; break;
-                                case "10": NovoRelatorio.Outubro += x.Total.Value; break;
-                                case "11": NovoRelatorio.Novembro += x.Total.Value; break;
-                                case "12": NovoRelatorio.Dezembro += x.Total.Value; break;
-                            }
-
-                            NovoRelatorio.Total += x.Total.Value;
-                        });
-
-                        RelatorioFabricante.Add(NovoRelatorio);
-                    }
-
-                });
-
-                #endregion
+                var CF = new int[] { 5551, 6551, 6107, 6109, 5117, 6117 };
+                var CfNe = new int[] { 1202, 1553, 2202, 2553 };
 
                 #region Faturado
 
-                var queryFaturado = Protheus.Fatnffabs.Where(x => x.Empresa == "I" && x.Tipofd == "F"
-                && (int)(object)x.Emissao >= Inicio && (int)(object)x.Emissao <= Fim)
-                    .Select(x => new
-                    {
-                        x.Empresa,
-                        x.Filial,
-                        x.Clifor,
-                        x.Loja,
-                        x.Nome,
-                        Tipo = x.Tipo == "H" ? "HOSPITAL" : x.Tipo == "M" ? "MEDICO" : x.Tipo == "I" ? "INSTRUMENTAL" : x.Tipo == "N" ? "NORMAL" : x.Tipo == "C" ? "CONVENIO" : x.Tipo == "P" ? "PARTICULAR" : x.Tipo == "S" ? "SUB-DISTRIBUIDOR" : "OUTROS",
-                        x.Est,
-                        x.Mun,
-                        x.Nf,
-                        x.Serie,
-                        x.Emissao,
-                        x.Fabricante,
-                        x.Total,
-                        x.Valipi,
-                        x.Valicm,
-                        x.Descon,
-                        Mes = x.Emissao.Substring(4, 2)
-                    }).OrderBy(x => x.Fabricante).ToList();
+                var queryFaturado = (from SD20 in Protheus.Sd2010s
+                                     join SA10 in Protheus.Sa1010s on new { Cliente = SD20.D2Cliente, Loja = SD20.D2Loja } equals new { Cliente = SA10.A1Cod, Loja = SA10.A1Loja }
+                                     join SB10 in Protheus.Sb1010s on SD20.D2Cod equals SB10.B1Cod
+                                     join SF20 in Protheus.Sf2010s on new { Filial = SD20.D2Filial, Doc = SD20.D2Doc, Serie = SD20.D2Serie, Cliente = SD20.D2Cliente, Loja = SD20.D2Loja } equals new { Filial = SF20.F2Filial, Doc = SF20.F2Doc, Serie = SF20.F2Serie, Cliente = SF20.F2Cliente, Loja = SF20.F2Loja }
+                                     join SC50 in Protheus.Sc5010s on new { Pedido = SD20.D2Pedido, Filial = SD20.D2Filial, Cliente = SD20.D2Cliente, Loja = SD20.D2Loja } equals new { Pedido = SC50.C5Num, Filial = SC50.C5Filial, Cliente = SC50.C5Cliente, Loja = SC50.C5Lojacli }
+                                     where SD20.DELET != "*" && SA10.DELET != "*" && SB10.DELET != "*" && SF20.DELET != "*" && SC50.DELET != "*" &&
+                                     (((int)(object)SD20.D2Cf >= 5102 && (int)(object)SD20.D2Cf <= 5114) || ((int)(object)SD20.D2Cf >= 6102 && (int)(object)SD20.D2Cf <= 6114)
+                                     || ((int)(object)SD20.D2Cf >= 7102 && (int)(object)SD20.D2Cf <= 7114) || CF.Contains((int)(object)SD20.D2Cf))
+                                     && (int)(object)SD20.D2Emissao >= Inicio && (int)(object)SD20.D2Emissao <= Fim && SD20.D2Quant != 0
+                                     select new
+                                     {
+                                         Filial = SD20.D2Filial,
+                                         Cliente = SD20.D2Cliente,
+                                         Loja = SD20.D2Loja,
+                                         Nome = SA10.A1Nome,
+                                         Tipo = SA10.A1Clinter,
+                                         Est = SA10.A1Est,
+                                         Mun = SA10.A1Mun,
+                                         NF = SD20.D2Doc,
+                                         Serie = SD20.D2Serie,
+                                         Emissao = SD20.D2Emissao,
+                                         Total = SD20.D2Total,
+                                         Valipi = SD20.D2Valipi,
+                                         Valicm = SD20.D2Valicm,
+                                         Descon = SD20.D2Descon,
+                                         TotalBrut = SD20.D2Valbrut,
+                                         Fabricante = SB10.B1Fabric
+                                     })
+                                     .GroupBy(x => new
+                                     {
+                                         x.Filial,
+                                         x.Cliente,
+                                         x.Loja,
+                                         x.Nome,
+                                         x.Tipo,
+                                         x.Est,
+                                         x.Mun,
+                                         x.NF,
+                                         x.Serie,
+                                         x.Emissao,
+                                         x.Fabricante
+                                     })
+                                     .Select(x => new FaturamentoNFFAB
+                                     {
+                                         Filial = x.Key.Filial,
+                                         Cliente = x.Key.Cliente,
+                                         Loja = x.Key.Loja,
+                                         Nome = x.Key.Nome,
+                                         Tipo = x.Key.Tipo == "H" ? "HOSPITAL" : x.Key.Tipo == "M" ? "MEDICO" : x.Key.Tipo == "I" ? "INSTRUMENTAL" : x.Key.Tipo == "N" ? "NORMAL" : x.Key.Tipo == "C" ? "CONVENIO" : x.Key.Tipo == "P" ? "PARTICULAR" : x.Key.Tipo == "S" ? "SUB-DISTRIBUIDOR" : "OUTROS",
+                                         Est = x.Key.Est,
+                                         Mun = x.Key.Mun,
+                                         NF = x.Key.NF,
+                                         Serie = x.Key.Serie,
+                                         Emissao = x.Key.Emissao,
+                                         Fabricante = x.Key.Fabricante,
+                                         Total = x.Sum(c => c.Total),
+                                         Valipi = x.Sum(c => c.Valipi),
+                                         Valicm = x.Sum(c => c.Valicm),
+                                         Descon = x.Sum(c => c.Descon),
+                                         Mes = x.Key.Emissao.Substring(4, 2)
+                                     }).OrderBy(x => x.Fabricante).ToList();
+
 
 
                 var hospital = queryFaturado.Where(x => x.Tipo == "HOSPITAL").ToList();
@@ -1970,7 +2019,7 @@ namespace SGID.Pages.Relatorios.Estoque
                                 {
                                     Nome = nota.Nome,
                                     Serie = nota.Serie,
-                                    NF = nota.Nf,
+                                    NF = nota.NF,
                                     Emissao = nota.Emissao
                                 };
 
@@ -1978,68 +2027,68 @@ namespace SGID.Pages.Relatorios.Estoque
                                 {
                                     case "01":
                                         {
-                                            tipo.Janeiro += nota.Total.Value;
-                                            NotaFiscal.Janeiro += nota.Total.Value; break;
+                                            tipo.Janeiro += nota.Total;
+                                            NotaFiscal.Janeiro += nota.Total; break;
                                         }
                                     case "02":
                                         {
-                                            tipo.Fevereiro += nota.Total.Value;
-                                            NotaFiscal.Fevereiro += nota.Total.Value; break;
+                                            tipo.Fevereiro += nota.Total;
+                                            NotaFiscal.Fevereiro += nota.Total; break;
                                         }
                                     case "03":
                                         {
-                                            tipo.Marco += nota.Total.Value;
-                                            NotaFiscal.Marco += nota.Total.Value; break;
+                                            tipo.Marco += nota.Total;
+                                            NotaFiscal.Marco += nota.Total; break;
                                         }
                                     case "04":
                                         {
-                                            tipo.Abril += nota.Total.Value;
-                                            NotaFiscal.Abril += nota.Total.Value; break;
+                                            tipo.Abril += nota.Total;
+                                            NotaFiscal.Abril += nota.Total; break;
                                         }
                                     case "05":
                                         {
-                                            tipo.Maio += nota.Total.Value;
-                                            NotaFiscal.Maio += nota.Total.Value; break;
+                                            tipo.Maio += nota.Total;
+                                            NotaFiscal.Maio += nota.Total; break;
                                         }
                                     case "06":
                                         {
-                                            tipo.Junho += nota.Total.Value;
-                                            NotaFiscal.Junho += nota.Total.Value; break;
+                                            tipo.Junho += nota.Total;
+                                            NotaFiscal.Junho += nota.Total; break;
                                         }
                                     case "07":
                                         {
-                                            tipo.Julho += nota.Total.Value;
-                                            NotaFiscal.Julho += nota.Total.Value; break;
+                                            tipo.Julho += nota.Total;
+                                            NotaFiscal.Julho += nota.Total; break;
                                         }
                                     case "08":
                                         {
-                                            tipo.Agosto += nota.Total.Value;
-                                            NotaFiscal.Agosto += nota.Total.Value; break;
+                                            tipo.Agosto += nota.Total;
+                                            NotaFiscal.Agosto += nota.Total; break;
                                         }
                                     case "09":
                                         {
-                                            tipo.Setembro += nota.Total.Value;
-                                            NotaFiscal.Setembro += nota.Total.Value; break;
+                                            tipo.Setembro += nota.Total;
+                                            NotaFiscal.Setembro += nota.Total; break;
                                         }
                                     case "10":
                                         {
-                                            tipo.Outubro += nota.Total.Value;
-                                            NotaFiscal.Outubro += nota.Total.Value; break;
+                                            tipo.Outubro += nota.Total;
+                                            NotaFiscal.Outubro += nota.Total; break;
                                         }
                                     case "11":
                                         {
-                                            tipo.Novembro += nota.Total.Value;
-                                            NotaFiscal.Novembro += nota.Total.Value; break;
+                                            tipo.Novembro += nota.Total;
+                                            NotaFiscal.Novembro += nota.Total; break;
                                         }
                                     case "12":
                                         {
-                                            tipo.Dezembro += nota.Total.Value;
-                                            NotaFiscal.Dezembro += nota.Total.Value; break;
+                                            tipo.Dezembro += nota.Total;
+                                            NotaFiscal.Dezembro += nota.Total; break;
                                         }
                                 }
 
-                                tipo.Total += x.Total.Value;
-                                NotaFiscal.Total += x.Total.Value;
+                                tipo.Total += x.Total;
+                                NotaFiscal.Total += x.Total;
 
                                 cliente.Notas.Add(NotaFiscal);
 
@@ -2073,7 +2122,7 @@ namespace SGID.Pages.Relatorios.Estoque
                                 {
                                     Nome = nota.Nome,
                                     Serie = nota.Serie,
-                                    NF = nota.Nf,
+                                    NF = nota.NF,
                                     Emissao = nota.Emissao
                                 };
 
@@ -2081,68 +2130,68 @@ namespace SGID.Pages.Relatorios.Estoque
                                 {
                                     case "01":
                                         {
-                                            tipo.Janeiro += nota.Total.Value;
-                                            NotaFiscal.Janeiro += nota.Total.Value; break;
+                                            tipo.Janeiro += nota.Total;
+                                            NotaFiscal.Janeiro += nota.Total; break;
                                         }
                                     case "02":
                                         {
-                                            tipo.Fevereiro += nota.Total.Value;
-                                            NotaFiscal.Fevereiro += nota.Total.Value; break;
+                                            tipo.Fevereiro += nota.Total;
+                                            NotaFiscal.Fevereiro += nota.Total; break;
                                         }
                                     case "03":
                                         {
-                                            tipo.Marco += nota.Total.Value;
-                                            NotaFiscal.Marco += nota.Total.Value; break;
+                                            tipo.Marco += nota.Total;
+                                            NotaFiscal.Marco += nota.Total; break;
                                         }
                                     case "04":
                                         {
-                                            tipo.Abril += nota.Total.Value;
-                                            NotaFiscal.Abril += nota.Total.Value; break;
+                                            tipo.Abril += nota.Total;
+                                            NotaFiscal.Abril += nota.Total; break;
                                         }
                                     case "05":
                                         {
-                                            tipo.Maio += nota.Total.Value;
-                                            NotaFiscal.Maio += nota.Total.Value; break;
+                                            tipo.Maio += nota.Total;
+                                            NotaFiscal.Maio += nota.Total; break;
                                         }
                                     case "06":
                                         {
-                                            tipo.Junho += nota.Total.Value;
-                                            NotaFiscal.Junho += nota.Total.Value; break;
+                                            tipo.Junho += nota.Total;
+                                            NotaFiscal.Junho += nota.Total; break;
                                         }
                                     case "07":
                                         {
-                                            tipo.Julho += nota.Total.Value;
-                                            NotaFiscal.Julho += nota.Total.Value; break;
+                                            tipo.Julho += nota.Total;
+                                            NotaFiscal.Julho += nota.Total; break;
                                         }
                                     case "08":
                                         {
-                                            tipo.Agosto += nota.Total.Value;
-                                            NotaFiscal.Agosto += nota.Total.Value; break;
+                                            tipo.Agosto += nota.Total;
+                                            NotaFiscal.Agosto += nota.Total; break;
                                         }
                                     case "09":
                                         {
-                                            tipo.Setembro += nota.Total.Value;
-                                            NotaFiscal.Setembro += nota.Total.Value; break;
+                                            tipo.Setembro += nota.Total;
+                                            NotaFiscal.Setembro += nota.Total; break;
                                         }
                                     case "10":
                                         {
-                                            tipo.Outubro += nota.Total.Value;
-                                            NotaFiscal.Outubro += nota.Total.Value; break;
+                                            tipo.Outubro += nota.Total;
+                                            NotaFiscal.Outubro += nota.Total; break;
                                         }
                                     case "11":
                                         {
-                                            tipo.Novembro += nota.Total.Value;
-                                            NotaFiscal.Novembro += nota.Total.Value; break;
+                                            tipo.Novembro += nota.Total;
+                                            NotaFiscal.Novembro += nota.Total; break;
                                         }
                                     case "12":
                                         {
-                                            tipo.Dezembro += nota.Total.Value;
-                                            NotaFiscal.Dezembro += nota.Total.Value; break;
+                                            tipo.Dezembro += nota.Total;
+                                            NotaFiscal.Dezembro += nota.Total; break;
                                         }
                                 }
 
-                                tipo.Total += x.Total.Value;
-                                NotaFiscal.Total += x.Total.Value;
+                                tipo.Total += x.Total;
+                                NotaFiscal.Total += x.Total;
 
                                 cliente.Notas.Add(NotaFiscal);
 
@@ -2176,7 +2225,7 @@ namespace SGID.Pages.Relatorios.Estoque
                                 {
                                     Nome = nota.Nome,
                                     Serie = nota.Serie,
-                                    NF = nota.Nf,
+                                    NF = nota.NF,
                                     Emissao = nota.Emissao
                                 };
 
@@ -2184,68 +2233,68 @@ namespace SGID.Pages.Relatorios.Estoque
                                 {
                                     case "01":
                                         {
-                                            tipo.Janeiro += nota.Total.Value;
-                                            NotaFiscal.Janeiro += nota.Total.Value; break;
+                                            tipo.Janeiro += nota.Total;
+                                            NotaFiscal.Janeiro += nota.Total; break;
                                         }
                                     case "02":
                                         {
-                                            tipo.Fevereiro += nota.Total.Value;
-                                            NotaFiscal.Fevereiro += nota.Total.Value; break;
+                                            tipo.Fevereiro += nota.Total;
+                                            NotaFiscal.Fevereiro += nota.Total; break;
                                         }
                                     case "03":
                                         {
-                                            tipo.Marco += nota.Total.Value;
-                                            NotaFiscal.Marco += nota.Total.Value; break;
+                                            tipo.Marco += nota.Total;
+                                            NotaFiscal.Marco += nota.Total; break;
                                         }
                                     case "04":
                                         {
-                                            tipo.Abril += nota.Total.Value;
-                                            NotaFiscal.Abril += nota.Total.Value; break;
+                                            tipo.Abril += nota.Total;
+                                            NotaFiscal.Abril += nota.Total; break;
                                         }
                                     case "05":
                                         {
-                                            tipo.Maio += nota.Total.Value;
-                                            NotaFiscal.Maio += nota.Total.Value; break;
+                                            tipo.Maio += nota.Total;
+                                            NotaFiscal.Maio += nota.Total; break;
                                         }
                                     case "06":
                                         {
-                                            tipo.Junho += nota.Total.Value;
-                                            NotaFiscal.Junho += nota.Total.Value; break;
+                                            tipo.Junho += nota.Total;
+                                            NotaFiscal.Junho += nota.Total; break;
                                         }
                                     case "07":
                                         {
-                                            tipo.Julho += nota.Total.Value;
-                                            NotaFiscal.Julho += nota.Total.Value; break;
+                                            tipo.Julho += nota.Total;
+                                            NotaFiscal.Julho += nota.Total; break;
                                         }
                                     case "08":
                                         {
-                                            tipo.Agosto += nota.Total.Value;
-                                            NotaFiscal.Agosto += nota.Total.Value; break;
+                                            tipo.Agosto += nota.Total;
+                                            NotaFiscal.Agosto += nota.Total; break;
                                         }
                                     case "09":
                                         {
-                                            tipo.Setembro += nota.Total.Value;
-                                            NotaFiscal.Setembro += nota.Total.Value; break;
+                                            tipo.Setembro += nota.Total;
+                                            NotaFiscal.Setembro += nota.Total; break;
                                         }
                                     case "10":
                                         {
-                                            tipo.Outubro += nota.Total.Value;
-                                            NotaFiscal.Outubro += nota.Total.Value; break;
+                                            tipo.Outubro += nota.Total;
+                                            NotaFiscal.Outubro += nota.Total; break;
                                         }
                                     case "11":
                                         {
-                                            tipo.Novembro += nota.Total.Value;
-                                            NotaFiscal.Novembro += nota.Total.Value; break;
+                                            tipo.Novembro += nota.Total;
+                                            NotaFiscal.Novembro += nota.Total; break;
                                         }
                                     case "12":
                                         {
-                                            tipo.Dezembro += nota.Total.Value;
-                                            NotaFiscal.Dezembro += nota.Total.Value; break;
+                                            tipo.Dezembro += nota.Total;
+                                            NotaFiscal.Dezembro += nota.Total; break;
                                         }
                                 }
 
-                                tipo.Total += x.Total.Value;
-                                NotaFiscal.Total += x.Total.Value;
+                                tipo.Total += x.Total;
+                                NotaFiscal.Total += x.Total;
 
                                 cliente.Notas.Add(NotaFiscal);
 
@@ -2279,7 +2328,7 @@ namespace SGID.Pages.Relatorios.Estoque
                                 {
                                     Nome = nota.Nome,
                                     Serie = nota.Serie,
-                                    NF = nota.Nf,
+                                    NF = nota.NF,
                                     Emissao = nota.Emissao
                                 };
 
@@ -2287,68 +2336,68 @@ namespace SGID.Pages.Relatorios.Estoque
                                 {
                                     case "01":
                                         {
-                                            tipo.Janeiro += nota.Total.Value;
-                                            NotaFiscal.Janeiro += nota.Total.Value; break;
+                                            tipo.Janeiro += nota.Total;
+                                            NotaFiscal.Janeiro += nota.Total; break;
                                         }
                                     case "02":
                                         {
-                                            tipo.Fevereiro += nota.Total.Value;
-                                            NotaFiscal.Fevereiro += nota.Total.Value; break;
+                                            tipo.Fevereiro += nota.Total;
+                                            NotaFiscal.Fevereiro += nota.Total; break;
                                         }
                                     case "03":
                                         {
-                                            tipo.Marco += nota.Total.Value;
-                                            NotaFiscal.Marco += nota.Total.Value; break;
+                                            tipo.Marco += nota.Total;
+                                            NotaFiscal.Marco += nota.Total; break;
                                         }
                                     case "04":
                                         {
-                                            tipo.Abril += nota.Total.Value;
-                                            NotaFiscal.Abril += nota.Total.Value; break;
+                                            tipo.Abril += nota.Total;
+                                            NotaFiscal.Abril += nota.Total; break;
                                         }
                                     case "05":
                                         {
-                                            tipo.Maio += nota.Total.Value;
-                                            NotaFiscal.Maio += nota.Total.Value; break;
+                                            tipo.Maio += nota.Total;
+                                            NotaFiscal.Maio += nota.Total; break;
                                         }
                                     case "06":
                                         {
-                                            tipo.Junho += nota.Total.Value;
-                                            NotaFiscal.Junho += nota.Total.Value; break;
+                                            tipo.Junho += nota.Total;
+                                            NotaFiscal.Junho += nota.Total; break;
                                         }
                                     case "07":
                                         {
-                                            tipo.Julho += nota.Total.Value;
-                                            NotaFiscal.Julho += nota.Total.Value; break;
+                                            tipo.Julho += nota.Total;
+                                            NotaFiscal.Julho += nota.Total; break;
                                         }
                                     case "08":
                                         {
-                                            tipo.Agosto += nota.Total.Value;
-                                            NotaFiscal.Agosto += nota.Total.Value; break;
+                                            tipo.Agosto += nota.Total;
+                                            NotaFiscal.Agosto += nota.Total; break;
                                         }
                                     case "09":
                                         {
-                                            tipo.Setembro += nota.Total.Value;
-                                            NotaFiscal.Setembro += nota.Total.Value; break;
+                                            tipo.Setembro += nota.Total;
+                                            NotaFiscal.Setembro += nota.Total; break;
                                         }
                                     case "10":
                                         {
-                                            tipo.Outubro += nota.Total.Value;
-                                            NotaFiscal.Outubro += nota.Total.Value; break;
+                                            tipo.Outubro += nota.Total;
+                                            NotaFiscal.Outubro += nota.Total; break;
                                         }
                                     case "11":
                                         {
-                                            tipo.Novembro += nota.Total.Value;
-                                            NotaFiscal.Novembro += nota.Total.Value; break;
+                                            tipo.Novembro += nota.Total;
+                                            NotaFiscal.Novembro += nota.Total; break;
                                         }
                                     case "12":
                                         {
-                                            tipo.Dezembro += nota.Total.Value;
-                                            NotaFiscal.Dezembro += nota.Total.Value; break;
+                                            tipo.Dezembro += nota.Total;
+                                            NotaFiscal.Dezembro += nota.Total; break;
                                         }
                                 }
 
-                                tipo.Total += x.Total.Value;
-                                NotaFiscal.Total += x.Total.Value;
+                                tipo.Total += x.Total;
+                                NotaFiscal.Total += x.Total;
 
                                 cliente.Notas.Add(NotaFiscal);
 
@@ -2382,7 +2431,7 @@ namespace SGID.Pages.Relatorios.Estoque
                                 {
                                     Nome = nota.Nome,
                                     Serie = nota.Serie,
-                                    NF = nota.Nf,
+                                    NF = nota.NF,
                                     Emissao = nota.Emissao
                                 };
 
@@ -2390,68 +2439,68 @@ namespace SGID.Pages.Relatorios.Estoque
                                 {
                                     case "01":
                                         {
-                                            tipo.Janeiro += nota.Total.Value;
-                                            NotaFiscal.Janeiro += nota.Total.Value; break;
+                                            tipo.Janeiro += nota.Total;
+                                            NotaFiscal.Janeiro += nota.Total; break;
                                         }
                                     case "02":
                                         {
-                                            tipo.Fevereiro += nota.Total.Value;
-                                            NotaFiscal.Fevereiro += nota.Total.Value; break;
+                                            tipo.Fevereiro += nota.Total;
+                                            NotaFiscal.Fevereiro += nota.Total; break;
                                         }
                                     case "03":
                                         {
-                                            tipo.Marco += nota.Total.Value;
-                                            NotaFiscal.Marco += nota.Total.Value; break;
+                                            tipo.Marco += nota.Total;
+                                            NotaFiscal.Marco += nota.Total; break;
                                         }
                                     case "04":
                                         {
-                                            tipo.Abril += nota.Total.Value;
-                                            NotaFiscal.Abril += nota.Total.Value; break;
+                                            tipo.Abril += nota.Total;
+                                            NotaFiscal.Abril += nota.Total; break;
                                         }
                                     case "05":
                                         {
-                                            tipo.Maio += nota.Total.Value;
-                                            NotaFiscal.Maio += nota.Total.Value; break;
+                                            tipo.Maio += nota.Total;
+                                            NotaFiscal.Maio += nota.Total; break;
                                         }
                                     case "06":
                                         {
-                                            tipo.Junho += nota.Total.Value;
-                                            NotaFiscal.Junho += nota.Total.Value; break;
+                                            tipo.Junho += nota.Total;
+                                            NotaFiscal.Junho += nota.Total; break;
                                         }
                                     case "07":
                                         {
-                                            tipo.Julho += nota.Total.Value;
-                                            NotaFiscal.Julho += nota.Total.Value; break;
+                                            tipo.Julho += nota.Total;
+                                            NotaFiscal.Julho += nota.Total; break;
                                         }
                                     case "08":
                                         {
-                                            tipo.Agosto += nota.Total.Value;
-                                            NotaFiscal.Agosto += nota.Total.Value; break;
+                                            tipo.Agosto += nota.Total;
+                                            NotaFiscal.Agosto += nota.Total; break;
                                         }
                                     case "09":
                                         {
-                                            tipo.Setembro += nota.Total.Value;
-                                            NotaFiscal.Setembro += nota.Total.Value; break;
+                                            tipo.Setembro += nota.Total;
+                                            NotaFiscal.Setembro += nota.Total; break;
                                         }
                                     case "10":
                                         {
-                                            tipo.Outubro += nota.Total.Value;
-                                            NotaFiscal.Outubro += nota.Total.Value; break;
+                                            tipo.Outubro += nota.Total;
+                                            NotaFiscal.Outubro += nota.Total; break;
                                         }
                                     case "11":
                                         {
-                                            tipo.Novembro += nota.Total.Value;
-                                            NotaFiscal.Novembro += nota.Total.Value; break;
+                                            tipo.Novembro += nota.Total;
+                                            NotaFiscal.Novembro += nota.Total; break;
                                         }
                                     case "12":
                                         {
-                                            tipo.Dezembro += nota.Total.Value;
-                                            NotaFiscal.Dezembro += nota.Total.Value; break;
+                                            tipo.Dezembro += nota.Total;
+                                            NotaFiscal.Dezembro += nota.Total; break;
                                         }
                                 }
 
-                                tipo.Total += x.Total.Value;
-                                NotaFiscal.Total += x.Total.Value;
+                                tipo.Total += x.Total;
+                                NotaFiscal.Total += x.Total;
 
                                 cliente.Notas.Add(NotaFiscal);
 
@@ -2485,7 +2534,7 @@ namespace SGID.Pages.Relatorios.Estoque
                                 {
                                     Nome = nota.Nome,
                                     Serie = nota.Serie,
-                                    NF = nota.Nf,
+                                    NF = nota.NF,
                                     Emissao = nota.Emissao
                                 };
 
@@ -2493,68 +2542,68 @@ namespace SGID.Pages.Relatorios.Estoque
                                 {
                                     case "01":
                                         {
-                                            tipo.Janeiro += nota.Total.Value;
-                                            NotaFiscal.Janeiro += nota.Total.Value; break;
+                                            tipo.Janeiro += nota.Total;
+                                            NotaFiscal.Janeiro += nota.Total; break;
                                         }
                                     case "02":
                                         {
-                                            tipo.Fevereiro += nota.Total.Value;
-                                            NotaFiscal.Fevereiro += nota.Total.Value; break;
+                                            tipo.Fevereiro += nota.Total;
+                                            NotaFiscal.Fevereiro += nota.Total; break;
                                         }
                                     case "03":
                                         {
-                                            tipo.Marco += nota.Total.Value;
-                                            NotaFiscal.Marco += nota.Total.Value; break;
+                                            tipo.Marco += nota.Total;
+                                            NotaFiscal.Marco += nota.Total; break;
                                         }
                                     case "04":
                                         {
-                                            tipo.Abril += nota.Total.Value;
-                                            NotaFiscal.Abril += nota.Total.Value; break;
+                                            tipo.Abril += nota.Total;
+                                            NotaFiscal.Abril += nota.Total; break;
                                         }
                                     case "05":
                                         {
-                                            tipo.Maio += nota.Total.Value;
-                                            NotaFiscal.Maio += nota.Total.Value; break;
+                                            tipo.Maio += nota.Total;
+                                            NotaFiscal.Maio += nota.Total; break;
                                         }
                                     case "06":
                                         {
-                                            tipo.Junho += nota.Total.Value;
-                                            NotaFiscal.Junho += nota.Total.Value; break;
+                                            tipo.Junho += nota.Total;
+                                            NotaFiscal.Junho += nota.Total; break;
                                         }
                                     case "07":
                                         {
-                                            tipo.Julho += nota.Total.Value;
-                                            NotaFiscal.Julho += nota.Total.Value; break;
+                                            tipo.Julho += nota.Total;
+                                            NotaFiscal.Julho += nota.Total; break;
                                         }
                                     case "08":
                                         {
-                                            tipo.Agosto += nota.Total.Value;
-                                            NotaFiscal.Agosto += nota.Total.Value; break;
+                                            tipo.Agosto += nota.Total;
+                                            NotaFiscal.Agosto += nota.Total; break;
                                         }
                                     case "09":
                                         {
-                                            tipo.Setembro += nota.Total.Value;
-                                            NotaFiscal.Setembro += nota.Total.Value; break;
+                                            tipo.Setembro += nota.Total;
+                                            NotaFiscal.Setembro += nota.Total; break;
                                         }
                                     case "10":
                                         {
-                                            tipo.Outubro += nota.Total.Value;
-                                            NotaFiscal.Outubro += nota.Total.Value; break;
+                                            tipo.Outubro += nota.Total;
+                                            NotaFiscal.Outubro += nota.Total; break;
                                         }
                                     case "11":
                                         {
-                                            tipo.Novembro += nota.Total.Value;
-                                            NotaFiscal.Novembro += nota.Total.Value; break;
+                                            tipo.Novembro += nota.Total;
+                                            NotaFiscal.Novembro += nota.Total; break;
                                         }
                                     case "12":
                                         {
-                                            tipo.Dezembro += nota.Total.Value;
-                                            NotaFiscal.Dezembro += nota.Total.Value; break;
+                                            tipo.Dezembro += nota.Total;
+                                            NotaFiscal.Dezembro += nota.Total; break;
                                         }
                                 }
 
-                                tipo.Total += x.Total.Value;
-                                NotaFiscal.Total += x.Total.Value;
+                                tipo.Total += x.Total;
+                                NotaFiscal.Total += x.Total;
 
                                 cliente.Notas.Add(NotaFiscal);
 
@@ -2588,7 +2637,7 @@ namespace SGID.Pages.Relatorios.Estoque
                                 {
                                     Nome = nota.Nome,
                                     Serie = nota.Serie,
-                                    NF = nota.Nf,
+                                    NF = nota.NF,
                                     Emissao = nota.Emissao
                                 };
 
@@ -2596,68 +2645,68 @@ namespace SGID.Pages.Relatorios.Estoque
                                 {
                                     case "01":
                                         {
-                                            tipo.Janeiro += nota.Total.Value;
-                                            NotaFiscal.Janeiro += nota.Total.Value; break;
+                                            tipo.Janeiro += nota.Total;
+                                            NotaFiscal.Janeiro += nota.Total; break;
                                         }
                                     case "02":
                                         {
-                                            tipo.Fevereiro += nota.Total.Value;
-                                            NotaFiscal.Fevereiro += nota.Total.Value; break;
+                                            tipo.Fevereiro += nota.Total;
+                                            NotaFiscal.Fevereiro += nota.Total; break;
                                         }
                                     case "03":
                                         {
-                                            tipo.Marco += nota.Total.Value;
-                                            NotaFiscal.Marco += nota.Total.Value; break;
+                                            tipo.Marco += nota.Total;
+                                            NotaFiscal.Marco += nota.Total; break;
                                         }
                                     case "04":
                                         {
-                                            tipo.Abril += nota.Total.Value;
-                                            NotaFiscal.Abril += nota.Total.Value; break;
+                                            tipo.Abril += nota.Total;
+                                            NotaFiscal.Abril += nota.Total; break;
                                         }
                                     case "05":
                                         {
-                                            tipo.Maio += nota.Total.Value;
-                                            NotaFiscal.Maio += nota.Total.Value; break;
+                                            tipo.Maio += nota.Total;
+                                            NotaFiscal.Maio += nota.Total; break;
                                         }
                                     case "06":
                                         {
-                                            tipo.Junho += nota.Total.Value;
-                                            NotaFiscal.Junho += nota.Total.Value; break;
+                                            tipo.Junho += nota.Total;
+                                            NotaFiscal.Junho += nota.Total; break;
                                         }
                                     case "07":
                                         {
-                                            tipo.Julho += nota.Total.Value;
-                                            NotaFiscal.Julho += nota.Total.Value; break;
+                                            tipo.Julho += nota.Total;
+                                            NotaFiscal.Julho += nota.Total; break;
                                         }
                                     case "08":
                                         {
-                                            tipo.Agosto += nota.Total.Value;
-                                            NotaFiscal.Agosto += nota.Total.Value; break;
+                                            tipo.Agosto += nota.Total;
+                                            NotaFiscal.Agosto += nota.Total; break;
                                         }
                                     case "09":
                                         {
-                                            tipo.Setembro += nota.Total.Value;
-                                            NotaFiscal.Setembro += nota.Total.Value; break;
+                                            tipo.Setembro += nota.Total;
+                                            NotaFiscal.Setembro += nota.Total; break;
                                         }
                                     case "10":
                                         {
-                                            tipo.Outubro += nota.Total.Value;
-                                            NotaFiscal.Outubro += nota.Total.Value; break;
+                                            tipo.Outubro += nota.Total;
+                                            NotaFiscal.Outubro += nota.Total; break;
                                         }
                                     case "11":
                                         {
-                                            tipo.Novembro += nota.Total.Value;
-                                            NotaFiscal.Novembro += nota.Total.Value; break;
+                                            tipo.Novembro += nota.Total;
+                                            NotaFiscal.Novembro += nota.Total; break;
                                         }
                                     case "12":
                                         {
-                                            tipo.Dezembro += nota.Total.Value;
-                                            NotaFiscal.Dezembro += nota.Total.Value; break;
+                                            tipo.Dezembro += nota.Total;
+                                            NotaFiscal.Dezembro += nota.Total; break;
                                         }
                                 }
 
-                                tipo.Total += x.Total.Value;
-                                NotaFiscal.Total += x.Total.Value;
+                                tipo.Total += x.Total;
+                                NotaFiscal.Total += x.Total;
 
                                 cliente.Notas.Add(NotaFiscal);
 
@@ -2691,7 +2740,7 @@ namespace SGID.Pages.Relatorios.Estoque
                                 {
                                     Nome = nota.Nome,
                                     Serie = nota.Serie,
-                                    NF = nota.Nf,
+                                    NF = nota.NF,
                                     Emissao = nota.Emissao
                                 };
 
@@ -2699,68 +2748,68 @@ namespace SGID.Pages.Relatorios.Estoque
                                 {
                                     case "01":
                                         {
-                                            tipo.Janeiro += nota.Total.Value;
-                                            NotaFiscal.Janeiro += nota.Total.Value; break;
+                                            tipo.Janeiro += nota.Total;
+                                            NotaFiscal.Janeiro += nota.Total; break;
                                         }
                                     case "02":
                                         {
-                                            tipo.Fevereiro += nota.Total.Value;
-                                            NotaFiscal.Fevereiro += nota.Total.Value; break;
+                                            tipo.Fevereiro += nota.Total;
+                                            NotaFiscal.Fevereiro += nota.Total; break;
                                         }
                                     case "03":
                                         {
-                                            tipo.Marco += nota.Total.Value;
-                                            NotaFiscal.Marco += nota.Total.Value; break;
+                                            tipo.Marco += nota.Total;
+                                            NotaFiscal.Marco += nota.Total; break;
                                         }
                                     case "04":
                                         {
-                                            tipo.Abril += nota.Total.Value;
-                                            NotaFiscal.Abril += nota.Total.Value; break;
+                                            tipo.Abril += nota.Total;
+                                            NotaFiscal.Abril += nota.Total; break;
                                         }
                                     case "05":
                                         {
-                                            tipo.Maio += nota.Total.Value;
-                                            NotaFiscal.Maio += nota.Total.Value; break;
+                                            tipo.Maio += nota.Total;
+                                            NotaFiscal.Maio += nota.Total; break;
                                         }
                                     case "06":
                                         {
-                                            tipo.Junho += nota.Total.Value;
-                                            NotaFiscal.Junho += nota.Total.Value; break;
+                                            tipo.Junho += nota.Total;
+                                            NotaFiscal.Junho += nota.Total; break;
                                         }
                                     case "07":
                                         {
-                                            tipo.Julho += nota.Total.Value;
-                                            NotaFiscal.Julho += nota.Total.Value; break;
+                                            tipo.Julho += nota.Total;
+                                            NotaFiscal.Julho += nota.Total; break;
                                         }
                                     case "08":
                                         {
-                                            tipo.Agosto += nota.Total.Value;
-                                            NotaFiscal.Agosto += nota.Total.Value; break;
+                                            tipo.Agosto += nota.Total;
+                                            NotaFiscal.Agosto += nota.Total; break;
                                         }
                                     case "09":
                                         {
-                                            tipo.Setembro += nota.Total.Value;
-                                            NotaFiscal.Setembro += nota.Total.Value; break;
+                                            tipo.Setembro += nota.Total;
+                                            NotaFiscal.Setembro += nota.Total; break;
                                         }
                                     case "10":
                                         {
-                                            tipo.Outubro += nota.Total.Value;
-                                            NotaFiscal.Outubro += nota.Total.Value; break;
+                                            tipo.Outubro += nota.Total;
+                                            NotaFiscal.Outubro += nota.Total; break;
                                         }
                                     case "11":
                                         {
-                                            tipo.Novembro += nota.Total.Value;
-                                            NotaFiscal.Novembro += nota.Total.Value; break;
+                                            tipo.Novembro += nota.Total;
+                                            NotaFiscal.Novembro += nota.Total; break;
                                         }
                                     case "12":
                                         {
-                                            tipo.Dezembro += nota.Total.Value;
-                                            NotaFiscal.Dezembro += nota.Total.Value; break;
+                                            tipo.Dezembro += nota.Total;
+                                            NotaFiscal.Dezembro += nota.Total; break;
                                         }
                                 }
 
-                                tipo.Total += x.Total.Value;
-                                NotaFiscal.Total += x.Total.Value;
+                                tipo.Total += x.Total;
+                                NotaFiscal.Total += x.Total;
 
                                 cliente.Notas.Add(NotaFiscal);
 
@@ -2772,34 +2821,71 @@ namespace SGID.Pages.Relatorios.Estoque
 
                     RelatorioFaturamento.Add(tipo);
                 }
-
-                RelatorioFaturamento = RelatorioFaturamento.OrderBy(x => x.Nome).ToList();
                 #endregion
 
                 #region Devolucao
 
-                var queryDevolucao = Protheus.Fatnffabs.Where(x => x.Empresa == "I" && x.Tipofd == "D"
-                && (int)(object)x.Emissao >= Inicio && (int)(object)x.Emissao <= Fim)
-                    .Select(x => new
-                    {
-                        x.Empresa,
-                        x.Filial,
-                        x.Clifor,
-                        x.Loja,
-                        x.Nome,
-                        Tipo = x.Tipo == "H" ? "HOSPITAL" : x.Tipo == "M" ? "MEDICO" : x.Tipo == "I" ? "INSTRUMENTAL" : x.Tipo == "N" ? "NORMAL" : x.Tipo == "C" ? "CONVENIO" : x.Tipo == "P" ? "PARTICULAR" : x.Tipo == "S" ? "SUB-DISTRIBUIDOR" : "OUTROS",
-                        x.Est,
-                        x.Mun,
-                        x.Nf,
-                        x.Serie,
-                        x.Emissao,
-                        x.Fabricante,
-                        x.Total,
-                        x.Valipi,
-                        x.Valicm,
-                        x.Descon,
-                        Mes = x.Emissao.Substring(4, 2)
-                    }).OrderBy(x => x.Fabricante).ToList();
+                var queryDevolucao = (from SD10 in Protheus.Sd1010s
+                                      join SF20 in Protheus.Sf2010s on new { Filial = SD10.D1Filial, NF = SD10.D1Nfori, Serie = SD10.D1Seriori, Forne = SD10.D1Fornece, Loja = SD10.D1Loja } equals new { Filial = SF20.F2Filial, NF = SF20.F2Doc, Serie = SF20.F2Serie, Forne = SF20.F2Cliente, Loja = SF20.F2Loja } into Sr
+                                      from A in Sr.DefaultIfEmpty()
+                                      join SA10 in Protheus.Sa1010s on new { Forne = SD10.D1Fornece, Loja = SD10.D1Loja } equals new { Forne = SA10.A1Cod, Loja = SA10.A1Loja }
+                                      join SB10 in Protheus.Sb1010s on SD10.D1Cod equals SB10.B1Cod
+                                      where SD10.DELET != "*" && A.DELET != "*" && SA10.DELET != "*" && SB10.DELET != "*"
+                                      && CfNe.Contains((int)(object)SD10.D1Cf) && (int)(object)SD10.D1Dtdigit >= Inicio && (int)(object)SD10.D1Dtdigit <= Fim
+                                      select new
+                                      {
+                                          Filial = SD10.D1Filial,
+                                          Cliente = SD10.D1Fornece,
+                                          Loja = SD10.D1Loja,
+                                          Nome = SA10.A1Nome,
+                                          Tipo = SA10.A1Clinter,
+                                          Est = SA10.A1Est,
+                                          Mun = SA10.A1Mun,
+                                          NF = SD10.D1Doc,
+                                          Serie = SD10.D1Serie,
+                                          Emissao = SD10.D1Emissao,
+                                          Total = SD10.D1Total - SD10.D1Valdesc,
+                                          Valipi = SD10.D1Valipi,
+                                          Valicm = SD10.D1Valicm,
+                                          Descon = SD10.D1Valdesc,
+                                          DTDIGIT = SD10.D1Dtdigit,
+                                          TotalBruto = SD10.D1Total - SD10.D1Valdesc + SD10.D1Valipi,
+                                          Fabricante = SB10.B1Fabric
+                                      }
+                                      ).GroupBy(x => new
+                                      {
+                                          x.Filial,
+                                          x.Cliente,
+                                          x.Loja,
+                                          x.Nome,
+                                          x.Tipo,
+                                          x.Est,
+                                          x.Mun,
+                                          x.NF,
+                                          x.Serie,
+                                          x.Emissao,
+                                          x.DTDIGIT,
+                                          x.Fabricante
+                                      }).Select(x => new FaturamentoNFFAB
+                                      {
+                                          Filial = x.Key.Filial,
+                                          Cliente = x.Key.Cliente,
+                                          Loja = x.Key.Loja,
+                                          Nome = x.Key.Nome,
+                                          Tipo = x.Key.Tipo == "H" ? "HOSPITAL" : x.Key.Tipo == "M" ? "MEDICO" : x.Key.Tipo == "I" ? "INSTRUMENTAL" : x.Key.Tipo == "N" ? "NORMAL" : x.Key.Tipo == "C" ? "CONVENIO" : x.Key.Tipo == "P" ? "PARTICULAR" : x.Key.Tipo == "S" ? "SUB-DISTRIBUIDOR" : "OUTROS",
+                                          Est = x.Key.Est,
+                                          Mun = x.Key.Mun,
+                                          NF = x.Key.NF,
+                                          Serie = x.Key.Serie,
+                                          Emissao = x.Key.Emissao,
+                                          Fabricante = x.Key.Fabricante,
+                                          Total = -x.Sum(c => c.Total),
+                                          Valipi = -x.Sum(c => c.Valipi),
+                                          Valicm = -x.Sum(c => c.Valicm),
+                                          Descon = -x.Sum(c => c.Descon),
+                                          Mes = x.Key.DTDIGIT.Substring(4, 2)
+                                      }).OrderBy(x => x.Fabricante).ToList();
+
 
                 var hospitalDev = queryDevolucao.Where(x => x.Tipo == "HOSPITAL").ToList();
                 var MedicoDev = queryDevolucao.Where(x => x.Tipo == "MEDICO").ToList();
@@ -2832,7 +2918,7 @@ namespace SGID.Pages.Relatorios.Estoque
                                 {
                                     Nome = nota.Nome,
                                     Serie = nota.Serie,
-                                    NF = nota.Nf,
+                                    NF = nota.NF,
                                     Emissao = nota.Emissao
                                 };
 
@@ -2840,68 +2926,68 @@ namespace SGID.Pages.Relatorios.Estoque
                                 {
                                     case "01":
                                         {
-                                            tipo.Janeiro += nota.Total.Value;
-                                            NotaFiscal.Janeiro += nota.Total.Value; break;
+                                            tipo.Janeiro += nota.Total;
+                                            NotaFiscal.Janeiro += nota.Total; break;
                                         }
                                     case "02":
                                         {
-                                            tipo.Fevereiro += nota.Total.Value;
-                                            NotaFiscal.Fevereiro += nota.Total.Value; break;
+                                            tipo.Fevereiro += nota.Total;
+                                            NotaFiscal.Fevereiro += nota.Total; break;
                                         }
                                     case "03":
                                         {
-                                            tipo.Marco += nota.Total.Value;
-                                            NotaFiscal.Marco += nota.Total.Value; break;
+                                            tipo.Marco += nota.Total;
+                                            NotaFiscal.Marco += nota.Total; break;
                                         }
                                     case "04":
                                         {
-                                            tipo.Abril += nota.Total.Value;
-                                            NotaFiscal.Abril += nota.Total.Value; break;
+                                            tipo.Abril += nota.Total;
+                                            NotaFiscal.Abril += nota.Total; break;
                                         }
                                     case "05":
                                         {
-                                            tipo.Maio += nota.Total.Value;
-                                            NotaFiscal.Maio += nota.Total.Value; break;
+                                            tipo.Maio += nota.Total;
+                                            NotaFiscal.Maio += nota.Total; break;
                                         }
                                     case "06":
                                         {
-                                            tipo.Junho += nota.Total.Value;
-                                            NotaFiscal.Junho += nota.Total.Value; break;
+                                            tipo.Junho += nota.Total;
+                                            NotaFiscal.Junho += nota.Total; break;
                                         }
                                     case "07":
                                         {
-                                            tipo.Julho += nota.Total.Value;
-                                            NotaFiscal.Julho += nota.Total.Value; break;
+                                            tipo.Julho += nota.Total;
+                                            NotaFiscal.Julho += nota.Total; break;
                                         }
                                     case "08":
                                         {
-                                            tipo.Agosto += nota.Total.Value;
-                                            NotaFiscal.Agosto += nota.Total.Value; break;
+                                            tipo.Agosto += nota.Total;
+                                            NotaFiscal.Agosto += nota.Total; break;
                                         }
                                     case "09":
                                         {
-                                            tipo.Setembro += nota.Total.Value;
-                                            NotaFiscal.Setembro += nota.Total.Value; break;
+                                            tipo.Setembro += nota.Total;
+                                            NotaFiscal.Setembro += nota.Total; break;
                                         }
                                     case "10":
                                         {
-                                            tipo.Outubro += nota.Total.Value;
-                                            NotaFiscal.Outubro += nota.Total.Value; break;
+                                            tipo.Outubro += nota.Total;
+                                            NotaFiscal.Outubro += nota.Total; break;
                                         }
                                     case "11":
                                         {
-                                            tipo.Novembro += nota.Total.Value;
-                                            NotaFiscal.Novembro += nota.Total.Value; break;
+                                            tipo.Novembro += nota.Total;
+                                            NotaFiscal.Novembro += nota.Total; break;
                                         }
                                     case "12":
                                         {
-                                            tipo.Dezembro += nota.Total.Value;
-                                            NotaFiscal.Dezembro += nota.Total.Value; break;
+                                            tipo.Dezembro += nota.Total;
+                                            NotaFiscal.Dezembro += nota.Total; break;
                                         }
                                 }
 
-                                tipo.Total += x.Total.Value;
-                                NotaFiscal.Total += x.Total.Value;
+                                tipo.Total += x.Total;
+                                NotaFiscal.Total += x.Total;
 
                                 cliente.Notas.Add(NotaFiscal);
 
@@ -2935,7 +3021,7 @@ namespace SGID.Pages.Relatorios.Estoque
                                 {
                                     Nome = nota.Nome,
                                     Serie = nota.Serie,
-                                    NF = nota.Nf,
+                                    NF = nota.NF,
                                     Emissao = nota.Emissao
                                 };
 
@@ -2943,68 +3029,68 @@ namespace SGID.Pages.Relatorios.Estoque
                                 {
                                     case "01":
                                         {
-                                            tipo.Janeiro += nota.Total.Value;
-                                            NotaFiscal.Janeiro += nota.Total.Value; break;
+                                            tipo.Janeiro += nota.Total;
+                                            NotaFiscal.Janeiro += nota.Total; break;
                                         }
                                     case "02":
                                         {
-                                            tipo.Fevereiro += nota.Total.Value;
-                                            NotaFiscal.Fevereiro += nota.Total.Value; break;
+                                            tipo.Fevereiro += nota.Total;
+                                            NotaFiscal.Fevereiro += nota.Total; break;
                                         }
                                     case "03":
                                         {
-                                            tipo.Marco += nota.Total.Value;
-                                            NotaFiscal.Marco += nota.Total.Value; break;
+                                            tipo.Marco += nota.Total;
+                                            NotaFiscal.Marco += nota.Total; break;
                                         }
                                     case "04":
                                         {
-                                            tipo.Abril += nota.Total.Value;
-                                            NotaFiscal.Abril += nota.Total.Value; break;
+                                            tipo.Abril += nota.Total;
+                                            NotaFiscal.Abril += nota.Total; break;
                                         }
                                     case "05":
                                         {
-                                            tipo.Maio += nota.Total.Value;
-                                            NotaFiscal.Maio += nota.Total.Value; break;
+                                            tipo.Maio += nota.Total;
+                                            NotaFiscal.Maio += nota.Total; break;
                                         }
                                     case "06":
                                         {
-                                            tipo.Junho += nota.Total.Value;
-                                            NotaFiscal.Junho += nota.Total.Value; break;
+                                            tipo.Junho += nota.Total;
+                                            NotaFiscal.Junho += nota.Total; break;
                                         }
                                     case "07":
                                         {
-                                            tipo.Julho += nota.Total.Value;
-                                            NotaFiscal.Julho += nota.Total.Value; break;
+                                            tipo.Julho += nota.Total;
+                                            NotaFiscal.Julho += nota.Total; break;
                                         }
                                     case "08":
                                         {
-                                            tipo.Agosto += nota.Total.Value;
-                                            NotaFiscal.Agosto += nota.Total.Value; break;
+                                            tipo.Agosto += nota.Total;
+                                            NotaFiscal.Agosto += nota.Total; break;
                                         }
                                     case "09":
                                         {
-                                            tipo.Setembro += nota.Total.Value;
-                                            NotaFiscal.Setembro += nota.Total.Value; break;
+                                            tipo.Setembro += nota.Total;
+                                            NotaFiscal.Setembro += nota.Total; break;
                                         }
                                     case "10":
                                         {
-                                            tipo.Outubro += nota.Total.Value;
-                                            NotaFiscal.Outubro += nota.Total.Value; break;
+                                            tipo.Outubro += nota.Total;
+                                            NotaFiscal.Outubro += nota.Total; break;
                                         }
                                     case "11":
                                         {
-                                            tipo.Novembro += nota.Total.Value;
-                                            NotaFiscal.Novembro += nota.Total.Value; break;
+                                            tipo.Novembro += nota.Total;
+                                            NotaFiscal.Novembro += nota.Total; break;
                                         }
                                     case "12":
                                         {
-                                            tipo.Dezembro += nota.Total.Value;
-                                            NotaFiscal.Dezembro += nota.Total.Value; break;
+                                            tipo.Dezembro += nota.Total;
+                                            NotaFiscal.Dezembro += nota.Total; break;
                                         }
                                 }
 
-                                tipo.Total += x.Total.Value;
-                                NotaFiscal.Total += x.Total.Value;
+                                tipo.Total += x.Total;
+                                NotaFiscal.Total += x.Total;
 
                                 cliente.Notas.Add(NotaFiscal);
 
@@ -3038,7 +3124,7 @@ namespace SGID.Pages.Relatorios.Estoque
                                 {
                                     Nome = nota.Nome,
                                     Serie = nota.Serie,
-                                    NF = nota.Nf,
+                                    NF = nota.NF,
                                     Emissao = nota.Emissao
                                 };
 
@@ -3046,68 +3132,68 @@ namespace SGID.Pages.Relatorios.Estoque
                                 {
                                     case "01":
                                         {
-                                            tipo.Janeiro += nota.Total.Value;
-                                            NotaFiscal.Janeiro += nota.Total.Value; break;
+                                            tipo.Janeiro += nota.Total;
+                                            NotaFiscal.Janeiro += nota.Total; break;
                                         }
                                     case "02":
                                         {
-                                            tipo.Fevereiro += nota.Total.Value;
-                                            NotaFiscal.Fevereiro += nota.Total.Value; break;
+                                            tipo.Fevereiro += nota.Total;
+                                            NotaFiscal.Fevereiro += nota.Total; break;
                                         }
                                     case "03":
                                         {
-                                            tipo.Marco += nota.Total.Value;
-                                            NotaFiscal.Marco += nota.Total.Value; break;
+                                            tipo.Marco += nota.Total;
+                                            NotaFiscal.Marco += nota.Total; break;
                                         }
                                     case "04":
                                         {
-                                            tipo.Abril += nota.Total.Value;
-                                            NotaFiscal.Abril += nota.Total.Value; break;
+                                            tipo.Abril += nota.Total;
+                                            NotaFiscal.Abril += nota.Total; break;
                                         }
                                     case "05":
                                         {
-                                            tipo.Maio += nota.Total.Value;
-                                            NotaFiscal.Maio += nota.Total.Value; break;
+                                            tipo.Maio += nota.Total;
+                                            NotaFiscal.Maio += nota.Total; break;
                                         }
                                     case "06":
                                         {
-                                            tipo.Junho += nota.Total.Value;
-                                            NotaFiscal.Junho += nota.Total.Value; break;
+                                            tipo.Junho += nota.Total;
+                                            NotaFiscal.Junho += nota.Total; break;
                                         }
                                     case "07":
                                         {
-                                            tipo.Julho += nota.Total.Value;
-                                            NotaFiscal.Julho += nota.Total.Value; break;
+                                            tipo.Julho += nota.Total;
+                                            NotaFiscal.Julho += nota.Total; break;
                                         }
                                     case "08":
                                         {
-                                            tipo.Agosto += nota.Total.Value;
-                                            NotaFiscal.Agosto += nota.Total.Value; break;
+                                            tipo.Agosto += nota.Total;
+                                            NotaFiscal.Agosto += nota.Total; break;
                                         }
                                     case "09":
                                         {
-                                            tipo.Setembro += nota.Total.Value;
-                                            NotaFiscal.Setembro += nota.Total.Value; break;
+                                            tipo.Setembro += nota.Total;
+                                            NotaFiscal.Setembro += nota.Total; break;
                                         }
                                     case "10":
                                         {
-                                            tipo.Outubro += nota.Total.Value;
-                                            NotaFiscal.Outubro += nota.Total.Value; break;
+                                            tipo.Outubro += nota.Total;
+                                            NotaFiscal.Outubro += nota.Total; break;
                                         }
                                     case "11":
                                         {
-                                            tipo.Novembro += nota.Total.Value;
-                                            NotaFiscal.Novembro += nota.Total.Value; break;
+                                            tipo.Novembro += nota.Total;
+                                            NotaFiscal.Novembro += nota.Total; break;
                                         }
                                     case "12":
                                         {
-                                            tipo.Dezembro += nota.Total.Value;
-                                            NotaFiscal.Dezembro += nota.Total.Value; break;
+                                            tipo.Dezembro += nota.Total;
+                                            NotaFiscal.Dezembro += nota.Total; break;
                                         }
                                 }
 
-                                tipo.Total += x.Total.Value;
-                                NotaFiscal.Total += x.Total.Value;
+                                tipo.Total += x.Total;
+                                NotaFiscal.Total += x.Total;
 
                                 cliente.Notas.Add(NotaFiscal);
 
@@ -3141,7 +3227,7 @@ namespace SGID.Pages.Relatorios.Estoque
                                 {
                                     Nome = nota.Nome,
                                     Serie = nota.Serie,
-                                    NF = nota.Nf,
+                                    NF = nota.NF,
                                     Emissao = nota.Emissao
                                 };
 
@@ -3149,68 +3235,68 @@ namespace SGID.Pages.Relatorios.Estoque
                                 {
                                     case "01":
                                         {
-                                            tipo.Janeiro += nota.Total.Value;
-                                            NotaFiscal.Janeiro += nota.Total.Value; break;
+                                            tipo.Janeiro += nota.Total;
+                                            NotaFiscal.Janeiro += nota.Total; break;
                                         }
                                     case "02":
                                         {
-                                            tipo.Fevereiro += nota.Total.Value;
-                                            NotaFiscal.Fevereiro += nota.Total.Value; break;
+                                            tipo.Fevereiro += nota.Total;
+                                            NotaFiscal.Fevereiro += nota.Total; break;
                                         }
                                     case "03":
                                         {
-                                            tipo.Marco += nota.Total.Value;
-                                            NotaFiscal.Marco += nota.Total.Value; break;
+                                            tipo.Marco += nota.Total;
+                                            NotaFiscal.Marco += nota.Total; break;
                                         }
                                     case "04":
                                         {
-                                            tipo.Abril += nota.Total.Value;
-                                            NotaFiscal.Abril += nota.Total.Value; break;
+                                            tipo.Abril += nota.Total;
+                                            NotaFiscal.Abril += nota.Total; break;
                                         }
                                     case "05":
                                         {
-                                            tipo.Maio += nota.Total.Value;
-                                            NotaFiscal.Maio += nota.Total.Value; break;
+                                            tipo.Maio += nota.Total;
+                                            NotaFiscal.Maio += nota.Total; break;
                                         }
                                     case "06":
                                         {
-                                            tipo.Junho += nota.Total.Value;
-                                            NotaFiscal.Junho += nota.Total.Value; break;
+                                            tipo.Junho += nota.Total;
+                                            NotaFiscal.Junho += nota.Total; break;
                                         }
                                     case "07":
                                         {
-                                            tipo.Julho += nota.Total.Value;
-                                            NotaFiscal.Julho += nota.Total.Value; break;
+                                            tipo.Julho += nota.Total;
+                                            NotaFiscal.Julho += nota.Total; break;
                                         }
                                     case "08":
                                         {
-                                            tipo.Agosto += nota.Total.Value;
-                                            NotaFiscal.Agosto += nota.Total.Value; break;
+                                            tipo.Agosto += nota.Total;
+                                            NotaFiscal.Agosto += nota.Total; break;
                                         }
                                     case "09":
                                         {
-                                            tipo.Setembro += nota.Total.Value;
-                                            NotaFiscal.Setembro += nota.Total.Value; break;
+                                            tipo.Setembro += nota.Total;
+                                            NotaFiscal.Setembro += nota.Total; break;
                                         }
                                     case "10":
                                         {
-                                            tipo.Outubro += nota.Total.Value;
-                                            NotaFiscal.Outubro += nota.Total.Value; break;
+                                            tipo.Outubro += nota.Total;
+                                            NotaFiscal.Outubro += nota.Total; break;
                                         }
                                     case "11":
                                         {
-                                            tipo.Novembro += nota.Total.Value;
-                                            NotaFiscal.Novembro += nota.Total.Value; break;
+                                            tipo.Novembro += nota.Total;
+                                            NotaFiscal.Novembro += nota.Total; break;
                                         }
                                     case "12":
                                         {
-                                            tipo.Dezembro += nota.Total.Value;
-                                            NotaFiscal.Dezembro += nota.Total.Value; break;
+                                            tipo.Dezembro += nota.Total;
+                                            NotaFiscal.Dezembro += nota.Total; break;
                                         }
                                 }
 
-                                tipo.Total += x.Total.Value;
-                                NotaFiscal.Total += x.Total.Value;
+                                tipo.Total += x.Total;
+                                NotaFiscal.Total += x.Total;
 
                                 cliente.Notas.Add(NotaFiscal);
 
@@ -3244,7 +3330,7 @@ namespace SGID.Pages.Relatorios.Estoque
                                 {
                                     Nome = nota.Nome,
                                     Serie = nota.Serie,
-                                    NF = nota.Nf,
+                                    NF = nota.NF,
                                     Emissao = nota.Emissao
                                 };
 
@@ -3252,68 +3338,68 @@ namespace SGID.Pages.Relatorios.Estoque
                                 {
                                     case "01":
                                         {
-                                            tipo.Janeiro += nota.Total.Value;
-                                            NotaFiscal.Janeiro += nota.Total.Value; break;
+                                            tipo.Janeiro += nota.Total;
+                                            NotaFiscal.Janeiro += nota.Total; break;
                                         }
                                     case "02":
                                         {
-                                            tipo.Fevereiro += nota.Total.Value;
-                                            NotaFiscal.Fevereiro += nota.Total.Value; break;
+                                            tipo.Fevereiro += nota.Total;
+                                            NotaFiscal.Fevereiro += nota.Total; break;
                                         }
                                     case "03":
                                         {
-                                            tipo.Marco += nota.Total.Value;
-                                            NotaFiscal.Marco += nota.Total.Value; break;
+                                            tipo.Marco += nota.Total;
+                                            NotaFiscal.Marco += nota.Total; break;
                                         }
                                     case "04":
                                         {
-                                            tipo.Abril += nota.Total.Value;
-                                            NotaFiscal.Abril += nota.Total.Value; break;
+                                            tipo.Abril += nota.Total;
+                                            NotaFiscal.Abril += nota.Total; break;
                                         }
                                     case "05":
                                         {
-                                            tipo.Maio += nota.Total.Value;
-                                            NotaFiscal.Maio += nota.Total.Value; break;
+                                            tipo.Maio += nota.Total;
+                                            NotaFiscal.Maio += nota.Total; break;
                                         }
                                     case "06":
                                         {
-                                            tipo.Junho += nota.Total.Value;
-                                            NotaFiscal.Junho += nota.Total.Value; break;
+                                            tipo.Junho += nota.Total;
+                                            NotaFiscal.Junho += nota.Total; break;
                                         }
                                     case "07":
                                         {
-                                            tipo.Julho += nota.Total.Value;
-                                            NotaFiscal.Julho += nota.Total.Value; break;
+                                            tipo.Julho += nota.Total;
+                                            NotaFiscal.Julho += nota.Total; break;
                                         }
                                     case "08":
                                         {
-                                            tipo.Agosto += nota.Total.Value;
-                                            NotaFiscal.Agosto += nota.Total.Value; break;
+                                            tipo.Agosto += nota.Total;
+                                            NotaFiscal.Agosto += nota.Total; break;
                                         }
                                     case "09":
                                         {
-                                            tipo.Setembro += nota.Total.Value;
-                                            NotaFiscal.Setembro += nota.Total.Value; break;
+                                            tipo.Setembro += nota.Total;
+                                            NotaFiscal.Setembro += nota.Total; break;
                                         }
                                     case "10":
                                         {
-                                            tipo.Outubro += nota.Total.Value;
-                                            NotaFiscal.Outubro += nota.Total.Value; break;
+                                            tipo.Outubro += nota.Total;
+                                            NotaFiscal.Outubro += nota.Total; break;
                                         }
                                     case "11":
                                         {
-                                            tipo.Novembro += nota.Total.Value;
-                                            NotaFiscal.Novembro += nota.Total.Value; break;
+                                            tipo.Novembro += nota.Total;
+                                            NotaFiscal.Novembro += nota.Total; break;
                                         }
                                     case "12":
                                         {
-                                            tipo.Dezembro += nota.Total.Value;
-                                            NotaFiscal.Dezembro += nota.Total.Value; break;
+                                            tipo.Dezembro += nota.Total;
+                                            NotaFiscal.Dezembro += nota.Total; break;
                                         }
                                 }
 
-                                tipo.Total += x.Total.Value;
-                                NotaFiscal.Total += x.Total.Value;
+                                tipo.Total += x.Total;
+                                NotaFiscal.Total += x.Total;
 
                                 cliente.Notas.Add(NotaFiscal);
 
@@ -3347,7 +3433,7 @@ namespace SGID.Pages.Relatorios.Estoque
                                 {
                                     Nome = nota.Nome,
                                     Serie = nota.Serie,
-                                    NF = nota.Nf,
+                                    NF = nota.NF,
                                     Emissao = nota.Emissao
                                 };
 
@@ -3355,68 +3441,68 @@ namespace SGID.Pages.Relatorios.Estoque
                                 {
                                     case "01":
                                         {
-                                            tipo.Janeiro += nota.Total.Value;
-                                            NotaFiscal.Janeiro += nota.Total.Value; break;
+                                            tipo.Janeiro += nota.Total;
+                                            NotaFiscal.Janeiro += nota.Total; break;
                                         }
                                     case "02":
                                         {
-                                            tipo.Fevereiro += nota.Total.Value;
-                                            NotaFiscal.Fevereiro += nota.Total.Value; break;
+                                            tipo.Fevereiro += nota.Total;
+                                            NotaFiscal.Fevereiro += nota.Total; break;
                                         }
                                     case "03":
                                         {
-                                            tipo.Marco += nota.Total.Value;
-                                            NotaFiscal.Marco += nota.Total.Value; break;
+                                            tipo.Marco += nota.Total;
+                                            NotaFiscal.Marco += nota.Total; break;
                                         }
                                     case "04":
                                         {
-                                            tipo.Abril += nota.Total.Value;
-                                            NotaFiscal.Abril += nota.Total.Value; break;
+                                            tipo.Abril += nota.Total;
+                                            NotaFiscal.Abril += nota.Total; break;
                                         }
                                     case "05":
                                         {
-                                            tipo.Maio += nota.Total.Value;
-                                            NotaFiscal.Maio += nota.Total.Value; break;
+                                            tipo.Maio += nota.Total;
+                                            NotaFiscal.Maio += nota.Total; break;
                                         }
                                     case "06":
                                         {
-                                            tipo.Junho += nota.Total.Value;
-                                            NotaFiscal.Junho += nota.Total.Value; break;
+                                            tipo.Junho += nota.Total;
+                                            NotaFiscal.Junho += nota.Total; break;
                                         }
                                     case "07":
                                         {
-                                            tipo.Julho += nota.Total.Value;
-                                            NotaFiscal.Julho += nota.Total.Value; break;
+                                            tipo.Julho += nota.Total;
+                                            NotaFiscal.Julho += nota.Total; break;
                                         }
                                     case "08":
                                         {
-                                            tipo.Agosto += nota.Total.Value;
-                                            NotaFiscal.Agosto += nota.Total.Value; break;
+                                            tipo.Agosto += nota.Total;
+                                            NotaFiscal.Agosto += nota.Total; break;
                                         }
                                     case "09":
                                         {
-                                            tipo.Setembro += nota.Total.Value;
-                                            NotaFiscal.Setembro += nota.Total.Value; break;
+                                            tipo.Setembro += nota.Total;
+                                            NotaFiscal.Setembro += nota.Total; break;
                                         }
                                     case "10":
                                         {
-                                            tipo.Outubro += nota.Total.Value;
-                                            NotaFiscal.Outubro += nota.Total.Value; break;
+                                            tipo.Outubro += nota.Total;
+                                            NotaFiscal.Outubro += nota.Total; break;
                                         }
                                     case "11":
                                         {
-                                            tipo.Novembro += nota.Total.Value;
-                                            NotaFiscal.Novembro += nota.Total.Value; break;
+                                            tipo.Novembro += nota.Total;
+                                            NotaFiscal.Novembro += nota.Total; break;
                                         }
                                     case "12":
                                         {
-                                            tipo.Dezembro += nota.Total.Value;
-                                            NotaFiscal.Dezembro += nota.Total.Value; break;
+                                            tipo.Dezembro += nota.Total;
+                                            NotaFiscal.Dezembro += nota.Total; break;
                                         }
                                 }
 
-                                tipo.Total += x.Total.Value;
-                                NotaFiscal.Total += x.Total.Value;
+                                tipo.Total += x.Total;
+                                NotaFiscal.Total += x.Total;
 
                                 cliente.Notas.Add(NotaFiscal);
 
@@ -3450,7 +3536,7 @@ namespace SGID.Pages.Relatorios.Estoque
                                 {
                                     Nome = nota.Nome,
                                     Serie = nota.Serie,
-                                    NF = nota.Nf,
+                                    NF = nota.NF,
                                     Emissao = nota.Emissao
                                 };
 
@@ -3458,68 +3544,68 @@ namespace SGID.Pages.Relatorios.Estoque
                                 {
                                     case "01":
                                         {
-                                            tipo.Janeiro += nota.Total.Value;
-                                            NotaFiscal.Janeiro += nota.Total.Value; break;
+                                            tipo.Janeiro += nota.Total;
+                                            NotaFiscal.Janeiro += nota.Total; break;
                                         }
                                     case "02":
                                         {
-                                            tipo.Fevereiro += nota.Total.Value;
-                                            NotaFiscal.Fevereiro += nota.Total.Value; break;
+                                            tipo.Fevereiro += nota.Total;
+                                            NotaFiscal.Fevereiro += nota.Total; break;
                                         }
                                     case "03":
                                         {
-                                            tipo.Marco += nota.Total.Value;
-                                            NotaFiscal.Marco += nota.Total.Value; break;
+                                            tipo.Marco += nota.Total;
+                                            NotaFiscal.Marco += nota.Total; break;
                                         }
                                     case "04":
                                         {
-                                            tipo.Abril += nota.Total.Value;
-                                            NotaFiscal.Abril += nota.Total.Value; break;
+                                            tipo.Abril += nota.Total;
+                                            NotaFiscal.Abril += nota.Total; break;
                                         }
                                     case "05":
                                         {
-                                            tipo.Maio += nota.Total.Value;
-                                            NotaFiscal.Maio += nota.Total.Value; break;
+                                            tipo.Maio += nota.Total;
+                                            NotaFiscal.Maio += nota.Total; break;
                                         }
                                     case "06":
                                         {
-                                            tipo.Junho += nota.Total.Value;
-                                            NotaFiscal.Junho += nota.Total.Value; break;
+                                            tipo.Junho += nota.Total;
+                                            NotaFiscal.Junho += nota.Total; break;
                                         }
                                     case "07":
                                         {
-                                            tipo.Julho += nota.Total.Value;
-                                            NotaFiscal.Julho += nota.Total.Value; break;
+                                            tipo.Julho += nota.Total;
+                                            NotaFiscal.Julho += nota.Total; break;
                                         }
                                     case "08":
                                         {
-                                            tipo.Agosto += nota.Total.Value;
-                                            NotaFiscal.Agosto += nota.Total.Value; break;
+                                            tipo.Agosto += nota.Total;
+                                            NotaFiscal.Agosto += nota.Total; break;
                                         }
                                     case "09":
                                         {
-                                            tipo.Setembro += nota.Total.Value;
-                                            NotaFiscal.Setembro += nota.Total.Value; break;
+                                            tipo.Setembro += nota.Total;
+                                            NotaFiscal.Setembro += nota.Total; break;
                                         }
                                     case "10":
                                         {
-                                            tipo.Outubro += nota.Total.Value;
-                                            NotaFiscal.Outubro += nota.Total.Value; break;
+                                            tipo.Outubro += nota.Total;
+                                            NotaFiscal.Outubro += nota.Total; break;
                                         }
                                     case "11":
                                         {
-                                            tipo.Novembro += nota.Total.Value;
-                                            NotaFiscal.Novembro += nota.Total.Value; break;
+                                            tipo.Novembro += nota.Total;
+                                            NotaFiscal.Novembro += nota.Total; break;
                                         }
                                     case "12":
                                         {
-                                            tipo.Dezembro += nota.Total.Value;
-                                            NotaFiscal.Dezembro += nota.Total.Value; break;
+                                            tipo.Dezembro += nota.Total;
+                                            NotaFiscal.Dezembro += nota.Total; break;
                                         }
                                 }
 
-                                tipo.Total += x.Total.Value;
-                                NotaFiscal.Total += x.Total.Value;
+                                tipo.Total += x.Total;
+                                NotaFiscal.Total += x.Total;
 
                                 cliente.Notas.Add(NotaFiscal);
 
@@ -3553,7 +3639,7 @@ namespace SGID.Pages.Relatorios.Estoque
                                 {
                                     Nome = nota.Nome,
                                     Serie = nota.Serie,
-                                    NF = nota.Nf,
+                                    NF = nota.NF,
                                     Emissao = nota.Emissao
                                 };
 
@@ -3561,68 +3647,68 @@ namespace SGID.Pages.Relatorios.Estoque
                                 {
                                     case "01":
                                         {
-                                            tipo.Janeiro += nota.Total.Value;
-                                            NotaFiscal.Janeiro += nota.Total.Value; break;
+                                            tipo.Janeiro += nota.Total;
+                                            NotaFiscal.Janeiro += nota.Total; break;
                                         }
                                     case "02":
                                         {
-                                            tipo.Fevereiro += nota.Total.Value;
-                                            NotaFiscal.Fevereiro += nota.Total.Value; break;
+                                            tipo.Fevereiro += nota.Total;
+                                            NotaFiscal.Fevereiro += nota.Total; break;
                                         }
                                     case "03":
                                         {
-                                            tipo.Marco += nota.Total.Value;
-                                            NotaFiscal.Marco += nota.Total.Value; break;
+                                            tipo.Marco += nota.Total;
+                                            NotaFiscal.Marco += nota.Total; break;
                                         }
                                     case "04":
                                         {
-                                            tipo.Abril += nota.Total.Value;
-                                            NotaFiscal.Abril += nota.Total.Value; break;
+                                            tipo.Abril += nota.Total;
+                                            NotaFiscal.Abril += nota.Total; break;
                                         }
                                     case "05":
                                         {
-                                            tipo.Maio += nota.Total.Value;
-                                            NotaFiscal.Maio += nota.Total.Value; break;
+                                            tipo.Maio += nota.Total;
+                                            NotaFiscal.Maio += nota.Total; break;
                                         }
                                     case "06":
                                         {
-                                            tipo.Junho += nota.Total.Value;
-                                            NotaFiscal.Junho += nota.Total.Value; break;
+                                            tipo.Junho += nota.Total;
+                                            NotaFiscal.Junho += nota.Total; break;
                                         }
                                     case "07":
                                         {
-                                            tipo.Julho += nota.Total.Value;
-                                            NotaFiscal.Julho += nota.Total.Value; break;
+                                            tipo.Julho += nota.Total;
+                                            NotaFiscal.Julho += nota.Total; break;
                                         }
                                     case "08":
                                         {
-                                            tipo.Agosto += nota.Total.Value;
-                                            NotaFiscal.Agosto += nota.Total.Value; break;
+                                            tipo.Agosto += nota.Total;
+                                            NotaFiscal.Agosto += nota.Total; break;
                                         }
                                     case "09":
                                         {
-                                            tipo.Setembro += nota.Total.Value;
-                                            NotaFiscal.Setembro += nota.Total.Value; break;
+                                            tipo.Setembro += nota.Total;
+                                            NotaFiscal.Setembro += nota.Total; break;
                                         }
                                     case "10":
                                         {
-                                            tipo.Outubro += nota.Total.Value;
-                                            NotaFiscal.Outubro += nota.Total.Value; break;
+                                            tipo.Outubro += nota.Total;
+                                            NotaFiscal.Outubro += nota.Total; break;
                                         }
                                     case "11":
                                         {
-                                            tipo.Novembro += nota.Total.Value;
-                                            NotaFiscal.Novembro += nota.Total.Value; break;
+                                            tipo.Novembro += nota.Total;
+                                            NotaFiscal.Novembro += nota.Total; break;
                                         }
                                     case "12":
                                         {
-                                            tipo.Dezembro += nota.Total.Value;
-                                            NotaFiscal.Dezembro += nota.Total.Value; break;
+                                            tipo.Dezembro += nota.Total;
+                                            NotaFiscal.Dezembro += nota.Total; break;
                                         }
                                 }
 
-                                tipo.Total += x.Total.Value;
-                                NotaFiscal.Total += x.Total.Value;
+                                tipo.Total += x.Total;
+                                NotaFiscal.Total += x.Total;
 
                                 cliente.Notas.Add(NotaFiscal);
 
@@ -3635,7 +3721,60 @@ namespace SGID.Pages.Relatorios.Estoque
                     RelatorioDevolucao.Add(tipo);
                 }
 
-                RelatorioDevolucao = RelatorioDevolucao.OrderBy(x => x.Nome).ToList();
+                #endregion
+
+                #region Fabricante
+                var query = queryFaturado.Concat(queryDevolucao)
+                    .GroupBy(x => new
+                    {
+                        x.Filial,
+                        x.Fabricante,
+                        x.Mes
+                    })
+                    .Select(x => new
+                    {
+                        x.Key.Filial,
+                        x.Key.Fabricante,
+                        x.Key.Mes,
+                        Total = x.Sum(c => c.Total)
+                    }).OrderBy(x => x.Fabricante).ToList();
+
+
+                query.ForEach(c =>
+                {
+
+                    if (!RelatorioFabricante.Any(x => x.Nome == c.Fabricante))
+                    {
+                        var Todos = query.Where(x => x.Fabricante == c.Fabricante).ToList();
+
+                        var NovoRelatorio = new Fabricante { Nome = c.Fabricante };
+
+                        Todos.ForEach(x =>
+                        {
+                            switch (x.Mes)
+                            {
+                                case "01": NovoRelatorio.Janeiro += x.Total; break;
+                                case "02": NovoRelatorio.Fevereiro += x.Total; break;
+                                case "03": NovoRelatorio.Marco += x.Total; break;
+                                case "04": NovoRelatorio.Abril += x.Total; break;
+                                case "05": NovoRelatorio.Maio += x.Total; break;
+                                case "06": NovoRelatorio.Junho += x.Total; break;
+                                case "07": NovoRelatorio.Julho += x.Total; break;
+                                case "08": NovoRelatorio.Agosto += x.Total; break;
+                                case "09": NovoRelatorio.Setembro += x.Total; break;
+                                case "10": NovoRelatorio.Outubro += x.Total; break;
+                                case "11": NovoRelatorio.Novembro += x.Total; break;
+                                case "12": NovoRelatorio.Dezembro += x.Total; break;
+                            }
+
+                            NovoRelatorio.Total += x.Total;
+                        });
+
+                        RelatorioFabricante.Add(NovoRelatorio);
+                    }
+
+                });
+
                 #endregion
 
                 #region Excel

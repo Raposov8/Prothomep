@@ -121,7 +121,6 @@ namespace SGID.Pages.Formularios.Patrimonio
                 sheet.Cells[1, 2].Value = "CODIGO";
                 sheet.Cells[1, 3].Value = "QUANT. FALTANTE";
 
-
                 int i = 2;
 
                 Relatorio.ForEach(Pedido =>
