@@ -6,7 +6,6 @@ using OfficeOpenXml;
 using SGID.Data;
 using SGID.Data.Models;
 using SGID.Models;
-using SGID.Models.Cadastro;
 
 namespace SGID.Pages.Relatorios.Cirurgias
 {

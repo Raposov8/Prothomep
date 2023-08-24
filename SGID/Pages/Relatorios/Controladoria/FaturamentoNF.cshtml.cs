@@ -10,7 +10,6 @@ using SGID.Models.Controladoria.FaturamentoNF;
 using SGID.Models.Controladoria.FaturamentoNF.RegistrosFaturamento;
 using SGID.Models.Denuo;
 using SGID.Models.Estoque.RelatorioFaturamentoNFFab;
-using SGID.Models.Relatorio;
 
 namespace SGID.Pages.Relatorios.Controladoria
 {

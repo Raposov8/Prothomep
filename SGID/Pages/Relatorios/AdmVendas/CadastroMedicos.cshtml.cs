@@ -5,7 +5,6 @@ using OfficeOpenXml;
 using SGID.Data;
 using SGID.Data.Models;
 using SGID.Models;
-using SGID.Models.Cadastro;
 using SGID.Models.Denuo;
 
 namespace SGID.Pages.Relatorios.AdmVendas

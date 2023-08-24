@@ -3,7 +3,6 @@ using Microsoft.EntityFrameworkCore;
 using SGID.Data;
 using SGID.Data.ViewModel;
 using SGID.Models.Denuo;
-using SGID.Models.Relatorio;
 using SGID.Hubs;
 using System.Globalization;
 using SGID.Models.Inter;
@@ -16,7 +15,6 @@ var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("SGID");
 var connectionProtheus = builder.Configuration.GetConnectionString("DENUO");
 var connectionProtheusInter = builder.Configuration.GetConnectionString("INTER");
-var connectionRelatorio = builder.Configuration.GetConnectionString("Relatorios");
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString, options => options.EnableRetryOnFailure()));
 builder.Services.AddDbContext<TOTVSDENUOContext>(options =>
@@ -31,8 +29,6 @@ builder.Services.AddDbContext<TOTVSINTERContext>(options =>
         ops.EnableRetryOnFailure();
         ops.CommandTimeout(600);
     }));
-builder.Services.AddDbContext<RelatorioContext>(options =>
-    options.UseSqlServer(connectionRelatorio, options => options.EnableRetryOnFailure()));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 builder.Services.AddIdentity<UserInter, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = false)

@@ -7,7 +7,6 @@ using SGID.Data.Models;
 using SGID.Models.Controladoria.FaturamentoNF;
 using SGID.Models.Controladoria.FaturamentoNF.RegistrosFaturamento;
 using SGID.Models.Inter;
-using SGID.Models.Relatorio;
 
 namespace SGID.Pages.Relatorios.Controladoria
 {

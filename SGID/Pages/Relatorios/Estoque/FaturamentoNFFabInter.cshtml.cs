@@ -8,7 +8,6 @@ using SGID.Data.Models;
 using SGID.Models.Estoque;
 using SGID.Models.Estoque.RelatorioFaturamentoNFFab;
 using SGID.Models.Inter;
-using SGID.Models.Relatorio;
 
 namespace SGID.Pages.Relatorios.Estoque
 {

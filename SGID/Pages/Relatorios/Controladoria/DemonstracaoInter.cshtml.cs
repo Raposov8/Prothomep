@@ -5,28 +5,25 @@ using OfficeOpenXml;
 using SGID.Data;
 using SGID.Data.Models;
 using SGID.Models;
-using SGID.Models.Relatorio;
 
 namespace SGID.Pages.Relatorios.Controladoria
 {
     [Authorize]
     public class DemonstracaoInterModel : PageModel
     {
-        private RelatorioContext DB { get; set; }
         private ApplicationDbContext SGID { get; set; }
 
         public List<RelatorioConserto> Relatorio { get; set; } = new List<RelatorioConserto>();
 
-        public DemonstracaoInterModel(RelatorioContext dB, ApplicationDbContext sgid)
+        public DemonstracaoInterModel( ApplicationDbContext sgid)
         {
-            DB = dB;
             SGID = sgid;
         }
         public void OnGet()
         {
             try
             {
-                Relatorio = DB.NfdemoInters.Where(x => x.Tipo == "D")
+                Relatorio = new List<RelatorioConserto>(); /*DB.NfdemoInters.Where(x => x.Tipo == "D")
                     .Select(x => new RelatorioConserto
                     {
 
@@ -41,7 +38,7 @@ namespace SGID.Pages.Relatorios.Controladoria
 
                     }).ToList();
 
-                Relatorio = Relatorio.OrderByDescending(x => x.Dias).ToList();
+                Relatorio = Relatorio.OrderByDescending(x => x.Dias).ToList();*/
             }
             catch (Exception e)
             {
@@ -55,22 +52,7 @@ namespace SGID.Pages.Relatorios.Controladoria
             try
             {
 
-                Relatorio = DB.NfdemoInters.Where(x => x.Tipo == "D")
-                    .Select(x => new RelatorioConserto
-                    {
-
-                        Filial = x.Filial,
-                        Nf = x.Nf,
-                        Serie = x.Serie,
-                        Emissao = x.Emissao,
-                        CodCli = x.Codcli,
-                        Loja = x.Loja,
-                        Cliente = x.Cliente,
-                        Dias = (int)(DateTime.Now - x.Emissao).Value.TotalDays
-
-                    }).ToList();
-
-                Relatorio = Relatorio.OrderBy(x => x.Dias).ToList();
+                Relatorio = new List<RelatorioConserto>();
 
                 using ExcelPackage package = new ExcelPackage();
                 package.Workbook.Worksheets.Add("Demonstracao Inter");

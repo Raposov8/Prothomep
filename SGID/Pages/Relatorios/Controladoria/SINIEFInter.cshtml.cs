@@ -9,7 +9,6 @@ using SGID.Data;
 using SGID.Data.Models;
 using SGID.Models;
 using SGID.Models.DTO;
-using SGID.Models.Relatorio;
 
 namespace SGID.Pages.Relatorios.Controladoria
 {
