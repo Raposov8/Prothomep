@@ -12,6 +12,8 @@ namespace SGID.Data.ViewModel
         public string? Assunto { get; set; }
         public string? Endereco { get; set; }
         public string? Bairro { get; set; }
+        public string? Telefone { get; set; }
+        public string? Email { get; set; }
         public string Empresa { get; set; }
         public string Vendedor { get; set; }
 

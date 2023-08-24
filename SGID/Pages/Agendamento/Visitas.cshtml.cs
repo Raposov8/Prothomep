@@ -254,9 +254,9 @@ namespace SGID.Pages.Agendamento
 
                     if (User.Identity.Name.Split("@")[1].ToUpper() == "INTERMEDIC.COM.BR")
                     {
-                        if (ProtheusInter.Sa1010s.Any(x => x.DELET != "*" && x.A1Clinter == "M" && x.A1Msblql != "1" && !string.IsNullOrWhiteSpace(x.A1Vend) && x.A1Nome == Medico))
+                        if (!ProtheusInter.Sa1010s.Any(x => x.DELET != "*" && x.A1Clinter == "M" && x.A1Msblql != "1" && !string.IsNullOrWhiteSpace(x.A1Vend) && x.A1Nome == Medico))
                         {
-                            if (SGID.VisitaClientes.Any(x => x.Medico == Medico && x.Empresa == "INTERMEDIC"))
+                            if (!SGID.VisitaClientes.Any(x => x.Medico == Medico && x.Empresa == "INTERMEDIC"))
                             {
                                 var VisitaCliente = new VisitaCliente
                                 {
@@ -278,9 +278,9 @@ namespace SGID.Pages.Agendamento
                     }
                     else
                     {
-                        if (ProtheusDenuo.Sa1010s.FirstOrDefault(x => x.DELET != "*" && x.A1Clinter == "M" && x.A1Msblql != "1" && !string.IsNullOrWhiteSpace(x.A1Vend) && x.A1Nome == Medico) == null)
+                        if (!ProtheusDenuo.Sa1010s.Any(x => x.DELET != "*" && x.A1Clinter == "M" && x.A1Msblql != "1" && !string.IsNullOrWhiteSpace(x.A1Vend) && x.A1Nome == Medico))
                         {
-                            if (SGID.VisitaClientes.Any(x => x.Medico == Medico && x.Empresa == "DENUO"))
+                            if (!SGID.VisitaClientes.Any(x => x.Medico == Medico && x.Empresa == "DENUO"))
                             {
                                 var VisitaCliente = new VisitaCliente
                                 {
@@ -346,31 +346,32 @@ namespace SGID.Pages.Agendamento
                 {
                     var endereco = ProtheusInter.Sa1010s.FirstOrDefault(x => x.DELET != "*" && x.A1Clinter == "M" && x.A1Msblql != "1" && !string.IsNullOrWhiteSpace(x.A1Vend) && x.A1Nome == Medico);
 
-                    var Quants = ProtheusInter.Sa1010s.Where(x => x.DELET != "*" && x.A1Clinter == "M" && x.A1Bairro == endereco.A1Bairro).Count();
-
-                    var Data = (SGID.Visitas.OrderByDescending(x => x.DataHora).FirstOrDefault(x => x.Medico == Medico && x.Empresa == "INTERMEDIC")?.DataHora) ?? DateTime.Now;
-
-                    var End = new
+                    if(endereco == null)
                     {
-                        Endereco = endereco.A1End,
-                        Bairro = endereco.A1Bairro,
-                        Quant = Quants,
-                        Ultima = Data.ToString("yyyy-MM-dd"),
-                        Telefone = $"{endereco.A1Ddd}{endereco.A1Tel}",
-                        Email = endereco.A1Email
-                    };
+                        var cliente = SGID.VisitaClientes.FirstOrDefault(x => x.Medico == Medico && x.Empresa == "INTERMEDIC");
 
-                    return new JsonResult(End);
-                }
-                else
-                {
-                    if (User.Identity.Name.Split("@")[1].ToUpper() == "INTERMEDIC.COM.BR")
+                        var Quants = ProtheusInter.Sa1010s.Where(x => x.DELET != "*" && x.A1Clinter == "M" && x.A1Bairro == cliente.Bairro).Count();
+
+                        var Data = (SGID.Visitas.OrderByDescending(x => x.DataHora).FirstOrDefault(x => x.Medico == Medico && x.Empresa == "INTERMEDIC")?.DataHora) ?? DateTime.Now;
+
+                        var End = new
+                        {
+                            Endereco = cliente.Endereco,
+                            Bairro = cliente.Bairro,
+                            Quant = Quants,
+                            Ultima = Data.ToString("yyyy-MM-dd"),
+                            Telefone = $"{cliente.Telefone}",
+                            Email = cliente.Email
+                        };
+
+                        return new JsonResult(End);
+                    }
+                    else
                     {
-                        var endereco = ProtheusInter.Sa1010s.FirstOrDefault(x => x.DELET != "*" && x.A1Clinter == "M" && x.A1Msblql != "1" && !string.IsNullOrWhiteSpace(x.A1Vend) && x.A1Nome == Medico);
-
                         var Quants = ProtheusInter.Sa1010s.Where(x => x.DELET != "*" && x.A1Clinter == "M" && x.A1Bairro == endereco.A1Bairro).Count();
 
                         var Data = (SGID.Visitas.OrderByDescending(x => x.DataHora).FirstOrDefault(x => x.Medico == Medico && x.Empresa == "INTERMEDIC")?.DataHora) ?? DateTime.Now;
+
                         var End = new
                         {
                             Endereco = endereco.A1End,
@@ -383,25 +384,97 @@ namespace SGID.Pages.Agendamento
 
                         return new JsonResult(End);
                     }
+
+                    
+                }
+                else
+                {
+
+                    if (User.Identity.Name.Split("@")[1].ToUpper() == "INTERMEDIC.COM.BR")
+                    {
+                        var endereco = ProtheusInter.Sa1010s.FirstOrDefault(x => x.DELET != "*" && x.A1Clinter == "M" && x.A1Msblql != "1" && !string.IsNullOrWhiteSpace(x.A1Vend) && x.A1Nome == Medico);
+                        if (endereco == null)
+                        {
+                            var cliente = SGID.VisitaClientes.FirstOrDefault(x => x.Medico == Medico && x.Empresa == "INTERMEDIC");
+
+                            var Quants = ProtheusInter.Sa1010s.Where(x => x.DELET != "*" && x.A1Clinter == "M" && x.A1Bairro == cliente.Bairro).Count();
+
+                            var Data = (SGID.Visitas.OrderByDescending(x => x.DataHora).FirstOrDefault(x => x.Medico == Medico && x.Empresa == "INTERMEDIC")?.DataHora) ?? DateTime.Now;
+
+                            var End = new
+                            {
+                                Endereco = cliente.Endereco,
+                                Bairro = cliente.Bairro,
+                                Quant = Quants,
+                                Ultima = Data.ToString("yyyy-MM-dd"),
+                                Telefone = $"{cliente.Telefone}",
+                                Email = cliente.Email
+                            };
+
+                            return new JsonResult(End);
+                        }
+                        else
+                        {
+                            var Quants = ProtheusInter.Sa1010s.Where(x => x.DELET != "*" && x.A1Clinter == "M" && x.A1Bairro == endereco.A1Bairro).Count();
+
+                            var Data = (SGID.Visitas.OrderByDescending(x => x.DataHora).FirstOrDefault(x => x.Medico == Medico && x.Empresa == "INTERMEDIC")?.DataHora) ?? DateTime.Now;
+
+                            var End = new
+                            {
+                                Endereco = endereco.A1End,
+                                Bairro = endereco.A1Bairro,
+                                Quant = Quants,
+                                Ultima = Data.ToString("yyyy-MM-dd"),
+                                Telefone = $"{endereco.A1Ddd}{endereco.A1Tel}",
+                                Email = endereco.A1Email
+                            };
+
+                            return new JsonResult(End);
+                        }
+                    }
                     else
                     {
 
                         var endereco = ProtheusDenuo.Sa1010s.FirstOrDefault(x => x.DELET != "*" && x.A1Clinter == "M" && x.A1Msblql != "1" && !string.IsNullOrWhiteSpace(x.A1Vend) && x.A1Nome == Medico);
 
-                        var Quants = ProtheusDenuo.Sa1010s.Where(x => x.DELET != "*" && x.A1Clinter == "M" && x.A1Bairro == endereco.A1Bairro).Count();
-
-                        var Data = (SGID.Visitas.OrderByDescending(x => x.DataHora).FirstOrDefault(x => x.Medico == Medico && x.Empresa == "DENUO")?.DataHora) ?? DateTime.Now;
-                        var End = new
+                        if (endereco == null)
                         {
-                            Endereco = endereco.A1End,
-                            Bairro = endereco.A1Bairro,
-                            Quant = Quants,
-                            Ultima = Data.ToString("yyyy-MM-dd"),
-                            Telefone = $"{endereco.A1Ddd}{endereco.A1Tel}",
-                            Email = endereco.A1Email
-                        };
+                            var cliente = SGID.VisitaClientes.FirstOrDefault(x => x.Medico == Medico && x.Empresa=="DENUO");
 
-                        return new JsonResult(End);
+                            var Quants = ProtheusInter.Sa1010s.Where(x => x.DELET != "*" && x.A1Clinter == "M" && x.A1Bairro == cliente.Bairro).Count();
+
+                            var Data = (SGID.Visitas.OrderByDescending(x => x.DataHora).FirstOrDefault(x => x.Medico == Medico && x.Empresa == "INTERMEDIC")?.DataHora) ?? DateTime.Now;
+
+                            var End = new
+                            {
+                                Endereco = cliente.Endereco,
+                                Bairro = cliente.Bairro,
+                                Quant = Quants,
+                                Ultima = Data.ToString("yyyy-MM-dd"),
+                                Telefone = $"{cliente.Telefone}",
+                                Email = cliente.Email
+                            };
+
+                            return new JsonResult(End);
+                        }
+                        else
+                        {
+                            var Quants = ProtheusDenuo.Sa1010s.Where(x => x.DELET != "*" && x.A1Clinter == "M" && x.A1Bairro == endereco.A1Bairro).Count();
+
+                            var Data = (SGID.Visitas.OrderByDescending(x => x.DataHora).FirstOrDefault(x => x.Medico == Medico && x.Empresa == "DENUO")?.DataHora) ?? DateTime.Now;
+
+                            var End = new
+                            {
+                                Endereco = endereco.A1End,
+                                Bairro = endereco.A1Bairro,
+                                Quant = Quants,
+                                Ultima = Data.ToString("yyyy-MM-dd"),
+                                Telefone = $"{endereco.A1Ddd}{endereco.A1Tel}",
+                                Email = endereco.A1Email
+                            };
+
+                            return new JsonResult(End);
+                        }
                     }
                 }
             }
