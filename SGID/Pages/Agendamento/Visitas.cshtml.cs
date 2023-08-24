@@ -223,7 +223,7 @@ namespace SGID.Pages.Agendamento
             return new JsonResult("");
         }
 
-        public IActionResult OnPost(string Medico, string Local, DateTime Data, DateTime DataUltima, string Assunto,
+        public JsonResult OnPost(string Medico, string Local, DateTime Data, DateTime DataUltima, string Assunto,
             string Endereco,string Bairro,string Email,string Telefone, string MotVis, string Obs,string ResuVisi)
         {
             try
@@ -301,14 +301,14 @@ namespace SGID.Pages.Agendamento
                     }
                 }
 
-                return LocalRedirect("/agendamento/visitas");
+                return new JsonResult("Sucesso");
 
             }
             catch (Exception e)
             {
                 string user = User.Identity.Name.Split("@")[0].ToUpper();
                 Logger.Log(e, SGID, "NovaVisita", user);
-                return Page();
+                return new JsonResult("");
             }
         }
 

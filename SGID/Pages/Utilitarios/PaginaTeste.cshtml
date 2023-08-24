@@ -35,7 +35,8 @@
                 var latlondata = position.coords.latitude + "," + position.coords.longitude;
                 var latlon = `Your Latitude Position is:=${position.coords.latitude},Your Longitude Position is:=${position.coords.longitude}`;
                 //alert(latlon)
-                var img_url = `http://maps.googleapis.com/maps/api/staticmap?center=${latlondata}&zoom=14&size=400x300&sensor=false`;
+                var img_url = `https://maps.googleapis.com/maps/api/staticmap?center=${latlondata}&zoom=14&size=400x300&sensor=false`;
+                console.log(img_url)
                 document.getElementById("mapholder").innerHTML = `<img src='${img_url}' />`;
             }
             function showError(error) {

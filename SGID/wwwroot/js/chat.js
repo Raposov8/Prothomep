@@ -2,7 +2,7 @@
 "use strict";
 
 $(document).ready(function () {
-    var connection = new signalR.HubConnectionBuilder().withUrl("http://192.168.2.9/Logisticahub").build();
+    var connection = new signalR.HubConnectionBuilder().withUrl("https://192.168.2.9/Logisticahub").build();
 
     //Disable the send button until connection is established.
     document.getElementById("sendButton").disabled = true;
@@ -22,7 +22,8 @@ $(document).ready(function () {
         return console.error(err.toString());
     });
 
-    document.getElementById("sendButton").addEventListener("click", function (event) {
+    document.getElementById("sendButton").addEventListener("click", function (event)
+    {
         var user = document.getElementById("userInput").value;
         var message = document.getElementById("messageInput").value;
         connection.invoke("SendMessage", user, message).catch(function (err) {

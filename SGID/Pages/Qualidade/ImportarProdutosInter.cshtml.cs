@@ -614,7 +614,7 @@ namespace SGID.Pages.Qualidade
                 TextoResposta = $"Error: Produto:{produto},campo {campo} numero de caracteris excedido";
 
                 string user = User.Identity.Name.Split("@")[0].ToUpper();
-                Logger.Log(e, SGID, "Importar SI Denuo", user);
+                Logger.Log(e, SGID, "Importar Produto Denuo", user);
 
                 return Page();
             }
@@ -623,7 +623,7 @@ namespace SGID.Pages.Qualidade
                 TextoResposta = $"Error: Checar a formatação do Texto Produto:{produto}";
 
                 string user = User.Identity.Name.Split("@")[0].ToUpper();
-                Logger.Log(e, SGID, "Importar SI Inter", user);
+                Logger.Log(e, SGID, "Importar Produto Inter", user);
 
                 return Page();
             }
@@ -639,7 +639,7 @@ namespace SGID.Pages.Qualidade
                 }
 
                 string user = User.Identity.Name.Split("@")[0].ToUpper();
-                Logger.Log(e, SGID, "Importar SI Inter", user);
+                Logger.Log(e, SGID, "Importar Produto Inter", user);
 
                 return Page();
             }
@@ -648,7 +648,7 @@ namespace SGID.Pages.Qualidade
                 TextoResposta = "Error: Contate o TI";
 
                 string user = User.Identity.Name.Split("@")[0].ToUpper();
-                Logger.Log(e, SGID, "Importar SI Inter", user);
+                Logger.Log(e, SGID, "Importar Produto Inter", user);
 
                 return Page();
             }

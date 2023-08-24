@@ -35,8 +35,6 @@
 </div>
 
 <div class="modal fade" id="novavisita-modal" role="dialog" tabindex="-1" aria-labelledby="demo-default-modal" aria-hidden="true">
-    @using (@Html.BeginForm(FormMethod.Post, new { enctype = "multipart/form-data" }))
-    {
         <div class="modal-dialog">
             <div class="modal-content">
                 <!--Modal header-->
@@ -148,7 +146,7 @@
                 <div class="modal-footer">
                     <div class="col-md-12">
                         <div class="row justify-content-center">
-                            <div style="color:#00b050" class="col-md-2"><button class="btn btn-button btn-success float-end" style="font-size:12px;" type="submit"><i class="fa-solid fa-thumbs-up"></i> Salvar</button></div> |
+                            <div id="Salvar2" style="color:#00b050" class="col-md-2"><button class="btn btn-button btn-success float-end" style="font-size:12px;" type="submit"><i class="fa-solid fa-thumbs-up"></i> Salvar</button></div> |
                             <div style="color:#c00000" class="col-md-2">
                                 <div class="close"><a class="btn btn-button btn-danger" style="font-size:12px;"><i class="fa-solid fa-xmark"></i> Cancelar</a></div></div>
                         </div>
@@ -156,7 +154,7 @@
                 </div>
             </div>
         </div>
-    }
+    
 </div>
 
 <div class="modal fade" id="details-modal" role="dialog" tabindex="-1" aria-labelledby="demo-default-modal" aria-hidden="true">
@@ -268,7 +266,7 @@
                             <div class="col-md-3">
                                 <div style="color:#00b050" id="Salvar">
                                     <button class="btn btn-button btn-success float-end" style="font-size:12px;" type="submit">
-                                        <i class="fa-solid fa-thumbs-up"></i> Salvar
+                                        <i class="fa-solid fa-thumbs-up"></i> Finalizar Visita
                                     </button>
                                 </div>
                             </div>
@@ -751,10 +749,42 @@
 
             })
 
-
-
+            $("#Salvar2").on('click',function(){
             
+                var Id = $("#Id").val()
+                var Medico = $("#Medico").val()
+                var DataUltima = $("#DataUltima").val()
+                var Data = $("#Data").val()
+                var Local = $("#Local").val()
+                var Endereco = $("#Endereco").val()
+                var Bairro = $("#Bairro").val()
+                var Email = $("#Email").val()
+                var Telefone = $("#Telefone").val()
+                var Assunto = $("#Assunto").val()
+                var MotVis = $('input[name=MotVis]:checked').val();
+                var Obs = $("#Obs").val()
+                var Resu = $("#ResuVisi").val()
 
+
+
+
+                var chamadaUrl = `/agendamento/visitas?id=${Id}&&Medico=${Medico}&&Local=${Local}&&Data=${Data}&&DataUltima=${DataUltima}&&Assunto=${Assunto}&&Endereco=${Endereco}&&Bairro=${Bairro}&&MotVis=${MotVis}&&Obs=${Obs}&&ResuVisi=${Resu}&&Telefone=${Telefone}&&Email=${Email}`
+                $.ajax({
+                    url: chamadaUrl,
+                    type: "POST",
+                    contentType: "application/json;",
+                    dataType: 'json',
+                    headers: {
+                        "RequestVerificationToken": $('input:hidden[name="__RequestVerificationToken"]').val()
+                    },
+                    success: function (data) {
+
+                        if (data == "Sucesso") {
+                            location.reload()
+                        }
+                    }
+                })
+            })
         })
 
     </script>

@@ -107,7 +107,7 @@ webSocketOptions.AllowedOrigins.Add("http://192.168.2.9");
 
 app.UseWebSockets(webSocketOptions);
 
-app.UseHttpsRedirection();
+//app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
