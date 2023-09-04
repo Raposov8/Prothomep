@@ -29,6 +29,8 @@ namespace SGID.Pages.DashBoards
 
         public List<ValoresEmAberto> Faturamento { get; set; } = new List<ValoresEmAberto>();
 
+        public List<ValoresEmAberto> ValoresEmAberto { get; set; } = new List<ValoresEmAberto>();
+
         public DashBoardADMModel(TOTVSDENUOContext denuo, TOTVSINTERContext inter, ApplicationDbContext sgid)
         {
             ProtheusDenuo = denuo;
@@ -58,6 +60,9 @@ namespace SGID.Pages.DashBoards
                     DataInicio = $"{Ano}0101";
 
                     DataFim = $"{Ano}1231";
+
+                    MetaInter = 2600000 * 12;
+                    MetaDenuo = 2600000 * 12;
                     #endregion
                 }
                 else
@@ -67,6 +72,8 @@ namespace SGID.Pages.DashBoards
 
                     DataFim = $"{Ano}{Mes}31";
 
+                    MetaInter = 2600000;
+                    MetaDenuo = 2600000;
                     #endregion
                 }
 
@@ -178,16 +185,20 @@ namespace SGID.Pages.DashBoards
 
 
                 var LinhasTela = new List<RelatorioFaturamentoLinhas>
-                    {
-                        new RelatorioFaturamentoLinhas { Nome = "QTDA. CIRURGIAS", Quant = LinhasValor.Sum(x => x.Quant) }
-                    };
+                {
+                    new RelatorioFaturamentoLinhas { Nome = "QTDA. CIRURGIAS", Quant = resultado2.Sum(x => x.Quant) }
+                };
 
                 LinhasValor.ForEach(x =>
                 {
                     LinhasTela.Add(new RelatorioFaturamentoLinhas { Nome = x.Nome, Quant = x.Quant });
                 });
 
-                LinhasTela.Add(new RelatorioFaturamentoLinhas { Nome = "VALOR CIRURGIAS", Quant = LinhasValor.Sum(x => x.Faturamento) });
+                LinhasTela.Add(new RelatorioFaturamentoLinhas { Nome = "INTERMEDIC", Quant = resultadoInter.Sum(x=> x.Total) });
+
+                LinhasTela.Add(new RelatorioFaturamentoLinhas { Nome = "DENUO", Quant = resultadoDenuo.Sum(x => x.Total) });
+
+                LinhasTela.Add(new RelatorioFaturamentoLinhas { Nome = "VALOR CIRURGIAS", Quant = resultado2.Sum(x=>x.Valor) });
 
 
                 #endregion
@@ -206,7 +217,7 @@ namespace SGID.Pages.DashBoards
                               where SD20.DELET != "*" && SA10.DELET != "*" && SB10.DELET != "*" && SF20.DELET != "*" && SC50.DELET != "*" && SA30.DELET != "*"
                               && ((int)(object)SD20.D2Cf >= 5102 && (int)(object)SD20.D2Cf <= 5114 || (int)(object)SD20.D2Cf >= 6102 && (int)(object)SD20.D2Cf <= 6114 ||
                               (int)(object)SD20.D2Cf >= 7102 && (int)(object)SD20.D2Cf <= 7114 || CF.Contains(SD20.D2Cf)) && ((int)(object)SD20.D2Emissao >= (int)(object)DataInicio && (int)(object)SD20.D2Emissao <= (int)(object)DataFim)
-                              && SD20.D2Quant != 0 && SC50.C5Utpoper == "F" && SA10.A1Cgc != "04715053000140" && SA10.A1Cgc != "04715053000220" && SA10.A1Cgc != "01390500000140" && (int)(object)SD20.D2Emissao >= 20200701
+                              && SC50.C5Utpoper == "F" && SA10.A1Cgc != "04715053000140" && SA10.A1Cgc != "04715053000220" && SA10.A1Cgc != "01390500000140" && (int)(object)SD20.D2Emissao >= 20200701
                               select new
                               {
                                   Login = SA30.A3Xlogin,
@@ -301,7 +312,7 @@ namespace SGID.Pages.DashBoards
                                    where SD20.DELET != "*" && SA10.DELET != "*" && SB10.DELET != "*" && SF20.DELET != "*" && SC50.DELET != "*" && SA30.DELET != "*"
                                    && ((int)(object)SD20.D2Cf >= 5102 && (int)(object)SD20.D2Cf <= 5114 || (int)(object)SD20.D2Cf >= 6102 && (int)(object)SD20.D2Cf <= 6114 ||
                                    (int)(object)SD20.D2Cf >= 7102 && (int)(object)SD20.D2Cf <= 7114 || CF.Contains(SD20.D2Cf)) && ((int)(object)SD20.D2Emissao >= (int)(object)DataInicio && (int)(object)SD20.D2Emissao <= (int)(object)DataFim)
-                                   && SD20.D2Quant != 0 && SC50.C5Utpoper == "F" && SA10.A1Clinter != "S" && SA10.A1Cgc != "04715053000140" && SA10.A1Cgc != "04715053000220" && SA10.A1Cgc != "01390500000140" && (int)(object)SD20.D2Emissao >= 20200701
+                                   && SC50.C5Utpoper == "F" && SA10.A1Clinter != "S" && SA10.A1Cgc != "04715053000140" && SA10.A1Cgc != "04715053000220" && SA10.A1Cgc != "01390500000140" && (int)(object)SD20.D2Emissao >= 20200701
                                    select new
                                    {
                                        Login = SA30.A3Xlogin,
@@ -380,6 +391,7 @@ namespace SGID.Pages.DashBoards
                              .ToList();
                 #endregion
 
+
                 Faturamento.Add(new ValoresEmAberto { Nome = "DENUO", Valor = resultadoDenuo2.Sum(x => x.Total) - DevolDenuo.Sum(x => x.Total) });
 
                 #endregion
@@ -397,7 +409,8 @@ namespace SGID.Pages.DashBoards
                 var Teste = new
                 {
                     valores = valores,
-                    Linhas = LinhasTela
+                    Linhas = LinhasTela,
+                    Meta = MetaInter + MetaDenuo
                 };
 
                 return new JsonResult(Teste);
@@ -410,6 +423,101 @@ namespace SGID.Pages.DashBoards
 
                 return new JsonResult("");
             }
+        }
+
+        public JsonResult OnPostEmAberto(string Mes, string Ano)
+        {
+
+            try
+            {
+                string user = User.Identity.Name.Split("@")[0].ToUpper();
+                string[] CF = new string[] { "5551", "6551", "6107", "6109" };
+                string DataInicio = "";
+                string DataFim = "";
+
+                if (Mes == "13")
+                {
+                    DataInicio = $"{Ano}0101";
+
+                    DataFim = $"{Ano}1231";
+
+
+
+                }
+                else
+                {
+                    DataInicio = $"{Ano}{Mes}01";
+
+                    DataFim = $"{Ano}{Mes}31";
+                }
+
+
+                #region EmAberto
+
+                #region Intermedic
+                var resultadoEmAbertoInter = (from SC5 in ProtheusInter.Sc5010s
+                                              from SC6 in ProtheusInter.Sc6010s
+                                              from SA1 in ProtheusInter.Sa1010s
+                                              from SA3 in ProtheusInter.Sa3010s
+                                              from SF4 in ProtheusInter.Sf4010s
+                                              from SB1 in ProtheusInter.Sb1010s
+                                              where SC5.DELET != "*" && SC6.C6Filial == SC5.C5Filial && SC6.C6Num == SC5.C5Num
+                                              && SC6.C6Nota == "" && SC6.C6Blq != "R" && SC6.DELET != "*"
+                                              && SF4.F4Codigo == SC6.C6Tes && SF4.F4Duplic == "S" && SF4.DELET != "*" && SA1.A1Cod == SC5.C5Cliente
+                                              && SA1.A1Loja == SC5.C5Lojacli && SA1.DELET != "*" && SA3.A3Cod == SC5.C5Vend1 && SA3.DELET != "*"
+                                              && (SC5.C5Utpoper == "F" || SC5.C5Utpoper == "T") && SB1.DELET != "*" && SC6.C6Produto == SB1.B1Cod
+                                              && SA1.A1Cgc != "04715053000140" && SA1.A1Cgc != "04715053000220" && SA1.A1Cgc != "01390500000140"
+                                              && (int)(object)SC5.C5Emissao >= (int)(object)DataInicio
+                                              && (int)(object)SC5.C5Emissao <= (int)(object)DataFim
+                                              orderby SC5.C5Num, SC5.C5Emissao descending
+                                              select SC6.C6Valor
+                                         ).Sum();
+
+                ValoresEmAberto.Add(new ValoresEmAberto { Nome = "INTERMEDIC", Valor = resultadoEmAbertoInter });
+                #endregion
+
+                #region Denuo
+                var resultadoEmAbertoDenuo = (from SC5 in ProtheusDenuo.Sc5010s
+                                              from SC6 in ProtheusDenuo.Sc6010s
+                                              from SA1 in ProtheusDenuo.Sa1010s
+                                              from SA3 in ProtheusDenuo.Sa3010s
+                                              from SF4 in ProtheusDenuo.Sf4010s
+                                              from SB1 in ProtheusDenuo.Sb1010s
+                                              where SC5.DELET != "*" && SC6.C6Filial == SC5.C5Filial && SC6.C6Num == SC5.C5Num
+                                              && SC6.C6Nota == "" && SC6.C6Blq != "R" && SC6.DELET != "*"
+                                              && SF4.F4Codigo == SC6.C6Tes && SF4.F4Duplic == "S" && SF4.DELET != "*" && SA1.A1Cod == SC5.C5Cliente
+                                              && SA1.A1Loja == SC5.C5Lojacli && SA1.DELET != "*" && SA3.A3Cod == SC5.C5Vend1 && SA3.DELET != "*"
+                                              && (SC5.C5Utpoper == "F" || SC5.C5Utpoper == "T") && SB1.DELET != "*" && SC6.C6Produto == SB1.B1Cod
+                                              && SA1.A1Cgc != "04715053000140" && SA1.A1Cgc != "04715053000220" && SA1.A1Cgc != "01390500000140"
+                                              && SC5.C5Xtipopv != "D"
+                                              && (int)(object)SC5.C5Emissao >= (int)(object)DataInicio
+                                              && (int)(object)SC5.C5Emissao <= (int)(object)DataFim
+                                              orderby SC5.C5Num, SC5.C5Emissao descending
+                                              select SC6.C6Valor)
+                                              .Sum();
+
+                ValoresEmAberto.Add(new ValoresEmAberto { Nome = "DENUO", Valor = resultadoEmAbertoDenuo });
+                #endregion
+
+                #endregion
+
+
+                var valores = new
+                {
+                    Valores = ValoresEmAberto,
+                    ValorTotal = ValoresEmAberto.Sum(x => x.Valor)
+                };
+
+                return new JsonResult(valores);
+            }
+            catch (Exception ex)
+            {
+                string user = User.Identity.Name.Split("@")[0].ToUpper();
+                Logger.Log(ex, SGID, "DashBoardMetas EmAberto", user);
+
+                return new JsonResult("");
+            }
+
         }
     }
 }

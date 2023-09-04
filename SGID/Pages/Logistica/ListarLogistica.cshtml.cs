@@ -15,9 +15,7 @@ namespace SGID.Pages.Logistica
         private TOTVSDENUOContext ProtheusDenuo { get; set; }
         private TOTVSINTERContext ProtheusInter { get; set; }
         private ApplicationDbContext SGID { get; set; }
-
         public List<Agendamentos> Agendamentos { get; set; }
-
         public List<RejeicaoMotivos> Rejeicoes { get; set; }
 
         public string Empresa { get; set; } = "";

@@ -34,6 +34,12 @@
                         <td>@string.Format("{0:N2}", data.Valor)</td>
                     </tr>
                 }
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td>Total:</td>
+                    <td>@string.Format("{0:N2}", Model.Relatorio.Sum(x=> x.Valor))</td>
+                </tr>
             </tbody>
         </table>
     </div>

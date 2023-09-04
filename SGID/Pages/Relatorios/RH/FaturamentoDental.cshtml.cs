@@ -3,12 +3,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using OfficeOpenXml;
-using OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime;
-using OPMEnexo;
 using SGID.Data;
-using SGID.Data.Model;
 using SGID.Data.Models;
-using SGID.Models.Controladoria;
 using SGID.Models.Denuo;
 using SGID.Models.RH;
 

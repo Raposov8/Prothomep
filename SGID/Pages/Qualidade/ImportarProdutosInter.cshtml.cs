@@ -66,7 +66,7 @@ namespace SGID.Pages.Qualidade
                     {
                         var line = reader.ReadLine();
 
-                        if (line.Contains(";"))
+                        if (line.Contains(';'))
                         {
                             var values = line.Split(';');
 

@@ -67,7 +67,7 @@ namespace SGID.Pages.Importacao
                     {
                         var line = reader.ReadLine();
 
-                        if (line.Contains(";"))
+                        if (line.Contains(';'))
                         {
                             var values = line.Split(';');
 

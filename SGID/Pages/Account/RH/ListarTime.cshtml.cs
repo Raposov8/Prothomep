@@ -452,8 +452,6 @@ namespace SGID.Pages.Account.RH
                         User = x,
                     };
 
-
-
                     if (x.TipoFaturamento != "S" && x.TipoFaturamento != "L")
                     {
                         if(dataini < 20230801)

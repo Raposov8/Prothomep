@@ -292,7 +292,7 @@ namespace SGID.Pages.Relatorios.Controladoria
             }
         }
 
-        public IActionResult OnPostExport()
+        public IActionResult OnPostExport(string Ano)
         {
             try
             {

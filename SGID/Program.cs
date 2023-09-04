@@ -50,8 +50,7 @@ builder.Services.Configure<IdentityOptions>(options =>
     options.Lockout.AllowedForNewUsers = true;
 
     // User settings.
-    options.User.AllowedUserNameCharacters =
-    "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-.@_+";
+    options.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-.@_+";
     options.User.RequireUniqueEmail = false;
     options.SignIn.RequireConfirmedEmail = false;
 });
@@ -64,7 +63,7 @@ builder.Services.AddCors(options =>
     options.AddPolicy(name: MyAllowSpecificOrigins,
                       policy =>
                       {
-                          policy.WithOrigins("http://192.168.2.9",
+                          policy.WithOrigins("http://172.16.150.152",
                                               "https://gidd.com.br",
                                               "http://gidd.com.br",
                                               "http://200.170.251.206");
@@ -99,7 +98,7 @@ var webSocketOptions = new WebSocketOptions
 
 webSocketOptions.AllowedOrigins.Add("https://gidd.com.br");
 webSocketOptions.AllowedOrigins.Add("http://200.170.251.206");
-webSocketOptions.AllowedOrigins.Add("http://192.168.2.9");
+webSocketOptions.AllowedOrigins.Add("http://172.16.150.152");
 
 app.UseWebSockets(webSocketOptions);
 

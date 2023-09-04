@@ -94,6 +94,7 @@ namespace SGID.Pages.DashBoards
                                      Login = SA30.A3Xlogin,
                                      NF = SD20.D2Doc,
                                      Total = SD20.D2Total,
+                                     TotalBrut = SD20.D2Valbrut,
                                      Linha = SA30.A3Xdescun
 
                                  });
@@ -108,6 +109,7 @@ namespace SGID.Pages.DashBoards
                         A3Nome = x.Key.Login,
                         Nf = x.Key.NF,
                         Total = x.Sum(c => c.Total),
+                        TotalBrut = x.Sum(c=>c.TotalBrut),
                         Linha = x.Key.Linha
                     }).ToList();
                     #endregion
@@ -128,6 +130,7 @@ namespace SGID.Pages.DashBoards
                                           Login = SA30.A3Xlogin,
                                           NF = SD20.D2Doc,
                                           Total = SD20.D2Total,
+                                          TotalBrut = SD20.D2Valbrut,
                                           Linha = SA30.A3Xdescun
                                       });
 
@@ -141,6 +144,7 @@ namespace SGID.Pages.DashBoards
                         A3Nome = x.Key.Login,
                         Nf = x.Key.NF,
                         Total = x.Sum(c => c.Total),
+                        TotalBrut = x.Sum(c => c.TotalBrut),
                         Linha = x.Key.Linha
                     }).ToList();
                     #endregion
@@ -152,7 +156,8 @@ namespace SGID.Pages.DashBoards
                     {
                         Linha = x.Key.Linha,
                         Quant = x.Count(),
-                        Valor = x.Sum(c => c.Total)
+                        Valor = x.Sum(c => c.Total),
+                        ValorBrut = x.Sum(c=> c.TotalBrut)
                     }).ToList();
                 
                 
@@ -170,7 +175,7 @@ namespace SGID.Pages.DashBoards
                 
                 var LinhasTela = new List<RelatorioFaturamentoLinhas>
                     {
-                        new RelatorioFaturamentoLinhas { Nome = "QTDA. CIRURGIAS", Quant = LinhasValor.Sum(x => x.Quant) }
+                        new RelatorioFaturamentoLinhas { Nome = "QTDA. CIRURGIAS", Quant = resultado2.Sum(x => x.Quant) }
                     };
                 
                 LinhasValor.ForEach(x =>
@@ -178,7 +183,7 @@ namespace SGID.Pages.DashBoards
                     LinhasTela.Add(new RelatorioFaturamentoLinhas { Nome = x.Nome, Quant = x.Quant });
                 });
                 
-                LinhasTela.Add(new RelatorioFaturamentoLinhas { Nome = "VALOR CIRURGIAS", Quant = LinhasValor.Sum(x => x.Faturamento) });
+                LinhasTela.Add(new RelatorioFaturamentoLinhas { Nome = "VALOR CIRURGIAS", Quant = resultado2.Sum(x => x.Valor) });
                 #endregion
 
                 #region Faturados

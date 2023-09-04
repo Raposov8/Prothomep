@@ -11,6 +11,7 @@
         public string Serie { get; set; }
         public string Emissao { get; set; }
         public string Pedido { get; set; }
+        public double TotalBrut { get; set; }
         public double Total { get; set; }
         public double Valipi { get; set; }
         public double Valicm { get; set; }

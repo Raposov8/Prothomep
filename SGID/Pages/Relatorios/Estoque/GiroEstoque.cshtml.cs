@@ -35,7 +35,7 @@ namespace SGID.Pages.Relatorios.Estoque
             var Saida = (from SD20 in Protheus.Sd2010s
                          join SC50 in Protheus.Sc5010s on new { Filial = SD20.D2Filial, Pedido = SD20.D2Pedido } equals new { Filial = SC50.C5Filial, Pedido = SC50.C5Num }
                          join SB10 in Protheus.Sb1010s on SD20.D2Cod equals SB10.B1Cod
-                         where SC50.C5Utpoper == "F" && (int)(object)SD20.D2Emissao >= (int)(object)Inicio &&
+                         where (SC50.C5Utpoper == "F" || SC50.C5Utpoper == "V") && (int)(object)SD20.D2Emissao >= (int)(object)Inicio &&
                          (int)(object)SD20.D2Emissao <= (int)(object)Fim
                          select new
                          {
@@ -59,7 +59,7 @@ namespace SGID.Pages.Relatorios.Estoque
 
             var Entrada = (from SB80 in Protheus.Sb8010s
                            join SB10 in Protheus.Sb1010s on SB80.B8Produto equals SB10.B1Cod
-                           where SB80.DELET != "*"
+                           where SB80.DELET != "*" && (SB80.B8Local == "01" || SB80.B8Local == "02" || SB80.B8Local == "80")
                            select new
                            {
                                Codigo = SB80.B8Produto,
@@ -113,7 +113,7 @@ namespace SGID.Pages.Relatorios.Estoque
                 var Saida = (from SD20 in Protheus.Sd2010s
                              join SC50 in Protheus.Sc5010s on new { Filial = SD20.D2Filial, Pedido = SD20.D2Pedido } equals new { Filial = SC50.C5Filial, Pedido = SC50.C5Num }
                              join SB10 in Protheus.Sb1010s on SD20.D2Cod equals SB10.B1Cod
-                             where SC50.C5Utpoper == "F" && (int)(object)SD20.D2Emissao >= (int)(object)Inicio &&
+                             where (SC50.C5Utpoper == "F" || SC50.C5Utpoper == "V") && (int)(object)SD20.D2Emissao >= (int)(object)Inicio &&
                              (int)(object)SD20.D2Emissao <= (int)(object)Fim
                              select new
                              {
@@ -137,7 +137,7 @@ namespace SGID.Pages.Relatorios.Estoque
 
                 var Entrada = (from SB80 in Protheus.Sb8010s
                                join SB10 in Protheus.Sb1010s on SB80.B8Produto equals SB10.B1Cod
-                               where SB80.DELET != "*"
+                               where SB80.DELET != "*" && (SB80.B8Local == "01" || SB80.B8Local == "02" || SB80.B8Local == "80")
                                select new
                                {
                                    Codigo = SB80.B8Produto,

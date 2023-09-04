@@ -77,7 +77,7 @@ namespace SGID.Pages.UserAdmin
 
                 var userRoles = await _userManager.GetRolesAsync(user);
 
-                selectedRole ??= new string[] { };
+                selectedRole ??= Array.Empty<string>();
 
                 var result = await _userManager.AddToRolesAsync(user, selectedRole.Except(userRoles).ToArray());
 

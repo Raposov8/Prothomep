@@ -177,8 +177,8 @@ namespace SGID.Pages.Relatorios.Qualidade
                 sheet.Cells[1, 9].Value = "Serie Saida";
                 sheet.Cells[1, 10].Value = "Emissao NF";
                 sheet.Cells[1, 11].Value = "IT Saida";
-                sheet.Cells[1, 10].Value = "QTD Saida";
-                sheet.Cells[1, 11].Value = "Saldo";
+                sheet.Cells[1, 12].Value = "QTD Saida";
+                sheet.Cells[1, 13].Value = "Saldo";
 
                 int i = 2;
 
@@ -189,7 +189,7 @@ namespace SGID.Pages.Relatorios.Qualidade
                     sheet.Cells[i, 3].Value = Pedido.Processo;
                     sheet.Cells[i, 4].Value = Pedido.Agendamento;
                     sheet.Cells[i, 5].Value = Pedido.Patrimonio;
-                    sheet.Cells[i, 6].Value = Pedido.ValidLote;
+                    sheet.Cells[i, 6].Value = Pedido.ValidLote != null? $"{Pedido.ValidLote.Substring(6, 2)}/{Pedido.ValidLote.Substring(4, 2)}/{Pedido.ValidLote.Substring(0, 4)}" :"";
                     sheet.Cells[i, 7].Value = Pedido.Operacao;
                     sheet.Cells[i, 8].Value = Pedido.NFSaida;
                     sheet.Cells[i, 9].Value = Pedido.SerieSaida;

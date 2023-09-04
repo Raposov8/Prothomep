@@ -167,6 +167,10 @@
                 }
                 @if(User.IsInRole("Admin") || User.IsInRole("Financeiro") || User.IsInRole("Diretoria"))
                 {
+                    <li>
+                        <a class="nav-link" href="/dashboards/DashBoardadm"><i class="fa-solid fa-chart-pie"></i>Metas ADM</a>
+                    </li>
+
                     <li class="nav-item dropdown">
                         <a class="nav-link align-items-center rounded dropdown-toggle" data-bs-toggle="collapse"
                         data-bs-target="#financeiro-collapse" aria-expanded="false">
@@ -491,8 +495,14 @@
                                     </a>
                                     <div class="collapse" id="admvendas1-collapse">
                                         <ul class="list-unstyled fw-normal pb-1 small">
-                                            <li><a class="nav-link teste" href="/relatorios/admvendas/cirurgiasvalorizadas">Cirugias Valorizadas Denuo</a></li>
-                                            <li><a class="nav-link teste" href="/relatorios/admvendas/cirurgiasvalorizadasinter">Cirugias Valorizadas Inter</a></li>
+                                            <li><a class="nav-link teste" href="/relatorios/rh/CirurgiaAFaturar">Cirugias A Faturar Denuo</a></li>
+                                            <li><a class="nav-link teste" href="/relatorios/rh/CirurgiaAFaturarInter">Cirugias A Faturar Inter</a></li>
+                                            <li><a class="nav-link teste" href="/relatorios/rh/CirurgiasDevolucaoFat">Cirurgias Devolução Denuo</a></li>
+                                            <li><a class="nav-link teste" href="/relatorios/rh/CirurgiasDevolucaoFatInter">Cirurgias Devolução Inter</a></li>
+                                            <li><a class="nav-link teste" href="/relatorios/admvendas/CirurgiasFaturadas">Cirurgias Faturadas Denuo</a></li>
+                                            <li><a class="nav-link teste" href="/relatorios/admvendas/CirurgiasFaturadasInter">Cirurgias Faturadas Inter</a></li>
+                                            <li><a class="nav-link teste" href="/relatorios/rh/CirurgiasValorizadas">Cirugias Valorizadas Denuo</a></li>
+                                            <li><a class="nav-link teste" href="/relatorios/rh/CirurgiasValorizadasInterr">Cirugias Valorizadas Inter</a></li>
                                             <li><a class="nav-link teste" href="/relatorios/admvendas/pedidostriagem">Pedidos Triagem Denuo</a></li>
                                             <li><a class="nav-link teste" href="/relatorios/admvendas/pedidostriageminter">Pedidos Triagem Inter</a></li>
                                             <li><a class="nav-link teste" href="/relatorios/admvendas/cadastromedicos/1">Cadastros Médicos Denuo</a></li>
@@ -562,6 +572,18 @@
                                             <li><a class="nav-link" href="/relatorios/estoque/faturamentonffabinter">Faturamento NF Fabricante Inter</a></li>
                                             <li><a class="nav-link" href="/relatorios/estoque/Armazem10">Armazem 10 Denuo</a></li>
                                             <li><a class="nav-link" href="/relatorios/estoque/Armazem10Inter">Armazem 10 Inter</a></li>
+                                            <li><a class="nav-link" href="/relatorios/estoque/giroestoque">Giro Estoque Denuo</a></li>
+                                            <li><a class="nav-link" href="/relatorios/estoque/giroestoqueinter">Giro Estoque Inter</a></li>
+                                            <li><a class="nav-link" href="/relatorios/subdistribuidor">Sub Distribuidor Faturado Denuo</a></li>
+                                            <li><a class="nav-link" href="/relatorios/subdistribuidorNFaturado">Sub Distribuidor Não Faturado Denuo</a></li>
+                                            <li><a class="nav-link" href="/relatorios/subdistribuidorFaturadoInter">Sub Distribuidor Faturado Intermedic</a></li>
+                                            <li><a class="nav-link" href="/relatorios/subdistribuidorNFaturadoInter">Sub Distribuidor Não Faturado Intermedic</a></li>
+                                            <li><a class="nav-link teste" href="/relatorios/admvendas/pedidostriagem">Pedidos Triagem Denuo</a></li>
+                                            <li><a class="nav-link teste" href="/relatorios/admvendas/pedidostriageminter">Pedidos Triagem Inter</a></li>
+                                            <li><a class="nav-link teste" href="/relatorios/admvendas/cadastromedicos/1">Cadastros Médicos Denuo</a></li>
+                                            <li><a class="nav-link teste" href="/relatorios/cirurgias/cadastrosmedicosinter/1">Cadastros Médicos Inter</a></li>
+                                            <li><a class="nav-link teste" href="/relatorios/rh/cirurgiasvalorizadas">Cirurgias Valorizadas Denuo</a></li>
+                                            <li><a class="nav-link teste" href="/relatorios/rh/cirurgiasvalorizadasinter">Cirurgias Valorizadas Inter</a></li>
                                         </ul>
                                     </div>
                                 </li>
@@ -595,6 +617,7 @@
                                     </a>
                                     <div class="collapse" id="qualidade-collapse">
                                         <ul class="list-unstyled fw-normal pb-1 small">
+                                            <li><a class="nav-link" href="/relatorios/estoque/poderterceiros">Poder Terceiros</a></li>
                                             <li><a class="nav-link" href="/relatorios/qualidade/registroxprodutos">Registro x Produtos Denuo</a></li>
                                             <li><a class="nav-link" href="/relatorios/qualidade/registroxprodutosinter">Registro x Produtos Inter</a></li>
                                             <li><a class="nav-link" href="/relatorios/qualidade/validadepermanente">Validade Permanente Denuo</a></li>
@@ -654,7 +677,7 @@
                      </ul>
                   </div>
                </li>
-                @if(User.IsInRole("Admin") || User.IsInRole("Patrimonio") || User.IsInRole("Diretoria"))
+               @if(User.IsInRole("Admin") || User.IsInRole("Patrimonio") || User.IsInRole("Diretoria"))
                {
                    <li class="nav-item dropdown">
                        <a class="nav-link align-items-center rounded dropdown-toggle" data-bs-toggle="collapse" 
@@ -728,7 +751,7 @@
                        </div>
                    </li>
                }
-                @if(User.IsInRole("Admin") || User.IsInRole("RH") || User.IsInRole("Diretoria"))
+               @if(User.IsInRole("Admin") || User.IsInRole("RH") || User.IsInRole("Diretoria"))
                {
                     <li class="nav-item dropdown">
                         <a class="nav-link align-items-center rounded dropdown-toggle" data-bs-toggle="collapse"
@@ -743,27 +766,27 @@
                         </div>
                     </li>
                }
-                @if(User.IsInRole("Admin"))
+               @if(User.IsInRole("Admin"))
                {
                   <li>
                      <a class="nav-link" href="/useradmin/listarusuarios/1"><i class="fa-solid fa-user"></i>Usuários</a>
                   </li>
                }
-                @if(User.IsInRole("Admin")|| User.IsInRole("GestorComercial") || User.IsInRole("Venda") || User.IsInRole("Diretoria"))
-                {
-                    <li class="nav-item dropdown">
-                        <a class="nav-link align-items-center rounded dropdown-toggle" data-bs-toggle="collapse"
-                        data-bs-target="#Medicos-collapse" aria-expanded="false">
-                           <i class="fa-solid fa-user-doctor"></i> Medicos
-                        </a>
-                        <div class="collapse" id="Medicos-collapse">
-                            <ul class="list-unstyled fw-normal pb-1 small">
-                                <li><a class="nav-link teste" href="/Utilitarios/ListarCRMInter">Medicos Sem CRM Inter</a></li>
-                                <li><a class="nav-link teste" href="/Utilitarios/ListarCRMDenuo">Medicos Sem CRM Denuo</a></li>
-                            </ul>
-                        </div>
-                    </li>
-                }
+               @if(User.IsInRole("Admin")|| User.IsInRole("GestorComercial") || User.IsInRole("Venda") || User.IsInRole("Diretoria"))
+               {
+                   <li class="nav-item dropdown">
+                       <a class="nav-link align-items-center rounded dropdown-toggle" data-bs-toggle="collapse"
+                       data-bs-target="#Medicos-collapse" aria-expanded="false">
+                          <i class="fa-solid fa-user-doctor"></i> Medicos
+                       </a>
+                       <div class="collapse" id="Medicos-collapse">
+                           <ul class="list-unstyled fw-normal pb-1 small">
+                               <li><a class="nav-link teste" href="/Utilitarios/ListarCRMInter">Medicos Sem CRM Inter</a></li>
+                               <li><a class="nav-link teste" href="/Utilitarios/ListarCRMDenuo">Medicos Sem CRM Denuo</a></li>
+                           </ul>
+                       </div>
+                   </li>
+               }
             </ul>
         </div>
         <div class="content">

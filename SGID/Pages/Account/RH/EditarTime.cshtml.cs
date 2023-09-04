@@ -18,7 +18,6 @@ namespace SGID.Pages.Account.RH
     {
         private readonly ApplicationDbContext _db;
         private readonly UserManager<UserInter> _userManager;
-        private readonly RoleManager<IdentityRole> _roleManager;
         private TOTVSDENUOContext ProtheusDenuo { get; set; }
         private TOTVSINTERContext ProtheusInter { get; set; }
 

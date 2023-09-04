@@ -52,6 +52,10 @@ namespace SGID.Pages
             {
                 return LocalRedirect("/dashboards/DashBoardMetas");
             }
+            else if (User.IsInRole("Qualidade"))
+            {
+                return LocalRedirect("/dashboards/DashBoardQualidade");
+            }
             else if (User.IsInRole("Financeiro") || User.IsInRole("Diretoria"))
             {
                 return LocalRedirect("/relatorios/vexpenses/relatoriodespesas");
@@ -102,7 +106,7 @@ namespace SGID.Pages
                 return Page();
 
             }
-            else if(User.IsInRole("GestorComercial"))
+            else if (User.IsInRole("GestorComercial"))
             {
                 if (User.Identity.Name.Split("@")[1].ToUpper()=="INTERMEDIC.COM.BR")
                 {

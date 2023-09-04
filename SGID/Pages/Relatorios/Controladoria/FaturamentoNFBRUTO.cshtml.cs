@@ -53,7 +53,7 @@ namespace SGID.Pages.Relatorios.Controladoria
                                      where SD20.DELET != "*" && SA10.DELET != "*" && SB10.DELET != "*" && SF20.DELET != "*" && SC50.DELET != "*" &&
                                      (((int)(object)SD20.D2Cf >= 5102 && (int)(object)SD20.D2Cf <= 5114) || ((int)(object)SD20.D2Cf >= 6102 && (int)(object)SD20.D2Cf <= 6114)
                                      || ((int)(object)SD20.D2Cf >= 7102 && (int)(object)SD20.D2Cf <= 7114) || CF.Contains((int)(object)SD20.D2Cf))
-                                     && (int)(object)SD20.D2Emissao >= InicioAno && (int)(object)SD20.D2Emissao <= FimAno && SD20.D2Quant != 0
+                                     && (int)(object)SD20.D2Emissao >= InicioAno && (int)(object)SD20.D2Emissao <= FimAno
                                      select new
                                      {
                                          Filial = SD20.D2Filial,
@@ -311,7 +311,7 @@ namespace SGID.Pages.Relatorios.Controladoria
                                      where SD20.DELET != "*" && SA10.DELET != "*" && SB10.DELET != "*" && SF20.DELET != "*" && SC50.DELET != "*" &&
                                      (((int)(object)SD20.D2Cf >= 5102 && (int)(object)SD20.D2Cf <= 5114) || ((int)(object)SD20.D2Cf >= 6102 && (int)(object)SD20.D2Cf <= 6114)
                                      || ((int)(object)SD20.D2Cf >= 7102 && (int)(object)SD20.D2Cf <= 7114) || CF.Contains((int)(object)SD20.D2Cf))
-                                     && (int)(object)SD20.D2Emissao >= InicioAno && (int)(object)SD20.D2Emissao <= FimAno && SD20.D2Quant != 0
+                                     && (int)(object)SD20.D2Emissao >= InicioAno && (int)(object)SD20.D2Emissao <= FimAno
                                      select new
                                      {
                                          Filial = SD20.D2Filial,
@@ -349,7 +349,7 @@ namespace SGID.Pages.Relatorios.Controladoria
                                                 CliFor = x.Key.Cliente,
                                                 Loja = x.Key.Loja,
                                                 Nome = x.Key.Nome,
-                                                Tipo = x.Key.Tipo == "H" ? "HOSPITAL" : x.Key.Tipo == "M" ? "MEDICO" : x.Key.Tipo == "I" ? "INSTRUMENTADOR" : x.Key.Tipo == "N" ? "NORMAL" : x.Key.Tipo == "C" ? "CONVENIO" : x.Key.Tipo == "P" ? "PARTICULAR" : x.Key.Tipo == "S" ? "SUB-DISTRIBUIDOR" : "OUTROS",
+                                                Tipo = x.Key.Tipo == "G" ? "INTERGRUPO" : x.Key.Tipo == "H" ? "HOSPITAL" : x.Key.Tipo == "M" ? "MEDICO" : x.Key.Tipo == "I" ? "INSTRUMENTADOR" : x.Key.Tipo == "N" ? "NORMAL" : x.Key.Tipo == "C" ? "CONVENIO" : x.Key.Tipo == "P" ? "PARTICULAR" : x.Key.Tipo == "S" ? "SUB-DISTRIBUIDOR" : "OUTROS",
                                                 NF = x.Key.NF,
                                                 Serie = x.Key.Serie,
                                                 Emissao = $"{x.Key.Emissao.Substring(6, 2)}/{x.Key.Emissao.Substring(4, 2)}/{x.Key.Emissao.Substring(0, 4)}",
@@ -444,7 +444,7 @@ namespace SGID.Pages.Relatorios.Controladoria
                                              CliFor = x.Key.Cliente,
                                              Loja = x.Key.Loja,
                                              Nome = x.Key.Nome,
-                                             Tipo = x.Key.Tipo == "H" ? "HOSPITAL" : x.Key.Tipo == "M" ? "MEDICO" : x.Key.Tipo == "I" ? "INSTRUMENTADOR" : x.Key.Tipo == "N" ? "NORMAL" : x.Key.Tipo == "C" ? "CONVENIO" : x.Key.Tipo == "P" ? "PARTICULAR" : x.Key.Tipo == "S" ? "SUB-DISTRIBUIDOR" : "OUTROS",
+                                             Tipo = x.Key.Tipo == "G" ? "INTERGRUPO" : x.Key.Tipo == "H" ? "HOSPITAL" : x.Key.Tipo == "M" ? "MEDICO" : x.Key.Tipo == "I" ? "INSTRUMENTADOR" : x.Key.Tipo == "N" ? "NORMAL" : x.Key.Tipo == "C" ? "CONVENIO" : x.Key.Tipo == "P" ? "PARTICULAR" : x.Key.Tipo == "S" ? "SUB-DISTRIBUIDOR" : "OUTROS",
                                              NF = x.Key.NF,
                                              Serie = x.Key.Serie,
                                              Emissao = $"{x.Key.Emissao.Substring(6, 2)}/{x.Key.Emissao.Substring(4, 2)}/{x.Key.Emissao.Substring(0, 4)}",

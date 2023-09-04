@@ -57,7 +57,7 @@ namespace SGID.Pages.Relatorios.Estoque
 
             var Entrada = (from SB80 in Protheus.Sb8010s
                            join SB10 in Protheus.Sb1010s on SB80.B8Produto equals SB10.B1Cod
-                           where SB80.DELET != "*"
+                           where SB80.DELET != "*" && (SB80.B8Local == "01" || SB80.B8Local == "02" || SB80.B8Local == "80")
                            select new
                            {
                                Codigo = SB80.B8Produto,
@@ -135,7 +135,7 @@ namespace SGID.Pages.Relatorios.Estoque
 
                 var Entrada = (from SB80 in Protheus.Sb8010s
                                join SB10 in Protheus.Sb1010s on SB80.B8Produto equals SB10.B1Cod
-                               where SB80.DELET != "*"
+                               where SB80.DELET != "*" && (SB80.B8Local == "01" || SB80.B8Local == "02" || SB80.B8Local == "80")
                                select new
                                {
                                    Codigo = SB80.B8Produto,

@@ -1,0 +1,46 @@
+﻿@page
+@model SGID.Pages.DashBoards.DashBoardQualidadeModel
+@{
+    ViewData["Title"] = "DASHBOARD";
+    Layout = "_LayoutGeral";
+}
+
+@Html.AntiForgeryToken()
+
+
+<!--Tabela-->
+<div class="col-xs-12 col-sm-12 col-md-12">
+    <div class="panel">
+        <div class="panel-body">
+            <table id="demo-dt-addrow" class="table table-striped table-bordered" cellspacing="0" width="50%">
+                <thead>
+                    <tr>
+                        <th class="text-center">
+                            EMPRESA
+                        </th>
+                        <th class="text-center">
+                            CODIGO
+                        </th>
+                        <th class="text-center">
+                            DESCRIÇÃO
+                        </th>
+                        <th class="text-center">
+                            DT. VALIDADE
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach(var data in Model.Produtos)
+                    {
+                        <tr>
+                            <td>@data.Empresa</td>
+                            <td>@data.Codigo</td>
+                            <td>@data.Descricao</td>
+                            <td>@data.DtValidade.ToString("dd/MM/yyyy")</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

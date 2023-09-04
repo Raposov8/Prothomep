@@ -116,8 +116,14 @@
         </div>
     </div>
 </div>
+<div id="Valores" class="row justify-content-center">
+    <div></div>
+</div>
 <br />
 <div class="row justify-content-center">
+    <div class="col-md-4">
+        <div id="GraficoAberto" style="height:100%"></div>
+    </div>
     <div class="col-md-4">
         <div id="Empresas">
         </div>
@@ -150,7 +156,7 @@
 @section scripts
     {
     <script type="text/javascript">
-        google.charts.load('current', { 'packages': ['corechart'] });
+        google.charts.load('current', { 'packages': ['corechart', 'bar'] });
         google.charts.setOnLoadCallback(drawChart2);
 
         var formato = { minimumFractionDigits: 2, style: 'currency', currency: 'BRL' }
@@ -169,6 +175,25 @@
             elem.innerHTML = width * 1 + '%';
         }
 
+        function drawChart() {
+
+            var data = google.visualization.arrayToDataTable(
+                grafico
+            );
+
+            var options = {
+                title: 'Valor em Aberto',
+                legend: { position: "none" },
+                bar: { groupWidth: '50%' },
+                vAxis: { format: 'short' },
+                colors: ['#ffcc00']
+            };
+
+
+            var chart = new google.charts.Bar(document.getElementById('GraficoAberto'));
+
+            chart.draw(data, google.charts.Bar.convertOptions(options));
+        }
 
         function drawChart2() {
 
@@ -193,7 +218,7 @@
 
             var count = 0;
 
-            $('input[name=Tipo]').on('change', function (e) {
+            $('input[name=Tipo]').on('click', function (e) {
 
                 move(0)
                 $("#loading-modal").modal('show')
@@ -204,6 +229,8 @@
                 var Mes = $('input[name=Tipo]:checked').val();
 
                 count = 0;
+
+                
 
                 var chamadaUrl = `/dashboards/dashboardadm?handler=Faturados&&Mes=${Mes}&&Ano=${Ano}`
                 $.ajax({
@@ -217,13 +244,15 @@
                     success: function (data) {
 
                         $("#Tipos>div").remove();
+                        $("#Valores>div").remove();
                         
                         var linha = '';
 
                         data.linhas.forEach(x => {
                             
 
-                            if (count == 5) {
+                            if (count >= 5) 
+                            {
                                 linha = ` <div class="col-xs-2 col-sm-2 col-md-2 col-xl-2">
                                                               <div class="panel panel-colorful" style="background-color:#203864">
                                                           <div class="panel-heading">
@@ -234,8 +263,10 @@
                                                           </div>
                                                       </div>
                                                   </div>`
+                                $("#Valores").append(linha);
                             }
-                            else if (count == 0) {
+                            else if (count == 0) 
+                            {
                                 linha = ` <div class="col-xs-2 col-sm-2 col-md-2 col-xl-2">
                                                                       <div class="panel panel-colorful" style="background-color:#203864">
                                                                   <div class="panel-heading">
@@ -246,8 +277,10 @@
                                                                   </div>
                                                               </div>
                                                           </div>`
+                                $("#Tipos").append(linha);
                             }
-                            else {
+                            else 
+                            {
                                 linha = ` <div class="col-xs-2 col-sm-2 col-md-2 col-xl-2">
                                                               <div class="panel panel-colorful" style="background-color:#8faadc">
                                                           <div class="panel-heading">
@@ -258,10 +291,11 @@
                                                           </div>
                                                       </div>
                                                   </div>`
+                                $("#Tipos").append(linha);
                             }
                             count++;
 
-                            $("#Tipos").append(linha);
+                            
                         })
 
                         move(30)
@@ -281,7 +315,7 @@
 
                         $("#Empresas>div").remove();
 
-                        var Meta = @Model.MetaDenuo + @Model.MetaInter
+                        var Meta = data.meta;
 
                         linha = ` <div class="col-xs-12 col-sm-12 col-md-12 col-xl-12">
                                       <div class="panel panel-colorful" style="background-color:#8faadc">
@@ -298,13 +332,31 @@
 
                         move(60)
 
+                        data.valores.valores.forEach(x => {
+
+
+                            linha = ` <div class="col-xs-12 col-sm-12 col-md-12 col-xl-12">
+                                                 <div class="panel panel-colorful" style="background-color:#8faadc">
+                                                    <div class="panel-heading">
+                                                        <h2 style="margin:0%;color:#ffffff;font-size:20px;" class="panel-title text-center">${x.nome}</h2>
+                                                    </div>
+                                                    <div class="panel-body" style="padding-top:0px;">
+                                                        <a class="produto"><h3 class="text-center" style="margin-top:0%; color:#ffffff;font-size:20px">${x.valor.toLocaleString('pt-BR', formato)}</h3></a>
+                                                    </div>
+                                                </div>
+                                            </div>`
+
+                            $("#Empresas").append(linha)
+
+                        })
+
                         linha = ` <div class="col-xs-12 col-sm-12 col-md-12 col-xl-12">
                                               <div class="panel panel-colorful" style="background-color:#8faadc">
                                           <div class="panel-heading">
-                                              <h2 style="margin:0%;color:#ffffff;font-size:20px;" class="panel-title text-center">TOTAL FATURADO</h2>
+                                              <h2 style="margin:0%;color:#ffffff;font-size:20px;" class="panel-title text-center">TOTAL FATURADO(COM DEVOLUÇÃO)</h2>
                                           </div>
                                           <div class="panel-body" style="padding-top:0px;">
-                                                     <a class="produto"><h3 class="text-center" style="margin-top:0%; color:#ffffff;font-size:20px">${Valor.toLocaleString('pt-BR', formato)}</h3></a>
+                                              <a class="produto"><h3 class="text-center" style="margin-top:0%; color:#ffffff;font-size:20px">${Valor.toLocaleString('pt-BR', formato)}</h3></a>
                                           </div>
                                       </div>
                                   </div>`
@@ -331,6 +383,38 @@
                         move(100)
 
                         $("#loading-modal").modal('hide')
+                    }
+                })
+
+                var chamadaUrl2 = `/dashboards/dashboardadm?handler=EmAberto&&Mes=${Mes}&&Ano=${Ano}`
+
+                $.ajax({
+                    url: chamadaUrl2,
+                    type: "POST",
+                    contentType: "application/json;",
+                    dataType: 'json',
+                    headers: {
+                        "RequestVerificationToken": $('input:hidden[name="__RequestVerificationToken"]').val()
+                    },
+                    success: function (data) {
+
+                        grafico = [];
+
+                        grafico.push(['Areas', 'Valor']);
+
+
+                        data.valores.forEach(x => {
+
+                            grafico.push([x.nome, x.valor])
+                        })
+
+                        drawChart()
+
+
+                        //$('#TotalAberto').html(`<div style="color:#3366cc"><b>Total: ${data.valorTotal.toLocaleString('pt-BR', formato)}</b></div>`);
+
+                        move(50)
+
                     }
                 })
             })
