@@ -83,7 +83,7 @@ namespace SGID.Pages.Relatorios.Estoque
             }
         }
 
-        public IActionResult OnPostExport()
+        public IActionResult OnPostExport(string Produto, string Cliente, string Lote)
         {
             try
             {

@@ -822,7 +822,7 @@ namespace SGID.Pages.Relatorios.RH
                         }
                         default:
                         {
-                            sheet.Cells[i, 12].Value = Pedido.D2_TOTAL * 0.03;
+                            sheet.Cells[i, 12].Value = Pedido.D2_TOTAL * 0.02;
                             sheet.Cells[i, 12].Style.Numberformat.Format = "0.00";
                             break;
                         }
@@ -893,6 +893,7 @@ namespace SGID.Pages.Relatorios.RH
                                 }
                             case "KELLY.GONCALVES":
                             case "ROSANA.LUZ":
+                            case "WESLLEY.FERREIRA":
                                 {
                                     sheet.Cells[i, 12].Value = Pedido.Total * 0.02;
                                     sheet.Cells[i, 12].Style.Numberformat.Format = "0.00";
@@ -900,7 +901,7 @@ namespace SGID.Pages.Relatorios.RH
                                 }
                             default:
                                 {
-                                    sheet.Cells[i, 12].Value = Pedido.Total * 0.03;
+                                    sheet.Cells[i, 12].Value = Pedido.Total * 0.02;
                                     sheet.Cells[i, 12].Style.Numberformat.Format = "0.00";
                                     break;
                                 }
@@ -965,7 +966,7 @@ namespace SGID.Pages.Relatorios.RH
                             }
                         default:
                             {
-                                sheet.Cells[i, 4].Value = (Vendedor.Faturado + Vendedor.Devolucao) * 0.03;
+                                sheet.Cells[i, 4].Value = (Vendedor.Faturado + Vendedor.Devolucao) * 0.02;
                                 sheet.Cells[i, 4].Style.Numberformat.Format = "0.00";
                                 break;
                             }

@@ -79,57 +79,47 @@ namespace SGID.Pages.Relatorios.RH
                                          SD10.D1Nfori,
                                          SD10.D1Seriori,
                                          SD10.D1Datori,
-                                         SD10.D1Emissao
-                                     }) .ToList();
+                                         SD10.D1Emissao,
+                                         SA30.A3Xdescun
+                                     }).GroupBy(x => new
+                                     {
+                                         x.A1Nome,
+                                         x.A3Nome,
+                                         x.D1Filial,
+                                         x.D1Fornece,
+                                         x.D1Loja,
+                                         x.A1Clinter,
+                                         x.D1Doc,
+                                         x.D1Serie,
+                                         x.D1Emissao,
+                                         x.D1Dtdigit,
+                                         x.D1Nfori,
+                                         x.D1Seriori,
+                                         x.D1Datori,
+                                         x.A3Xdescun
+                                     });
 
-                        if (teste.Count != 0)
+                        Relatorio = teste.Select(x => new RelatorioDevolucaoFat
                         {
-                            teste.ForEach(x =>
-                            {
-                                if (!Relatorio.Any(d => d.Nome == x.A1Nome && d.Nf == x.D1Doc))
-                                {
-
-                                    var Iguais = teste
-                                    .Where(c => c.A1Nome == x.A1Nome && c.A3Nome == x.A3Nome && c.D1Filial == x.D1Filial
-                                    && c.D1Fornece == x.D1Fornece && c.D1Loja == x.D1Loja && c.A1Clinter == x.A1Clinter
-                                    && c.D1Doc == x.D1Doc && c.D1Serie == x.D1Serie && c.D1Emissao == x.D1Emissao && c.D1Dtdigit == x.D1Dtdigit
-                                    && c.D1Nfori == x.D1Nfori && c.D1Seriori == x.D1Seriori && c.D1Datori == x.D1Datori).ToList();
-
-                                    double desconto = 0;
-                                    double valipi = 0;
-                                    double total = 0;
-                                    double valicm = 0;
-                                    Iguais.ForEach(x =>
-                                    {
-                                        desconto += x.D1Valdesc;
-                                        valipi += x.D1Valipi;
-                                        total += x.D1Total;
-                                        valicm += x.D1Valicm;
-                                    });
-
-                                    Relatorio.Add(new RelatorioDevolucaoFat
-                                    {
-                                        Filial = x.D1Filial,
-                                        Clifor = x.D1Fornece,
-                                        Loja = x.D1Loja,
-                                        Nome = x.A1Nome,
-                                        Tipo = x.A1Clinter,
-                                        Nf = x.D1Doc,
-                                        Serie = x.D1Serie,
-                                        Digitacao = x.D1Dtdigit,
-                                        Total = total - desconto,
-                                        Valipi = valipi,
-                                        Valicm = valicm,
-                                        Descon = desconto,
-                                        TotalBrut = total - desconto + valipi,
-                                        A3Nome = x.A3Nome,
-                                        D1Nfori = x.D1Nfori,
-                                        D1Seriori = x.D1Seriori,
-                                        D1Datori = x.D1Datori
-                                    });
-                                }
-                            });
-                        }
+                            Filial = x.Key.D1Filial,
+                            Clifor = x.Key.D1Fornece,
+                            Loja = x.Key.D1Loja,
+                            Nome = x.Key.A1Nome,
+                            Tipo = x.Key.A1Clinter,
+                            Nf = x.Key.D1Doc,
+                            Serie = x.Key.D1Serie,
+                            Digitacao = x.Key.D1Dtdigit,
+                            Total = x.Sum(c => c.D1Total) - x.Sum(c => c.D1Valdesc),
+                            Valipi = x.Sum(c => c.D1Valipi),
+                            Valicm = x.Sum(c => c.D1Valicm),
+                            Descon = x.Sum(c => c.D1Valdesc),
+                            TotalBrut = x.Sum(c => c.D1Total) - x.Sum(c => c.D1Valdesc) + x.Sum(c => c.D1Valdesc),
+                            A3Nome = x.Key.A3Nome,
+                            D1Nfori = x.Key.D1Nfori,
+                            D1Seriori = x.Key.D1Seriori,
+                            D1Datori = x.Key.D1Datori,
+                            Linha = x.Key.A3Xdescun
+                        }).ToList();
 
                         #endregion
                     }
@@ -167,58 +157,48 @@ namespace SGID.Pages.Relatorios.RH
                                          SD10.D1Nfori,
                                          SD10.D1Seriori,
                                          SD10.D1Datori,
-                                         SD10.D1Emissao
+                                         SD10.D1Emissao,
+                                         SA30.A3Xdescun
                                      }
-                             ).ToList();
+                             ).GroupBy(x => new
+                             {
+                                 x.A1Nome,
+                                 x.A3Nome,
+                                 x.D1Filial,
+                                 x.D1Fornece,
+                                 x.D1Loja,
+                                 x.A1Clinter,
+                                 x.D1Doc,
+                                 x.D1Serie,
+                                 x.D1Emissao,
+                                 x.D1Dtdigit,
+                                 x.D1Nfori,
+                                 x.D1Seriori,
+                                 x.D1Datori,
+                                 x.A3Xdescun
+                             });
 
-                        if (teste.Count != 0)
+                        Relatorio = teste.Select(x => new RelatorioDevolucaoFat
                         {
-                            teste.ForEach(x =>
-                            {
-                                if (!Relatorio.Any(d => d.Nome == x.A1Nome && d.Nf == x.D1Doc))
-                                {
-
-                                    var Iguais = teste
-                                    .Where(c => c.A1Nome == x.A1Nome && c.A3Nome == x.A3Nome && c.D1Filial == x.D1Filial
-                                    && c.D1Fornece == x.D1Fornece && c.D1Loja == x.D1Loja && c.A1Clinter == x.A1Clinter
-                                    && c.D1Doc == x.D1Doc && c.D1Serie == x.D1Serie && c.D1Emissao == x.D1Emissao && c.D1Dtdigit == x.D1Dtdigit
-                                    && c.D1Nfori == x.D1Nfori && c.D1Seriori == x.D1Seriori && c.D1Datori == x.D1Datori).ToList();
-
-                                    double desconto = 0;
-                                    double valipi = 0;
-                                    double total = 0;
-                                    double valicm = 0;
-                                    Iguais.ForEach(x =>
-                                    {
-                                        desconto += x.D1Valdesc;
-                                        valipi += x.D1Valipi;
-                                        total += x.D1Total;
-                                        valicm += x.D1Valicm;
-                                    });
-
-                                    Relatorio.Add(new RelatorioDevolucaoFat
-                                    {
-                                        Filial = x.D1Filial,
-                                        Clifor = x.D1Fornece,
-                                        Loja = x.D1Loja,
-                                        Nome = x.A1Nome,
-                                        Tipo = x.A1Clinter,
-                                        Nf = x.D1Doc,
-                                        Serie = x.D1Serie,
-                                        Digitacao = x.D1Dtdigit,
-                                        Total = total - desconto,
-                                        Valipi = valipi,
-                                        Valicm = valicm,
-                                        Descon = desconto,
-                                        TotalBrut = total - desconto + valipi,
-                                        A3Nome = x.A3Nome,
-                                        D1Nfori = x.D1Nfori,
-                                        D1Seriori = x.D1Seriori,
-                                        D1Datori = x.D1Datori
-                                    });
-                                }
-                            });
-                        }
+                            Filial = x.Key.D1Filial,
+                            Clifor = x.Key.D1Fornece,
+                            Loja = x.Key.D1Loja,
+                            Nome = x.Key.A1Nome,
+                            Tipo = x.Key.A1Clinter,
+                            Nf = x.Key.D1Doc,
+                            Serie = x.Key.D1Serie,
+                            Digitacao = x.Key.D1Dtdigit,
+                            Total = x.Sum(c => c.D1Total) - x.Sum(c => c.D1Valdesc),
+                            Valipi = x.Sum(c => c.D1Valipi),
+                            Valicm = x.Sum(c => c.D1Valicm),
+                            Descon = x.Sum(c => c.D1Valdesc),
+                            TotalBrut = x.Sum(c => c.D1Total) - x.Sum(c => c.D1Valdesc) + x.Sum(c => c.D1Valdesc),
+                            A3Nome = x.Key.A3Nome,
+                            D1Nfori = x.Key.D1Nfori,
+                            D1Seriori = x.Key.D1Seriori,
+                            D1Datori = x.Key.D1Datori,
+                            Linha = x.Key.A3Xdescun
+                        }).ToList();
 
                         #endregion
                     }
@@ -254,58 +234,48 @@ namespace SGID.Pages.Relatorios.RH
                                      SD10.D1Nfori,
                                      SD10.D1Seriori,
                                      SD10.D1Datori,
-                                     SD10.D1Emissao
+                                     SD10.D1Emissao,
+                                     SA30.A3Xdescun
                                  }
-                             ).ToList();
+                             ).GroupBy(x => new
+                             {
+                                 x.A1Nome,
+                                 x.A3Nome,
+                                 x.D1Filial,
+                                 x.D1Fornece,
+                                 x.D1Loja,
+                                 x.A1Clinter,
+                                 x.D1Doc,
+                                 x.D1Serie,
+                                 x.D1Emissao,
+                                 x.D1Dtdigit,
+                                 x.D1Nfori,
+                                 x.D1Seriori,
+                                 x.D1Datori,
+                                 x.A3Xdescun
+                             });
 
-                    if (teste.Count != 0)
+                    Relatorio = teste.Select(x => new RelatorioDevolucaoFat
                     {
-                        teste.ForEach(x =>
-                        {
-                            if (!Relatorio.Any(d => d.Nome == x.A1Nome && d.Nf == x.D1Doc))
-                            {
-
-                                var Iguais = teste
-                                .Where(c => c.A1Nome == x.A1Nome && c.A3Nome == x.A3Nome && c.D1Filial == x.D1Filial
-                                && c.D1Fornece == x.D1Fornece && c.D1Loja == x.D1Loja && c.A1Clinter == x.A1Clinter
-                                && c.D1Doc == x.D1Doc && c.D1Serie == x.D1Serie && c.D1Emissao == x.D1Emissao && c.D1Dtdigit == x.D1Dtdigit
-                                && c.D1Nfori == x.D1Nfori && c.D1Seriori == x.D1Seriori && c.D1Datori == x.D1Datori).ToList();
-
-                                double desconto = 0;
-                                double valipi = 0;
-                                double total = 0;
-                                double valicm = 0;
-                                Iguais.ForEach(x =>
-                                {
-                                    desconto += x.D1Valdesc;
-                                    valipi += x.D1Valipi;
-                                    total += x.D1Total;
-                                    valicm += x.D1Valicm;
-                                });
-
-                                Relatorio.Add(new RelatorioDevolucaoFat
-                                {
-                                    Filial = x.D1Filial,
-                                    Clifor = x.D1Fornece,
-                                    Loja = x.D1Loja,
-                                    Nome = x.A1Nome,
-                                    Tipo = x.A1Clinter,
-                                    Nf = x.D1Doc,
-                                    Serie = x.D1Serie,
-                                    Digitacao = x.D1Dtdigit,
-                                    Total = total - desconto,
-                                    Valipi = valipi,
-                                    Valicm = valicm,
-                                    Descon = desconto,
-                                    TotalBrut = total - desconto + valipi,
-                                    A3Nome = x.A3Nome,
-                                    D1Nfori = x.D1Nfori,
-                                    D1Seriori = x.D1Seriori,
-                                    D1Datori = x.D1Datori
-                                });
-                            }
-                        });
-                    }
+                        Filial = x.Key.D1Filial,
+                        Clifor = x.Key.D1Fornece,
+                        Loja = x.Key.D1Loja,
+                        Nome = x.Key.A1Nome,
+                        Tipo = x.Key.A1Clinter,
+                        Nf = x.Key.D1Doc,
+                        Serie = x.Key.D1Serie,
+                        Digitacao = x.Key.D1Dtdigit,
+                        Total = x.Sum(c => c.D1Total) - x.Sum(c => c.D1Valdesc),
+                        Valipi = x.Sum(c => c.D1Valipi),
+                        Valicm = x.Sum(c => c.D1Valicm),
+                        Descon = x.Sum(c => c.D1Valdesc),
+                        TotalBrut = x.Sum(c => c.D1Total) - x.Sum(c => c.D1Valdesc) + x.Sum(c => c.D1Valdesc),
+                        A3Nome = x.Key.A3Nome,
+                        D1Nfori = x.Key.D1Nfori,
+                        D1Seriori = x.Key.D1Seriori,
+                        D1Datori = x.Key.D1Datori,
+                        Linha = x.Key.A3Xdescun
+                    }).ToList();
                 }
                 
 
@@ -368,57 +338,47 @@ namespace SGID.Pages.Relatorios.RH
                                          SD10.D1Nfori,
                                          SD10.D1Seriori,
                                          SD10.D1Datori,
-                                         SD10.D1Emissao
-                                     }).ToList();
+                                         SD10.D1Emissao,
+                                         SA30.A3Xdescun
+                                     }).GroupBy(x => new
+                                     {
+                                         x.A1Nome,
+                                         x.A3Nome,
+                                         x.D1Filial,
+                                         x.D1Fornece,
+                                         x.D1Loja,
+                                         x.A1Clinter,
+                                         x.D1Doc,
+                                         x.D1Serie,
+                                         x.D1Emissao,
+                                         x.D1Dtdigit,
+                                         x.D1Nfori,
+                                         x.D1Seriori,
+                                         x.D1Datori,
+                                         x.A3Xdescun
+                                     });
 
-                        if (teste.Count != 0)
+                        Relatorio = teste.Select(x => new RelatorioDevolucaoFat
                         {
-                            teste.ForEach(x =>
-                            {
-                                if (!Relatorio.Any(d => d.Nome == x.A1Nome && d.Nf == x.D1Doc))
-                                {
-
-                                    var Iguais = teste
-                                    .Where(c => c.A1Nome == x.A1Nome && c.A3Nome == x.A3Nome && c.D1Filial == x.D1Filial
-                                    && c.D1Fornece == x.D1Fornece && c.D1Loja == x.D1Loja && c.A1Clinter == x.A1Clinter
-                                    && c.D1Doc == x.D1Doc && c.D1Serie == x.D1Serie && c.D1Emissao == x.D1Emissao && c.D1Dtdigit == x.D1Dtdigit
-                                    && c.D1Nfori == x.D1Nfori && c.D1Seriori == x.D1Seriori && c.D1Datori == x.D1Datori).ToList();
-
-                                    double desconto = 0;
-                                    double valipi = 0;
-                                    double total = 0;
-                                    double valicm = 0;
-                                    Iguais.ForEach(x =>
-                                    {
-                                        desconto += x.D1Valdesc;
-                                        valipi += x.D1Valipi;
-                                        total += x.D1Total;
-                                        valicm += x.D1Valicm;
-                                    });
-
-                                    Relatorio.Add(new RelatorioDevolucaoFat
-                                    {
-                                        Filial = x.D1Filial,
-                                        Clifor = x.D1Fornece,
-                                        Loja = x.D1Loja,
-                                        Nome = x.A1Nome,
-                                        Tipo = x.A1Clinter,
-                                        Nf = x.D1Doc,
-                                        Serie = x.D1Serie,
-                                        Digitacao = x.D1Dtdigit,
-                                        Total = total - desconto,
-                                        Valipi = valipi,
-                                        Valicm = valicm,
-                                        Descon = desconto,
-                                        TotalBrut = total - desconto + valipi,
-                                        A3Nome = x.A3Nome,
-                                        D1Nfori = x.D1Nfori,
-                                        D1Seriori = x.D1Seriori,
-                                        D1Datori = x.D1Datori
-                                    });
-                                }
-                            });
-                        }
+                            Filial = x.Key.D1Filial,
+                            Clifor = x.Key.D1Fornece,
+                            Loja = x.Key.D1Loja,
+                            Nome = x.Key.A1Nome,
+                            Tipo = x.Key.A1Clinter,
+                            Nf = x.Key.D1Doc,
+                            Serie = x.Key.D1Serie,
+                            Digitacao = x.Key.D1Dtdigit,
+                            Total = x.Sum(c => c.D1Total) - x.Sum(c => c.D1Valdesc),
+                            Valipi = x.Sum(c => c.D1Valipi),
+                            Valicm = x.Sum(c => c.D1Valicm),
+                            Descon = x.Sum(c => c.D1Valdesc),
+                            TotalBrut = x.Sum(c => c.D1Total) - x.Sum(c => c.D1Valdesc) + x.Sum(c => c.D1Valdesc),
+                            A3Nome = x.Key.A3Nome,
+                            D1Nfori = x.Key.D1Nfori,
+                            D1Seriori = x.Key.D1Seriori,
+                            D1Datori = x.Key.D1Datori,
+                            Linha = x.Key.A3Xdescun
+                        }).ToList();
 
                         #endregion
                     }
@@ -456,58 +416,48 @@ namespace SGID.Pages.Relatorios.RH
                                          SD10.D1Nfori,
                                          SD10.D1Seriori,
                                          SD10.D1Datori,
-                                         SD10.D1Emissao
+                                         SD10.D1Emissao,
+                                         SA30.A3Xdescun
                                      }
-                             ).ToList();
+                             ).GroupBy(x => new
+                             {
+                                 x.A1Nome,
+                                 x.A3Nome,
+                                 x.D1Filial,
+                                 x.D1Fornece,
+                                 x.D1Loja,
+                                 x.A1Clinter,
+                                 x.D1Doc,
+                                 x.D1Serie,
+                                 x.D1Emissao,
+                                 x.D1Dtdigit,
+                                 x.D1Nfori,
+                                 x.D1Seriori,
+                                 x.D1Datori,
+                                 x.A3Xdescun
+                             });
 
-                        if (teste.Count != 0)
+                        Relatorio = teste.Select(x => new RelatorioDevolucaoFat
                         {
-                            teste.ForEach(x =>
-                            {
-                                if (!Relatorio.Any(d => d.Nome == x.A1Nome && d.Nf == x.D1Doc))
-                                {
-
-                                    var Iguais = teste
-                                    .Where(c => c.A1Nome == x.A1Nome && c.A3Nome == x.A3Nome && c.D1Filial == x.D1Filial
-                                    && c.D1Fornece == x.D1Fornece && c.D1Loja == x.D1Loja && c.A1Clinter == x.A1Clinter
-                                    && c.D1Doc == x.D1Doc && c.D1Serie == x.D1Serie && c.D1Emissao == x.D1Emissao && c.D1Dtdigit == x.D1Dtdigit
-                                    && c.D1Nfori == x.D1Nfori && c.D1Seriori == x.D1Seriori && c.D1Datori == x.D1Datori).ToList();
-
-                                    double desconto = 0;
-                                    double valipi = 0;
-                                    double total = 0;
-                                    double valicm = 0;
-                                    Iguais.ForEach(x =>
-                                    {
-                                        desconto += x.D1Valdesc;
-                                        valipi += x.D1Valipi;
-                                        total += x.D1Total;
-                                        valicm += x.D1Valicm;
-                                    });
-
-                                    Relatorio.Add(new RelatorioDevolucaoFat
-                                    {
-                                        Filial = x.D1Filial,
-                                        Clifor = x.D1Fornece,
-                                        Loja = x.D1Loja,
-                                        Nome = x.A1Nome,
-                                        Tipo = x.A1Clinter,
-                                        Nf = x.D1Doc,
-                                        Serie = x.D1Serie,
-                                        Digitacao = x.D1Dtdigit,
-                                        Total = total - desconto,
-                                        Valipi = valipi,
-                                        Valicm = valicm,
-                                        Descon = desconto,
-                                        TotalBrut = total - desconto + valipi,
-                                        A3Nome = x.A3Nome,
-                                        D1Nfori = x.D1Nfori,
-                                        D1Seriori = x.D1Seriori,
-                                        D1Datori = x.D1Datori
-                                    });
-                                }
-                            });
-                        }
+                            Filial = x.Key.D1Filial,
+                            Clifor = x.Key.D1Fornece,
+                            Loja = x.Key.D1Loja,
+                            Nome = x.Key.A1Nome,
+                            Tipo = x.Key.A1Clinter,
+                            Nf = x.Key.D1Doc,
+                            Serie = x.Key.D1Serie,
+                            Digitacao = x.Key.D1Dtdigit,
+                            Total = x.Sum(c => c.D1Total) - x.Sum(c => c.D1Valdesc),
+                            Valipi = x.Sum(c => c.D1Valipi),
+                            Valicm = x.Sum(c => c.D1Valicm),
+                            Descon = x.Sum(c => c.D1Valdesc),
+                            TotalBrut = x.Sum(c => c.D1Total) - x.Sum(c => c.D1Valdesc) + x.Sum(c => c.D1Valdesc),
+                            A3Nome = x.Key.A3Nome,
+                            D1Nfori = x.Key.D1Nfori,
+                            D1Seriori = x.Key.D1Seriori,
+                            D1Datori = x.Key.D1Datori,
+                            Linha = x.Key.A3Xdescun
+                        }).ToList();
 
                         #endregion
                     }
@@ -543,58 +493,49 @@ namespace SGID.Pages.Relatorios.RH
                                      SD10.D1Nfori,
                                      SD10.D1Seriori,
                                      SD10.D1Datori,
-                                     SD10.D1Emissao
+                                     SD10.D1Emissao,
+                                     SA30.A3Xdescun
                                  }
-                             ).ToList();
+                             ).GroupBy(x => new
+                             {
+                                 x.A1Nome,
+                                 x.A3Nome,
+                                 x.D1Filial,
+                                 x.D1Fornece,
+                                 x.D1Loja,
+                                 x.A1Clinter,
+                                 x.D1Doc,
+                                 x.D1Serie,
+                                 x.D1Emissao,
+                                 x.D1Dtdigit,
+                                 x.D1Nfori,
+                                 x.D1Seriori,
+                                 x.D1Datori,
+                                 x.A3Xdescun,
 
-                    if (teste.Count != 0)
+                             });
+
+                    Relatorio = teste.Select(x => new RelatorioDevolucaoFat
                     {
-                        teste.ForEach(x =>
-                        {
-                            if (!Relatorio.Any(d => d.Nome == x.A1Nome && d.Nf == x.D1Doc))
-                            {
-
-                                var Iguais = teste
-                                .Where(c => c.A1Nome == x.A1Nome && c.A3Nome == x.A3Nome && c.D1Filial == x.D1Filial
-                                && c.D1Fornece == x.D1Fornece && c.D1Loja == x.D1Loja && c.A1Clinter == x.A1Clinter
-                                && c.D1Doc == x.D1Doc && c.D1Serie == x.D1Serie && c.D1Emissao == x.D1Emissao && c.D1Dtdigit == x.D1Dtdigit
-                                && c.D1Nfori == x.D1Nfori && c.D1Seriori == x.D1Seriori && c.D1Datori == x.D1Datori).ToList();
-
-                                double desconto = 0;
-                                double valipi = 0;
-                                double total = 0;
-                                double valicm = 0;
-                                Iguais.ForEach(x =>
-                                {
-                                    desconto += x.D1Valdesc;
-                                    valipi += x.D1Valipi;
-                                    total += x.D1Total;
-                                    valicm += x.D1Valicm;
-                                });
-
-                                Relatorio.Add(new RelatorioDevolucaoFat
-                                {
-                                    Filial = x.D1Filial,
-                                    Clifor = x.D1Fornece,
-                                    Loja = x.D1Loja,
-                                    Nome = x.A1Nome,
-                                    Tipo = x.A1Clinter,
-                                    Nf = x.D1Doc,
-                                    Serie = x.D1Serie,
-                                    Digitacao = x.D1Dtdigit,
-                                    Total = total - desconto,
-                                    Valipi = valipi,
-                                    Valicm = valicm,
-                                    Descon = desconto,
-                                    TotalBrut = total - desconto + valipi,
-                                    A3Nome = x.A3Nome,
-                                    D1Nfori = x.D1Nfori,
-                                    D1Seriori = x.D1Seriori,
-                                    D1Datori = x.D1Datori
-                                });
-                            }
-                        });
-                    }
+                        Filial = x.Key.D1Filial,
+                        Clifor = x.Key.D1Fornece,
+                        Loja = x.Key.D1Loja,
+                        Nome = x.Key.A1Nome,
+                        Tipo = x.Key.A1Clinter,
+                        Nf = x.Key.D1Doc,
+                        Serie = x.Key.D1Serie,
+                        Digitacao = x.Key.D1Dtdigit,
+                        Total = x.Sum(c => c.D1Total) - x.Sum(c => c.D1Valdesc),
+                        Valipi = x.Sum(c => c.D1Valipi),
+                        Valicm = x.Sum(c => c.D1Valicm),
+                        Descon = x.Sum(c => c.D1Valdesc),
+                        TotalBrut = x.Sum(c => c.D1Total) - x.Sum(c => c.D1Valdesc) + x.Sum(c => c.D1Valdesc),
+                        A3Nome = x.Key.A3Nome,
+                        D1Nfori = x.Key.D1Nfori,
+                        D1Seriori = x.Key.D1Seriori,
+                        D1Datori = x.Key.D1Datori,
+                        Linha = x.Key.A3Xdescun
+                    }).ToList();
                 }
 
                 using ExcelPackage package = new ExcelPackage();
