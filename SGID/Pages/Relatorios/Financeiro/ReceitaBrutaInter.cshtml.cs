@@ -38,7 +38,7 @@ namespace SGID.Pages.Relatorios.Financeiro
                 Relatorios = (from SF20 in Protheus.Sf2010s
                               join SD20 in Protheus.Sd2010s on SF20.F2Doc equals SD20.D2Doc
                               join SB10 in Protheus.Sb1010s on SD20.D2Cod equals SB10.B1Cod
-                              join SA10 in Protheus.Sa1010s on SF20.F2Cliente equals SA10.A1Cod into Sr
+                              join SA10 in Protheus.Sa1010s on new { Cliente = SD20.D2Cliente, Loja = SD20.D2Loja } equals new { Cliente = SA10.A1Cod, Loja = SA10.A1Loja } into Sr
                               from m in Sr.DefaultIfEmpty()
                               join SC50 in Protheus.Sc5010s on SD20.D2Pedido equals SC50.C5Num into Se
                               from c in Se.DefaultIfEmpty()
@@ -126,7 +126,7 @@ namespace SGID.Pages.Relatorios.Financeiro
                 Relatorios = (from SF20 in Protheus.Sf2010s
                               join SD20 in Protheus.Sd2010s on SF20.F2Doc equals SD20.D2Doc
                               join SB10 in Protheus.Sb1010s on SD20.D2Cod equals SB10.B1Cod
-                              join SA10 in Protheus.Sa1010s on SF20.F2Cliente equals SA10.A1Cod into Sr
+                              join SA10 in Protheus.Sa1010s on new { Cliente = SD20.D2Cliente, Loja = SD20.D2Loja } equals new { Cliente = SA10.A1Cod, Loja = SA10.A1Loja } into Sr
                               from m in Sr.DefaultIfEmpty()
                               join SC50 in Protheus.Sc5010s on SD20.D2Pedido equals SC50.C5Num into Se
                               from c in Se.DefaultIfEmpty()

@@ -60,17 +60,17 @@
     <div class="container-lg container-xl container-xxl" style="margin-left:0px;margin-right:0px;">
         <div class="sidenav" id="mySidenav">
             <ul style="padding-left:0%;">
-                <li>
+               <li>
                     <a><input type="checkbox" id="checkFeche"/>
                     <label for="checkFeche">
                         <i class="fas fa-bars fa-xl" id="btn"></i>
                     </label>
                     </a>
                 </li>
-                <li>
+               <li>
                     <a class="nav-link" href="/dashboard/3"><i class="fa-solid fa-house"></i>Home</a>
                 </li>
-                @if(User.IsInRole("Admin") || User.IsInRole("GestorComercial") || User.IsInRole("Comercial") )
+               @if(User.IsInRole("Admin") || User.IsInRole("GestorComercial") || User.IsInRole("Comercial") )
                 {
                     if (User.Identity.Name.Split("@")[1].ToUpper() == "INTERMEDIC.COM.BR")
                     {
@@ -97,13 +97,13 @@
                     </li>
                     
                 }
-                @if(User.IsInRole("Admin")|| User.IsInRole("Diretoria"))
+               @if(User.IsInRole("Admin")|| User.IsInRole("Diretoria"))
                 {
                      <li>
                         <a class="nav-link" href="/dashboards/DashBoardMetas"><i class="fa-solid fa-clipboard-user"></i>DashBoard Diretoria</a>
                      </li>
                 }
-                @if(User.IsInRole("Admin") || User.IsInRole("GestorVenda") || User.IsInRole("Venda") || User.IsInRole("Diretoria"))
+               @if(User.IsInRole("Admin") || User.IsInRole("GestorVenda") || User.IsInRole("Venda") || User.IsInRole("Diretoria"))
                 {
                     @if (User.IsInRole("Admin") || User.IsInRole("GestorVenda"))
                     {
@@ -123,7 +123,7 @@
                         </div>
                     </li>
                 }
-                @if(User.IsInRole("Admin") || User.IsInRole("Comercial") || User.IsInRole("GestorComercial") || User.IsInRole("Diretoria"))
+               @if(User.IsInRole("Admin") || User.IsInRole("Comercial") || User.IsInRole("GestorComercial") || User.IsInRole("Diretoria"))
                 {
                     <li class="nav-item dropdown">
                         <a class="nav-link align-items-center rounded dropdown-toggle" data-bs-toggle="collapse" 
@@ -165,7 +165,7 @@
                         </div>
                     </li>-->
                 }
-                @if(User.IsInRole("Admin") || User.IsInRole("Financeiro") || User.IsInRole("Diretoria"))
+               @if(User.IsInRole("Admin") || User.IsInRole("Financeiro") || User.IsInRole("Diretoria"))
                 {
                     <li>
                         <a class="nav-link" href="/dashboards/DashBoardadm"><i class="fa-solid fa-chart-pie"></i>Metas ADM</a>
@@ -201,7 +201,7 @@
                         </div>
                     </li>
                 }
-                @if(User.IsInRole("Admin") || User.IsInRole("Instrumentador") || User.IsInRole("Diretoria"))
+               @if(User.IsInRole("Admin") || User.IsInRole("Instrumentador") || User.IsInRole("Diretoria"))
                 {
                     <li class="nav-item dropdown">
                         <a class="nav-link align-items-center rounded dropdown-toggle" data-bs-toggle="collapse" 
@@ -216,7 +216,7 @@
                         </div>
                     </li>
                 }
-                @if(User.IsInRole("Admin") || User.IsInRole("RH") || User.IsInRole("Diretoria"))
+               @if(User.IsInRole("Admin") || User.IsInRole("RH") || User.IsInRole("Diretoria"))
                 {
                     <li class="nav-item dropdown">
                         <a class="nav-link align-items-center rounded dropdown-toggle" data-bs-toggle="collapse" 
@@ -246,7 +246,7 @@
                     </li>
                     
                 }
-                @if(User.IsInRole("Admin") || User.IsInRole("Estoque") || User.IsInRole("Diretoria"))
+               @if(User.IsInRole("Admin") || User.IsInRole("Estoque") || User.IsInRole("Diretoria"))
                 {
                     <li class="nav-item dropdown">
                         <a class="nav-link align-items-center rounded dropdown-toggle" data-bs-toggle="collapse" 
@@ -326,7 +326,7 @@
                         </div>
                     </li>
                 }
-                @if(User.IsInRole("Admin"))
+               @if(User.IsInRole("Admin"))
                 {
                     <li class="nav-item dropdown">
                         <a class="nav-link align-items-center rounded dropdown-toggle" data-bs-toggle="collapse"
@@ -341,22 +341,26 @@
                         </div>
                     </li> 
                 }
-                @if(User.IsInRole("Admin") || User.IsInRole("Qualidade"))
+               @if(User.IsInRole("Admin") || User.IsInRole("Qualidade"))
                 {
                     <li class="nav-item dropdown">
                         <a class="nav-link align-items-center rounded dropdown-toggle" data-bs-toggle="collapse"
-                           data-bs-target="#qualidade-collapse" aria-expanded="false">
+                        data-bs-target="#qualidade-collapse" aria-expanded="false">
                             <i class="fa-solid fa-square-check"></i> Qualidade
                         </a>
                         <div class="collapse" id="qualidade-collapse">
                             <ul class="list-unstyled fw-normal pb-1 small">
                                 <li><a class="nav-link" href="/qualidade/importarprodutos">Importar Produtos Denuo</a></li>
                                 <li><a class="nav-link" href="/qualidade/importarprodutosinter">Importar Produtos Inter</a></li>
+                                @if(User.IsInRole("Admin"))
+                                {
+                                    <li><a class="nav-link" href="/qualidade/AlteracaoComercializado">Importar Alterar Comercializado</a></li>
+                                }
                             </ul>
                         </div>
                     </li>
                 }
-                <li class="nav-item dropdown">
+               <li class="nav-item dropdown">
                   <a class="nav-link align-items-center rounded dropdown-toggle" data-bs-toggle="collapse" 
                      data-bs-target="#relatorio-collapse" aria-expanded="false"> 
                      <i class="fa-solid fa-clipboard-list"></i>Relatórios
@@ -626,6 +630,20 @@
                                     </div>
                                 </li>
                             }
+                            @if (User.IsInRole("Admin") || User.IsInRole("Dental"))
+                            {
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link align-items-center rounded dropdown-toggle" data-bs-toggle="collapse"
+                                       data-bs-target="#dental-collapse" aria-expanded="false">
+                                        Dental
+                                    </a>
+                                    <div class="collapse" id="dental-collapse">
+                                        <ul class="list-unstyled fw-normal pb-1 small">
+                                            <li><a class="nav-link" href="/relatorios/estoque/giroestoque">Giro Estoque Denuo</a></li>
+                                        </ul>
+                                    </div>
+                                </li>
+                            }
                             @if (User.IsInRole("Admin") || User.IsInRole("Financeiro") || User.IsInRole("Diretoria"))
                             {
                                 <li class="nav-item dropdown">
@@ -801,7 +819,7 @@
     <script src="~/js/loading-bar.js" asp-append-version="true"></script>
     <script>
         $("#check").on('change',function (){
-               document.getElementById("mySidenav").style.width = "250px";
+            document.getElementById("mySidenav").style.width = "250px";
         });
 
         $("#checkFeche").on('change',function(){

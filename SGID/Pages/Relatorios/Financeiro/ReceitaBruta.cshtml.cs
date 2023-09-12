@@ -43,7 +43,7 @@ namespace SGID.Pages.Relatorios.Financeiro
                 Relatorios = (from SF20 in Protheus.Sf2010s
                               join SD20 in Protheus.Sd2010s on SF20.F2Doc equals SD20.D2Doc
                               join SB10 in Protheus.Sb1010s on SD20.D2Cod equals SB10.B1Cod
-                              join SA10 in Protheus.Sa1010s on SF20.F2Cliente equals SA10.A1Cod into Sr
+                              join SA10 in Protheus.Sa1010s on new { Cliente = SD20.D2Cliente, Loja = SD20.D2Loja } equals new { Cliente = SA10.A1Cod, Loja = SA10.A1Loja } into Sr
                               from m in Sr.DefaultIfEmpty()
                               join SC50 in Protheus.Sc5010s on SD20.D2Pedido equals SC50.C5Num into Se
                               from c in Se.DefaultIfEmpty()
@@ -128,14 +128,16 @@ namespace SGID.Pages.Relatorios.Financeiro
                 Relatorios = (from SF20 in Protheus.Sf2010s
                               join SD20 in Protheus.Sd2010s on SF20.F2Doc equals SD20.D2Doc
                               join SB10 in Protheus.Sb1010s on SD20.D2Cod equals SB10.B1Cod
-                              join SA10 in Protheus.Sa1010s on SF20.F2Cliente equals SA10.A1Cod into Sr
+                              join SA10 in Protheus.Sa1010s on new { Cliente = SD20.D2Cliente, Loja = SD20.D2Loja } equals new { Cliente = SA10.A1Cod, Loja = SA10.A1Loja } into Sr
                               from m in Sr.DefaultIfEmpty()
                               join SC50 in Protheus.Sc5010s on SD20.D2Pedido equals SC50.C5Num into Se
                               from c in Se.DefaultIfEmpty()
                               where (int)(object)SD20.D2Emissao >= (int)(object)DataInicio.ToString("yyyy/MM/dd").Replace("/", "")
                               && (int)(object)SD20.D2Emissao <= (int)(object)DataFim.ToString("yyyy/MM/dd").Replace("/", "")
-                              && (((int)(object)SD20.D2Cf >= 5102 && (int)(object)SD20.D2Cf <= 5114) || ((int)(object)SD20.D2Cf >= 6102 && (int)(object)SD20.D2Cf <= 6114) ||
-                              ((int)(object)SD20.D2Cf >= 7102 && (int)(object)SD20.D2Cf <= 7114) || CF.Contains((int)(object)SD20.D2Cf))
+                              && (((int)(object)SD20.D2Cf >= 5102 && (int)(object)SD20.D2Cf <= 5114) || 
+                              ((int)(object)SD20.D2Cf >= 6102 && (int)(object)SD20.D2Cf <= 6114) ||
+                              ((int)(object)SD20.D2Cf >= 7102 && (int)(object)SD20.D2Cf <= 7114) || 
+                              CF.Contains((int)(object)SD20.D2Cf))
                               && SF20.DELET != "*" && SD20.DELET != "*"
                               select new ReceitaBruta
                               {

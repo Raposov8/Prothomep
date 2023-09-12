@@ -78,7 +78,7 @@ namespace SGID.Pages.Relatorios.Estoque
                                Desc = x.Key.Desc,
                                Saldo = x.Sum(c => c.Saldo),
                                Fabricante = x.Key.Fabricante
-                           }).Where(x => x.Saldo > 0).ToList();
+                           }).Where(x => x.Saldo >= 0).ToList();
 
 
             Entrada.ForEach(x =>
@@ -156,7 +156,7 @@ namespace SGID.Pages.Relatorios.Estoque
                                    Desc = x.Key.Desc,
                                    Saldo = x.Sum(c => c.Saldo),
                                    Fabricante = x.Key.Fabricante
-                               }).Where(x => x.Saldo > 0).ToList();
+                               }).Where(x => x.Saldo >= 0).ToList();
 
 
                 Entrada.ForEach(x =>

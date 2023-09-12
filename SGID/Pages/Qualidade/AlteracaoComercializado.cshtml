@@ -1,0 +1,81 @@
+﻿@page
+@model SGID.Pages.Qualidade.AlteracaoComercializadoModel
+@{
+    ViewData["Title"] = "Alteração Comercializado";
+    Layout = "_LayoutGeral";
+}
+
+<div class="row">
+    <div class="col-md-6">
+        <h2 style="padding-left:20px;">Importar Arquivo</h2>
+    </div>
+</div>
+
+@Html.AntiForgeryToken()
+
+@using (@Html.BeginForm(FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    <div class="row">
+        <div class="card" style="padding:10px;">
+            <div class="col-md-12">
+                <div class="row">
+                    <div class="col-md-12 Titulo">
+                        <span>Selecionar Arquivo</span>
+                    </div>
+                    <div class="custom-file" style="margin-top:10px;">
+                        <input type="file" class="custom-file-input" id="Anexos" name="Anexos" accept=".csv" />
+                    </div>
+                    <div>
+                        <span>Selecionar Empresa</span>
+                        <select class="form-control" id="Empresa" name="Empresa">
+                            <option value="INTERMEDIC">Intermedic</option>
+                            <option value="DENUO">Denuo</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div style="color:#00b050" class="col-md-2"><button class="btn btn-button btn-success float-end" style="font-size:12px;" type="submit"><i class="fa-solid fa-thumbs-up"></i> Enviar</button></div> |
+            <div style="color:#c00000" class="col-md-2"><a class="btn btn-button btn-danger" style="font-size:12px;" href="/dashboard/0"><i class="fa-solid fa-xmark"></i> Cancelar</a></div>
+        </div>
+    </div>
+}
+
+<div class="modal fade" id="loading-modal" role="dialog" tabindex="-1" aria-labelledby="demo-default-modal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <!--Modal body-->
+            <div class="modal-body">
+                <div style="display:flex; justify-content: center;">
+                    <i class="fa-solid fa-spinner fa-50x fa-spin-pulse"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+@section Scripts{
+    <script>
+
+        $(document).ready(function () {
+
+            @if (Model.TextoResposta != "")
+            {
+                @:alert(`@Model.TextoResposta`)
+            }
+        
+        })
+
+    </script>
+    <script>
+
+        $('#Sub').on('click', function () {
+            $("#loading-modal").modal('show')
+        })
+    </script>
+}
+
+

@@ -20,12 +20,13 @@ namespace SGID.Pages.Instrumentador
             SGID = sgid;
             _WEB = wEB;
         }
+
         public void OnGet(int id)
         {
            Agendamento = SGID.Agendamentos.FirstOrDefault(x => x.Id == id);
         }
 
-        public IActionResult OnPostAsync(int Id,string codigo,string NomePaciente,string NomeMedico,string NomeCliente,int Status,
+        public IActionResult OnPostAsync(int Id,string Codigo,string NomePaciente,string NomeMedico,string NomeCliente,int Status,
             DateTime DataCirurgia,string Hora,string Procedimento,string Obs, IFormCollection Anexos01, IFormCollection Anexos02, 
             IFormCollection Anexos03, IFormCollection Anexos04, IFormCollection Anexos05)
         {
@@ -33,7 +34,7 @@ namespace SGID.Pages.Instrumentador
             var dados = new DadosCirurgia
             {
                 DataCriacao = DateTime.Now,
-                Codigo = codigo,
+                Codigo = Codigo,
                 NomePaciente = NomePaciente,
                 NomeMedico = NomeMedico,
                 NomeCliente = NomeCliente,
