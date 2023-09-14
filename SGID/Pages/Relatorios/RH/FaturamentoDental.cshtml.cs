@@ -901,7 +901,7 @@ namespace SGID.Pages.Relatorios.RH
                                 }
                             default:
                                 {
-                                    sheet.Cells[i, 12].Value = Pedido.Total * 0.02;
+                                    sheet.Cells[i, 12].Value = Pedido.Total * 0.03;
                                     sheet.Cells[i, 12].Style.Numberformat.Format = "0.00";
                                     break;
                                 }

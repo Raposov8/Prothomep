@@ -38,7 +38,8 @@ namespace SGID.Pages.Relatorios.RH
                              join SE10 in Protheus.Se1010s on new { PRE = SE50.E5Prefixo, Num = SE50.E5Numero, Par = SE50.E5Parcela, Tipo = SE50.E5Tipo, Cliente = SE50.E5Cliente, Loja = SE50.E5Loja }
                              equals new { PRE = SE10.E1Prefixo, Num = SE10.E1Num, Par = SE10.E1Parcela, Tipo = SE10.E1Tipo, Cliente = SE10.E1Cliente, Loja = SE10.E1Loja }
                              join SA10 in Protheus.Sa1010s on SE50.E5Cliente equals SA10.A1Cod
-                             join SC50 in Protheus.Sc5010s on SE10.E1Pedido equals SC50.C5Num
+                             join SC50 in Protheus.Sc5010s on SE10.E1Pedido equals SC50.C5Num into sr
+                             from c in sr.DefaultIfEmpty()
                              where SE50.DELET != "*" && SE10.DELET != "*" && SE50.E5Recpag == "R"
                              && (SE50.E5Tipodoc == "VL" || SE50.E5Tipodoc == "RA")
                              && (SE50.E5Naturez == "111001" || SE50.E5Naturez == "111004" || SE50.E5Naturez == "111006")
@@ -70,7 +71,7 @@ namespace SGID.Pages.Relatorios.RH
                                  DtDigi = SE50.E5Dtdigit,
                                  Mot = SE50.E5Motbx,
                                  Orig = SE50.E5Filorig,
-                                 Vendedor = SC50.C5Nomvend,
+                                 Vendedor = c.C5Nomvend,
                                  TipoCliente = SA10.A1Clinter
                              }
                              ).ToList();
@@ -97,8 +98,9 @@ namespace SGID.Pages.Relatorios.RH
                 Relatorio = (from SE50 in Protheus.Se5010s
                              join SE10 in Protheus.Se1010s on new { PRE = SE50.E5Prefixo, Num = SE50.E5Numero, Par = SE50.E5Parcela, Tipo = SE50.E5Tipo, Cliente = SE50.E5Cliente, Loja = SE50.E5Loja }
                              equals new { PRE = SE10.E1Prefixo, Num = SE10.E1Num, Par = SE10.E1Parcela, Tipo = SE10.E1Tipo, Cliente = SE10.E1Cliente, Loja = SE10.E1Loja }
-                             join SA10 in Protheus.Sa1010s on SE50.E5Cliente equals SA10.A1Cod
-                             join SC50 in Protheus.Sc5010s on SE10.E1Pedido equals SC50.C5Num
+                             join SA10 in Protheus.Sa1010s on new {Cliente= SE50.E5Cliente } equals new {Cliente = SA10.A1Cod }   
+                             join SC50 in Protheus.Sc5010s on SE10.E1Pedido equals SC50.C5Num into sr
+                             from c in sr.DefaultIfEmpty()
                              where SE50.DELET != "*" && SE10.DELET != "*" && SE50.E5Recpag == "R"
                              && (SE50.E5Tipodoc == "VL" || SE50.E5Tipodoc == "RA")
                              && (SE50.E5Naturez == "111001" || SE50.E5Naturez == "111004" || SE50.E5Naturez == "111006")
@@ -130,7 +132,7 @@ namespace SGID.Pages.Relatorios.RH
                                  DtDigi = SE50.E5Dtdigit,
                                  Mot = SE50.E5Motbx,
                                  Orig = SE50.E5Filorig,
-                                 Vendedor = SC50.C5Nomvend,
+                                 Vendedor = c.C5Nomvend,
                                  TipoCliente = SA10.A1Clinter
                              }
                              ).ToList();

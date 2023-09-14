@@ -39,7 +39,7 @@ namespace SGID.Pages.Relatorios.RH
                              equals new { PRE = SE10.E1Prefixo, Num = SE10.E1Num, Par = SE10.E1Parcela, Tipo = SE10.E1Tipo, Cliente = SE10.E1Cliente, Loja = SE10.E1Loja }
                              join SA10 in Protheus.Sa1010s on SE50.E5Cliente equals SA10.A1Cod
                              join SC50 in Protheus.Sc5010s on SE10.E1Pedido equals SC50.C5Num
-                             join SD20 in Protheus.Sd2010s on new { Filial = SC50.C5Filial, Num = SC50.C5Num } equals new { Filial = SD20.D2Filial, Num = SD20.D2Pedido }
+                             join SA30 in Protheus.Sa3010s on SC50.C5Vend1 equals SA30.A3Cod
                              where SE50.DELET != "*" && SE10.DELET != "*" && SE50.E5Recpag == "R"
                              && (SE50.E5Tipodoc == "VL" || SE50.E5Tipodoc == "RA")
                              && (SE50.E5Naturez == "111001" || SE50.E5Naturez == "111004" || SE50.E5Naturez == "111006")
@@ -73,9 +73,13 @@ namespace SGID.Pages.Relatorios.RH
                                  Orig = SE50.E5Filorig,
                                  Vendedor = SC50.C5Nomvend,
                                  TipoCliente = SA10.A1Clinter,
-                                 DataPedido = SD20.D2Emissao
-                             }
-                             ).ToList();
+                                 CodigoCliente = SA10.A1Xgrinte,
+                                 Login = SA30.A3Xlogin,
+                                 Gestor = SA30.A3Xlogsup,
+                                 DataPedido = SC50.C5Emissao
+
+                             }).ToList();
+
             }
             catch (Exception e)
             {
@@ -90,8 +94,6 @@ namespace SGID.Pages.Relatorios.RH
         {
             try
             {
-                Inicio = Datainicio;
-                Fim = Datafim;
 
                 Inicio = Datainicio;
                 Fim = Datafim;
@@ -101,7 +103,7 @@ namespace SGID.Pages.Relatorios.RH
                              equals new { PRE = SE10.E1Prefixo, Num = SE10.E1Num, Par = SE10.E1Parcela, Tipo = SE10.E1Tipo, Cliente = SE10.E1Cliente, Loja = SE10.E1Loja }
                              join SA10 in Protheus.Sa1010s on SE50.E5Cliente equals SA10.A1Cod
                              join SC50 in Protheus.Sc5010s on SE10.E1Pedido equals SC50.C5Num
-                             join SD20 in Protheus.Sd2010s on new { Filial = SC50.C5Filial, Num = SC50.C5Num } equals new { Filial = SD20.D2Filial, Num = SD20.D2Pedido }
+                             join SA30 in Protheus.Sa3010s on SC50.C5Vend1 equals SA30.A3Cod
                              where SE50.DELET != "*" && SE10.DELET != "*" && SE50.E5Recpag == "R"
                              && (SE50.E5Tipodoc == "VL" || SE50.E5Tipodoc == "RA")
                              && (SE50.E5Naturez == "111001" || SE50.E5Naturez == "111004" || SE50.E5Naturez == "111006")
@@ -135,9 +137,11 @@ namespace SGID.Pages.Relatorios.RH
                                  Orig = SE50.E5Filorig,
                                  Vendedor = SC50.C5Nomvend,
                                  TipoCliente = SA10.A1Clinter,
-                                 DataPedido = SD20.D2Emissao
-                             }
-                             ).ToList();
+                                 CodigoCliente = SA10.A1Xgrinte,
+                                 Login = SA30.A3Xlogin,
+                                 Gestor = SA30.A3Xlogsup,
+                                 DataPedido = SC50.C5Emissao
+                             }).ToList();
 
 
                 using ExcelPackage package = new ExcelPackage();
@@ -219,7 +223,7 @@ namespace SGID.Pages.Relatorios.RH
                 sheet.Cells[sheet.Dimension.Address].AutoFitColumns();
                 using MemoryStream stream = new MemoryStream();
                 package.SaveAs(stream);
-                return File(stream.ToArray(), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "BaixaSubDistribuidorDenuo.xlsx");
+                return File(stream.ToArray(), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "BaixaLicitacoesDenuo.xlsx");
             }
             catch (Exception e)
             {

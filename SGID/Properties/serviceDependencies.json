@@ -8,6 +8,11 @@
       "type": "mssql",
       "connectionId": "ConnectionStrings:INTER",
       "dynamicId": null
+    },
+    "mssql3": {
+      "type": "mssql",
+      "connectionId": "ConnectionStrings:DENUO",
+      "dynamicId": null
     }
   }
 }

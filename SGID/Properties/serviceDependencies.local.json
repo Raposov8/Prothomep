@@ -10,6 +10,13 @@
       "type": "mssql.onprem",
       "connectionId": "ConnectionStrings:INTER",
       "dynamicId": null
+    },
+    "mssql3": {
+      "serviceConnectorResourceId": "",
+      "secretStore": "LocalSecretsFile",
+      "type": "mssql.onprem",
+      "connectionId": "ConnectionStrings:DENUO",
+      "dynamicId": null
     }
   }
 }
