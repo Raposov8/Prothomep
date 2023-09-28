@@ -2,6 +2,7 @@
 {
     public class Patrimonio
     {
+        public string Codigo { get; set; }
         public string Descri { get; set; }
         public string KitBas { get; set; }
 

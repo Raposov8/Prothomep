@@ -69,7 +69,8 @@ namespace SGID.Pages.Relatorios.Financeiro
                                   Data = $"{SD20.D2Emissao.Substring(6, 2)}/{SD20.D2Emissao.Substring(4, 2)}/{SD20.D2Emissao.Substring(0, 4)}",
                                   Pedido = SD20.D2Pedido,
                                   Vendedor = c.C5Nomvend,
-                                  Fabricante = SB10.B1Fabric
+                                  Fabricante = SB10.B1Fabric,
+                                  UnidadeNegocio = SB10.B1Xunnego == "000001" ? "OUTROS" : SB10.B1Xunnego == "000002" ? "TORAX" : SB10.B1Xunnego == "000003" ? "COLUNA" : SB10.B1Xunnego == "000004" ? "NEURO" : SB10.B1Xunnego == "000005" ? "ORTOPEDIA" : SB10.B1Xunnego == "000006" ? "BUCOMAXILO" : SB10.B1Xunnego == "000007" ? "MATRIX" : SB10.B1Xunnego == "000008" ? "DENTAL" : SB10.B1Xunnego == "000009" ? "CMF" : ""
                               }).ToList();
 
                 var teste = (from SD10 in Protheus.Sd1010s
@@ -99,7 +100,8 @@ namespace SGID.Pages.Relatorios.Financeiro
                                  Data = $"{SD10.D1Emissao.Substring(6, 2)}/{SD10.D1Emissao.Substring(4, 2)}/{SD10.D1Emissao.Substring(0, 4)}",
                                  Pedido = SD10.D1Pedido,
                                  Vendedor = "",
-                                 Fabricante = SB10.B1Fabric
+                                 Fabricante = SB10.B1Fabric,
+                                 UnidadeNegocio = SB10.B1Xunnego == "000001" ? "OUTROS" : SB10.B1Xunnego == "000002" ? "TORAX" : SB10.B1Xunnego == "000003" ? "COLUNA" : SB10.B1Xunnego == "000004" ? "NEURO" : SB10.B1Xunnego == "000005" ? "ORTOPEDIA" : SB10.B1Xunnego == "000006" ? "BUCOMAXILO" : SB10.B1Xunnego == "000007" ? "MATRIX" : SB10.B1Xunnego == "000008" ? "DENTAL" : SB10.B1Xunnego == "000009" ? "CMF" : ""
                              }).ToList();
 
                 Relatorios.AddRange(teste);
@@ -156,7 +158,8 @@ namespace SGID.Pages.Relatorios.Financeiro
                                   Data = $"{SD20.D2Emissao.Substring(6, 2)}/{SD20.D2Emissao.Substring(4, 2)}/{SD20.D2Emissao.Substring(0, 4)}",
                                   Pedido = SD20.D2Pedido,
                                   Vendedor = c.C5Nomvend,
-                                  Fabricante = SB10.B1Fabric
+                                  Fabricante = SB10.B1Fabric,
+                                  UnidadeNegocio = SB10.B1Xunnego == "000001" ? "OUTROS" : SB10.B1Xunnego == "000002" ? "TORAX" : SB10.B1Xunnego == "000003" ? "COLUNA" : SB10.B1Xunnego == "000004" ? "NEURO" : SB10.B1Xunnego == "000005" ? "ORTOPEDIA" : SB10.B1Xunnego == "000006" ? "BUCOMAXILO" : SB10.B1Xunnego == "000007" ? "MATRIX" : SB10.B1Xunnego == "000008" ? "DENTAL" : SB10.B1Xunnego == "000009" ? "CMF" : ""
                               }).ToList();
 
                 var teste = (from SD10 in Protheus.Sd1010s
@@ -186,7 +189,8 @@ namespace SGID.Pages.Relatorios.Financeiro
                                  Data = $"{SD10.D1Emissao.Substring(6, 2)}/{SD10.D1Emissao.Substring(4, 2)}/{SD10.D1Emissao.Substring(0, 4)}",
                                  Pedido = SD10.D1Pedido,
                                  Vendedor = "",
-                                 Fabricante = SB10.B1Fabric
+                                 Fabricante = SB10.B1Fabric,
+                                 UnidadeNegocio = SB10.B1Xunnego == "000001" ? "OUTROS" : SB10.B1Xunnego == "000002" ? "TORAX" : SB10.B1Xunnego == "000003" ? "COLUNA" : SB10.B1Xunnego == "000004" ? "NEURO" : SB10.B1Xunnego == "000005" ? "ORTOPEDIA" : SB10.B1Xunnego == "000006" ? "BUCOMAXILO" : SB10.B1Xunnego == "000007" ? "MATRIX" : SB10.B1Xunnego == "000008" ? "DENTAL" : SB10.B1Xunnego == "000009" ? "CMF" : ""
                              }).ToList();
 
                 Relatorios.AddRange(teste);
@@ -220,6 +224,7 @@ namespace SGID.Pages.Relatorios.Financeiro
                 sheet.Cells[1, 19].Value = "PEDIDO";
                 sheet.Cells[1, 20].Value = "VENDEDOR";
                 sheet.Cells[1, 21].Value = "FABRICANTE";
+                sheet.Cells[1, 22].Value = "UN. NEGOCIO";
 
                 int i = 2;
 
@@ -267,6 +272,7 @@ namespace SGID.Pages.Relatorios.Financeiro
                     sheet.Cells[i, 19].Value = Pedido.Pedido;
                     sheet.Cells[i, 20].Value = Pedido.Vendedor;
                     sheet.Cells[i, 21].Value = Pedido.Fabricante;
+                    sheet.Cells[i, 22].Value = Pedido.UnidadeNegocio;
                     i++;
                 });
 

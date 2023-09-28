@@ -10,7 +10,7 @@
         public string Endereco { get; set; }
         public double Saldo { get; set; }
         public string UM { get; set; }
-        public int Empenho { get;set; }
+        public double Empenho { get;set; }
         public string Data { get; set; }
         public string DtValid { get; set; }
         public string Descendereco { get; set; }

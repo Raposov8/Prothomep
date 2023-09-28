@@ -1,0 +1,53 @@
+﻿@page "{Id}"
+@model SGID.Pages.Account.RH.DetailsDentalModel
+@{
+    ViewBag.Title = "Detalhes Comercial";
+    Layout = "_LayoutGeral";
+}
+
+<h2>Detalhes</h2>
+
+<div>
+    <h4>Usuário</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model._details.UserName)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model._details.UserName)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model._details.GestorName)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model._details.GestorName)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model=> model._details.Meta)
+        </dt>
+        <dd>
+            @string.Format("{0:N2}", Model._details.Meta)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model=> model._details.Porcentagem)
+        </dt>
+        <dd>
+            @string.Format("{0:N2}", Model._details.Porcentagem)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model=> model._details.PorcentagemSegun)
+        </dt>
+        <dd>
+            @string.Format("{0:N2}", Model._details.PorcentagemSegun)
+        </dd>
+    </dl>
+</div>
+
+
+<p>
+    <a href="/account/rh/editartime/@Model._details.Id">Editar</a>
+    <a href="/account/rh/listartime">Voltar para a lista</a>
+</p>
+
+

@@ -85,6 +85,7 @@ namespace SGID.Pages.Logistica
                                 {
                                     Descri = PA10.Pa1Despat,
                                     KitBas = PA10.Pa1Kitbas,
+                                    Codigo = x.Codigo,
                                     Quantidade = 1
                                 }).First();
 
@@ -144,6 +145,7 @@ namespace SGID.Pages.Logistica
                                 {
                                     Descri = PA10.Pa1Despat,
                                     KitBas = PA10.Pa1Kitbas,
+                                    Codigo = x.Codigo,
                                     Quantidade = 1
                                 }).First();
 

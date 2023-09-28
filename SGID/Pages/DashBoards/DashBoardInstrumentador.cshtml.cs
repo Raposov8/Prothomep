@@ -6,7 +6,7 @@ using SGID.Data;
 using SGID.Data.Models;
 using SGID.Models.DTO;
 
-namespace SGID.Pages.Instrumentador
+namespace SGID.Pages.DashBoards
 {
     [Authorize(Roles = "Admin,Instrumentador,Diretoria")]
     public class DashBoardInstrumentadorModel : PageModel

@@ -385,6 +385,9 @@
                                 <thead>
                                     <tr>
                                         <th class="text-center">
+                                            Codigo
+                                        </th>
+                                        <th class="text-center">
                                             Descri
                                         </th>
                                         <th class="text-center">
@@ -704,6 +707,7 @@
                         $("#Patrimonio>tbody>tr").detach()
                         patris.forEach(function (patri) {
                             var linha = `<tr>
+                                                        <td> ${patri.codigo}</td>
                                                         <td> ${patri.descri}</td>
                                                         <td> ${patri.kitBas}</td>
                                             </tr>`

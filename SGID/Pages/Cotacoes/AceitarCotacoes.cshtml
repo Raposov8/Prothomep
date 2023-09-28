@@ -218,6 +218,9 @@
                                     <thead>
                                         <tr style="background-color:#5b9bd5; color:white;">
                                             <th class="text-center">
+                                                Código
+                                            </th>
+                                            <th class="text-center">
                                                 Descrição
                                             </th>
                                             <th class="text-center">
@@ -233,6 +236,10 @@
                                         @foreach (var data in Model.Patrimonios)
                                         {
                                             <tr>
+                                                <td class="text-center">
+                                                    @data.Codigo
+                                                    <input type="hidden" id="Patris[@countPatri].Codigo" name="Patris[@countPatri].Codigo" value="@data.Codigo" />
+                                                </td>
                                                 <td class="text-center">
                                                     @data.Descri
                                                     <input type="hidden" id="Patris[@countPatri].Descri" name="Patris[@countPatri].Descri" value="@data.Descri" />
@@ -400,7 +407,17 @@
 
             <!--Modal footer-->
             <div class="modal-footer">
-                <div class="col-md-12">
+                <div class="col-md-6">
+                    @if(@Model.Agendamento.Empresa == "03")
+                    {
+                        <a class="nav-link" href="/formularios/RelatorioPatrimonioTodos/03" target="_blank">Consulta Patrimônios</a>
+                    }
+                    else
+                    {
+                        <a class="nav-link" href="/formularios/RelatorioPatrimonioTodos/01" target="_blank">Consulta Patrimônios</a>
+                    }
+                </div>
+                <div class="col-md-6">
                     <button class="btn btn-button btn-success float-end" id="AdicionarPatri">
                         Adicionar Item
                     </button>
@@ -669,20 +686,22 @@
                                 }
                                 else {
                                     var linha = `<tr>
-                                                             <td>
-                                                             ${data.descri}
-                                                             <input type="hidden" id="Patris[${countPatri}].Descri" name="Patris[${countPatri}].Descri" value="${data.descri}" />
-                                                             </td>
-                                                             <td>
-                                                             ${data.kitBas}
-                                                             <input type="hidden" id="Patris[${countPatri}].KitBas" name="Patris[${countPatri}].KitBas" value="${data.kitBas}" />
-                                                             </td>
-                                                             <td>
-                                                                 
-
-                                                                 <a class="fa-regular fa-trash-can add-tooltip" onclick="removePatri(this)" style="text-decoration:none;" id="Excluir" data-container="body" data-placement="top" data-original-title="Excluir Recurso" aria-hidden="true"></a>
-                                                             </td>
-                                                             </tr>`;
+                                                    <td class="text-center">
+                                                    ${data.codigo}
+                                                    <input type="hidden" id="Patris[${countPatri}].Codigo" name="Patris[${countPatri}].Codigo" value="${data.codigo}" />
+                                                    </td>
+                                                    <td class="text-center">
+                                                    ${data.descri}
+                                                    <input type="hidden" id="Patris[${countPatri}].Descri" name="Patris[${countPatri}].Descri" value="${data.descri}" />
+                                                    </td>
+                                                    <td class="text-center">
+                                                    ${data.kitBas}
+                                                    <input type="hidden" id="Patris[${countPatri}].KitBas" name="Patris[${countPatri}].KitBas" value="${data.kitBas}" />
+                                                    </td>
+                                                    <td class="text-center">
+                                                      <a class="fa-regular fa-trash-can add-tooltip" onclick="removePatri(this)" style="text-decoration:none;" id="Excluir" data-container="body" data-placement="top" data-original-title="Excluir Recurso" aria-hidden="true"></a>
+                                                  </td>
+                                                  </tr>`;
                                     countPatri++;
                                     $("#Patrimonio>tbody").append(linha);
                                     $("#CodPatri").val("");
@@ -718,22 +737,22 @@
                             }
                             else {
                                 var linha = `<tr>
-                                                 <td>
-                                                 ${data.descri}
-                                                 <input type="hidden" id="Patris[${countPatri}].Descri" name="Patris[${countPatri}].Descri" value="${data.descri}" />
-                                                 </td>
-                                                 <td>
-                                                 ${data.kitBas}
-                                                 <input type="hidden" id="Patris[${countPatri}].KitBas" name="Patris[${countPatri}].KitBas" value="${data.kitBas}" />
-                                                 </td>
-                                                 <td>
-                                                    
-
-                                                     <a class="fa-regular fa-trash-can add-tooltip" onclick="removePatri(this)" style="text-decoration:none;" id="Excluir" data-container="body" data-placement="top" data-original-title="Excluir Recurso" aria-hidden="true"></a>
-                                                 </td>
-                                                 </tr>
-                                                 
-                                                 `;
+                                                          <td class="text-center">
+                                                            ${data.codigo}
+                                                            <input type="hidden" id="Patris[${countPatri}].Codigo" name="Patris[${countPatri}].Codigo" value="${data.codigo}" />
+                                                            </td>
+                                                            <td class="text-center">
+                                                            ${data.descri}
+                                                            <input type="hidden" id="Patris[${countPatri}].Descri" name="Patris[${countPatri}].Descri" value="${data.descri}" />
+                                                            </td>
+                                                            <td class="text-center">
+                                                            ${data.kitBas}
+                                                            <input type="hidden" id="Patris[${countPatri}].KitBas" name="Patris[${countPatri}].KitBas" value="${data.kitBas}" />
+                                                            </td>
+                                                                  <td class="text-center">
+                                                              <a class="fa-regular fa-trash-can add-tooltip" onclick="removePatri(this)" style="text-decoration:none;" id="Excluir" data-container="body" data-placement="top" data-original-title="Excluir Recurso" aria-hidden="true"></a>
+                                                          </td>
+                                                          </tr>`;
                                 countPatri++;
                                 $("#Patrimonio>tbody").append(linha);
                                 $("#CodPatri").val("");

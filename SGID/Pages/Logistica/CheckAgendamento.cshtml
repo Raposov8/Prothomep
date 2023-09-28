@@ -182,6 +182,10 @@
                                         @foreach (var data in Model.Patrimonios)
                                         {
                                             <tr>
+                                                <td class ="text-center">
+                                                    @data.Codigo
+                                                    <input type="hidden" id="Patris[@countPatri].Codigo" name="Patris[@countPatri].Codigo" value="@data.Codigo" />
+                                                </td>
                                                 <td class="text-center">
                                                     @data.Descri
                                                     <input type="hidden" id="Patris[@countPatri].Descri" name="Patris[@countPatri].Descri" value="@data.Descri" />

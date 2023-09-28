@@ -23,7 +23,7 @@
         <table id="demo-dt-addrow" class="table table-striped table-bordered" cellspacing="0" width="100%">
             <thead>
                 <tr>
-                    <th colspan="7" class="text-center">
+                    <th colspan="8" class="text-center">
                         Faturamento Venda Direta
                     </th>
                 </tr>
@@ -39,6 +39,9 @@
                     </th>
                     <th class="text-center">
                         VALOR
+                    </th>
+                    <th class="text-center">
+                        COMISSÃO
                     </th>
                     <th class="text-center">
                         VENDEDOR
@@ -59,11 +62,31 @@
                         <td>@Html.DisplayFor(model=> data.NF)</td>
                         <td>@Html.DisplayFor(model=> data.Cliente)</td>
                         <td>@string.Format("{0:N2}", data.Total)</td>
+                        <td>@string.Format("{0:N2}", data.Total * (Model.Representante.User.Porcentagem/ 100))</td>
                         <td>@Html.DisplayFor(model=> data.Login)</td>
                         <td>@Html.DisplayFor(model=> data.Gestor)</td>
                         <td>@Html.DisplayFor(model=> data.Linha)</td>
                     </tr>
                 }
+                @foreach (var data in Model.BaixaFaturamento)
+                {
+                    <tr>
+                        <td>@Html.DisplayFor(model=> data.Empresa)</td>
+                        <td>@Html.DisplayFor(model=> data.Numero)</td>
+                        <td>@Html.DisplayFor(model=> data.CliFor)</td>
+                        <td>@string.Format("{0:N2}", data.TotalBaixado)</td>
+                        <td>@string.Format("{0:N2}", data.TotalBaixado * (Model.Representante.User.Porcentagem/ 100))</td>
+                        <td>@Html.DisplayFor(model=> data.Login)</td>
+                        <td>@Html.DisplayFor(model=> data.Gestor)</td>
+                        <td>@Html.DisplayFor(model=> data.Linha)</td>
+                    </tr>
+                }
+                <tr>
+                    <td colspan="3">Total:</td>
+                    <td>@string.Format("{0:N2}", Model.BaixaFaturamento.Sum(x=> x.TotalBaixado) + Model.Faturamento.Sum(x=> x.Total))</td>
+                    <td>@string.Format("{0:N2}", (Model.BaixaFaturamento.Sum(x=> x.TotalBaixado) * (Model.Representante.User.Porcentagem/ 100)) + (Model.Faturamento.Sum(x=> x.Total) * (Model.Representante.User.Porcentagem/ 100)))</td>
+                    <td colspan="3"></td>
+                </tr>
             </tbody>
         </table>
     </div>
@@ -73,7 +96,7 @@
         <table id="demo-dt-addrow" class="table table-striped table-bordered" cellspacing="0" width="100%">
             <thead>
                 <tr>
-                    <th colspan="7" class="text-center">
+                    <th colspan="8" class="text-center">
                         Devolução Venda Direta
                     </th>
                 </tr>
@@ -89,6 +112,9 @@
                     </th>
                     <th class="text-center">
                         VALOR
+                    </th>
+                    <th class="text-center">
+                        COMISSÃO
                     </th>
                     <th class="text-center">
                         VENDEDOR
@@ -109,11 +135,18 @@
                         <td>@Html.DisplayFor(model=> data.D1Nfori)</td>
                         <td>@Html.DisplayFor(model=> data.Nome)</td>
                         <td>@string.Format("{0:N2}", data.Total)</td>
+                        <td>@string.Format("{0:N2}", data.Total * (Model.Representante.User.Porcentagem/ 100))</td>
                         <td>@Html.DisplayFor(model=> data.Login)</td>
                         <td>@Html.DisplayFor(model=> data.Gestor)</td>
                         <td>@Html.DisplayFor(model=> data.Linha)</td>
                     </tr>
                 }
+                <tr>
+                    <td colspan="3">Total:</td>
+                    <td>@string.Format("{0:N2}", Model.Devolucao.Sum(x=> x.Total) )</td>
+                    <td>@string.Format("{0:N2}", Model.Devolucao.Sum(x=> x.Total) * (Model.Representante.User.Porcentagem/ 100))</td>
+                    <td colspan="3"></td>
+                </tr>
             </tbody>
         </table>
     </div>
@@ -124,7 +157,7 @@
         <table id="demo-dt-addrow" class="table table-striped table-bordered" cellspacing="0" width="100%">
             <thead>
                 <tr>
-                    <th colspan="7" class="text-center">
+                    <th colspan="8" class="text-center">
                         Faturamento Sobre Equipe
                     </th>
                 </tr>
@@ -140,6 +173,9 @@
                     </th>
                     <th class="text-center">
                         VALOR
+                    </th>
+                    <th class="text-center">
+                        COMISSÃO
                     </th>
                     <th class="text-center">
                         VENDEDOR
@@ -160,11 +196,18 @@
                         <td>@Html.DisplayFor(model=> data.NF)</td>
                         <td>@Html.DisplayFor(model=> data.Cliente)</td>
                         <td>@string.Format("{0:N2}", data.Total)</td>
+                        <td>@string.Format("{0:N2}", data.Total * (Model.Representante.User.Porcentagem/ 100))</td>
                         <td>@Html.DisplayFor(model=> data.Login)</td>
                         <td>@Html.DisplayFor(model=> data.Gestor)</td>
                         <td>@Html.DisplayFor(model=> data.Linha)</td>
                     </tr>
                 }
+                <tr>
+                    <td colspan="3">Total:</td>
+                    <td>@string.Format("{0:N2}", Model.GestorFaturamento.Sum(x=> x.Total) )</td>
+                    <td>@string.Format("{0:N2}", Model.GestorFaturamento.Sum(x=> x.Total) * (Model.Representante.User.Porcentagem/ 100))</td>
+                    <td colspan="3"></td>
+                </tr>
             </tbody>
         </table>
     </div>
@@ -174,7 +217,7 @@
         <table id="demo-dt-addrow" class="table table-striped table-bordered" cellspacing="0" width="100%">
             <thead>
                 <tr>
-                    <th colspan="7" class="text-center">
+                    <th colspan="8" class="text-center">
                         Devolução Sobre Equipe
                     </th>
                 </tr>
@@ -190,6 +233,9 @@
                     </th>
                     <th class="text-center">
                         VALOR
+                    </th>
+                    <th class="text-center">
+                        COMISSÃO
                     </th>
                     <th class="text-center">
                         VENDEDOR
@@ -210,11 +256,18 @@
                         <td>@Html.DisplayFor(model=> data.D1Nfori)</td>
                         <td>@Html.DisplayFor(model=> data.Nome)</td>
                         <td>@string.Format("{0:N2}", data.Total)</td>
+                        <td>@string.Format("{0:N2}", data.Total * (Model.Representante.User.PorcentagemSeg/ 100))</td>
                         <td>@Html.DisplayFor(model=> data.Login)</td>
                         <td>@Html.DisplayFor(model=> data.Gestor)</td>
                         <td>@Html.DisplayFor(model=> data.Linha)</td>
                     </tr>
                 }
+                <tr>
+                    <td colspan="3">Total:</td>
+                    <td>@string.Format("{0:N2}", Model.GestorDevolucao.Sum(x=> x.Total) )</td>
+                    <td>@string.Format("{0:N2}", Model.GestorDevolucao.Sum(x=> x.Total) * (Model.Representante.User.Porcentagem/ 100))</td>
+                    <td colspan="3"></td>
+                </tr>
             </tbody>
         </table>
     </div>
@@ -225,7 +278,7 @@
         <table id="demo-dt-addrow" class="table table-striped table-bordered" cellspacing="0" width="100%">
             <thead>
                 <tr>
-                    <th colspan="7" class="text-center">
+                    <th colspan="8" class="text-center">
                         Faturamento Sobre Linha
                     </th>
                 </tr>
@@ -241,6 +294,9 @@
                     </th>
                     <th class="text-center">
                         VALOR
+                    </th>
+                    <th class="text-center">
+                        COMISSÃO
                     </th>
                     <th class="text-center">
                         VENDEDOR
@@ -261,11 +317,18 @@
                         <td>@Html.DisplayFor(model=> data.NF)</td>
                         <td>@Html.DisplayFor(model=> data.Cliente)</td>
                         <td>@string.Format("{0:N2}", data.Total)</td>
+                        <td>@string.Format("{0:N2}", data.Total * (Model.Representante.User.PorcentagemGenProd/ 100))</td>
                         <td>@Html.DisplayFor(model=> data.Login)</td>
                         <td>@Html.DisplayFor(model=> data.Gestor)</td>
                         <td>@Html.DisplayFor(model=> data.Linha)</td>
                     </tr>
                 }
+                <tr>
+                    <td colspan="3">Total:</td>
+                    <td>@string.Format("{0:N2}", Model.LinhaFaturamento.Sum(x=> x.Total) )</td>
+                    <td>@string.Format("{0:N2}", Model.LinhaFaturamento.Sum(x=> x.Total) * (Model.Representante.User.Porcentagem/ 100))</td>
+                    <td colspan="3"></td>
+                </tr>
             </tbody>
         </table>
     </div>
@@ -275,7 +338,7 @@
         <table id="demo-dt-addrow" class="table table-striped table-bordered" cellspacing="0" width="100%">
             <thead>
                 <tr>
-                    <th colspan="7" class="text-center">
+                    <th colspan="8" class="text-center">
                         Devolução Sobre Linha
                     </th>
                 </tr>
@@ -291,6 +354,9 @@
                     </th>
                     <th class="text-center">
                         VALOR
+                    </th>
+                    <th class="text-center">
+                        COMISSÃO
                     </th>
                     <th class="text-center">
                         VENDEDOR
@@ -311,11 +377,18 @@
                         <td>@Html.DisplayFor(model=> data.D1Nfori)</td>
                         <td>@Html.DisplayFor(model=> data.Nome)</td>
                         <td>@string.Format("{0:N2}", data.Total)</td>
+                        <td>@string.Format("{0:N2}", data.Total * (Model.Representante.User.PorcentagemGenProd/ 100))</td>
                         <td>@Html.DisplayFor(model=> data.Login)</td>
                         <td>@Html.DisplayFor(model=> data.Gestor)</td>
                         <td>@Html.DisplayFor(model=> data.Linha)</td>
                     </tr>
                 }
+                <tr>
+                    <td colspan="3">Total:</td>
+                    <td>@string.Format("{0:N2}", Model.LinhaDevolucao.Sum(x=> x.Total) )</td>
+                    <td>@string.Format("{0:N2}", Model.LinhaDevolucao.Sum(x=> x.Total) * (Model.Representante.User.Porcentagem/ 100))</td>
+                    <td colspan="3"></td>
+                </tr>
             </tbody>
         </table>
     </div>

@@ -1,0 +1,152 @@
+﻿@page
+@model SGID.Pages.DashBoards.DashBoardGestorInstrumentadorModel
+@{
+    ViewData["Title"] = "DASHBOARD";
+    Layout = "_LayoutGeral";
+}
+
+<!--<div id="piechart" style="width: 900px; height: 500px;"></div>-->
+@Html.AntiForgeryToken()
+
+<div class="row justify-content-center">
+    <div class="col-sm-3 col-md-3">
+        <div class="panel panel-colorful" style="background-color:lightgray">
+            <div class="panel-heading">
+                <h2 style="margin:0%;color:black" class="panel-title text-center">CIRURGIAS REALIZADAS</h2>
+            </div>
+            <div class="panel-body" style="padding-top:0px;">
+                <a class="produto" ><h3 class="text-center" style="margin-top:0%; color:black;font-size:50px">58</h3></a>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-3 col-md-3">
+        <div class="panel panel-colorful" style="background-color:lightgray">
+            <div class="panel-heading">
+                <h2 style="margin:0%;color:black" class="panel-title text-center">ANDAMENTO</h2>
+            </div>
+            <div class="panel-body" style="padding-top:0px;">
+                <a class="produto"><h3 class="text-center" style="margin-top:0%; color:black;font-size:50px">12</h3></a>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-3 col-md-3">
+        <div class="panel panel-colorful" style="background-color:lightgray">
+            <div class="panel-heading">
+                <h2 style="margin:0%;color:black" class="panel-title text-center">CANCELADAS</h2>
+            </div>
+            <div class="panel-body" style="padding-top:0px;">
+                <a class="produto"><h3 class="text-center" style="margin-top:0%; color:black;font-size:50px">3</h3></a>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-3 col-md-3">
+        <div class="panel panel-colorful" style="background-color:lightgray">
+            <div class="panel-heading">
+                <h2 style="margin:0%;color:black" class="panel-title text-center">AGENDADAS</h2>
+            </div>
+            <div class="panel-body" style="padding-top:0px;">
+                <a class="produto"><h3 class="text-center" style="margin-top:0%; color:black;font-size:50px">40</h3></a>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row justify-content-between">
+    <div class="col-md-6">
+        <div class="row justify-content-start">
+            <div class="col-md-8">
+                <a href="/instrumentador/novoinstrumentador" class="btn btn-primary mb-2" style="background-color:#2197e3">
+                    <i class="fa-solid fa-circle-plus" style="color:#ffffff;background-color:#2197e3"></i> NOVO INSTRUMENTADOR
+                </a>
+            </div>
+            <div class="col-md-4">
+                <button class="btn btn-primary mb-2" style="background-color:#00be9c">
+                    <i class="fa-solid fa-circle-plus" style="color:#ffffff;background-color:#00be9c"></i> NOVA CIRURGIA
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-4">
+        <input class="form-control" type="search" id="searchInput" name="searchInput" oninput="this.value = this.value.toUpperCase()" placeholder="Pesquisar" />
+    </div>
+</div>
+
+
+<!--Tabela-->
+<div class="col-xs-12 col-sm-12 col-md-12">
+    <div class="panel">
+        <div class="panel-body">
+            <table id="demo-dt-addrow" class="table table-striped table-bordered" cellspacing="0" width="50%">
+                <thead>
+                    <tr>
+                        <th class="text-center">
+                            EMPRESA
+                        </th>
+                        <th class="text-center">
+                            DATA
+                        </th>
+                        <th class="text-center">
+                            INSTRUMENTADOR
+                        </th>
+                        <th class="text-center">
+                            AGEN.
+                        </th>
+                        <th class="text-center">
+                            PROCEDIMENTO
+                        </th>
+                        <th class="text-center">
+                            HOSPITAL
+                        </th>
+                        <th class="text-center">
+                            MÉDICO
+                        </th>
+                        <th class="text-center">
+                            TIPO
+                        </th>
+                        <th class="text-center">
+                            STATUS
+                        </th>
+                        <th class="text-center">
+                            AÇÃO
+                        </th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            INTERMEDIC
+                        </td>
+                        <td>
+                            11/08/2023
+                        </td>
+                        <td>
+                            CRISTINA DO N. OLIVEIRA
+                        </td>
+                        <td>
+                            29380
+                        </td>
+                        <td>
+                            EXPANSÃO
+                        </td>
+                        <td>
+                            CLINICAS FMUSP
+                        </td>
+                        <td>
+                            GUSTAVO GROTHE
+                        </td>
+                        <td>
+                            ELETIVA
+                        </td>
+                        <td style="background-color:green;">
+
+                        </td>
+                        <td>
+
+                        </td>
+                    </tr> 
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

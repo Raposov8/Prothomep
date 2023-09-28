@@ -18,5 +18,6 @@
         public string Pedido { get; set; }
         public string Vendedor { get; set; }
         public string Fabricante { get; set; }
+        public string UnidadeNegocio { get; set; }
     }
 }

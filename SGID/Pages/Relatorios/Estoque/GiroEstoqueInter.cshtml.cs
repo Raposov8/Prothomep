@@ -63,19 +63,22 @@ namespace SGID.Pages.Relatorios.Estoque
                                Codigo = SB80.B8Produto,
                                Desc = SB10.B1Desc,
                                Saldo = SB80.B8Saldo - SB80.B8Empenho,
-                               Fabricante = SB10.B1Fabric
+                               Fabricante = SB10.B1Fabric,
+                               Unidade = SB10.B1Xunnego == "000001" ? "OUTROS" : SB10.B1Xunnego == "000003" ? "COLUNA" : SB10.B1Xunnego == "000004" ? "NEURO" : SB10.B1Xunnego == "000005" ? "ORTOPEDIA" : SB10.B1Xunnego == "000006" ? "BUCOMAXILO" : SB10.B1Xunnego == "000007" ? "MATRIX" : SB10.B1Xunnego == "000008" ? "DENTAL" : SB10.B1Xunnego == "000009" ? "CMF" : ""
                            }
                            ).GroupBy(x => new
                            {
                                x.Codigo,
                                x.Desc,
-                               x.Fabricante
+                               x.Fabricante,
+                               x.Unidade
                            }).Select(x => new RelatorioGiroEstoque
                            {
                                Codigo = x.Key.Codigo,
                                Desc = x.Key.Desc,
                                Saldo = x.Sum(c => c.Saldo),
-                               Fabricante = x.Key.Fabricante
+                               Fabricante = x.Key.Fabricante,
+                               Unidade = x.Key.Unidade
                            }).Where(x => x.Saldo >= 0).ToList();
 
 
@@ -141,20 +144,23 @@ namespace SGID.Pages.Relatorios.Estoque
                                    Codigo = SB80.B8Produto,
                                    Desc = SB10.B1Desc,
                                    Saldo = SB80.B8Saldo - SB80.B8Empenho,
-                                   Fabricante = SB10.B1Fabric
+                                   Fabricante = SB10.B1Fabric,
+                                   Unidade = SB10.B1Xunnego == "000001" ? "OUTROS" : SB10.B1Xunnego == "000003" ? "COLUNA" : SB10.B1Xunnego == "000004" ? "NEURO" : SB10.B1Xunnego == "000005" ? "ORTOPEDIA" : SB10.B1Xunnego == "000006" ? "BUCOMAXILO" : SB10.B1Xunnego == "000007" ? "MATRIX" : SB10.B1Xunnego == "000008" ? "DENTAL" : SB10.B1Xunnego == "000009" ? "CMF" : ""
                                }
                                ).GroupBy(x => new
                                {
                                    x.Codigo,
                                    x.Desc,
-                                   x.Fabricante
+                                   x.Fabricante,
+                                   x.Unidade
                                }).Select(x => new RelatorioGiroEstoque
                                {
                                    Codigo = x.Key.Codigo,
                                    Desc = x.Key.Desc,
                                    Saldo = x.Sum(c => c.Saldo),
-                                   Fabricante = x.Key.Fabricante
-                               }).Where(x => x.Saldo > 0).ToList();
+                                   Fabricante = x.Key.Fabricante,
+                                   Unidade = x.Key.Unidade
+                               }).Where(x => x.Saldo >= 0).ToList();
 
 
                 Entrada.ForEach(x =>

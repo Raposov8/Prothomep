@@ -1,0 +1,146 @@
+﻿@page "{Id}"
+@model SGID.Pages.Instrumentador.EditarInstrumentadorModel
+@{
+    ViewData["Title"] = "Editar Instrumentador";
+    Layout = "_LayoutGeral";
+}
+
+
+<div class="row">
+    <h4 style="padding-left:20px;">CADASTRO DE INSTRUMENTADOR(RECURSOS)</h4>
+</div>
+
+
+<div class="card" style="padding:10px;">
+    @using (@Html.BeginForm(FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        <div class="row">
+            <div class="col-md-12">
+                <div class="row">
+                    <input hidden id="Id" name="Id" value="@Model.Instrumentador.Id" />
+                    <div class="form-group col-md-4">
+                        <label>Nome</label>
+                        <input type="text" class="form-control" id="Nome" name="Nome" value="@Model.Instrumentador.Nome" oninput="this.value = this.value.toUpperCase()" />
+                    </div>
+                    <div class="form-group col-md-2">
+                        <label>DT. Nascimento</label>
+                        <input type="date" class="form-control" id="DtNascimento" name="DtNascimento" value="@Model.Instrumentador.Nascimento" oninput="this.value = this.value.toUpperCase()" />
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label>Endereço</label>
+                        <input type="text" class="form-control" id="Endereco" name="Endereco" value="@Model.Instrumentador.Endereco" oninput="this.value = this.value.toUpperCase()" />
+                    </div>
+                    <div class="form-group col-md-2">
+                        <label>Bairro</label>
+                        <input type="text" class="form-control" id="Bairro" name="Bairro" value="@Model.Instrumentador.Bairro" oninput="this.value = this.value.toUpperCase()" />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-md-4">
+                        <label>Municipio</label>
+                        <input type="text" class="form-control" id="Municipio" name="Municipio" value="@Model.Instrumentador.Municipio" oninput="this.value = this.value.toUpperCase()" />
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label>Estado</label>
+                        <input type="text" class="form-control" id="Estado" name="Estado" value="@Model.Instrumentador.Estado" oninput="this.value = this.value.toUpperCase()" />
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label>Pais</label>
+                        <input type="text" class="form-control" id="Pais" name="Pais" value="@Model.Instrumentador.Pais" oninput="this.value = this.value.toUpperCase()" />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-md-4">
+                        <label>E-mail</label>
+                        <input type="text" class="form-control" id="Email" name="Email" value="@Model.Instrumentador.Email" oninput="this.value = this.value.toUpperCase()" />
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label>Telefone 1</label>
+                        <input type="text" class="form-control" id="Telefone1" name="Telefone1" value="@Model.Instrumentador.Telefone" oninput="this.value = this.value.toUpperCase()" />
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label>Telefone 2</label>
+                        <input type="text" class="form-control" id="Telefone2" name="Telefone2" value="@Model.Instrumentador.Telefone2" oninput="this.value = this.value.toUpperCase()" />
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12 Titulo">
+                    <span>DEMAIS DADOS</span>
+                </div>
+                <div class="row">
+                    <div class="form-group col-md-3">
+                        <label>CBO</label>
+                        <input type="text" class="form-control" id="CBO" name="CBO" value="@Model.Instrumentador.CBO" oninput="this.value = this.value.toUpperCase()" />
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label>RG</label>
+                        <input type="text" class="form-control" id="RG" name="RG" value="@Model.Instrumentador.RG" oninput="this.value = this.value.toUpperCase()" />
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label>CPF</label>
+                        <input type="text" class="form-control" id="CPF" name="CPF" value="@Model.Instrumentador.CPF" oninput="this.value = this.value.toUpperCase()" />
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label>PIS/PASEP/NIT</label>
+                        <input type="text" class="form-control" id="PisPasep" name="PisPasep" value="@Model.Instrumentador.PISPASEP" oninput="this.value = this.value.toUpperCase()" />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-md-2">
+                        <label>TIPO CHAVE</label>
+                        <input type="text" class="form-control" id="TipoChave" name="TipoChave" value="@Model.Instrumentador.TipoChave" oninput="this.value = this.value.toUpperCase()" />
+                    </div>
+                    <div class="form-group col-md-2">
+                        <label>CHAVE PIX</label>
+                        <input type="text" class="form-control" id="ChavePix" name="ChavePix" value="@Model.Instrumentador.ChavePix" oninput="this.value = this.value.toUpperCase()" />
+                    </div>
+                    <div class="form-group col-md-2">
+                        <label>BANCO</label>
+                        <input type="text" class="form-control" id="Banco" name="Banco" value="@Model.Instrumentador.Banco" oninput="this.value = this.value.toUpperCase()" />
+                    </div>
+                    <div class="form-group col-md-2">
+                        <label>AG</label>
+                        <input type="text" class="form-control" id="AG" name="AG" value="@Model.Instrumentador.Ag" oninput="this.value = this.value.toUpperCase()" />
+                    </div>
+                    <div class="form-group col-md-2">
+                        <label>C/C</label>
+                        <input type="text" class="form-control" id="CC" name="CC" value="@Model.Instrumentador.CC" oninput="this.value = this.value.toUpperCase()" />
+                    </div>
+                    <div class="form-group col-md-2">
+                        <label>REMUNERAÇÃO</label>
+                        <input type="text" class="form-control" id="Remuneracao" name="Remuneracao" value="@Model.Instrumentador.Remuneracao" oninput="this.value = this.value.toUpperCase()" />
+                    </div>
+                </div>
+            </div>
+            <br />
+            <div class="row">
+                <div class="col-md-12 Titulo">
+                </div>
+                <div class="form-group col-md-12">
+                    <label>SERVIÇOS CONTRATADOS</label>
+                    <textarea type="text" class="form-control" id="ServCon" name="ServCon" oninput="this.value = this.value.toUpperCase()"></textarea>
+                </div>
+            </div>
+            <div class="row" style="margin-top:10px;">
+                <div class="col-md-12">
+                    <a class="btn btn-button btn-danger" href="/dashboards/DashBoardGestorInstrumentador">Voltar</a>
+                    <button class="btn btn-button btn-success float-end" type="submit"><i class="fa-solid fa-check"></i> SALVAR</button>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+@section scripts{
+<script>
+    $(document).ready(function(){
+
+         var teste = '@Model.Instrumentador.ServCon'
+
+         $('#ServCon').val(teste.replace('&#xAA;', 'ª').replace('&#xC7;', 'Ç').replace('&#xC3;', 'Ã'))
+    })
+
+</script>
+}
+

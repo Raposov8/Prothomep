@@ -12,5 +12,6 @@
         public string Cliente { get; set; }
         public double Total { get; set; }
         public double Comissao { get; set; }
+        public string Login { get; set; }
     }
 }

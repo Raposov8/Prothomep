@@ -19,6 +19,11 @@ namespace SGID.Data
         public DbSet<ProdutosAgendamentos> ProdutosAgendamentos { get; set; }
         public DbSet<RejeicaoMotivos> RejeicaoMotivos { get; set; }
 
+        //Instrumentador
+        public DbSet<AgendamentoInstrumentador> AgendamentoInstrumentadors { get; set; }
+        public DbSet<RecursoIntrumentador> Instrumentadores { get; set; }
+
+
         //Comercial Cotações
         public DbSet<DadosCirurgia> DadosCirurgias { get; set; }
         public DbSet<AnexosDadosCirurgia> AnexosDadosCirurgias { get; set; }
@@ -45,6 +50,7 @@ namespace SGID.Data
         public DbSet<Time> Times { get; set; }
         public DbSet<TimeProduto> TimeProdutos { get; set; }
         public DbSet<TimeADM> TimeADMs { get; set; }
+        public DbSet<TimeDental> TimeDentals { get; set; }
 
         //Sistema
         public DbSet<Log> Logs { get; set; }

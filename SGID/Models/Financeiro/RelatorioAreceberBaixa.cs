@@ -31,5 +31,6 @@
         public string DataPedido { get; set; }
         public string Gestor { get; set; }
         public string Linha { get; set; }
+        public string Empresa { get; set; }
     }
 }

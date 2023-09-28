@@ -1,0 +1,86 @@
+﻿@page
+@model SGID.Pages.Relatorios.Estoque.SaldoEstoqueInterModel
+@{
+    ViewData["Title"] = "Relatorio Saldo Estoque Inter";
+    Layout = "_LayoutGeral";
+}
+
+@using (@Html.BeginForm(FormMethod.Post))
+{
+    <div class="form-group mx-sm-3 mb-2 col-lg-2">
+        <select type="text" class="form-control" id="Local" name="Local" placeholder="Local">
+            <option value="">TODOS....</option>
+            @foreach (var data in Model.Relatorio.Select(x => x.Local).Distinct().ToList())
+            {
+                <option value="@data">@data</option>
+            }
+        </select>
+    </div>
+
+    <div class="form-group mx-sm-3 mb-2 col-lg-1">
+        <button type="submit" class="btn btn-primary mb-2">Pesquisar</button>
+    </div>
+
+    <!--<div class="row">
+        <div class="form-group mx-sm-3 mb-2 col-lg-1">
+            <button type="submit" class="btn btn-secondary mb-2" asp-page-handler="Export"><i class="fa-solid fa-file-excel"></i> Exportar Excel</button>
+        </div>
+    </div>-->
+}
+
+<div class="panel">
+    <div class="panel-body">
+        <table id="demo-dt-addrow" class="table table-striped table-bordered" cellspacing="0" width="100%">
+            <thead>
+                <tr>
+                    <th class="text-center">
+                        Filial
+                    </th>
+                    <th class="text-center">
+                        Produto
+                    </th>
+                    <th class="text-center">
+                        Desc Prod.
+                    </th>
+                    <th class="text-center">
+                        Lotectl
+                    </th>
+                    <th class="text-center">
+                        Local
+                    </th>
+                    <th class="text-center">
+                        Saldo
+                    </th>
+                    <th class="text-center">
+                        Empenho
+                    </th>
+                    <th class="text-center">
+                        Data
+                    </th>
+                    <th class="text-center">
+                        DtValid
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var data in Model.Relatorio)
+                {
+                    <tr>
+                        <td>@Html.DisplayFor(model=> data.Filial)</td>
+                        <td>@Html.DisplayFor(model=> data.Produto)</td>
+                        <td>@Html.DisplayFor(model=> data.DescProd)</td>
+                        <td>@Html.DisplayFor(model=> data.LoteCtl)</td>
+                        <td>@Html.DisplayFor(model=> data.Local)</td>
+                        <td>@Html.DisplayFor(model=> data.Saldo)</td>
+                        <td>@Html.DisplayFor(model=> data.Empenho)</td>
+                        <td>@Html.DisplayFor(model=> data.Data)</td>
+                        <td>@Html.DisplayFor(model=> data.DtValid)</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+

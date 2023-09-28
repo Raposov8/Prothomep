@@ -431,11 +431,12 @@ namespace SGID.Pages.Cirurgias
                                       join SA10 in ProtheusInter.Sa1010s on new { Codigo = c.PacClient, Loja = c.PacLojent } equals new { Codigo = SA10.A1Cod, Loja = SA10.A1Loja } into st
                                       from a in st.DefaultIfEmpty()
                                       where PA10.DELET != "*" && PA10.Pa1Msblql != "1" && PA10.Pa1Status != "B"
-                                      && c.DELET != "*" && a.DELET != "*" && PA10.Pa1Despat == teste
+                                      && c.DELET != "*" && a.DELET != "*" && (PA10.Pa1Despat == teste || PA10.Pa1Codigo == teste)
                                       select new
                                       {
                                           Descri = PA10.Pa1Despat,
                                           KitBas = PA10.Pa1Kitbas,
+                                          Codigo = PA10.Pa1Codigo
                                       }).FirstOrDefault();
 
 
@@ -453,11 +454,12 @@ namespace SGID.Pages.Cirurgias
                                       where PA10.DELET != "*" && PA10.Pa1Msblql != "1" && PA10.Pa1Status != "B"
                                       && c.DELET != "*" && a.DELET != "*"
                                       && ((int)(object)c.PacDtcir >= 20200701 || c.PacDtcir == null)
-                                      && PA10.Pa1Despat == teste
+                                      && (PA10.Pa1Despat == teste || PA10.Pa1Codigo == teste)
                                       select new
                                       {
                                           Descri = PA10.Pa1Despat,
                                           KitBas = PA10.Pa1Kitbas,
+                                          Codigo = PA10.Pa1Codigo
                                       }).FirstOrDefault();
 
 

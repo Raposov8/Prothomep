@@ -93,6 +93,8 @@ public partial class TOTVSDENUOContext : DbContext
 
     public virtual DbSet<Sm2010> Sm2010s { get; set; }
 
+    public virtual DbSet<Sra010> Sra010s { get; set; }
+
     public virtual DbSet<Sua010> Sua010s { get; set; }
 
     public virtual DbSet<Sua020> Sua020s { get; set; }
@@ -102,6 +104,10 @@ public partial class TOTVSDENUOContext : DbContext
     public virtual DbSet<Sw1010> Sw1010s { get; set; }
 
     public virtual DbSet<Sx5010> Sx5010s { get; set; }
+
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
+        => optionsBuilder.UseSqlServer("Data Source=172.16.150.200;Initial Catalog=TOTVSDENUO;User ID=sa;Password=GID@Erp@PrW8;Encrypt=False;");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -22799,6 +22805,1371 @@ public partial class TOTVSDENUOContext : DbContext
                 .HasDefaultValueSql("('                 ')")
                 .HasColumnName("M2_USERLGI");
             entity.Property(e => e.RECDEL).HasColumnName("R_E_C_D_E_L_");
+        });
+
+        modelBuilder.Entity<Sra010>(entity =>
+        {
+            entity.HasKey(e => e.RECNO).HasName("SRA010_PK");
+
+            entity.ToTable("SRA010");
+
+            entity.HasIndex(e => new { e.RaFilial, e.RaMat, e.RaNome, e.RECNO, e.DELET }, "SRA0101");
+
+            entity.HasIndex(e => new { e.RaFilial, e.RaCc, e.RaMat, e.RECNO, e.DELET }, "SRA0102").HasFillFactor(80);
+
+            entity.HasIndex(e => new { e.RaFilial, e.RaNome, e.RaMat, e.RECNO, e.DELET }, "SRA0103").HasFillFactor(80);
+
+            entity.HasIndex(e => new { e.RaFilial, e.RaTnotrab, e.RaSeqturn, e.RaRegra, e.RaMat, e.RECNO, e.DELET }, "SRA0104").HasFillFactor(80);
+
+            entity.HasIndex(e => new { e.RaFilial, e.RaCic, e.RECNO, e.DELET }, "SRA0105").HasFillFactor(80);
+
+            entity.HasIndex(e => new { e.RaFilial, e.RaPis, e.RECNO, e.DELET }, "SRA0106").HasFillFactor(80);
+
+            entity.HasIndex(e => new { e.RaFilial, e.RaCodfunc, e.RECNO, e.DELET }, "SRA0107").HasFillFactor(80);
+
+            entity.HasIndex(e => new { e.RaFilial, e.RaCc, e.RaNome, e.RECNO, e.DELET }, "SRA0108").HasFillFactor(80);
+
+            entity.HasIndex(e => new { e.RaCracha, e.RaFilial, e.RECNO, e.DELET }, "SRA0109").HasFillFactor(80);
+
+            entity.HasIndex(e => new { e.RaApelido, e.RaFilial, e.RECNO, e.DELET }, "SRA010A").HasFillFactor(80);
+
+            entity.HasIndex(e => new { e.RaFilial, e.RaCodigo, e.RECNO, e.DELET }, "SRA010B");
+
+            entity.HasIndex(e => new { e.RaFilial, e.RaCargo, e.RECNO, e.DELET }, "SRA010C").HasFillFactor(80);
+
+            entity.HasIndex(e => new { e.RaMat, e.RaFilial, e.RECNO, e.DELET }, "SRA010D").HasFillFactor(80);
+
+            entity.HasIndex(e => new { e.RaNome, e.RaFilial, e.RECNO, e.DELET }, "SRA010E").HasFillFactor(80);
+
+            entity.HasIndex(e => new { e.RaFilial, e.RaMat, e.RaProces, e.RECNO, e.DELET }, "SRA010F").HasFillFactor(80);
+
+            entity.HasIndex(e => new { e.RaFilial, e.RaProces, e.RaMat, e.RECNO, e.DELET }, "SRA010G").HasFillFactor(80);
+
+            entity.HasIndex(e => new { e.RaFilial, e.RaProces, e.RaCc, e.RaMat, e.RECNO, e.DELET }, "SRA010H").HasFillFactor(80);
+
+            entity.HasIndex(e => new { e.RaFilial, e.RaProces, e.RaCodfunc, e.RECNO, e.DELET }, "SRA010I").HasFillFactor(80);
+
+            entity.HasIndex(e => new { e.RaFilial, e.RaRegime, e.RaMat, e.RECNO, e.DELET }, "SRA010J").HasFillFactor(80);
+
+            entity.HasIndex(e => new { e.RaCic, e.RaFilial, e.RaMat, e.RECNO, e.DELET }, "SRA010L").HasFillFactor(80);
+
+            entity.HasIndex(e => new { e.RaFilial, e.RaDepto, e.RaMat, e.RECNO, e.DELET }, "SRA010N").HasFillFactor(80);
+
+            entity.HasIndex(e => new { e.RaFilial, e.RaDepto, e.RaNome, e.RECNO, e.DELET }, "SRA010O").HasFillFactor(80);
+
+            entity.HasIndex(e => new { e.RaFilial, e.RaProces, e.RaDepto, e.RaMat, e.RECNO, e.DELET }, "SRA010P").HasFillFactor(80);
+
+            entity.HasIndex(e => new { e.RaCodunic, e.RaFilial, e.RECNO, e.DELET }, "SRA010Q").HasFillFactor(80);
+
+            entity.HasIndex(e => new { e.RaFilial, e.RaProces, e.RaTnotrab, e.RaSeqturn, e.RaRegra, e.RaMat, e.RECNO, e.DELET }, "SRA010R").HasFillFactor(80);
+
+            entity.HasIndex(e => new { e.RaPis, e.RaFilial, e.RECNO, e.DELET }, "SRA010T");
+
+            entity.HasIndex(e => new { e.RaFilial, e.RaMat, e.RECDEL }, "SRA010_UNQ")
+                .IsUnique()
+                .HasFillFactor(80);
+
+            entity.Property(e => e.RECNO)
+                .ValueGeneratedNever()
+                .HasColumnName("R_E_C_N_O_");
+            entity.Property(e => e.DELET)
+                .HasMaxLength(1)
+                .IsUnicode(false)
+                .HasDefaultValueSql("(' ')")
+                .HasColumnName("D_E_L_E_T_");
+            entity.Property(e => e.RECDEL).HasColumnName("R_E_C_D_E_L_");
+            entity.Property(e => e.RaAcumbh)
+                .HasMaxLength(1)
+                .IsUnicode(false)
+                .HasDefaultValueSql("(' ')")
+                .HasColumnName("RA_ACUMBH");
+            entity.Property(e => e.RaAdcconf).HasColumnName("RA_ADCCONF");
+            entity.Property(e => e.RaAdcins)
+                .HasMaxLength(1)
+                .IsUnicode(false)
+                .HasDefaultValueSql("(' ')")
+                .HasColumnName("RA_ADCINS");
+            entity.Property(e => e.RaAdcperi)
+                .HasMaxLength(1)
+                .IsUnicode(false)
+                .HasDefaultValueSql("(' ')")
+                .HasColumnName("RA_ADCPERI");
+            entity.Property(e => e.RaAdctrf).HasColumnName("RA_ADCTRF");
+            entity.Property(e => e.RaAdicedi)
+                .HasMaxLength(1)
+                .IsUnicode(false)
+                .HasDefaultValueSql("(' ')")
+                .HasColumnName("RA_ADICEDI");
+            entity.Property(e => e.RaAdmissa)
+                .HasMaxLength(8)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('        ')")
+                .HasColumnName("RA_ADMISSA");
+            entity.Property(e => e.RaAdtpose)
+                .HasMaxLength(6)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('      ')")
+                .HasColumnName("RA_ADTPOSE");
+            entity.Property(e => e.RaAfasfgt)
+                .HasMaxLength(2)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('  ')")
+                .HasColumnName("RA_AFASFGT");
+            entity.Property(e => e.RaAltadm)
+                .HasMaxLength(1)
+                .IsUnicode(false)
+                .HasDefaultValueSql("(' ')")
+                .HasColumnName("RA_ALTADM");
+            entity.Property(e => e.RaAltcbo)
+                .HasMaxLength(1)
+                .IsUnicode(false)
+                .HasDefaultValueSql("(' ')")
+                .HasColumnName("RA_ALTCBO");
+            entity.Property(e => e.RaAltcp)
+                .HasMaxLength(1)
+                .IsUnicode(false)
+                .HasDefaultValueSql("(' ')")
+                .HasColumnName("RA_ALTCP");
+            entity.Property(e => e.RaAltend)
+                .HasMaxLength(1)
+                .IsUnicode(false)
+                .HasDefaultValueSql("(' ')")
+                .HasColumnName("RA_ALTEND");
+            entity.Property(e => e.RaAltnasc)
+                .HasMaxLength(1)
+                .IsUnicode(false)
+                .HasDefaultValueSql("(' ')")
+                .HasColumnName("RA_ALTNASC");
+            entity.Property(e => e.RaAltnome)
+                .HasMaxLength(1)
+                .IsUnicode(false)
+                .HasDefaultValueSql("(' ')")
+                .HasColumnName("RA_ALTNOME");
+            entity.Property(e => e.RaAltopc)
+                .HasMaxLength(1)
+                .IsUnicode(false)
+                .HasDefaultValueSql("(' ')")
+                .HasColumnName("RA_ALTOPC");
+            entity.Property(e => e.RaAltpis)
+                .HasMaxLength(1)
+                .IsUnicode(false)
+                .HasDefaultValueSql("(' ')")
+                .HasColumnName("RA_ALTPIS");
+            entity.Property(e => e.RaAnocheg)
+                .HasMaxLength(2)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('  ')")
+                .HasColumnName("RA_ANOCHEG");
+            entity.Property(e => e.RaAnoseme).HasColumnName("RA_ANOSEME");
+            entity.Property(e => e.RaAnteaum).HasColumnName("RA_ANTEAUM");
+            entity.Property(e => e.RaApelido)
+                .HasMaxLength(15)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('               ')")
+                .HasColumnName("RA_APELIDO");
+            entity.Property(e => e.RaAposent)
+                .HasMaxLength(8)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('        ')")
+                .HasColumnName("RA_APOSENT");
+            entity.Property(e => e.RaAsmedic)
+                .HasMaxLength(2)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('  ')")
+                .HasColumnName("RA_ASMEDIC");
+            entity.Property(e => e.RaAsodont)
+                .HasMaxLength(2)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('  ')")
+                .HasColumnName("RA_ASODONT");
+            entity.Property(e => e.RaAssist)
+                .HasMaxLength(1)
+                .IsUnicode(false)
+                .HasDefaultValueSql("(' ')")
+                .HasColumnName("RA_ASSIST");
+            entity.Property(e => e.RaAutmei)
+                .HasMaxLength(1)
+                .IsUnicode(false)
+                .HasDefaultValueSql("(' ')")
+                .HasColumnName("RA_AUTMEI");
+            entity.Property(e => e.RaBairro)
+                .HasMaxLength(15)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('               ')")
+                .HasColumnName("RA_BAIRRO");
+            entity.Property(e => e.RaBcdepsa)
+                .HasMaxLength(8)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('        ')")
+                .HasColumnName("RA_BCDEPSA");
+            entity.Property(e => e.RaBcdpfgt)
+                .HasMaxLength(8)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('        ')")
+                .HasColumnName("RA_BCDPFGT");
+            entity.Property(e => e.RaBhfol)
+                .HasMaxLength(1)
+                .IsUnicode(false)
+                .HasDefaultValueSql("(' ')")
+                .HasColumnName("RA_BHFOL");
+            entity.Property(e => e.RaBitmap)
+                .HasMaxLength(20)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('                    ')")
+                .HasColumnName("RA_BITMAP");
+            entity.Property(e => e.RaBloqadm)
+                .HasMaxLength(1)
+                .IsUnicode(false)
+                .HasDefaultValueSql("(' ')")
+                .HasColumnName("RA_BLOQADM");
+            entity.Property(e => e.RaBrnasex)
+                .HasMaxLength(1)
+                .IsUnicode(false)
+                .HasDefaultValueSql("(' ')")
+                .HasColumnName("RA_BRNASEX");
+            entity.Property(e => e.RaBrpdh)
+                .HasMaxLength(1)
+                .IsUnicode(false)
+                .HasDefaultValueSql("(' ')")
+                .HasColumnName("RA_BRPDH");
+            entity.Property(e => e.RaCarcert)
+                .HasMaxLength(30)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('                              ')")
+                .HasColumnName("RA_CARCERT");
+            entity.Property(e => e.RaCargo)
+                .HasMaxLength(5)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('     ')")
+                .HasColumnName("RA_CARGO");
+            entity.Property(e => e.RaCasadbr)
+                .HasMaxLength(1)
+                .IsUnicode(false)
+                .HasDefaultValueSql("(' ')")
+                .HasColumnName("RA_CASADBR");
+            entity.Property(e => e.RaCatcnh)
+                .HasMaxLength(1)
+                .IsUnicode(false)
+                .HasDefaultValueSql("(' ')")
+                .HasColumnName("RA_CATCNH");
+            entity.Property(e => e.RaCatefd)
+                .HasMaxLength(3)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('   ')")
+                .HasColumnName("RA_CATEFD");
+            entity.Property(e => e.RaCateg)
+                .HasMaxLength(2)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('  ')")
+                .HasColumnName("RA_CATEG");
+            entity.Property(e => e.RaCatfunc)
+                .HasMaxLength(1)
+                .IsUnicode(false)
+                .HasDefaultValueSql("(' ')")
+                .HasColumnName("RA_CATFUNC");
+            entity.Property(e => e.RaCbo)
+                .HasMaxLength(5)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('     ')")
+                .HasColumnName("RA_CBO");
+            entity.Property(e => e.RaCc)
+                .HasMaxLength(9)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('         ')")
+                .HasColumnName("RA_CC");
+            entity.Property(e => e.RaCdmucer)
+                .HasMaxLength(5)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('     ')")
+                .HasColumnName("RA_CDMUCER");
+            entity.Property(e => e.RaCdmuric)
+                .HasMaxLength(5)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('     ')")
+                .HasColumnName("RA_CDMURIC");
+            entity.Property(e => e.RaCep)
+                .HasMaxLength(8)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('        ')")
+                .HasColumnName("RA_CEP");
+            entity.Property(e => e.RaCepcxpo)
+                .HasMaxLength(8)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('        ')")
+                .HasColumnName("RA_CEPCXPO");
+            entity.Property(e => e.RaCestab)
+                .HasMaxLength(1)
+                .IsUnicode(false)
+                .HasDefaultValueSql("(' ')")
+                .HasColumnName("RA_CESTAB");
+            entity.Property(e => e.RaChapa)
+                .HasMaxLength(5)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('     ')")
+                .HasColumnName("RA_CHAPA");
+            entity.Property(e => e.RaChident)
+                .HasMaxLength(25)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('                         ')")
+                .HasColumnName("RA_CHIDENT");
+            entity.Property(e => e.RaCic)
+                .HasMaxLength(11)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('           ')")
+                .HasColumnName("RA_CIC");
+            entity.Property(e => e.RaClasest)
+                .HasMaxLength(2)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('  ')")
+                .HasColumnName("RA_CLASEST");
+            entity.Property(e => e.RaClassec)
+                .HasMaxLength(2)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('  ')")
+                .HasColumnName("RA_CLASSEC");
+            entity.Property(e => e.RaClaures)
+                .HasMaxLength(1)
+                .IsUnicode(false)
+                .HasDefaultValueSql("(' ')")
+                .HasColumnName("RA_CLAURES");
+            entity.Property(e => e.RaClvl)
+                .HasMaxLength(9)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('         ')")
+                .HasColumnName("RA_CLVL");
+            entity.Property(e => e.RaCnhorg)
+                .HasMaxLength(20)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('                    ')")
+                .HasColumnName("RA_CNHORG");
+            entity.Property(e => e.RaCodacer)
+                .HasMaxLength(2)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('  ')")
+                .HasColumnName("RA_CODACER");
+            entity.Property(e => e.RaCodcon)
+                .HasMaxLength(4)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('    ')")
+                .HasColumnName("RA_CODCON");
+            entity.Property(e => e.RaCodfunc)
+                .HasMaxLength(5)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('     ')")
+                .HasColumnName("RA_CODFUNC");
+            entity.Property(e => e.RaCodigo)
+                .HasMaxLength(14)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('              ')")
+                .HasColumnName("RA_CODIGO");
+            entity.Property(e => e.RaCodmun)
+                .HasMaxLength(5)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('     ')")
+                .HasColumnName("RA_CODMUN");
+            entity.Property(e => e.RaCodmunn)
+                .HasMaxLength(5)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('     ')")
+                .HasColumnName("RA_CODMUNN");
+            entity.Property(e => e.RaCodpais)
+                .HasMaxLength(5)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('     ')")
+                .HasColumnName("RA_CODPAIS");
+            entity.Property(e => e.RaCodret)
+                .HasMaxLength(4)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('    ')")
+                .HasColumnName("RA_CODRET");
+            entity.Property(e => e.RaCodtit)
+                .HasMaxLength(2)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('  ')")
+                .HasColumnName("RA_CODTIT");
+            entity.Property(e => e.RaCodunic)
+                .HasMaxLength(30)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('                              ')")
+                .HasColumnName("RA_CODUNIC");
+            entity.Property(e => e.RaComplem)
+                .HasMaxLength(15)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('               ')")
+                .HasColumnName("RA_COMPLEM");
+            entity.Property(e => e.RaComplrg)
+                .HasMaxLength(20)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('                    ')")
+                .HasColumnName("RA_COMPLRG");
+            entity.Property(e => e.RaCompsab)
+                .HasMaxLength(1)
+                .IsUnicode(false)
+                .HasDefaultValueSql("(' ')")
+                .HasColumnName("RA_COMPSAB");
+            entity.Property(e => e.RaConfed)
+                .HasMaxLength(1)
+                .IsUnicode(false)
+                .HasDefaultValueSql("(' ')")
+                .HasColumnName("RA_CONFED");
+            entity.Property(e => e.RaCpaisor)
+                .HasMaxLength(5)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('     ')")
+                .HasColumnName("RA_CPAISOR");
+            entity.Property(e => e.RaCpostal)
+                .HasMaxLength(9)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('         ')")
+                .HasColumnName("RA_CPOSTAL");
+            entity.Property(e => e.RaCracha)
+                .HasMaxLength(10)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('          ')")
+                .HasColumnName("RA_CRACHA");
+            entity.Property(e => e.RaCtdepsa)
+                .HasMaxLength(12)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('            ')")
+                .HasColumnName("RA_CTDEPSA");
+            entity.Property(e => e.RaCtdpfgt)
+                .HasMaxLength(12)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('            ')")
+                .HasColumnName("RA_CTDPFGT");
+            entity.Property(e => e.RaCtpcd)
+                .HasMaxLength(1)
+                .IsUnicode(false)
+                .HasDefaultValueSql("(' ')")
+                .HasColumnName("RA_CTPCD");
+            entity.Property(e => e.RaCtrlema).HasColumnName("RA_CTRLEMA");
+            entity.Property(e => e.RaDatcheg)
+                .HasMaxLength(8)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('        ')")
+                .HasColumnName("RA_DATCHEG");
+            entity.Property(e => e.RaDatnatu)
+                .HasMaxLength(8)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('        ')")
+                .HasColumnName("RA_DATNATU");
+            entity.Property(e => e.RaDddcelu)
+                .HasMaxLength(2)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('  ')")
+                .HasColumnName("RA_DDDCELU");
+            entity.Property(e => e.RaDddfone)
+                .HasMaxLength(2)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('  ')")
+                .HasColumnName("RA_DDDFONE");
+            entity.Property(e => e.RaDefetiv)
+                .HasMaxLength(8)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('        ')")
+                .HasColumnName("RA_DEFETIV");
+            entity.Property(e => e.RaDefifis)
+                .HasMaxLength(1)
+                .IsUnicode(false)
+                .HasDefaultValueSql("(' ')")
+                .HasColumnName("RA_DEFIFIS");
+            entity.Property(e => e.RaDemiant)
+                .HasMaxLength(8)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('        ')")
+                .HasColumnName("RA_DEMIANT");
+            entity.Property(e => e.RaDemipas)
+                .HasMaxLength(8)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('        ')")
+                .HasColumnName("RA_DEMIPAS");
+            entity.Property(e => e.RaDemissa)
+                .HasMaxLength(8)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('        ')")
+                .HasColumnName("RA_DEMISSA");
+            entity.Property(e => e.RaDepir)
+                .HasMaxLength(2)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('  ')")
+                .HasColumnName("RA_DEPIR");
+            entity.Property(e => e.RaDepsf)
+                .HasMaxLength(2)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('  ')")
+                .HasColumnName("RA_DEPSF");
+            entity.Property(e => e.RaDepto)
+                .HasMaxLength(9)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('         ')")
+                .HasColumnName("RA_DEPTO");
+            entity.Property(e => e.RaDescep)
+                .HasMaxLength(1)
+                .IsUnicode(false)
+                .HasDefaultValueSql("(' ')")
+                .HasColumnName("RA_DESCEP");
+            entity.Property(e => e.RaDeseps)
+                .HasMaxLength(254)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('                                                                                                                                                                                                                                                              ')")
+                .HasColumnName("RA_DESEPS");
+            entity.Property(e => e.RaDexpric)
+                .HasMaxLength(8)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('        ')")
+                .HasColumnName("RA_DEXPRIC");
+            entity.Property(e => e.RaDistsn)
+                .HasMaxLength(1)
+                .IsUnicode(false)
+                .HasDefaultValueSql("(' ')")
+                .HasColumnName("RA_DISTSN");
+            entity.Property(e => e.RaDpassme)
+                .HasMaxLength(2)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('  ')")
+                .HasColumnName("RA_DPASSME");
+            entity.Property(e => e.RaDtcaged)
+                .HasMaxLength(8)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('        ')")
+                .HasColumnName("RA_DTCAGED");
+            entity.Property(e => e.RaDtcpexp)
+                .HasMaxLength(8)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('        ')")
+                .HasColumnName("RA_DTCPEXP");
+            entity.Property(e => e.RaDtefret)
+                .HasMaxLength(8)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('        ')")
+                .HasColumnName("RA_DTEFRET");
+            entity.Property(e => e.RaDtefrtn)
+                .HasMaxLength(8)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('        ')")
+                .HasColumnName("RA_DTEFRTN");
+            entity.Property(e => e.RaDtemcnh)
+                .HasMaxLength(8)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('        ')")
+                .HasColumnName("RA_DTEMCNH");
+            entity.Property(e => e.RaDtentra)
+                .HasMaxLength(8)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('        ')")
+                .HasColumnName("RA_DTENTRA");
+            entity.Property(e => e.RaDtfimct)
+                .HasMaxLength(8)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('        ')")
+                .HasColumnName("RA_DTFIMCT");
+            entity.Property(e => e.RaDthrest)
+                .HasMaxLength(8)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('        ')")
+                .HasColumnName("RA_DTHREST");
+            entity.Property(e => e.RaDtincon)
+                .HasMaxLength(8)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('        ')")
+                .HasColumnName("RA_DTINCON");
+            entity.Property(e => e.RaDtnomea)
+                .HasMaxLength(8)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('        ')")
+                .HasColumnName("RA_DTNOMEA");
+            entity.Property(e => e.RaDtrec)
+                .HasMaxLength(8)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('        ')")
+                .HasColumnName("RA_DTREC");
+            entity.Property(e => e.RaDtrgexp)
+                .HasMaxLength(8)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('        ')")
+                .HasColumnName("RA_DTRGEXP");
+            entity.Property(e => e.RaDtvccnh)
+                .HasMaxLength(8)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('        ')")
+                .HasColumnName("RA_DTVCCNH");
+            entity.Property(e => e.RaDtvtest)
+                .HasMaxLength(8)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('        ')")
+                .HasColumnName("RA_DTVTEST");
+            entity.Property(e => e.RaDvalpas)
+                .HasMaxLength(8)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('        ')")
+                .HasColumnName("RA_DVALPAS");
+            entity.Property(e => e.RaEaposen)
+                .HasMaxLength(1)
+                .IsUnicode(false)
+                .HasDefaultValueSql("(' ')")
+                .HasColumnName("RA_EAPOSEN");
+            entity.Property(e => e.RaEmail)
+                .HasMaxLength(50)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('                                                  ')")
+                .HasColumnName("RA_EMAIL");
+            entity.Property(e => e.RaEmail2)
+                .HasMaxLength(60)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('                                                            ')")
+                .HasColumnName("RA_EMAIL2");
+            entity.Property(e => e.RaEmicert)
+                .HasMaxLength(8)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('        ')")
+                .HasColumnName("RA_EMICERT");
+            entity.Property(e => e.RaEmispas)
+                .HasMaxLength(15)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('               ')")
+                .HasColumnName("RA_EMISPAS");
+            entity.Property(e => e.RaEmisric)
+                .HasMaxLength(10)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('          ')")
+                .HasColumnName("RA_EMISRIC");
+            entity.Property(e => e.RaEnderec)
+                .HasMaxLength(30)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('                              ')")
+                .HasColumnName("RA_ENDEREC");
+            entity.Property(e => e.RaEstado)
+                .HasMaxLength(2)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('  ')")
+                .HasColumnName("RA_ESTADO");
+            entity.Property(e => e.RaEstcivi)
+                .HasMaxLength(1)
+                .IsUnicode(false)
+                .HasDefaultValueSql("(' ')")
+                .HasColumnName("RA_ESTCIVI");
+            entity.Property(e => e.RaExamedi)
+                .HasMaxLength(8)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('        ')")
+                .HasColumnName("RA_EXAMEDI");
+            entity.Property(e => e.RaFecrei)
+                .HasMaxLength(8)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('        ')")
+                .HasColumnName("RA_FECREI");
+            entity.Property(e => e.RaFicha)
+                .HasMaxLength(8)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('        ')")
+                .HasColumnName("RA_FICHA");
+            entity.Property(e => e.RaFilhobr)
+                .HasMaxLength(1)
+                .IsUnicode(false)
+                .HasDefaultValueSql("(' ')")
+                .HasColumnName("RA_FILHOBR");
+            entity.Property(e => e.RaFilial)
+                .HasMaxLength(2)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('  ')")
+                .HasColumnName("RA_FILIAL");
+            entity.Property(e => e.RaFitipen)
+                .HasMaxLength(2)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('  ')")
+                .HasColumnName("RA_FITIPEN");
+            entity.Property(e => e.RaFolcert)
+                .HasMaxLength(4)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('    ')")
+                .HasColumnName("RA_FOLCERT");
+            entity.Property(e => e.RaFtinsal).HasColumnName("RA_FTINSAL");
+            entity.Property(e => e.RaFwidm)
+                .HasMaxLength(34)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('                                  ')")
+                .HasColumnName("RA_FWIDM");
+            entity.Property(e => e.RaGrinrai)
+                .HasMaxLength(2)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('  ')")
+                .HasColumnName("RA_GRINRAI");
+            entity.Property(e => e.RaHabilit)
+                .HasMaxLength(10)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('          ')")
+                .HasColumnName("RA_HABILIT");
+            entity.Property(e => e.RaHabilmt)
+                .HasMaxLength(1)
+                .IsUnicode(false)
+                .HasDefaultValueSql("(' ')")
+                .HasColumnName("RA_HABILMT");
+            entity.Property(e => e.RaHojorva)
+                .HasMaxLength(1)
+                .IsUnicode(false)
+                .HasDefaultValueSql("(' ')")
+                .HasColumnName("RA_HOJORVA");
+            entity.Property(e => e.RaHoparc)
+                .HasMaxLength(1)
+                .IsUnicode(false)
+                .HasDefaultValueSql("(' ')")
+                .HasColumnName("RA_HOPARC");
+            entity.Property(e => e.RaHrsdia).HasColumnName("RA_HRSDIA");
+            entity.Property(e => e.RaHrseman).HasColumnName("RA_HRSEMAN");
+            entity.Property(e => e.RaHrsmes).HasColumnName("RA_HRSMES");
+            entity.Property(e => e.RaInsmax).HasColumnName("RA_INSMAX");
+            entity.Property(e => e.RaInsmed).HasColumnName("RA_INSMED");
+            entity.Property(e => e.RaInsmin).HasColumnName("RA_INSMIN");
+            entity.Property(e => e.RaInssaut)
+                .HasMaxLength(1)
+                .IsUnicode(false)
+                .HasDefaultValueSql("(' ')")
+                .HasColumnName("RA_INSSAUT");
+            entity.Property(e => e.RaInsssc)
+                .HasMaxLength(1)
+                .IsUnicode(false)
+                .HasDefaultValueSql("(' ')")
+                .HasColumnName("RA_INSSSC");
+            entity.Property(e => e.RaItem)
+                .HasMaxLength(9)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('         ')")
+                .HasColumnName("RA_ITEM");
+            entity.Property(e => e.RaJornred).HasColumnName("RA_JORNRED");
+            entity.Property(e => e.RaKeyloc)
+                .HasMaxLength(4)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('    ')")
+                .HasColumnName("RA_KEYLOC");
+            entity.Property(e => e.RaLivcert)
+                .HasMaxLength(8)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('        ')")
+                .HasColumnName("RA_LIVCERT");
+            entity.Property(e => e.RaLocbnf)
+                .HasMaxLength(4)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('    ')")
+                .HasColumnName("RA_LOCBNF");
+            entity.Property(e => e.RaLogrdsc)
+                .HasMaxLength(80)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('                                                                                ')")
+                .HasColumnName("RA_LOGRDSC");
+            entity.Property(e => e.RaLogrnum)
+                .HasMaxLength(10)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('          ')")
+                .HasColumnName("RA_LOGRNUM");
+            entity.Property(e => e.RaLogrtp)
+                .HasMaxLength(4)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('    ')")
+                .HasColumnName("RA_LOGRTP");
+            entity.Property(e => e.RaMae)
+                .HasMaxLength(40)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('                                        ')")
+                .HasColumnName("RA_MAE");
+            entity.Property(e => e.RaMat)
+                .HasMaxLength(6)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('      ')")
+                .HasColumnName("RA_MAT");
+            entity.Property(e => e.RaMatcert)
+                .HasMaxLength(32)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('                                ')")
+                .HasColumnName("RA_MATCERT");
+            entity.Property(e => e.RaMatipen)
+                .HasMaxLength(6)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('      ')")
+                .HasColumnName("RA_MATIPEN");
+            entity.Property(e => e.RaMatmig)
+                .HasMaxLength(20)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('                    ')")
+                .HasColumnName("RA_MATMIG");
+            entity.Property(e => e.RaMensind)
+                .HasMaxLength(1)
+                .IsUnicode(false)
+                .HasDefaultValueSql("(' ')")
+                .HasColumnName("RA_MENSIND");
+            entity.Property(e => e.RaMesesan).HasColumnName("RA_MESESAN");
+            entity.Property(e => e.RaMestrab)
+                .HasMaxLength(2)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('  ')")
+                .HasColumnName("RA_MESTRAB");
+            entity.Property(e => e.RaMolest)
+                .HasMaxLength(8)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('        ')")
+                .HasColumnName("RA_MOLEST");
+            entity.Property(e => e.RaMsblql)
+                .HasMaxLength(1)
+                .IsUnicode(false)
+                .HasDefaultValueSql("(' ')")
+                .HasColumnName("RA_MSBLQL");
+            entity.Property(e => e.RaMunicip)
+                .HasMaxLength(20)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('                    ')")
+                .HasColumnName("RA_MUNICIP");
+            entity.Property(e => e.RaMunnasc)
+                .HasMaxLength(30)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('                              ')")
+                .HasColumnName("RA_MUNNASC");
+            entity.Property(e => e.RaNaciona)
+                .HasMaxLength(2)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('  ')")
+                .HasColumnName("RA_NACIONA");
+            entity.Property(e => e.RaNacionc)
+                .HasMaxLength(5)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('     ')")
+                .HasColumnName("RA_NACIONC");
+            entity.Property(e => e.RaNasc)
+                .HasMaxLength(8)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('        ')")
+                .HasColumnName("RA_NASC");
+            entity.Property(e => e.RaNatural)
+                .HasMaxLength(2)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('  ')")
+                .HasColumnName("RA_NATURAL");
+            entity.Property(e => e.RaNivel)
+                .HasMaxLength(2)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('  ')")
+                .HasColumnName("RA_NIVEL");
+            entity.Property(e => e.RaNjud14)
+                .HasMaxLength(20)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('                    ')")
+                .HasColumnName("RA_NJUD14");
+            entity.Property(e => e.RaNome)
+                .HasMaxLength(30)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('                              ')")
+                .HasColumnName("RA_NOME");
+            entity.Property(e => e.RaNomecmp)
+                .HasMaxLength(70)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('                                                                      ')")
+                .HasColumnName("RA_NOMECMP");
+            entity.Property(e => e.RaNrleian)
+                .HasMaxLength(14)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('              ')")
+                .HasColumnName("RA_NRLEIAN");
+            entity.Property(e => e.RaNrproc)
+                .HasMaxLength(20)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('                    ')")
+                .HasColumnName("RA_NRPROC");
+            entity.Property(e => e.RaNsocial)
+                .HasMaxLength(70)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('                                                                      ')")
+                .HasColumnName("RA_NSOCIAL");
+            entity.Property(e => e.RaNumcelu)
+                .HasMaxLength(10)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('          ')")
+                .HasColumnName("RA_NUMCELU");
+            entity.Property(e => e.RaNumcp)
+                .HasMaxLength(7)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('       ')")
+                .HasColumnName("RA_NUMCP");
+            entity.Property(e => e.RaNumende)
+                .HasMaxLength(6)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('      ')")
+                .HasColumnName("RA_NUMENDE");
+            entity.Property(e => e.RaNumepas)
+                .HasMaxLength(15)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('               ')")
+                .HasColumnName("RA_NUMEPAS");
+            entity.Property(e => e.RaNuminsc)
+                .HasMaxLength(11)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('           ')")
+                .HasColumnName("RA_NUMINSC");
+            entity.Property(e => e.RaNumnatu)
+                .HasMaxLength(10)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('          ')")
+                .HasColumnName("RA_NUMNATU");
+            entity.Property(e => e.RaNumric)
+                .HasMaxLength(12)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('            ')")
+                .HasColumnName("RA_NUMRIC");
+            entity.Property(e => e.RaNupfch)
+                .HasMaxLength(2)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('  ')")
+                .HasColumnName("RA_NUPFCH");
+            entity.Property(e => e.RaObsdefi).HasColumnName("RA_OBSDEFI");
+            entity.Property(e => e.RaOcdtexp)
+                .HasMaxLength(8)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('        ')")
+                .HasColumnName("RA_OCDTEXP");
+            entity.Property(e => e.RaOcdtval)
+                .HasMaxLength(8)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('        ')")
+                .HasColumnName("RA_OCDTVAL");
+            entity.Property(e => e.RaOcemis)
+                .HasMaxLength(20)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('                    ')")
+                .HasColumnName("RA_OCEMIS");
+            entity.Property(e => e.RaOcorren)
+                .HasMaxLength(2)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('  ')")
+                .HasColumnName("RA_OCORREN");
+            entity.Property(e => e.RaOktrans)
+                .HasMaxLength(2)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('  ')")
+                .HasColumnName("RA_OKTRANS");
+            entity.Property(e => e.RaOpcao)
+                .HasMaxLength(8)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('        ')")
+                .HasColumnName("RA_OPCAO");
+            entity.Property(e => e.RaOrgemrg)
+                .HasMaxLength(5)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('     ')")
+                .HasColumnName("RA_ORGEMRG");
+            entity.Property(e => e.RaPai)
+                .HasMaxLength(40)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('                                        ')")
+                .HasColumnName("RA_PAI");
+            entity.Property(e => e.RaPaisext)
+                .HasMaxLength(5)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('     ')")
+                .HasColumnName("RA_PAISEXT");
+            entity.Property(e => e.RaPensali).HasColumnName("RA_PENSALI");
+            entity.Property(e => e.RaPercadt).HasColumnName("RA_PERCADT");
+            entity.Property(e => e.RaPercsat).HasColumnName("RA_PERCSAT");
+            entity.Property(e => e.RaPerestu)
+                .HasMaxLength(1)
+                .IsUnicode(false)
+                .HasDefaultValueSql("(' ')")
+                .HasColumnName("RA_PERESTU");
+            entity.Property(e => e.RaPerfch)
+                .HasMaxLength(6)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('      ')")
+                .HasColumnName("RA_PERFCH");
+            entity.Property(e => e.RaPerfgts).HasColumnName("RA_PERFGTS");
+            entity.Property(e => e.RaPericul).HasColumnName("RA_PERICUL");
+            entity.Property(e => e.RaPgctsin)
+                .HasMaxLength(1)
+                .IsUnicode(false)
+                .HasDefaultValueSql("(' ')")
+                .HasColumnName("RA_PGCTSIN");
+            entity.Property(e => e.RaPis)
+                .HasMaxLength(11)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('           ')")
+                .HasColumnName("RA_PIS");
+            entity.Property(e => e.RaPlapre)
+                .HasMaxLength(14)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('              ')")
+                .HasColumnName("RA_PLAPRE");
+            entity.Property(e => e.RaPlsaude)
+                .HasMaxLength(1)
+                .IsUnicode(false)
+                .HasDefaultValueSql("(' ')")
+                .HasColumnName("RA_PLSAUDE");
+            entity.Property(e => e.RaPortdef)
+                .HasMaxLength(6)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('      ')")
+                .HasColumnName("RA_PORTDEF");
+            entity.Property(e => e.RaPosto)
+                .HasMaxLength(9)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('         ')")
+                .HasColumnName("RA_POSTO");
+            entity.Property(e => e.RaPrcfch)
+                .HasMaxLength(5)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('     ')")
+                .HasColumnName("RA_PRCFCH");
+            entity.Property(e => e.RaProces)
+                .HasMaxLength(5)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('     ')")
+                .HasColumnName("RA_PROCES");
+            entity.Property(e => e.RaRacacor)
+                .HasMaxLength(1)
+                .IsUnicode(false)
+                .HasDefaultValueSql("(' ')")
+                .HasColumnName("RA_RACACOR");
+            entity.Property(e => e.RaRecmail)
+                .HasMaxLength(1)
+                .IsUnicode(false)
+                .HasDefaultValueSql("(' ')")
+                .HasColumnName("RA_RECMAIL");
+            entity.Property(e => e.RaRecpfnc)
+                .HasMaxLength(1)
+                .IsUnicode(false)
+                .HasDefaultValueSql("(' ')")
+                .HasColumnName("RA_RECPFNC");
+            entity.Property(e => e.RaRegcivi)
+                .HasMaxLength(2)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('  ')")
+                .HasColumnName("RA_REGCIVI");
+            entity.Property(e => e.RaRegime)
+                .HasMaxLength(1)
+                .IsUnicode(false)
+                .HasDefaultValueSql("(' ')")
+                .HasColumnName("RA_REGIME");
+            entity.Property(e => e.RaRegistr)
+                .HasMaxLength(6)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('      ')")
+                .HasColumnName("RA_REGISTR");
+            entity.Property(e => e.RaRegra)
+                .HasMaxLength(2)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('  ')")
+                .HasColumnName("RA_REGRA");
+            entity.Property(e => e.RaRescrai)
+                .HasMaxLength(2)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('  ')")
+                .HasColumnName("RA_RESCRAI");
+            entity.Property(e => e.RaReservi)
+                .HasMaxLength(12)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('            ')")
+                .HasColumnName("RA_RESERVI");
+            entity.Property(e => e.RaResext)
+                .HasMaxLength(1)
+                .IsUnicode(false)
+                .HasDefaultValueSql("(' ')")
+                .HasColumnName("RA_RESEXT");
+            entity.Property(e => e.RaRg)
+                .HasMaxLength(15)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('               ')")
+                .HasColumnName("RA_RG");
+            entity.Property(e => e.RaRgexp)
+                .HasMaxLength(6)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('      ')")
+                .HasColumnName("RA_RGEXP");
+            entity.Property(e => e.RaRgorg)
+                .HasMaxLength(3)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('   ')")
+                .HasColumnName("RA_RGORG");
+            entity.Property(e => e.RaRguf)
+                .HasMaxLength(2)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('  ')")
+                .HasColumnName("RA_RGUF");
+            entity.Property(e => e.RaRhexp)
+                .HasMaxLength(6)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('      ')")
+                .HasColumnName("RA_RHEXP");
+            entity.Property(e => e.RaRne)
+                .HasMaxLength(14)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('              ')")
+                .HasColumnName("RA_RNE");
+            entity.Property(e => e.RaRnedexp)
+                .HasMaxLength(8)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('        ')")
+                .HasColumnName("RA_RNEDEXP");
+            entity.Property(e => e.RaRneorg)
+                .HasMaxLength(20)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('                    ')")
+                .HasColumnName("RA_RNEORG");
+            entity.Property(e => e.RaRotfch)
+                .HasMaxLength(3)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('   ')")
+                .HasColumnName("RA_ROTFCH");
+            entity.Property(e => e.RaSalario).HasColumnName("RA_SALARIO");
+            entity.Property(e => e.RaSecao)
+                .HasMaxLength(4)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('    ')")
+                .HasColumnName("RA_SECAO");
+            entity.Property(e => e.RaSegurov)
+                .HasMaxLength(2)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('  ')")
+                .HasColumnName("RA_SEGUROV");
+            entity.Property(e => e.RaSenha)
+                .HasMaxLength(6)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('      ')")
+                .HasColumnName("RA_SENHA");
+            entity.Property(e => e.RaSeqturn)
+                .HasMaxLength(2)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('  ')")
+                .HasColumnName("RA_SEQTURN");
+            entity.Property(e => e.RaSercp)
+                .HasMaxLength(5)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('     ')")
+                .HasColumnName("RA_SERCP");
+            entity.Property(e => e.RaServent)
+                .HasMaxLength(6)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('      ')")
+                .HasColumnName("RA_SERVENT");
+            entity.Property(e => e.RaServico)
+                .HasMaxLength(60)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('                                                            ')")
+                .HasColumnName("RA_SERVICO");
+            entity.Property(e => e.RaSexo)
+                .HasMaxLength(1)
+                .IsUnicode(false)
+                .HasDefaultValueSql("(' ')")
+                .HasColumnName("RA_SEXO");
+            entity.Property(e => e.RaSindica)
+                .HasMaxLength(2)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('  ')")
+                .HasColumnName("RA_SINDICA");
+            entity.Property(e => e.RaSitfolh)
+                .HasMaxLength(1)
+                .IsUnicode(false)
+                .HasDefaultValueSql("(' ')")
+                .HasColumnName("RA_SITFOLH");
+            entity.Property(e => e.RaSubcarr).HasColumnName("RA_SUBCARR");
+            entity.Property(e => e.RaTabela)
+                .HasMaxLength(3)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('   ')")
+                .HasColumnName("RA_TABELA");
+            entity.Property(e => e.RaTabfaix)
+                .HasMaxLength(2)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('  ')")
+                .HasColumnName("RA_TABFAIX");
+            entity.Property(e => e.RaTabnive)
+                .HasMaxLength(2)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('  ')")
+                .HasColumnName("RA_TABNIVE");
+            entity.Property(e => e.RaTcfmsg)
+                .HasMaxLength(6)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('      ')")
+                .HasColumnName("RA_TCFMSG");
+            entity.Property(e => e.RaTelefon)
+                .HasMaxLength(20)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('                    ')")
+                .HasColumnName("RA_TELEFON");
+            entity.Property(e => e.RaTipamed)
+                .HasMaxLength(1)
+                .IsUnicode(false)
+                .HasDefaultValueSql("(' ')")
+                .HasColumnName("RA_TIPAMED");
+            entity.Property(e => e.RaTipcert)
+                .HasMaxLength(1)
+                .IsUnicode(false)
+                .HasDefaultValueSql("(' ')")
+                .HasColumnName("RA_TIPCERT");
+            entity.Property(e => e.RaTipcta)
+                .HasMaxLength(1)
+                .IsUnicode(false)
+                .HasDefaultValueSql("(' ')")
+                .HasColumnName("RA_TIPCTA");
+            entity.Property(e => e.RaTipende)
+                .HasMaxLength(1)
+                .IsUnicode(false)
+                .HasDefaultValueSql("(' ')")
+                .HasColumnName("RA_TIPENDE");
+            entity.Property(e => e.RaTipinf)
+                .HasMaxLength(1)
+                .IsUnicode(false)
+                .HasDefaultValueSql("(' ')")
+                .HasColumnName("RA_TIPINF");
+            entity.Property(e => e.RaTipoadm)
+                .HasMaxLength(2)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('  ')")
+                .HasColumnName("RA_TIPOADM");
+            entity.Property(e => e.RaTipocon)
+                .HasMaxLength(1)
+                .IsUnicode(false)
+                .HasDefaultValueSql("(' ')")
+                .HasColumnName("RA_TIPOCON");
+            entity.Property(e => e.RaTipopen)
+                .HasMaxLength(1)
+                .IsUnicode(false)
+                .HasDefaultValueSql("(' ')")
+                .HasColumnName("RA_TIPOPEN");
+            entity.Property(e => e.RaTipopgt)
+                .HasMaxLength(1)
+                .IsUnicode(false)
+                .HasDefaultValueSql("(' ')")
+                .HasColumnName("RA_TIPOPGT");
+            entity.Property(e => e.RaTipovia)
+                .HasMaxLength(1)
+                .IsUnicode(false)
+                .HasDefaultValueSql("(' ')")
+                .HasColumnName("RA_TIPOVIA");
+            entity.Property(e => e.RaTituloe)
+                .HasMaxLength(12)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('            ')")
+                .HasColumnName("RA_TITULOE");
+            entity.Property(e => e.RaTnotrab)
+                .HasMaxLength(3)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('   ')")
+                .HasColumnName("RA_TNOTRAB");
+            entity.Property(e => e.RaTpasodo)
+                .HasMaxLength(1)
+                .IsUnicode(false)
+                .HasDefaultValueSql("(' ')")
+                .HasColumnName("RA_TPASODO");
+            entity.Property(e => e.RaTpcontr)
+                .HasMaxLength(1)
+                .IsUnicode(false)
+                .HasDefaultValueSql("(' ')")
+                .HasColumnName("RA_TPCONTR");
+            entity.Property(e => e.RaTpctsal)
+                .HasMaxLength(1)
+                .IsUnicode(false)
+                .HasDefaultValueSql("(' ')")
+                .HasColumnName("RA_TPCTSAL");
+            entity.Property(e => e.RaTpcuest)
+                .HasMaxLength(1)
+                .IsUnicode(false)
+                .HasDefaultValueSql("(' ')")
+                .HasColumnName("RA_TPCUEST");
+            entity.Property(e => e.RaTpdeffi)
+                .HasMaxLength(1)
+                .IsUnicode(false)
+                .HasDefaultValueSql("(' ')")
+                .HasColumnName("RA_TPDEFFI");
+            entity.Property(e => e.RaTpjorna)
+                .HasMaxLength(1)
+                .IsUnicode(false)
+                .HasDefaultValueSql("(' ')")
+                .HasColumnName("RA_TPJORNA");
+            entity.Property(e => e.RaTplivro)
+                .HasMaxLength(1)
+                .IsUnicode(false)
+                .HasDefaultValueSql("(' ')")
+                .HasColumnName("RA_TPLIVRO");
+            entity.Property(e => e.RaTpmail)
+                .HasMaxLength(1)
+                .IsUnicode(false)
+                .HasDefaultValueSql("(' ')")
+                .HasColumnName("RA_TPMAIL");
+            entity.Property(e => e.RaTpprevi)
+                .HasMaxLength(1)
+                .IsUnicode(false)
+                .HasDefaultValueSql("(' ')")
+                .HasColumnName("RA_TPPREVI");
+            entity.Property(e => e.RaTprcbt)
+                .HasMaxLength(1)
+                .IsUnicode(false)
+                .HasDefaultValueSql("(' ')")
+                .HasColumnName("RA_TPRCBT");
+            entity.Property(e => e.RaTpreint)
+                .HasMaxLength(1)
+                .IsUnicode(false)
+                .HasDefaultValueSql("(' ')")
+                .HasColumnName("RA_TPREINT");
+            entity.Property(e => e.RaTpsbcom)
+                .HasMaxLength(1)
+                .IsUnicode(false)
+                .HasDefaultValueSql("(' ')")
+                .HasColumnName("RA_TPSBCOM");
+            entity.Property(e => e.RaUfcert)
+                .HasMaxLength(2)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('  ')")
+                .HasColumnName("RA_UFCERT");
+            entity.Property(e => e.RaUfcnh)
+                .HasMaxLength(2)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('  ')")
+                .HasColumnName("RA_UFCNH");
+            entity.Property(e => e.RaUfcp)
+                .HasMaxLength(2)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('  ')")
+                .HasColumnName("RA_UFCP");
+            entity.Property(e => e.RaUfpas)
+                .HasMaxLength(2)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('  ')")
+                .HasColumnName("RA_UFPAS");
+            entity.Property(e => e.RaUfric)
+                .HasMaxLength(2)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('  ')")
+                .HasColumnName("RA_UFRIC");
+            entity.Property(e => e.RaUsradm)
+                .HasMaxLength(6)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('      ')")
+                .HasColumnName("RA_USRADM");
+            entity.Property(e => e.RaValeali)
+                .HasMaxLength(2)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('  ')")
+                .HasColumnName("RA_VALEALI");
+            entity.Property(e => e.RaValeref)
+                .HasMaxLength(2)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('  ')")
+                .HasColumnName("RA_VALEREF");
+            entity.Property(e => e.RaVctexp2)
+                .HasMaxLength(8)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('        ')")
+                .HasColumnName("RA_VCTEXP2");
+            entity.Property(e => e.RaVctoexp)
+                .HasMaxLength(8)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('        ')")
+                .HasColumnName("RA_VCTOEXP");
+            entity.Property(e => e.RaViemrai)
+                .HasMaxLength(2)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('  ')")
+                .HasColumnName("RA_VIEMRAI");
+            entity.Property(e => e.RaZonasec)
+                .HasMaxLength(8)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('        ')")
+                .HasColumnName("RA_ZONASEC");
         });
 
         modelBuilder.Entity<Sua010>(entity =>

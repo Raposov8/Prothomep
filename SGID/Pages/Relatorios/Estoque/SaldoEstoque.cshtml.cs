@@ -20,39 +20,18 @@ namespace SGID.Pages.Relatorios.Estoque
         private ApplicationDbContext SGID { get; set; }
 
         public List<RelatorioSaldoEstoque> Relatorio { get; set; } = new List<RelatorioSaldoEstoque>();
+        public List<string> Locals { get; set; } = new List<string>();
 
         public SaldoEstoqueModel(TOTVSDENUOContext protheus,ApplicationDbContext sgid)
         {
             Protheus = protheus;
             SGID = sgid;
         }
-        public int CurrentPage { get; set; }
-        public int TotalPages { get; set; }
 
-        public void OnGet(int id)
+        public void OnGet()
         {
             try
             {
-                CurrentPage = id;
-
-                TotalPages = (int)Math.Ceiling(decimal.Divide((from SB80 in Protheus.Sb8010s
-                                                               join SB10 in Protheus.Sb1010s on SB80.B8Produto equals SB10.B1Cod
-                                                               where SB10.DELET != "*" && SB80.DELET != "*" && SB80.B8Saldo != 0
-                                                               select new RelatorioSaldoEstoque
-                                                               {
-                                                                   Filial = SB80.B8Filial,
-                                                                   Produto = SB80.B8Produto,
-                                                                   DescProd = SB10.B1Desc,
-                                                                   LoteCtl = SB80.B8Lotectl,
-                                                                   Local = SB80.B8Local,
-                                                                   Endereco = "",
-                                                                   Saldo = SB80.B8Saldo,
-                                                                   UM = SB10.B1Um,
-                                                                   Empenho = 0,
-                                                                   Data = $"{SB80.B8Data.Substring(6, 2)}/{SB80.B8Data.Substring(4, 2)}/{SB80.B8Data.Substring(0, 4)}",
-                                                                   DtValid = $"{SB80.B8Dtvalid.Substring(6, 2)}/{SB80.B8Dtvalid.Substring(4, 2)}/{SB80.B8Dtvalid.Substring(0, 4)}",
-                                                                   Descendereco = ""
-                                                               }).Count(), 20));
 
                 Relatorio = (from SB80 in Protheus.Sb8010s
                              join SB10 in Protheus.Sb1010s on SB80.B8Produto equals SB10.B1Cod
@@ -64,19 +43,52 @@ namespace SGID.Pages.Relatorios.Estoque
                                  DescProd = SB10.B1Desc,
                                  LoteCtl = SB80.B8Lotectl,
                                  Local = SB80.B8Local,
-                                 Endereco = "",
                                  Saldo = SB80.B8Saldo,
                                  UM = SB10.B1Um,
-                                 Empenho = 0,
+                                 Empenho = SB80.B8Empenho,
                                  Data = $"{SB80.B8Data.Substring(6, 2)}/{SB80.B8Data.Substring(4, 2)}/{SB80.B8Data.Substring(0, 4)}",
                                  DtValid = $"{SB80.B8Dtvalid.Substring(6, 2)}/{SB80.B8Dtvalid.Substring(4, 2)}/{SB80.B8Dtvalid.Substring(0, 4)}",
                                  Descendereco = ""
-                             }).Skip((id - 1) * 20).Take(20).ToList();
+                             }).ToList();
             }
             catch (Exception e)
             {
                 string user = User.Identity.Name.Split("@")[0].ToUpper();
                 Logger.Log(e, SGID, "SaldoEstoque",user);
+            }
+        }
+
+        public IActionResult OnPost(string Local)
+        {
+            try
+            {
+
+                Relatorio = (from SB80 in Protheus.Sb8010s
+                             join SB10 in Protheus.Sb1010s on SB80.B8Produto equals SB10.B1Cod
+                             where SB10.DELET != "*" && SB80.DELET != "*" && SB80.B8Saldo != 0
+                             && SB80.B8Local==Local
+                             select new RelatorioSaldoEstoque
+                             {
+                                 Filial = SB80.B8Filial,
+                                 Produto = SB80.B8Produto,
+                                 DescProd = SB10.B1Desc,
+                                 LoteCtl = SB80.B8Lotectl,
+                                 Local = SB80.B8Local,
+                                 Saldo = SB80.B8Saldo,
+                                 UM = SB10.B1Um,
+                                 Empenho = SB80.B8Empenho,
+                                 Data = $"{SB80.B8Data.Substring(6, 2)}/{SB80.B8Data.Substring(4, 2)}/{SB80.B8Data.Substring(0, 4)}",
+                                 DtValid = $"{SB80.B8Dtvalid.Substring(6, 2)}/{SB80.B8Dtvalid.Substring(4, 2)}/{SB80.B8Dtvalid.Substring(0, 4)}",
+                                 Descendereco = ""
+                             }).ToList();
+
+                return Page();
+            }
+            catch (Exception e)
+            {
+                string user = User.Identity.Name.Split("@")[0].ToUpper();
+                Logger.Log(e, SGID, "SaldoEstoque", user);
+                return Page();
             }
         }
 

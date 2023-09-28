@@ -89,8 +89,6 @@ namespace SGID.Pages.Relatorios.RH
         {
             try
             {
-                Inicio = Datainicio;
-                Fim = Datafim;
 
                 Inicio = Datainicio;
                 Fim = Datafim;

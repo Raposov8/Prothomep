@@ -56,7 +56,7 @@ namespace SGID.Pages.Cotacoes
                     }).ToList();
 
             var Patrimonio = SGID.PatrimoniosAgendamentos.Where(x => x.AgendamentoId == Agendamento.Id)
-                .Select(x => x.Patrimonio).ToList();
+                .Select(x => new { x.Patrimonio,x.Codigo }).ToList();
 
             var avulsos = SGID.AvulsosAgendamento.Where(x => x.AgendamentoId == Agendamento.Id)
                 .Select(x => new
@@ -136,11 +136,12 @@ namespace SGID.Pages.Cotacoes
                                 join SA10 in ProtheusInter.Sa1010s on new { Codigo = c.PacClient, Loja = c.PacLojent } equals new { Codigo = SA10.A1Cod, Loja = SA10.A1Loja } into st
                                 from a in st.DefaultIfEmpty()
                                 where PA10.DELET != "*" && PA10.Pa1Msblql != "1" && PA10.Pa1Status != "B"
-                                && c.DELET != "*" && a.DELET != "*" && PA10.Pa1Despat == x
+                                && c.DELET != "*" && a.DELET != "*" && PA10.Pa1Despat == x.Patrimonio
                                 select new Patrimonio
                                 {
                                     Descri = PA10.Pa1Despat,
                                     KitBas = PA10.Pa1Kitbas,
+                                    Codigo = x.Codigo
                                 }).First();
 
 
@@ -245,12 +246,13 @@ namespace SGID.Pages.Cotacoes
                                 join SA10 in ProtheusDenuo.Sa1010s on new { Codigo = c.PacClient, Loja = c.PacLojent } equals new { Codigo = SA10.A1Cod, Loja = SA10.A1Loja } into st
                                 from a in st.DefaultIfEmpty()
                                 where PA10.DELET != "*" && PA10.Pa1Msblql != "1" && PA10.Pa1Status != "B"
-                                && c.DELET != "*" && a.DELET != "*" && PA10.Pa1Despat == x
+                                && c.DELET != "*" && a.DELET != "*" && PA10.Pa1Despat == x.Patrimonio
                                 && ((int)(object)c.PacDtcir >= 20200701 || c.PacDtcir == null)
                                 select new Patrimonio
                                 {
                                     Descri = PA10.Pa1Despat,
                                     KitBas = PA10.Pa1Kitbas,
+                                    Codigo = x.Codigo
                                 }).First();
 
 
@@ -370,7 +372,7 @@ namespace SGID.Pages.Cotacoes
 
                 AgendamentoPatris.ForEach(produto => 
                 {
-                    var patriUpdate = Patris.FirstOrDefault(x => x.Descri == produto.Patrimonio);
+                    var patriUpdate = Patris.FirstOrDefault(x => x.Descri == produto.Patrimonio && x.Codigo == produto.Codigo);
 
                     SGID.PatrimoniosAgendamentos.Remove(produto);
                     SGID.SaveChanges();
@@ -382,7 +384,8 @@ namespace SGID.Pages.Cotacoes
                     var ProdXAgenda = new PatrimonioAgendamento
                     {
                         AgendamentoId = id,
-                        Patrimonio = patri.Descri
+                        Patrimonio = patri.Descri,
+                        Codigo = patri.Codigo
                     };
 
                     SGID.PatrimoniosAgendamentos.Add(ProdXAgenda);

@@ -11,5 +11,6 @@ namespace SGID.Data.ViewModel
         public int AgendamentoId { get; set; }
         public Agendamentos Agendamento { get; set; }
         public string Patrimonio { get; set; }
+        public string? Codigo { get; set; }
     }
 }

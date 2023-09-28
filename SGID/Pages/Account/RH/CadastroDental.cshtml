@@ -1,0 +1,55 @@
+﻿@page
+@model SGID.Pages.Account.RH.CadastroDentalModel
+@{
+    Layout = "_LayoutGeral";
+    ViewData["Title"] = "Register Comercial";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<div class="card" style="padding:10px;">
+    <div class="row">
+        <div class="col-md-12">
+            @using (Html.BeginForm(FormMethod.Post))
+            {
+                <form method="post">
+                    <div asp-validation-summary="All" class="text-danger"></div>
+                    <div class="row">
+                        <div class="form-group col-md-4">
+                            @Html.LabelFor(model => model.Input.Email, new { @class = "col-md-12 control-label" })
+                            <div class="col-md-12">
+                                @Html.TextBoxFor(model => model.Input.Email, new { @class = "form-control", @required = "required",@placehold="Email" })
+                            </div>
+                        </div>
+                        <div class="form-group col-md-4">
+                            @Html.LabelFor(model => model.Input.Meta, new { @class = "col-md-12 control-label" })
+                            <div class="col-md-12">
+                                @Html.TextBoxFor(model => model.Input.Meta,"{0:N2}", new { @class = "form-control", @placehold="Meta" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-md-4">
+                            @Html.LabelFor(model => model.Input.Porcentagem, new { @class = "col-md-12 control-label" })
+                            <div class="col-md-12">
+                                @Html.TextBoxFor(model => model.Input.Porcentagem, "{0:N2}", new { @class = "form-control", @placehold= "Porcentagem" })
+                            </div>
+                        </div>
+                        <div class="form-group col-md-4">
+                            @Html.LabelFor(model => model.Input.PorcentagemSegun, new { @class = "col-md-12 control-label" })
+                            <div class="col-md-12">
+                                @Html.TextBoxFor(model => model.Input.PorcentagemSegun, "{0:N2}", new { @class = "form-control", @placehold= "Porcentagem" })
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="offset-10 col-md-2">
+                            <button type="submit" class="btn-primary">Register</button>
+                        </div>
+                    </div>
+                </form>
+            }
+        </div>
+    </div>
+</div>
