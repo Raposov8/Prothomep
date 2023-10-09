@@ -49,6 +49,7 @@ namespace SGID.Pages.Cirurgias
                     {
                         produto = x.CodigoProduto,
                         unidade = x.Quantidade,
+                        valorUnitario = x.ValorUnitario,
                         valor = x.ValorTotal,
                         Tabela = x.CodigoTabela
                     }).ToList();
@@ -125,7 +126,7 @@ namespace SGID.Pages.Cirurgias
                         Anvisa = produto.B1Reganvi,
                         Marca = produto.B1Fabric,
                         Und = x.unidade,
-                        PrcUnid = produto.Da1Prcven,
+                        PrcUnid = x.valorUnitario,
                         SegUnd = produto.B1Um,
                         VlrTotal = x.valor,
                         TipoOp = produto.B1Tipo,
@@ -207,7 +208,7 @@ namespace SGID.Pages.Cirurgias
                         Anvisa = produto.B1Reganvi,
                         Marca = produto.B1Fabric,
                         Und = x.unidade,
-                        PrcUnid = produto.Da1Prcven,
+                        PrcUnid = x.valorUnitario,
                         SegUnd = produto.B1Um,
                         VlrTotal = x.valor,
                     };
@@ -298,6 +299,7 @@ namespace SGID.Pages.Cirurgias
                     {
 
                         produto.Quantidade = produtoUpdate.Und;
+                        produto.ValorUnitario = produtoUpdate.PrcUnid;
                         produto.ValorTotal = produtoUpdate.VlrTotal;
 
                         SGID.ProdutosAgendamentos.Update(produto);
@@ -319,6 +321,7 @@ namespace SGID.Pages.Cirurgias
                         AgendamentoId = agendamento.Id,
                         CodigoProduto = produto.Item,
                         Quantidade = produto.Und,
+                        ValorUnitario = produto.PrcUnid,
                         ValorTotal = produto.VlrTotal,
                         CodigoTabela = CodTabela
                     };

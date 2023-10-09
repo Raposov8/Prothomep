@@ -25,6 +25,7 @@ namespace SGID.Pages.Account.RH
         public EditUserModel Editar { get; set; }
         public List<string> Linhas { get; set; } = new List<string>();
         public List<string> Gerente { get; set; } = new List<string> { "SIM", "NAO" };
+        public List<string> Regioes { get; set; } = new List<string> { "CAPITAL", "INTERIOR" };
 
         public EditarTimeModel(ApplicationDbContext context, UserManager<UserInter> userManager
             ,TOTVSDENUOContext DENUO, TOTVSINTERContext INTER)
@@ -78,7 +79,10 @@ namespace SGID.Pages.Account.RH
                     Selected = Produtos.Contains(x),
                     Text = x,
                     Value = x
-                })
+                }),
+                Teto = usuario.Teto,
+                TipoVendedor = usuario.TipoVendedor,
+                Salario = usuario.Salario
             };
 
             return Page();
@@ -113,6 +117,9 @@ namespace SGID.Pages.Account.RH
                 usuario.PorcentagemSeg = Editar.PorcentagemSegun;
                 usuario.GerenProd = GerenProd;
                 usuario.PorcentagemGenProd = Editar.PorcentagemProd;
+                usuario.TipoVendedor = Editar.TipoVendedor;
+                usuario.Teto = Editar.Teto;
+                usuario.Salario = Editar.Salario;
 
 
                 _db.Times.Update(usuario);
@@ -188,6 +195,12 @@ namespace SGID.Pages.Account.RH
             [Display(Name = "É Gestor de Produtos?")]
             public string GerenProd { get; set; }
 
+            [Display(Name = "Teto")]
+            public double Teto { get; set; } = 0.0;
+            [Display(Name = "Interior ou Capital?")]
+            public string TipoVendedor { get; set; }
+            [Display(Name = "Salario")]
+            public double Salario { get; set; } = 0.0;
             public IEnumerable<SelectListItem> RolesList { get; set; }
         }
     }

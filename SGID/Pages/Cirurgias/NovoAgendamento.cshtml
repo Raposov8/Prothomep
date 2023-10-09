@@ -497,11 +497,10 @@
                                                     <input type="hidden" id="Produtos[${count}].SegUnd" name="Produtos[${count}].SegUnd" value="${data.segUnd}" />
                                                     </td>
                                                     <td>
-                                                    ${data.prcUnid}
-                                                    <input class="unid${count}" type="hidden" id="Produtos[${count}].PrcUnid" name="Produtos[${count}].PrcUnid" value="${data.prcUnid}" />
+                                                    <input class="testeValor" id="Produtos[${count}].PrcUnid" name="Produtos[${count}].PrcUnid" value="${data.prcUnid}" />
                                                     </td>
                                                     <td>
-                                                    <input  class="total${count}" id="Produtos[${count}].VlrTotal" name="Produtos[${count}].VlrTotal" value="${data.vlrTotal}"/>
+                                                    <input class="total${count}" id="Produtos[${count}].VlrTotal" name="Produtos[${count}].VlrTotal" value="${data.vlrTotal}"/>
                                                     </td>
                                                     <td>
                                                     ${data.tipoOp}
@@ -523,12 +522,23 @@
                                    $('input.teste').on('change', function () {
                                         var unidade = $(this).val();
                                         var count = $(this).attr("id").split(".")[0].substring(9, 10);
-                                        var id = `input.unid${count}`;
+                                        var id = `#Produtos[${count}].PrcUnid`;
                                         var valor = $(id).val();
                                         var valorTotal = valor * unidade;
-                                        var id2 = $(`input.total${count}`).val(valorTotal.toFixed(2));
+                                        var id2 = $(`#Produtos[${count}].VlrTotal`).val(valorTotal.toFixed(2));
                                         $(id2).val(valorTotal.toFixed(2));
                                     })
+
+                                    $('input.testeValor').on('change', function () {
+                                        var valor = $(this).val();
+                                        var count = $(this).attr("id").split(".")[0].substring(9, 10);
+                                        var id = `#Produtos[${count}].Und`;
+                                        var unidade = $(id).val();
+                                        var valorTotal = valor * unidade;
+                                        var id2 = $(`#Produtos[${count}].VlrTotal`).val(valorTotal.toFixed(2));
+                                        $(id2).val(valorTotal.toFixed(2));
+                                    })
+
 
                                     $("#CodProd").val("");
                                     count++;
@@ -566,69 +576,84 @@
                             else {
 
                                 var linha = `<tr>
-                                            <td>
-                                            ${data.item}
-                                            <input type="hidden" id="Produtos[${count}].Item" name="Produtos[${count}].Item" value="${data.item}" />
-                                            </td>
-                                            <td>
-                                            ${data.licit}
-                                            <input type="hidden" id="Produtos[${count}].Licit" name="Produtos[${count}].Licit" value="${data.licit}" />
-                                            </td>
-                                            <td>
-                                            ${data.produtos}
-                                            <input type="hidden" id="Produtos[${count}].Produtos" name="Produtos[${count}].Produtos" value="${data.produtos}" />
-                                            </td>
-                                            <td>
-                                            ${data.tuss}
-                                            <input type="hidden" id="Produtos[${count}].Tuss" name="Produtos[${count}].Tuss" value="${data.tuss}" />
-                                            </td>
-                                            <td>
-                                            ${data.anvisa}
-                                            <input type="hidden" id="Produtos[${count}].Anvisa" name="Produtos[${count}].Anvisa" value="${data.anvisa}" />
-                                            </td>
-                                            <td>
-                                            ${data.marca}
-                                            <input type="hidden" id="Produtos[${count}].Marca" name="Produtos[${count}].Marca" value="${data.marca}" />
-                                            </td>
-                                            <td>
-                                            <input type="number" style="Width:60px;" class="teste" id="Produtos[${count}].Und" min="0" name="Produtos[${count}].Und" value="${data.und}" />
-                                            </td>
-                                            <td>
-                                            ${data.segUnd}
-                                            <input type="hidden" id="Produtos[${count}].SegUnd" name="Produtos[${count}].SegUnd" value="${data.segUnd}" />
-                                            </td>
-                                            <td>
-                                            ${data.prcUnid}
-                                            <input class="unid${count}" type="hidden" id="Produtos[${count}].PrcUnid" name="Produtos[${count}].PrcUnid" value="${data.prcUnid}" />
-                                            </td>
-                                            <td>
-                                            <input  class="total${count}" id="Produtos[${count}].VlrTotal" name="Produtos[${count}].VlrTotal" value="${data.vlrTotal}"/>
-                                            </td>
-                                            <td>
-                                            ${data.tipoOp}
-                                            <input type="hidden" id="Produtos[${count}].TipoOp" name="Produtos[${count}].TipoOp" value="${data.tipoOp}" />
-                                            </td>
-                                            <td>
-                                            ${data.lote}
-                                            <input type="hidden" id="Produtos[${count}].Lote" name="Produtos[${count}].Lote" value="${data.lote}" />
-                                            </td>
-                                            <td>
-                                                <a  class="fas fa-eye add-tooltip" style="text-decoration:none;" data-container="body" data-placement="top" data-original-title="Visualizar Recurso" aria-hidden="true"></a>
+                                                <td>
+                                                ${data.item}
+                                                <input type="hidden" id="Produtos[${count}].Item" name="Produtos[${count}].Item" value="${data.item}" />
+                                                </td>
+                                                <td>
+                                                ${data.licit}
+                                                <input type="hidden" id="Produtos[${count}].Licit" name="Produtos[${count}].Licit" value="${data.licit}" />
+                                                </td>
+                                                <td>
+                                                ${data.produtos}
+                                                <input type="hidden" id="Produtos[${count}].Produtos" name="Produtos[${count}].Produtos" value="${data.produtos}" />
+                                                </td>
+                                                <td>
+                                                ${data.tuss}
+                                                <input type="hidden" id="Produtos[${count}].Tuss" name="Produtos[${count}].Tuss" value="${data.tuss}" />
+                                                </td>
+                                                <td>
+                                                ${data.anvisa}
+                                                <input type="hidden" id="Produtos[${count}].Anvisa" name="Produtos[${count}].Anvisa" value="${data.anvisa}" />
+                                                </td>
+                                                <td>
+                                                ${data.marca}
+                                                <input type="hidden" id="Produtos[${count}].Marca" name="Produtos[${count}].Marca" value="${data.marca}" />
+                                                </td>
+                                                <td>
+                                                <input type="number" style="Width:60px;" class="teste" id="Produtos[${count}].Und" min="0" name="Produtos[${count}].Und" value="${data.und}" />
+                                                </td>
+                                                <td>
+                                                ${data.segUnd}
+                                                <input type="hidden" id="Produtos[${count}].SegUnd" name="Produtos[${count}].SegUnd" value="${data.segUnd}" />
+                                                </td>
+                                                <td>
+                                                <input class="testeValor" id="Produtos[${count}].PrcUnid" name="Produtos[${count}].PrcUnid" value="${data.prcUnid}" />
+                                                </td>
+                                                <td>
+                                                <input class="total${count}" id="Produtos[${count}].VlrTotal" name="Produtos[${count}].VlrTotal" value="${data.vlrTotal}"/>
+                                                </td>
+                                                <td>
+                                                ${data.tipoOp}
+                                                <input type="hidden" id="Produtos[${count}].TipoOp" name="Produtos[${count}].TipoOp" value="${data.tipoOp}" />
+                                                </td>
+                                                <td>
+                                                ${data.lote}
+                                                <input type="hidden" id="Produtos[${count}].Lote" name="Produtos[${count}].Lote" value="${data.lote}" />
+                                                </td>
+                                                <td>
+                                                    <a class="fas fa-eye add-tooltip" style="text-decoration:none;" data-container="body" data-placement="top" data-original-title="Visualizar Recurso" aria-hidden="true"></a>
 
-                                                <a class="fa-regular fa-trash-can add-tooltip" onclick="remove(this)" style="text-decoration:none;" id="Excluir" data-container="body" data-placement="top" data-original-title="Excluir Recurso" aria-hidden="true"></a>
-                                            </td>
-                                            </tr>`;
+                                                    <a class="fa-regular fa-trash-can add-tooltip" onclick="remove(this)" style="text-decoration:none;" id="Excluir" data-container="body" data-placement="top" data-original-title="Excluir Recurso" aria-hidden="true"></a>
+                                                </td>
+                                             </tr>`;
 
                                 $("#Produto>tbody").append(linha);
 
                                 $('input.teste').on('change', function () {
                                     var unidade = $(this).val();
+                                    console.log(unidade)
                                     var count = $(this).attr("id").split(".")[0].substring(9, 10);
-                                    var id = `input.unid${count}`;
-                                    var valor = $(id).val();
+                                    console.log(count)
+                                    var valor = $(`input[name='Produtos[${count}].PrcUnid']`).val();
+                                    console.log(valor)
                                     var valorTotal = valor * unidade;
-                                    var id2 = $(`input.total${count}`).val(valorTotal.toFixed(2));
-                                    $(id2).val(valorTotal.toFixed(2));
+                                    console.log(valorTotal)
+                                    $(`input[name='Produtos[${count}].VlrTotal']`).val(valorTotal.toFixed(2));
+                                    
+                                })
+
+                                $('input.testeValor').on('change', function () {
+                                    var valor = $(this).val();
+                                    console.log(valor)
+                                    var count = $(this).attr("id").split(".")[0].substring(9, 10);
+                                    console.log(count)
+                                    var unidade = $(`input[name='Produtos[${count}].Und']`).val();
+                                    console.log(unidade)
+                                    var valorTotal = valor * unidade;
+                                    console.log(valorTotal)
+                                    $(`input[name='Produtos[${count}].VlrTotal']`).val(valorTotal.toFixed(2));
+                                    
                                 })
 
                                 $("#CodProd").val("");

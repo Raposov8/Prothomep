@@ -34,22 +34,37 @@
                         Codigo
                     </th>
                     <th class="text-center">
-                        Descrição
-                    </th>
-                    <th class="text-center">
-                        Filial
-                    </th>
-                    <th class="text-center">
-                        Local
-                    </th>
-                    <th class="text-center">
                         Lote
                     </th>
                     <th class="text-center">
-                        LoteFor
+                        Processo
                     </th>
                     <th class="text-center">
-                        Valid lote
+                        Agendamento
+                    </th>
+                    <th class="text-center">
+                        Patrimonio
+                    </th>
+                    <th class="text-center">
+                        Valid Lote
+                    </th>
+                    <th class="text-center">
+                        Operacao
+                    </th>
+                    <th class="text-center">
+                        NF Saida
+                    </th>
+                    <th class="text-center">
+                        Serie Saida
+                    </th>
+                    <th class="text-center">
+                        Emissao NF
+                    </th>
+                    <th class="text-center">
+                        IT Saida
+                    </th>
+                    <th class="text-center">
+                        QTD Saida
                     </th>
                     <th class="text-center">
                         Saldo
@@ -61,12 +76,24 @@
                 {
                 <tr>
                     <td>@Html.DisplayFor(model=> data.Codigo)</td>
-                    <td>@Html.DisplayFor(model=> data.Descricao)</td>
-                    <td>@Html.DisplayFor(model=> data.Filial)</td>
-                    <td>@Html.DisplayFor(model=> data.Local)</td>
                     <td>@Html.DisplayFor(model=> data.Lote)</td>
-                    <td>@Html.DisplayFor(model=> data.LoteFor)</td>
-                    <td>@data.ValidLote.Substring(6, 2)/@data.ValidLote.Substring(4, 2)/@data.ValidLote.Substring(0, 4)</td>
+                    <td>@Html.DisplayFor(model=> data.Processo)</td>
+                    <td>@Html.DisplayFor(model=> data.Agendamento)</td>
+                    <td>@Html.DisplayFor(model=> data.Patrimonio)</td>
+                    @if (data.ValidLote != null)
+                    {
+                        <td>@data.ValidLote</td>
+                    }
+                    else
+                    {
+                        <td></td>
+                    }
+                    <td>@Html.DisplayFor(model=> data.Operacao)</td>
+                    <td>@Html.DisplayFor(model=> data.NFSaida)</td>
+                    <td>@Html.DisplayFor(model=> data.SerieSaida)</td>
+                    <td>@Html.DisplayFor(model=> data.EmissaoNf)</td>
+                    <td>@Html.DisplayFor(model=> data.ItSaida)</td>
+                    <td>@Html.DisplayFor(model=> data.QtdSaida)</td>
                     <td>@Html.DisplayFor(model=> data.Saldo)</td>
                 </tr>
                 }

@@ -11,7 +11,7 @@
     <div class="offset-4 col-md-3">
     </div>
     <div class="offset-2 col-md-3">
-        <a href="/account/rh/cadastrotime" class="float-end" style="text-decoration:none;"><i class="fa-solid fa-user-plus"></i> Novo Integrante</a>
+        <a href="/account/rh/cadastrodental" class="float-end" style="text-decoration:none;"><i class="fa-solid fa-user-plus"></i> Novo Integrante</a>
     </div>
 </div>
 @using (@Html.BeginForm(FormMethod.Post))
@@ -24,14 +24,6 @@
         <div class="form-group mx-sm-3 mb-2 col-lg-2">
             <label>Ano</label>
             <input type="text" class="form-control" id="Ano" name="Ano" placeholder="Ano" value="@Model.Ano" />
-        </div>
-        <div class="form-group mx-sm-3 mb-2 col-lg-2">
-            <label>Empresa</label>
-            <select type="text" class="form-control" id="Empresa" name="Empresa">
-                <option value="">TODOS...</option>
-                <option value="DENUO">DENUO</option>
-                <option value="INTERMEDIC">INTERMEDIC</option>
-            </select>
         </div>
         <div class="form-group mx-sm-3 mb-2 col-lg-1">
             <label></label>
@@ -53,8 +45,6 @@
                     <th class="text-center">Comissão @Model.Mes</th>
                     <th class="text-center">Faturado Equipe @Model.Mes</th>
                     <th class="text-center">Comissão sobre a Equipe @Model.Mes</th>
-                    <th class="text-center">Faturado Sobre Linha @Model.Mes</th>
-                    <th class="text-center">Comissão Sobre Linha @Model.Mes</th>
                     <th class="text-center">Opções</th>
                 </tr>
             </thead>
@@ -78,16 +68,10 @@
                             R$ @string.Format("{0:N2}", item.ComissaoEquipe)
                         </td>
                         <td class="text-center">
-                            R$ @string.Format("{0:N2}", item.FaturadoProduto)
-                        </td>
-                        <td class="text-center">
-                            R$ @string.Format("{0:N2}", item.ComissaoProduto)
-                        </td>
-                        <td class="text-center">
-                            <a href="/account/rh/editartime/@item.User.Id">Editar</a> |
-                            <a href="/account/rh/detailstime/@item.User.Id">Detalhes</a> |
-                            <a href="/account/rh/deletetime/@item.User.Id">Desativar</a> |
-                            <a href="/account/rh/RelatorioComissao?IdTime=@item.User.Id&&Mes=@Model.MesAno&&Ano=@Model.Ano">Relatorio</a>
+                            <a href="/account/rh/editardental/@item.User.Id">Editar</a> |
+                            <a href="/account/rh/detailsdental/@item.User.Id">Detalhes</a> |
+                            <a href="/account/rh/deletedental/@item.User.Id">Desativar</a> |
+                            <!--<a href="/account/rh/RelatorioComissao?IdTime=@item.User.Id&&Mes=@Model.MesAno&&Ano=@Model.Ano">Relatorio</a>-->
                         </td>
                     </tr>
                 }

@@ -69,7 +69,9 @@ namespace SGID.Pages.Account.RH
                                 Status = true,
                                 Integrante = integrante,
                                 Porcentagem = Input.Porcentagem,
-                                IdUsuario = usuario.Id
+                                IdUsuario = usuario.Id,
+                                Salario = Input.Salario,
+                                Teto = Input.Teto
                             };
 
                             _db.TimeADMs.Add(time);
@@ -122,7 +124,9 @@ namespace SGID.Pages.Account.RH
                             Status = true,
                             Integrante = integrante,
                             Porcentagem = Input.Porcentagem,
-                            IdUsuario = usuariop.Id
+                            IdUsuario = usuariop.Id,
+                            Salario = Input.Salario,
+                            Teto = Input.Teto
                         };
 
                         _db.TimeADMs.Add(time);
@@ -147,6 +151,10 @@ namespace SGID.Pages.Account.RH
             public string Email { get; set; } = "";
             [Display(Name = "% Sobre Faturamento")]
             public double Porcentagem { get; set; } = 0.0;
+            [Display(Name = "Teto")]
+            public double Teto { get; set; } = 0.0;
+            [Display(Name = "Salario")]
+            public double Salario { get; set; } = 0.0;
         }
     }
 }

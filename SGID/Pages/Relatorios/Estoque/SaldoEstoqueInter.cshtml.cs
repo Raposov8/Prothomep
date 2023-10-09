@@ -15,6 +15,7 @@ namespace SGID.Pages.Relatorios.Estoque
 
         public List<RelatorioSaldoEstoque> Relatorio { get; set; } = new List<RelatorioSaldoEstoque>();
         public List<string> Locals { get; set; } = new List<string>();
+        public List<string> Locais { get; set; } = new List<string> { "01", "80", "70", "30" };
 
         public SaldoEstoqueInterModel(TOTVSINTERContext protheus, ApplicationDbContext sgid)
         {
@@ -27,22 +28,19 @@ namespace SGID.Pages.Relatorios.Estoque
             try
             {
 
-                Relatorio = (from SB80 in Protheus.Sb8010s
-                             join SB10 in Protheus.Sb1010s on SB80.B8Produto equals SB10.B1Cod
-                             where SB10.DELET != "*" && SB80.DELET != "*" && SB80.B8Saldo != 0
+                Relatorio = (from SB20 in Protheus.Sb2010s
+                             join SB10 in Protheus.Sb1010s on SB20.B2Cod equals SB10.B1Cod
+                             where SB10.DELET != "*" && SB20.DELET != "*" && SB20.B2Qatu != 0
+                             && SB20.B2Filial == "01" && Locais.Contains(SB20.B2Local)
                              select new RelatorioSaldoEstoque
                              {
-                                 Filial = SB80.B8Filial,
-                                 Produto = SB80.B8Produto,
+                                 Filial = SB20.B2Filial,
+                                 Produto = SB20.B2Cod,
                                  DescProd = SB10.B1Desc,
-                                 LoteCtl = SB80.B8Lotectl,
-                                 Local = SB80.B8Local,
-                                 Saldo = SB80.B8Saldo,
+                                 Local = SB20.B2Local,
+                                 Saldo = SB20.B2Qatu,
                                  UM = SB10.B1Um,
-                                 Empenho = SB80.B8Empenho,
-                                 Data = $"{SB80.B8Data.Substring(6, 2)}/{SB80.B8Data.Substring(4, 2)}/{SB80.B8Data.Substring(0, 4)}",
-                                 DtValid = $"{SB80.B8Dtvalid.Substring(6, 2)}/{SB80.B8Dtvalid.Substring(4, 2)}/{SB80.B8Dtvalid.Substring(0, 4)}",
-                                 Descendereco = ""
+                                 Empenho = SB20.B2Reserva,
                              }).ToList();
             }
             catch (Exception e)
@@ -52,29 +50,35 @@ namespace SGID.Pages.Relatorios.Estoque
             }
         }
 
-        public IActionResult OnPost(string Local)
+        public IActionResult OnPost(string Local, string Produto)
         {
             try
             {
 
-                Relatorio = (from SB80 in Protheus.Sb8010s
-                             join SB10 in Protheus.Sb1010s on SB80.B8Produto equals SB10.B1Cod
-                             where SB10.DELET != "*" && SB80.DELET != "*" && SB80.B8Saldo != 0
-                             && SB80.B8Local == Local
+                Relatorio = (from SB20 in Protheus.Sb2010s
+                             join SB10 in Protheus.Sb1010s on SB20.B2Cod equals SB10.B1Cod
+                             where SB10.DELET != "*" && SB20.DELET != "*" && SB20.B2Qatu != 0
+                             && SB20.B2Filial == "01" && Locais.Contains(SB20.B2Local)
                              select new RelatorioSaldoEstoque
                              {
-                                 Filial = SB80.B8Filial,
-                                 Produto = SB80.B8Produto,
+                                 Filial = SB20.B2Filial,
+                                 Produto = SB20.B2Cod,
                                  DescProd = SB10.B1Desc,
-                                 LoteCtl = SB80.B8Lotectl,
-                                 Local = SB80.B8Local,
-                                 Saldo = SB80.B8Saldo,
+                                 Local = SB20.B2Local,
+                                 Saldo = SB20.B2Qatu,
                                  UM = SB10.B1Um,
-                                 Empenho = SB80.B8Empenho,
-                                 Data = $"{SB80.B8Data.Substring(6, 2)}/{SB80.B8Data.Substring(4, 2)}/{SB80.B8Data.Substring(0, 4)}",
-                                 DtValid = $"{SB80.B8Dtvalid.Substring(6, 2)}/{SB80.B8Dtvalid.Substring(4, 2)}/{SB80.B8Dtvalid.Substring(0, 4)}",
-                                 Descendereco = ""
+                                 Empenho = SB20.B2Reserva,
                              }).ToList();
+
+                if (Local != "" && Local != null)
+                {
+                    Relatorio = Relatorio.Where(x => x.Local == Local).ToList();
+                }
+
+                if (Produto != "" && Produto != null)
+                {
+                    Relatorio = Relatorio.Where(x => x.Produto == Produto).ToList();
+                }
 
                 return Page();
             }
@@ -86,28 +90,34 @@ namespace SGID.Pages.Relatorios.Estoque
             }
         }
 
-        public IActionResult OnPostExport()
+        public IActionResult OnPostExport(string Local, string Produto)
         {
             try
             {
-                Relatorio = (from SB80 in Protheus.Sb8010s
-                             join SB10 in Protheus.Sb1010s on SB80.B8Produto equals SB10.B1Cod
-                             where SB10.DELET != "*" && SB80.DELET != "*" && SB80.B8Saldo != 0
+                Relatorio = (from SB20 in Protheus.Sb2010s
+                             join SB10 in Protheus.Sb1010s on SB20.B2Cod equals SB10.B1Cod
+                             where SB10.DELET != "*" && SB20.DELET != "*" && SB20.B2Qatu != 0
+                             && SB20.B2Filial == "01" && Locais.Contains(SB20.B2Local)
                              select new RelatorioSaldoEstoque
                              {
-                                 Filial = SB80.B8Filial,
-                                 Produto = SB80.B8Produto,
+                                 Filial = SB20.B2Filial,
+                                 Produto = SB20.B2Cod,
                                  DescProd = SB10.B1Desc,
-                                 LoteCtl = SB80.B8Lotectl,
-                                 Local = SB80.B8Local,
-                                 Endereco = "",
-                                 Saldo = SB80.B8Saldo,
+                                 Local = SB20.B2Local,
+                                 Saldo = SB20.B2Qatu,
                                  UM = SB10.B1Um,
-                                 Empenho = 0,
-                                 Data = $"{SB80.B8Data.Substring(6, 2)}/{SB80.B8Data.Substring(4, 2)}/{SB80.B8Data.Substring(0, 4)}",
-                                 DtValid = $"{SB80.B8Dtvalid.Substring(6, 2)}/{SB80.B8Dtvalid.Substring(4, 2)}/{SB80.B8Dtvalid.Substring(0, 4)}",
-                                 Descendereco = ""
+                                 Empenho = SB20.B2Reserva,
                              }).ToList();
+
+                if (Local != "" && Local != null)
+                {
+                    Relatorio = Relatorio.Where(x => x.Local == Local).ToList();
+                }
+
+                if (Produto != "" && Produto != null)
+                {
+                    Relatorio = Relatorio.Where(x => x.Produto == Produto).ToList();
+                }
 
                 using ExcelPackage package = new ExcelPackage();
                 package.Workbook.Worksheets.Add("SaldoEstoque");
@@ -117,15 +127,9 @@ namespace SGID.Pages.Relatorios.Estoque
                 sheet.Cells[1, 1].Value = "Filial";
                 sheet.Cells[1, 2].Value = "Produto";
                 sheet.Cells[1, 3].Value = "Desc Prod.";
-                sheet.Cells[1, 4].Value = "Lotectl";
-                sheet.Cells[1, 5].Value = "Local";
-                sheet.Cells[1, 6].Value = "Endereço";
-                sheet.Cells[1, 7].Value = "Saldo";
-                sheet.Cells[1, 8].Value = "UM";
-                sheet.Cells[1, 9].Value = "Empenho";
-                sheet.Cells[1, 10].Value = "Data";
-                sheet.Cells[1, 11].Value = "DtValid";
-                sheet.Cells[1, 12].Value = "Descendereco";
+                sheet.Cells[1, 4].Value = "Local";
+                sheet.Cells[1, 5].Value = "Saldo";
+                sheet.Cells[1, 6].Value = "Empenho";
 
                 int i = 2;
 
@@ -134,15 +138,9 @@ namespace SGID.Pages.Relatorios.Estoque
                     sheet.Cells[i, 1].Value = Pedido.Filial;
                     sheet.Cells[i, 2].Value = Pedido.Produto;
                     sheet.Cells[i, 3].Value = Pedido.DescProd;
-                    sheet.Cells[i, 4].Value = Pedido.LoteCtl;
-                    sheet.Cells[i, 5].Value = Pedido.Local;
-                    sheet.Cells[i, 6].Value = Pedido.Endereco;
-                    sheet.Cells[i, 7].Value = Pedido.Saldo;
-                    sheet.Cells[i, 8].Value = Pedido.UM;
-                    sheet.Cells[i, 9].Value = Pedido.Empenho;
-                    sheet.Cells[i, 10].Value = Pedido.Data;
-                    sheet.Cells[i, 11].Value = Pedido.DtValid;
-                    sheet.Cells[i, 12].Value = Pedido.Descendereco;
+                    sheet.Cells[i, 4].Value = Pedido.Local;
+                    sheet.Cells[i, 5].Value = Pedido.Saldo;
+                    sheet.Cells[i, 6].Value = Pedido.Empenho;
 
                     i++;
                 });

@@ -28,6 +28,22 @@
                             </div>
                         </div>
                     </div>
+
+                    <div class="row">
+                        <div class="form-group col-md-4">
+                            @Html.LabelFor(model => model.Input.Teto, new { @class = "col-md-12 control-label" })
+                            <div class="col-md-12">
+                                @Html.TextBoxFor(model => model.Input.Teto, "{0:N2}", new { @class = "form-control", @placehold= "Teto" })
+                            </div>
+                        </div>
+                        <div class="form-group col-md-4">
+                            @Html.LabelFor(model => model.Input.Salario, new { @class = "col-md-12 control-label" })
+                            <div class="col-md-12">
+                                @Html.TextBoxFor(model => model.Input.Salario, "{0:N2}", new { @class = "form-control", @placehold= "Salario" })
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="form-group">
                         <div class="offset-10 col-md-2">
                             <button type="submit" class="btn-primary">Register</button>

@@ -16,5 +16,7 @@ namespace SGID.Data.ViewModel
         public double PorcentagemSeg { get; set; }
         public string IdUsuario { get; set; }
         public string? Color { get; set; }
+        public double Teto { get; set; }
+        public double Salario { get; set; }
     }
 }

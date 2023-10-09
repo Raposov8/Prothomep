@@ -51,6 +51,8 @@ public partial class TOTVSDENUOContext : DbContext
 
     public virtual DbSet<Sb1020> Sb1020s { get; set; }
 
+    public virtual DbSet<Sb2010> Sb2010s { get; set; }
+
     public virtual DbSet<Sb6010> Sb6010s { get; set; }
 
     public virtual DbSet<Sb8010> Sb8010s { get; set; }
@@ -8536,6 +8538,191 @@ public partial class TOTVSDENUOContext : DbContext
                 .IsUnicode(false)
                 .HasDefaultValueSql("('      ')")
                 .HasColumnName("B1_XUNNEGO");
+            entity.Property(e => e.DELET)
+                .HasMaxLength(1)
+                .IsUnicode(false)
+                .HasDefaultValueSql("(' ')")
+                .HasColumnName("D_E_L_E_T_");
+            entity.Property(e => e.RECDEL).HasColumnName("R_E_C_D_E_L_");
+        });
+
+        modelBuilder.Entity<Sb2010>(entity =>
+        {
+            entity.HasKey(e => e.RECNO).HasName("SB2010_PK");
+
+            entity.ToTable("SB2010");
+
+            entity.HasIndex(e => new { e.B2Filial, e.B2Cod, e.B2Local, e.RECNO, e.DELET }, "SB20101").HasFillFactor(80);
+
+            entity.HasIndex(e => new { e.B2Filial, e.B2Local, e.B2Cod, e.RECNO, e.DELET }, "SB20102").HasFillFactor(80);
+
+            entity.HasIndex(e => new { e.B2Filial, e.B2Local, e.B2Qaclass, e.RECNO, e.DELET }, "SB20103");
+
+            entity.HasIndex(e => new { e.B2Filial, e.B2Local, e.B2Cod, e.RECDEL }, "SB2010_UNQ")
+                .IsUnique()
+                .HasFillFactor(80);
+
+            entity.Property(e => e.RECNO)
+                .ValueGeneratedNever()
+                .HasColumnName("R_E_C_N_O_");
+            entity.Property(e => e.B2Bloquei)
+                .HasMaxLength(1)
+                .IsUnicode(false)
+                .HasDefaultValueSql("(' ')")
+                .HasColumnName("B2_BLOQUEI");
+            entity.Property(e => e.B2Cm1).HasColumnName("B2_CM1");
+            entity.Property(e => e.B2Cm2).HasColumnName("B2_CM2");
+            entity.Property(e => e.B2Cm3).HasColumnName("B2_CM3");
+            entity.Property(e => e.B2Cm4).HasColumnName("B2_CM4");
+            entity.Property(e => e.B2Cm5).HasColumnName("B2_CM5");
+            entity.Property(e => e.B2Cmff1).HasColumnName("B2_CMFF1");
+            entity.Property(e => e.B2Cmff2).HasColumnName("B2_CMFF2");
+            entity.Property(e => e.B2Cmff3).HasColumnName("B2_CMFF3");
+            entity.Property(e => e.B2Cmff4).HasColumnName("B2_CMFF4");
+            entity.Property(e => e.B2Cmff5).HasColumnName("B2_CMFF5");
+            entity.Property(e => e.B2Cmfim1).HasColumnName("B2_CMFIM1");
+            entity.Property(e => e.B2Cmfim2).HasColumnName("B2_CMFIM2");
+            entity.Property(e => e.B2Cmfim3).HasColumnName("B2_CMFIM3");
+            entity.Property(e => e.B2Cmfim4).HasColumnName("B2_CMFIM4");
+            entity.Property(e => e.B2Cmfim5).HasColumnName("B2_CMFIM5");
+            entity.Property(e => e.B2Cmrp1).HasColumnName("B2_CMRP1");
+            entity.Property(e => e.B2Cmrp2).HasColumnName("B2_CMRP2");
+            entity.Property(e => e.B2Cmrp3).HasColumnName("B2_CMRP3");
+            entity.Property(e => e.B2Cmrp4).HasColumnName("B2_CMRP4");
+            entity.Property(e => e.B2Cmrp5).HasColumnName("B2_CMRP5");
+            entity.Property(e => e.B2Cod)
+                .HasMaxLength(15)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('               ')")
+                .HasColumnName("B2_COD");
+            entity.Property(e => e.B2Dinvent)
+                .HasMaxLength(8)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('        ')")
+                .HasColumnName("B2_DINVENT");
+            entity.Property(e => e.B2Dinvfim)
+                .HasMaxLength(8)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('        ')")
+                .HasColumnName("B2_DINVFIM");
+            entity.Property(e => e.B2Dmov)
+                .HasMaxLength(8)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('        ')")
+                .HasColumnName("B2_DMOV");
+            entity.Property(e => e.B2Dtinv)
+                .HasMaxLength(8)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('        ')")
+                .HasColumnName("B2_DTINV");
+            entity.Property(e => e.B2Dult)
+                .HasMaxLength(8)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('        ')")
+                .HasColumnName("B2_DULT");
+            entity.Property(e => e.B2Ecsaldo).HasColumnName("B2_ECSALDO");
+            entity.Property(e => e.B2Filial)
+                .HasMaxLength(2)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('  ')")
+                .HasColumnName("B2_FILIAL");
+            entity.Property(e => e.B2Hmov)
+                .HasMaxLength(8)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('        ')")
+                .HasColumnName("B2_HMOV");
+            entity.Property(e => e.B2Hult)
+                .HasMaxLength(8)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('        ')")
+                .HasColumnName("B2_HULT");
+            entity.Property(e => e.B2Local)
+                .HasMaxLength(2)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('  ')")
+                .HasColumnName("B2_LOCAL");
+            entity.Property(e => e.B2Localiz)
+                .HasMaxLength(15)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('               ')")
+                .HasColumnName("B2_LOCALIZ");
+            entity.Property(e => e.B2Msexp)
+                .HasMaxLength(8)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('        ')")
+                .HasColumnName("B2_MSEXP");
+            entity.Property(e => e.B2Naoclas).HasColumnName("B2_NAOCLAS");
+            entity.Property(e => e.B2Qaclass).HasColumnName("B2_QACLASS");
+            entity.Property(e => e.B2Qatu).HasColumnName("B2_QATU");
+            entity.Property(e => e.B2Qemp).HasColumnName("B2_QEMP");
+            entity.Property(e => e.B2Qemp2).HasColumnName("B2_QEMP2");
+            entity.Property(e => e.B2Qempn).HasColumnName("B2_QEMPN");
+            entity.Property(e => e.B2Qempn2).HasColumnName("B2_QEMPN2");
+            entity.Property(e => e.B2Qemppr2).HasColumnName("B2_QEMPPR2");
+            entity.Property(e => e.B2Qemppre).HasColumnName("B2_QEMPPRE");
+            entity.Property(e => e.B2Qempprj).HasColumnName("B2_QEMPPRJ");
+            entity.Property(e => e.B2Qempsa).HasColumnName("B2_QEMPSA");
+            entity.Property(e => e.B2Qepre2).HasColumnName("B2_QEPRE2");
+            entity.Property(e => e.B2Qfim).HasColumnName("B2_QFIM");
+            entity.Property(e => e.B2Qfim2).HasColumnName("B2_QFIM2");
+            entity.Property(e => e.B2Qfimff).HasColumnName("B2_QFIMFF");
+            entity.Property(e => e.B2Qnpt).HasColumnName("B2_QNPT");
+            entity.Property(e => e.B2Qpedve2).HasColumnName("B2_QPEDVE2");
+            entity.Property(e => e.B2Qpedven).HasColumnName("B2_QPEDVEN");
+            entity.Property(e => e.B2Qter).HasColumnName("B2_QTER");
+            entity.Property(e => e.B2Qtnp).HasColumnName("B2_QTNP");
+            entity.Property(e => e.B2Qtsegum).HasColumnName("B2_QTSEGUM");
+            entity.Property(e => e.B2Qult).HasColumnName("B2_QULT");
+            entity.Property(e => e.B2Reserv2).HasColumnName("B2_RESERV2");
+            entity.Property(e => e.B2Reserva).HasColumnName("B2_RESERVA");
+            entity.Property(e => e.B2Salped2).HasColumnName("B2_SALPED2");
+            entity.Property(e => e.B2Salpedi).HasColumnName("B2_SALPEDI");
+            entity.Property(e => e.B2Salppre).HasColumnName("B2_SALPPRE");
+            entity.Property(e => e.B2Status)
+                .HasMaxLength(1)
+                .IsUnicode(false)
+                .HasDefaultValueSql("(' ')")
+                .HasColumnName("B2_STATUS");
+            entity.Property(e => e.B2Tipo)
+                .HasMaxLength(1)
+                .IsUnicode(false)
+                .HasDefaultValueSql("(' ')")
+                .HasColumnName("B2_TIPO");
+            entity.Property(e => e.B2Usai)
+                .HasMaxLength(8)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('        ')")
+                .HasColumnName("B2_USAI");
+            entity.Property(e => e.B2Vatu1).HasColumnName("B2_VATU1");
+            entity.Property(e => e.B2Vatu2).HasColumnName("B2_VATU2");
+            entity.Property(e => e.B2Vatu3).HasColumnName("B2_VATU3");
+            entity.Property(e => e.B2Vatu4).HasColumnName("B2_VATU4");
+            entity.Property(e => e.B2Vatu5).HasColumnName("B2_VATU5");
+            entity.Property(e => e.B2Vfim1).HasColumnName("B2_VFIM1");
+            entity.Property(e => e.B2Vfim2).HasColumnName("B2_VFIM2");
+            entity.Property(e => e.B2Vfim3).HasColumnName("B2_VFIM3");
+            entity.Property(e => e.B2Vfim4).HasColumnName("B2_VFIM4");
+            entity.Property(e => e.B2Vfim5).HasColumnName("B2_VFIM5");
+            entity.Property(e => e.B2Vfimff1).HasColumnName("B2_VFIMFF1");
+            entity.Property(e => e.B2Vfimff2).HasColumnName("B2_VFIMFF2");
+            entity.Property(e => e.B2Vfimff3).HasColumnName("B2_VFIMFF3");
+            entity.Property(e => e.B2Vfimff4).HasColumnName("B2_VFIMFF4");
+            entity.Property(e => e.B2Vfimff5).HasColumnName("B2_VFIMFF5");
+            entity.Property(e => e.B2Vfrp1).HasColumnName("B2_VFRP1");
+            entity.Property(e => e.B2Vfrp2).HasColumnName("B2_VFRP2");
+            entity.Property(e => e.B2Vfrp3).HasColumnName("B2_VFRP3");
+            entity.Property(e => e.B2Vfrp4).HasColumnName("B2_VFRP4");
+            entity.Property(e => e.B2Vfrp5).HasColumnName("B2_VFRP5");
+            entity.Property(e => e.B2Xdtfin)
+                .HasMaxLength(8)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('        ')")
+                .HasColumnName("B2_XDTFIN");
+            entity.Property(e => e.B2Xdtini)
+                .HasMaxLength(8)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('        ')")
+                .HasColumnName("B2_XDTINI");
             entity.Property(e => e.DELET)
                 .HasMaxLength(1)
                 .IsUnicode(false)

@@ -63,7 +63,7 @@ namespace SGID.Pages.Account.RH
                     _db.Times.Update(Integrante);
                     _db.SaveChanges();
 
-                    return Redirect("/Account/RH/listartime");
+                    return Redirect("/account/rh/listardental");
                 }
             }
             catch (Exception excep)

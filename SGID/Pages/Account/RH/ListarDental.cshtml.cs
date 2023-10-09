@@ -56,8 +56,8 @@ namespace SGID.Pages.Account.RH
 
                 #region Dental
 
-                    #region Faturado
-                    var query = (from SD20 in Protheus.Sd2010s
+                 #region Faturado
+                    var query3 = (from SD20 in Protheus.Sd2010s
                                  join SA10 in Protheus.Sa1010s on new { Cod = SD20.D2Cliente, Loja = SD20.D2Loja } equals new { Cod = SA10.A1Cod, Loja = SA10.A1Loja }
                                  join SB10 in Protheus.Sb1010s on SD20.D2Cod equals SB10.B1Cod
                                  join SF20 in Protheus.Sf2010s on new { Filial = SD20.D2Filial, Doc = SD20.D2Doc, Serie = SD20.D2Serie, Cliente = SD20.D2Cliente, Loja = SD20.D2Loja } equals new { Filial = SF20.F2Filial, Doc = SF20.F2Doc, Serie = SF20.F2Serie, Cliente = SF20.F2Cliente, Loja = SF20.F2Loja }
@@ -100,7 +100,8 @@ namespace SGID.Pages.Account.RH
                                      D2_QUANT = SD20.D2Quant,
                                      D2_VALIPI = SD20.D2Valipi,
                                      D2_VALICM = SD20.D2Valicm,
-                                     D2_DESCON = SD20.D2Descon
+                                     D2_DESCON = SD20.D2Descon,
+                                     A3_LOGIN = c.A3Xlogin
                                  }
                                   ).GroupBy(Prod =>
                                   new
@@ -124,10 +125,11 @@ namespace SGID.Pages.Account.RH
                                       Prod.C5_X_NMPLA,
                                       Prod.C5_UTPOPER,
                                       Prod.C6_PRODUTO,
-                                      Prod.B1_DESC
+                                      Prod.B1_DESC,
+                                      Prod.A3_LOGIN
                                   });
 
-                    var Faturamento = query.Select(x => new RelatorioFaturamentoDental
+                    var Faturamento = query3.Select(x => new RelatorioFaturamentoDental
                     {
                         D2_FILIAL = x.Key.D2_FILIAL,
                         D2_CLIENTE = x.Key.D2_CLIENTE,
@@ -154,13 +156,14 @@ namespace SGID.Pages.Account.RH
                         D2_VALIPI = x.Sum(c => c.D2_VALIPI),
                         D2_VALICM = x.Sum(c => c.D2_VALICM),
                         D2_DESCON = x.Sum(c => c.D2_DESCON),
+                        A3_LOGIN = x.Key.A3_LOGIN
                     }).OrderBy(x => x.A3_NOME).ToList();
                     #endregion
-
-                    #region Devolucao
+                 
+                 #region Devolucao
                     var CfDevolucao = new string[] { "1202", "2202", "3202", "1553", "2553" };
 
-                var queryDevolucao = (from SD10 in Protheus.Sd1010s
+                var queryDevolucao3 = (from SD10 in Protheus.Sd1010s
                                       join SF20 in Protheus.Sf2010s on new { Filial = SD10.D1Filial, Doc = SD10.D1Nfori, Serie = SD10.D1Seriori, Fornece = SD10.D1Fornece, Loja = SD10.D1Loja } equals new { Filial = SF20.F2Filial, Doc = SF20.F2Doc, Serie = SF20.F2Serie, Fornece = SF20.F2Cliente, Loja = SF20.F2Loja }
                                       join SD20 in Protheus.Sd2010s on new { Filial = SD10.D1Filial, Doc = SD10.D1Nfori, Serie = SD10.D1Seriori, Fornece = SD10.D1Fornece, Loja = SD10.D1Loja, Item = SD10.D1Itemori } equals new { Filial = SD20.D2Filial, Doc = SD20.D2Doc, Serie = SD20.D2Serie, Fornece = SD20.D2Cliente, Loja = SD20.D2Loja, Item = SD20.D2Item }
                                       join SC50 in Protheus.Sc5010s on new { Filial = SD20.D2Filial, Num = SD20.D2Pedido } equals new { Filial = SC50.C5Filial, Num = SC50.C5Num }
@@ -214,7 +217,7 @@ namespace SGID.Pages.Account.RH
                                               x.A3Xlogin
                                           });
 
-                    var Devolucao = queryDevolucao.Select(x => new RelatorioDevolucaoDental
+                    var Devolucao = queryDevolucao3.Select(x => new RelatorioDevolucaoDental
                     {
                         Emissao = $"{x.Key.D1Emissao.Substring(6, 2)}/{x.Key.D1Emissao.Substring(4, 2)}/{x.Key.D1Emissao.Substring(0, 4)}",
                         Filial = x.Key.D1Filial,
@@ -244,22 +247,23 @@ namespace SGID.Pages.Account.RH
                     };
 
 
-                    if (usuario == "MARCOS.PARRA")
+                    if (usuario != "MARCOS.PARRA")
                     {
 
-                        time.Faturado += Faturamento.Where(x => x.A3_LOGIN == usuario).Sum(x => x.D2_TOTAL) - Devolucao.Where(x => x.Login == usuario).Sum(x => x.Total);
+                        time.Faturado += Faturamento.Where(x => x.A3_LOGIN.Trim() == usuario).Sum(x => x.D2_TOTAL) + Devolucao.Where(x => x.Login.Trim() == usuario).Sum(x => x.Total);
 
                         time.Comissao = time.Faturado * (time.User.Porcentagem / 100);
                         Usuarios.Add(time);
                     }
                     else
                     {
-                        time.FaturadoEquipe += Faturamento.Sum(x => x.D2_TOTAL) - Devolucao.Sum(x => x.Total);
+                        time.FaturadoEquipe += Faturamento.Sum(x => x.D2_TOTAL) + Devolucao.Sum(x => x.Total);
 
                         time.ComissaoEquipe = time.FaturadoEquipe * (time.User.PorcentagemSeg / 100);
                         Usuarios.Add(time);
                     }
                 });
+
             }
             catch (Exception e)
             {
@@ -335,7 +339,8 @@ namespace SGID.Pages.Account.RH
                                  D2_QUANT = SD20.D2Quant,
                                  D2_VALIPI = SD20.D2Valipi,
                                  D2_VALICM = SD20.D2Valicm,
-                                 D2_DESCON = SD20.D2Descon
+                                 D2_DESCON = SD20.D2Descon,
+                                 A3_LOGIN = c.A3Xlogin
                              }
                               ).GroupBy(Prod =>
                               new
@@ -359,7 +364,8 @@ namespace SGID.Pages.Account.RH
                                   Prod.C5_X_NMPLA,
                                   Prod.C5_UTPOPER,
                                   Prod.C6_PRODUTO,
-                                  Prod.B1_DESC
+                                  Prod.B1_DESC,
+                                  Prod.A3_LOGIN
                               });
 
                 var Faturamento = query.Select(x => new RelatorioFaturamentoDental
@@ -389,6 +395,7 @@ namespace SGID.Pages.Account.RH
                     D2_VALIPI = x.Sum(c => c.D2_VALIPI),
                     D2_VALICM = x.Sum(c => c.D2_VALICM),
                     D2_DESCON = x.Sum(c => c.D2_DESCON),
+                    A3_LOGIN = x.Key.A3_LOGIN.Trim()
                 }).OrderBy(x => x.A3_NOME).ToList();
                 #endregion
 
@@ -460,7 +467,7 @@ namespace SGID.Pages.Account.RH
                     Vendedor = x.Key.C5Nomvend,
                     Cliente = x.Key.A1Nome,
                     Total = -(x.Sum(c => c.D1Total) - x.Sum(c => c.D1Valdesc) + x.Sum(c => c.D1Valipi)),
-                    Login = x.Key.A3Xlogin
+                    Login = x.Key.A3Xlogin.Trim()
                 }).OrderBy(x => x.Vendedor).ToList();
 
                 #endregion
@@ -479,17 +486,17 @@ namespace SGID.Pages.Account.RH
                     };
 
 
-                    if (usuario == "MARCOS.PARRA")
+                    if (usuario != "MARCOS.PARRA")
                     {
 
-                        time.Faturado += Faturamento.Where(x => x.A3_LOGIN == usuario).Sum(x => x.D2_TOTAL) - Devolucao.Where(x => x.Login == usuario).Sum(x => x.Total);
+                        time.Faturado += Faturamento.Where(x => x.A3_LOGIN == usuario).Sum(x => x.D2_TOTAL) + Devolucao.Where(x => x.Login == usuario).Sum(x => x.Total);
 
                         time.Comissao = time.Faturado * (time.User.Porcentagem / 100);
                         Usuarios.Add(time);
                     }
                     else
                     {
-                        time.FaturadoEquipe += Faturamento.Sum(x => x.D2_TOTAL) - Devolucao.Sum(x => x.Total);
+                        time.FaturadoEquipe += Faturamento.Sum(x => x.D2_TOTAL) + Devolucao.Sum(x => x.Total);
 
                         time.ComissaoEquipe = time.FaturadoEquipe * (time.User.PorcentagemSeg / 100);
                         Usuarios.Add(time);
@@ -576,7 +583,8 @@ namespace SGID.Pages.Account.RH
                                  D2_QUANT = SD20.D2Quant,
                                  D2_VALIPI = SD20.D2Valipi,
                                  D2_VALICM = SD20.D2Valicm,
-                                 D2_DESCON = SD20.D2Descon
+                                 D2_DESCON = SD20.D2Descon,
+                                 A3_LOGIN = c.A3Xlogin
                              }
                               ).GroupBy(Prod =>
                               new
@@ -600,7 +608,8 @@ namespace SGID.Pages.Account.RH
                                   Prod.C5_X_NMPLA,
                                   Prod.C5_UTPOPER,
                                   Prod.C6_PRODUTO,
-                                  Prod.B1_DESC
+                                  Prod.B1_DESC,
+                                  Prod.A3_LOGIN
                               });
 
                 var Faturamento = query.Select(x => new RelatorioFaturamentoDental
@@ -630,6 +639,7 @@ namespace SGID.Pages.Account.RH
                     D2_VALIPI = x.Sum(c => c.D2_VALIPI),
                     D2_VALICM = x.Sum(c => c.D2_VALICM),
                     D2_DESCON = x.Sum(c => c.D2_DESCON),
+                    A3_LOGIN = x.Key.A3_LOGIN
                 }).OrderBy(x => x.A3_NOME).ToList();
                 #endregion
 
@@ -709,7 +719,7 @@ namespace SGID.Pages.Account.RH
 
                 #endregion
 
-                
+
 
 
 
@@ -746,22 +756,23 @@ namespace SGID.Pages.Account.RH
                     };
 
 
-                    if (usuario == "MARCOS.PARRA")
+                    if (usuario != "MARCOS.PARRA")
                     {
 
-                        time.Faturado += Faturamento.Where(x => x.A3_LOGIN == usuario).Sum(x => x.D2_TOTAL) - Devolucao.Where(x => x.Login == usuario).Sum(x => x.Total);
+                        time.Faturado += Faturamento.Where(x => x.A3_LOGIN == usuario).Sum(x => x.D2_TOTAL) + Devolucao.Where(x => x.Login == usuario).Sum(x => x.Total);
 
                         time.Comissao = time.Faturado * (time.User.Porcentagem / 100);
                         Usuarios.Add(time);
                     }
                     else
                     {
-                        time.FaturadoEquipe += Faturamento.Sum(x => x.D2_TOTAL) - Devolucao.Sum(x => x.Total);
+                        time.FaturadoEquipe += Faturamento.Sum(x => x.D2_TOTAL) + Devolucao.Sum(x => x.Total);
 
                         time.ComissaoEquipe = time.FaturadoEquipe * (time.User.PorcentagemSeg / 100);
                         Usuarios.Add(time);
                     }
                 });
+
 
                 Usuarios.ForEach(x =>
                 {

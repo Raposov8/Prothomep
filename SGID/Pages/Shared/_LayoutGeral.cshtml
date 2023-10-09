@@ -42,7 +42,8 @@
                                 <img class="img-circle img-xs" src="/imagens/Pic1.png" alt="Profile Picture"> Olá @User.Identity.Name.Split("@")[0]
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="dropdowm03">
-                                @if (User.IsInRole("Admin")){
+                                @if (User.IsInRole("Admin"))
+                                {
                                     <li class="dropdown-item" >
                                         <a href="/account/register"><i class="fa-solid fa-user-plus" style="margin-right:5px;"></i>Cadastro Usuario</a>
                                     </li>
@@ -66,38 +67,11 @@
                         <i class="fas fa-bars fa-xl" id="btn"></i>
                     </label>
                     </a>
-                </li>
+               </li>
                <li>
                     <a class="nav-link" href="/dashboard/3"><i class="fa-solid fa-house"></i>Home</a>
-                </li>
-               @if(User.IsInRole("Admin") || User.IsInRole("GestorComercial") || User.IsInRole("Comercial") )
-                {
-                    if (User.Identity.Name.Split("@")[1].ToUpper() == "INTERMEDIC.COM.BR")
-                    {
-                        <li>
-                            <a class="nav-link" href="/dashboards/DashBoardComercial/01"><i class="fa-solid fa-id-badge"></i>DashBoard Pessoal</a>
-                        </li>
-                    }
-                    else
-                    {
-                        <li>
-                            <a class="nav-link" href="/dashboards/DashBoardComercial/03"><i class="fa-solid fa-id-badge"></i>DashBoard Pessoal</a>
-                        </li>
-                    }
-                    <li class="nav-item dropdown">
-                        <a class="nav-link align-items-center rounded dropdown-toggle" data-bs-toggle="collapse"
-                           data-bs-target="#visitas-collapse" aria-expanded="false">
-                            <i class="fa-solid fa-calendar-days"></i>Visitas
-                        </a>
-                        <div class="collapse" id="visitas-collapse">
-                            <ul class="list-unstyled fw-normal pb-1 small">
-                                <li><a class="nav-link" href="/agendamento/visitas">Painel Visitas</a></li>
-                            </ul>
-                        </div>
-                    </li>
-                    
-                }
-               @if(User.IsInRole("Admin")|| User.IsInRole("Diretoria"))
+               </li>
+               @if(User.IsInRole("Admin") || User.IsInRole("Diretoria"))
                 {
                      <li>
                         <a class="nav-link" href="/dashboards/DashBoardMetas"><i class="fa-solid fa-clipboard-user"></i>DashBoard Diretoria</a>
@@ -125,6 +99,29 @@
                 }
                @if(User.IsInRole("Admin") || User.IsInRole("Comercial") || User.IsInRole("GestorComercial") || User.IsInRole("Diretoria"))
                 {
+                    if (User.Identity.Name.Split("@")[1].ToUpper() == "INTERMEDIC.COM.BR")
+                    {
+                        <li>
+                            <a class="nav-link" href="/dashboards/DashBoardComercial/01"><i class="fa-solid fa-id-badge"></i>DashBoard Pessoal</a>
+                        </li>
+                    }
+                    else
+                    {
+                        <li>
+                            <a class="nav-link" href="/dashboards/DashBoardComercial/03"><i class="fa-solid fa-id-badge"></i>DashBoard Pessoal</a>
+                        </li>
+                    }
+                    <li class="nav-item dropdown">
+                        <a class="nav-link align-items-center rounded dropdown-toggle" data-bs-toggle="collapse"
+                           data-bs-target="#visitas-collapse" aria-expanded="false">
+                            <i class="fa-solid fa-calendar-days"></i>Visitas
+                        </a>
+                        <div class="collapse" id="visitas-collapse">
+                            <ul class="list-unstyled fw-normal pb-1 small">
+                                <li><a class="nav-link" href="/agendamento/visitas">Painel Visitas</a></li>
+                            </ul>
+                        </div>
+                    </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link align-items-center rounded dropdown-toggle" data-bs-toggle="collapse" 
                         data-bs-target="#cotacoes2-collapse" aria-expanded="false"> 
@@ -219,32 +216,47 @@
                @if(User.IsInRole("Admin") || User.IsInRole("RH") || User.IsInRole("Diretoria"))
                 {
                     <li class="nav-item dropdown">
-                        <a class="nav-link align-items-center rounded dropdown-toggle" data-bs-toggle="collapse" 
-                        data-bs-target="#rh-collapse" aria-expanded="false">
+                        <a class="nav-link align-items-center rounded dropdown-toggle" data-bs-toggle="collapse"
+                           data-bs-target="#rh-collapse" aria-expanded="false">
                             <i class="fa-solid fa-user-tie"></i>Gente & Gestão
                         </a>
                         <div class="collapse" id="rh-collapse">
                             <ul class="list-unstyled fw-normal pb-1 small">
-                                @if(User.IsInRole("Admin")){<li><a class="nav-link" href="/rh/listargestaopessoal/">Listar Acessos</a></li>}
+                                @if (User.IsInRole("Admin"))
+                                {
+                                    <li><a class="nav-link" href="/rh/listargestaopessoal/">Listar Acessos</a></li>
+                                }
                                 <li><a class="nav-link" href="/rh/gestaopessoal/">Solicitar Acesso</a></li>
-                                <li><a class="nav-link" href="/cirurgias/listarrecursos">Recursos</a></li>
-                                <li><a class="nav-link" href="#">Procedimentos</a></li>
+                                <!--<li><a class="nav-link" href="/cirurgias/listarrecursos">Recursos</a></li>
+                                <li><a class="nav-link" href="#">Procedimentos</a></li>-->
                                 <li class="nav-item dropdown">
                                     <a class="nav-link align-items-center rounded dropdown-toggle" data-bs-toggle="collapse"
-                                    data-bs-target="#comissoes-collapse" aria-expanded="false">
+                                       data-bs-target="#comissoes-collapse" aria-expanded="false">
                                         <i class="fa-solid fa-file-invoice-dollar"></i>Comissoes
                                     </a>
                                     <div class="collapse" id="comissoes-collapse">
                                         <ul class="list-unstyled fw-normal pb-1 small">
-                                            <li><a class="nav-link" href="/relatorios/comissoes/comissao">Comissões Denuo</a></li>
-                                            <li><a class="nav-link" href="/relatorios/comissoes/comissaointer">Comissões Inter</a></li>
+                                            <li><a class="nav-link" href="/account/RH/listartime">Comissões Comercial</a></li>
+                                            <li><a class="nav-link" href="/account/RH/listaradm">Comissões ADM</a></li>
+                                            <li><a class="nav-link" href="/account/RH/listardental">Comissões Dental</a></li>
+                                        </ul>
+                                    </div>
+                                </li>
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link align-items-center rounded dropdown-toggle" data-bs-toggle="collapse"
+                                       data-bs-target="#rhFatuxComi-collapse" aria-expanded="false">
+                                        <i class="fa-solid fa-money-bill-transfer"></i> Faturamento X Funcionario
+                                    </a>
+                                    <div class="collapse" id="rhFatuxComi-collapse">
+                                        <ul class="list-unstyled fw-normal pb-1 small">
+                                            <li> <a class="nav-link" href="/Relatorios/Diretoria/FaturamentoXFuncionario">Faturamento X Funcionario</a></li>
                                         </ul>
                                     </div>
                                 </li>
                             </ul>
                         </div>
                     </li>
-                    
+
                 }
                @if(User.IsInRole("Admin") || User.IsInRole("Estoque") || User.IsInRole("Diretoria"))
                 {
@@ -539,6 +551,8 @@
                                             <li><a class="nav-link" href="/relatorios/rh/BaixaSubDistribuidorInter">Baixa SubDistribuidor Inter</a></li>
                                             <li><a class="nav-link" href="/relatorios/rh/BaixaLicitacoes">Baixa Licitações Denuo</a></li>
                                             <li><a class="nav-link" href="/relatorios/rh/BaixaLicitacoesInter">Baixa Licitações Inter</a></li>
+                                            <li><a class="nav-link" href="/relatorios/rh/FaturamentoLicitacoesInter">Faturamento Licitacoes Intermedic</a></li>
+                                            <li><a class="nav-link" href="/relatorios/rh/FaturamentoLicitacoes">Faturamento Licitacoes Denuo</a></li>
                                         </ul>
                                     </div>
                                 </li>
@@ -772,28 +786,13 @@
                        </div>
                    </li>
                }
-               @if(User.IsInRole("Admin") || User.IsInRole("RH") || User.IsInRole("Diretoria"))
-               {
-                    <li class="nav-item dropdown">
-                        <a class="nav-link align-items-center rounded dropdown-toggle" data-bs-toggle="collapse"
-                           data-bs-target="#rhcomissoes-collapse" aria-expanded="false">
-                            <i class="fa-solid fa-money-bill-transfer"></i> Comissões
-                        </a>
-                        <div class="collapse" id="rhcomissoes-collapse">
-                            <ul class="list-unstyled fw-normal pb-1 small">
-                                <a class="nav-link" href="/account/RH/listartime">Comissões Comercial</a>
-                                <a class="nav-link" href="/account/RH/listaradm">Comissões ADM</a>
-                            </ul>
-                        </div>
-                    </li>
-               }
                @if(User.IsInRole("Admin"))
                {
                   <li>
                      <a class="nav-link" href="/useradmin/listarusuarios/1"><i class="fa-solid fa-user"></i>Usuários</a>
                   </li>
                }
-               @if(User.IsInRole("Admin")|| User.IsInRole("GestorComercial") || User.IsInRole("Venda") || User.IsInRole("Diretoria"))
+               @if(User.IsInRole("Admin") || User.IsInRole("GestorComercial") || User.IsInRole("Venda") || User.IsInRole("Diretoria"))
                {
                    <li class="nav-item dropdown">
                        <a class="nav-link align-items-center rounded dropdown-toggle" data-bs-toggle="collapse"
@@ -820,6 +819,8 @@
     <script src="~/lib/jquery.mask/jquery.mask.min.js" asp-append-version="true"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script src="~/js/loading-bar.js" asp-append-version="true"></script>
+    <script src="~/lib/jquery.redirect/dist/jquery.redirect.js" asp-append-version="true"></script>
+
     <script>
         $("#check").on('change',function (){
             document.getElementById("mySidenav").style.width = "250px";

@@ -5,6 +5,36 @@
     Layout = "_LayoutGeral";
 }
 
+@using (@Html.BeginForm(FormMethod.Post))
+{
+    <div class="row">
+        <div class="form-group mx-sm-3 mb-2 col-lg-2">
+            <label>Mês</label>
+            <input type="text" class="form-control" id="Mes" name="Mes" placeholder="Mês" value="@Model.Mes" />
+        </div>
+        <div class="form-group mx-sm-3 mb-2 col-lg-2">
+            <label>Ano</label>
+            <input type="text" class="form-control" id="Ano" name="Ano" placeholder="Ano" value="@Model.Ano" />
+        </div>
+        <div class="form-group mx-sm-3 mb-2 col-lg-2">
+            <label>Empresa</label>
+            <select type="text" class="form-control" id="Empresa" name="Empresa">
+                <option value="">TODOS...</option>
+                <option value="DENUO">DENUO</option>
+                <option value="INTERMEDIC">INTERMEDIC</option>
+            </select>
+        </div>
+        <div class="form-group mx-sm-3 mb-2 col-lg-1">
+            <label></label>
+            <button type="submit" class="btn btn-primary mb-2">Pesquisar</button>
+        </div>
+        <!--<div class="form-group mx-sm-3 mb-2 col-lg-1">
+            <button type="submit" class="btn btn-secondary mb-2" asp-page-handler="Export"><i class="fa-solid fa-file-excel"></i> Exportar Excel</button>
+        </div>-->
+    </div>
+}
+
+
 <div class="panel">
     <div class="panel-body">
         <table id="demo-dt-addrow" class="table table-striped table-bordered" cellspacing="0" width="100%">
@@ -47,20 +77,278 @@
             </thead>
             <tbody>
 
+                @if (Model.UsuariosLicitacoes.Count > 0)
+                {
                     <tr>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
+                        <td>LICITAÇÕES</td>
+                        <td>@Model.Mes/@Model.Ano</td>
+                        <td>@string.Format("{0:N2}",Model.UsuariosLicitacoes.Sum(x=> x.Faturado))</td>
+                        <td>@string.Format("{0:N2}",Model.UsuariosLicitacoes.Sum(x=> x.Meta))</td>
+                        <td>@string.Format("{0:N2}",((Model.UsuariosLicitacoes.Sum(x=> x.Faturado) / Model.UsuariosLicitacoes.Sum(x=> x.Meta)) * 100))</td>
+                        <td>@string.Format("{0:N2}",Model.UsuariosLicitacoes.Sum(x=> x.Salario))</td>
+                        <td>@string.Format("{0:N2}",Model.UsuariosLicitacoes.Sum(x=> x.Comissao))</td>
+                        <td>@string.Format("{0:N2}",Model.UsuariosLicitacoes.Sum(x=> x.ComissaoEquipe) + Model.UsuariosLicitacoes.Sum(x=> x.ComissaoProduto))</td>
+                        <td>@string.Format("{0:N2}",Model.UsuariosLicitacoes.Sum(x=> x.Total))</td>
+                        <td>@string.Format("{0:N2}",Model.UsuariosLicitacoes.Sum(x=> x.Teto))</td>
+                        <td>@string.Format("{0:N2}",Model.UsuariosLicitacoes.Sum(x=> x.Paga))</td>
                     </tr>
-                
+                }
+
+                @foreach (var item in Model.UsuariosLicitacoes)
+                {
+                    <tr>
+                        <td>@item.User.Integrante.ToUpper().Split("@")[0].Replace("."," ")</td>
+                        <td>@Model.Mes/@Model.Ano</td>
+                        <td>@string.Format("{0:N2}",item.Faturado)</td>
+                        <td>@string.Format("{0:N2}",item.Meta)</td>
+                        <td>@string.Format("{0:N2}",item.MetaAtingimento)</td>
+                        <td>@string.Format("{0:N2}",item.Salario)</td>
+                        <td>@string.Format("{0:N2}",item.Comissao)</td>
+                        <td>@string.Format("{0:N2}",item.ComissaoEquipe + item.ComissaoProduto)</td>
+                        <td>@string.Format("{0:N2}",item.Total)</td>
+                        <td>@string.Format("{0:N2}",item.Teto)</td>
+                        <td>@string.Format("{0:N2}",item.Paga)</td>
+                    </tr>
+                }
+
+                @if (Model.UsuariosSub.Count > 0)
+                {
+                    <tr>
+                        <td>SUB-DISTRIBUIDOR</td>
+                        <td>@Model.Mes/@Model.Ano</td>
+                        <td>@string.Format("{0:N2}",Model.UsuariosSub.First().Faturado)</td>
+                        <td>@string.Format("{0:N2}",Model.UsuariosSub.Sum(x=> x.Faturado))</td>
+                        <td>@string.Format("{0:N2}",((Model.UsuariosSub.Sum(x=> x.Faturado) / Model.UsuariosSub.Sum(x=> x.Meta)) * 100))</td>
+                        <td>@string.Format("{0:N2}",Model.UsuariosSub.Sum(x=> x.Salario))</td>
+                        <td>@string.Format("{0:N2}",Model.UsuariosSub.Sum(x=> x.Comissao))</td>
+                        <td>@string.Format("{0:N2}",Model.UsuariosSub.Sum(x=> x.ComissaoEquipe) + Model.UsuariosSub.Sum(x=> x.ComissaoProduto))</td>
+                        <td>@string.Format("{0:N2}",Model.UsuariosSub.Sum(x=> x.Total))</td>
+                        <td>@string.Format("{0:N2}",Model.UsuariosSub.Sum(x=> x.Teto))</td>
+                        <td>@string.Format("{0:N2}",Model.UsuariosSub.Sum(x=> x.Paga))</td>
+                    </tr>
+                }
+
+                @foreach (var item in Model.UsuariosSub)
+                {
+                    <tr>
+                        <td>@item.User.Integrante.ToUpper().Split("@")[0].Replace("."," ")</td>
+                        <td>@Model.Mes/@Model.Ano</td>
+                        <td>@string.Format("{0:N2}",item.Faturado)</td>
+                        <td>@string.Format("{0:N2}",item.Meta)</td>
+                        <td>@string.Format("{0:N2}",item.MetaAtingimento)</td>
+                        <td>@string.Format("{0:N2}",item.Salario)</td>
+                        <td>@string.Format("{0:N2}",item.Comissao)</td>
+                        <td>@string.Format("{0:N2}",item.ComissaoEquipe + item.ComissaoProduto)</td>
+                        <td>@string.Format("{0:N2}",item.Total)</td>
+                        <td>@string.Format("{0:N2}",item.Teto)</td>
+                        <td>@string.Format("{0:N2}",item.Paga)</td>
+                    </tr>
+                }
+
+                @if (Model.ComercialOrtopedia.Count > 0)
+                {
+                    <tr>
+                        <td>ORTOPEDIA</td>
+                        <td>@Model.Mes/@Model.Ano</td>
+                        <td>@string.Format("{0:N2}",Model.ComercialOrtopedia.Sum(x=> x.Faturado))</td>
+                        <td>@string.Format("{0:N2}",Model.ComercialOrtopedia.Sum(x=> x.Meta))</td>
+                        <td>@string.Format("{0:N2}",((Model.ComercialOrtopedia.Sum(x=> x.Faturado) / Model.ComercialOrtopedia.Sum(x=> x.Meta)) * 100))</td>
+                        <td>@string.Format("{0:N2}",Model.ComercialOrtopedia.Sum(x=> x.Salario))</td>
+                        <td>@string.Format("{0:N2}",Model.ComercialOrtopedia.Sum(x=> x.Comissao))</td>
+                        <td>@string.Format("{0:N2}",Model.ComercialOrtopedia.Sum(x=> x.ComissaoEquipe) + Model.ComercialOrtopedia.Sum(x=> x.ComissaoProduto))</td>
+                        <td>@string.Format("{0:N2}",Model.ComercialOrtopedia.Sum(x=> x.Total))</td>
+                        <td>@string.Format("{0:N2}",Model.ComercialOrtopedia.Sum(x=> x.Teto))</td>
+                        <td>@string.Format("{0:N2}",Model.ComercialOrtopedia.Sum(x=> x.Paga))</td>
+                    </tr>
+                }
+
+                @foreach (var item in Model.ComercialOrtopedia)
+                {
+                    <tr>
+                        <td>@item.User.Integrante.ToUpper().Split("@")[0].Replace("."," ")</td>
+                        <td>@Model.Mes/@Model.Ano</td>
+                        <td>@string.Format("{0:N2}",item.Faturado)</td>
+                        <td>@string.Format("{0:N2}",item.Meta)</td>
+                        <td>@string.Format("{0:N2}",item.MetaAtingimento)</td>
+                        <td>@string.Format("{0:N2}",item.Salario)</td>
+                        <td>@string.Format("{0:N2}",item.Comissao)</td>
+                        <td>@string.Format("{0:N2}",item.ComissaoEquipe + item.ComissaoProduto)</td>
+                        <td>@string.Format("{0:N2}",item.Total)</td>
+                        <td>@string.Format("{0:N2}",item.Teto)</td>
+                        <td>@string.Format("{0:N2}",item.Paga)</td>
+                    </tr>
+                }
+
+                @if (Model.ComercialBuco.Count > 0)
+                {
+                    <tr>
+                        <td>BUCOMAXILO</td>
+                        <td>@Model.Mes/@Model.Ano</td>
+                        <td>@string.Format("{0:N2}",Model.ComercialBuco.Sum(x=> x.Faturado))</td>
+                        <td>@string.Format("{0:N2}",Model.ComercialBuco.Sum(x=> x.Meta))</td>
+                        <td>@string.Format("{0:N2}",((Model.ComercialBuco.Sum(x=> x.Faturado) / Model.ComercialBuco.Sum(x=> x.Meta)) * 100))</td>
+                        <td>@string.Format("{0:N2}",Model.ComercialBuco.Sum(x=> x.Salario))</td>
+                        <td>@string.Format("{0:N2}",Model.ComercialBuco.Sum(x=> x.Comissao))</td>
+                        <td>@string.Format("{0:N2}",Model.ComercialBuco.Sum(x=> x.ComissaoEquipe) + Model.ComercialBuco.Sum(x=> x.ComissaoProduto))</td>
+                        <td>@string.Format("{0:N2}",Model.ComercialBuco.Sum(x=> x.Total))</td>
+                        <td>@string.Format("{0:N2}",Model.ComercialBuco.Sum(x=> x.Teto))</td>
+                        <td>@string.Format("{0:N2}",Model.ComercialBuco.Sum(x=> x.Paga))</td>
+                    </tr>
+                }
+
+                @foreach (var item in Model.ComercialBuco)
+                {
+                    <tr>
+                        <td>@item.User.Integrante.ToUpper().Split("@")[0].Replace("."," ")</td>
+                        <td>@Model.Mes/@Model.Ano</td>
+                        <td>@string.Format("{0:N2}",item.Faturado)</td>
+                        <td>@string.Format("{0:N2}",item.Meta)</td>
+                        <td>@string.Format("{0:N2}",item.MetaAtingimento)</td>
+                        <td>@string.Format("{0:N2}",item.Salario)</td>
+                        <td>@string.Format("{0:N2}",item.Comissao)</td>
+                        <td>@string.Format("{0:N2}",item.ComissaoEquipe + item.ComissaoProduto)</td>
+                        <td>@string.Format("{0:N2}",item.Total)</td>
+                        <td>@string.Format("{0:N2}",item.Teto)</td>
+                        <td>@string.Format("{0:N2}",item.Paga)</td>
+                    </tr>
+                }
+
+                @if (Model.ComercialTorax.Count > 0)
+                {
+                    <tr>
+                        <td>TORAX</td>
+                        <td>@Model.Mes/@Model.Ano</td>
+                        <td>@string.Format("{0:N2}",Model.ComercialTorax.Sum(x=> x.Faturado))</td>
+                        <td>@string.Format("{0:N2}",Model.ComercialTorax.Sum(x=> x.Meta))</td>
+                        <td>@string.Format("{0:N2}",((Model.ComercialTorax.Sum(x=> x.Faturado) / Model.ComercialTorax.Sum(x=> x.Meta)) * 100))</td>
+                        <td>@string.Format("{0:N2}",Model.ComercialTorax.Sum(x=> x.Salario))</td>
+                        <td>@string.Format("{0:N2}",Model.ComercialTorax.Sum(x=> x.Comissao))</td>
+                        <td>@string.Format("{0:N2}",Model.ComercialTorax.Sum(x=> x.ComissaoEquipe) + Model.ComercialBuco.Sum(x=> x.ComissaoProduto))</td>
+                        <td>@string.Format("{0:N2}",Model.ComercialTorax.Sum(x=> x.Total))</td>
+                        <td>@string.Format("{0:N2}",Model.ComercialTorax.Sum(x=> x.Teto))</td>
+                        <td>@string.Format("{0:N2}",Model.ComercialTorax.Sum(x=> x.Paga))</td>
+                    </tr>
+                }
+
+                @foreach (var item in Model.ComercialTorax)
+                {
+                    <tr>
+                        <td>@item.User.Integrante.ToUpper().Split("@")[0].Replace("."," ")</td>
+                        <td>@Model.Mes/@Model.Ano</td>
+                        <td>@string.Format("{0:N2}",item.Faturado)</td>
+                        <td>@string.Format("{0:N2}",item.Meta)</td>
+                        <td>@string.Format("{0:N2}",item.MetaAtingimento)</td>
+                        <td>@string.Format("{0:N2}",item.Salario)</td>
+                        <td>@string.Format("{0:N2}",item.Comissao)</td>
+                        <td>@string.Format("{0:N2}",item.ComissaoEquipe + item.ComissaoProduto)</td>
+                        <td>@string.Format("{0:N2}",item.Total)</td>
+                        <td>@string.Format("{0:N2}",item.Teto)</td>
+                        <td>@string.Format("{0:N2}",item.Paga)</td>
+                    </tr>
+                }
+
+                @if (Model.ComercialInterior.Count > 0)
+                {
+                    <tr>
+                        <td>INTERIOR</td>
+                        <td>@Model.Mes/@Model.Ano</td>
+                        <td>@string.Format("{0:N2}",Model.ComercialInterior.Sum(x=> x.Faturado))</td>
+                        <td>@string.Format("{0:N2}",Model.ComercialInterior.Sum(x=> x.Meta))</td>
+                        <td>@string.Format("{0:N2}",((Model.ComercialInterior.Sum(x=> x.Faturado) / Model.ComercialInterior.Sum(x=> x.Meta)) * 100))</td>
+                        <td>@string.Format("{0:N2}",Model.ComercialInterior.Sum(x=> x.Salario))</td>
+                        <td>@string.Format("{0:N2}",Model.ComercialInterior.Sum(x=> x.Comissao))</td>
+                        <td>@string.Format("{0:N2}",Model.ComercialInterior.Sum(x=> x.ComissaoEquipe) + Model.ComercialInterior.Sum(x=> x.ComissaoProduto))</td>
+                        <td>@string.Format("{0:N2}",Model.ComercialInterior.Sum(x=> x.Total))</td>
+                        <td>@string.Format("{0:N2}",Model.ComercialInterior.Sum(x=> x.Teto))</td>
+                        <td>@string.Format("{0:N2}",Model.ComercialInterior.Sum(x=> x.Paga))</td>
+                    </tr>
+                }
+
+                @foreach (var item in Model.ComercialInterior)
+                {
+                    <tr>
+                        <td>@item.User.Integrante.ToUpper().Split("@")[0].Replace("."," ")</td>
+                        <td>@Model.Mes/@Model.Ano</td>
+                        <td>@string.Format("{0:N2}",item.Faturado)</td>
+                        <td>@string.Format("{0:N2}",item.Meta)</td>
+                        <td>@string.Format("{0:N2}",item.MetaAtingimento)</td>
+                        <td>@string.Format("{0:N2}",item.Salario)</td>
+                        <td>@string.Format("{0:N2}",item.Comissao)</td>
+                        <td>@string.Format("{0:N2}",item.ComissaoEquipe + item.ComissaoProduto)</td>
+                        <td>@string.Format("{0:N2}",item.Total)</td>
+                        <td>@string.Format("{0:N2}",item.Teto)</td>
+                        <td>@string.Format("{0:N2}",item.Paga)</td>
+                    </tr>
+                }
+
+                @if (Model.UsuariosDental.Count > 0)
+                {
+                    <tr>
+                        <td>DENTAL</td>
+                        <td>@Model.Mes/@Model.Ano</td>
+                        <td>@string.Format("{0:N2}",Model.UsuariosDental.Sum(x=> x.Faturado))</td>
+                        <td>@string.Format("{0:N2}",Model.UsuariosDental.Sum(x=> x.Meta))</td>
+                        <td>@string.Format("{0:N2}",((Model.UsuariosDental.Sum(x=> x.Faturado) / Model.UsuariosDental.Sum(x=> x.Meta)) * 100))</td>
+                        <td>@string.Format("{0:N2}",Model.UsuariosDental.Sum(x=> x.Salario))</td>
+                        <td>@string.Format("{0:N2}",Model.UsuariosDental.Sum(x=> x.Comissao))</td>
+                        <td>@string.Format("{0:N2}",Model.UsuariosDental.Sum(x=> x.ComissaoEquipe))</td>
+                        <td>@string.Format("{0:N2}",Model.UsuariosDental.Sum(x=> x.Total))</td>
+                        <td>@string.Format("{0:N2}",Model.UsuariosDental.Sum(x=> x.Teto))</td>
+                        <td>@string.Format("{0:N2}",Model.UsuariosDental.Sum(x=> x.Paga))</td>
+                    </tr>
+                }
+
+                @foreach(var item in Model.UsuariosDental)
+                {
+                    <tr>
+                        <td>@item.User.Integrante.ToUpper().Split("@")[0].Replace("."," ")</td>
+                        <td>@Model.Mes/@Model.Ano</td>
+                        <td>@string.Format("{0:N2}",item.Faturado)</td>
+                        <td>@string.Format("{0:N2}",item.Meta)</td>
+                        <td>@string.Format("{0:N2}",item.MetaAtingimento)</td>
+                        <td>@string.Format("{0:N2}",item.Salario)</td>
+                        <td>@string.Format("{0:N2}",item.Comissao)</td>
+                        <td>@string.Format("{0:N2}",item.ComissaoEquipe)</td>
+                        <td>@string.Format("{0:N2}",item.Total)</td>
+                        <td>@string.Format("{0:N2}",item.Teto)</td>
+                        <td>@string.Format("{0:N2}",item.Paga)</td>
+                    </tr>
+                }
+
+                @if (Model.Usuarios.Count > 0)
+                {
+                    <tr>
+                        <td>ADMINISTRATIVO</td>
+                        <td>@Model.Mes/@Model.Ano</td>
+                        <td>@string.Format("{0:N2}",Model.Usuarios.First().Faturado)</td>
+                        <td>@string.Format("{0:N2}",Model.Usuarios.First().Meta)</td>
+                        <td>@string.Format("{0:N2}",Model.Usuarios.First().MetaAtingimento)</td>
+                        <td>@string.Format("{0:N2}",Model.Usuarios.Sum(x=> x.Salario))</td>
+                        <td>@string.Format("{0:N2}",Model.Usuarios.Sum(x=> x.Comissao))</td>
+                        <td></td>
+                        <td>@string.Format("{0:N2}",Model.Usuarios.Sum(x=> x.Total))</td>
+                        <td>@string.Format("{0:N2}",Model.Usuarios.Sum(x=> x.Teto))</td>
+                        <td>@string.Format("{0:N2}",Model.Usuarios.Sum(x=> x.Paga))</td>
+                    </tr>
+                }
+
+                @foreach (var item in Model.Usuarios)
+                {
+                    <tr>
+                        <td>@item.User.Integrante.ToUpper().Split("@")[0].Replace("."," ")</td>
+                        <td>@Model.Mes/@Model.Ano</td>
+                        <td>@string.Format("{0:N2}",item.Faturado)</td>
+                        <td>@string.Format("{0:N2}",item.Meta)</td>
+                        <td>@string.Format("{0:N2}",item.MetaAtingimento)</td>
+                        <td>@string.Format("{0:N2}",item.Salario)</td>
+                        <td>@string.Format("{0:N2}",item.Comissao)</td>
+                        <td></td>
+                        <td>@string.Format("{0:N2}",item.Total)</td>
+                        <td>@string.Format("{0:N2}",item.Teto)</td>
+                        <td>@string.Format("{0:N2}",item.Paga)</td>
+                    </tr>
+                }
+
             </tbody>
         </table>
     </div>

@@ -801,32 +801,6 @@ namespace SGID.Pages.Relatorios.RH
                     sheet.Cells[i, 11].Value = Pedido.D2_TOTAL;
                     sheet.Cells[i, 11].Style.Numberformat.Format = "0.00";
 
-                    switch (Pedido.A3_LOGIN) {
-
-                        case "PEDRO.KOVACS":
-                        case "WILSON.GORGONE":
-                        case "ROGER.MACEDO":
-                        case "CIRO.PALLU":
-                        {
-
-                           sheet.Cells[i, 12].Value = Pedido.D2_TOTAL * 0.10;
-                           sheet.Cells[i, 12].Style.Numberformat.Format = "0.00";
-                           break;
-                        }
-                        case "KELLY.GONCALVES":
-                        case "ROSANA.LUZ":
-                        {
-                            sheet.Cells[i, 12].Value = Pedido.D2_TOTAL * 0.02;
-                            sheet.Cells[i, 12].Style.Numberformat.Format = "0.00";
-                            break;
-                        }
-                        default:
-                        {
-                            sheet.Cells[i, 12].Value = Pedido.D2_TOTAL * 0.03;
-                            sheet.Cells[i, 12].Style.Numberformat.Format = "0.00";
-                            break;
-                        }
-                    }
 
                     Faturado += Pedido.D2_TOTAL;
 
@@ -878,34 +852,6 @@ namespace SGID.Pages.Relatorios.RH
                     {
                         teste.Devolucao += Pedido.Total;
 
-                        switch (teste.Login)
-                        {
-
-                            case "PEDRO.KOVACS":
-                            case "WILSON.GORGONE":
-                            case "ROGER.MACEDO":
-                            case "CIRO.PALLU":
-                                {
-
-                                    sheet.Cells[i, 12].Value = Pedido.Total * 0.10;
-                                    sheet.Cells[i, 12].Style.Numberformat.Format = "0.00";
-                                    break;
-                                }
-                            case "KELLY.GONCALVES":
-                            case "ROSANA.LUZ":
-                            case "WESLLEY.FERREIRA":
-                                {
-                                    sheet.Cells[i, 12].Value = Pedido.Total * 0.02;
-                                    sheet.Cells[i, 12].Style.Numberformat.Format = "0.00";
-                                    break;
-                                }
-                            default:
-                                {
-                                    sheet.Cells[i, 12].Value = Pedido.Total * 0.03;
-                                    sheet.Cells[i, 12].Style.Numberformat.Format = "0.00";
-                                    break;
-                                }
-                        }
                     }
 
                     Devoluca += Pedido.Total;
@@ -943,34 +889,6 @@ namespace SGID.Pages.Relatorios.RH
 
                     sheet.Cells[i, 3].Value = Vendedor.Devolucao;
                     sheet.Cells[i, 3].Style.Numberformat.Format = "0.00";
-
-                    switch (Vendedor.Login)
-                    {
-
-                        case "PEDRO.KOVACS":
-                        case "WILSON.GORGONE":
-                        case "ROGER.MACEDO":
-                        case "CIRO.PALLU":
-                            {
-
-                                sheet.Cells[i, 4].Value = (Vendedor.Faturado + Vendedor.Devolucao) * 0.10;
-                                sheet.Cells[i, 4].Style.Numberformat.Format = "0.00";
-                                break;
-                            }
-                        case "KELLY.GONCALVES":
-                        case "ROSANA.LUZ":
-                            {
-                                sheet.Cells[i, 4].Value = (Vendedor.Faturado + Vendedor.Devolucao) * 0.02;
-                                sheet.Cells[i, 4].Style.Numberformat.Format = "0.00";
-                                break;
-                            }
-                        default:
-                            {
-                                sheet.Cells[i, 4].Value = (Vendedor.Faturado + Vendedor.Devolucao) * 0.02;
-                                sheet.Cells[i, 4].Style.Numberformat.Format = "0.00";
-                                break;
-                            }
-                    }
 
                     i++;
                 });

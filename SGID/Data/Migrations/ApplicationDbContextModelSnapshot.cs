@@ -824,6 +824,9 @@ namespace SGID.Data.Migrations
                     b.Property<double>("ValorTotal")
                         .HasColumnType("float");
 
+                    b.Property<double>("ValorUnitario")
+                        .HasColumnType("float");
+
                     b.HasKey("Id");
 
                     b.HasIndex("AgendamentoId");
@@ -1051,10 +1054,19 @@ namespace SGID.Data.Migrations
                     b.Property<double>("PorcentagemSeg")
                         .HasColumnType("float");
 
+                    b.Property<double>("Salario")
+                        .HasColumnType("float");
+
                     b.Property<bool>("Status")
                         .HasColumnType("bit");
 
+                    b.Property<double>("Teto")
+                        .HasColumnType("float");
+
                     b.Property<string>("TipoFaturamento")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TipoVendedor")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -1087,8 +1099,14 @@ namespace SGID.Data.Migrations
                     b.Property<double>("Porcentagem")
                         .HasColumnType("float");
 
+                    b.Property<double>("Salario")
+                        .HasColumnType("float");
+
                     b.Property<bool>("Status")
                         .HasColumnType("bit");
+
+                    b.Property<double>("Teto")
+                        .HasColumnType("float");
 
                     b.HasKey("Id");
 
@@ -1130,8 +1148,14 @@ namespace SGID.Data.Migrations
                     b.Property<double>("PorcentagemSeg")
                         .HasColumnType("float");
 
+                    b.Property<double>("Salario")
+                        .HasColumnType("float");
+
                     b.Property<bool>("Status")
                         .HasColumnType("bit");
+
+                    b.Property<double>("Teto")
+                        .HasColumnType("float");
 
                     b.HasKey("Id");
 

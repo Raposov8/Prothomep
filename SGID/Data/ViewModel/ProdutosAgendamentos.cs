@@ -13,6 +13,7 @@ namespace SGID.Data.ViewModel
         public string CodigoProduto { get; set; }
         public string CodigoTabela { get; set; }
         public double Quantidade { get; set; }
+        public double ValorUnitario { get; set; }
         public double ValorTotal { get; set; }
     }
 }

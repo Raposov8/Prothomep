@@ -169,6 +169,26 @@
                 <a href="/relatorios/diretoria/TitulosVencidosInter" target="_blank">Saiba Mais...</a>
             </div>
         </div>
+        <div class="panel">
+            <div class="panel-body">
+                <table id="Folha" class="table-striped table-bordered" cellspacing="0" width="100%">
+                    <thead>
+                        <tr>
+                            <th colspan="2">
+                                FOLHA DE PAGAMENTO
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td colspan="2">
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <a><div id="FolhaRed">Saiba Mais...</div></a>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -385,9 +405,52 @@
                         $("#loading-modal").modal('hide')
                     }
                 })
+
+                var chamadaUrl3 = `/dashboards/dashboardmetas?handler=Comissoes&&Mes=${Mes}&&Ano=${Ano}`
+                $.ajax({
+                    url: chamadaUrl3,
+                    type: "POST",
+                    contentType: "application/json;",
+                    dataType: 'json',
+                    headers: {
+                        "RequestVerificationToken": $('input:hidden[name="__RequestVerificationToken"]').val()
+                    },
+                    success: function (data) {
+
+                        $("#Folha>tbody>tr").remove();
+                            
+                         var linha = `<tr>
+                                          <td>
+                                           <b>SALÁRIO</b>
+                                          </td>
+                                          <td>
+                                           <b>${data.salario.toLocaleString('pt-BR', formato)}</b>
+                                          </td>
+                                      </tr>`;
+
+                        $("#Folha>tbody").append(linha);
+
+                        var linha2 = `<tr>
+                                          <td>
+                                           <b>COMISSÕES</b>
+                                          </td>
+                                          <td>
+                                           <b>${data.comissoes.toLocaleString('pt-BR', formato)}</b>
+                                          </td>
+                                      </tr>`;
+
+                        $("#Folha>tbody").append(linha2);
+                        
+
+                        move(100)
+
+                        $("#loading-modal").modal('hide')
+                    }
+                })
+
             })
 
-            var chamadaUrl = `/dashboards/dashboarddiretorio2?handler=Vencidos`
+            var chamadaUrl = `/dashboards/dashboardmetas?handler=Vencidos`
             $.ajax({
                 url: chamadaUrl,
                 type: "POST",
@@ -399,20 +462,6 @@
                 success: function (data) {
 
                     $("#Vencidos>tbody>tr").remove();
-
-                    data.valores.forEach(x => {
-                        var linha = `<tr>
-                                                                 <td>
-                                                                         ${x.cliente}
-                                                                 </td>
-                                                                 <td>
-                                                                 ${x.valor.toLocaleString('pt-BR', formato)}
-                                                                 </td>
-                                                             </tr>`;
-
-                        $("#Vencidos>tbody").append(linha);
-                    })
-
 
                     var linha = `<tr>
                                             <td>
@@ -428,7 +477,7 @@
                 }
             })
 
-            var chamadaUrl2 = `/dashboards/dashboarddiretorio2?handler=VencidosInter`
+            var chamadaUrl2 = `/dashboards/dashboardmetas?handler=VencidosInter`
             $.ajax({
                 url: chamadaUrl2,
                 type: "POST",
@@ -441,34 +490,34 @@
 
                     $("#VencidosInter>tbody>tr").remove();
 
-                    data.valores.forEach(x => {
-                        var linha = `<tr>
-                                                                         <td>
-                                                                                 ${x.cliente}
-                                                                         </td>
-                                                                         <td>
-                                                                         ${x.valor.toLocaleString('pt-BR', formato)}
-                                                                         </td>
-                                                                     </tr>`;
-
-                        $("#VencidosInter>tbody").append(linha);
-                    })
-
 
                     var linha = `<tr>
-                                             <td>
-                                              <b>TOTAL</b>
-                                             </td>
-                                             <td>
-                                              <b>${data.valorTotal.toLocaleString('pt-BR', formato)}</b>
-                                             </td>
-                                         </tr>`;
+                                     <td>
+                                      <b>TOTAL</b>
+                                     </td>
+                                     <td>
+                                      <b>${data.valorTotal.toLocaleString('pt-BR', formato)}</b>
+                                     </td>
+                                 </tr>`;
 
                     $("#VencidosInter>tbody").append(linha);
 
 
                 }
             })
+
+            
+
+        })
+
+        $("#FolhaRed").on('click',function(){
+
+            var Ano = $("#Ano").val();
+            var Mes = $('input[name=Tipo]:checked').val();
+
+             
+            window.open(`/relatorios/diretoria/FaturamentoXFuncionario?handler=Diretoria&&Mes=${Mes}&Ano=${Ano}`, '_blank');
+            
 
         })
 

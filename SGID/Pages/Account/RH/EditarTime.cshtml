@@ -56,7 +56,7 @@
                 <div class="form-group col-md-4">
                     @Html.LabelFor(model => model.Editar.GerenProd, new { @class = "col-md-12 control-label" })
                     <div class="col-md-12">
-                        @Html.DropDownList("GerenProd",new SelectList(Model.Gerente,Model.Editar.GerenProd),"",new { @class = "form-control", @placehold= "Porcentagem" })
+                        @Html.DropDownList("Editar.GerenProd",new SelectList(Model.Gerente,Model.Editar.GerenProd),"",new { @class = "form-control", @placehold= "Porcentagem" })
                     </div>
                 </div>
                 <div class="form-group col-md-4" id="PorcGerente">
@@ -76,6 +76,26 @@
                         <input type="checkbox" id="SelectedLinhas" name="SelectedLinhas" value="@item.Value" checked="@item.Selected" class="checkbox-inline" />
                         @Html.Label(item.Value, item.Value , new { @class = "control-label" })
                     }
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group col-md-4">
+                    @Html.LabelFor(model => model.Editar.Teto, new { @class = "col-md-12 control-label" })
+                    <div class="col-md-12">
+                        @Html.TextBoxFor(model => model.Editar.Teto, "{0:N2}", new { @class = "form-control", @placehold= "Teto" })
+                    </div>
+                </div>
+                <div class="form-group col-md-4">
+                    @Html.LabelFor(model => model.Editar.TipoVendedor, new { @class = "col-md-12 control-label" })
+                    <div class="col-md-12">
+                        @Html.DropDownList("Editar.TipoVendedor",new SelectList(Model.Regioes,Model.Editar.TipoVendedor),"",new { @class = "form-control", @placehold= "Porcentagem" })
+                    </div>
+                </div>
+                <div class="form-group col-md-4">
+                    @Html.LabelFor(model => model.Editar.Salario, new { @class = "col-md-12 control-label" })
+                    <div class="col-md-12">
+                        @Html.TextBoxFor(model => model.Editar.Salario, "{0:N2}", new { @class = "form-control", @placehold= "Salario" })
+                    </div>
                 </div>
             </div>
 

@@ -18,5 +18,8 @@ namespace SGID.Data.ViewModel
         public string GerenProd { get; set; }
         public string? Color { get; set; }
         public string? TipoFaturamento { get; set; }
+        public string? TipoVendedor { get; set; }
+        public double Teto { get; set; }
+        public double Salario { get; set; }
     }
 }

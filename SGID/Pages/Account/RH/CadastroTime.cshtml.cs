@@ -35,6 +35,8 @@ namespace SGID.Pages.Account.RH
 
         public List<string> Gerente { get; set; } = new List<string> { "SIM", "NAO" };
 
+        public List<string> Regioes { get; set; } = new List<string> { "CAPITAL", "INTERIOR" };
+
         public CadastroTimeModel(ILogger<RegisterModel> logger, UserManager<UserInter> userManager
             , ApplicationDbContext context, IWebHostEnvironment wEB,TOTVSINTERContext INTER,TOTVSDENUOContext DENUO)
         {
@@ -86,7 +88,10 @@ namespace SGID.Pages.Account.RH
                                 PorcentagemSeg = Input.PorcentagemSegun,
                                 GerenProd = Input.GerenProd,
                                 PorcentagemGenProd = Input.PorcentagemProd,
-                                IdUsuario = usuario.Id
+                                IdUsuario = usuario.Id,
+                                TipoVendedor = Input.TipoVendedor,
+                                Teto = Input.Teto,
+                                Salario = Input.Salario
                                 
                             };
 
@@ -167,7 +172,9 @@ namespace SGID.Pages.Account.RH
                             PorcentagemSeg = Input.PorcentagemSegun,
                             GerenProd = Input.GerenProd,
                             PorcentagemGenProd = Input.PorcentagemProd,
-                            IdUsuario = usuariop.Id
+                            IdUsuario = usuariop.Id,
+                            TipoVendedor = Input.TipoVendedor,
+                            Teto = Input.Teto
                         };
 
                         _db.Times.Add(time);
@@ -219,6 +226,12 @@ namespace SGID.Pages.Account.RH
             public double PorcentagemProd { get; set; } = 0.0;
             [Display(Name = "É Gestor de Produtos")]
             public string GerenProd { get; set; }
+            [Display(Name = "Teto")]
+            public double Teto { get; set; } = 0.0;
+            [Display(Name = "Interior ou Capital?")]
+            public string TipoVendedor { get; set; }
+            [Display(Name = "Salario")]
+            public double Salario { get; set; } = 0.0;
         }
     }
 

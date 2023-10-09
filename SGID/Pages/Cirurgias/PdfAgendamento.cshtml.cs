@@ -42,6 +42,7 @@ namespace SGID.Pages.Cirurgias
                     {
                         produto = x.CodigoProduto,
                         unidade = x.Quantidade,
+                        valorunitario = x.ValorUnitario,
                         valor = x.ValorTotal,
                         Tabela = x.CodigoTabela
                     }).ToList();
@@ -89,7 +90,7 @@ namespace SGID.Pages.Cirurgias
                         Marca = produto.B1Fabric,
                         Validade = produto.B8Dtvalid,
                         Und = x.unidade,
-                        PrcUnid = produto.Da1Prcven,
+                        PrcUnid = x.valorunitario,
                         SegUnd = produto.B1Um,
                         Descon = produto.Da1Vlrdes,
                         VlrTotal = x.valor,
@@ -142,7 +143,7 @@ namespace SGID.Pages.Cirurgias
                         Validade = produto.B8Dtvalid,
                         Marca = produto.B1Fabric,
                         Und = x.unidade,
-                        PrcUnid = produto.Da1Prcven,
+                        PrcUnid = x.valorunitario,
                         SegUnd = produto.B1Um,
                         Descon = produto.Da1Vlrdes,
                         VlrTotal = x.valor,
@@ -155,6 +156,7 @@ namespace SGID.Pages.Cirurgias
                     Produtos.Add(ViewProduto);
                 });
             }
+
             string Pasta = $"{_WEB.WebRootPath}/Rotativa/Rotativa";
 
             if (Agendamento.StatusPedido != 3 && Agendamento.StatusPedido != 4) 

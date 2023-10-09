@@ -63,6 +63,7 @@
   <ItemGroup>
     <Folder Include="wwwroot\AnexosAgendamento\" />
     <Folder Include="wwwroot\Anexos\" />
+    <Folder Include="wwwroot\lib\jquery.redirect\dist\" />
   </ItemGroup>
 
   <ProjectExtensions><VisualStudio><UserProperties appsettings_1json__JsonSchema="" libman_1json__JsonSchema="" /></VisualStudio></ProjectExtensions>

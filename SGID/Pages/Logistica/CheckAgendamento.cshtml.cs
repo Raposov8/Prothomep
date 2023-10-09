@@ -42,6 +42,7 @@ namespace SGID.Pages.Logistica
                     {
                         produto = x.CodigoProduto,
                         unidade = x.Quantidade,
+                        valorunidade = x.ValorUnitario,
                         codTabela = x.CodigoTabela,
                         valor = x.ValorTotal
                     }).ToList();
@@ -111,7 +112,7 @@ namespace SGID.Pages.Logistica
                         Anvisa = produto.B1Reganvi,
                         Marca = produto.B1Fabric,
                         Und = x.unidade,
-                        PrcUnid = preco,
+                        PrcUnid = x.valorunidade,
                         SegUnd = produto.B1Um,
                         VlrTotal = x.valor,
                     };
@@ -217,7 +218,7 @@ namespace SGID.Pages.Logistica
                         Anvisa = produto.B1Reganvi,
                         Marca = produto.B1Fabric,
                         Und = x.unidade,
-                        PrcUnid = preco,
+                        PrcUnid = x.valorunidade,
                         SegUnd = produto.B1Um,
                         VlrTotal = x.valor,
                     };

@@ -34,19 +34,14 @@ namespace SGID.Pages.Account.RH
 
         }
 
-        public async Task<IActionResult> OnPostAsync(params string[] SelectedLinhas)
+        public async Task<IActionResult> OnPostAsync()
         {
             try
             {
                 if (ModelState.IsValid)
                 {
-                    //var user = new UserInter { UserName = Input.Email, Email = Input.Email, EmailConfirmed = true };
-                    //var usuariop = await _userManager.FindByEmailAsync(user.Email);
-
-
-
-                    //var lider = Input.GestorEmail.Split("@")[0];
-                    var integrante = Input.Email;//.Split("@")[0];
+                    
+                    var integrante = Input.Email;
 
                         var time = new TimeDental
                         {
@@ -57,13 +52,13 @@ namespace SGID.Pages.Account.RH
                             Meta = Input.Meta,
                             Porcentagem = Input.Porcentagem,
                             PorcentagemSeg = Input.PorcentagemSegun,
-                            //IdUsuario = usuariop.Id
+                            IdUsuario = ""
                         };
 
                         _db.TimeDentals.Add(time);
                         _db.SaveChanges();
 
-                        return LocalRedirect("/account/rh/listartime");
+                        return LocalRedirect("/account/rh/listardental");
                     
                 }
             }
@@ -79,13 +74,15 @@ namespace SGID.Pages.Account.RH
         {
             [Display(Name = "E-mail")]
             public string Email { get; set; } = "";
-            [Display(Name = "E-mail Gestor")]
-            public string GestorEmail { get; set; } = "";
             public double Meta { get; set; } = 0.0;
             [Display(Name = "% Direta")]
             public double Porcentagem { get; set; } = 0.0;
             [Display(Name = "% Equipe")]
             public double PorcentagemSegun { get; set; } = 0.0;
+            [Display(Name = "Teto")]
+            public double Teto { get; set; } = 0.0;
+            [Display(Name = "Salario")]
+            public double Salario { get; set; } = 0.0;
         }
     }
 }

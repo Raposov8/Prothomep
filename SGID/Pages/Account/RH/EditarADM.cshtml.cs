@@ -59,6 +59,8 @@ namespace SGID.Pages.Account.RH
                 Id = user.Id,
                 Email = user.Email,
                 Porcentagem = usuario.Porcentagem,
+                Salario = usuario.Salario,
+                Teto = usuario.Teto
             };
 
             return Page();
@@ -88,6 +90,8 @@ namespace SGID.Pages.Account.RH
                 usuario.Integrante = Editar.Email.Split("@")[0];
 
                 usuario.Porcentagem = Editar.Porcentagem;
+                usuario.Salario = Editar.Salario;
+                usuario.Teto = Editar.Teto;
 
 
                 _db.TimeADMs.Update(usuario);
@@ -116,6 +120,10 @@ namespace SGID.Pages.Account.RH
 
             [Display(Name = "% Sobre Faturamento")]
             public double Porcentagem { get; set; }
+            [Display(Name = "Teto")]
+            public double Teto { get; set; } = 0.0;
+            [Display(Name = "Salario")]
+            public double Salario { get; set; } = 0.0;
 
         }
     }
