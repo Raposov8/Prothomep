@@ -29,7 +29,7 @@ namespace SGID.Pages.RH
         }
 
         public IActionResult OnPostAsync(DateTime DataEvento,string Empresa,string Nome,string Tipo,string Email,
-           string Cargo, string Ramal, string Obs,params string[] SelectedRoles)
+           string Cargo, string Ramal,string NomeSub,string CargoSub,string Contratacao,string Obs,params string[] SelectedRoles)
         {
             try
             {
@@ -44,6 +44,9 @@ namespace SGID.Pages.RH
                     Email = Email,
                     Ramal = Ramal,
                     Obs = Obs,
+                    NomeSub = NomeSub,
+                    CargoSub = CargoSub,
+                    Contratacao = Contratacao,
                     Usuario = User.Identity.Name.Split("@")[0]
                 };
 

@@ -44,7 +44,7 @@ namespace SGID.Pages.DashBoards
                 }).ToList();
 
 
-            Produtos = resultadoDenuo.Concat(resultadoInter).OrderByDescending(x=> x.DtValidade).ToList();
+            Produtos = resultadoDenuo.Concat(resultadoInter).OrderByDescending(x => x.DtValidade).ToList();
         }
     }
 }

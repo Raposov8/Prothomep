@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SGID.Data;
 
@@ -11,9 +12,11 @@ using SGID.Data;
 namespace SGID.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231010143811_NomeSubGesteGestao")]
+    partial class NomeSubGesteGestao
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -957,14 +960,8 @@ namespace SGID.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("CargoSub")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<bool>("Celular")
                         .HasColumnType("bit");
-
-                    b.Property<string>("Contratacao")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("DataAlteracao")
                         .HasColumnType("datetime2");

@@ -11,6 +11,7 @@
 
 <div class="row">
     <h3 id="Error" class="invisivel" style="padding-left:20px;color:red">Data Evento deve ter 3 dias uteis ou mais</h3>
+    <h3 id="Error2" class="invisivel" style="padding-left:20px;color:red">Deve ser informado o Nome do Antigo Colaborador</h3>
 </div>
 
 <div class="card" style="padding:10px;">
@@ -58,6 +59,23 @@
                         <label>Ramal</label>
                         <input type="text" class="form-control" id="Ramal" name="Ramal"/>
                     </div>
+                    <div class="form-group col-md-2">
+                        <label>Aumento de Quadro?</label>
+                        <select type="text" class="form-control" id="Contratacao" name="Contratacao">
+                            <option value="S">SIM</option>
+                            <option value="N">NÃO</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row" id="Sub">
+                    <div class="form-group col-md-4">
+                        <label>Nome Colaborador Subtituido</label>
+                        <input type="text" class="form-control" id="NomeSub" name="NomeSub" />
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label>Cargo Substituido</label>
+                        <input type="text" class="form-control" id="CargoSub" name="CargoSub" />
+                    </div>
                 </div>
                 <div class="row">
                     <div class="form-group col-md-12">
@@ -89,7 +107,7 @@
             </div>
             <div class="row" style="margin-top:10px;">
                 <div class="col-md-12">
-                    <button class="btn btn-button btn-success float-end" type="submit">Salvar</button>
+                    <button class="btn btn-button btn-success float-end" id="Envio" type="submit">Salvar</button>
                 </div>
             </div>
         </div>
@@ -98,19 +116,12 @@
 
 @section scripts{
     <script>
-        $('#DataEvento').blur(function () {
+        $('#DataEvento').blur(function () 
+        {
             var val = $(this).val()
 
             var data = new Date()
 
-            /*if(data.getDay()==0 || data.getDay()>=5)
-            {
-                data.setDate(data.getDate() + 5)
-            }
-            else
-            {
-                
-            }*/
 
             data.setDate(data.getDate() + 3);
 
@@ -126,5 +137,135 @@
                 $("#Error").addClass("invisivel");
             }
         })
+    </script>
+
+    <script>
+        $(document).ready(function () 
+        {
+
+            $('#Sub').hide();
+
+
+            $("#Contratacao").on('change', function () 
+            {
+
+                var teste = $("#Contratacao").val();
+
+                if (teste == "N") 
+                {
+                    $('#Sub').show();
+                    $("#Envio").addClass("invisivel");
+                }
+                else 
+                {
+                    $('#Sub').hide();
+                    $("#Envio").removeClass("invisivel");
+                }
+
+            })
+
+
+            $("#NomeSub").on('change',function (e)
+            {
+
+                var Nome = $("#NomeSub").val();
+
+                if (Nome != undefined) {
+
+                    if (Nome.trim().length === 0) 
+                    {
+                        $("#Envio").removeClass("visivel");
+                        $("#Envio").addClass("invisivel");
+                    }
+                    else 
+                    {
+                        var CargoSub = $("#CargoSub").val();
+
+                        if (CargoSub != undefined) 
+                        {
+
+                            if (CargoSub.trim().length === 0) 
+                            {
+                                $("#Envio").removeClass("visivel");
+                                $("#Envio").addClass("invisivel");
+                            }
+                            else
+                            {
+                                $("#Envio").removeClass("invisivel");
+                                $("#Envio").addClass("visivel");
+                            }
+                        }
+                        else
+                        {
+                            $("#Envio").removeClass("visivel");
+                            $("#Envio").addClass("invisivel");
+                        }
+                        
+                    }
+                }
+                else
+                {
+                    $("#Envio").removeClass("visivel");
+                    $("#Envio").addClass("invisivel");
+                }
+            })
+
+            $("#CargoSub").on('change', function (e) {
+
+                var CargoSub = $("#CargoSub").val();
+
+                if (CargoSub != undefined) 
+                {
+
+                    if (CargoSub.trim().length === 0) 
+                    {
+                        $("#Envio").removeClass("visivel");
+                        $("#Envio").addClass("invisivel");
+                    }
+                    else 
+                    {
+                        var Nome = $("#NomeSub").val();
+
+                        if (Nome != undefined) 
+                        {
+
+                            if (Nome.trim().length === 0) 
+                            {
+                                $("#Envio").removeClass("visivel");
+                                $("#Envio").addClass("invisivel");
+                            }
+                            else 
+                            {
+                                $("#Envio").removeClass("invisivel");
+                                $("#Envio").addClass("visivel");
+                            }
+                        }
+                        else 
+                        {
+                            $("#Envio").removeClass("visivel");
+                            $("#Envio").addClass("invisivel");
+                        }
+
+                    }
+                }
+                else 
+                {
+                    $("#Envio").removeClass("visivel");
+                    $("#Envio").addClass("invisivel");
+                }
+            })
+        })
+
+        $(document).ready(function () 
+        {
+            $(window).keydown(function (event) 
+            {
+                if (event.keyCode == 13) 
+                {
+                    event.preventDefault();
+                    return false;
+                }
+            });
+        });
     </script>
 }

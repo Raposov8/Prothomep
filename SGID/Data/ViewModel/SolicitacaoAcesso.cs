@@ -22,5 +22,8 @@ namespace SGID.Data.ViewModel
         public bool Celular { get; set; }
         public bool Impressora { get; set; }
         public string Usuario { get; set; }
+        public string? Contratacao { get; set; }
+        public string? NomeSub { get; set; }
+        public string? CargoSub { get; set; }
     }
 }

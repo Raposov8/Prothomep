@@ -21,8 +21,8 @@
         $(document).ready(function () {
             var x = document.getElementById("demo");
 
-            $("#Location").on("click",function(){
-                console.log('1')
+            $("#Location").on("click",function()
+            {
                 if (navigator.geolocation) {
                     navigator.geolocation.getCurrentPosition(showPosition, showError);
                 }
@@ -35,7 +35,7 @@
                 var latlondata = position.coords.latitude + "," + position.coords.longitude;
                 var latlon = `Your Latitude Position is:=${position.coords.latitude},Your Longitude Position is:=${position.coords.longitude}`;
                 //alert(latlon)
-                var img_url = `https://maps.googleapis.com/maps/api/staticmap?center=${latlondata}&zoom=14&size=400x300&sensor=false`;
+                var img_url = `https://maps.googleapis.com/maps/api/staticmap?center=${latlondata}&zoom=14&size=400x300&sensor=false&key=AIzaSyA2i3HhgYMkGeM_ihqJ1CTNgplO6LaeZ4U`;
                 console.log(img_url)
                 document.getElementById("mapholder").innerHTML = `<img src='${img_url}' />`;
             }

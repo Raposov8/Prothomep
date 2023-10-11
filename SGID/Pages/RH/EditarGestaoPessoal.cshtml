@@ -58,6 +58,23 @@
                         <label>Ramal</label>
                         <input type="text" class="form-control" id="Ramal" name="Ramal" value="@Model.Acesso.Ramal"/>
                     </div>
+                    <div class="form-group col-md-2">
+                        <label>Aumento de Quadro?</label>
+                        <select type="text" class="form-control" id="Contratacao" name="Contratacao">
+                            <option value="S">SIM</option>
+                            <option value="N">NÃO</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row" id="Sub">
+                    <div class="form-group col-md-4">
+                        <label>Nome Colaborador Subtituido</label>
+                        <input type="text" class="form-control" id="NomeSub" name="NomeSub" value="@Model.Acesso.NomeSub" />
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label>Cargo Substituido</label>
+                        <input type="text" class="form-control" id="CargoSub" name="CargoSub" value="@Model.Acesso.CargoSub" />
+                    </div>
                 </div>
                 <div class="row">
                     <div class="form-group col-md-12">
@@ -103,6 +120,18 @@
             $('#Tipo').val(@Model.Acesso.Tipo);
             $("#Obs").val('@Model.Acesso.Obs');
 
+            var contra = '@Model.Acesso.Contratacao';
+            if (contra=="")
+            {
+                $("#Contratacao").val('S');
+            }
+            else
+            {
+                $("#Contratacao").val('@Model.Acesso.Contratacao');
+            }
+            
+
+
             $('input:checkbox[value="Protheus"]').prop('checked', @Model.Acesso.Protheus.ToString().ToLower());
             $('input:checkbox[value="Ramal"]').prop('checked', @Model.Acesso.IsRamal.ToString().ToLower());
             $('input:checkbox[value="Impressora"]').prop('checked', @Model.Acesso.Impressora.ToString().ToLower());
@@ -136,5 +165,112 @@
                 $("#Error").addClass("invisivel");
             }
         })
+    </script>
+
+    <script>
+        $(document).ready(function () {
+
+            $('#Sub').hide();
+
+
+            $("#Contratacao").on('change', function () {
+
+                var teste = $("#Contratacao").val();
+
+                if (teste == "N") {
+                    $('#Sub').show();
+                    $("#Envio").addClass("invisivel");
+                }
+                else {
+                    $('#Sub').hide();
+                    $("#Envio").removeClass("invisivel");
+                }
+
+            })
+
+
+            $("#NomeSub").on('change', function (e) {
+
+                var Nome = $("#NomeSub").val();
+
+                if (Nome != undefined) {
+
+                    if (Nome.trim().length === 0) {
+                        $("#Envio").removeClass("visivel");
+                        $("#Envio").addClass("invisivel");
+                    }
+                    else {
+                        var CargoSub = $("#CargoSub").val();
+
+                        if (CargoSub != undefined) {
+
+                            if (CargoSub.trim().length === 0) {
+                                $("#Envio").removeClass("visivel");
+                                $("#Envio").addClass("invisivel");
+                            }
+                            else {
+                                $("#Envio").removeClass("invisivel");
+                                $("#Envio").addClass("visivel");
+                            }
+                        }
+                        else {
+                            $("#Envio").removeClass("visivel");
+                            $("#Envio").addClass("invisivel");
+                        }
+
+                    }
+                }
+                else {
+                    $("#Envio").removeClass("visivel");
+                    $("#Envio").addClass("invisivel");
+                }
+            })
+
+            $("#CargoSub").on('change', function (e) {
+
+                var CargoSub = $("#CargoSub").val();
+
+                if (CargoSub != undefined) {
+
+                    if (CargoSub.trim().length === 0) {
+                        $("#Envio").removeClass("visivel");
+                        $("#Envio").addClass("invisivel");
+                    }
+                    else {
+                        var Nome = $("#NomeSub").val();
+
+                        if (Nome != undefined) {
+
+                            if (Nome.trim().length === 0) {
+                                $("#Envio").removeClass("visivel");
+                                $("#Envio").addClass("invisivel");
+                            }
+                            else {
+                                $("#Envio").removeClass("invisivel");
+                                $("#Envio").addClass("visivel");
+                            }
+                        }
+                        else {
+                            $("#Envio").removeClass("visivel");
+                            $("#Envio").addClass("invisivel");
+                        }
+
+                    }
+                }
+                else {
+                    $("#Envio").removeClass("visivel");
+                    $("#Envio").addClass("invisivel");
+                }
+            })
+        })
+
+        $(document).ready(function () {
+            $(window).keydown(function (event) {
+                if (event.keyCode == 13) {
+                    event.preventDefault();
+                    return false;
+                }
+            });
+        });
     </script>
 }
