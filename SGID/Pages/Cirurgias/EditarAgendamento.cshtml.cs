@@ -273,7 +273,7 @@ namespace SGID.Pages.Cirurgias
                 agendamento.Observacao = Obs;
 
                 agendamento.DataEntrega = DataEntrega;
-                agendamento.DataRetirada = DataRetirada;
+                agendamento.DataRetorno = DataRetirada;
 
                 agendamento.UsuarioAlterar = User.Identity.Name.Split("@")[0].ToUpper();
 

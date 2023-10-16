@@ -28,7 +28,7 @@ namespace SGID.Pages.RH
             Acessos = SGID.SolicitacaoAcessos.Where(x => x.DataEvento >= DateTime.Now).ToList();
         }
 
-        public IActionResult OnPostCancelar(int Id)
+        public IActionResult OnGetCancelar(int Id)
         {
             var solicita = SGID.SolicitacaoAcessos.FirstOrDefault(x => x.Id == Id);
 

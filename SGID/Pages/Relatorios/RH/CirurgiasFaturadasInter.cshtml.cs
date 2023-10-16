@@ -49,13 +49,13 @@ namespace SGID.Pages.Relatorios.RH
                              join SB10 in Protheus.Sb1010s on SD20.D2Cod equals SB10.B1Cod
                              join SF20 in Protheus.Sf2010s on new { Filial = SD20.D2Filial, Doc = SD20.D2Doc, Serie = SD20.D2Serie, Cliente = SD20.D2Cliente, Loja = SD20.D2Loja } equals new { Filial = SF20.F2Filial, Doc = SF20.F2Doc, Serie = SF20.F2Serie, Cliente = SF20.F2Cliente, Loja = SF20.F2Loja }
                              join SC50 in Protheus.Sc5010s on new { Filial = SD20.D2Filial, Num = SD20.D2Pedido } equals new { Filial = SC50.C5Filial, Num = SC50.C5Num }
-                             join SC60 in Protheus.Sc6010s on new {Filial=SD20.D2Filial,Pedido=SD20.D2Pedido,Cliente=SD20.D2Cliente,Loja=SD20.D2Loja,Item=SD20.D2Itempv,Cod=SD20.D2Cod} equals new { Filial = SC60.C6Filial, Pedido = SC60.C6Num, Cliente = SC60.C6Cli, Loja = SC60.C6Loja, Item = SC60.C6Item, Cod = SC60.C6Produto }
+                             join SC60 in Protheus.Sc6010s on new { Filial = SD20.D2Filial, Pedido = SD20.D2Pedido, Cliente = SD20.D2Cliente, Loja = SD20.D2Loja, Item = SD20.D2Itempv, Cod = SD20.D2Cod } equals new { Filial = SC60.C6Filial, Pedido = SC60.C6Num, Cliente = SC60.C6Cli, Loja = SC60.C6Loja, Item = SC60.C6Item, Cod = SC60.C6Produto }
                              where SD20.DELET != "*" && SA10.DELET != "*" && SB10.DELET != "*" && SF20.DELET != "*" && SC50.DELET != "*" && SC60.DELET != "*"
                              && (((int)(object)SD20.D2Cf >= 5102 && (int)(object)SD20.D2Cf <= 5114) || ((int)(object)SD20.D2Cf >= 6102 && (int)(object)SD20.D2Cf <= 6114) ||
                              ((int)(object)SD20.D2Cf >= 7102 && (int)(object)SD20.D2Cf <= 7114) || CF.Contains(SD20.D2Cf)) && ((int)(object)SD20.D2Emissao >= (int)(object)DataI && (int)(object)SD20.D2Emissao <= (int)(object)DataF)
                              && SD20.D2Quant != 0 && SC50.C5Utpoper == "F" && SA10.A1Clinter != "S" && SA10.A1Cgc != "04715053000140" && SA10.A1Cgc != "04715053000220" && SA10.A1Cgc != "01390500000140" && (int)(object)SD20.D2Emissao >= 20200701
                              && SB10.B1Ugrpint != "082"
-                             
+
                              select new
                              {
                                  Filial = SD20.D2Filial,
@@ -81,7 +81,8 @@ namespace SGID.Pages.Relatorios.RH
                                  SC50.C5Utpoper,
                                  SD20.D2Cod,
                                  SB10.B1Desc,
-                                 SC60.C6Produto
+                                 SC60.C6Produto,
+                                 SA10.A1Mun
                              });
 
 
@@ -110,7 +111,8 @@ namespace SGID.Pages.Relatorios.RH
                     x.C5Utpoper,
                     x.D2Cod,
                     x.B1Desc,
-                    x.C6Produto
+                    x.C6Produto,
+                    x.A1Mun
                 }).Select(x => new RelatorioCirurgiasFaturadas
                 {
                     Filial = x.Key.Filial,
@@ -135,7 +137,8 @@ namespace SGID.Pages.Relatorios.RH
                     XNMPla = x.Key.NomPla,
                     Utpoper = x.Key.C5Utpoper,
                     D2Cod = x.Key.D2Cod,
-                    B1Desc = x.Key.B1Desc
+                    B1Desc = x.Key.B1Desc,
+                    Municipio = x.Key.A1Mun
 
                 }).OrderBy(x => x.A3Nome).ToList();
 
@@ -204,7 +207,8 @@ namespace SGID.Pages.Relatorios.RH
                                  SC50.C5Utpoper,
                                  SD20.D2Cod,
                                  SB10.B1Desc,
-                                 SC60.C6Produto
+                                 SC60.C6Produto,
+                                 SA10.A1Mun
                              });
 
 
@@ -233,7 +237,8 @@ namespace SGID.Pages.Relatorios.RH
                     x.C5Utpoper,
                     x.D2Cod,
                     x.B1Desc,
-                    x.C6Produto
+                    x.C6Produto,
+                    x.A1Mun
                 }).Select(x => new RelatorioCirurgiasFaturadas
                 {
                     Filial = x.Key.Filial,
@@ -258,7 +263,8 @@ namespace SGID.Pages.Relatorios.RH
                     XNMPla = x.Key.NomPla,
                     Utpoper = x.Key.C5Utpoper,
                     D2Cod = x.Key.D2Cod,
-                    B1Desc = x.Key.B1Desc
+                    B1Desc = x.Key.B1Desc,
+                    Municipio = x.Key.A1Mun
 
                 }).OrderBy(x => x.A3Nome).ToList();
 
@@ -285,6 +291,10 @@ namespace SGID.Pages.Relatorios.RH
                 sheet.Cells[1, 16].Value = "Convênio";
                 sheet.Cells[1, 17].Value = "Produto";
                 sheet.Cells[1, 18].Value = "Desc. Produto";
+                if (!User.IsInRole("GestorComercial"))
+                {
+                    sheet.Cells[1, 19].Value = "Municipio";
+                }
 
                 int i = 2;
 
@@ -308,6 +318,7 @@ namespace SGID.Pages.Relatorios.RH
                     sheet.Cells[i, 16].Value = Pedido.XNMPla;
                     sheet.Cells[i, 17].Value = Pedido.D2Cod;
                     sheet.Cells[i, 18].Value = Pedido.B1Desc;
+                    sheet.Cells[i, 19].Value = Pedido.Municipio;
 
                     i++;
                 });

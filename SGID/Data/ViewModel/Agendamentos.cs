@@ -8,8 +8,6 @@ namespace SGID.Data.ViewModel
     {
         [Key]
         public int Id { get; set; }
-        public DateTime DataCriacao { get; set; }
-        public DateTime DataAlteracao { get; set; }
         public int StatusCotacao { get; set; }
         public int StatusPedido { get; set; }
 
@@ -46,22 +44,31 @@ namespace SGID.Data.ViewModel
 
         //ADM
         public string? UsuarioCriacao { get; set; }
+        public DateTime DataCriacao { get; set; }
         public string? UsuarioAlterar { get; set; }
+        public DateTime DataAlteracao { get; set; }
 
 
         //COMERCIAL
         public string? UsuarioComercial { get; set; }
+        public DateTime? DataComercial { get; set; }
 
+        //COMERCIAL VOLTA
+        public string? UsuarioComercialAprova { get; set; }
+        public DateTime? DataComercialAprova { get; set; }
+
+        
         //Rejeição
         public string? UsuarioRejeicao { get; set; }
         public string? MotivoRejeicao { get; set; }
         public string? ObsRejeicao { get; set; }
 
         //Logistica
-        public string? UsuarioLogistica { get; set; } 
+        public string? UsuarioLogistica { get; set; }
+        public DateTime? DataLogistica { get; set; }
         public int StatusLogistica { get; set; }
         public string? MediaEntrega { get; set; }
         public DateTime? DataEntrega { get; set; }
-        public DateTime? DataRetirada { get; set; }
+        public DateTime? DataRetorno { get; set; }
     }
 }

@@ -70,7 +70,7 @@ namespace SGID.Pages.RH
                 SGID.SolicitacaoAcessos.Add(solicita);
                 SGID.SaveChanges();
 
-                mensagem += $"<br/> Data Solicitação: {solicita.DataCriacao.ToString("dd/MM/yyyy HH:mm:ss")}";
+                mensagem += $"<br/> Data Solicitação: {solicita.DataCriacao:dd/MM/yyyy HH:mm:ss}";
 
                 var template = new
                 {

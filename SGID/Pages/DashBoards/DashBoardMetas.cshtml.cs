@@ -177,16 +177,16 @@ namespace SGID.Pages.DashBoards
                 
                 
                 var resultado2 = resultado.GroupBy(x => new { x.Linha }).Select(x => new
-                    {
+                {
                         Linha = x.Key.Linha,
                         Quant = x.Count(),
                         Valor = x.Sum(c => c.Total),
                         ValorBrut = x.Sum(c=> c.TotalBrut)
-                    }).ToList();
+                }).ToList();
                 
                 
                 LinhasValor.ForEach(x =>
-                    {
+                {
                         var valor = resultado2.Where(c => c.Linha.Trim() == x.Nome).FirstOrDefault();
 
                         if (valor != null)
@@ -194,7 +194,7 @@ namespace SGID.Pages.DashBoards
                             x.Quant = valor.Quant;
                             x.Faturamento = valor.Valor;
                         }
-                    });
+                });
                 
                 
                 var LinhasTela = new List<RelatorioFaturamentoLinhas>
@@ -863,16 +863,28 @@ namespace SGID.Pages.DashBoards
         public JsonResult OnPostComissoes(string Mes, string Ano)
         {
             #region Dados
-            string Tempo = $"{Mes}/01/{Ano}";
 
-            var date = DateTime.Parse(Tempo);
+            string DataInicio = "";
+            string DataFim = "";
+            if (Mes != "13")
+            {
+                string Tempo = $"{Mes}/01/{Ano}";
 
-            //MesAno = date.ToString("MM").ToUpper();
-            //this.Ano = date.ToString("yyyy").ToUpper();
+                var date = DateTime.Parse(Tempo);
 
-            string data = date.ToString("yyyy/MM").Replace("/", "");
-            string DataInicio = data + "01";
-            string DataFim = data + "31";
+                //MesAno = date.ToString("MM").ToUpper();
+                //this.Ano = date.ToString("yyyy").ToUpper();
+
+                string data = date.ToString("yyyy/MM").Replace("/", "");
+                DataInicio = data + "01";
+                DataFim = data + "31";
+            }
+            else
+            {
+                DataInicio = $"{Ano}0101";
+                DataFim = $"{Ano}1231"; ;
+            }
+
             int[] CF = new int[] { 5551, 6551, 6107, 6109, 5117, 6117 };
 
             var cf = new[] { "5551", "6551", "6107", "6109" };
@@ -1636,11 +1648,22 @@ namespace SGID.Pages.DashBoards
                 + ComercialOrtopedia.Sum(x => x.ComissaoEquipe) + ComercialBuco.Sum(x => x.ComissaoEquipe) + ComercialTorax.Sum(x => x.ComissaoEquipe) + ComercialInterior.Sum(x => x.ComissaoEquipe)
                 + UsuariosDental.Sum(x => x.ComissaoEquipe) + ComercialOrtopedia.Sum(x => x.ComissaoProduto) + ComercialBuco.Sum(x => x.ComissaoProduto) + ComercialTorax.Sum(x => x.ComissaoProduto) + ComercialInterior.Sum(x => x.ComissaoProduto);
 
-            return new JsonResult(new 
+            if (Mes != "13")
             {
-                Salario = Salario,
-                Comissoes = Comissoes
-            });
+                return new JsonResult(new
+                {
+                    Salario = Salario,
+                    Comissoes = Comissoes
+                });
+            }
+            else
+            {
+                return new JsonResult(new
+                {
+                    Salario = Salario * 12,
+                    Comissoes = Comissoes
+                });
+            }
         }
     }
 }

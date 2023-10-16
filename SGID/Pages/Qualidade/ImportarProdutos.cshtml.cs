@@ -23,7 +23,6 @@ namespace SGID.Pages.Qualidade
             SGID = sgid;
             _WEB = web;
         }
-
         public void OnGet()
         {
 
@@ -585,7 +584,7 @@ namespace SGID.Pages.Qualidade
                             linha.B1Urev = "";
                             linha.B1Userlga = "";
                             linha.B1Userlgi = "";
-                            // linha.B1Xcodanv = "";
+                            //linha.B1Xcodanv = "";
                             //B1Utpimpx = "";
 
                             Linhas.Add(linha);
@@ -595,7 +594,6 @@ namespace SGID.Pages.Qualidade
                             i++;
 
                         }
-
                     }
                 }
 

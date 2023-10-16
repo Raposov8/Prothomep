@@ -605,9 +605,9 @@
                 @:$("#DataEntrega").val(data)
             }
 
-            @if (Model.Agendamento.DataRetirada != null)
+            @if (Model.Agendamento.DataRetorno != null)
             {
-                @:data = "@Model.Agendamento.DataRetirada.Value.ToString("yyyy-MM-dd'T'HH:mm")"
+            @:data = "@Model.Agendamento.DataRetorno.Value.ToString("yyyy-MM-dd'T'HH:mm")"
                 @:$("#DataRetirada").val(data)
             }
 

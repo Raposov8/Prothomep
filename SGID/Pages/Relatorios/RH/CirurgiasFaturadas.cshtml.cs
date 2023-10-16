@@ -276,7 +276,8 @@ namespace SGID.Pages.Relatorios.RH
                                      NomPla = SC50.C5XNmpla,
                                      SC50.C5Utpoper,
                                      SD20.D2Cod,
-                                     SB10.B1Desc
+                                     SB10.B1Desc,
+                                     SA10.A1Mun
                                  });
 
 
@@ -304,7 +305,8 @@ namespace SGID.Pages.Relatorios.RH
                         x.NomPla,
                         x.C5Utpoper,
                         x.D2Cod,
-                        x.B1Desc
+                        x.B1Desc,
+                        x.A1Mun
                     }).Select(x => new RelatorioCirurgiasFaturadas
                     {
                         Filial = x.Key.Filial,
@@ -329,7 +331,8 @@ namespace SGID.Pages.Relatorios.RH
                         XNMPla = x.Key.NomPla,
                         Utpoper = x.Key.C5Utpoper,
                         D2Cod = x.Key.D2Cod,
-                        B1Desc = x.Key.B1Desc
+                        B1Desc = x.Key.B1Desc,
+                        Municipio = x.Key.A1Mun
 
                     }).OrderBy(x => x.A3Nome).ToList();
                 }
@@ -561,8 +564,8 @@ namespace SGID.Pages.Relatorios.RH
                                  where SD20.DELET != "*" && SA10.DELET != "*" && SB10.DELET != "*" && SF20.DELET != "*" && SC50.DELET != "*" && SA30.DELET != "*"
                                  && ((int)(object)SD20.D2Cf >= 5102 && (int)(object)SD20.D2Cf <= 5114 || (int)(object)SD20.D2Cf >= 6102 && (int)(object)SD20.D2Cf <= 6114 ||
                                  (int)(object)SD20.D2Cf >= 7102 && (int)(object)SD20.D2Cf <= 7114 || CF.Contains((int)(object)SD20.D2Cf)) && ((int)(object)SD20.D2Emissao >= (int)(object)DataInicio.ToString("yyyy/MM/dd").Replace("/", "") && (int)(object)SD20.D2Emissao <= (int)(object)DataFim.ToString("yyyy/MM/dd").Replace("/", ""))
-                                 && SD20.D2Quant != 0 && SC50.C5Utpoper == "F" && SC50.C5Xtipopv != "D" && SA10.A1Clinter != "S" && SA10.A1Cgc != "04715053000140" && SA10.A1Cgc != "04715053000220" && SA10.A1Cgc != "01390500000140" && (int)(object)SD20.D2Emissao >= 20200701
-                                 && (SA10.A1Xgrinte != "000011" || SA10.A1Xgrinte != "000012")
+                                 && SD20.D2Quant != 0 && SC50.C5Utpoper == "F" && SC50.C5Xtipopv != "D" && SA10.A1Clinter != "S" && SA10.A1Cgc != "04715053000140" && SA10.A1Cgc != "04715053000220" && SA10.A1Cgc != "01390500000140" && (int)(object)SD20.D2Emissao >= 20200801
+
                                  select new
                                  {
                                      Filial = SD20.D2Filial,
@@ -587,7 +590,8 @@ namespace SGID.Pages.Relatorios.RH
                                      NomPla = SC50.C5XNmpla,
                                      SC50.C5Utpoper,
                                      SD20.D2Cod,
-                                     SB10.B1Desc
+                                     SB10.B1Desc,
+                                     SA10.A1Mun
                                  });
 
 
@@ -615,7 +619,8 @@ namespace SGID.Pages.Relatorios.RH
                         x.NomPla,
                         x.C5Utpoper,
                         x.D2Cod,
-                        x.B1Desc
+                        x.B1Desc,
+                        x.A1Mun
                     }).Select(x => new RelatorioCirurgiasFaturadas
                     {
                         Filial = x.Key.Filial,
@@ -640,7 +645,8 @@ namespace SGID.Pages.Relatorios.RH
                         XNMPla = x.Key.NomPla,
                         Utpoper = x.Key.C5Utpoper,
                         D2Cod = x.Key.D2Cod,
-                        B1Desc = x.Key.B1Desc
+                        B1Desc = x.Key.B1Desc,
+                        Municipio = x.Key.A1Mun
 
                     }).OrderBy(x => x.A3Nome).ToList();
                 }
@@ -668,6 +674,10 @@ namespace SGID.Pages.Relatorios.RH
                 sheet.Cells[1, 16].Value = "Convênio";
                 sheet.Cells[1, 17].Value = "Produto";
                 sheet.Cells[1, 18].Value = "Desc. Produto";
+                if (!User.IsInRole("GestorComercial"))
+                {
+                    sheet.Cells[1, 19].Value = "Municipio";
+                }
 
                 int i = 2;
 
@@ -691,6 +701,7 @@ namespace SGID.Pages.Relatorios.RH
                     sheet.Cells[i, 16].Value = Pedido.XNMPla;
                     sheet.Cells[i, 17].Value = Pedido.D2Cod;
                     sheet.Cells[i, 18].Value = Pedido.B1Desc;
+                    sheet.Cells[i, 19].Value = Pedido.Municipio;
 
                     i++;
                 });

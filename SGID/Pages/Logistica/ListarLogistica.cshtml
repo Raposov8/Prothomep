@@ -34,6 +34,42 @@
     <div class="col-xs-3 col-sm-3 col-md-3 col-xl-3">
         <div class="panel panel-colorful" style="background-color:lightgray">
             <div class="panel-heading">
+                <h2 style="margin:0%;color:red" class="panel-title text-center">PENDENTE</h2>
+            </div>
+            <div class="panel-body" style="padding-top:0px;">
+                @if (Model.Empresa == "01")
+                {
+                    <a class="produto" href="/logistica/listarlogistica/01/1"><h3 class="text-center" style="margin-top:0%; color:red;font-size:80px">@Model.Aprovadas</h3></a>
+                }
+                else
+                {
+                    <a class="produto" href="/logistica/listarlogistica/03/1"><h3 class="text-center" style="margin-top:0%; color:red;font-size:80px">@Model.Aprovadas</h3></a>
+                }
+
+            </div>
+        </div>
+    </div>
+    <div class="col-xs-3 col-sm-3 col-md-3 col-xl-3">
+        <div class="panel panel-colorful" style="background-color:lightgray">
+            <div class="panel-heading">
+                <h2 style="margin:0%;color:red" class="panel-title text-center">SEPARAÇÃO</h2>
+            </div>
+            <div class="panel-body" style="padding-top:0px;">
+                @if (Model.Empresa == "01")
+                {
+                    <a class="produto" href="/logistica/listarlogistica/01/1"><h3 class="text-center" style="margin-top:0%; color:red;font-size:80px">@Model.Aprovadas</h3></a>
+                }
+                else
+                {
+                    <a class="produto" href="/logistica/listarlogistica/03/1"><h3 class="text-center" style="margin-top:0%; color:red;font-size:80px">@Model.Aprovadas</h3></a>
+                }
+
+            </div>
+        </div>
+    </div>
+    <div class="col-xs-3 col-sm-3 col-md-3 col-xl-3">
+        <div class="panel panel-colorful" style="background-color:lightgray">
+            <div class="panel-heading">
                 <h2 style="margin:0%;color:yellow" class="panel-title text-center">EM ROTA</h2>
             </div>
             <div class="panel-body" style="padding-top:0px;">
@@ -82,6 +118,24 @@
                     <a class="produto" href="/logistica/listarlogistica/03/4"><h3 class="text-center" style="margin-top:0%;color:black;font-size:80px">@Model.Retorno</h3></a>
                 }
                 
+            </div>
+        </div>
+    </div>
+    <div class="col-xs-3 col-sm-3 col-md-3 col-xl-3">
+        <div class="panel panel-colorful" style="background-color:lightgray">
+            <div class="panel-heading">
+                <h2 style="margin:0%;color:red" class="panel-title text-center">INSPEÇÃO</h2>
+            </div>
+            <div class="panel-body" style="padding-top:0px;">
+                @if (Model.Empresa == "01")
+                {
+                    <a class="produto" href="/logistica/listarlogistica/01/1"><h3 class="text-center" style="margin-top:0%; color:red;font-size:80px">@Model.Aprovadas</h3></a>
+                }
+                else
+                {
+                    <a class="produto" href="/logistica/listarlogistica/03/1"><h3 class="text-center" style="margin-top:0%; color:red;font-size:80px">@Model.Aprovadas</h3></a>
+                }
+
             </div>
         </div>
     </div>
