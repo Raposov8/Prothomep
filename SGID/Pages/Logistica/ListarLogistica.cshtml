@@ -16,16 +16,16 @@
     <div class="col-xs-3 col-sm-3 col-md-3 col-xl-3">
         <div class="panel panel-colorful" style="background-color:lightgray">
             <div class="panel-heading">
-                <h2 style="margin:0%;color:red" class="panel-title text-center">APROVADAS</h2>
+                <h2 style="margin:0%;color:green" class="panel-title text-center">APROVADAS</h2>
             </div>
             <div class="panel-body" style="padding-top:0px;">
                 @if(Model.Empresa == "01")
                 {
-                    <a class="produto" href="/logistica/listarlogistica/01/1"><h3 class="text-center" style="margin-top:0%; color:red;font-size:80px">@Model.Aprovadas</h3></a>
+                    <a class="produto" href="/logistica/listarlogistica/01/1"><h3 class="text-center" style="margin-top:0%; color:green;font-size:80px">@Model.Aprovadas</h3></a>
                 }
                 else
                 {
-                    <a class="produto" href="/logistica/listarlogistica/03/1"><h3 class="text-center" style="margin-top:0%; color:red;font-size:80px">@Model.Aprovadas</h3></a>
+                    <a class="produto" href="/logistica/listarlogistica/03/1"><h3 class="text-center" style="margin-top:0%; color:green;font-size:80px">@Model.Aprovadas</h3></a>
                 }
                 
             </div>
@@ -39,11 +39,11 @@
             <div class="panel-body" style="padding-top:0px;">
                 @if (Model.Empresa == "01")
                 {
-                    <a class="produto" href="/logistica/listarlogistica/01/1"><h3 class="text-center" style="margin-top:0%; color:red;font-size:80px">@Model.Aprovadas</h3></a>
+                    <a class="produto" href="/logistica/listarlogistica/01/2"><h3 class="text-center" style="margin-top:0%; color:red;font-size:80px">@Model.Pendente</h3></a>
                 }
                 else
                 {
-                    <a class="produto" href="/logistica/listarlogistica/03/1"><h3 class="text-center" style="margin-top:0%; color:red;font-size:80px">@Model.Aprovadas</h3></a>
+                    <a class="produto" href="/logistica/listarlogistica/03/2"><h3 class="text-center" style="margin-top:0%; color:red;font-size:80px">@Model.Pendente</h3></a>
                 }
 
             </div>
@@ -52,16 +52,16 @@
     <div class="col-xs-3 col-sm-3 col-md-3 col-xl-3">
         <div class="panel panel-colorful" style="background-color:lightgray">
             <div class="panel-heading">
-                <h2 style="margin:0%;color:red" class="panel-title text-center">SEPARAÇÃO</h2>
+                <h2 style="margin:0%;color:yellow" class="panel-title text-center">SEPARAÇÃO</h2>
             </div>
             <div class="panel-body" style="padding-top:0px;">
                 @if (Model.Empresa == "01")
                 {
-                    <a class="produto" href="/logistica/listarlogistica/01/1"><h3 class="text-center" style="margin-top:0%; color:red;font-size:80px">@Model.Aprovadas</h3></a>
+                    <a class="produto" href="/logistica/listarlogistica/01/3"><h3 class="text-center" style="margin-top:0%; color:yellow;font-size:80px">@Model.Separacao</h3></a>
                 }
                 else
                 {
-                    <a class="produto" href="/logistica/listarlogistica/03/1"><h3 class="text-center" style="margin-top:0%; color:red;font-size:80px">@Model.Aprovadas</h3></a>
+                    <a class="produto" href="/logistica/listarlogistica/03/3"><h3 class="text-center" style="margin-top:0%; color:yellow;font-size:80px">@Model.Separacao</h3></a>
                 }
 
             </div>
@@ -70,16 +70,16 @@
     <div class="col-xs-3 col-sm-3 col-md-3 col-xl-3">
         <div class="panel panel-colorful" style="background-color:lightgray">
             <div class="panel-heading">
-                <h2 style="margin:0%;color:yellow" class="panel-title text-center">EM ROTA</h2>
+                <h2 style="margin:0%;color:green" class="panel-title text-center">EM ROTA</h2>
             </div>
             <div class="panel-body" style="padding-top:0px;">
                 @if(Model.Empresa == "01")
                 {
-                    <a class="produto" href="/logistica/listarlogistica/01/2"><h3 class="text-center" style="margin-top:0%;color:yellow;font-size:80px">@Model.EmRota</h3></a>
+                    <a class="produto" href="/logistica/listarlogistica/01/4"><h3 class="text-center" style="margin-top:0%;color:green;font-size:80px">@Model.EmRota</h3></a>
                 }
                 else
                 {
-                    <a class="produto" href="/logistica/listarlogistica/03/2"><h3 class="text-center" style="margin-top:0%;color:yellow;font-size:80px">@Model.EmRota</h3></a>
+                    <a class="produto" href="/logistica/listarlogistica/03/4"><h3 class="text-center" style="margin-top:0%;color:green;font-size:80px">@Model.EmRota</h3></a>
                 }
                 
             </div>
@@ -93,11 +93,11 @@
             <div class="panel-body" style="padding-top:0px;">
                 @if(Model.Empresa == "01")
                 {
-                    <a class="produto" href="/logistica/listarlogistica/01/3"><h3 class="text-center" style="margin-top:0%; color:green;font-size:80px">@Model.Entregue</h3></a>
+                    <a class="produto" href="/logistica/listarlogistica/01/5"><h3 class="text-center" style="margin-top:0%; color:green;font-size:80px">@Model.Entregue</h3></a>
                 }
                 else
                 {
-                    <a class="produto" href="/logistica/listarlogistica/03/3"><h3 class="text-center" style="margin-top:0%; color:green;font-size:80px">@Model.Entregue</h3></a>
+                    <a class="produto" href="/logistica/listarlogistica/03/5"><h3 class="text-center" style="margin-top:0%; color:green;font-size:80px">@Model.Entregue</h3></a>
                 }
                 
             </div>
@@ -106,16 +106,16 @@
     <div class="col-xs-3 col-sm-3 col-md-3 col-xl-3">
         <div class="panel panel-colorful" style="background-color:lightgray">
             <div class="panel-heading">
-                <h2 style="margin:0%;color:black;" class="panel-title text-center">RETORNO</h2>
+                <h2 style="margin:0%;color:red;" class="panel-title text-center">RETORNO</h2>
             </div>
             <div class="panel-body" style="padding-top:0px;">
                 @if(Model.Empresa == "01")
                 {
-                    <a class="produto" href="/logistica/listarlogistica/01/4"><h3 class="text-center" style="margin-top:0%;color:black;font-size:80px">@Model.Retorno</h3></a>
+                    <a class="produto" href="/logistica/listarlogistica/01/6"><h3 class="text-center" style="margin-top:0%;color:red;font-size:80px">@Model.Retorno</h3></a>
                 }
                 else
                 {
-                    <a class="produto" href="/logistica/listarlogistica/03/4"><h3 class="text-center" style="margin-top:0%;color:black;font-size:80px">@Model.Retorno</h3></a>
+                    <a class="produto" href="/logistica/listarlogistica/03/6"><h3 class="text-center" style="margin-top:0%;color:red;font-size:80px">@Model.Retorno</h3></a>
                 }
                 
             </div>
@@ -124,16 +124,16 @@
     <div class="col-xs-3 col-sm-3 col-md-3 col-xl-3">
         <div class="panel panel-colorful" style="background-color:lightgray">
             <div class="panel-heading">
-                <h2 style="margin:0%;color:red" class="panel-title text-center">INSPEÇÃO</h2>
+                <h2 style="margin:0%;color:yellow" class="panel-title text-center">INSPEÇÃO</h2>
             </div>
             <div class="panel-body" style="padding-top:0px;">
                 @if (Model.Empresa == "01")
                 {
-                    <a class="produto" href="/logistica/listarlogistica/01/1"><h3 class="text-center" style="margin-top:0%; color:red;font-size:80px">@Model.Aprovadas</h3></a>
+                    <a class="produto" href="/logistica/listarlogistica/01/7"><h3 class="text-center" style="margin-top:0%; color:yellow;font-size:80px">@Model.Inspecao</h3></a>
                 }
                 else
                 {
-                    <a class="produto" href="/logistica/listarlogistica/03/1"><h3 class="text-center" style="margin-top:0%; color:red;font-size:80px">@Model.Aprovadas</h3></a>
+                    <a class="produto" href="/logistica/listarlogistica/03/7"><h3 class="text-center" style="margin-top:0%; color:yellow;font-size:80px">@Model.Inspecao</h3></a>
                 }
 
             </div>
@@ -153,23 +153,30 @@
                         TC
                     </th>
                     <th class="text-center">
+                        AGEND.
+                    </th>
+                    <th class="text-center">
                         HOSPITAL
                     </th>
                     <th class="text-center">
                         MÉDICO
                     </th>
                     <th class="text-center">
-                        DT. DA CIRURGIA
+                        PACIENTE
                     </th>
                     <th class="text-center">
-                        PROCEDIMENTO
+                        DT. CIRURGIA
+                    </th>
+                    <th class="text-center">
+                        DT. ENTREGA
+                    </th>
+                    <th class="text-center">
+                        REPREN.
                     </th>
                     <th class="text-center">
                         STATUS
                     </th>
-                    <th class="text-center">
-                        VENDEDOR
-                    </th>
+                    
                     <th class="text-center">
                         AÇÕES
                     </th>
@@ -199,8 +206,10 @@
                         <td style="background-color:red;">
                         </td>
                     }
+                    <td>@Pedido.Id</td>
                     <td>@Pedido.Hospital</td>
                     <td>@Pedido.Medico</td>
+                    <td>@Pedido.Paciente</td>
                     <td>
                         @if(Pedido.DataCirurgia == null)
                         {
@@ -208,11 +217,21 @@
                         }
                         else
                         {
-                            <span>@Pedido.DataCirurgia.Value.ToString("dd/MM/yyyy HH:mm")</span>
+                           <span>@Pedido.DataCirurgia.Value.ToString("dd/MM/yyyy HH:mm")</span>
                         }
                     </td>
                     <td>
-                        @Pedido.Procedimento
+                        @if (Pedido.DataEntrega == null)
+                        {
+                            <span>NÃO HÁ REGISTRO</span>
+                        }
+                        else
+                        {
+                            <span>@Pedido.DataEntrega.Value.ToString("dd/MM/yyyy HH:mm")</span>
+                        }
+                    </td>
+                    <td>
+                        @Pedido.Vendedor
                     </td>
                     <td>
                         @if (Pedido.StatusLogistica == 0)
@@ -221,47 +240,46 @@
                         }
                         else if (Pedido.StatusLogistica == 1)
                         {
-                            <span>EM ROTA DE ENTREGA</span>
+                            <span>PENDENTE</span>
                         }
                         else if (Pedido.StatusLogistica == 2)
                         {
-                            <span>ENTREGUE</span>
+                            <span>SEPARAÇÃO</span>
                         }
                         else if (Pedido.StatusLogistica == 3)
                         {
-                            <span>EM ESPERA PARA INSPEÇÂO</span>
+                            <span>EM ROTA</span>
                         }
                         else if (Pedido.StatusLogistica == 4)
                         {
-                            <span>EM ESPERA DE RETIRADA</span>
+                            <span>ENTREGUE</span>
                         }
-                        else if(Pedido.StatusLogistica == 5)
+                        else if (Pedido.StatusLogistica == 5)
                         {
-                            <span>EM ROTA DE RETIRADA</span>
+                            <span>ESPERANDO RETORNO</span>
                         }
                         else
                         {
-                            <span>FINALIZADA</span>
+                            <span>ESPERANDO PARA INSPEÇÂO</span>
                         }
                     </td>
                     <td>
-                        @Pedido.Vendedor
-                    </td>
-                    <td>
 
-                            @if (Pedido.StatusLogistica == 0)
-                            {
-                                <a onclick="dados(@Pedido.Id)" class="details"><i class="fa-solid fa-truck-arrow-right" style="color:green"></i></a>
-                                <!--<a class="produto" href="/cirurgias/editaragendamento/@Pedido.Id"><i class="fa-solid fa-pen"></i></a>-->
-                                <a class="rejeicao" data-id="@Pedido.Id"><i class="fa-regular fa-circle-xmark" style="color:red"></i></a>
-                                <a href="/logistica/PickListLogistica/@Pedido.Id" target="_blank" class="details"><i class="fa-solid fa-list-check"></i></a>
-                                <!--<a class="MotivoRej" data-id="@Pedido.Id"><i class="fa-solid fa-bars" style="text-decoration:none;" data-container="body" data-placement="top" data-original-title="Motivo Rejeição" aria-hidden="true"></i></a>-->
-                            }
-                            @if(Pedido.StatusLogistica == 1)
-                            {
-                                <a href="/logistica/checkagendamento/@Pedido.Id" class="details"><i class="fa-solid fa-list-check"></i></a>
-                                <a href="/logistica/PickListLogistica/@Pedido.Id" target="_blank" class="details"><i class="fa-solid fa-list-check"></i></a>
-                            }
+                            <i class="fa-solid fa-paper-plane"></i>
+                            <i class="fa-solid fa-hourglass"></i>
+                            <i class="fa-solid fa-truck-fast"></i>
+                            <i class="fa-solid fa-map-location-dot"></i>
+                            <i class="fa-solid fa-people-carry-box"></i>
+                            <i class="fa-solid fa-magnifying-glass-plus"></i>
+
+                            <!--<a onclick="dados(@Pedido.Id)" class="details"><i class="fa-solid fa-truck-arrow-right" style="color:green"></i></a>-->
+                            <!--<a class="produto" href="/cirurgias/editaragendamento/@Pedido.Id"><i class="fa-solid fa-pen"></i></a>-->
+                            <!--<a class="MotivoRej" data-id="@Pedido.Id"><i class="fa-solid fa-bars" style="text-decoration:none;" data-container="body" data-placement="top" data-original-title="Motivo Rejeição" aria-hidden="true"></i></a>-->
+
+                            <!--<a class="rejeicao" data-id="@Pedido.Id"><i class="fa-regular fa-circle-xmark" style="color:red"></i></a>
+                            <a href="/logistica/PickListLogistica/@Pedido.Id" target="_blank" class="details"><i class="fa-solid fa-list-check"></i></a>
+                            <a href="/logistica/checkagendamento/@Pedido.Id" class="details"><i class="fa-solid fa-list-check"></i></a>
+                            <a href="/logistica/PickListLogistica/@Pedido.Id" target="_blank" class="details"><i class="fa-solid fa-list-check"></i></a>-->
                     </td>
                 </tr>
                 }

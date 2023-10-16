@@ -1,19 +1,18 @@
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using SGID.Data;
-using SGID.Data.Models;
 using SGID.Data.ViewModel;
+using SGID.Models.Denuo;
 using SGID.Models.Cirurgias;
 using SGID.Models.DTO;
-using SGID.Models.Denuo;
-using OPMEnexo;
 using SGID.Models.Inter;
+using SGID.Data.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace SGID.Pages.Cotacoes
 {
     [Authorize(Roles = "Admin,GestorComercial,Comercial,Diretoria")]
-    public class AceitarCotacoesModel : PageModel
+    public class ConfirmarCotacoesModel : PageModel
     {
         private ApplicationDbContext SGID { get; set; }
         private TOTVSDENUOContext ProtheusDenuo { get; set; }
@@ -32,7 +31,7 @@ namespace SGID.Pages.Cotacoes
         public List<string> SearchProduto { get; set; } = new List<string>();
 
         private readonly IWebHostEnvironment _WEB;
-        public AceitarCotacoesModel(ApplicationDbContext sgid, IWebHostEnvironment wEB, TOTVSDENUOContext denuo, TOTVSINTERContext inter)
+        public ConfirmarCotacoesModel(ApplicationDbContext sgid, IWebHostEnvironment wEB, TOTVSDENUOContext denuo, TOTVSINTERContext inter)
         {
             SGID = sgid;
             _WEB = wEB;
@@ -57,7 +56,7 @@ namespace SGID.Pages.Cotacoes
                     }).ToList();
 
             var Patrimonio = SGID.PatrimoniosAgendamentos.Where(x => x.AgendamentoId == Agendamento.Id)
-                .Select(x => new { x.Patrimonio,x.Codigo }).ToList();
+                .Select(x => new { x.Patrimonio, x.Codigo }).ToList();
 
             var avulsos = SGID.AvulsosAgendamento.Where(x => x.AgendamentoId == Agendamento.Id)
                 .Select(x => new
@@ -68,7 +67,7 @@ namespace SGID.Pages.Cotacoes
 
             var anexos = SGID.AnexosAgendamentos.Where(x => x.AgendamentoId == Agendamento.Id).ToList();
 
-            if(anexos.Count > 0)
+            if (anexos.Count > 0)
             {
                 anexos.ForEach(x => Anexos.Add(x.AnexoCam));
             }
@@ -107,24 +106,24 @@ namespace SGID.Pages.Cotacoes
                                        SB10.B1Xtuss
                                    }).FirstOrDefault();
 
-                        var preco = (from DA10 in ProtheusInter.Da1010s
-                                     where DA10.DELET != "*" && DA10.Da1Codtab == x.codTabela && DA10.Da1Codpro == x.produto.ToUpper()
-                                     select DA10.Da1Prcven).FirstOrDefault();
+                    var preco = (from DA10 in ProtheusInter.Da1010s
+                                 where DA10.DELET != "*" && DA10.Da1Codtab == x.codTabela && DA10.Da1Codpro == x.produto.ToUpper()
+                                 select DA10.Da1Prcven).FirstOrDefault();
 
-                        
-                            var ViewProduto = new Produto
-                            {
-                                Item = produto.B1Cod,
-                                Licit = produto.B1Solicit,
-                                Produtos = produto.B1Desc,
-                                Tuss = produto.B1Xtuss,
-                                Anvisa = produto.B1Reganvi,
-                                Marca = produto.B1Fabric,
-                                Und = x.unidade,
-                                PrcUnid = x.ValorUnidade,
-                                SegUnd = produto.B1Um,
-                                VlrTotal = x.valor,
-                            };
+
+                    var ViewProduto = new Produto
+                    {
+                        Item = produto.B1Cod,
+                        Licit = produto.B1Solicit,
+                        Produtos = produto.B1Desc,
+                        Tuss = produto.B1Xtuss,
+                        Anvisa = produto.B1Reganvi,
+                        Marca = produto.B1Fabric,
+                        Und = x.unidade,
+                        PrcUnid = x.ValorUnidade,
+                        SegUnd = produto.B1Um,
+                        VlrTotal = x.valor,
+                    };
 
                     Produtos.Add(ViewProduto);
                 });
@@ -249,7 +248,7 @@ namespace SGID.Pages.Cotacoes
 
                     Patrimonios.Add(view);
                 });
-                
+
                 avulsos.ForEach(x =>
                 {
                     var produto = (from SB10 in ProtheusDenuo.Sb1010s
@@ -306,12 +305,13 @@ namespace SGID.Pages.Cotacoes
             }
         }
 
-        public IActionResult OnPostAsync(int id,string NomePaciente,DateTime? DataCirurgia,int Urgencia
-            ,string NomeMedico,string CRM,string NomeHospital,string NomeVendedor,string Obs,
-            List<Produto> Avulsos, List<Produto> Produtos,List<Patrimonio> Patris ,string CodTabela,DateTime? Entrega)
+        public IActionResult OnPostAsync(int id, string NomePaciente, DateTime? DataCirurgia, int Urgencia
+            , string NomeMedico, string CRM, string NomeHospital, string NomeVendedor, string Obs,
+            List<Produto> Avulsos, List<Produto> Produtos, List<Patrimonio> Patris, string CodTabela, DateTime? Entrega)
         {
             try
             {
+                #region ProdutosPedido
                 var AgendamentoProduto = SGID.ProdutosAgendamentos.Where(x => x.AgendamentoId == id).ToList();
 
                 if (!string.IsNullOrEmpty(Obs) && !string.IsNullOrWhiteSpace(Obs))
@@ -322,7 +322,7 @@ namespace SGID.Pages.Cotacoes
                     SGID.SaveChanges();
                 }
 
-                AgendamentoProduto.ForEach(produto => 
+                AgendamentoProduto.ForEach(produto =>
                 {
                     var produtoUpdate = Produtos.FirstOrDefault(x => x.Item == produto.CodigoProduto);
 
@@ -344,7 +344,7 @@ namespace SGID.Pages.Cotacoes
                     }
                 });
 
-                Produtos.ForEach(produto => 
+                Produtos.ForEach(produto =>
                 {
                     var ProdXAgenda = new ProdutosAgendamentos
                     {
@@ -358,10 +358,12 @@ namespace SGID.Pages.Cotacoes
                     SGID.ProdutosAgendamentos.Add(ProdXAgenda);
                     SGID.SaveChanges();
                 });
+                #endregion
 
+                #region Patrimonios
                 var AgendamentoPatris = SGID.PatrimoniosAgendamentos.Where(x => x.AgendamentoId == id).ToList();
 
-                AgendamentoPatris.ForEach(produto => 
+                AgendamentoPatris.ForEach(produto =>
                 {
                     var patriUpdate = Patris.FirstOrDefault(x => x.Descri == produto.Patrimonio && x.Codigo == produto.Codigo);
 
@@ -370,7 +372,7 @@ namespace SGID.Pages.Cotacoes
 
                 });
 
-                Patris.ForEach(patri => 
+                Patris.ForEach(patri =>
                 {
                     var ProdXAgenda = new PatrimonioAgendamento
                     {
@@ -382,10 +384,13 @@ namespace SGID.Pages.Cotacoes
                     SGID.PatrimoniosAgendamentos.Add(ProdXAgenda);
                     SGID.SaveChanges();
                 });
+                #endregion
+
+                #region Avulsos
 
                 var AgendamentoAvulsos = SGID.AvulsosAgendamento.Where(x => x.AgendamentoId == id).ToList();
 
-                AgendamentoAvulsos.ForEach(avus => 
+                AgendamentoAvulsos.ForEach(avus =>
                 {
                     var Avulso = Avulsos.FirstOrDefault(c => c.Item == avus.Produto);
 
@@ -404,7 +409,7 @@ namespace SGID.Pages.Cotacoes
                     }
                 });
 
-                Avulsos.ForEach(avulso => 
+                Avulsos.ForEach(avulso =>
                 {
                     var agendamento = new AvulsosAgendamento
                     {
@@ -419,30 +424,25 @@ namespace SGID.Pages.Cotacoes
 
                 });
 
+                #endregion
+
                 var Agendamento = SGID.Agendamentos.FirstOrDefault(x => x.Id == id);
 
-                Agendamento.DataCirurgia = DataCirurgia;
-                Agendamento.DataAlteracao = DateTime.Now;
-                Agendamento.DataEntrega = Entrega;
-
-                if (Agendamento.StatusPedido == 2)
-                {
-                    Agendamento.StatusCotacao = 1;
-                    Agendamento.StatusPedido = 5;
-                    Agendamento.UsuarioComercial = User.Identity.Name.Split("@")[0].ToUpper();
-                }
+                Agendamento.UsuarioComercialAprova = User.Identity.Name.Split("@")[0].ToUpper();
+                Agendamento.DataComercialAprova = DateTime.Now;
 
 
 
                 SGID.Agendamentos.Update(Agendamento);
                 SGID.SaveChanges();
 
-                return LocalRedirect("/cotacoes/DashBoardCotacoes/0");
-            }catch(Exception E)
+                return LocalRedirect("/cotacoes/DashBoardCotacoes/3");
+            }
+            catch (Exception E)
             {
                 string user = User.Identity.Name.Split("@")[0].ToUpper();
                 Logger.Log(E, SGID, "AceitarCotacoes", user);
-                return LocalRedirect("/cotacoes/DashBoardCotacoes/0");
+                return LocalRedirect("/cotacoes/DashBoardCotacoes/3");
             }
         }
     }

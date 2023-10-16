@@ -126,11 +126,11 @@ namespace SGID.Pages.Logistica
             Rejeicoes = SGID.RejeicaoMotivos.ToList();
         }
 
-        public JsonResult OnGetEnviar(int IdA)
+        public JsonResult OnGetEnviarComercial(int IdA)
         {
             var agendamento = SGID.Agendamentos.FirstOrDefault(x => x.Id == IdA);
 
-            agendamento.UsuarioLogistica = User.Identity.Name.Split("@")[0].ToUpper();
+            //agendamento.UsuarioLogistica = User.Identity.Name.Split("@")[0].ToUpper();
             agendamento.StatusLogistica = 1;
 
             SGID.Agendamentos.Update(agendamento);

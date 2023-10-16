@@ -98,7 +98,7 @@
                     </li>
                 }
                @if(User.IsInRole("Admin") || User.IsInRole("Comercial") || User.IsInRole("GestorComercial") || User.IsInRole("Diretoria"))
-                {
+               {
                     if (User.Identity.Name.Split("@")[1].ToUpper() == "INTERMEDIC.COM.BR")
                     {
                         <li>
@@ -131,8 +131,8 @@
                             <ul class="list-unstyled fw-normal pb-1 small">
                                 <li><a class="nav-link" href="/cotacoes/dashboardcotacoes/0">Em Aberto</a></li>
                                 <li><a class="nav-link" href="/cotacoes/dashboardcotacoes/1">Aprovadas</a></li>
-                                <li><a class="nav-link" href="/cotacoes/dashboardcotacoes/2">Reprovadas</a></li>
-                                <li><a class="nav-link" href="/cotacoes/dashboardcotacoes/3">Respondidas</a></li>
+                                <li><a class="nav-link" href="/cotacoes/dashboardcotacoes/2">Confirmar com Estoque</a></li>
+                                <!--<li><a class="nav-link" href="/cotacoes/dashboardcotacoes/3">Respondidas</a></li>-->
                                 <!--User.IsInRole("GestorComercial") || User.IsInRole("Comercial") ||-->
                             </ul>
                         </div>
