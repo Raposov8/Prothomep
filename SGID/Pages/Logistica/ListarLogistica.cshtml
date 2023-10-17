@@ -264,20 +264,21 @@
                         }
                     </td>
                     <td>
+                            <a href="/logistica/Logistica?handler=EnviarComercial&&IdA=${@Pedido.Id}"><i class="fa-solid fa-paper-plane"></i></a>
 
-                            <i class="fa-solid fa-paper-plane"></i>
-                            <i class="fa-solid fa-hourglass"></i>
+                            <a onclick="dados(@Pedido.Id)" class="details"><i class="fa-solid fa-hourglass"></i></a>
                             <i class="fa-solid fa-truck-fast"></i>
                             <i class="fa-solid fa-map-location-dot"></i>
                             <i class="fa-solid fa-people-carry-box"></i>
                             <i class="fa-solid fa-magnifying-glass-plus"></i>
 
-                            <!--<a onclick="dados(@Pedido.Id)" class="details"><i class="fa-solid fa-truck-arrow-right" style="color:green"></i></a>-->
+
+                            <!--<i class="fa-solid fa-truck-arrow-right" style="color:green"></i>-->
                             <!--<a class="produto" href="/cirurgias/editaragendamento/@Pedido.Id"><i class="fa-solid fa-pen"></i></a>-->
                             <!--<a class="MotivoRej" data-id="@Pedido.Id"><i class="fa-solid fa-bars" style="text-decoration:none;" data-container="body" data-placement="top" data-original-title="Motivo Rejeição" aria-hidden="true"></i></a>-->
 
                             <!--<a class="rejeicao" data-id="@Pedido.Id"><i class="fa-regular fa-circle-xmark" style="color:red"></i></a>
-                            <a href="/logistica/PickListLogistica/@Pedido.Id" target="_blank" class="details"><i class="fa-solid fa-list-check"></i></a>
+                            
                             <a href="/logistica/checkagendamento/@Pedido.Id" class="details"><i class="fa-solid fa-list-check"></i></a>
                             <a href="/logistica/PickListLogistica/@Pedido.Id" target="_blank" class="details"><i class="fa-solid fa-list-check"></i></a>-->
                     </td>

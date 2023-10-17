@@ -311,54 +311,6 @@ namespace SGID.Pages.Cotacoes
         {
             try
             {
-                #region ProdutosPedido
-                var AgendamentoProduto = SGID.ProdutosAgendamentos.Where(x => x.AgendamentoId == id).ToList();
-
-                if (!string.IsNullOrEmpty(Obs) && !string.IsNullOrWhiteSpace(Obs))
-                {
-                    var Observacao = new ObsAgendamento { AgendamentoId = id, User = User.Identity.Name.Split("@")[0].ToUpper(), Obs = Obs, DataCriacao = DateTime.Now };
-
-                    SGID.ObsAgendamentos.Add(Observacao);
-                    SGID.SaveChanges();
-                }
-
-                AgendamentoProduto.ForEach(produto =>
-                {
-                    var produtoUpdate = Produtos.FirstOrDefault(x => x.Item == produto.CodigoProduto);
-
-                    if (produtoUpdate != null)
-                    {
-
-                        produto.Quantidade = produtoUpdate.Und;
-                        produto.ValorTotal = produtoUpdate.Und * produtoUpdate.PrcUnid;
-
-                        SGID.ProdutosAgendamentos.Update(produto);
-                        SGID.SaveChanges();
-
-                        Produtos.Remove(produtoUpdate);
-                    }
-                    else
-                    {
-                        SGID.ProdutosAgendamentos.Remove(produto);
-                        SGID.SaveChanges();
-                    }
-                });
-
-                Produtos.ForEach(produto =>
-                {
-                    var ProdXAgenda = new ProdutosAgendamentos
-                    {
-                        AgendamentoId = id,
-                        CodigoProduto = produto.Item,
-                        Quantidade = produto.Und,
-                        ValorTotal = produto.Und * produto.PrcUnid,
-                        CodigoTabela = CodTabela
-                    };
-
-                    SGID.ProdutosAgendamentos.Add(ProdXAgenda);
-                    SGID.SaveChanges();
-                });
-                #endregion
 
                 #region Patrimonios
                 var AgendamentoPatris = SGID.PatrimoniosAgendamentos.Where(x => x.AgendamentoId == id).ToList();
@@ -430,7 +382,7 @@ namespace SGID.Pages.Cotacoes
 
                 Agendamento.UsuarioComercialAprova = User.Identity.Name.Split("@")[0].ToUpper();
                 Agendamento.DataComercialAprova = DateTime.Now;
-
+                Agendamento.StatusLogistica = 2;
 
 
                 SGID.Agendamentos.Update(Agendamento);

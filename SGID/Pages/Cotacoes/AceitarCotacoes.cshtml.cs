@@ -430,6 +430,7 @@ namespace SGID.Pages.Cotacoes
                     Agendamento.StatusCotacao = 1;
                     Agendamento.StatusPedido = 5;
                     Agendamento.UsuarioComercial = User.Identity.Name.Split("@")[0].ToUpper();
+                    Agendamento.DataCotacao = DateTime.Now;
                 }
 
 
@@ -438,7 +439,8 @@ namespace SGID.Pages.Cotacoes
                 SGID.SaveChanges();
 
                 return LocalRedirect("/cotacoes/DashBoardCotacoes/0");
-            }catch(Exception E)
+            }
+            catch(Exception E)
             {
                 string user = User.Identity.Name.Split("@")[0].ToUpper();
                 Logger.Log(E, SGID, "AceitarCotacoes", user);

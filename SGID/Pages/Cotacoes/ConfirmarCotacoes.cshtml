@@ -28,7 +28,7 @@
                 <div class="row">
                     <div class="row">
                         <div class="col-md-8">
-                            <h4>Cotações</h4>
+                            <h4>Confirmar Produtos</h4>
                         </div>
                         <div class="col-md-4" style="justify-content:end">
                             <div class="row">
@@ -162,56 +162,6 @@
                     </div>
                     <br />
                     <div class="row">
-                        <div class="col-md-12 Titulo">INCLUIR PRODUTO(S)</div>
-                        <div class="panel">
-                            <div class="panel-body">
-                                <table id="Produto" name="Produto" class="table table-striped table-bordered" cellspacing="0" width="100%">
-                                    <thead>
-                                        <tr style="background-color:#5b9bd5; color:white;">
-                                            <th class="text-center">
-                                                Código
-                                            </th>
-                                            <th class="text-center">
-                                                Descrição
-                                            </th>
-                                            <th class="text-center">
-                                                Qtd.
-                                            </th>
-                                            <th class="text-center">
-                                                Ação
-                                                <a class="details" data-id="10" data-toggle="modal" data-target="#details-modal"><i class="fa-solid fa-circle-plus" style="color:green"></i></a>
-                                            </th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach (var data in Model.Produtos)
-                                        {
-                                            <tr>
-                                                <td class="text-center">
-                                                    @data.Item
-                                                    <input type="hidden" id="Produtos[@count].Item" name="Produtos[@count].Item" value="@data.Item" />
-                                                </td>
-                                                <td class="text-center">
-                                                    @data.Produtos
-                                                    <input type="hidden" id="Produtos[@count].Produtos" name="Produtos[@count].Produtos" value="@data.Produtos" />
-                                                </td>
-                                                <td class="text-center">
-                                                    <input type="number" id="Produtos[@count].Und" name="Produtos[@count].Und" value="@data.Und" />
-                                                    <input type="hidden" id="Produtos[@count].PrcUnid" name="Produtos[@count].PrcUnid" value="@data.PrcUnid" />
-                                                </td>
-                                                <td class="text-center">
-                                                    <!--<a class="fas fa-eye add-tooltip" style="text-decoration:none;" data-container="body" data-placement="top" data-original-title="Visualizar Recurso" aria-hidden="true"></a>-->
-
-                                                    <a class="fa-regular fa-trash-can add-tooltip" onclick="remove(this)" style="text-decoration:none;" id="Excluir" data-container="body" data-placement="top" data-original-title="Excluir Recurso" aria-hidden="true"></a>
-                                                </td>
-                                            </tr>
-                                            count++;
-                                        }
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                        <br />
                         <div class="col-md-12 Titulo">INCLUIR PATRIMONIO(S)</div>
                         <div class="panel">
                             <div class="panel-body">
@@ -227,10 +177,6 @@
                                             <th class="text-center">
                                                 KitBas
                                             </th>
-                                            <th class="text-center">
-                                                Ação
-                                                <a class="patri" data-id="10" data-toggle="modal" data-target="#patri-modal"><i class="fa-solid fa-circle-plus" style="color:green"></i></a>
-                                            </th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -238,8 +184,7 @@
                                         {
                                             <tr>
                                                 <td class="text-center">
-                                                    @data.Codigo
-                                                    <input type="hidden" id="Patris[@countPatri].Codigo" name="Patris[@countPatri].Codigo" value="@data.Codigo" />
+                                                    <input type="text" id="Patris[@countPatri].Codigo" name="Patris[@countPatri].Codigo" value="@data.Codigo" />
                                                 </td>
                                                 <td class="text-center">
                                                     @data.Descri
@@ -248,10 +193,6 @@
                                                 <td class="text-center">
                                                     @data.KitBas
                                                     <input type="hidden" id="Patris[@countPatri].KitBas" name="Patris[@countPatri].KitBas" value="@data.KitBas" />
-                                                </td>
-                                                <td class="text-center">
-
-                                                    <a class="fa-regular fa-trash-can add-tooltip" onclick="removePatri(this)" style="text-decoration:none;" id="Excluir" data-container="body" data-placement="top" data-original-title="Excluir Recurso" aria-hidden="true"></a>
                                                 </td>
                                             </tr>
                                             countPatri++;
@@ -276,10 +217,6 @@
                                             <th class="text-center">
                                                 Qtd.
                                             </th>
-                                            <th class="text-center">
-                                                Ação
-                                                <a class="details2" data-id="10" data-toggle="modal" data-target="#details-modal"><i class="fa-solid fa-circle-plus" style="color:green"></i></a>
-                                            </th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -296,11 +233,6 @@
                                                 </td>
                                                 <td class="text-center">
                                                     <input type="number" id="Avulsos[@countAvulso].Und" name="Avulsos[@countAvulso].Und" value="@data.Und" />
-                                                </td>
-                                                <td class="text-center">
-
-
-                                                    <a class="fa-regular fa-trash-can add-tooltip" onclick="removeAvulso(this)" style="text-decoration:none;" id="Excluir" data-container="body" data-placement="top" data-original-title="Excluir Recurso" aria-hidden="true"></a>
                                                 </td>
                                             </tr>
                                             countAvulso++;

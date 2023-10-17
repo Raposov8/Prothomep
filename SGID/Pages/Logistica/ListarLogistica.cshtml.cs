@@ -126,7 +126,7 @@ namespace SGID.Pages.Logistica
             Rejeicoes = SGID.RejeicaoMotivos.ToList();
         }
 
-        public JsonResult OnGetEnviarComercial(int IdA)
+        public IActionResult OnGetEnviarComercial(int IdA)
         {
             var agendamento = SGID.Agendamentos.FirstOrDefault(x => x.Id == IdA);
 
@@ -136,7 +136,20 @@ namespace SGID.Pages.Logistica
             SGID.Agendamentos.Update(agendamento);
             SGID.SaveChanges();
 
-            return new JsonResult("");
+            return LocalRedirect($"/Logistica/ListarLogistica/${agendamento.Empresa}/2");
+        }
+
+        public IActionResult OnGetEnviar(int IdA)
+        {
+            var agendamento = SGID.Agendamentos.FirstOrDefault(x => x.Id == IdA);
+
+            //agendamento.UsuarioLogistica = User.Identity.Name.Split("@")[0].ToUpper();
+            agendamento.StatusLogistica = 3;
+
+            SGID.Agendamentos.Update(agendamento);
+            SGID.SaveChanges();
+
+            return LocalRedirect($"/Logistica/ListarLogistica/${agendamento.Empresa}/4");
         }
 
     }
