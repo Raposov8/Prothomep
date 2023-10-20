@@ -76,7 +76,8 @@ namespace SGID.Pages.Relatorios.AdmVendas
                                  NomPac = SC50.C5XNmpac,
                                  NomPla = SC50.C5XNmpla,
                                  SC50.C5Utpoper,
-                                 SA30.A3Xdescun
+                                 SA30.A3Xdescun,
+                                 SC50.C5Nomclie
                              });
 
 
@@ -99,9 +100,10 @@ namespace SGID.Pages.Relatorios.AdmVendas
                     x.NomPac,
                     x.NomPla,
                     x.C5Utpoper,
-                    x.A3Xdescun
+                    x.A3Xdescun,
+                    x.C5Nomclie
                 })
-                    .Select(x => new RelatorioCirurgiasFaturadas
+                .Select(x => new RelatorioCirurgiasFaturadas
                 {
                     Filial = x.Key.Filial,
                     Clifor = x.Key.Clifor,
@@ -124,7 +126,8 @@ namespace SGID.Pages.Relatorios.AdmVendas
                     XNMPac = x.Key.NomPac,
                     XNMPla = x.Key.NomPla,
                     Utpoper = x.Key.C5Utpoper,
-                    Linha = x.Key.A3Xdescun
+                    Linha = x.Key.A3Xdescun,
+                    Entrega = x.Key.C5Nomclie
 
                 }).OrderBy(x => x.A3Nome).ToList();
 
@@ -161,7 +164,8 @@ namespace SGID.Pages.Relatorios.AdmVendas
                                  SD10.D1Seriori,
                                  SD10.D1Datori,
                                  SD10.D1Emissao,
-                                 SA30.A3Xdescun
+                                 SA30.A3Xdescun,
+                                 SC50.C5Nomclie
                              }
                          ).GroupBy(x => new
                          {
@@ -178,7 +182,8 @@ namespace SGID.Pages.Relatorios.AdmVendas
                              x.D1Nfori,
                              x.D1Seriori,
                              x.D1Datori,
-                             x.A3Xdescun
+                             x.A3Xdescun,
+                             x.C5Nomclie
                          });
 
                 Relatorio2 = teste.Select(x => new RelatorioDevolucaoFat
@@ -200,7 +205,8 @@ namespace SGID.Pages.Relatorios.AdmVendas
                     D1Nfori = x.Key.D1Nfori,
                     D1Seriori = x.Key.D1Seriori,
                     D1Datori = x.Key.D1Datori,
-                    Linha = x.Key.A3Xdescun
+                    Linha = x.Key.A3Xdescun,
+                    Entrega = x.Key.C5Nomclie
                 }).ToList();
 
 
@@ -255,7 +261,8 @@ namespace SGID.Pages.Relatorios.AdmVendas
                                  NomPac = SC50.C5XNmpac,
                                  NomPla = SC50.C5XNmpla,
                                  SC50.C5Utpoper,
-                                 SA30.A3Xdescun
+                                 SA30.A3Xdescun,
+                                 SC50.C5Nomclie
                              });
 
 
@@ -278,7 +285,8 @@ namespace SGID.Pages.Relatorios.AdmVendas
                     x.NomPac,
                     x.NomPla,
                     x.C5Utpoper,
-                    x.A3Xdescun
+                    x.A3Xdescun,
+                    x.C5Nomclie
                 }).Select(x => new RelatorioCirurgiasFaturadas
                 {
                     Filial = x.Key.Filial,
@@ -302,7 +310,8 @@ namespace SGID.Pages.Relatorios.AdmVendas
                     XNMPac = x.Key.NomPac,
                     XNMPla = x.Key.NomPla,
                     Utpoper = x.Key.C5Utpoper,
-                    Linha = x.Key.A3Xdescun
+                    Linha = x.Key.A3Xdescun,
+                    Entrega = x.Key.C5Nomclie
 
                 }).OrderBy(x => x.A3Nome).ToList();
                 #endregion
@@ -340,7 +349,8 @@ namespace SGID.Pages.Relatorios.AdmVendas
                                  SD10.D1Seriori,
                                  SD10.D1Datori,
                                  SD10.D1Emissao,
-                                 SA30.A3Xdescun
+                                 SA30.A3Xdescun,
+                                 SC50.C5Nomclie
                              }
                          ).GroupBy(x => new
                          {
@@ -357,7 +367,8 @@ namespace SGID.Pages.Relatorios.AdmVendas
                              x.D1Nfori,
                              x.D1Seriori,
                              x.D1Datori,
-                             x.A3Xdescun
+                             x.A3Xdescun,
+                             x.C5Nomclie
                          });
 
                 Relatorio2 = teste.Select(x => new RelatorioDevolucaoFat
@@ -379,7 +390,8 @@ namespace SGID.Pages.Relatorios.AdmVendas
                     D1Nfori = x.Key.D1Nfori,
                     D1Seriori = x.Key.D1Seriori,
                     D1Datori = x.Key.D1Datori,
-                    Linha = x.Key.A3Xdescun
+                    Linha = x.Key.A3Xdescun,
+                    Entrega = x.Key.C5Nomclie
                 }).ToList();
                 #endregion
 
@@ -405,6 +417,7 @@ namespace SGID.Pages.Relatorios.AdmVendas
                 sheet.Cells[1, 15].Value = "Paciente";
                 sheet.Cells[1, 16].Value = "Convênio";
                 sheet.Cells[1, 17].Value = "Especialidade";
+                sheet.Cells[1, 18].Value = "Cliente Entrega";
 
                 int i = 2;
 
@@ -427,6 +440,7 @@ namespace SGID.Pages.Relatorios.AdmVendas
                     sheet.Cells[i, 15].Value = Pedido.XNMPac;
                     sheet.Cells[i, 16].Value = Pedido.XNMPla;
                     sheet.Cells[i, 17].Value = Pedido.Linha;
+                    sheet.Cells[i, 18].Value = Pedido.Entrega;
 
                     i++;
                 });
@@ -456,6 +470,7 @@ namespace SGID.Pages.Relatorios.AdmVendas
                 sheet.Cells[i, 16].Value = "D1_SERIORI";
                 sheet.Cells[i, 17].Value = "D1_DATORI";
                 sheet.Cells[i, 18].Value = "Especialidade";
+                sheet.Cells[i, 19].Value = "Cliente Entrega";
 
                 i++;
 
@@ -479,6 +494,8 @@ namespace SGID.Pages.Relatorios.AdmVendas
                     sheet.Cells[i, 16].Value = Pedido.D1Seriori;
                     sheet.Cells[i, 17].Value = Pedido.D1Datori;
                     sheet.Cells[i, 18].Value = Pedido.Linha;
+                    sheet.Cells[i, 18].Value = Pedido.Entrega;
+
 
                     i++;
                 });

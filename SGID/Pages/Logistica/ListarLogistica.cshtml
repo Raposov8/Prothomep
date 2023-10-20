@@ -264,7 +264,7 @@
                         }
                     </td>
                     <td>
-                            <a href="/logistica/Logistica?handler=EnviarComercial&&IdA=${@Pedido.Id}"><i class="fa-solid fa-paper-plane"></i></a>
+                            <a href="/logistica/ListarLogistica/01/01?handler=EnviarComercial&&IdA=@Pedido.Id"><i class="fa-solid fa-paper-plane"></i></a>
 
                             <a onclick="dados(@Pedido.Id)" class="details"><i class="fa-solid fa-hourglass"></i></a>
                             <i class="fa-solid fa-truck-fast"></i>
@@ -780,10 +780,10 @@
                         $("#Patrimonio>tbody>tr").detach()
                         patris.forEach(function (patri) {
                             var linha = `<tr>
-                                                        <td> ${patri.codigo}</td>
-                                                        <td> ${patri.descri}</td>
-                                                        <td> ${patri.kitBas}</td>
-                                            </tr>`
+                                            <td> ${patri.codigo}</td>
+                                            <td> ${patri.descri}</td>
+                                            <td> ${patri.kitBas}</td>
+                                         </tr>`
                             $("#Patrimonio>tbody").append(linha);
                         })
 
@@ -791,17 +791,17 @@
                         $("#Avulso>tbody>tr").detach()
                         avulsos.forEach(function (produto) {
                             var linha = `
-                                                <tr>
-                                                    <td>${produto.item}</td>
-                                                    <td>${produto.licit}</td>
-                                                    <td>${produto.produtos}</td>
-                                                    <td>${produto.tuss}</td>
-                                                    <td>${produto.anvisa}</td>
-                                                    <td>${produto.marca}</td>
-                                                    <td>${produto.und}</td>
-                                                    <td>${produto.lote}</td>
-                                                </tr>
-                                                `;
+                                         <tr>
+                                             <td>${produto.item}</td>
+                                             <td>${produto.licit}</td>
+                                             <td>${produto.produtos}</td>
+                                             <td>${produto.tuss}</td>
+                                             <td>${produto.anvisa}</td>
+                                             <td>${produto.marca}</td>
+                                             <td>${produto.und}</td>
+                                             <td>${produto.lote}</td>
+                                         </tr>
+                                         `;
                             $("#Avulso>tbody").append(linha);
                         })
 

@@ -113,30 +113,52 @@
                     </tr>
                 </thead>
                 <tbody>
+                    @foreach(var data in Model.Agendamentos){
                     <tr>
                         <td>
-                            INTERMEDIC
+                             @if (data.Empresa == "01")
+                             {
+                                 <span>INTERMEDIC</span>
+                             }
+                             else
+                             {
+                                 <span>DENUO</span>
+                             }
                         </td>
                         <td>
-                            11/08/2023
+                             @if (data.DataCirurgia == null)
+                             {
+                                 <span>NÃO DATA REGISTRADA</span>
+                             }
+                             else
+                             {
+                                 <span>@data.DataCirurgia.Value.ToString("dd/MM/yyyy HH:mm")</span>
+                             }
                         </td>
                         <td>
-                            CRISTINA DO N. OLIVEIRA
+                            @data.Instrumentador
                         </td>
                         <td>
-                            29380
+                            @data.Id
                         </td>
                         <td>
-                            EXPANSÃO
+                            @data.Procedimento
                         </td>
                         <td>
-                            CLINICAS FMUSP
+                            @data.Hospital
                         </td>
                         <td>
-                            GUSTAVO GROTHE
+                            @data.Medico
                         </td>
                         <td>
-                            ELETIVA
+                            @if (data.Tipo == 2)
+                            {
+                               <span>ELETIVA</span>
+                            }
+                            else
+                            {
+                               <span>URGENTE</span>
+                            }
                         </td>
                         <td style="background-color:green;">
 
@@ -145,6 +167,7 @@
 
                         </td>
                     </tr> 
+                    }
                 </tbody>
             </table>
         </div>

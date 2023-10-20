@@ -5,6 +5,8 @@ using OfficeOpenXml;
 using SGID.Data;
 using SGID.Data.Models;
 using SGID.Models;
+using SGID.Models.Controladoria;
+using SGID.Models.Denuo;
 
 namespace SGID.Pages.Relatorios.Controladoria
 {
@@ -13,32 +15,45 @@ namespace SGID.Pages.Relatorios.Controladoria
     {
         private ApplicationDbContext SGID { get; set; }
 
+        private TOTVSDENUOContext Protheus { get; set; }
+
         public List<RelatorioConserto> Relatorio { get; set; } = new List<RelatorioConserto>();
 
-        public DemonstracaoModel(ApplicationDbContext sgid)
+        public DemonstracaoModel(ApplicationDbContext sgid, TOTVSDENUOContext denuo)
         {
             SGID = sgid;
+            Protheus = denuo;
         }
         public void OnGet()
         {
             try
             {
-                Relatorio = new List<RelatorioConserto>(); /*DB.NfdemoDenuos.Where(x => x.Tipo == "D")
-                    .Select(x => new RelatorioConserto
-                    {
 
-                        Filial = x.Filial,
-                        Nf = x.Nf,
-                        Serie = x.Serie,
-                        Emissao = x.Emissao,
-                        CodCli = x.Codcli,
-                        Loja = x.Loja,
-                        Cliente = x.Cliente,
-                        Dias = (int)(DateTime.Now - x.Emissao).Value.TotalDays
+                var data = Convert.ToInt32(DateTime.Now.ToString("yyyy/MM/dd").Replace("/", ""));
 
-                    }).ToList();
+                Relatorio = (from SD20 in Protheus.Sd2010s
+                             join SA10 in Protheus.Sa1010s on new { Cliente = SD20.D2Cliente, Loja = SD20.D2Loja } equals new { Cliente = SA10.A1Cod, Loja = SA10.A1Loja }
+                             join SD10 in Protheus.Sd1010s on new { Cliente = SD20.D2Filial + SD20.D2Doc + SD20.D2Serie + SD20.D2Cliente + SD20.D2Loja } equals new {Cliente = SD10.D1Filial + SD10.D1Nfori + SD10.D1Seriori + SD10.D1Fornece + SD10.D1Loja} into Sr
+                             from m in Sr.DefaultIfEmpty()
+                             where SD20.DELET != "*" && SA10.DELET != "*" && SD20.D2Cf == "5912" && SD20.D2Tipo == "N"
+                             select new RelatorioConserto
+                             {
 
-                Relatorio = Relatorio.OrderByDescending(x => x.Dias).ToList();*/
+                                 Filial = SD20.D2Filial,
+                                 Nf = SD20.D2Doc,
+                                 Serie = SD20.D2Serie,
+                                 Emissao = Convert.ToDateTime($"{SD20.D2Emissao.Substring(4, 2)}/{SD20.D2Emissao.Substring(6, 2)}/{SD20.D2Emissao.Substring(0, 4)}"),
+                                 CodCli = SD20.D2Cliente,
+                                 Loja = SD20.D2Loja,
+                                 Cliente = SA10.A1Nome,
+                                 Dias = (int)(DateTime.Now - Convert.ToDateTime($"{SD20.D2Emissao.Substring(4, 2)}/{SD20.D2Emissao.Substring(6, 2)}/{SD20.D2Emissao.Substring(0, 4)}")).TotalDays,
+                                 CF = m.D1Cf
+                             }
+                             ).ToList();
+
+                Relatorio = Relatorio.Where(x => x.CF == null).DistinctBy(x => x.Nf).ToList();
+
+                Relatorio = Relatorio.OrderByDescending(x => x.Dias).ToList();
             }
             catch (Exception e)
             {
@@ -47,12 +62,11 @@ namespace SGID.Pages.Relatorios.Controladoria
             }
         }
 
-        public IActionResult OnPostExport()
+        public IActionResult OnPostExport(List<RelatorioConserto> Relatorio)
         {
             try
             {
-
-                Relatorio = new List<RelatorioConserto>();
+                var data = Convert.ToInt32(DateTime.Now.ToString("yyyy/MM/dd").Replace("/", ""));
 
                 using ExcelPackage package = new ExcelPackage();
                 package.Workbook.Worksheets.Add("Demonstracao");

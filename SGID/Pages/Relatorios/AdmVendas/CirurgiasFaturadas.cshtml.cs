@@ -75,7 +75,8 @@ namespace SGID.Pages.Relatorios.AdmVendas
                                      NomPac = SC50.C5XNmpac,
                                      NomPla = SC50.C5XNmpla,
                                      SC50.C5Utpoper,
-                                     SA30.A3Xdescun
+                                     SA30.A3Xdescun,
+                                     Entrega = SC50.C5Nomclie
                                  });
 
 
@@ -98,7 +99,8 @@ namespace SGID.Pages.Relatorios.AdmVendas
                         x.NomPac,
                         x.NomPla,
                         x.C5Utpoper,
-                        x.A3Xdescun
+                        x.A3Xdescun,
+                        x.Entrega
                     }).Select(x => new RelatorioCirurgiasFaturadas
                     {
                         Filial = x.Key.Filial,
@@ -122,7 +124,8 @@ namespace SGID.Pages.Relatorios.AdmVendas
                         XNMPac = x.Key.NomPac,
                         XNMPla = x.Key.NomPla,
                         Utpoper = x.Key.C5Utpoper,
-                        Linha = x.Key.A3Xdescun
+                        Linha = x.Key.A3Xdescun,
+                        Entrega = x.Key.Entrega
 
                     }).OrderBy(x => x.A3Nome).ToList();
 
@@ -160,7 +163,8 @@ namespace SGID.Pages.Relatorios.AdmVendas
                                          SD10.D1Seriori,
                                          SD10.D1Datori,
                                          SD10.D1Emissao,
-                                         SA30.A3Xdescun
+                                         SA30.A3Xdescun,
+                                         SC50.C5Nomclie
                                      }
                                  ).ToList();
 
@@ -208,7 +212,8 @@ namespace SGID.Pages.Relatorios.AdmVendas
                                         D1Nfori = x.D1Nfori,
                                         D1Seriori = x.D1Seriori,
                                         D1Datori = x.D1Datori,
-                                        Linha = x.A3Xdescun
+                                        Linha = x.A3Xdescun,
+                                        Entrega = x.C5Nomclie
                                     });
                                 }
                             });
@@ -241,7 +246,8 @@ namespace SGID.Pages.Relatorios.AdmVendas
                              where SD20.DELET != "*" && SA10.DELET != "*" && SB10.DELET != "*" && SF20.DELET != "*" && SC50.DELET != "*" && SA30.DELET != "*"
                              && ((int)(object)SD20.D2Cf >= 5102 && (int)(object)SD20.D2Cf <= 5114 || (int)(object)SD20.D2Cf >= 6102 && (int)(object)SD20.D2Cf <= 6114 ||
                              (int)(object)SD20.D2Cf >= 7102 && (int)(object)SD20.D2Cf <= 7114 || CF.Contains((int)(object)SD20.D2Cf)) && ((int)(object)SD20.D2Emissao >= (int)(object)DataInicio.ToString("yyyy/MM/dd").Replace("/", "") && (int)(object)SD20.D2Emissao <= (int)(object)DataFim.ToString("yyyy/MM/dd").Replace("/", ""))
-                             && SD20.D2Quant != 0 && SC50.C5Utpoper == "F" && SC50.C5Xtipopv != "D" && SA10.A1Clinter != "S" && SA10.A1Cgc != "04715053000140" && SA10.A1Cgc != "04715053000220" && SA10.A1Cgc != "01390500000140" && (int)(object)SD20.D2Emissao >= 20200701
+                             && SD20.D2Quant != 0 && SC50.C5Utpoper == "F" && SC50.C5Xtipopv != "D" && SA10.A1Clinter != "S" && SA10.A1Cgc != "04715053000140" && SA10.A1Cgc != "04715053000220" && SA10.A1Cgc != "01390500000140" && (int)(object)SD20.D2Emissao >= 20200801
+
                              select new
                              {
                                  Filial = SD20.D2Filial,
@@ -265,7 +271,8 @@ namespace SGID.Pages.Relatorios.AdmVendas
                                  NomPac = SC50.C5XNmpac,
                                  NomPla = SC50.C5XNmpla,
                                  SC50.C5Utpoper,
-                                 SA30.A3Xdescun
+                                 SA30.A3Xdescun,
+                                 Entrega = SC50.C5Nomclie
                              });
 
 
@@ -288,7 +295,8 @@ namespace SGID.Pages.Relatorios.AdmVendas
                     x.NomPac,
                     x.NomPla,
                     x.C5Utpoper,
-                    x.A3Xdescun
+                    x.A3Xdescun,
+                    x.Entrega
                 }).Select(x => new RelatorioCirurgiasFaturadas
                 {
                     Filial = x.Key.Filial,
@@ -312,7 +320,8 @@ namespace SGID.Pages.Relatorios.AdmVendas
                     XNMPac = x.Key.NomPac,
                     XNMPla = x.Key.NomPla,
                     Utpoper = x.Key.C5Utpoper,
-                    Linha = x.Key.A3Xdescun
+                    Linha = x.Key.A3Xdescun,
+                    Entrega = x.Key.Entrega
 
                 }).OrderBy(x => x.A3Nome).ToList();
                 #endregion
@@ -350,7 +359,8 @@ namespace SGID.Pages.Relatorios.AdmVendas
                                  SD10.D1Seriori,
                                  SD10.D1Datori,
                                  SD10.D1Emissao,
-                                 SA30.A3Xdescun
+                                 SA30.A3Xdescun,
+                                 SC50.C5Nomclie
                              }
                          )
                          .GroupBy(x => new
@@ -368,7 +378,8 @@ namespace SGID.Pages.Relatorios.AdmVendas
                              x.D1Nfori,
                              x.D1Seriori,
                              x.D1Datori,
-                             x.A3Xdescun
+                             x.A3Xdescun,
+                             x.C5Nomclie
                          });
 
                 Relatorio2 = teste.Select(x => new RelatorioDevolucaoFat
@@ -390,7 +401,8 @@ namespace SGID.Pages.Relatorios.AdmVendas
                     D1Nfori = x.Key.D1Nfori,
                     D1Seriori = x.Key.D1Seriori,
                     D1Datori = x.Key.D1Datori,
-                    Linha = x.Key.A3Xdescun
+                    Linha = x.Key.A3Xdescun,
+                    Entrega = x.Key.C5Nomclie
                 }).ToList();
 
 
@@ -418,6 +430,7 @@ namespace SGID.Pages.Relatorios.AdmVendas
                 sheet.Cells[1, 15].Value = "Paciente";
                 sheet.Cells[1, 16].Value = "Convênio";
                 sheet.Cells[1, 17].Value = "Especialidade";
+                sheet.Cells[1, 18].Value = "Cliente Entrega";
 
                 int i = 2;
 
@@ -440,6 +453,7 @@ namespace SGID.Pages.Relatorios.AdmVendas
                     sheet.Cells[i, 15].Value = Pedido.XNMPac;
                     sheet.Cells[i, 16].Value = Pedido.XNMPla;
                     sheet.Cells[i, 17].Value = Pedido.Linha;
+                    sheet.Cells[i, 18].Value = Pedido.Entrega;
 
                     i++;
                 });
@@ -448,6 +462,7 @@ namespace SGID.Pages.Relatorios.AdmVendas
                 var format = sheet.Cells[i, 8, i, 9];
                 format.Style.Numberformat.Format = "#,##0.00;(#,##0.00)";
 
+                i++;
                 i++;
 
                 sheet.Cells[i, 1].Value = "FILIAL";
@@ -468,6 +483,7 @@ namespace SGID.Pages.Relatorios.AdmVendas
                 sheet.Cells[i, 16].Value = "D1_SERIORI";
                 sheet.Cells[i, 17].Value = "D1_DATORI";
                 sheet.Cells[i, 18].Value = "Especialidade";
+                sheet.Cells[i, 19].Value = "Cliente Entrega";
 
                 i++;
 
@@ -491,6 +507,8 @@ namespace SGID.Pages.Relatorios.AdmVendas
                     sheet.Cells[i, 16].Value = Pedido.D1Seriori;
                     sheet.Cells[i, 17].Value = Pedido.D1Datori;
                     sheet.Cells[i, 18].Value = Pedido.Linha;
+                    sheet.Cells[i, 19].Value = Pedido.Entrega;
+
 
                     i++;
                 });

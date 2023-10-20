@@ -12,5 +12,6 @@ namespace SGID.Models
         public string CodCli { get; set; }
         public string Loja { get; set; }
         public string Cliente { get; set; }
+        public string CF { get; set; }
     }
 }

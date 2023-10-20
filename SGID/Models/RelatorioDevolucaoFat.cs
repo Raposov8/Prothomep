@@ -25,5 +25,6 @@
         public string Linha { get; set; }
         public string DOR { get; set; }
         public string Codigo { get; set; }
+        public string Entrega { get; set; }
     }
 }

@@ -104,6 +104,7 @@ namespace SGID.Pages.Cirurgias
 					{
 						produto = x.CodigoProduto,
 						unidade = x.Quantidade,
+                        ValorUnidade = x.ValorUnitario,
 						valor = x.ValorTotal
 					}).ToList();
 
@@ -128,7 +129,7 @@ namespace SGID.Pages.Cirurgias
                             Anvisa = c.B1Reganvi,
                             Marca = c.B1Fabric,
                             Und = x.unidade,
-                            PrcUnid = c.B1Uprc,
+                            PrcUnid = x.ValorUnidade,
                             SegUnd = c.B1Um,
                             VlrTotal = x.valor,
                             TipoOp = c.B1Tipo,
@@ -148,6 +149,7 @@ namespace SGID.Pages.Cirurgias
                                     && c.DELET != "*" && a.DELET != "*" && PA10.Pa1Despat == x.Patrimonio
                                     select new Patrimonio
                                     {
+                                        Codigo = x.Codigo,
                                         Descri = PA10.Pa1Despat,
                                         KitBas = PA10.Pa1Kitbas,
                                     }).First();
@@ -187,7 +189,7 @@ namespace SGID.Pages.Cirurgias
                             Anvisa = c.B1Reganvi,
                             Marca = c.B1Fabric,
                             Und = x.unidade,
-                            PrcUnid = c.B1Uprc,
+                            PrcUnid = x.ValorUnidade,
                             SegUnd = c.B1Um,
                             VlrTotal = x.valor,
                         }).First();
@@ -206,6 +208,7 @@ namespace SGID.Pages.Cirurgias
                                     && c.DELET != "*" && a.DELET != "*" && PA10.Pa1Despat == x.Patrimonio
                                     select new Patrimonio
                                     {
+                                        Codigo = x.Codigo,
                                         Descri = PA10.Pa1Despat,
                                         KitBas = PA10.Pa1Kitbas,
                                     }).First();

@@ -30,6 +30,7 @@
         public double QTDE { get; set; }
         public double D2Prcven { get; set; }
         public string Linha { get; set; }
+        public string Entrega { get; set; }
 
         //RH Eduardo
         public string Municipio { get; set; }

@@ -177,6 +177,9 @@
                                             <th class="text-center">
                                                 KitBas
                                             </th>
+                                            <th class="text-center">
+                                                Ações
+                                            </th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -193,6 +196,9 @@
                                                 <td class="text-center">
                                                     @data.KitBas
                                                     <input type="hidden" id="Patris[@countPatri].KitBas" name="Patris[@countPatri].KitBas" value="@data.KitBas" />
+                                                </td>
+                                                <td class="text-center">
+                                                    <a href="/Formularios/Patrimonio/RelatorioPatrimonio/@Model.Agendamento.Empresa?handler=Confirmar&&Patrimonio=@data.Descri&&Empresa=@Model.Agendamento.Empresa" target="_blank"><i class="fa-solid fa-magnifying-glass"></i></a>
                                                 </td>
                                             </tr>
                                             countPatri++;
