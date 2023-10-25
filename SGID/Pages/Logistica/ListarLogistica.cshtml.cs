@@ -143,13 +143,65 @@ namespace SGID.Pages.Logistica
         {
             var agendamento = SGID.Agendamentos.FirstOrDefault(x => x.Id == IdA);
 
-            //agendamento.UsuarioLogistica = User.Identity.Name.Split("@")[0].ToUpper();
+            agendamento.UsuarioLogistica = User.Identity.Name.Split("@")[0].ToUpper();
             agendamento.StatusLogistica = 3;
 
             SGID.Agendamentos.Update(agendamento);
             SGID.SaveChanges();
 
             return LocalRedirect($"/Logistica/ListarLogistica/${agendamento.Empresa}/4");
+        }
+
+        public IActionResult OnGetEnviarParaRota(int IdA)
+        {
+            var agendamento = SGID.Agendamentos.FirstOrDefault(x => x.Id == IdA);
+
+            //agendamento.UsuarioLogistica = User.Identity.Name.Split("@")[0].ToUpper();
+            agendamento.StatusLogistica = 4;
+
+            SGID.Agendamentos.Update(agendamento);
+            SGID.SaveChanges();
+
+            return LocalRedirect($"/Logistica/ListarLogistica/${agendamento.Empresa}/5");
+        }
+
+        public IActionResult OnGetEnviarParaEntregue(int IdA)
+        {
+            var agendamento = SGID.Agendamentos.FirstOrDefault(x => x.Id == IdA);
+
+            //agendamento.UsuarioLogistica = User.Identity.Name.Split("@")[0].ToUpper();
+            agendamento.StatusLogistica = 5;
+
+            SGID.Agendamentos.Update(agendamento);
+            SGID.SaveChanges();
+
+            return LocalRedirect($"/Logistica/ListarLogistica/${agendamento.Empresa}/6");
+        }
+
+        public IActionResult OnGetEnviarParaInspecao(int IdA)
+        {
+            var agendamento = SGID.Agendamentos.FirstOrDefault(x => x.Id == IdA);
+
+            //agendamento.UsuarioLogistica = User.Identity.Name.Split("@")[0].ToUpper();
+            agendamento.StatusLogistica = 6;
+
+            SGID.Agendamentos.Update(agendamento);
+            SGID.SaveChanges();
+
+            return LocalRedirect($"/Logistica/ListarLogistica/${agendamento.Empresa}/7");
+        }
+
+        public IActionResult OnGetEnviarParaArquivo(int IdA)
+        {
+            var agendamento = SGID.Agendamentos.FirstOrDefault(x => x.Id == IdA);
+
+            //agendamento.UsuarioLogistica = User.Identity.Name.Split("@")[0].ToUpper();
+            agendamento.StatusLogistica = 7;
+
+            SGID.Agendamentos.Update(agendamento);
+            SGID.SaveChanges();
+
+            return LocalRedirect($"/Logistica/ListarLogistica/${agendamento.Empresa}/7");
         }
 
     }

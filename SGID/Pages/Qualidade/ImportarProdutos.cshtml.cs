@@ -36,6 +36,8 @@ namespace SGID.Pages.Qualidade
             {
                 string Pasta = $"{_WEB.WebRootPath}/Temp";
 
+                var Data = DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss").Replace("/","").Replace(" ","").Replace(":","");
+
                 if (!Directory.Exists(Pasta))
                 {
                     Directory.CreateDirectory(Pasta);
@@ -43,7 +45,7 @@ namespace SGID.Pages.Qualidade
 
                 foreach (var anexo in Anexos.Files)
                 {
-                    string Caminho = $"{Pasta}/TemporarioProduto.csv";
+                    string Caminho = $"{Pasta}/TemporarioProduto{Data}.csv";
 
                     using (Stream fileStream = new FileStream(Caminho, FileMode.Create))
                     {
@@ -51,15 +53,11 @@ namespace SGID.Pages.Qualidade
                     }
                 }
 
-                FileInfo file = new FileInfo($"{Pasta}/TemporarioProduto.csv");
-
-                var RecnoSB= Protheus.Sb1010s.OrderByDescending(x => x.RECNO).FirstOrDefault().RECNO;
-
-                
+                var RecnoSB = Protheus.Sb1010s.OrderByDescending(x => x.RECNO).FirstOrDefault().RECNO;
 
                 int i = 1;
 
-                using (var reader = new StreamReader($"{Pasta}/TemporarioProduto.csv"))
+                using (var reader = new StreamReader($"{Pasta}/TemporarioProduto{Data}.csv"))
                 {
                     while (!reader.EndOfStream)
                     {

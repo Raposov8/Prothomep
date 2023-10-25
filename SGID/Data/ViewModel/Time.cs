@@ -21,5 +21,6 @@ namespace SGID.Data.ViewModel
         public string? TipoVendedor { get; set; }
         public double Teto { get; set; }
         public double Salario { get; set; }
+        public bool PJ { get; set; }
     }
 }

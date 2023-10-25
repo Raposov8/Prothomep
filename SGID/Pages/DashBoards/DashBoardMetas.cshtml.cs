@@ -457,10 +457,11 @@ namespace SGID.Pages.DashBoards
                                         {
                                             Total = SD10.D2Total,
                                             Descon = SD10.D2Descon,
-                                        }
-                            ).ToList();
+                                        }).ToList();
 
-                Faturamento.Add(new ValoresEmAberto { Nome = "SUB INTER", Valor = FaturadoSubInter.Sum(c => c.Total) });
+                var dolar = ProtheusInter.Sm2010s.Where(x => x.DELET != "*" && x.M2Moeda2 != 0).OrderByDescending(x => x.M2Data).FirstOrDefault();
+
+                Faturamento.Add(new ValoresEmAberto { Nome = "SUB INTER", Valor = FaturadoSubInter.Sum(c => c.Total) * dolar.M2Moeda2 });
 
                 #endregion
 
@@ -482,10 +483,12 @@ namespace SGID.Pages.DashBoards
                                         {
                                             Total = SD10.D2Total,
                                             Descon = SD10.D2Descon,
-                                        }
-                            ).ToList();
 
-                Faturamento.Add(new ValoresEmAberto { Nome = "SUB DENUO", Valor = FaturadoSubDenuo.Sum(c => c.Total) });
+                                        }).ToList();
+
+                var dolar2 = ProtheusDenuo.Sm2010s.Where(x => x.DELET != "*" && x.M2Moeda2 != 0).OrderByDescending(x => x.M2Data).FirstOrDefault();
+
+                Faturamento.Add(new ValoresEmAberto { Nome = "SUB DENUO", Valor = FaturadoSubDenuo.Sum(c => c.Total) * dolar2.M2Moeda2 });
 
                 #endregion
 
@@ -549,9 +552,9 @@ namespace SGID.Pages.DashBoards
 
 
                 var LinhasTela = new List<RelatorioFaturamentoLinhas>
-                    {
-                        new RelatorioFaturamentoLinhas { Nome = "QTDA. CIRURGIAS", Quant = resultado2.Sum(x => x.Quant) -  Devolucao2.Sum(x=> x.Quant) }
-                    };
+                {
+                    new RelatorioFaturamentoLinhas { Nome = "QTDA. CIRURGIAS", Quant = resultado2.Sum(x => x.Quant) -  Devolucao2.Sum(x=> x.Quant) }
+                };
 
                 LinhasValor.ForEach(x =>
                 {
@@ -699,7 +702,9 @@ namespace SGID.Pages.DashBoards
                                             select (SC60.C6Qtdven - SC60.C6Qtdent) * SC60.C6Prcven
                              ).Sum();
 
-                ValoresEmAberto.Add(new ValoresEmAberto { Nome = "SUB INTER", Valor = SubdistribuidorInter });
+                var dolar = ProtheusInter.Sm2010s.Where(x => x.DELET != "*" && x.M2Moeda2 != 0).OrderByDescending(x => x.M2Data).FirstOrDefault();
+
+                ValoresEmAberto.Add(new ValoresEmAberto { Nome = "SUB INTER", Valor = SubdistribuidorInter * dolar.M2Moeda2 });
                 #endregion
 
                 #region Sub Denuo
@@ -717,7 +722,9 @@ namespace SGID.Pages.DashBoards
                                             select (SC60.C6Qtdven - SC60.C6Qtdent) * SC60.C6Prcven
                              ).Sum();
 
-                ValoresEmAberto.Add(new ValoresEmAberto { Nome = "SUB DENUO", Valor = SubdistribuidorDenuo });
+                var dolar2 = ProtheusDenuo.Sm2010s.Where(x => x.DELET != "*" && x.M2Moeda2 != 0).OrderByDescending(x => x.M2Data).FirstOrDefault();
+
+                ValoresEmAberto.Add(new ValoresEmAberto { Nome = "SUB DENUO", Valor = SubdistribuidorDenuo * dolar2.M2Moeda2 });
                 #endregion
 
                 #endregion
@@ -747,7 +754,7 @@ namespace SGID.Pages.DashBoards
             DateTime data = DateTime.Now.AddMonths(9);
             string mesInicio = data.Month.ToString("D2");
             string anoInicio = (data.Year - 1).ToString();
-            string DataInicio = $"{data.Year - 1}{data.Month.ToString("D2")}{data.Day.ToString("D2")}";
+            string DataInicio = $"{data.Year - 1}{data.Month:D2}{data.Day:D2}";
 
             var NaoBaixados = (from SE10 in ProtheusDenuo.Se1010s
                                join SA10 in ProtheusDenuo.Sa1010s on SE10.E1Cliente equals SA10.A1Cod
@@ -788,7 +795,7 @@ namespace SGID.Pages.DashBoards
             DateTime data = DateTime.Now.AddMonths(9);
             string mesInicio = data.Month.ToString("D2");
             string anoInicio = (data.Year - 1).ToString();
-            string DataInicio = $"{data.Year - 1}{data.Month.ToString("D2")}{data.Day.ToString("D2")}";
+            string DataInicio = $"{data.Year - 1}{data.Month:D2}{data.Day:D2}";
 
             var NaoBaixados = (from SE10 in ProtheusInter.Se1010s
                                join SA10 in ProtheusInter.Sa1010s on SE10.E1Cliente equals SA10.A1Cod

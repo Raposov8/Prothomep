@@ -18,5 +18,6 @@ namespace SGID.Data.ViewModel
         public string? Color { get; set; }
         public double Teto { get; set; }
         public double Salario { get; set; }
+        public bool PJ { get; set; }
     }
 }

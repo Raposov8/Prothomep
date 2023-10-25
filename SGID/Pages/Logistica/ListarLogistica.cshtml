@@ -176,7 +176,6 @@
                     <th class="text-center">
                         STATUS
                     </th>
-                    
                     <th class="text-center">
                         AÇÕES
                     </th>
@@ -186,103 +185,117 @@
                 @foreach(var Pedido in Model.Agendamentos)
                 {
                     <tr>
-                    <td>
-                        @if (Pedido.Empresa == "01")
-                        {
-                            <span>INTERMEDIC</span>
-                        }
-                        else
-                        {
-                            <span>DENUO</span>
-                        }
-                    </td>
-                    @if (Pedido.Tipo == 2)
-                    {
-                        <td style="background-color:green;">
+                        <td>
+                            @if (Pedido.Empresa == "01")
+                            {
+                                <span>INTERMEDIC</span>
+                            }
+                            else
+                            {
+                                <span>DENUO</span>
+                            }
                         </td>
-                    }
-                    else
-                    {
-                        <td style="background-color:red;">
+                        @if (Pedido.Tipo == 2)
+                        {
+                            <td style="background-color:green;">
+                            </td>
+                        }
+                        else
+                        {
+                            <td style="background-color:red;">
+                            </td>
+                        }
+                        <td>@Pedido.Id</td>
+                        <td>@Pedido.Hospital</td>
+                        <td>@Pedido.Medico</td>
+                        <td>@Pedido.Paciente</td>
+                        <td>
+                            @if(Pedido.DataCirurgia == null)
+                            {
+                               <span>NÃO HÁ REGISTRO</span>
+                            }
+                            else
+                            {
+                               <span>@Pedido.DataCirurgia.Value.ToString("dd/MM/yyyy HH:mm")</span>
+                            }
                         </td>
-                    }
-                    <td>@Pedido.Id</td>
-                    <td>@Pedido.Hospital</td>
-                    <td>@Pedido.Medico</td>
-                    <td>@Pedido.Paciente</td>
-                    <td>
-                        @if(Pedido.DataCirurgia == null)
-                        {
-                           <span>NÃO HÁ REGISTRO</span>
-                        }
-                        else
-                        {
-                           <span>@Pedido.DataCirurgia.Value.ToString("dd/MM/yyyy HH:mm")</span>
-                        }
-                    </td>
-                    <td>
-                        @if (Pedido.DataEntrega == null)
-                        {
-                            <span>NÃO HÁ REGISTRO</span>
-                        }
-                        else
-                        {
-                            <span>@Pedido.DataEntrega.Value.ToString("dd/MM/yyyy HH:mm")</span>
-                        }
-                    </td>
-                    <td>
-                        @Pedido.Vendedor
-                    </td>
-                    <td>
-                        @if (Pedido.StatusLogistica == 0)
-                        {
-                            <span>APROVADAS</span>
-                        }
-                        else if (Pedido.StatusLogistica == 1)
-                        {
-                            <span>PENDENTE</span>
-                        }
-                        else if (Pedido.StatusLogistica == 2)
-                        {
-                            <span>SEPARAÇÃO</span>
-                        }
-                        else if (Pedido.StatusLogistica == 3)
-                        {
-                            <span>EM ROTA</span>
-                        }
-                        else if (Pedido.StatusLogistica == 4)
-                        {
-                            <span>ENTREGUE</span>
-                        }
-                        else if (Pedido.StatusLogistica == 5)
-                        {
-                            <span>ESPERANDO RETORNO</span>
-                        }
-                        else
-                        {
-                            <span>ESPERANDO PARA INSPEÇÂO</span>
-                        }
-                    </td>
-                    <td>
-                            <a href="/logistica/ListarLogistica/01/01?handler=EnviarComercial&&IdA=@Pedido.Id"><i class="fa-solid fa-paper-plane"></i></a>
+                        <td>
+                            @if (Pedido.DataEntrega == null)
+                            {
+                                <span>NÃO HÁ REGISTRO</span>
+                            }
+                            else
+                            {
+                                <span>@Pedido.DataEntrega.Value.ToString("dd/MM/yyyy HH:mm")</span>
+                            }
+                        </td>
+                        <td>
+                            @Pedido.Vendedor
+                        </td>
+                        <td>
+                            @if (Pedido.StatusLogistica == 0)
+                            {
+                                <span>APROVADAS</span>
+                            }
+                            else if (Pedido.StatusLogistica == 1)
+                            {
+                                <span>PENDENTE</span>
+                            }
+                            else if (Pedido.StatusLogistica == 2)
+                            {
+                                <span>SEPARAÇÃO</span>
+                            }
+                            else if (Pedido.StatusLogistica == 3)
+                            {
+                                <span>EM ROTA</span>
+                            }
+                            else if (Pedido.StatusLogistica == 4)
+                            {
+                                <span>ENTREGUE</span>
+                            }
+                            else if (Pedido.StatusLogistica == 5)
+                            {
+                                <span>ESPERANDO RETORNO</span>
+                            }
+                            else
+                            {
+                                <span>ESPERANDO PARA INSPEÇÂO</span>
+                            }
+                        </td>
+                        <td>
+                            @if (Model.Empresa == "01")
+                            {
+                                <a href="/logistica/ListarLogistica/01/01?handler=EnviarComercial&&IdA=@Pedido.Id"><i class="fa-solid fa-paper-plane"></i></a>
 
-                            <a onclick="dados(@Pedido.Id)" class="details"><i class="fa-solid fa-hourglass"></i></a>
-                            <i class="fa-solid fa-truck-fast"></i>
-                            <i class="fa-solid fa-map-location-dot"></i>
-                            <i class="fa-solid fa-people-carry-box"></i>
-                            <i class="fa-solid fa-magnifying-glass-plus"></i>
+                                <a onclick="dados(@Pedido.Id)" class="details"><i class="fa-solid fa-hourglass"></i></a>
+                                <a href="/logistica/ListarLogistica/01/01?handler=Enviar&&IdA=@Pedido.Id"><i class="fa-solid fa-truck-fast"></i></a>
+                                <a href="/logistica/ListarLogistica/01/01?handler=EnviarParaRota&&IdA=@Pedido.Id"><i class="fa-solid fa-map-location-dot"></i></a>
+                                <a href="/logistica/ListarLogistica/01/01?handler=EnviarParaEntregue&&IdA=@Pedido.Id"><i class="fa-solid fa-people-carry-box"></i></a>
+                                <a href="/logistica/ListarLogistica/01/01?handler=EnviarParaInspecao&&IdA=@Pedido.Id"><i class="fa-solid fa-magnifying-glass-plus"></i></a>
+                            }
+                            else
+                            {
+                                <a href="/logistica/ListarLogistica/03/01?handler=EnviarComercial&&IdA=@Pedido.Id"><i class="fa-solid fa-paper-plane"></i></a>
 
-
-                            <!--<i class="fa-solid fa-truck-arrow-right" style="color:green"></i>-->
-                            <!--<a class="produto" href="/cirurgias/editaragendamento/@Pedido.Id"><i class="fa-solid fa-pen"></i></a>-->
-                            <!--<a class="MotivoRej" data-id="@Pedido.Id"><i class="fa-solid fa-bars" style="text-decoration:none;" data-container="body" data-placement="top" data-original-title="Motivo Rejeição" aria-hidden="true"></i></a>-->
-
-                            <!--<a class="rejeicao" data-id="@Pedido.Id"><i class="fa-regular fa-circle-xmark" style="color:red"></i></a>
+                                <a onclick="dados(@Pedido.Id)" class="details"><i class="fa-solid fa-hourglass"></i></a>
+                                <a href="/logistica/ListarLogistica/03/01?handler=Enviar&&IdA=@Pedido.Id"><i class="fa-solid fa-truck-fast"></i></a>
+                                <a href="/logistica/ListarLogistica/03/01?handler=EnviarParaRota&&IdA=@Pedido.Id"><i class="fa-solid fa-map-location-dot"></i></a>
+                                <a href="/logistica/ListarLogistica/03/01?handler=EnviarParaEntregue&&IdA=@Pedido.Id"><i class="fa-solid fa-people-carry-box"></i></a>
+                                <a href="/logistica/ListarLogistica/03/01?handler=EnviarParaInspecao&&IdA=@Pedido.Id"><i class="fa-solid fa-magnifying-glass-plus"></i></a>
+                            }
                             
-                            <a href="/logistica/checkagendamento/@Pedido.Id" class="details"><i class="fa-solid fa-list-check"></i></a>
-                            <a href="/logistica/PickListLogistica/@Pedido.Id" target="_blank" class="details"><i class="fa-solid fa-list-check"></i></a>-->
-                    </td>
-                </tr>
+
+
+                                <!--<i class="fa-solid fa-truck-arrow-right" style="color:green"></i>-->
+                                <!--<a class="produto" href="/cirurgias/editaragendamento/@Pedido.Id"><i class="fa-solid fa-pen"></i></a>-->
+                                <!--<a class="MotivoRej" data-id="@Pedido.Id"><i class="fa-solid fa-bars" style="text-decoration:none;" data-container="body" data-placement="top" data-original-title="Motivo Rejeição" aria-hidden="true"></i></a>-->
+
+                                <!--<a class="rejeicao" data-id="@Pedido.Id"><i class="fa-regular fa-circle-xmark" style="color:red"></i></a>
+                                
+                                <a href="/logistica/checkagendamento/@Pedido.Id" class="details"><i class="fa-solid fa-list-check"></i></a>
+                                <a href="/logistica/PickListLogistica/@Pedido.Id" target="_blank" class="details"><i class="fa-solid fa-list-check"></i></a>-->
+                        </td>
+                    </tr>
                 }
             </tbody>
         </table>
@@ -640,7 +653,8 @@
 
             $("#searchInput").keyup(function () {
                 var rows = $("#demo-dt-addrow").find("tr").hide();
-                if (this.value.length) {
+                if (this.value.length) 
+                {
                     var data = this.value.split(" ");
                     $.each(data, function (i, v) {
                         rows.filter(":contains('" + v + "')").show();
@@ -652,7 +666,7 @@
                 var id = $(this).data('id')
                 $("#RejeicaoId").val(id)
                 $('#rejeicao-modal').modal('show')
-            })
+            });
 
 
         })
@@ -757,23 +771,22 @@
 
 
                         $("#Produto>tbody>tr").detach()
-                        produtos.forEach(function (produto) {
-                            var linha = `
-                                        <tr>
-                                            <td>${produto.item}</td>
-                                            <td>${produto.licit}</td>
-                                            <td>${produto.produtos}</td>
-                                            <td>${produto.tuss}</td>
-                                            <td>${produto.anvisa}</td>
-                                            <td>${produto.marca}</td>
-                                            <td>${produto.und}</td>
-                                            <td>${produto.prcUnid}</td>
-                                            <td>${produto.segUnd}</td>
-                                            <td>${produto.tipoOp}</td>
-                                            <td>${produto.vlrTotal}</td>
-                                            <td>${produto.lote}</td>
-                                        </tr>
-                                        `;
+                        produtos.forEach(function (produto) 
+                        {
+                            var linha = `<tr>
+                                             <td>${produto.item}</td>
+                                             <td>${produto.licit}</td>
+                                             <td>${produto.produtos}</td>
+                                             <td>${produto.tuss}</td>
+                                             <td>${produto.anvisa}</td>
+                                             <td>${produto.marca}</td>
+                                             <td>${produto.und}</td>
+                                             <td>${produto.prcUnid}</td>
+                                             <td>${produto.segUnd}</td>
+                                             <td>${produto.tipoOp}</td>
+                                             <td>${produto.vlrTotal}</td>
+                                             <td>${produto.lote}</td>
+                                         </tr>`;
                             $("#Produto>tbody").append(linha);
                         })
 

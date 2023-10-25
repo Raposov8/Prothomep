@@ -49,10 +49,8 @@ namespace SGID.Pages.Importacao
                 {
                     string Caminho = $"{Pasta}/Temporario.csv";
 
-                    using (Stream fileStream = new FileStream(Caminho, FileMode.Create))
-                    {
-                        anexo.CopyTo(fileStream);
-                    }
+                    using Stream fileStream = new FileStream(Caminho, FileMode.Create);
+                    anexo.CopyTo(fileStream);
                 }
 
                 FileInfo file = new FileInfo($"{Pasta}/Temporario.csv");

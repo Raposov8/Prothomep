@@ -42,35 +42,36 @@ namespace SGID.Pages.Qualidade
             {
                 string Pasta = $"{_WEB.WebRootPath}/Temp";
 
+                var Data = DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss").Replace("/", "").Replace(" ", "").Replace(":", "");
+
                 if (!Directory.Exists(Pasta))
                 {
                     Directory.CreateDirectory(Pasta);
                 }
 
-                foreach (var anexo in Anexos.Files)
+                if(Empresa == "DENUO")
                 {
-                    string Caminho = $"{Pasta}/AlteracaoProduto.csv";
-
-                    using (Stream fileStream = new FileStream(Caminho, FileMode.Create))
+                    foreach (var anexo in Anexos.Files)
                     {
-                        anexo.CopyTo(fileStream);
-                    }
-                }
+                        string Caminho = $"{Pasta}/AlteracaoProduto{Data}.csv";
 
-                using (var reader = new StreamReader($"{Pasta}/AlteracaoProduto.csv"))
-                {
-                    while (!reader.EndOfStream)
-                    {
-                        var line = reader.ReadLine();
-
-                        if (line.Contains(';'))
+                        using (Stream fileStream = new FileStream(Caminho, FileMode.Create))
                         {
-                            var values = line.Split(';');
+                            anexo.CopyTo(fileStream);
+                        }
+                    }
 
-                            produto = values[0];
+                    using (var reader = new StreamReader($"{Pasta}/AlteracaoProduto{Data}.csv"))
+                    {
+                        while (!reader.EndOfStream)
+                        {
+                            var line = reader.ReadLine();
 
-                            if (Empresa == "DENUO") 
+                            if (line.Contains(';'))
                             {
+                                var values = line.Split(';');
+
+                                produto = values[0];
 
                                 var DBProduto = ProtheusDenuo.Sb1010s.FirstOrDefault(x => x.B1Cod == produto);
 
@@ -78,20 +79,49 @@ namespace SGID.Pages.Qualidade
 
                                 ProtheusDenuo.Update(DBProduto);
                                 ProtheusDenuo.SaveChanges();
+
                             }
-                            else
+                        }
+                    }
+                }
+                else
+                {
+                    foreach (var anexo in Anexos.Files)
+                    {
+                        string Caminho = $"{Pasta}/AlteracaoProdutoInter{Data}.csv";
+
+                        using (Stream fileStream = new FileStream(Caminho, FileMode.Create))
+                        {
+                            anexo.CopyTo(fileStream);
+                        }
+                    }
+
+                    using (var reader = new StreamReader($"{Pasta}/AlteracaoProdutoInter{Data}.csv"))
+                    {
+                        while (!reader.EndOfStream)
+                        {
+                            var line = reader.ReadLine();
+
+                            if (line.Contains(';'))
                             {
+                                var values = line.Split(';');
+
+                                produto = values[0];
+
+                                
                                 var DBProduto = ProtheusInter.Sb1010s.FirstOrDefault(x => x.B1Cod == produto);
 
                                 DBProduto.B1Comerci = values[1];
 
                                 ProtheusInter.Update(DBProduto);
                                 ProtheusInter.SaveChanges();
+                                
                             }
-
                         }
                     }
                 }
+
+                
 
                 TextoResposta = $"Informações Mudadas com Sucesso";
             }
