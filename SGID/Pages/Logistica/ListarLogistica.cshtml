@@ -284,7 +284,10 @@
                                 <a href="/logistica/ListarLogistica/03/01?handler=EnviarParaInspecao&&IdA=@Pedido.Id"><i class="fa-solid fa-magnifying-glass-plus"></i></a>
                             }
                             
-
+                            @if(Pedido.StatusLogistica == 2)
+                            {
+                                <a href="/logistica/ChecarAgendamento/@Pedido.Id" class="fa-solid fa-pen add-tooltip" style="text-decoration:none;" data-container="body" data-placement="top" data-original-title="Confirmar Cotação" aria-hidden="true"></a>
+                            }
 
                                 <!--<i class="fa-solid fa-truck-arrow-right" style="color:green"></i>-->
                                 <!--<a class="produto" href="/cirurgias/editaragendamento/@Pedido.Id"><i class="fa-solid fa-pen"></i></a>-->

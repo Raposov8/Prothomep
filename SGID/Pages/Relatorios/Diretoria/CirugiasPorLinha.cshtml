@@ -1,0 +1,141 @@
+﻿@page "{Mes}/{Ano}/{Linha}"
+@model SGID.Pages.Relatorios.Diretoria.CirugiasPorLinhaModel
+@{
+    ViewData["Title"] = "Relatorio Cirurgias Por Linha";
+    Layout = "_LayoutGeral";
+}
+
+
+<div class="panel">
+    <div class="panel-body">
+        <table id="demo-dt-addrow" class="table table-striped table-bordered" cellspacing="0" width="100%">
+            <thead>
+                <tr>
+                    <th class="text-center" colspan="4">
+                        RANKING TOP 3 VENDEDORES
+                    </th>
+                </tr>
+                <tr>
+                    <th class="text-center">
+                        VENDEDOR
+                    </th>
+                    <th class="text-center">
+                        Nº DE CIRURGIAS
+                    </th>
+                    <th class="text-center">
+                        VALOR
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var data in Model.Vendedores.Take(3))
+                {
+                    <tr>
+                        <td>@Html.DisplayFor(model=> data.Nome)</td>
+                        <td>@Html.DisplayFor(model=> data.Quant)</td>
+                        <td>@string.Format("{0:N2}", data.Valor)</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+
+<div class="panel">
+    <div class="panel-body">
+        <table id="demo-dt-addrow" class="table table-striped table-bordered" cellspacing="0" width="100%">
+            <thead>
+                <tr>
+                    <th class="text-center" colspan="4">
+                        FATURAMENTO
+                    </th>
+                </tr>
+                <tr>
+                    <th class="text-center">
+                        NF
+                    </th>
+                    <th class="text-center">
+                        TOTAL
+                    </th>
+                    <th class="text-center">
+                        MEDICO
+                    </th>
+                    <th class="text-center">
+                        VENDEDOR
+                    </th>
+                    <th class="text-center">
+                        LINHA
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var data in Model.Relatorio)
+                {
+                    <tr>
+                        <td>@Html.DisplayFor(model=> data.Nf)</td>
+                        <td>@string.Format("{0:N2}", data.Total)</td>
+                        <td>@Html.DisplayFor(model=> data.XNMMed)</td>
+                        <td>@Html.DisplayFor(model=> data.A3Nome)</td>
+                        <td>@Html.DisplayFor(model=> data.Linha)</td>
+                    </tr>
+                }
+                <tr>
+                    <td>TOTAL:</td>
+                    <td colspan="2">@string.Format("{0:N2}", Model.Relatorio.Sum(x=> x.Total))</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<br />
+<div class="panel">
+    <div class="panel-body">
+        <table id="demo-dt-addrow" class="table table-striped table-bordered" cellspacing="0" width="100%">
+            <thead>
+                <tr>
+                    <th class="text-center" colspan="4">
+                        DEVOLUÇÃO
+                    </th>
+                </tr>
+                <tr>
+                    <th class="text-center">
+                        NF
+                    </th>
+                    <th class="text-center">
+                        TOTAL
+                    </th>
+                    <th class="text-center">
+                        MEDICO
+                    </th>
+                    <th class="text-center">
+                        VENDEDOR
+                    </th>
+                    <th class="text-center">
+                        LINHA
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var data in Model.Devolucao)
+                {
+                    <tr>
+                        <td>@Html.DisplayFor(model=> data.Nf)</td>
+                        <td>@string.Format("{0:N2}", data.Total)</td>
+                        <td>@Html.DisplayFor(model=> data.Medico)</td>
+                        <td>@Html.DisplayFor(model=> data.A3Nome)</td>
+                        <td>@Html.DisplayFor(model=> data.Linha)</td>
+                    </tr>
+                }
+                @if (Model.Devolucao.Count > 0)
+                {
+                    <tr>
+                        <td>TOTAL:</td>
+                        <td colspan="2">@string.Format("{0:N2}", Model.Devolucao.Sum(x=> x.Total))</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

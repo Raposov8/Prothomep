@@ -1,0 +1,103 @@
+﻿@page
+@model SGID.Pages.Relatorios.Visitas.RelatorioVisitasModel
+@{
+    ViewData["Title"] = "Relatorio de Visitas";
+    Layout = "_LayoutGeral";
+}
+
+
+@using (@Html.BeginForm(FormMethod.Post))
+{
+    <div class="row">
+        <div class="form-group mx-sm-3 mb-2 col-lg-2">
+            <input type="date" class="form-control" id="DataInicio" name="DataInicio" value="@Model.Inicio.ToString("yyyy-MM-dd")" placeholder="Data Inicio">
+        </div>
+        <div class="form-group mx-sm-3 mb-2 col-lg-2">
+            <input type="date" class="form-control" id="DataFim" name="DataFim" value="@Model.Fim.ToString("yyyy-MM-dd")" placeholder="Data Fim">
+        </div>
+        <div class="form-group mx-sm-3 mb-2 col-lg-1">
+            <button type="submit" class="btn btn-primary mb-2">Pesquisar</button>
+        </div>
+    </div>
+}
+
+
+<div class="panel">
+    <div class="panel-body">
+        <table id="demo-dt-addrow" class="table table-striped table-bordered" cellspacing="0" width="100%">
+            <thead>
+                <tr>
+                    <th class="text-center" colspan="4">
+                        VENDEDORES
+                    </th>
+                </tr>
+                <tr>
+                    <th class="text-center">
+                        VENDEDOR
+                    </th>
+                    <th class="text-center">
+                        Nº DE VISITAS
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var data in Model.Vendedores)
+                {
+                    <tr>
+                        <td>@data.Nome.Replace("."," ")</td>
+                        <td>@Html.DisplayFor(model=> data.Quant)</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+
+<div class="panel">
+    <div class="panel-body">
+        <table id="demo-dt-addrow" class="table table-striped table-bordered" cellspacing="0" width="100%">
+            <thead>
+                <tr>
+                    <th class="text-center" colspan="4">
+                        Visitas
+                    </th>
+                </tr>
+                <tr>
+                    <th class="text-center">
+                        EMPRESA
+                    </th>
+                    <th class="text-center">
+                        VENDEDOR
+                    </th>
+                    <th class="text-center">
+                        CLIENTE
+                    </th>
+                    <th class="text-center">
+                        DATA DA VISITA
+                    </th>
+                    <th class="text-center">
+                        ULTIMA VISITA
+                    </th>
+                    <th class="text-center">
+                        ASSUNTO
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var data in Model.Visitas)
+                {
+                    <tr>
+                        <td>@Html.DisplayFor(model=> data.Empresa)</td>
+                        <td>@data.Vendedor.Replace("."," ")</td>
+                        <td>@Html.DisplayFor(model=> data.Medico)</td>
+                        <td>@data.DataHora.ToString("dd/MM/yyyy HH:mm")</td>
+                        <td>@data.DataUltima.Value.ToString("dd/MM/yyyy") </td>
+                        <td>@Html.DisplayFor(model=> data.Assunto)</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

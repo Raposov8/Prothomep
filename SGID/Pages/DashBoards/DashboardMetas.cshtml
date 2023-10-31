@@ -54,7 +54,7 @@
 </div>
 <br />
 <div class="row">
-    <div class="col-md-12"><text style="cursor: default; user-select: none; -webkit-font-smoothing: antialiased; font-family: Roboto; font-size: 16px;color:#757575">FATURAMENTO INTERMEDIC & DENUO</text></div>
+    <div class="col-md-12"><text style="cursor: default; user-select: none; -webkit-font-smoothing: antialiased; font-family: Roboto; font-size: 16px;color:#757575">FATURAMENTO CIRURGIAS INTERMEDIC & DENUO</text></div>
 </div>
 <div id="Tipos" class="row justify-content-center">
 
@@ -293,12 +293,11 @@
 
             var count = 0;
 
-            $('input[name=Tipo]').on('change', function (e) {
+            $('input[name=Tipo]').on('click', function (e) {
 
                 move(0)
-                $("#loading-modal").modal('show')
+                $("#loading-modal").modal('show');
 
-                
 
                 var Ano = $("#Ano").val();
                 var Mes = $('input[name=Tipo]:checked').val();
@@ -362,7 +361,7 @@
                                                               <h2 style="margin:0%;color:#ffffff;font-size:20px;" class="panel-title text-center"> ${x.nome}</h2>
                                                   </div>
                                                   <div class="panel-body" style="padding-top:0px;">
-                                                              <a class="produto"><h3 class="text-center" style="margin-top:0%; color:#ffffff;font-size:20px">${x.quant.toLocaleString('pt-BR', formato)}</h3></a>
+                                                              <a class="produto" ><h3 class="text-center" style="margin-top:0%; color:#ffffff;font-size:20px">${x.quant.toLocaleString('pt-BR', formato)}</h3></a>
                                                   </div>
                                               </div>
                                           </div>`
@@ -370,25 +369,25 @@
                             else if(count == 0)
                             {
                                 linha = ` <div class="col-xs-2 col-sm-2 col-md-2 col-xl-2">
-                                                              <div class="panel panel-colorful" style="background-color:#203864">
-                                                          <div class="panel-heading">
-                                                                      <h2 style="margin:0%;color:#ffffff;font-size:20px;" class="panel-title text-center"> ${x.nome}</h2>
-                                                          </div>
-                                                          <div class="panel-body" style="padding-top:0px;">
-                                                                      <a class="produto"><h3 class="text-center" style="margin-top:0%; color:#ffffff;font-size:20px">${x.quant}</h3></a>
-                                                          </div>
-                                                      </div>
-                                                  </div>`
+                                                      <div class="panel panel-colorful" style="background-color:#203864">
+                                                  <div class="panel-heading">
+                                                              <h2 style="margin:0%;color:#ffffff;font-size:20px;" class="panel-title text-center"> ${x.nome}</h2>
+                                                  </div>
+                                                  <div class="panel-body" style="padding-top:0px;">
+                                                              <a class="produto"><h3 class="text-center" style="margin-top:0%; color:#ffffff;font-size:20px">${x.quant}</h3></a>
+                                                  </div>
+                                              </div>
+                                          </div>`
                             }
                             else
                             {
                                 linha = ` <div class="col-xs-2 col-sm-2 col-md-2 col-xl-2">
                                                       <div class="panel panel-colorful" style="background-color:#8faadc">
                                                   <div class="panel-heading">
-                                                              <h2 style="margin:0%;color:#ffffff;font-size:20px;" class="panel-title text-center"> ${x.nome}</h2>
+                                                      <h2 style="margin:0%;color:#ffffff;font-size:20px;" class="panel-title text-center"> ${x.nome}</h2>
                                                   </div>
                                                   <div class="panel-body" style="padding-top:0px;">
-                                                              <a class="produto"><h3 class="text-center" style="margin-top:0%; color:#ffffff;font-size:20px">${x.quant}</h3></a>
+                                                        <a href='/relatorios/diretoria/cirugiasporlinha/${Mes}/${Ano}/${x.nome}' target='_blank'><h3 class="text-center" style="margin-top:0%; color:#ffffff;font-size:20px">${x.quant}</h3></a>
                                                   </div>
                                               </div>
                                           </div>`

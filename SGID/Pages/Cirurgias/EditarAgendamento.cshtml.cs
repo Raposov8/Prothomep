@@ -98,10 +98,10 @@ namespace SGID.Pages.Cirurgias
 
                 codigos.ForEach(x =>
                 {
+                    //Intermedic
                     var produto = (from SB10 in ProtheusInter.Sb1010s
-                                   join DA10 in ProtheusInter.Da1010s on SB10.B1Cod equals DA10.Da1Codpro
                                    where SB10.B1Cod == x.produto && SB10.B1Msblql != "1"
-                                   && SB10.DELET != "*" && DA10.DELET != "*" && DA10.Da1Codtab == x.Tabela
+                                   && SB10.DELET != "*"
                                    select new
                                    {
                                        SB10.B1Cod,
@@ -109,13 +109,13 @@ namespace SGID.Pages.Cirurgias
                                        SB10.B1Solicit,
                                        SB10.B1Desc,
                                        SB10.B1Fabric,
-                                       DA10.Da1Prcven,
                                        SB10.B1Tipo,
                                        SB10.B1Lotesbp,
                                        SB10.B1Um,
                                        SB10.B1Reganvi,
                                        SB10.B1Xtuss
                                    }).FirstOrDefault();
+
 
                     var ViewProduto = new Produto
                     {
@@ -180,10 +180,10 @@ namespace SGID.Pages.Cirurgias
 
                 codigos.ForEach(x =>
                 {
+                    //Denuo
                     var produto = (from SB10 in ProtheusDenuo.Sb1010s
-                                   join DA10 in ProtheusDenuo.Da1010s on SB10.B1Cod equals DA10.Da1Codpro
                                    where SB10.B1Cod == x.produto && SB10.B1Msblql != "1"
-                                   && SB10.DELET != "*" && DA10.DELET != "*" && DA10.Da1Codtab == x.Tabela
+                                   && SB10.DELET != "*"
                                    select new
                                    {
                                        SB10.B1Cod,
@@ -191,7 +191,6 @@ namespace SGID.Pages.Cirurgias
                                        SB10.B1Solicit,
                                        SB10.B1Desc,
                                        SB10.B1Fabric,
-                                       DA10.Da1Prcven,
                                        SB10.B1Tipo,
                                        SB10.B1Lotesbp,
                                        SB10.B1Um,
@@ -199,21 +198,24 @@ namespace SGID.Pages.Cirurgias
                                        SB10.B1Xtuss
                                    }).FirstOrDefault();
 
-                    var ViewProduto = new Produto
-                    {
-                        Item = produto.B1Cod,
-                        Licit = produto.B1Solicit,
-                        Produtos = produto.B1Desc,
-                        Tuss = produto.B1Xtuss,
-                        Anvisa = produto.B1Reganvi,
-                        Marca = produto.B1Fabric,
-                        Und = x.unidade,
-                        PrcUnid = x.valorUnitario,
-                        SegUnd = produto.B1Um,
-                        VlrTotal = x.valor,
-                    };
+
+                        var ViewProduto = new Produto
+                        {
+                            Item = produto.B1Cod,
+                            Licit = produto.B1Solicit,
+                            Produtos = produto.B1Desc,
+                            Tuss = produto.B1Xtuss,
+                            Anvisa = produto.B1Reganvi,
+                            Marca = produto.B1Fabric,
+                            Und = x.unidade,
+                            PrcUnid = x.valorUnitario,
+                            SegUnd = produto.B1Um,
+                            VlrTotal = x.valor,
+                            TipoOp = produto.B1Tipo,
+                        };
 
                     Produtos.Add(ViewProduto);
+                    
                 });
 
                 Patrimonio.ForEach(x =>

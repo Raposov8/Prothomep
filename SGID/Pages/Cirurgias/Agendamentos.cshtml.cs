@@ -55,7 +55,7 @@ namespace SGID.Pages.Cirurgias
 						Start = $"{x.DataCirurgia:MM/dd/yyyy HH:mm}",
 						AllDay = false,
                         color = cor,
-                        textColor = cor =="yellow"?"#20232a": "#ffffff",
+                        textColor = cor == "yellow"?"#20232a": "#ffffff",
 
                     });
 				//color = "yellow"

@@ -303,6 +303,7 @@ namespace SGID.Pages.Cirurgias
                                            SB10.B1Xtuss
                                        }).FirstOrDefault();
 
+
                         produto ??= (from SB10 in ProtheusInter.Sb1010s
                                            where SB10.B1Desc == Codigo.ToUpper() && SB10.B1Msblql != "1"
                                            && SB10.DELET != "*"
@@ -390,22 +391,22 @@ namespace SGID.Pages.Cirurgias
                                          select DA10.Da1Prcven).FirstOrDefault();
 
                        
-                                var ViewProduto = new Produto
-                                {
-                                    Item = produto.B1Cod,
-                                    Licit = produto.B1Solicit,
-                                    Produtos = produto.B1Desc,
-                                    Tuss = produto.B1Xtuss,
-                                    Anvisa = produto.B1Reganvi,
-                                    Marca = produto.B1Fabric,
-                                    Und = 1,
-                                    PrcUnid = preco,
-                                    SegUnd = produto.B1Um,
-                                    VlrTotal = preco,
-                                    TipoOp = produto.B1Tipo,
-                                };
+                            var ViewProduto = new Produto
+                            {
+                                Item = produto.B1Cod,
+                                Licit = produto.B1Solicit,
+                                Produtos = produto.B1Desc,
+                                Tuss = produto.B1Xtuss,
+                                Anvisa = produto.B1Reganvi,
+                                Marca = produto.B1Fabric,
+                                Und = 1,
+                                PrcUnid = preco,
+                                SegUnd = produto.B1Um,
+                                VlrTotal = preco,
+                                TipoOp = produto.B1Tipo,
+                            };
 
-                                return new JsonResult(ViewProduto);
+                            return new JsonResult(ViewProduto);
                             
                     }
                     

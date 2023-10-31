@@ -26,5 +26,6 @@
         public string DOR { get; set; }
         public string Codigo { get; set; }
         public string Entrega { get; set; }
+        public string Medico { get; set; }
     }
 }

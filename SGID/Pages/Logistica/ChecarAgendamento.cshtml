@@ -1,7 +1,7 @@
 ﻿@page "{id}"
-@model SGID.Pages.Cotacoes.ConfirmarCotacoesModel
+@model SGID.Pages.Logistica.ChecarAgendamentoModel
 @{
-    ViewData["Title"] = "Aceitar Cotações";
+    ViewData["Title"] = "Liberar Agendamento";
     Layout = "_LayoutGeral";
 
     var count = 0;
@@ -245,7 +245,6 @@
                                                     <input type="number" id="Avulsos[@countAvulso].Und" name="Avulsos[@countAvulso].Und" value="@data.Und" />
                                                 </td>
                                                 <td class="text-center">
-
                                                 </td>
                                             </tr>
                                             countAvulso++;
@@ -385,20 +384,20 @@
             @if (Model.Agendamento.DataCirurgia != null)
             {
                 @:data = "@Model.Agendamento.DataCirurgia.Value.ToString("yyyy-MM-dd'T'HH:mm")";
-
+            
                 @:console.log(data);
-
+            
                 @:$("#DataCirurgia").val(data);
             }
 
-            @if(@Model.Agendamento.DataEntrega!= null)
-            {
+        @if (@Model.Agendamento.DataEntrega != null)
+        {
             @:data2 = "@Model.Agendamento.DataEntrega.Value.ToString("yyyy-MM-dd'T'HH:mm")";
 
-                @:console.log(data2);
+            @:console.log(data2);
 
-                @:$("#Entrega").val(data2);
-            }
+            @:$("#Entrega").val(data2);
+        }
 
             removePatri = function (item) {
 
@@ -502,22 +501,22 @@
                                 }
                                 else {
                                     var linha = `<tr>
-                                                            <td class="text-center">
-                                                            ${data.codigo}
-                                                            <input type="hidden" id="Patris[${countPatri}].Codigo" name="Patris[${countPatri}].Codigo" value="${data.codigo}" />
-                                                            </td>
-                                                            <td class="text-center">
-                                                            ${data.descri}
-                                                            <input type="hidden" id="Patris[${countPatri}].Descri" name="Patris[${countPatri}].Descri" value="${data.descri}" />
-                                                            </td>
-                                                            <td class="text-center">
-                                                            ${data.kitBas}
-                                                            <input type="hidden" id="Patris[${countPatri}].KitBas" name="Patris[${countPatri}].KitBas" value="${data.kitBas}" />
-                                                            </td>
-                                                            <td class="text-center">
-                                                              <a class="fa-regular fa-trash-can add-tooltip" onclick="removePatri(this)" style="text-decoration:none;" id="Excluir" data-container="body" data-placement="top" data-original-title="Excluir Recurso" aria-hidden="true"></a>
-                                                          </td>
-                                                          </tr>`;
+                                                                    <td class="text-center">
+                                                                    ${data.codigo}
+                                                                    <input type="hidden" id="Patris[${countPatri}].Codigo" name="Patris[${countPatri}].Codigo" value="${data.codigo}" />
+                                                                    </td>
+                                                                    <td class="text-center">
+                                                                    ${data.descri}
+                                                                    <input type="hidden" id="Patris[${countPatri}].Descri" name="Patris[${countPatri}].Descri" value="${data.descri}" />
+                                                                    </td>
+                                                                    <td class="text-center">
+                                                                    ${data.kitBas}
+                                                                    <input type="hidden" id="Patris[${countPatri}].KitBas" name="Patris[${countPatri}].KitBas" value="${data.kitBas}" />
+                                                                    </td>
+                                                                    <td class="text-center">
+                                                                      <a class="fa-regular fa-trash-can add-tooltip" onclick="removePatri(this)" style="text-decoration:none;" id="Excluir" data-container="body" data-placement="top" data-original-title="Excluir Recurso" aria-hidden="true"></a>
+                                                                  </td>
+                                                                  </tr>`;
                                     countPatri++;
                                     $("#Patrimonio>tbody").append(linha);
                                     $("#CodPatri").val("");
@@ -553,22 +552,22 @@
                             }
                             else {
                                 var linha = `<tr>
-                                                                  <td class="text-center">
-                                                                    ${data.codigo}
-                                                                    <input type="hidden" id="Patris[${countPatri}].Codigo" name="Patris[${countPatri}].Codigo" value="${data.codigo}" />
-                                                                    </td>
-                                                                    <td class="text-center">
-                                                                    ${data.descri}
-                                                                    <input type="hidden" id="Patris[${countPatri}].Descri" name="Patris[${countPatri}].Descri" value="${data.descri}" />
-                                                                    </td>
-                                                                    <td class="text-center">
-                                                                    ${data.kitBas}
-                                                                    <input type="hidden" id="Patris[${countPatri}].KitBas" name="Patris[${countPatri}].KitBas" value="${data.kitBas}" />
-                                                                    </td>
                                                                           <td class="text-center">
-                                                                      <a class="fa-regular fa-trash-can add-tooltip" onclick="removePatri(this)" style="text-decoration:none;" id="Excluir" data-container="body" data-placement="top" data-original-title="Excluir Recurso" aria-hidden="true"></a>
-                                                                  </td>
-                                                                  </tr>`;
+                                                                            ${data.codigo}
+                                                                            <input type="hidden" id="Patris[${countPatri}].Codigo" name="Patris[${countPatri}].Codigo" value="${data.codigo}" />
+                                                                            </td>
+                                                                            <td class="text-center">
+                                                                            ${data.descri}
+                                                                            <input type="hidden" id="Patris[${countPatri}].Descri" name="Patris[${countPatri}].Descri" value="${data.descri}" />
+                                                                            </td>
+                                                                            <td class="text-center">
+                                                                            ${data.kitBas}
+                                                                            <input type="hidden" id="Patris[${countPatri}].KitBas" name="Patris[${countPatri}].KitBas" value="${data.kitBas}" />
+                                                                            </td>
+                                                                                  <td class="text-center">
+                                                                              <a class="fa-regular fa-trash-can add-tooltip" onclick="removePatri(this)" style="text-decoration:none;" id="Excluir" data-container="body" data-placement="top" data-original-title="Excluir Recurso" aria-hidden="true"></a>
+                                                                          </td>
+                                                                          </tr>`;
                                 countPatri++;
                                 $("#Patrimonio>tbody").append(linha);
                                 $("#CodPatri").val("");
@@ -601,22 +600,22 @@
 
                             if (data != "") {
                                 var linha = `<tr>
-                                                    <td class="text-center">
-                                                    ${data.item}
-                                                            <input type="hidden" id="Avulsos[${countAvulso}].Item" name="Avulsos[${countAvulso}].Item" value="${data.item}" />
-                                                    </td>
-                                                    <td class="text-center">
-                                                    ${data.produtos}
-                                                    <input type="hidden" id="Avulsos[${countAvulso}].Produtos" name="Avulsos[${countAvulso}].Produto" value="${data.produtos}" />
-                                                    </td>
-                                                    <td class="text-center">
-                                                        <input type="number" id="Avulsos[${countAvulso}].Und" name="Avulsos[${countAvulso}].Und" value="${data.und}" />
-                                                    </td>
-                                                    <td class="text-center">
+                                                            <td class="text-center">
+                                                            ${data.item}
+                                                                    <input type="hidden" id="Avulsos[${countAvulso}].Item" name="Avulsos[${countAvulso}].Item" value="${data.item}" />
+                                                            </td>
+                                                            <td class="text-center">
+                                                            ${data.produtos}
+                                                            <input type="hidden" id="Avulsos[${countAvulso}].Produtos" name="Avulsos[${countAvulso}].Produto" value="${data.produtos}" />
+                                                            </td>
+                                                            <td class="text-center">
+                                                                <input type="number" id="Avulsos[${countAvulso}].Und" name="Avulsos[${countAvulso}].Und" value="${data.und}" />
+                                                            </td>
+                                                            <td class="text-center">
 
-                                                        <a class="fa-regular fa-trash-can add-tooltip" onclick="removeAvulso(this)" style="text-decoration:none;" id="Excluir" data-container="body" data-placement="top" data-original-title="Excluir Recurso" aria-hidden="true"></a>
-                                                    </td>
-                                                    </tr>`;
+                                                                <a class="fa-regular fa-trash-can add-tooltip" onclick="removeAvulso(this)" style="text-decoration:none;" id="Excluir" data-container="body" data-placement="top" data-original-title="Excluir Recurso" aria-hidden="true"></a>
+                                                            </td>
+                                                            </tr>`;
 
                                 $("#Avulsos>tbody").append(linha);
 
@@ -649,22 +648,22 @@
 
                         if (data != "") {
                             var linha = `<tr>
-                                        <td class="text-center">
-                                        ${data.item}
-                                        <input type="hidden" id="Avulsos[${countAvulso}].Item" name="Avulsos[${countAvulso}].Item" value="${data.item}" />
-                                        </td>
-                                        <td class="text-center">
-                                        ${data.produtos}
-                                        <input type="hidden" id="Avulsos[${countAvulso}].Produtos" name="Avulsos[${countAvulso}].Produto" value="${data.produtos}" />
-                                        </td>
-                                        <td class="text-center">
-                                            <input type="number" id="Avulsos[${countAvulso}].Und" name="Avulsos[${countAvulso}].Und" value="${data.und}" />
-                                        </td>
-                                        <td class="text-center">
+                                                <td class="text-center">
+                                                ${data.item}
+                                                <input type="hidden" id="Avulsos[${countAvulso}].Item" name="Avulsos[${countAvulso}].Item" value="${data.item}" />
+                                                </td>
+                                                <td class="text-center">
+                                                ${data.produtos}
+                                                <input type="hidden" id="Avulsos[${countAvulso}].Produtos" name="Avulsos[${countAvulso}].Produto" value="${data.produtos}" />
+                                                </td>
+                                                <td class="text-center">
+                                                    <input type="number" id="Avulsos[${countAvulso}].Und" name="Avulsos[${countAvulso}].Und" value="${data.und}" />
+                                                </td>
+                                                <td class="text-center">
 
-                                            <a class="fa-regular fa-trash-can add-tooltip" onclick="removeAvulso(this)" style="text-decoration:none;" id="Excluir" data-container="body" data-placement="top" data-original-title="Excluir Recurso" aria-hidden="true"></a>
-                                        </td>
-                                        </tr>`;
+                                                    <a class="fa-regular fa-trash-can add-tooltip" onclick="removeAvulso(this)" style="text-decoration:none;" id="Excluir" data-container="body" data-placement="top" data-original-title="Excluir Recurso" aria-hidden="true"></a>
+                                                </td>
+                                                </tr>`;
 
                             $("#Avulsos>tbody").append(linha);
                             $("#CodProd2").val("")
@@ -704,7 +703,7 @@
             @:Produto.push("@d");
         }
 
-        $(document).ready(function () {
+            $(document).ready(function () {
 
                 function autocomplete(inp, arr) {
                     /*the autocomplete function takes two arguments,

@@ -113,12 +113,16 @@
                     }
                     <li class="nav-item dropdown">
                         <a class="nav-link align-items-center rounded dropdown-toggle" data-bs-toggle="collapse"
-                           data-bs-target="#visitas-collapse" aria-expanded="false">
+                        data-bs-target="#visitas-collapse" aria-expanded="false">
                             <i class="fa-solid fa-calendar-days"></i>Visitas
                         </a>
                         <div class="collapse" id="visitas-collapse">
                             <ul class="list-unstyled fw-normal pb-1 small">
                                 <li><a class="nav-link" href="/agendamento/visitas">Painel Visitas</a></li>
+                                @if (User.IsInRole("Admin") || User.IsInRole("Diretoria"))
+                                {
+                                    <li><a class="nav-link" href="/relatorios/visitas/relatoriovisitas">Relatorio Visitas</a></li>
+                                }
                             </ul>
                         </div>
                     </li>

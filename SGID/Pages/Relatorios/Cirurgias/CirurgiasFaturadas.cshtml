@@ -8,24 +8,23 @@
 
 
 
-@using(@Html.BeginForm(FormMethod.Post)){
+@using(@Html.BeginForm(FormMethod.Post))
+{
         <div class="row">
-        <div class="form-group mx-sm-3 mb-2 col-lg-2">
-            <input type="date" class="form-control" id="DataInicio" name="DataInicio" value="@Model.Inicio.ToString("yyyy-MM-dd")" placeholder="Data Inicio">
-        </div>
-        <div class="form-group mx-sm-3 mb-2 col-lg-2">
-            <input type="date" class="form-control" id="DataFim" name="DataFim" value="@Model.Fim.ToString("yyyy-MM-dd")" placeholder="Data Fim">
-        </div>
-
+            <div class="form-group mx-sm-3 mb-2 col-lg-2">
+                <input type="date" class="form-control" id="DataInicio" name="DataInicio" value="@Model.Inicio.ToString("yyyy-MM-dd")" placeholder="Data Inicio">
+            </div>
+            <div class="form-group mx-sm-3 mb-2 col-lg-2">
+                <input type="date" class="form-control" id="DataFim" name="DataFim" value="@Model.Fim.ToString("yyyy-MM-dd")" placeholder="Data Fim">
+            </div>
             <div class="form-group mx-sm-3 mb-2 col-lg-1">
                 <button type="submit" class="btn btn-primary mb-2">Pesquisar</button>
             </div>
-
             <div class="form-group mx-sm-3 mb-2 col-lg-1">
                <button type="submit" class="btn btn-secondary mb-2" asp-page-handler="Export"><i class="fa-solid fa-file-excel"></i> Exportar Excel</button>
             </div>
         </div>
-    }
+}
 
 
 

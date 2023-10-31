@@ -94,7 +94,7 @@
                                 </div>
                                 <div class="col-md-3">
                                     <label class="col-md-12" style="font-size:12px;">Data da Entrega</label>
-                                    <input type="datetime-local" class="col-md-12 form-control" id="Entrega" name="Entrega" />
+                                    <input type="datetime-local" class="col-md-12 form-control" id="Entrega" name="Entrega"  />
                                 </div>
                             </div>
                         </div>
@@ -130,7 +130,7 @@
                                                 @data.User.Replace("."," ").ToUpper()
                                             </td>
                                             <td>
-                                                @if(data.DataCriacao.ToString("dd/MM/yyyy HH:mm:ss") == "01/01/0001 00:00:00")
+                                                @if (data.DataCriacao.ToString("dd/MM/yyyy HH:mm:ss") != "01/01/0001 00:00:00")
                                                 {
                                                     <span>@data.DataCriacao.ToString("dd/MM/yyyy HH:mm:ss")</span>
                                                 }
@@ -443,6 +443,15 @@
                 @:console.log(data);
 
                 @:$("#DataCirurgia").val(data);
+            }
+
+            @if(@Model.Agendamento.DataEntrega!= null)
+            {
+            @:data2 = "@Model.Agendamento.DataEntrega.Value.ToString("yyyy-MM-dd'T'HH:mm")";
+
+                @:console.log(data2);
+
+                @:$("#Entrega").val(data2);
             }
 
             remove = function(item) {

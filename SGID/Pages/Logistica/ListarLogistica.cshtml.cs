@@ -136,7 +136,7 @@ namespace SGID.Pages.Logistica
             SGID.Agendamentos.Update(agendamento);
             SGID.SaveChanges();
 
-            return LocalRedirect($"/Logistica/ListarLogistica/${agendamento.Empresa}/2");
+            return LocalRedirect($"/Logistica/ListarLogistica/{agendamento.Empresa}/2");
         }
 
         public IActionResult OnGetEnviar(int IdA)

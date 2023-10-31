@@ -111,7 +111,7 @@ namespace SGID.Pages.Qualidade
                             campo = "B1_XFAMILI";
                             linha.B1Xfamili = TesteString.Testestring(values[17],2);
                             campo = "B1_XSBFAMI";
-                            linha.B1Xsbfami = TesteString.Testestring(values[18],2);
+                            linha.B1Xsbfami = TesteString.Testestring(values[18],3);
                             campo = "B1_UGRPINT";
                             linha.B1Ugrpint = TesteString.Testestring(values[19],3);
 

@@ -33,6 +33,8 @@ public partial class TOTVSDENUOContext : DbContext
 
     public virtual DbSet<Pad010> Pad010s { get; set; }
 
+    public virtual DbSet<Pag010> Pag010s { get; set; }
+
     public virtual DbSet<Pah010> Pah010s { get; set; }
 
     public virtual DbSet<Pai010> Pai010s { get; set; }
@@ -1372,6 +1374,41 @@ public partial class TOTVSDENUOContext : DbContext
                 .IsUnicode(false)
                 .HasDefaultValueSql("('  ')")
                 .HasColumnName("PAD_UM");
+        });
+
+        modelBuilder.Entity<Pag010>(entity =>
+        {
+            entity.HasKey(e => e.RECNO).HasName("PAG010_PK");
+
+            entity.ToTable("PAG010");
+
+            entity.HasIndex(e => new { e.PagFilial, e.PagGrupo, e.RECNO, e.DELET }, "PAG0101").HasFillFactor(80);
+
+            entity.HasIndex(e => new { e.PagFilial, e.PagDescr, e.RECNO, e.DELET }, "PAG0102").HasFillFactor(80);
+
+            entity.Property(e => e.RECNO)
+                .ValueGeneratedNever()
+                .HasColumnName("R_E_C_N_O_");
+            entity.Property(e => e.DELET)
+                .HasMaxLength(1)
+                .IsUnicode(false)
+                .HasDefaultValueSql("(' ')")
+                .HasColumnName("D_E_L_E_T_");
+            entity.Property(e => e.PagDescr)
+                .HasMaxLength(40)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('                                        ')")
+                .HasColumnName("PAG_DESCR");
+            entity.Property(e => e.PagFilial)
+                .HasMaxLength(2)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('  ')")
+                .HasColumnName("PAG_FILIAL");
+            entity.Property(e => e.PagGrupo)
+                .HasMaxLength(3)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('   ')")
+                .HasColumnName("PAG_GRUPO");
         });
 
         modelBuilder.Entity<Pah010>(entity =>

@@ -15,13 +15,13 @@
 {
     <div class="row">
         <div class="form-group mx-sm-3 mb-2 col-lg-3">
-            <input type="text" class="form-control" id="Produto" name="Produto" onkeyup="this.value = this.value.toUpperCase();" placeholder="Produto">
+            <input type="text" class="form-control" id="Produto" name="Produto" onkeyup="this.value = this.value.toUpperCase();" placeholder="Produto" value="@Model.CodProduto">
         </div>
         <div class="form-group mx-sm-3 mb-2 col-lg-3">
-            <input type="text" class="form-control" id="Anvisa" name="Anvisa" placeholder="Cod. Anvisa">
+            <input type="text" class="form-control" id="Anvisa" name="Anvisa" placeholder="Cod. Anvisa" value="@Model.CodAnvisa">
         </div>
         <div class="form-group mx-sm-3 mb-2 col-lg-3">
-            <input type="text" class="form-control" id="Fabricante" name="Fabricante" placeholder="Fabricante">
+            <input type="text" class="form-control" id="Fabricante" name="Fabricante" placeholder="Fabricante" value="@Model.Fabricante">
         </div>
         <div class="form-group mx-sm-3 mb-2 col-lg-3">
             <select class="form-control" id="Empresa" name="Empresa">
@@ -111,3 +111,12 @@
     </div>
 </div>
 
+@section scripts{
+    <script>
+        $(document).ready(function () {
+
+            $("#Empresa").val("@Model.Empresa")
+             
+        });
+    </script>
+}

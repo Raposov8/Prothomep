@@ -177,7 +177,7 @@
                 </div>
                 <div class="panel">
                     <div class="panel-body">
-                        <table id="Produto" name="Produto" class="table table-striped table-bordered" cellspacing="0" width="100%">
+                        <table id="Observacoes" name="Observacoes" class="table table-striped table-bordered" cellspacing="0" width="100%">
                             <thead>
                                 <tr>
                                     <th class="text-center">
@@ -199,7 +199,7 @@
                                             @data.User.Replace("."," ").ToUpper()
                                         </td>
                                         <td>
-                                            @if (data.DataCriacao.ToString("dd/MM/yyyy HH:mm:ss") == "01/01/0001 00:00:00")
+                                            @if (data.DataCriacao.ToString("dd/MM/yyyy HH:mm:ss") != "01/01/0001 00:00:00")
                                             {
                                                 <span>@data.DataCriacao.ToString("dd/MM/yyyy HH:mm:ss")</span>
                                             }
@@ -357,47 +357,47 @@
                 </table>
             </div>
         </div>
-            <br/>
-                <div class="panel">
-                    <div class="panel-body">
-                        <table id="Patrimonio" name="Patrimonio" class="table table-striped table-bordered" cellspacing="0" width="100%">
-                            <thead>
-                                <tr>
-                                    <th class="text-center">
-                                        Descri
-                                    </th>
-                                    <th class="text-center">
-                                        KitBas
-                                    </th>
-                                    <th class="text-center">
-                                        <a class="patri" data-id="10" data-toggle="modal" data-target="#patri-modal"><i class="fa-solid fa-circle-plus" style="color:green"></i></a>
-                                    </th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach(var data in Model.Patris)
-                                {
-                                    <tr>
-                                        <td>
-                                        @data.Descri
-                                        <input type="hidden" id="Patris[@countPatri].Descri" name="Patris[@countPatri].Descri" value="@data.Descri" />
-                                        </td>
-                                        <td>
-                                        @data.KitBas
-                                           <input type="hidden" id="Patris[@countPatri].KitBas" name="Patris[@countPatri].KitBas" value="@data.KitBas" />
-                                        </td>
-                                        <td>
-                                            <a href="/" class="fas fa-eye add-tooltip" style="text-decoration:none;" data-container="body" data-placement="top" data-original-title="Visualizar Recurso" aria-hidden="true"></a>
+        <br/>
+        <div class="panel">
+            <div class="panel-body">
+                <table id="Patrimonio" name="Patrimonio" class="table table-striped table-bordered" cellspacing="0" width="100%">
+                    <thead>
+                        <tr>
+                            <th class="text-center">
+                                Descri
+                            </th>
+                            <th class="text-center">
+                                KitBas
+                            </th>
+                            <th class="text-center">
+                                <a class="patri" data-id="10" data-toggle="modal" data-target="#patri-modal"><i class="fa-solid fa-circle-plus" style="color:green"></i></a>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach(var data in Model.Patris)
+                        {
+                            <tr>
+                                <td>
+                                    @data.Descri
+                                    <input type="hidden" id="Patris[@countPatri].Descri" name="Patris[@countPatri].Descri" value="@data.Descri" />
+                                </td>
+                                <td>
+                                    @data.KitBas
+                                   <input type="hidden" id="Patris[@countPatri].KitBas" name="Patris[@countPatri].KitBas" value="@data.KitBas" />
+                                </td>
+                                <td>
+                                    <a href="/" class="fas fa-eye add-tooltip" style="text-decoration:none;" data-container="body" data-placement="top" data-original-title="Visualizar Recurso" aria-hidden="true"></a>
 
-                                            <a class="fa-regular fa-trash-can add-tooltip" onclick="removePatri(this)" style="text-decoration:none;" id="Excluir" data-container="body" data-placement="top" data-original-title="Excluir Recurso" aria-hidden="true"></a>
-                                        </td>
+                                    <a class="fa-regular fa-trash-can add-tooltip" onclick="removePatri(this)" style="text-decoration:none;" id="Excluir" data-container="body" data-placement="top" data-original-title="Excluir Recurso" aria-hidden="true"></a>
+                                </td>
                             </tr>
                             countPatri++;
                         }
                     </tbody>
-                        </table>
-                    </div>
-                </div>
+                </table>
+            </div>
+        </div>
         <div class="row justify-content-center">
             <div style="color:#00b050" class="col-md-2"><button class="btn btn-button btn-success float-end" style="font-size:12px;" type="submit"><i class="fa-solid fa-thumbs-up"></i> Salvar</button></div> |
             <div style="color:#c00000" class="col-md-2"><a class="btn btn-button btn-danger" style="font-size:12px;" href="/cirurgias/agendamentos"><i class="fa-solid fa-xmark"></i> Cancelar</a></div>

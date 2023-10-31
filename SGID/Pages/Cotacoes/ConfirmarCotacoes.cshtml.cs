@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace SGID.Pages.Cotacoes
 {
-    [Authorize(Roles = "Admin,GestorComercial,Comercial,Diretoria")]
+    [Authorize]
     public class ConfirmarCotacoesModel : PageModel
     {
         private ApplicationDbContext SGID { get; set; }
@@ -351,6 +351,7 @@ namespace SGID.Pages.Cotacoes
                         avus.Quantidade = Avulso.Und;
 
                         SGID.AvulsosAgendamento.Update(avus);
+                        Avulsos.Remove(Avulso);
                         SGID.SaveChanges();
 
                     }
@@ -359,6 +360,7 @@ namespace SGID.Pages.Cotacoes
                         SGID.AvulsosAgendamento.Remove(avus);
                         SGID.SaveChanges();
                     }
+                    
                 });
 
                 Avulsos.ForEach(avulso =>
@@ -370,7 +372,6 @@ namespace SGID.Pages.Cotacoes
                         Quantidade = avulso.Und
                     };
 
-
                     SGID.AvulsosAgendamento.Add(agendamento);
                     SGID.SaveChanges();
 
@@ -378,15 +379,24 @@ namespace SGID.Pages.Cotacoes
 
                 #endregion
 
+
+
                 var Agendamento = SGID.Agendamentos.FirstOrDefault(x => x.Id == id);
 
                 Agendamento.UsuarioComercialAprova = User.Identity.Name.Split("@")[0].ToUpper();
                 Agendamento.DataComercialAprova = DateTime.Now;
                 Agendamento.StatusLogistica = 2;
 
-
                 SGID.Agendamentos.Update(Agendamento);
                 SGID.SaveChanges();
+
+                if (!string.IsNullOrEmpty(Obs) && !string.IsNullOrWhiteSpace(Obs))
+                {
+                    var Observacao = new ObsAgendamento { AgendamentoId = Agendamento.Id, User = Agendamento.UsuarioComercialAprova, Obs = Obs, DataCriacao = DateTime.Now };
+
+                    SGID.ObsAgendamentos.Add(Observacao);
+                    SGID.SaveChanges();
+                }
 
                 return LocalRedirect("/cotacoes/DashBoardCotacoes/3");
             }
