@@ -307,89 +307,108 @@ namespace SGID.Pages.Logistica
 
         public IActionResult OnPostAsync(int id,string Empresa, string NomePaciente, DateTime? DataCirurgia, int Urgencia
             , string NomeMedico, string CRM, string NomeHospital, string NomeVendedor, string Obs,
-            List<Produto> Avulsos, List<Produto> Produtos, List<Patrimonio> Patris, string CodTabela, DateTime? Entrega)
+            List<Produto> Avulsos, List<Produto> Produtos, List<Patrimonio> Patris, string CodTabela, DateTime? Entrega,int Reprovado)
         {
             try
             {
-
-
-                #region Patrimonios
-                var AgendamentoPatris = SGID.PatrimoniosAgendamentos.Where(x => x.AgendamentoId == id).ToList();
-
-                AgendamentoPatris.ForEach(produto =>
+                if(Reprovado != 0)
                 {
-                    var patriUpdate = Patris.FirstOrDefault(x => x.Descri == produto.Patrimonio && x.Codigo == produto.Codigo);
 
-                    SGID.PatrimoniosAgendamentos.Remove(produto);
+                    var Agendamento = SGID.Agendamentos.FirstOrDefault(x => x.Id == id);
+
+                    Agendamento.UsuarioLogistica = User.Identity.Name.Split("@")[0].ToUpper();
+                    Agendamento.DataLogistica = DateTime.Now;
+                    Agendamento.StatusLogistica = 1;
+
+
+                    SGID.Agendamentos.Update(Agendamento);
                     SGID.SaveChanges();
 
-                });
+                    return LocalRedirect($"/logistica/listarlogistica/{Empresa}/2");
 
-                Patris.ForEach(patri =>
+                }
+                else
                 {
-                    var ProdXAgenda = new PatrimonioAgendamento
+                    #region Patrimonios
+                    var AgendamentoPatris = SGID.PatrimoniosAgendamentos.Where(x => x.AgendamentoId == id).ToList();
+
+                    AgendamentoPatris.ForEach(produto =>
                     {
-                        AgendamentoId = id,
-                        Patrimonio = patri.Descri,
-                        Codigo = patri.Codigo
-                    };
+                        var patriUpdate = Patris.FirstOrDefault(x => x.Descri == produto.Patrimonio && x.Codigo == produto.Codigo);
 
-                    SGID.PatrimoniosAgendamentos.Add(ProdXAgenda);
-                    SGID.SaveChanges();
-                });
-                #endregion
-
-                #region Avulsos
-
-                var AgendamentoAvulsos = SGID.AvulsosAgendamento.Where(x => x.AgendamentoId == id).ToList();
-
-                AgendamentoAvulsos.ForEach(avus =>
-                {
-                    var Avulso = Avulsos.FirstOrDefault(c => c.Item == avus.Produto);
-
-                    if (Avulso != null)
-                    {
-                        avus.Quantidade = Avulso.Und;
-
-                        SGID.AvulsosAgendamento.Update(avus);
-                        Avulsos.Remove(Avulso);
+                        SGID.PatrimoniosAgendamentos.Remove(produto);
                         SGID.SaveChanges();
 
-                    }
-                    else
+                    });
+
+                    Patris.ForEach(patri =>
                     {
-                        SGID.AvulsosAgendamento.Remove(avus);
+                        var ProdXAgenda = new PatrimonioAgendamento
+                        {
+                            AgendamentoId = id,
+                            Patrimonio = patri.Descri,
+                            Codigo = patri.Codigo
+                        };
+
+                        SGID.PatrimoniosAgendamentos.Add(ProdXAgenda);
                         SGID.SaveChanges();
-                    }
-                });
+                    });
+                    #endregion
 
-                Avulsos.ForEach(avulso =>
-                {
-                    var agendamento = new AvulsosAgendamento
+                    #region Avulsos
+
+                    var AgendamentoAvulsos = SGID.AvulsosAgendamento.Where(x => x.AgendamentoId == id).ToList();
+
+                    AgendamentoAvulsos.ForEach(avus =>
                     {
-                        AgendamentoId = id,
-                        Produto = avulso.Item,
-                        Quantidade = avulso.Und
-                    };
+                        var Avulso = Avulsos.FirstOrDefault(c => c.Item == avus.Produto);
+
+                        if (Avulso != null)
+                        {
+                            avus.Quantidade = Avulso.Und;
+
+                            SGID.AvulsosAgendamento.Update(avus);
+                            Avulsos.Remove(Avulso);
+                            SGID.SaveChanges();
+
+                        }
+                        else
+                        {
+                            SGID.AvulsosAgendamento.Remove(avus);
+                            SGID.SaveChanges();
+                        }
+                    });
+
+                    Avulsos.ForEach(avulso =>
+                    {
+                        var agendamento = new AvulsosAgendamento
+                        {
+                            AgendamentoId = id,
+                            Produto = avulso.Item,
+                            Quantidade = avulso.Und
+                        };
 
 
-                    SGID.AvulsosAgendamento.Add(agendamento);
+                        SGID.AvulsosAgendamento.Add(agendamento);
+                        SGID.SaveChanges();
+
+                    });
+                    #endregion
+
+                    var Agendamento = SGID.Agendamentos.FirstOrDefault(x => x.Id == id);
+
+                    Agendamento.UsuarioLogistica = User.Identity.Name.Split("@")[0].ToUpper();
+                    Agendamento.DataLogistica = DateTime.Now;
+                    Agendamento.StatusLogistica = 3;
+
+
+                    SGID.Agendamentos.Update(Agendamento);
                     SGID.SaveChanges();
 
-                });
-                #endregion
+                    return LocalRedirect($"/logistica/listarlogistica/{Empresa}/4");
+                }
 
-                var Agendamento = SGID.Agendamentos.FirstOrDefault(x => x.Id == id);
-
-                Agendamento.UsuarioLogistica = User.Identity.Name.Split("@")[0].ToUpper();
-                Agendamento.DataLogistica = DateTime.Now;
-                Agendamento.StatusLogistica = 3;
-
-
-                SGID.Agendamentos.Update(Agendamento);
-                SGID.SaveChanges();
-
-                return LocalRedirect($"/logistica/listarlogistica/{Empresa}/2");
+                
             }
             catch (Exception E)
             {

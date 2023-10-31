@@ -43,6 +43,7 @@
                                 <span>DADOS DO PACIENTE</span>
                             </div>
                             <input hidden id="id" name="id" value="@Model.Agendamento.Id" />
+                            <input hidden id="Reprovado" name="Reprovado" value="0" />
                             <input hidden id="CodTabela" name="CodTabela" value="@Model.Agendamento.CodTabela" />
                             <input hidden id="Empresa" name="Empresa" value="@Model.Agendamento.Empresa" />
                             <div class="row">
@@ -255,46 +256,14 @@
                         </div>
                     </div>
                     <div class="row justify-content-center">
-                        <div style="color:#00b050" class="col-md-2"><button class="btn btn-button btn-success float-end" style="font-size:12px;" type="submit"><i class="fa-solid fa-thumbs-up"></i> Aceitar Cotação</button></div> |
-                        <div style="color:#c00000" class="col-md-2"><button class="btn btn-button btn-danger" style="font-size:12px;" type="submit"><i class="fa-solid fa-xmark"></i> Reprovar Cotação</button></div>
+                        <div style="color:#00b050" class="col-md-2"><button class="btn btn-button btn-success float-end" style="font-size:12px;" type="submit"><i class="fa-solid fa-thumbs-up"></i>Enviar Para Protheus</button></div> |
+                        <div style="color:#c00000" class="col-md-2"><button class="btn btn-button btn-danger" onclick="getElementById('Reprovado').value = 1" style="font-size:12px;" type="submit" ><i class="fa-solid fa-xmark"></i>Retornar Para Vendedor</button></div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 }
-
-<div class="modal fade" id="details-modal" role="dialog" tabindex="-1" aria-labelledby="demo-default-modal" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <!--Modal header-->
-            <div class="modal-header">
-                <div class="col-md-12">
-                    <h4>Buscar Item</h4>
-                </div>
-            </div>
-
-            <!--Modal body-->
-            <div class="modal-body">
-                <div class="row">
-                    <div class="col-md-12">
-                        <label>Codigo Produto</label>
-                        <input type="text" class="form-control" id="CodProd" name="CodProd" />
-                    </div>
-                </div>
-            </div>
-
-            <!--Modal footer-->
-            <div class="modal-footer">
-                <div class="col-md-12">
-                    <button class="btn btn-button btn-success float-end" id="Adicionar">
-                        Adicionar Item
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
 
 <div class="modal fade" id="details2-modal" role="dialog" tabindex="-1" aria-labelledby="demo-default-modal" aria-hidden="true">
     <div class="modal-dialog">

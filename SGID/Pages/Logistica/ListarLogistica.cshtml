@@ -267,8 +267,8 @@
                             {
                                 <a href="/logistica/ListarLogistica/01/01?handler=EnviarComercial&&IdA=@Pedido.Id"><i class="fa-solid fa-paper-plane"></i></a>
 
-                                <a onclick="dados(@Pedido.Id)" class="details"><i class="fa-solid fa-hourglass"></i></a>
-                                <a href="/logistica/ListarLogistica/01/01?handler=Enviar&&IdA=@Pedido.Id"><i class="fa-solid fa-truck-fast"></i></a>
+                                <a href="/logistica/ChecarAgendamento/@Pedido.Id" class="fa-solid fa-truck-fast add-tooltip" style="text-decoration:none;" data-container="body" data-placement="top" data-original-title="Confirmar Cotação" aria-hidden="true"></a>
+                                
                                 <a href="/logistica/ListarLogistica/01/01?handler=EnviarParaRota&&IdA=@Pedido.Id"><i class="fa-solid fa-map-location-dot"></i></a>
                                 <a href="/logistica/ListarLogistica/01/01?handler=EnviarParaEntregue&&IdA=@Pedido.Id"><i class="fa-solid fa-people-carry-box"></i></a>
                                 <a href="/logistica/ListarLogistica/01/01?handler=EnviarParaInspecao&&IdA=@Pedido.Id"><i class="fa-solid fa-magnifying-glass-plus"></i></a>
@@ -277,8 +277,8 @@
                             {
                                 <a href="/logistica/ListarLogistica/03/01?handler=EnviarComercial&&IdA=@Pedido.Id"><i class="fa-solid fa-paper-plane"></i></a>
 
-                                <a onclick="dados(@Pedido.Id)" class="details"><i class="fa-solid fa-hourglass"></i></a>
-                                <a href="/logistica/ListarLogistica/03/01?handler=Enviar&&IdA=@Pedido.Id"><i class="fa-solid fa-truck-fast"></i></a>
+                                <a href="/logistica/ChecarAgendamento/@Pedido.Id" class="fa-solid fa-truck-fast add-tooltip" style="text-decoration:none;" data-container="body" data-placement="top" data-original-title="Confirmar Cotação" aria-hidden="true"></a>
+                                
                                 <a href="/logistica/ListarLogistica/03/01?handler=EnviarParaRota&&IdA=@Pedido.Id"><i class="fa-solid fa-map-location-dot"></i></a>
                                 <a href="/logistica/ListarLogistica/03/01?handler=EnviarParaEntregue&&IdA=@Pedido.Id"><i class="fa-solid fa-people-carry-box"></i></a>
                                 <a href="/logistica/ListarLogistica/03/01?handler=EnviarParaInspecao&&IdA=@Pedido.Id"><i class="fa-solid fa-magnifying-glass-plus"></i></a>
@@ -286,7 +286,7 @@
                             
                             @if(Pedido.StatusLogistica == 2)
                             {
-                                <a href="/logistica/ChecarAgendamento/@Pedido.Id" class="fa-solid fa-pen add-tooltip" style="text-decoration:none;" data-container="body" data-placement="top" data-original-title="Confirmar Cotação" aria-hidden="true"></a>
+                                <a ></a>
                             }
 
                                 <!--<i class="fa-solid fa-truck-arrow-right" style="color:green"></i>-->

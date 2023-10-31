@@ -139,19 +139,6 @@ namespace SGID.Pages.Logistica
             return LocalRedirect($"/Logistica/ListarLogistica/{agendamento.Empresa}/2");
         }
 
-        public IActionResult OnGetEnviar(int IdA)
-        {
-            var agendamento = SGID.Agendamentos.FirstOrDefault(x => x.Id == IdA);
-
-            agendamento.UsuarioLogistica = User.Identity.Name.Split("@")[0].ToUpper();
-            agendamento.StatusLogistica = 3;
-
-            SGID.Agendamentos.Update(agendamento);
-            SGID.SaveChanges();
-
-            return LocalRedirect($"/Logistica/ListarLogistica/${agendamento.Empresa}/4");
-        }
-
         public IActionResult OnGetEnviarParaRota(int IdA)
         {
             var agendamento = SGID.Agendamentos.FirstOrDefault(x => x.Id == IdA);
