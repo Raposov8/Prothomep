@@ -72,37 +72,37 @@
                     <a class="nav-link" href="/dashboard/3"><i class="fa-solid fa-house"></i>Home</a>
                </li>
                @if(User.IsInRole("Admin") || User.IsInRole("Diretoria"))
-                {
-                     <li>
-                        <a class="nav-link" href="/dashboards/DashBoardMetas"><i class="fa-solid fa-clipboard-user"></i>DashBoard Diretoria</a>
-                     </li>
-                }
-                @if(User.IsInRole("Admin") || User.IsInRole("Diretoria") || User.IsInRole("GestorSubDistribuidor"))
-                {
+               {
                     <li>
-                        <a class="nav-link" href="/dashboards/DashBoardGestorSubDistribuidor"><i class="fa-solid fa-clipboard-user"></i>DashBoard SubDistribuidor</a>
+                       <a class="nav-link" href="/dashboards/DashBoardMetas"><i class="fa-solid fa-clipboard-user"></i>DashBoard Diretoria</a>
                     </li>
-                }
-                @if(User.IsInRole("Admin") || User.IsInRole("GestorVenda") || User.IsInRole("Venda") || User.IsInRole("Diretoria"))
-                {
-                    @if (User.IsInRole("Admin") || User.IsInRole("GestorVenda"))
-                    {
-                        <li>
-                            <a class="nav-link" href="/dashboards/DashBoardadm"><i class="fa-solid fa-chart-pie"></i>Metas ADM</a>
-                        </li>
-                    }
-                    <li class="nav-item dropdown">
-                        <a class="nav-link align-items-center rounded dropdown-toggle" data-bs-toggle="collapse" 
-                      data-bs-target="#cirurgias-collapse" aria-expanded="false"> 
-                            <i class="fa-solid fa-heart-pulse"></i>Cirurgias
-                        </a>
-                        <div class="collapse" id="cirurgias-collapse">
-                            <ul class="list-unstyled fw-normal pb-1 small">
-                                <li><a class="nav-link" href="/cirurgias/agendamentos">Painel Cirurgias</a></li>
-                            </ul>
-                        </div>
-                    </li>
-                }
+               }
+               @if(User.IsInRole("Admin") || User.IsInRole("Diretoria") || User.IsInRole("GestorSubDistribuidor"))
+               {
+                   <li>
+                       <a class="nav-link" href="/dashboards/DashBoardGestorSubDistribuidor"><i class="fa-solid fa-clipboard-user"></i>DashBoard SubDistribuidor</a>
+                   </li>
+               }
+               @if(User.IsInRole("Admin") || User.IsInRole("GestorVenda") || User.IsInRole("Venda") || User.IsInRole("Diretoria"))
+               {
+                   @if (User.IsInRole("Admin") || User.IsInRole("GestorVenda"))
+                   {
+                       <li>
+                           <a class="nav-link" href="/dashboards/DashBoardadm"><i class="fa-solid fa-chart-pie"></i>Metas ADM</a>
+                       </li>
+                   }
+                   <li class="nav-item dropdown">
+                       <a class="nav-link align-items-center rounded dropdown-toggle" data-bs-toggle="collapse" 
+                     data-bs-target="#cirurgias-collapse" aria-expanded="false"> 
+                           <i class="fa-solid fa-heart-pulse"></i>Cirurgias
+                       </a>
+                       <div class="collapse" id="cirurgias-collapse">
+                           <ul class="list-unstyled fw-normal pb-1 small">
+                               <li><a class="nav-link" href="/cirurgias/agendamentos">Painel Cirurgias</a></li>
+                           </ul>
+                       </div>
+                   </li>
+               }
                @if(User.IsInRole("Admin") || User.IsInRole("Comercial") || User.IsInRole("GestorComercial") || User.IsInRole("Diretoria"))
                {
                     if (User.Identity.Name.Split("@")[1].ToUpper() == "INTERMEDIC.COM.BR")

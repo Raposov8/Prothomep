@@ -54,16 +54,35 @@
 </div>
 <br />
 <div class="row">
-    <div class="col-md-3">
+    <div class="col-md-6">
         <div id="GraficoAberto" style="height:500px;"></div>
     </div>
-    <div class="col-md-3">
+    <div class="col-md-6">
         <div id="GraficoFatu" style="height:100%"></div>
     </div>
+    
+</div>
+
+<div class="row">
     <div class="col-md-6">
-        <div id="GraficoClienteFatu" style="height:100%"></div>
+        <div id="GraficoClienteFatuDenuo" style="height:100%"></div>
+    </div>
+    <div class="col-md-6">
+        <div id="GraficoFabricanteFatuDenuo" style="height:100%"></div>
     </div>
 </div>
+
+<div class="row">
+    <div class="col-md-6">
+        <div id="GraficoClienteFatuInter" style="height:100%"></div>
+    </div>
+    <div class="col-md-6">
+        <div id="GraficoFabricanteFatuInter" style="height:100%"></div>
+    </div>
+    
+</div>
+
+
 
 
 
@@ -96,6 +115,8 @@
         var grafico2 = [];
         var grafico3 = [];
         var grafico4 = [];
+        var grafico5 = [];
+        var grafico6 = [];
 
         grafico.push(['UNIDADES DE NEGOCIOS', 'Valores', { role: 'style' }]);
         grafico2.push(['UNIDADES DE NEGOCIOS', 'Valores']);
@@ -166,7 +187,7 @@
             );
 
             var options = {
-                title: 'FATURAMENTO POR CLIENTE',
+                title: 'FATURAMENTO POR CLIENTE INTERMEDIC',
                 legend: { position: "none" },
                 bar: { groupWidth: '50%' },
                 vAxis: {
@@ -178,7 +199,73 @@
             };
 
 
-            var chart = new google.charts.Bar(document.getElementById('GraficoClienteFatu'));
+            var chart = new google.charts.Bar(document.getElementById('GraficoClienteFatuInter'));
+
+            chart.draw(data, google.charts.Bar.convertOptions(options));
+        }
+        function drawChart4() {
+            var data = google.visualization.arrayToDataTable(
+                grafico4
+            );
+
+            var options = {
+                title: 'FATURAMENTO POR CLIENTE DENUO',
+                legend: { position: "none" },
+                bar: { groupWidth: '50%' },
+                vAxis: {
+                    format: 'currency',
+                    textStyle: { fontSize: 0 }
+                },
+                hAxis: { textPosition: 'none', textStyle: { fontSize: 0 } },
+
+            };
+
+
+            var chart = new google.charts.Bar(document.getElementById('GraficoClienteFatuDenuo'));
+
+            chart.draw(data, google.charts.Bar.convertOptions(options));
+        }
+        function drawChart5() {
+            var data = google.visualization.arrayToDataTable(
+                grafico5
+            );
+
+            var options = {
+                title: 'FATURAMENTO POR FABRICANTE DENUO',
+                legend: { position: "none" },
+                bar: { groupWidth: '50%' },
+                vAxis: {
+                    format: 'currency',
+                    textStyle: { fontSize: 0 }
+                },
+                hAxis: { textPosition: 'none', textStyle: { fontSize: 0 } },
+
+            };
+
+
+            var chart = new google.charts.Bar(document.getElementById('GraficoFabricanteFatuDenuo'));
+
+            chart.draw(data, google.charts.Bar.convertOptions(options));
+        }
+        function drawChart6() {
+            var data = google.visualization.arrayToDataTable(
+                grafico6
+            );
+
+            var options = {
+                title: 'FATURAMENTO POR FABRICANTE INTERMEDIC',
+                legend: { position: "none" },
+                bar: { groupWidth: '50%' },
+                vAxis: {
+                    format: 'currency',
+                    textStyle: { fontSize: 0 }
+                },
+                hAxis: { textPosition: 'none', textStyle: { fontSize: 0 } },
+
+            };
+
+
+            var chart = new google.charts.Bar(document.getElementById('GraficoFabricanteFatuInter'));
 
             chart.draw(data, google.charts.Bar.convertOptions(options));
         }
@@ -261,13 +348,52 @@
 
                         grafico3.push(['CLIENTES', 'Valores']);
 
-                        data.valores.clientes.forEach(x => {
+                        data.valores.clientesInter.forEach(x => {
 
                             grafico3.push([x.nome, x.valor])
 
                         })
 
                         drawChart3()
+
+                        grafico4 = [];
+
+                        grafico4.push(['CLIENTES', 'Valores']);
+
+                        data.valores.clientesDenuo.forEach(x => {
+
+                            grafico4.push([x.nome, x.valor])
+
+                        })
+
+                        drawChart4()
+
+                        grafico5 = [];
+
+                        grafico5.push(['FABRICANTES', 'Valores']);
+
+                        data.valores.fabricanteDenuo.forEach(x => {
+
+                            grafico5.push([x.nome, x.valor])
+
+                        })
+
+                        drawChart5()
+
+                        move(80)
+
+                        grafico6 = [];
+
+                        grafico6.push(['FABRICANTES', 'Valores']);
+
+                        data.valores.fabricanteInter.forEach(x => {
+
+                            grafico6.push([x.nome, x.valor])
+
+                        })
+
+                        drawChart6()
+
 
                         move(100)
 

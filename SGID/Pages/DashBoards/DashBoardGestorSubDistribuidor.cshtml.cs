@@ -19,10 +19,10 @@ namespace SGID.Pages.DashBoards
 
         public List<ValoresEmAberto> ValoresEmAberto { get; set; } = new List<ValoresEmAberto>();
         public List<ValoresEmAberto> Faturamento { get; set; } = new List<ValoresEmAberto>();
-        public List<ValoresEmAberto> Clientes { get; set; } = new List<ValoresEmAberto>();
-        public List<ValoresEmAberto> Baixados { get; set; } = new List<ValoresEmAberto>();
-        public List<ValoresEmAberto> ClientesBaixados { get; set; } = new List<ValoresEmAberto>();
-
+        public List<ValoresEmAberto> ClientesDenuo { get; set; } = new List<ValoresEmAberto>();
+        public List<ValoresEmAberto> ClientesInter { get; set; } = new List<ValoresEmAberto>();
+        public List<ValoresEmAberto> FabricanteInter { get; set; } = new List<ValoresEmAberto>();
+        public List<ValoresEmAberto> FabricanteDenuo { get; set; } = new List<ValoresEmAberto>();
         public string Ano { get; set; }
 
         public DashBoardGestorSubDistribuidorModel(ApplicationDbContext sgid, TOTVSDENUOContext denuo, TOTVSINTERContext inter)
@@ -87,9 +87,10 @@ namespace SGID.Pages.DashBoards
                                             Nome = SA10.A1Nreduz,
                                             Total = SD10.D2Total,
                                             Descon = SD10.D2Descon,
+                                            Fabricante = SB10.B1Fabric
                                         }).ToList();
                 var dolar = ProtheusInter.Sm2010s.Where(x => x.DELET != "*" && x.M2Moeda2 != 0).OrderByDescending(x => x.M2Data).FirstOrDefault();
-                Faturamento.Add(new ValoresEmAberto { Nome = "SUB INTER", Valor = FaturadoSubInter.Sum(c => c.Total) * dolar.M2Moeda2 });
+                Faturamento.Add(new ValoresEmAberto { Nome = "INTERMEDIC", Valor = FaturadoSubInter.Sum(c => c.Total) });
                 #endregion
 
                 #region SubDistribuidorDenuo
@@ -111,10 +112,10 @@ namespace SGID.Pages.DashBoards
                                             Nome = SA10.A1Nreduz,
                                             Total = SD10.D2Total,
                                             Descon = SD10.D2Descon,
-
+                                            Fabricante = SB10.B1Fabric
                                         }).ToList();
 
-                Faturamento.Add(new ValoresEmAberto { Nome = "SUB DENUO", Valor = FaturadoSubDenuo.Sum(c => c.Total) });
+                Faturamento.Add(new ValoresEmAberto { Nome = "DENUO", Valor = FaturadoSubDenuo.Sum(c => c.Total) });
 
 
                 var cliente = FaturadoSubDenuo.GroupBy(x => x.Nome).Select(x => new
@@ -129,30 +130,43 @@ namespace SGID.Pages.DashBoards
                     Total = x.Sum(c => c.Total)
                 }).OrderByDescending(x => x.Total).ToList();
 
+                var fabricanteInter = FaturadoSubInter.GroupBy(x => x.Fabricante).Select(x => new
+                {
+                    Nome = x.Key,
+                    Total = x.Sum(c => c.Total)
+                }).OrderByDescending(x => x.Total).ToList();
+
+                var fabricanteDenuo = FaturadoSubDenuo.GroupBy(x => x.Fabricante).Select(x => new
+                {
+                    Nome = x.Key,
+                    Total = x.Sum(c => c.Total)
+                }).OrderByDescending(x => x.Total).ToList();
+
                 cliente.ForEach(x =>
                 {
-                    Clientes.Add(new ValoresEmAberto { Nome = x.Nome, Valor = x.Total });
+                    ClientesDenuo.Add(new ValoresEmAberto { Nome = x.Nome, Valor = x.Total });
                 });
 
                 clienteInter.ForEach(x =>
                 {
-                    var checarcliente = Clientes.FirstOrDefault(c => c.Nome == x.Nome);
-                    if (checarcliente != null)
-                    {
-                        checarcliente.Valor += x.Total;
-                    }
-                    else
-                    {
-                        Clientes.Add(new ValoresEmAberto { Nome = x.Nome, Valor = x.Total });
-                    }
+                   ClientesInter.Add(new ValoresEmAberto { Nome = x.Nome, Valor = x.Total });
+                });
 
+                fabricanteDenuo.ForEach(x =>
+                {
+                    FabricanteDenuo.Add(new ValoresEmAberto { Nome = x.Nome, Valor = x.Total });
+                });
+
+                fabricanteInter.ForEach(x =>
+                {
+                    FabricanteInter.Add(new ValoresEmAberto { Nome = x.Nome, Valor = x.Total });
                 });
 
                 #endregion
 
                 #endregion
 
-                #region Baixados
+                /*#region Baixados
 
                 #region SubDistribuidorInter Baixa
 
@@ -250,14 +264,15 @@ namespace SGID.Pages.DashBoards
 
                 #endregion
 
-                #endregion
+                #endregion*/
 
                 var valores = new
                 {
                     Valores = Faturamento,
-                    Clientes = Clientes.OrderByDescending(x => x.Valor),
-                    Baixados = Baixados,
-                    ClientesBaixados = ClientesBaixados,
+                    ClientesDenuo = ClientesDenuo.OrderByDescending(x => x.Valor),
+                    ClientesInter = ClientesInter.OrderByDescending(x => x.Valor),
+                    FabricanteDenuo = FabricanteDenuo.OrderByDescending(x => x.Valor),
+                    FabricanteInter = FabricanteInter.OrderByDescending(x => x.Valor),
                     ValorTotal = Faturamento.Sum(x => x.Valor)
                 };
 
@@ -326,7 +341,7 @@ namespace SGID.Pages.DashBoards
 
                 var dolar = ProtheusInter.Sm2010s.Where(x => x.DELET != "*" && x.M2Moeda2 != 0).OrderByDescending(x => x.M2Data).FirstOrDefault();
 
-                ValoresEmAberto.Add(new ValoresEmAberto { Nome = "SUB INTER", Valor = SubdistribuidorInter * dolar.M2Moeda2 });
+                ValoresEmAberto.Add(new ValoresEmAberto { Nome = "INTERMEDIC", Valor = SubdistribuidorInter * dolar.M2Moeda2 });
                 #endregion
 
                 #region Sub Denuo
@@ -346,7 +361,7 @@ namespace SGID.Pages.DashBoards
 
                 var dolar2 = ProtheusDenuo.Sm2010s.Where(x => x.DELET != "*" && x.M2Moeda2 != 0).OrderByDescending(x => x.M2Data).FirstOrDefault();
 
-                ValoresEmAberto.Add(new ValoresEmAberto { Nome = "SUB DENUO", Valor = SubdistribuidorDenuo * dolar2.M2Moeda2 });
+                ValoresEmAberto.Add(new ValoresEmAberto { Nome = "DENUO", Valor = SubdistribuidorDenuo * dolar2.M2Moeda2 });
                 #endregion
 
                 #endregion
