@@ -12,5 +12,7 @@ namespace SGID.Data.ViewModel
         public Agendamentos Agendamento { get; set; }
         public string Patrimonio { get; set; }
         public string? Codigo { get; set; }
+        public bool CheckPatrimonio { get; set; }
+        public string? Observacao { get; set; }
     }
 }

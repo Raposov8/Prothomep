@@ -11,6 +11,7 @@ using SGID.Models.Diretoria;
 using SGID.Models.RH;
 using SGID.Data.ViewModel;
 using SGID.Models.Financeiro;
+using SGID.Models.Controladoria.FaturamentoNF;
 
 namespace SGID.Pages.DashBoards
 {
@@ -439,8 +440,9 @@ namespace SGID.Pages.DashBoards
                 Faturamento.Add(new ValoresEmAberto { Nome = "DENTAL", Valor = FatuDental.Sum(x => x.D2_TOTAL) + DevolucaoDental.Sum(x => x.Total) });
                 #endregion
 
-                #region SubDistribuidorInter
+                /*
 
+                 #region SubDistribuidorInter
                 var FaturadoSubInter = (from SD10 in ProtheusInter.Sd2010s
                                         join SF10 in ProtheusInter.Sf4010s on SD10.D2Tes equals SF10.F4Codigo
                                         join SB10 in ProtheusInter.Sb1010s on SD10.D2Cod equals SB10.B1Cod
@@ -458,11 +460,8 @@ namespace SGID.Pages.DashBoards
                                             Total = SD10.D2Total,
                                             Descon = SD10.D2Descon,
                                         }).ToList();
-
                 var dolar = ProtheusInter.Sm2010s.Where(x => x.DELET != "*" && x.M2Moeda2 != 0).OrderByDescending(x => x.M2Data).FirstOrDefault();
-
                 Faturamento.Add(new ValoresEmAberto { Nome = "SUB INTER", Valor = FaturadoSubInter.Sum(c => c.Total) * dolar.M2Moeda2 });
-
                 #endregion
 
                 #region SubDistribuidorDenuo
@@ -488,11 +487,106 @@ namespace SGID.Pages.DashBoards
 
                 var dolar2 = ProtheusDenuo.Sm2010s.Where(x => x.DELET != "*" && x.M2Moeda2 != 0).OrderByDescending(x => x.M2Data).FirstOrDefault();
 
-                Faturamento.Add(new ValoresEmAberto { Nome = "SUB DENUO", Valor = FaturadoSubDenuo.Sum(c => c.Total) * dolar2.M2Moeda2 });
+                Faturamento.Add(new ValoresEmAberto { Nome = "SUB DENUO", Valor = FaturadoSubDenuo.Sum(c => c.Total) });
+
+                #endregion*/
+
+
+                #region SubDistribuidorInter Baixa
+
+                var BaixaSubInter = (from SE50 in ProtheusInter.Se5010s
+                             join SE10 in ProtheusInter.Se1010s on new { PRE = SE50.E5Prefixo, Num = SE50.E5Numero, Par = SE50.E5Parcela, Tipo = SE50.E5Tipo, Cliente = SE50.E5Cliente, Loja = SE50.E5Loja }
+                             equals new { PRE = SE10.E1Prefixo, Num = SE10.E1Num, Par = SE10.E1Parcela, Tipo = SE10.E1Tipo, Cliente = SE10.E1Cliente, Loja = SE10.E1Loja }
+                             join SA10 in ProtheusInter.Sa1010s on SE50.E5Cliente equals SA10.A1Cod
+                             join SC50 in ProtheusInter.Sc5010s on SE10.E1Pedido equals SC50.C5Num into sr
+                             from c in sr.DefaultIfEmpty()
+                             where SE50.DELET != "*" && SE10.DELET != "*" && SE50.E5Recpag == "R"
+                             && (SE50.E5Tipodoc == "VL" || SE50.E5Tipodoc == "RA")
+                             && (SE50.E5Naturez == "111001" || SE50.E5Naturez == "111004" || SE50.E5Naturez == "111006")
+                             && (SE50.E5Banco == "001" || SE50.E5Banco == "237" || SE50.E5Banco == "341")
+                             && (int)(object)SE50.E5Data >= (int)(object)DataInicio
+                             && (int)(object)SE50.E5Data <= (int)(object)DataFim
+                             && SA10.A1Clinter == "S"
+                             select new RelatorioAreceberBaixa
+                             {
+                                 Prefixo = SE50.E5Prefixo,
+                                 Numero = SE50.E5Numero,
+                                 Parcela = SE50.E5Parcela,
+                                 TP = SE50.E5Tipo,
+                                 CliFor = SE50.E5Clifor,
+                                 NomeFor = SA10.A1Nome,
+                                 Naturez = SE50.E5Naturez,
+                                 Vencimento = SE10.E1Vencto,
+                                 Historico = SE50.E5Histor,
+                                 DataBaixa = SE50.E5Data,
+                                 ValorOrig = SE10.E1Valor,
+                                 JurMulta = SE50.E5Vljuros + SE50.E5Vlmulta,
+                                 Correcao = SE50.E5Vlcorre,
+                                 Descon = SE50.E5Vldesco,
+                                 Abatimento = 0,
+                                 Imposto = 0,
+                                 ValorAcess = 0,
+                                 TotalBaixado = SE50.E5Valor,
+                                 Banco = SE50.E5Banco,
+                                 DtDigi = SE50.E5Dtdigit,
+                                 Mot = SE50.E5Motbx,
+                                 Orig = SE50.E5Filorig,
+                                 Vendedor = c.C5Nomvend,
+                                 TipoCliente = SA10.A1Clinter
+                             }
+                            ).ToList();
+
+                Faturamento.Add(new ValoresEmAberto { Nome = "SUB INTER", Valor = BaixaSubInter.Sum(c => c.TotalBaixado) });
 
                 #endregion
 
+                #region SubDistribuidorDenuo Baixa
 
+                var BaixaSubDenuo = (from SE50 in ProtheusDenuo.Se5010s
+                                     join SE10 in ProtheusDenuo.Se1010s on new { PRE = SE50.E5Prefixo, Num = SE50.E5Numero, Par = SE50.E5Parcela, Tipo = SE50.E5Tipo, Cliente = SE50.E5Cliente, Loja = SE50.E5Loja }
+                                     equals new { PRE = SE10.E1Prefixo, Num = SE10.E1Num, Par = SE10.E1Parcela, Tipo = SE10.E1Tipo, Cliente = SE10.E1Cliente, Loja = SE10.E1Loja }
+                                     join SA10 in ProtheusDenuo.Sa1010s on SE50.E5Cliente equals SA10.A1Cod
+                                     join SC50 in ProtheusDenuo.Sc5010s on SE10.E1Pedido equals SC50.C5Num into sr
+                                     from c in sr.DefaultIfEmpty()
+                                     where SE50.DELET != "*" && SE10.DELET != "*" && SE50.E5Recpag == "R"
+                                     && (SE50.E5Tipodoc == "VL" || SE50.E5Tipodoc == "RA")
+                                     && (SE50.E5Naturez == "111001" || SE50.E5Naturez == "111004" || SE50.E5Naturez == "111006")
+                                     && (SE50.E5Banco == "001" || SE50.E5Banco == "237" || SE50.E5Banco == "341")
+                                     && (int)(object)SE50.E5Data >= (int)(object)DataInicio
+                                     && (int)(object)SE50.E5Data <= (int)(object)DataFim
+                                     && SA10.A1Clinter == "S"
+                                     select new RelatorioAreceberBaixa
+                                     {
+                                         Prefixo = SE50.E5Prefixo,
+                                         Numero = SE50.E5Numero,
+                                         Parcela = SE50.E5Parcela,
+                                         TP = SE50.E5Tipo,
+                                         CliFor = SE50.E5Clifor,
+                                         NomeFor = SA10.A1Nome,
+                                         Naturez = SE50.E5Naturez,
+                                         Vencimento = SE10.E1Vencto,
+                                         Historico = SE50.E5Histor,
+                                         DataBaixa = SE50.E5Data,
+                                         ValorOrig = SE10.E1Valor,
+                                         JurMulta = SE50.E5Vljuros + SE50.E5Vlmulta,
+                                         Correcao = SE50.E5Vlcorre,
+                                         Descon = SE50.E5Vldesco,
+                                         Abatimento = 0,
+                                         Imposto = 0,
+                                         ValorAcess = 0,
+                                         TotalBaixado = SE50.E5Valor,
+                                         Banco = SE50.E5Banco,
+                                         DtDigi = SE50.E5Dtdigit,
+                                         Mot = SE50.E5Motbx,
+                                         Orig = SE50.E5Filorig,
+                                         Vendedor = c.C5Nomvend,
+                                         TipoCliente = SA10.A1Clinter
+                                     }
+                            ).ToList();
+
+                Faturamento.Add(new ValoresEmAberto { Nome = "SUB DENUO", Valor = BaixaSubDenuo.Sum(c => c.TotalBaixado) });
+
+                #endregion
 
                 #endregion
 

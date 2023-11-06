@@ -313,19 +313,16 @@ namespace SGID.Pages.Logistica
             {
                 if(Reprovado != 0)
                 {
-
                     var Agendamento = SGID.Agendamentos.FirstOrDefault(x => x.Id == id);
 
                     Agendamento.UsuarioLogistica = User.Identity.Name.Split("@")[0].ToUpper();
                     Agendamento.DataLogistica = DateTime.Now;
                     Agendamento.StatusLogistica = 1;
 
-
                     SGID.Agendamentos.Update(Agendamento);
                     SGID.SaveChanges();
 
                     return LocalRedirect($"/logistica/listarlogistica/{Empresa}/2");
-
                 }
                 else
                 {
@@ -407,8 +404,6 @@ namespace SGID.Pages.Logistica
 
                     return LocalRedirect($"/logistica/listarlogistica/{Empresa}/4");
                 }
-
-                
             }
             catch (Exception E)
             {

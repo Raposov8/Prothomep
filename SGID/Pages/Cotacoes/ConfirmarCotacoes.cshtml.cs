@@ -330,7 +330,9 @@ namespace SGID.Pages.Cotacoes
                     {
                         AgendamentoId = id,
                         Patrimonio = patri.Descri,
-                        Codigo = patri.Codigo
+                        Codigo = patri.Codigo,
+                        Observacao = patri.Obs,
+                        CheckPatrimonio = patri.Check
                     };
 
                     SGID.PatrimoniosAgendamentos.Add(ProdXAgenda);

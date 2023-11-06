@@ -1,0 +1,283 @@
+﻿@page
+@model SGID.Pages.DashBoards.DashBoardGestorSubDistribuidorModel
+@{
+    ViewData["Title"] = "DASHBOARD";
+    Layout = "_LayoutGeral";
+}
+
+@Html.AntiForgeryToken()
+
+<div class="row">
+    <div class="col-sm-10 col-md-10">
+        <input hidden type="radio" class="btn-check" name="Tipo" id="Tipo13" value="13" autocomplete="off">
+        <label class="btn btn-outline-primary" for="Tipo13">TODO</label>
+
+        <input hidden type="radio" class="btn-check" name="Tipo" id="Tipo1" value="01" autocomplete="off">
+        <label class="btn btn-outline-primary" for="Tipo1">JAN</label>
+
+        <input hidden type="radio" class="btn-check" name="Tipo" id="Tipo2" value="02" autocomplete="off">
+        <label class="btn btn-outline-primary" for="Tipo2">FEV</label>
+
+        <input hidden type="radio" class="btn-check" name="Tipo" id="Tipo3" value="03" autocomplete="off">
+        <label class="btn btn-outline-primary" for="Tipo3">MAR</label>
+
+        <input hidden type="radio" class="btn-check" name="Tipo" id="Tipo4" value="04" autocomplete="off">
+        <label class="btn btn-outline-primary" for="Tipo4">ABR</label>
+
+        <input hidden type="radio" class="btn-check" name="Tipo" id="Tipo5" value="05" autocomplete="off">
+        <label class="btn btn-outline-primary" for="Tipo5">MAI</label>
+
+        <input hidden type="radio" class="btn-check" name="Tipo" id="Tipo6" value="06" autocomplete="off">
+        <label class="btn btn-outline-primary" for="Tipo6">JUN</label>
+
+        <input hidden type="radio" class="btn-check" name="Tipo" id="Tipo7" value="07" autocomplete="off">
+        <label class="btn btn-outline-primary" for="Tipo7">JUL</label>
+
+        <input hidden type="radio" class="btn-check" name="Tipo" id="Tipo8" value="08" autocomplete="off">
+        <label class="btn btn-outline-primary" for="Tipo8">AGO</label>
+
+        <input hidden type="radio" class="btn-check" name="Tipo" id="Tipo9" value="09" autocomplete="off">
+        <label class="btn btn-outline-primary" for="Tipo9">SET</label>
+
+        <input hidden type="radio" class="btn-check" name="Tipo" id="Tipo10" value="10" autocomplete="off">
+        <label class="btn btn-outline-primary" for="Tipo10">OUT</label>
+
+        <input hidden type="radio" class="btn-check" name="Tipo" id="Tipo11" value="11" autocomplete="off">
+        <label class="btn btn-outline-primary" for="Tipo11">NOV</label>
+
+        <input hidden type="radio" class="btn-check" name="Tipo" id="Tipo12" value="12" autocomplete="off">
+        <label class="btn btn-outline-primary" for="Tipo12">DEZ</label>
+    </div>
+    <div class="col-sm-2 col-md-2">
+        <input type="text" class="form-control" id="Ano" name="Ano" placeholder="Ano" value="@Model.Ano" />
+    </div>
+</div>
+<br />
+<div class="row">
+    <div class="col-md-3">
+        <div id="GraficoAberto" style="height:500px;"></div>
+    </div>
+    <div class="col-md-3">
+        <div id="GraficoFatu" style="height:100%"></div>
+    </div>
+    <div class="col-md-6">
+        <div id="GraficoClienteFatu" style="height:100%"></div>
+    </div>
+</div>
+
+
+
+
+<div class="modal fade" id="loading-modal" role="dialog" tabindex="-1" aria-labelledby="demo-default-modal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <!--Modal body style="display:flex; justify-content: center;"-->
+            <div class="modal-body ">
+                <div>
+                    <div class="progressbarWrapper">
+                        <span id="greenBar"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section scripts
+    {
+    <script type="text/javascript">
+        google.charts.load('current', { packages: ['bar'], language: 'pt-BR' });
+        google.charts.setOnLoadCallback(drawChart);
+
+        var formato = { minimumFractionDigits: 2, style: 'currency', currency: 'BRL' }
+
+        var grafico = [];
+        var grafico2 = [];
+        var grafico3 = [];
+        var grafico4 = [];
+
+        grafico.push(['UNIDADES DE NEGOCIOS', 'Valores', { role: 'style' }]);
+        grafico2.push(['UNIDADES DE NEGOCIOS', 'Valores']);
+
+
+        function move(obj) 
+        {
+            let elem = document.getElementById("greenBar");
+            var width = obj;
+
+            elem.style.width = width + '%';
+            elem.style.backgroundColor = '#00e600';
+            elem.innerHTML = width * 1 + '%';
+        }
+
+        function drawChart() {
+
+            var data = google.visualization.arrayToDataTable(
+                grafico
+            );
+
+            var options = {
+                title: 'VALOR EM ABERTO',
+                legend: { position: "none" },
+                bar: { groupWidth: '50%' },
+                vAxis: {
+                    textPosition: 'none',
+                    format: 'currency',
+                    textStyle: { fontSize: 0 }
+                },
+                hAxis: { textPosition: 'none' },
+                colors: ['#ffcc00']
+            };
+
+
+            var chart = new google.charts.Bar(document.getElementById('GraficoAberto'));
+
+            chart.draw(data, google.charts.Bar.convertOptions(options));
+        }
+
+        function drawChart2() {
+
+            var data = google.visualization.arrayToDataTable(
+                grafico2
+            );
+
+            var options = {
+                title: 'FATURAMENTO',
+                legend: { position: "none" },
+                bar: { groupWidth: '50%' },
+                vAxis: {
+                    format: 'currency',
+                    textStyle: { fontSize: 0 }
+                },
+                hAxis: { textPosition: 'none' },
+
+            };
+
+
+            var chart = new google.charts.Bar(document.getElementById('GraficoFatu'));
+
+            chart.draw(data, google.charts.Bar.convertOptions(options));
+        }
+
+        function drawChart3() {
+            var data = google.visualization.arrayToDataTable(
+                grafico3
+            );
+
+            var options = {
+                title: 'FATURAMENTO POR CLIENTE',
+                legend: { position: "none" },
+                bar: { groupWidth: '50%' },
+                vAxis: {
+                    format: 'currency',
+                    textStyle: { fontSize: 0 }
+                },
+                hAxis: { textPosition: 'none', textStyle: { fontSize: 0 } },
+
+            };
+
+
+            var chart = new google.charts.Bar(document.getElementById('GraficoClienteFatu'));
+
+            chart.draw(data, google.charts.Bar.convertOptions(options));
+        }
+
+    </script>
+    <script>
+        $(document).ready(function () {
+
+            var count = 0;
+
+            $('input[name=Tipo]').on('click', function (e) {
+
+                move(0)
+                $("#loading-modal").modal('show');
+
+
+                var Ano = $("#Ano").val();
+                var Mes = $('input[name=Tipo]:checked').val();
+
+                count = 0;
+
+                var chamadaUrl2 = `/dashboards/dashboardgestorsubdistribuidor?handler=EmAberto&&Mes=${Mes}&&Ano=${Ano}`
+
+                $.ajax({
+                    url: chamadaUrl2,
+                    type: "POST",
+                    contentType: "application/json;",
+                    dataType: 'json',
+                    headers: {
+                        "RequestVerificationToken": $('input:hidden[name="__RequestVerificationToken"]').val()
+                    },
+                    success: function (data) {
+
+                        grafico = [];
+
+                        grafico.push(['UNIDADES DE NEGOCIOS', 'Valores']);
+
+
+                        data.valores.forEach(x => {
+
+                            grafico.push([x.nome, x.valor])
+                        })
+
+                        drawChart()
+
+
+                        //$('#TotalAberto').html(`<div style="color:#3366cc"><b>Total: ${data.valorTotal.toLocaleString('pt-BR', formato)}</b></div>`);
+
+                        move(50)
+
+                    }
+                })
+
+                var chamadaUrl = `/dashboards/dashboardgestorsubdistribuidor?handler=Faturados&&Mes=${Mes}&&Ano=${Ano}`
+                $.ajax({
+                    url: chamadaUrl,
+                    type: "POST",
+                    contentType: "application/json;",
+                    dataType: 'json',
+                    headers: {
+                        "RequestVerificationToken": $('input:hidden[name="__RequestVerificationToken"]').val()
+                    },
+                    success: function (data) {
+
+                        $("#Tipos>div").remove();
+
+                        grafico2 = [];
+
+                        grafico2.push(['UNIDADES DE NEGOCIOS', 'Valores']);
+
+                        data.valores.valores.forEach(x => {
+
+                            grafico2.push([x.nome, x.valor])
+
+                        })
+
+                        drawChart2()
+
+                        grafico3 = [];
+
+                        grafico3.push(['CLIENTES', 'Valores']);
+
+                        data.valores.clientes.forEach(x => {
+
+                            grafico3.push([x.nome, x.valor])
+
+                        })
+
+                        drawChart3()
+
+                        move(100)
+
+                        $("#loading-modal").modal('hide')
+                    }
+                })
+                
+            })
+        })
+
+
+    </script>
+}

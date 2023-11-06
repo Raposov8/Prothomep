@@ -7,6 +7,7 @@
         public string KitBas { get; set; }
 
         public int Quantidade { get; set; }
-        public string Check { get; set; }
+        public bool Check { get; set; }
+        public string Obs { get; set; }
     }
 }
