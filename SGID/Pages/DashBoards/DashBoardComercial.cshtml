@@ -8,104 +8,241 @@
 <!--<div id="piechart" style="width: 900px; height: 500px;"></div>-->
 @Html.AntiForgeryToken()
 
-<div class="row justify-content-center">
-    <div class="col-xs-12 col-sm-4 col-md-4">
-        <div class="panel panel-colorful" style="background-color:lightgray">
-            <div class="panel-heading">
-                <h2 style="margin:0%;color:black;font-size:25px" class="panel-title text-center">Cirurgias Valorizadas</h2>
-            </div>
-            @if (User.Identity.Name.Split('@')[1] == "intermedic.com.br")
-            {
-                <div class="panel-body" style="padding-top:0px;">
-                    <a class="produto" href="/relatorios/cirurgias/cirurgiasvalorizadasinter/"><h3 class="text-center" style="margin-top:0%; color:black;font-size:50px">@Model.CirurgiasValorizadas</h3></a>
-                </div>
-            }
-            else
-            {
-                <div class="panel-body" style="padding-top:0px;">
-                    <a class="produto" href="/relatorios/cirurgias/cirurgiasvalorizadas/"><h3 class="text-center" style="margin-top:0%; color:black;font-size:50px">@Model.CirurgiasValorizadas</h3></a>
-                </div>
-            }
-        </div>
-        <div class="panel panel-colorful" style="background-color:lightgray">
-            <div class="panel-heading">
-                <h2 style="margin:0%;color:black" class="panel-title text-center"></h2>
-            </div>
-            <div class="panel-body" style="padding-top:0px;">
-                <a class="produto" href=""><h3 class="text-center" style="margin-top:0%; color:black;font-size:50px">R$ @string.Format("{0:N2}",Model.CirurgiasValorizadasValor)</h3></a>
-            </div>
-        </div>
+<div class="row">
+    <div class="col-sm-10 col-md-10">
+        <input hidden type="radio" class="btn-check" name="Tipo" id="Tipo13" value="13" autocomplete="off">
+        <label class="btn btn-outline-primary" for="Tipo13">TODO</label>
+
+        <input hidden type="radio" class="btn-check" name="Tipo" id="Tipo1" value="01" autocomplete="off">
+        <label class="btn btn-outline-primary" for="Tipo1">JAN</label>
+
+        <input hidden type="radio" class="btn-check" name="Tipo" id="Tipo2" value="02" autocomplete="off">
+        <label class="btn btn-outline-primary" for="Tipo2">FEV</label>
+
+        <input hidden type="radio" class="btn-check" name="Tipo" id="Tipo3" value="03" autocomplete="off">
+        <label class="btn btn-outline-primary" for="Tipo3">MAR</label>
+
+        <input hidden type="radio" class="btn-check" name="Tipo" id="Tipo4" value="04" autocomplete="off">
+        <label class="btn btn-outline-primary" for="Tipo4">ABR</label>
+
+        <input hidden type="radio" class="btn-check" name="Tipo" id="Tipo5" value="05" autocomplete="off">
+        <label class="btn btn-outline-primary" for="Tipo5">MAI</label>
+
+        <input hidden type="radio" class="btn-check" name="Tipo" id="Tipo6" value="06" autocomplete="off">
+        <label class="btn btn-outline-primary" for="Tipo6">JUN</label>
+
+        <input hidden type="radio" class="btn-check" name="Tipo" id="Tipo7" value="07" autocomplete="off">
+        <label class="btn btn-outline-primary" for="Tipo7">JUL</label>
+
+        <input hidden type="radio" class="btn-check" name="Tipo" id="Tipo8" value="08" autocomplete="off">
+        <label class="btn btn-outline-primary" for="Tipo8">AGO</label>
+
+        <input hidden type="radio" class="btn-check" name="Tipo" id="Tipo9" value="09" autocomplete="off">
+        <label class="btn btn-outline-primary" for="Tipo9">SET</label>
+
+        <input hidden type="radio" class="btn-check" name="Tipo" id="Tipo10" value="10" autocomplete="off">
+        <label class="btn btn-outline-primary" for="Tipo10">OUT</label>
+
+        <input hidden type="radio" class="btn-check" name="Tipo" id="Tipo11" value="11" autocomplete="off">
+        <label class="btn btn-outline-primary" for="Tipo11">NOV</label>
+
+        <input hidden type="radio" class="btn-check" name="Tipo" id="Tipo12" value="12" autocomplete="off">
+        <label class="btn btn-outline-primary" for="Tipo12">DEZ</label>
     </div>
-    <div class="col-sm-4 col-md-4">
-        <div class="panel panel-colorful" style="background-color:lightgray">
-            <div class="panel-heading">
-                <h2 style="margin:0%;color:#00b050;font-size:25px" class="panel-title text-center">Faturado Mês</h2>
-            </div>
-            @if (User.Identity.Name.Split('@')[1] == "intermedic.com.br")
-            {
-                <div class="panel-body" style="padding-top:0px;">
-                    <a class="produto" href="/relatorios/cirurgias/cirurgiasfaturadasinter/"><h3 class="text-center" style="margin-top:0%; color:#00b050;font-size:50px">@Model.FaturadoMes</h3></a>
-                </div>
-            }
-            else
-            {
-                <div class="panel-body" style="padding-top:0px;">
-                    <a class="produto" href="/relatorios/cirurgias/cirurgiasfaturadas/"><h3 class="text-center" style="margin-top:0%; color:#00b050;font-size:50px">@Model.FaturadoMes</h3></a>
-                </div>
-            }
-        </div>
-        <div class="panel panel-colorful" style="background-color:lightgray">
-            <div class="panel-heading">
-                <h2 style="margin:0%;color:#00b050" class="panel-title text-center"></h2>
-            </div>
-            <div class="panel-body" style="padding-top:0px;">
-                <a class="produto" href=""><h3 class="text-center" style="margin-top:0%; color:#00b050;font-size:50px">R$ @string.Format("{0:N2}",Model.FaturadoMesValor)</h3></a>
-            </div>
-        </div>
+    <div class="col-sm-2 col-md-2">
+        <input type="text" class="form-control" id="Ano" name="Ano" placeholder="Ano" value="@Model.Ano" />
     </div>
-    <div class="col-sm-4 col-md-4">
-        <div class="panel panel-colorful" style="background-color:lightgray">
-            <div class="panel-heading">
-                <h2 style="margin:0%;color:#fafa00;font-size:25px" class="panel-title text-center">Cirurgias Em Aberto</h2>
-            </div>
-            @if (User.Identity.Name.Split('@')[1] == "intermedic.com.br") 
-            {
-                <div class="panel-body" style="padding-top:0px;">
-                    <a class="produto" href="/relatorios/cirurgias/cirurgiasafaturarinter/"><h3 class="text-center" style="margin-top:0%; color:#fafa00;font-size:50px">@Model.CirurgiasEmAberto</h3></a>
+</div>
+
+<div id="Dash">
+    <div class="row justify-content-center">
+        <div class="col-xs-12 col-sm-4 col-md-4">
+            <div class="panel panel-colorful" style="background-color:lightgray">
+                <div class="panel-heading">
+                    <h2 style="margin:0%;color:black;font-size:25px" class="panel-title text-center">Cirurgias Valorizadas</h2>
                 </div>
-            }
-            else
-            {
-                <div class="panel-body" style="padding-top:0px;">
-                    <a class="produto" href="/relatorios/cirurgias/cirurgiasafaturar/"><h3 class="text-center" style="margin-top:0%; color:#fafa00;font-size:50px">@Model.CirurgiasEmAberto</h3></a>
+                @if (User.Identity.Name.Split('@')[1] == "intermedic.com.br")
+                {
+                    <div class="panel-body" style="padding-top:0px;">
+                        <a class="produto" href="/relatorios/cirurgias/cirurgiasvalorizadasinter/"><h3 class="text-center" style="margin-top:0%; color:black;font-size:50px">@Model.CirurgiasValorizadas</h3></a>
+                    </div>
+                }
+                else
+                {
+                    <div class="panel-body" style="padding-top:0px;">
+                        <a class="produto" href="/relatorios/cirurgias/cirurgiasvalorizadas/"><h3 class="text-center" style="margin-top:0%; color:black;font-size:50px">@Model.CirurgiasValorizadas</h3></a>
+                    </div>
+                }
+            </div>
+            <div class="panel panel-colorful" style="background-color:lightgray">
+                <div class="panel-heading">
+                    <h2 style="margin:0%;color:black" class="panel-title text-center"></h2>
                 </div>
-            }
-        </div>
-        <div class="panel panel-colorful" style="background-color:lightgray">
-            <div class="panel-heading">
-                <h2 style="margin:0%;color:#fafa00" class="panel-title text-center"></h2>
-            </div>
-            <div class="panel-body" style="padding-top:0px;">
-                <a class="produto" href=""><h3 class="text-center" style="margin-top:0%; color:#fafa00;font-size:50px">R$ @string.Format("{0:N2}",Model.CirurgiasEmAbertoValor)</h3></a>
+                <div class="panel-body" style="padding-top:0px;">
+                    <a class="produto" href=""><h3 class="text-center" style="margin-top:0%; color:black;font-size:50px">R$ @string.Format("{0:N2}",Model.CirurgiasValorizadasValor)</h3></a>
+                </div>
             </div>
         </div>
-    </div>
-    <div class="col-xs-12 col-sm-4 col-md-4">
-        <div class="panel panel-colorful" style="background-color:lightgray">
-            <div class="panel-heading">
-                <h2 style="margin:0%;color:#0099ff" class="panel-title text-center">Meta</h2>
+        <div class="col-sm-4 col-md-4">
+            <div class="panel panel-colorful" style="background-color:lightgray">
+                <div class="panel-heading">
+                    <h2 style="margin:0%;color:#00b050;font-size:25px" class="panel-title text-center">Faturado Mês</h2>
+                </div>
+                @if (User.Identity.Name.Split('@')[1] == "intermedic.com.br")
+                {
+                    <div class="panel-body" style="padding-top:0px;">
+                        <a class="produto" href="/relatorios/cirurgias/cirurgiasfaturadasinter/"><h3 class="text-center" style="margin-top:0%; color:#00b050;font-size:50px">@Model.FaturadoMes</h3></a>
+                    </div>
+                }
+                else
+                {
+                    <div class="panel-body" style="padding-top:0px;">
+                        <a class="produto" href="/relatorios/cirurgias/cirurgiasfaturadas/"><h3 class="text-center" style="margin-top:0%; color:#00b050;font-size:50px">@Model.FaturadoMes</h3></a>
+                    </div>
+                }
             </div>
-            <div class="panel-body" style="padding-top:0px;">
-                <a class="produto" href=""><h3 class="text-center" style="margin-top:0%; color:#0099ff;font-size:50px">R$ @string.Format("{0:N2}",Model.Meta)</h3></a>
+            <div class="panel panel-colorful" style="background-color:lightgray">
+                <div class="panel-heading">
+                    <h2 style="margin:0%;color:#00b050" class="panel-title text-center"></h2>
+                </div>
+                <div class="panel-body" style="padding-top:0px;">
+                    <a class="produto" href=""><h3 class="text-center" style="margin-top:0%; color:#00b050;font-size:50px">R$ @string.Format("{0:N2}",Model.FaturadoMesValor)</h3></a>
+                </div>
             </div>
         </div>
-        <div class="panel panel-colorful" style="background-color:lightgray">
-            <div class="panel-heading">
-                <h2 style="margin:0%;color:#0099ff" class="panel-title text-center">Comissão</h2>
+        <div class="col-sm-4 col-md-4">
+            <div class="panel panel-colorful" style="background-color:lightgray">
+                <div class="panel-heading">
+                    <h2 style="margin:0%;color:#fafa00;font-size:25px" class="panel-title text-center">Cirurgias Em Aberto</h2>
+                </div>
+                @if (User.Identity.Name.Split('@')[1] == "intermedic.com.br") 
+                {
+                    <div class="panel-body" style="padding-top:0px;">
+                        <a class="produto" href="/relatorios/cirurgias/cirurgiasafaturarinter/"><h3 class="text-center" style="margin-top:0%; color:#fafa00;font-size:50px">@Model.CirurgiasEmAberto</h3></a>
+                    </div>
+                }
+                else
+                {
+                    <div class="panel-body" style="padding-top:0px;">
+                        <a class="produto" href="/relatorios/cirurgias/cirurgiasafaturar/"><h3 class="text-center" style="margin-top:0%; color:#fafa00;font-size:50px">@Model.CirurgiasEmAberto</h3></a>
+                    </div>
+                }
             </div>
-            <div class="panel-body" style="padding-top:0px;">
-                <a class="produto" href=""><h3 class="text-center" style="margin-top:0%; color:#0099ff;font-size:50px">R$ @string.Format("{0:N2}",Model.Comissao)</h3></a>
+            <div class="panel panel-colorful" style="background-color:lightgray">
+                <div class="panel-heading">
+                    <h2 style="margin:0%;color:#fafa00" class="panel-title text-center"></h2>
+                </div>
+                <div class="panel-body" style="padding-top:0px;">
+                    <a class="produto" href=""><h3 class="text-center" style="margin-top:0%; color:#fafa00;font-size:50px">R$ @string.Format("{0:N2}",Model.CirurgiasEmAbertoValor)</h3></a>
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-12 col-sm-4 col-md-4">
+            <div class="panel panel-colorful" style="background-color:lightgray">
+                <div class="panel-heading">
+                    <h2 style="margin:0%;color:#0099ff" class="panel-title text-center">Meta</h2>
+                </div>
+                <div class="panel-body" style="padding-top:0px;">
+                    <a class="produto" href=""><h4 class="text-center" style="margin-top:0%; color:#0099ff;font-size:50px">R$ @string.Format("{0:N2}",Model.Meta)</h4></a>
+                </div>
+            </div>
+            <div class="panel panel-colorful" style="background-color:lightgray">
+                <div class="panel-heading">
+                    <h2 style="margin:0%;color:#0099ff" class="panel-title text-center">Comissão</h2>
+                </div>
+                <div class="panel-body" style="padding-top:0px;">
+                    <a class="produto" href=""><h3 class="text-center" style="margin-top:0%; color:#0099ff;font-size:50px">R$ @string.Format("{0:N2}",Model.Comissao)</h3></a>
+                </div>
             </div>
         </div>
     </div>
 </div>
+
+<div class="modal fade" id="loading-modal" role="dialog" tabindex="-1" aria-labelledby="demo-default-modal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <!--Modal body style="display:flex; justify-content: center;"-->
+            <div class="modal-body ">
+                <div>
+                    <div class="progressbarWrapper">
+                        <span id="greenBar"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section scripts
+{
+
+    <script type="text/javascript">
+        $(document).ready(function () 
+        {
+
+            var formato = { minimumFractionDigits: 2, style: 'currency', currency: 'BRL' }
+
+            var data = "";
+
+            function move(obj) {
+                let elem = document.getElementById("greenBar");
+                var width = obj;
+
+                elem.style.width = width + '%';
+                elem.style.backgroundColor = '#00e600';
+                elem.innerHTML = width * 1 + '%';
+            }
+
+            var count = 0;
+
+            $('input[name=Tipo]').on('click', function (e) {
+
+                move(0)
+                $("#loading-modal").modal('show');
+
+
+                var Ano = $("#Ano").val();
+                var Mes = $('input[name=Tipo]:checked').val();
+
+                count = 0;
+                var empresa = '@Model.Empresa';
+                move(40)
+                var chamadaUrl = `/dashboards/dashboardcomercial/${empresa}?handler=Dash&&Mes=${Mes}&&Ano=${Ano}`
+                $.ajax({
+                    url: chamadaUrl,
+                    type: "POST",
+                    contentType: "application/json;",
+                    dataType: 'json',
+                    headers: {
+                        "RequestVerificationToken": $('input:hidden[name="__RequestVerificationToken"]').val()
+                    },
+                    success: function (data) 
+                    {
+                        $("#Dash>div").remove();
+
+                        @if (User.Identity.Name.Split('@')[1] == "intermedic.com.br")
+                        {
+                            @:linha =`<div class="row justify-content-center"><div class="col-xs-12 col-sm-4 col-md-4"><div class="panel panel-colorful" style = "background-color:lightgray" ><div class="panel-heading" ><h2 style="margin:0%;color:black;font-size:25px" class="panel-title text-center" > Cirurgias Valorizadas </h2></div><div class="panel-body" style = "padding-top:0px;" ><a class="produto" href = "/relatorios/cirurgias/cirurgiasvalorizadasinter/"><h3 class="text-center" style="margin-top:0%; color:black;font-size:50px">${data.cirurgiasValorizadas}</h3></a></div></div><div class="panel panel-colorful" style = "background-color:lightgray" ><div class="panel-heading"><h2 style="margin:0%;color:black" class="panel-title text-center"></h2></div><div class="panel-body" style="padding-top:0px;"><a class="produto" href= "" > <h3 class="text-center" style = "margin-top:0%; color:black;font-size:50px" >${data.cirurgiasValorizadasValor.toLocaleString('pt-BR', formato)}</h3></a></div></div></div><div class="col-sm-4 col-md-4"><div class="panel panel-colorful" style = "background-color:lightgray"><div class="panel-heading" ><h2 style="margin:0%;color:#00b050;font-size:25px" class="panel-title text-center" > Faturado Mês </h2></div><div class="panel-body" style = "padding-top:0px;" ><a class="produto" href = "/relatorios/cirurgias/cirurgiasfaturadasinter/" > <h3 class="text-center" style = "margin-top:0%; color:#00b050;font-size:50px" > ${data.faturadoMes}</h3></a></div></div><div class="panel panel-colorful" style = "background-color:lightgray" ><div class="panel-heading" ><h2 style="margin:0%;color:#00b050" class="panel-title text-center" > </h2></div><div class="panel-body" style = "padding-top:0px;"><a class="produto" href = "" ><h3 class="text-center" style = "margin-top:0%; color:#00b050;font-size:50px" >${data.faturadoMesValor.toLocaleString('pt-BR', formato)}</h3></a></div></div></div><div class="col-sm-4 col-md-4" ><div class="panel panel-colorful" style = "background-color:lightgray" ><div class="panel-heading" ><h2 style="margin:0%;color:#fafa00;font-size:25px" class="panel-title text-center" >Cirurgias Em Aberto </h2></div><div class="panel-body" style = "padding-top:0px;" ><a class="produto" href = "/relatorios/cirurgias/cirurgiasafaturarinter/" > <h3 class="text-center" style = "margin-top:0%; color:#fafa00;font-size:50px" >${data.cirurgiasEmAberto}</h3></a ></div></div><div class="panel panel-colorful" style = "background-color:lightgray" ><div class="panel-heading" ><h2 style="margin:0%;color:#fafa00" class="panel-title text-center" > </h2></div><div class="panel-body" style = "padding-top:0px;" ><a class="produto" href = "" > <h3 class="text-center" style = "margin-top:0%; color:#fafa00;font-size:50px" > ${data.cirurgiasEmAbertoValor.toLocaleString('pt-BR', formato)}</h3></a></div></div></div><div class="col-xs-12 col-sm-4 col-md-4"><div class="panel panel-colorful" style = "background-color:lightgray"><div class="panel-heading"><h2 style="margin:0%;color:#0099ff" class="panel-title text-center" > Meta </h2></div><div class="panel-body" style = "padding-top:0px;" ><a class="produto" href = "" > <h4 class="text-center" style = "margin-top:0%; color:#0099ff;font-size:40px" >${data.meta.toLocaleString('pt-BR', formato)}</h4></a ></div></div><div class="panel panel-colorful" style = "background-color:lightgray" ><div class="panel-heading" ><h2 style="margin:0%;color:#0099ff" class="panel-title text-center" > Comissão </h2></div><div class="panel-body" style = "padding-top:0px;"><a class="produto" href = "" > <h3 class="text-center" style = "margin-top:0%; color:#0099ff;font-size:50px">${data.comissao.toLocaleString('pt-BR', formato)}</h3></a></div></div></div></div>`
+
+                        }
+                        else
+                        {
+                            @:linha = `<div class="row justify-content-center"><div class="col-xs-12 col-sm-4 col-md-4"><div class="panel panel-colorful" style = "background-color:lightgray" ><div class="panel-heading" ><h2 style="margin:0%;color:black;font-size:25px" class="panel-title text-center" > Cirurgias Valorizadas </h2></div><div class="panel-body" style = "padding-top:0px;" ><a class="produto" href = "/relatorios/cirurgias/cirurgiasvalorizadas/"> <h3 class="text-center" style="margin-top:0%; color:black;font-size:50px"> ${data.cirurgiasValorizadas}</h3></a></div></div><div class="panel panel-colorful" style = "background-color:lightgray" ><div class="panel-heading"><h2 style="margin:0%;color:black" class="panel-title text-center"></h2></div><div class="panel-body" style="padding-top:0px;"><a class="produto" href = "" > <h3 class="text-center" style = "margin-top:0%; color:black;font-size:50px" > ${data.cirurgiasValorizadasValor.toLocaleString('pt-BR', formato)}</h3></a></div></div></div><div class="col-sm-4 col-md-4"><div class="panel panel-colorful" style = "background-color:lightgray"><div class="panel-heading" ><h2 style="margin:0%;color:#00b050;font-size:25px" class="panel-title text-center" > Faturado Mês </h2></div><div class="panel-body" style = "padding-top:0px;" ><a class="produto" href = "/relatorios/cirurgias/cirurgiasfaturadas/" > <h3 class="text-center" style = "margin-top:0%; color:#00b050;font-size:50px" > ${data.faturadoMes}</h3></a ></div></div><div class="panel panel-colorful" style = "background-color:lightgray" ><div class="panel-heading" ><h2 style="margin:0%;color:#00b050" class="panel-title text-center" > </h2></div><div class="panel-body" style = "padding-top:0px;" ><a class="produto" href = "" > <h3 class="text-center" style = "margin-top:0%; color:#00b050;font-size:50px" >${data.faturadoMesValor.toLocaleString('pt-BR', formato)}</h3></a></div></div></div><div class="col-sm-4 col-md-4" ><div class="panel panel-colorful" style = "background-color:lightgray" ><div class="panel-heading" ><h2 style="margin:0%;color:#fafa00;font-size:25px" class="panel-title text-center" > Cirurgias Em Aberto </h2></div><div class="panel-body" style = "padding-top:0px;" ><a class="produto" href = "/relatorios/cirurgias/cirurgiasafaturar/" > <h3 class="text-center" style = "margin-top:0%; color:#fafa00;font-size:50px" >${data.cirurgiasEmAberto}</h3></a ></div></div><div class="panel panel-colorful" style = "background-color:lightgray" ><div class="panel-heading" ><h2 style="margin:0%;color:#fafa00" class="panel-title text-center" > </h2></div><div class="panel-body" style = "padding-top:0px;" ><a class="produto" href = "" > <h3 class="text-center" style = "margin-top:0%; color:#fafa00;font-size:50px" > ${data.cirurgiasEmAbertoValor.toLocaleString('pt-BR', formato)}</h3></a></div></div></div><div class="col-xs-12 col-sm-4 col-md-4"><div class="panel panel-colorful" style = "background-color:lightgray"><div class="panel-heading"><h2 style="margin:0%;color:#0099ff" class="panel-title text-center" > Meta </h2></div><div class="panel-body" style = "padding-top:0px;" ><a class="produto" href = "" > <h4 class="text-center" style = "margin-top:0%; color:#0099ff;font-size:40px" >${data.meta.toLocaleString('pt-BR', formato)}</h4></a ></div></div><div class="panel panel-colorful" style = "background-color:lightgray" ><div class="panel-heading" ><h2 style="margin:0%;color:#0099ff" class="panel-title text-center" > Comissão </h2></div><div class="panel-body" style = "padding-top:0px;" ><a class="produto" href = "" > <h3 class="text-center" style = "margin-top:0%; color:#0099ff;font-size:50px" >${data.comissao.toLocaleString('pt-BR', formato)}</h3></a></div></div></div></div>`
+                        }
+
+                        move(99)
+
+                        $("#Dash").append(linha)
+                        $("#loading-modal").modal('hide');
+                    }
+                })
+
+
+            })
+
+
+        })
+
+    </script>
+}
