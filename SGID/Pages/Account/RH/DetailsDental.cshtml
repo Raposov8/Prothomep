@@ -2,7 +2,14 @@
 @model SGID.Pages.Account.RH.DetailsDentalModel
 @{
     ViewBag.Title = "Detalhes Comercial";
-    Layout = "_LayoutGeral";
+    if (User.IsInRole("Diretoria") && !User.IsInRole("Admin"))
+    {
+        Layout = "_LayoutDiretoria";
+    }
+    else
+    {
+        Layout = "_LayoutGeral";
+    }
 }
 
 <h2>Detalhes</h2>

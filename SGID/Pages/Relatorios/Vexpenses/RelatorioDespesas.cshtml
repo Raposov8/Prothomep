@@ -2,7 +2,14 @@
 @model SGID.Pages.Relatorios.Vexpenses.RelatorioDespesasModel
 @{
     ViewData["Title"] = "Relatorio Despesas";
-    Layout = "_LayoutGeral";
+    if (User.IsInRole("Diretoria") && !User.IsInRole("Admin"))
+    {
+        Layout = "_LayoutDiretoria";
+    }
+    else
+    {
+        Layout = "_LayoutGeral";
+    }
 }
 
 @using (@Html.BeginForm(FormMethod.Post))

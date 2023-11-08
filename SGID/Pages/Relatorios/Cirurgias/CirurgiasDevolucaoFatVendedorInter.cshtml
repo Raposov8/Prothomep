@@ -2,7 +2,14 @@
 @model SGID.Pages.Relatorios.Cirurgias.CirurgiasDevolucaoFatVendedorInterModel
 @{
     ViewData["Title"] = "Relatorio Devolução Faturado Inter";
-    Layout = "_LayoutGeral";
+    if (User.IsInRole("Diretoria") && !User.IsInRole("Admin"))
+    {
+        Layout = "_LayoutDiretoria";
+    }
+    else
+    {
+        Layout = "_LayoutGeral";
+    }
 }
 
 @using(@Html.BeginForm(FormMethod.Post)){

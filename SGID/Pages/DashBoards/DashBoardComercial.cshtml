@@ -2,7 +2,14 @@
 @model SGID.Pages.DashBoards.DashBoardComercialModel
 @{
     ViewData["Title"] = "DASHBOARD";
-    Layout = "_LayoutGeral";
+    if (User.IsInRole("Diretoria") && !User.IsInRole("Admin"))
+    {
+        Layout = "_LayoutDiretoria";
+    }
+    else
+    {
+        Layout = "_LayoutGeral";
+    }
 }
 
 <!--<div id="piechart" style="width: 900px; height: 500px;"></div>-->

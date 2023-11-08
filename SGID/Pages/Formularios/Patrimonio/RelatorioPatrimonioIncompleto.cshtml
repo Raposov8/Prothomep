@@ -2,7 +2,14 @@
 @model SGID.Pages.Formularios.Patrimonio.RelatorioPatrimonioIncompletoModel
 @{
     ViewData["Title"] = "Relatorio Patrimonio Incompleto";
-    Layout = "_LayoutGeral";
+    if (User.IsInRole("Diretoria") && !User.IsInRole("Admin"))
+    {
+        Layout = "_LayoutDiretoria";
+    }
+    else
+    {
+        Layout = "_LayoutGeral";
+    }
 }
 
 <div class="panel">

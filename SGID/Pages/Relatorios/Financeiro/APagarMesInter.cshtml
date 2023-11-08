@@ -2,7 +2,14 @@
 @model SGID.Pages.Relatorios.Financeiro.APagarMesInterModel
 @{
     ViewData["Title"] = "Relatorio A Pagar Mes";
-    Layout = "_LayoutGeral";
+    if (User.IsInRole("Diretoria") && !User.IsInRole("Admin"))
+    {
+        Layout = "_LayoutDiretoria";
+    }
+    else
+    {
+        Layout = "_LayoutGeral";
+    }
 }
 
 @using(@Html.BeginForm(FormMethod.Post)){

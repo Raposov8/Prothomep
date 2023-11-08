@@ -2,7 +2,14 @@
 @model SGID.Pages.Instrumentador.EditarInstrumentadorModel
 @{
     ViewData["Title"] = "Editar Instrumentador";
-    Layout = "_LayoutGeral";
+    if (User.IsInRole("Diretoria") && !User.IsInRole("Admin"))
+    {
+        Layout = "_LayoutDiretoria";
+    }
+    else
+    {
+        Layout = "_LayoutGeral";
+    }
 }
 
 

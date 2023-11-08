@@ -2,7 +2,14 @@
 @model SGID.Pages.Relatorios.RH.CirurgiaAFaturarInterModel
 @{
     ViewData["Title"] = "Relatorio Cirurgias a Faturar Inter";
-    Layout = "_LayoutGeral";
+    if (User.IsInRole("Diretoria") && !User.IsInRole("Admin"))
+    {
+        Layout = "_LayoutDiretoria";
+    }
+    else
+    {
+        Layout = "_LayoutGeral";
+    }
 }
 
 @using (@Html.BeginForm(FormMethod.Post))

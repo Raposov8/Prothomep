@@ -2,7 +2,14 @@
 @model SGID.Pages.Cotacoes.DashBoardCotacoesModel
 @{
     ViewData["Title"] = "DASHBOARD";
-    Layout = "_LayoutGeral";
+    if (User.IsInRole("Diretoria") && !User.IsInRole("Admin"))
+    {
+        Layout = "_LayoutDiretoria";
+    }
+    else
+    {
+        Layout = "_LayoutGeral";
+    }
 }
 
 

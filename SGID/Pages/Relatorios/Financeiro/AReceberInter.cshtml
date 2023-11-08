@@ -2,7 +2,14 @@
 @model SGID.Pages.Relatorios.Financeiro.AReceberInterModel
 @{
     ViewData["Title"] = "Relatorio A Receber Baixa Inter";
-    Layout = "_LayoutGeral";
+    if (User.IsInRole("Diretoria") && !User.IsInRole("Admin"))
+    {
+        Layout = "_LayoutDiretoria";
+    }
+    else
+    {
+        Layout = "_LayoutGeral";
+    }
 }
 
 

@@ -2,7 +2,14 @@
 @model SGID.Pages.Account.RH.ListarTimeModel
 @{
     ViewData["Title"] = "Comissões Comercial";
-    Layout = "_LayoutGeral";
+    if (User.IsInRole("Diretoria") && !User.IsInRole("Admin"))
+    {
+        Layout = "_LayoutDiretoria";
+    }
+    else
+    {
+        Layout = "_LayoutGeral";
+    }
 }
 
 <h2>Time</h2>

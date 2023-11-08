@@ -614,7 +614,7 @@ namespace SGID.Pages.Qualidade
                 TextoResposta = $"Error: Produto:{produto},campo {campo} numero de caracteris excedido";
 
                 string user = User.Identity.Name.Split("@")[0].ToUpper();
-                Logger.Log(e, SGID, "Importar Produto Denuo", user);
+                Logger.Log(e, SGID, "Importar Produto Inter", user);
 
                 return Page();
             }

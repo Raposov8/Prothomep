@@ -2,7 +2,14 @@
 @model SGID.Pages.Relatorios.Cirurgias.CirurgiasFaturadasDenuoRJModel
 @{
     ViewData["Title"] = "Relatorio Cirurgias Faturadas Denuo RJ";
-    Layout = "_LayoutGeral";
+    if (User.IsInRole("Diretoria") && !User.IsInRole("Admin"))
+    {
+        Layout = "_LayoutDiretoria";
+    }
+    else
+    {
+        Layout = "_LayoutGeral";
+    }
 }
 
 

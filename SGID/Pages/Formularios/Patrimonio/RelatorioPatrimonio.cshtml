@@ -2,7 +2,14 @@
 @model SGID.Pages.Formularios.Patrimonio.RelatorioPatrimonioModel
 @{
     ViewData["Title"] = "Consulta Por Kit Base";
-    Layout = "_LayoutGeral";
+    if (User.IsInRole("Diretoria") && !User.IsInRole("Admin"))
+    {
+        Layout = "_LayoutDiretoria";
+    }
+    else
+    {
+        Layout = "_LayoutGeral";
+    }
 }
 
 

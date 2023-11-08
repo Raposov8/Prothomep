@@ -2,7 +2,14 @@
 @model SGID.Pages.Relatorios.SubDistribuidorNFaturadoModel
 @{
     ViewData["Title"] = "Relatorio SD Não Faturado Denuo";
-    Layout = "_LayoutGeral";
+    if (User.IsInRole("Diretoria") && !User.IsInRole("Admin"))
+    {
+        Layout = "_LayoutDiretoria";
+    }
+    else
+    {
+        Layout = "_LayoutGeral";
+    }
 }
 
 

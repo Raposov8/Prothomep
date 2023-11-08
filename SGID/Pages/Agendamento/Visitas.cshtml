@@ -2,7 +2,14 @@
 @model SGID.Pages.Agendamento.VisitasModel
 @{
     ViewData["Title"] = "Agendamento Visitas";
-    Layout = "_LayoutGeral";
+    if (User.IsInRole("Diretoria") && !User.IsInRole("Admin"))
+    {
+        Layout = "_LayoutDiretoria";
+    }
+    else
+    {
+        Layout = "_LayoutGeral";
+    }
 }
 
 @Html.AntiForgeryToken()
@@ -104,31 +111,43 @@
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="form-group col-sm-3 col-md-3">
+                                    <div class="form-group col-sm-12 col-md-12">
                                         <label class="Label">Assunto</label>
                                         <input class="form-control" id="Assunto" name="Assunto" oninput="this.value = this.value.toUpperCase()" required />
                                     </div>
-                                    <div class="form-group col-sm-9 col-md-9">
+                                    <div class="form-group col-sm-12 col-md-12">
                                         <label class="Label">Motivo da visita</label>
                                         <div class="row">
                                             <div class="col-sm-2 col-md-2">
                                                 <input hidden type="radio" class="btn-check" name="MotVis" id="MotVis1" value="VENDA" autocomplete="off"  required>
                                                 <label class="btn btn-outline-primary" for="MotVis1">VENDA</label>
                                             </div>
-                                            <div class="col-sm-3 col-md-3">
+                                            <div class="col-sm-2 col-md-2">
                                                 <input hidden type="radio" class="btn-check" name="MotVis" id="MotVis2" value="INDICAÇÃO" autocomplete="off"  required>
                                                 <label class="btn btn-outline-primary" for="MotVis2">INDICAÇÃO</label>
                                             </div>
-                                            <div class="col-sm-4 col-md-4">
+                                            <div class="col-sm-3 col-md-3">
                                                 <input hidden type="radio" class="btn-check" name="MotVis" id="MotVis3" value="ACOMPANHAMENTO" autocomplete="off"  required>
                                                 <label class="btn btn-outline-primary" for="MotVis3">ACOMPANHAMENTO</label>
                                             </div>
                                             <div class="col-sm-3 col-md-3">
+                                            <input hidden type="radio" class="btn-check" name="MotVis" id="MotVis6" value="CAIXA INSTRUMENTAL" autocomplete="off" required>
+                                                <label class="btn btn-outline-primary" for="MotVis6">CAIXA INSTRUMENTAL</label>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-2 col-md-2">
                                                 <input hidden type="radio" class="btn-check" name="MotVis" id="MotVis4" value="RECLAMAÇÃO" autocomplete="off" required>
                                                 <label class="btn btn-outline-primary" for="MotVis4">RECLAMAÇÃO</label>
                                             </div>
+                                            <div class="col-sm-2 col-md-2">
+                                                <input hidden type="radio" class="btn-check" name="MotVis" id="MotVis5" value="EVENTO" autocomplete="off" required>
+                                                <label class="btn btn-outline-primary" for="MotVis5">EVENTO</label>
+                                            </div>
+                                            
                                         </div>
                                     </div>
+                                    
                                     <div class="form-group col-sm-12 col-md-12">
                                         <label class="Label">Observação</label>
                                         <textarea type="text" class="form-control" id="Obs" name="Obs" oninput="this.value = this.value.toUpperCase()"></textarea>
@@ -277,7 +296,6 @@
         </div>
 </div>
 
-
 <div class="modal fade" id="PopupCancelada-modal" role="dialog" tabindex="-1" aria-labelledby="demo-default-modal" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -340,7 +358,7 @@
             <div class="modal-body">
                 <div class="col-md-12">
                     <label>Motivo Cancelamento</label>
-                    <textarea type="text" class="form-control" id="MotivoRejeicao" name="MotivoRejeicao">
+                    <textarea type="text" class="form-control" id="MotivoRejeicao" name="MotivoRejeicao" >
                     </textarea>
                 </div>
             </div>
@@ -479,7 +497,7 @@
 </div>
 
 @section Scripts
-    {
+{
     <link href="~/lib/fullcalendar/fullcalendar.min.css" rel='stylesheet' />
     <script src="~/lib/moment.js/moment.min.js"></script>
     <script src="~/lib/fullcalendar/fullcalendar.min.js"></script>
@@ -697,8 +715,6 @@
                     $("#PopupCancelada-modal").modal('hide')
                 }, 2000)
 
-                
-
                 setTimeout(function () {
                     $("#Remarcar-modal").modal('show')
                 }, 2000)
@@ -710,21 +726,19 @@
             {
 
 
-                   var Id = $("#Id2").val()
-                   var Medico = $("#Medico2").val()        
-                   var DataUltima = $("#DataUltima2").val()                       
-                   var Data = $("#Data2").val()     
-                   var Local = $("#Local2").val()
-                   var Endereco = $("#Endereco2").val()   
-                   var Bairro = $("#Bairro2").val()      
-                   var Email = $("#Email2").val()
-                   var Telefone = $("#Telefone2").val()
-                   var Assunto = $("#Assunto2").val()
-                   var MotVis = $('input[name=MotVis2]:checked').val();
-                   var Obs = $("#Obs2").val()                                                                            
-                   var Resu = $("#ResuVisi2").val()
-
-
+                var Id = $("#Id2").val()
+                var Medico = $("#Medico2").val()        
+                var DataUltima = $("#DataUltima2").val()                       
+                var Data = $("#Data2").val()     
+                var Local = $("#Local2").val()
+                var Endereco = $("#Endereco2").val()   
+                var Bairro = $("#Bairro2").val()      
+                var Email = $("#Email2").val()
+                var Telefone = $("#Telefone2").val()
+                var Assunto = $("#Assunto2").val()
+                var MotVis = $('input[name=MotVis2]:checked').val();
+                var Obs = $("#Obs2").val()                                                                            
+                var Resu = $("#ResuVisi2").val()
 
 
                 var chamadaUrl = `/agendamento/visitas?handler=Remarcar&&id=${Id}&&Medico=${Medico}&&Local=${Local}&&Data=${Data}&&DataUltima=${DataUltima}&&Assunto=${Assunto}&&Endereco=${Endereco}&&Bairro=${Bairro}&&MotVis=${MotVis}&&Obs=${Obs}&&ResuVisi=${Resu}&&Telefone=${Telefone}&&Email=${Email}`
@@ -790,7 +804,7 @@
 
         var Medicos = [];
 
-        @foreach (var data in Model.Medicos)
+        @foreach (var data in Model.Medicos.OrderBy(x=> x))
         {
             @:Medicos.push("@data");
         }
@@ -817,12 +831,13 @@
                     /*for each item in the array...*/
                     for (i = 0; i < arr.length; i++) {
                         /*check if the item starts with the same letters as the text field value:*/
-                        if (arr[i].substr(0, val.length).toUpperCase() == val.toUpperCase()) {
+                            if (arr[i].toUpperCase().includes(val.toUpperCase())) {
                             /*create a DIV element for each matching element:*/
                             b = document.createElement("DIV");
                             /*make the matching letters bold:*/
-                            b.innerHTML = "<strong>" + arr[i].substr(0, val.length) + "</strong>";
-                            b.innerHTML += arr[i].substr(val.length);
+                            /*b.innerHTML = "<strong>" + arr[i].substr(0, val.length) + "</strong>";
+                            b.innerHTML += arr[i].substr(val.length);*/
+                            b.innerHTML = arr[i];
                             /*insert a input field that will hold the current array item's value:*/
                             b.innerHTML += "<input type='hidden' value='" + arr[i] + "'>";
                             /*execute a function when someone clicks on the item value (DIV element):*/
@@ -918,8 +933,6 @@
             }
 
             autocomplete(document.getElementById("Medico"), Medicos);
-
         })
     </script>
-
 }

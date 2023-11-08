@@ -1,7 +1,14 @@
 ﻿@page
 @model SGID.Pages.Account.RH.CadastroTimeModel
 @{
-    Layout = "_LayoutGeral";
+    if (User.IsInRole("Diretoria") && !User.IsInRole("Admin"))
+    {
+        Layout = "_LayoutDiretoria";
+    }
+    else
+    {
+        Layout = "_LayoutGeral";
+    }
     ViewData["Title"] = "Register Comercial";
 }
 

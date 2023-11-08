@@ -4,7 +4,14 @@
     int count = 0;
     int countGrand = 0;
     ViewData["Title"] = "Relatorio Faturamento NF Fabricante Inter";
-    Layout = "_LayoutGeral";
+    if (User.IsInRole("Diretoria") && !User.IsInRole("Admin"))
+    {
+        Layout = "_LayoutDiretoria";
+    }
+    else
+    {
+        Layout = "_LayoutGeral";
+    }
 }
 
 @using(@Html.BeginForm(FormMethod.Post)){

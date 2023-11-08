@@ -2,7 +2,14 @@
 @model SGID.Pages.Relatorios.Controladoria.DemonstracaoInterModel
 @{
     ViewData["Title"] = "Relatorio Demonstraçao Inter";
-    Layout = "_LayoutGeral";
+    if (User.IsInRole("Diretoria") && !User.IsInRole("Admin"))
+    {
+        Layout = "_LayoutDiretoria";
+    }
+    else
+    {
+        Layout = "_LayoutGeral";
+    }
 
     var count = 0;
 }

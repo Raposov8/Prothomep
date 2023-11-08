@@ -2,7 +2,14 @@
 @model SGID.Pages.DashBoards.DashBoardInstrumentadorModel
 @{
     ViewData["Title"] = "DashBoard Instrumendador";
-    Layout = "_LayoutGeral";
+    if (User.IsInRole("Diretoria") && !User.IsInRole("Admin"))
+    {
+        Layout = "_LayoutDiretoria";
+    }
+    else
+    {
+        Layout = "_LayoutGeral";
+    }
 }
 
 @Html.AntiForgeryToken()

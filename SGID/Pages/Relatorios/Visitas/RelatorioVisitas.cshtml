@@ -2,7 +2,14 @@
 @model SGID.Pages.Relatorios.Visitas.RelatorioVisitasModel
 @{
     ViewData["Title"] = "Relatorio de Visitas";
-    Layout = "_LayoutGeral";
+    if (User.IsInRole("Diretoria") && !User.IsInRole("Admin"))
+    {
+        Layout = "_LayoutDiretoria";
+    }
+    else
+    {
+        Layout = "_LayoutGeral";
+    }
 }
 
 
@@ -38,6 +45,9 @@
                     <th class="text-center">
                         Nº DE VISITAS
                     </th>
+                    <th class="text-center">
+                        AÇÕES
+                    </th>
                 </tr>
             </thead>
             <tbody>
@@ -46,6 +56,7 @@
                     <tr>
                         <td>@data.Nome.Replace("."," ")</td>
                         <td>@Html.DisplayFor(model=> data.Quant)</td>
+                        <td><a target="_blank" href="/relatorios/visitas/relatoriovisitasindividual/@data.Nome/@Model.Inicio.ToString("yyyy-MM-dd")/@Model.Fim.ToString("yyyy-MM-dd")">Individual</a></td>
                     </tr>
                 }
             </tbody>

@@ -1,0 +1,617 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="user-scalable = yes" />
+    <link rel="icon" href="~/favicon.ico"/>
+    <title>SGID - @ViewData["Title"]</title>
+
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700&amp;subset=latin" rel="stylesheet">
+    <!--<script src="https://kit.fontawesome.com/dd769b6891.js" crossorigin="anonymous"></script>-->
+    <link rel="stylesheet" href="~/css/fontawesome/css/all.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/nifty.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/LayoutGeral.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap-grid.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/SGID.styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/loading-bar.css" asp-append-version="true"/>
+    
+
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.6.1/fullcalendar.min.css" type="text/css" rel="stylesheet"/>
+</head>
+<body>
+    <header class="col-sm-12 col-md-12 col-xl-12">
+        <nav class="navbar navbar-expand-sm navbar-expand-md navbar-toggleable-sm navbar-toggleable-md navbar-light bg-white border-bottom box-shadow mb-3">
+            <div class="container">
+                <div class="col-sm-2 col-md-2">
+                    <input type="checkbox" id="check"/>
+                    <label for="check">
+                        <i class="fas fa-bars fa-xl" id="btn"></i>
+                    </label>
+                </div>
+                <div class="col-sm-2 col-md-2">
+                    <img src="/imagens/gid.png" alt="GID Logo" height="66" width="120"/>
+                </div>
+                <div class="col-sm-2 col-md-2">
+                    <ul class="navbar-nav flex-grow-1">
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="dropdown03" data-bs-toggle="dropdown" aria-expanded="false">
+                                <img class="img-circle img-xs" src="/imagens/Pic1.png" alt="Profile Picture"> Olá @User.Identity.Name.Split("@")[0]
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="dropdowm03">
+                                @if (User.IsInRole("Admin"))
+                                {
+                                    <li class="dropdown-item" >
+                                        <a href="/account/register"><i class="fa-solid fa-user-plus" style="margin-right:5px;"></i>Cadastro Usuario</a>
+                                    </li>
+                                }
+                                <li class="dropdown-item" >
+                                    <a href="/account/LogOut"><i class="fa-solid fa-right-from-bracket" style="margin-right:5px;"></i>Logout</a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <div class="container-lg container-xl container-xxl" style="margin-left:0px;margin-right:0px;">
+        <div class="sidenav" id="mySidenav">
+            <ul style="padding-left:0%;">
+               <li>
+                    <a><input type="checkbox" id="checkFeche"/>
+                    <label for="checkFeche">
+                        <i class="fas fa-bars fa-xl" id="btn"></i>
+                    </label>
+                    </a>
+               </li>
+               <li>
+                    <a class="nav-link" href="/dashboard/3"><i class="fa-solid fa-house"></i>Home</a>
+               </li>
+               @if(User.IsInRole("Admin") || User.IsInRole("Diretoria"))
+               {
+                   <li>
+                      <a class="nav-link" href="/dashboards/DashBoardMetas"><i class="fa-solid fa-clipboard-user"></i>DashBoard Diretoria</a>
+                   </li>
+                   <li>
+                       <a class="nav-link" href="/dashboards/DashBoardGestorSubDistribuidor"><i class="fa-solid fa-clipboard-user"></i>DashBoard SubDistribuidor</a>
+                   </li>
+                   <li class="nav-item dropdown">
+                       <a class="nav-link align-items-center rounded dropdown-toggle" data-bs-toggle="collapse"
+                          data-bs-target="#visitas-collapse" aria-expanded="false">
+                           <i class="fa-solid fa-calendar-days"></i>Visitas
+                       </a>
+                       <div class="collapse" id="visitas-collapse">
+                           <ul class="list-unstyled fw-normal pb-1 small">
+                               <li><a class="nav-link" href="/agendamento/visitas">Painel Visitas</a></li>
+                               @if (User.IsInRole("Admin") || User.IsInRole("Diretoria"))
+                               {
+                                   <li><a class="nav-link" href="/relatorios/visitas/relatoriovisitas">Relatorio Visitas</a></li>
+                               }
+                           </ul>
+                       </div>
+                   </li>
+                   <li>
+                       <a class="nav-link" href="/dashboards/DashBoardadm"><i class="fa-solid fa-chart-pie"></i>Metas ADM</a>
+                   </li>
+               }
+               @if(User.IsInRole("Admin") || User.IsInRole("Financeiro") || User.IsInRole("Diretoria"))
+               {
+                   
+                    <li class="nav-item dropdown">
+                        <a class="nav-link align-items-center rounded dropdown-toggle" data-bs-toggle="collapse"
+                        data-bs-target="#financeiro-collapse" aria-expanded="false">
+                            <i class="fa-solid fa-file-invoice-dollar"></i>Financeiro
+                        </a>
+                        <div class="collapse" id="financeiro-collapse">
+                            <ul class="list-unstyled fw-normal pb-1 small">
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link align-items-center rounded dropdown-toggle" data-bs-toggle="collapse"
+                                   data-bs-target="#comissoes-collapse" aria-expanded="false">
+                                        <i class="fa-solid fa-money-bill"></i>Comissoes
+                                    </a>
+                                    <div class="collapse" id="comissoes-collapse">
+                                        <ul class="list-unstyled fw-normal pb-1 small">
+                                            <li><a class="nav-link" href="/relatorios/comissoes/comissao">Comissões Denuo</a></li>
+                                            <li><a class="nav-link" href="/relatorios/comissoes/comissaointer">Comissões Inter</a></li>
+                                        </ul>
+                                    </div>
+                                </li>
+                                <li><a class="nav-link" href="/relatorios/vexpenses/relatoriodespesas">Despesas VExpenses</a></li>
+                                <li><a class="nav-link" href="/relatorios/financeiro/receitabruta">Check Margem Denuo</a></li>
+                                <li><a class="nav-link" href="/relatorios/financeiro/receitabrutainter">Check Margem Inter</a></li>
+                                <li><a class="nav-link" href="/relatorios/financeiro/BaixaAReceber">A Receber Baixa Denuo</a></li>
+                                <li><a class="nav-link" href="/relatorios/financeiro/BaixaAReceberInter">A Receber Baixa Inter</a></li>
+                                <li><a class="nav-link" href="/relatorios/estoque/giroestoque">Giro Estoque Denuo</a></li>
+                                <li><a class="nav-link" href="/relatorios/estoque/giroestoqueinter">Giro Estoque Inter</a></li>
+                            </ul>
+                        </div>
+                    </li>
+               }
+               @if(User.IsInRole("Admin") || User.IsInRole("RH") || User.IsInRole("Diretoria"))
+               {
+                    <li class="nav-item dropdown">
+                        <a class="nav-link align-items-center rounded dropdown-toggle" data-bs-toggle="collapse"
+                           data-bs-target="#rh-collapse" aria-expanded="false">
+                            <i class="fa-solid fa-user-tie"></i>Gente & Gestão
+                        </a>
+                        <div class="collapse" id="rh-collapse">
+                            <ul class="list-unstyled fw-normal pb-1 small">
+                                @if (User.IsInRole("Admin"))
+                                {
+                                    <li><a class="nav-link" href="/rh/listargestaopessoal/">Listar Acessos</a></li>
+                                }
+                                <li><a class="nav-link" href="/rh/gestaopessoal/">Solicitar Acesso</a></li>
+                                <!--<li><a class="nav-link" href="/cirurgias/listarrecursos">Recursos</a></li>
+                                <li><a class="nav-link" href="#">Procedimentos</a></li>-->
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link align-items-center rounded dropdown-toggle" data-bs-toggle="collapse"
+                                       data-bs-target="#comissoes-collapse" aria-expanded="false">
+                                        <i class="fa-solid fa-file-invoice-dollar"></i>Comissoes
+                                    </a>
+                                    <div class="collapse" id="comissoes-collapse">
+                                        <ul class="list-unstyled fw-normal pb-1 small">
+                                            <li><a class="nav-link" href="/account/RH/listartime">Comissões Comercial</a></li>
+                                            <li><a class="nav-link" href="/account/RH/listaradm">Comissões ADM</a></li>
+                                            <li><a class="nav-link" href="/account/RH/listardental">Comissões Dental</a></li>
+                                        </ul>
+                                    </div>
+                                </li>
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link align-items-center rounded dropdown-toggle" data-bs-toggle="collapse"
+                                       data-bs-target="#rhFatuxComi-collapse" aria-expanded="false">
+                                        <i class="fa-solid fa-money-bill-transfer"></i> Faturamento X Funcionario
+                                    </a>
+                                    <div class="collapse" id="rhFatuxComi-collapse">
+                                        <ul class="list-unstyled fw-normal pb-1 small">
+                                            <li> <a class="nav-link" href="/Relatorios/Diretoria/FaturamentoXFuncionario">Faturamento X Funcionario</a></li>
+                                        </ul>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+               }
+               <li class="nav-item dropdown">
+                  <a class="nav-link align-items-center rounded dropdown-toggle" data-bs-toggle="collapse" 
+                     data-bs-target="#relatorio-collapse" aria-expanded="false"> 
+                     <i class="fa-solid fa-clipboard-list"></i>Relatórios
+                  </a>
+                  <div class="collapse" id="relatorio-collapse">
+                     <ul class="list-unstyled fw-normal pb-1 small">
+                            @if (User.IsInRole("Admin") || User.IsInRole("Comercial"))
+                            {
+                                @if (User.Identity.Name.Split("@")[1] == "denuo.com.br" || User.IsInRole("Admin") || User.IsInRole("ComercialDuo"))
+                                {
+                                    <li class="nav-item dropdown">
+                                        <a class="nav-link align-items-center rounded dropdown-toggle" data-bs-toggle="collapse"
+                                   data-bs-target="#comercialdenuo-collapse" aria-expanded="false">
+                                            Comercial Denuo
+                                        </a>
+                                        <div class="collapse" id="comercialdenuo-collapse">
+                                            <ul class="list-unstyled fw-normal pb-1 small">
+                                                <li><a class="nav-link" href="/relatorios/comercial/nfs">NFS Denuo</a></li>
+                                                <li><a class="nav-link" href="/relatorios/cirurgias/cirurgiasafaturar/">Cirurgias a Faturar Denuo</a></li>
+                                                <li><a class="nav-link" href="/relatorios/cirurgias/cirurgiasdevolucaofatvendedor/">Cirurgias Devolução Fat Denuo</a></li>
+                                                <li><a class="nav-link" href="/relatorios/cirurgias/cirurgiasfaturadas/">Cirurgias Faturadas Denuo</a></li>
+                                                <li><a class="nav-link" href="/relatorios/cirurgias/cirurgiasvalorizadas/">Cirurgias Valorizadas Denuo</a></li>
+                                                <li><a class="nav-link" href="/relatorios/estoque/saldoestoque">Saldo Estoque Denuo</a></li>
+                                            </ul>
+                                        </div>
+                                    </li>
+                                }
+                                @if (User.Identity.Name.Split("@")[1] == "intermedic.com.br" || User.IsInRole("Admin") || User.IsInRole("ComercialDuo"))
+                                {
+                                    <li class="nav-item dropdown">
+                                        <a class="nav-link align-items-center rounded dropdown-toggle" data-bs-toggle="collapse"
+                                   data-bs-target="#comercialinter-collapse" aria-expanded="false">
+                                            Comercial Inter
+                                        </a>
+                                        <div class="collapse" id="comercialinter-collapse">
+                                            <ul class="list-unstyled fw-normal pb-1 small">
+
+                                                <li><a class="nav-link" href="/relatorios/comercial/nfsinter">NFS Inter</a></li>
+                                                <li><a class="nav-link" href="/relatorios/cirurgias/cirurgiasafaturarinter/">Cirurgias a Faturar Inter</a></li>
+                                                <li><a class="nav-link" href="/relatorios/cirurgias/cirurgiasdevolucaofatvendedorinter/">Cirurgias Devolução Fat Inter</a></li>
+                                                <li><a class="nav-link" href="/relatorios/cirurgias/cirurgiasfaturadasinter/">Cirurgias Faturadas Inter</a></li>
+                                                <li><a class="nav-link" href="/relatorios/cirurgias/cirurgiasvalorizadasinter/">Cirurgias Valorizadas Inter</a></li>
+                                                <li><a class="nav-link" href="/relatorios/estoque/saldoestoqueinter">Saldo Estoque Inter</a></li>
+                                            </ul>
+                                        </div>
+                                    </li>
+                                }
+                            }
+                            @if (User.IsInRole("Admin") || User.IsInRole("GestorComercial") || User.IsInRole("Diretoria"))
+                            {
+                                @if (User.Identity.Name.Split("@")[1] == "denuo.com.br" || User.IsInRole("Admin") || User.IsInRole("Diretoria"))
+                                {
+                                    <li class="nav-item dropdown">
+                                        <a class="nav-link align-items-center rounded dropdown-toggle" data-bs-toggle="collapse"
+                                   data-bs-target="#comercialdenuo2-collapse" aria-expanded="false">
+                                            Gestor Comercial Denuo
+                                        </a>
+                                        <div class="collapse" id="comercialdenuo2-collapse">
+                                            <ul class="list-unstyled fw-normal pb-1 small">
+                                            <li><a class="nav-link teste" href="/relatorios/rh/cirurgiasdevolucaofat">Cirurgias Devolução Fat Denuo</a></li>
+                                            <li><a class="nav-link teste" href="/relatorios/rh/cirurgiasfaturadas">Cirurgias Faturadas Denuo</a></li>
+                                            <li><a class="nav-link teste" href="/relatorios/rh/cirurgiasvalorizadas">Cirurgias Valorizadas Denuo</a></li>
+                                            </ul>
+                                        </div>
+                                    </li>
+                                }
+                                @if (User.Identity.Name.Split("@")[1] == "intermedic.com.br" || User.IsInRole("Admin") || User.IsInRole("Diretoria"))
+                                {
+                                    <li class="nav-item dropdown">
+                                        <a class="nav-link align-items-center rounded dropdown-toggle" data-bs-toggle="collapse"
+                                    data-bs-target="#comercialinter2-collapse" aria-expanded="false">
+                                           Gestor Comercial Inter
+                                        </a>
+                                        <div class="collapse" id="comercialinter2-collapse">
+                                            <ul class="list-unstyled fw-normal pb-1 small">
+                                            <li><a class="nav-link teste" href="/relatorios/rh/cirurgiasdevolucaofatinter">Cirurgias Devolução Inter</a></li>
+                                            <li><a class="nav-link teste" href="/relatorios/rh/cirurgiasfaturadasinter">Cirurgias Faturadas Inter</a></li>
+                                            <li><a class="nav-link teste" href="/relatorios/rh/cirurgiasvalorizadasinter">Cirurgias Valorizadas Inter</a></li>
+                                            </ul>
+                                        </div>
+                                    </li>
+                                }
+                            }
+                            @if (User.IsInRole("Admin") || User.IsInRole("Controladoria") || User.IsInRole("Diretoria"))
+                            {
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link align-items-center rounded dropdown-toggle" data-bs-toggle="collapse"
+                                   data-bs-target="#controladoriadenuo-collapse" aria-expanded="false">
+                                        Controladoria Denuo
+                                    </a>
+                                    <div class="collapse" id="controladoriadenuo-collapse">
+                                        <ul class="list-unstyled fw-normal pb-1 small">
+                                            <li><a class="nav-link" href="/relatorios/controladoria/conserto/">Conserto Denuo</a></li>
+                                            <li><a class="nav-link" href="/relatorios/controladoria/demonstracao/">Demonstração Denuo</a></li>
+                                            <li><a class="nav-link" href="/relatorios/controladoria/faturamentonf/">Faturamento NF Denuo</a></li>
+                                            <li><a class="nav-link" href="/relatorios/controladoria/faturamentonfbruto/">Faturamento NF BRUTO Denuo</a></li>
+                                            <li><a class="nav-link" href="/relatorios/controladoria/infcirurgia/">Inf Cirurgia Denuo</a></li>
+                                            <li><a class="nav-link" href="/relatorios/controladoria/ncm/">NCM Denuo</a></li>
+                                            <li><a class="nav-link" href="/relatorios/controladoria/nfentrada/">NF Entrada Denuo</a></li>
+                                            <li><a class="nav-link" href="/relatorios/controladoria/retornosefaz/">Retorno Sefaz Denuo</a></li>
+                                            <li><a class="nav-link" href="/relatorios/controladoria/sinief/">SINIEF Denuo</a></li>
+                                            <li><a class="nav-link" href="/relatorios/controladoria/sd1/">SD1 Denuo</a></li>
+                                            <li><a class="nav-link" href="/relatorios/controladoria/sd2/">SD2 Denuo</a></li>
+                                        </ul>
+                                    </div>
+                                </li>
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link align-items-center rounded dropdown-toggle" data-bs-toggle="collapse"
+                                   data-bs-target="#controladoriainter-collapse" aria-expanded="false">
+                                        Controladoria Inter
+                                    </a>
+                                    <div class="collapse" id="controladoriainter-collapse">
+                                        <ul class="list-unstyled fw-normal pb-1 small">
+                                            <li><a class="nav-link" href="/relatorios/controladoria/consertointer/">Conserto Inter</a></li>
+                                            <li><a class="nav-link" href="/relatorios/controladoria/demonstracaointer/">Demonstração Inter</a></li>
+                                            <li><a class="nav-link" href="/relatorios/controladoria/faturamentonfinter/">Faturamento NF Inter</a></li>
+                                            <li><a class="nav-link" href="/relatorios/controladoria/faturamentonfbrutointer/">Faturamento NF BRUTO Inter</a></li>
+                                            <li><a class="nav-link" href="/relatorios/controladoria/infcirurgiainter/">Inf Cirurgia Inter</a></li>
+                                            <li><a class="nav-link" href="/relatorios/controladoria/liintermedic/">Faturamento LI Inter</a></li>
+                                            <li><a class="nav-link" href="/relatorios/controladoria/nfentradainter/">NF Entrada Inter</a></li>
+                                            <li><a class="nav-link" href="/relatorios/controladoria/retornosefazinter/">Retorno Sefaz Inter</a></li>
+                                            <li><a class="nav-link" href="/relatorios/controladoria/siniefinter/">SINIEF Inter</a></li>
+                                            <li><a class="nav-link" href="/relatorios/controladoria/sd1inter/">SD1 Inter</a></li>
+                                            <li><a class="nav-link" href="/relatorios/controladoria/sd2inter/">SD2 Inter</a></li>
+
+                                        </ul>
+                                    </div>
+                                </li>
+                            }
+                            @if (User.IsInRole("Admin") || User.IsInRole("GestorVenda") || User.IsInRole("Venda") || User.IsInRole("Diretoria"))
+                            {
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link align-items-center rounded dropdown-toggle" data-bs-toggle="collapse"
+                                   data-bs-target="#admvendas1-collapse" aria-expanded="false">
+                                        ADM Vendas
+                                    </a>
+                                    <div class="collapse" id="admvendas1-collapse">
+                                        <ul class="list-unstyled fw-normal pb-1 small">
+                                            <li><a class="nav-link teste" href="/relatorios/rh/CirurgiaAFaturar">Cirugias A Faturar Denuo</a></li>
+                                            <li><a class="nav-link teste" href="/relatorios/rh/CirurgiaAFaturarInter">Cirugias A Faturar Inter</a></li>
+                                            <li><a class="nav-link teste" href="/relatorios/rh/CirurgiasDevolucaoFat">Cirurgias Devolução Denuo</a></li>
+                                            <li><a class="nav-link teste" href="/relatorios/rh/CirurgiasDevolucaoFatInter">Cirurgias Devolução Inter</a></li>
+                                            <li><a class="nav-link teste" href="/relatorios/admvendas/CirurgiasFaturadas">Cirurgias Faturadas Denuo</a></li>
+                                            <li><a class="nav-link teste" href="/relatorios/admvendas/CirurgiasFaturadasInter">Cirurgias Faturadas Inter</a></li>
+                                            <li><a class="nav-link teste" href="/relatorios/rh/CirurgiasValorizadas">Cirugias Valorizadas Denuo</a></li>
+                                            <li><a class="nav-link teste" href="/relatorios/rh/CirurgiasValorizadasInterr">Cirugias Valorizadas Inter</a></li>
+                                            <li><a class="nav-link teste" href="/relatorios/admvendas/pedidostriagem">Pedidos Triagem Denuo</a></li>
+                                            <li><a class="nav-link teste" href="/relatorios/admvendas/pedidostriageminter">Pedidos Triagem Inter</a></li>
+                                            <li><a class="nav-link teste" href="/relatorios/admvendas/cadastromedicos/1">Cadastros Médicos Denuo</a></li>
+                                            <li><a class="nav-link teste" href="/relatorios/cirurgias/cadastrosmedicosinter/1">Cadastros Médicos Inter</a></li>
+                                        </ul>
+                                    </div>
+                                </li>
+                            }
+                            @if (User.IsInRole("Admin") || User.IsInRole("RH") || User.IsInRole("Diretoria"))
+                            {
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link align-items-center rounded dropdown-toggle" data-bs-toggle="collapse"
+                                    data-bs-target="#rh2-collapse" aria-expanded="false">
+                                        RH
+                                    </a>
+                                    <div class="collapse" id="rh2-collapse">
+                                        <ul class="list-unstyled fw-normal pb-1 small">
+                                            <li><a class="nav-link teste" href="/relatorios/rh/cirurgiasdevolucaofat">Cirurgias Devolução Fat Denuo</a></li>
+                                            <li><a class="nav-link teste" href="/relatorios/rh/cirurgiasdevolucaofatinter">Cirurgias Devolução Inter</a></li>
+                                            <li><a class="nav-link teste" href="/relatorios/rh/cirurgiasfaturadas">Cirurgias Faturadas Denuo</a></li>
+                                            <li><a class="nav-link teste" href="/relatorios/rh/cirurgiasfaturadasinter">Cirurgias Faturadas Inter</a></li>
+                                            <li><a class="nav-link teste" href="/relatorios/rh/cirurgiasvalorizadas">Cirurgias Valorizadas Denuo</a></li>
+                                            <li><a class="nav-link teste" href="/relatorios/rh/cirurgiasvalorizadasinter">Cirurgias Valorizadas Inter</a></li>
+                                            <li><a class="nav-link teste" href="/relatorios/rh/cirurgiaafaturar">Cirurgias A Faturar Denuo</a></li>
+                                            <li><a class="nav-link teste" href="/relatorios/rh/cirurgiaafaturarinter">Cirurgias A Faturar Inter</a></li>
+                                            <li><a class="nav-link teste" href="/relatorios/subdistribuidor">Sub Distribuidor Faturado Denuo</a></li>
+                                            <li><a class="nav-link" href="/relatorios/subdistribuidorFaturadoInter">Sub Distribuidor Faturado Intermedic</a></li>
+                                            <li><a class="nav-link" href="/relatorios/rh/faturamentodental">Faturamento Dental</a></li>
+                                            <li><a class="nav-link" href="/relatorios/rh/BaixaSubDistribuidor">Baixa SubDistribuidor Denuo</a></li>
+                                            <li><a class="nav-link" href="/relatorios/rh/BaixaSubDistribuidorInter">Baixa SubDistribuidor Inter</a></li>
+                                            <li><a class="nav-link" href="/relatorios/rh/BaixaLicitacoes">Baixa Licitações Denuo</a></li>
+                                            <li><a class="nav-link" href="/relatorios/rh/BaixaLicitacoesInter">Baixa Licitações Inter</a></li>
+                                            <li><a class="nav-link" href="/relatorios/rh/FaturamentoLicitacoesInter">Faturamento Licitacoes Intermedic</a></li>
+                                            <li><a class="nav-link" href="/relatorios/rh/FaturamentoLicitacoes">Faturamento Licitacoes Denuo</a></li>
+                                        </ul>
+                                    </div>
+                                </li>
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link align-items-center rounded dropdown-toggle" data-bs-toggle="collapse"
+                                   data-bs-target="#rh3-collapse" aria-expanded="false">
+                                        DOR
+                                    </a>
+                                    <div class="collapse" id="rh3-collapse">
+                                        <ul class="list-unstyled fw-normal pb-1 small">
+                                            <li><a class="nav-link teste" href="/relatorios/avanos/cirurgiasdevolucao">Cirurgias Devolução Fat</a></li>
+                                            <li><a class="nav-link teste" href="/relatorios/avanos/cirurgiasfaturadas">Cirurgias Faturadas</a></li>
+                                            <li><a class="nav-link teste" href="/relatorios/avanos/cirurgiasvalorizadas">Cirurgias Valorizadas</a></li>
+                                            <li><a class="nav-link" href="/relatorios/avanos/faturamentodental">Faturamento Dental</a></li>
+                                        </ul>
+                                    </div>
+                                </li>
+                            }
+                            @if (User.IsInRole("Admin") || User.IsInRole("Estoque") || User.IsInRole("GestorEstoque") || User.IsInRole("Diretoria"))
+                            {
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link align-items-center rounded dropdown-toggle" data-bs-toggle="collapse"
+                                   data-bs-target="#estoque2-collapse" aria-expanded="false">
+                                        Estoque
+                                    </a>
+                                    <div class="collapse" id="estoque2-collapse">
+                                        <ul class="list-unstyled fw-normal pb-1 small">
+                                            <li><a class="nav-link" href="/relatorios/estoque/ocorrencias">Ocorrências</a></li>
+                                            <li><a class="nav-link" href="/relatorios/estoque/expedicaoretirada">Expedição Retirada Denuo</a></li>
+                                            <li><a class="nav-link" href="/relatorios/estoque/expedicaoretiradainter">Expedição Retirada Inter</a></li>
+                                            <li><a class="nav-link" href="/relatorios/estoque/pa3">PA3</a></li>
+                                            <li><a class="nav-link" href="/relatorios/estoque/poderterceiros">Poder Terceiros</a></li>
+                                            <li><a class="nav-link" href="/relatorios/estoque/saldoestoque">Saldo Estoque Denuo</a></li>
+                                            <li><a class="nav-link" href="/relatorios/estoque/saldoestoqueinter">Saldo Estoque Inter</a></li>
+                                            <li><a class="nav-link" href="/relatorios/estoque/faturamentonffab">Faturamento NF Fabricante Denuo</a></li>
+                                            <li><a class="nav-link" href="/relatorios/estoque/faturamentonffabinter">Faturamento NF Fabricante Inter</a></li>
+                                            <li><a class="nav-link" href="/relatorios/estoque/Armazem10">Armazem 10 Denuo</a></li>
+                                            <li><a class="nav-link" href="/relatorios/estoque/Armazem10Inter">Armazem 10 Inter</a></li>
+                                            <li><a class="nav-link" href="/relatorios/estoque/giroestoque">Giro Estoque Denuo</a></li>
+                                            <li><a class="nav-link" href="/relatorios/estoque/giroestoqueinter">Giro Estoque Inter</a></li>
+                                            <li><a class="nav-link" href="/relatorios/subdistribuidor">Sub Distribuidor Faturado Denuo</a></li>
+                                            <li><a class="nav-link" href="/relatorios/subdistribuidorNFaturado">Sub Distribuidor Não Faturado Denuo</a></li>
+                                            <li><a class="nav-link" href="/relatorios/subdistribuidorFaturadoInter">Sub Distribuidor Faturado Intermedic</a></li>
+                                            <li><a class="nav-link" href="/relatorios/subdistribuidorNFaturadoInter">Sub Distribuidor Não Faturado Intermedic</a></li>
+                                            <li><a class="nav-link teste" href="/relatorios/admvendas/pedidostriagem">Pedidos Triagem Denuo</a></li>
+                                            <li><a class="nav-link teste" href="/relatorios/admvendas/pedidostriageminter">Pedidos Triagem Inter</a></li>
+                                            <li><a class="nav-link teste" href="/relatorios/admvendas/cadastromedicos/1">Cadastros Médicos Denuo</a></li>
+                                            <li><a class="nav-link teste" href="/relatorios/cirurgias/cadastrosmedicosinter/1">Cadastros Médicos Inter</a></li>
+                                            <li><a class="nav-link teste" href="/relatorios/rh/cirurgiasvalorizadas">Cirurgias Valorizadas Denuo</a></li>
+                                            <li><a class="nav-link teste" href="/relatorios/rh/cirurgiasvalorizadasinter">Cirurgias Valorizadas Inter</a></li>
+                                        </ul>
+                                    </div>
+                                </li>
+                            }
+                            @if (User.IsInRole("Admin") || User.IsInRole("Financeiro") || User.IsInRole("Diretoria"))
+                            {
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link align-items-center rounded dropdown-toggle" data-bs-toggle="collapse"
+                                   data-bs-target="#financeiro2-collapse" aria-expanded="false">
+                                        Financeiro
+                                    </a>
+                                    <div class="collapse" id="financeiro2-collapse">
+                                        <ul class="list-unstyled fw-normal pb-1 small">
+                                            <li><a class="nav-link" href="/relatorios/financeiro/pagomes">Pago Mes</a></li>
+                                            <li><a class="nav-link" href="/relatorios/financeiro/apagarsemana">A Pagar Semana Denuo</a></li>
+                                            <li><a class="nav-link" href="/relatorios/financeiro/apagarsemanainter">A Pagar Semana Inter</a></li>
+                                            <li><a class="nav-link" href="/relatorios/financeiro/apagarmes">A Pagar Mes Denuo</a></li>
+                                            <li><a class="nav-link" href="/relatorios/financeiro/apagarmesinter">A Pagar Mes Inter</a></li>
+                                            <li><a class="nav-link" href="/relatorios/financeiro/apagarmesp">A Pagar Mes P Denuo</a></li>
+                                            <li><a class="nav-link" href="/relatorios/financeiro/apagarmespinter">A Pagar Mes P Inter</a></li>
+                                        </ul>
+                                    </div>
+                                </li>
+                            }
+                            @if (User.IsInRole("Admin") || User.IsInRole("Qualidade") || User.IsInRole("Diretoria"))
+                            {
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link align-items-center rounded dropdown-toggle" data-bs-toggle="collapse"
+                                   data-bs-target="#qualidade-collapse" aria-expanded="false">
+                                        Qualidade
+                                    </a>
+                                    <div class="collapse" id="qualidade-collapse">
+                                        <ul class="list-unstyled fw-normal pb-1 small">
+                                            <li><a class="nav-link" href="/relatorios/estoque/poderterceiros">Poder Terceiros</a></li>
+                                            <li><a class="nav-link" href="/relatorios/qualidade/registroxprodutos">Registro x Produtos Denuo</a></li>
+                                            <li><a class="nav-link" href="/relatorios/qualidade/registroxprodutosinter">Registro x Produtos Inter</a></li>
+                                            <li><a class="nav-link" href="/relatorios/qualidade/validadepermanente">Validade Permanente Denuo</a></li>
+                                            <li><a class="nav-link" href="/relatorios/qualidade/validadepermanenteinter">Validade Permanente Inter</a></li>
+                                        </ul>
+                                    </div>
+                                </li>
+                            }
+                            @if (User.IsInRole("Admin") || User.IsInRole("Dental"))
+                            {
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link align-items-center rounded dropdown-toggle" data-bs-toggle="collapse"
+                                       data-bs-target="#dental-collapse" aria-expanded="false">
+                                        Dental
+                                    </a>
+                                    <div class="collapse" id="dental-collapse">
+                                        <ul class="list-unstyled fw-normal pb-1 small">
+                                            <li><a class="nav-link" href="/relatorios/estoque/giroestoque">Giro Estoque Denuo</a></li>
+                                        </ul>
+                                    </div>
+                                </li>
+                            }
+                            @if (User.IsInRole("Admin") || User.IsInRole("Financeiro") || User.IsInRole("Diretoria"))
+                            {
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link align-items-center rounded dropdown-toggle" data-bs-toggle="collapse"
+                                   data-bs-target="#gerencial-collapse" aria-expanded="false">
+                                        Gerencial
+                                    </a>
+                                    <div class="collapse" id="gerencial-collapse">
+                                        <ul class="list-unstyled fw-normal pb-1 small">
+                                            <li><a class="nav-link" href="/relatorios/controladoria/faturamentonf/">Faturamento NF Denuo</a></li>
+                                            <li><a class="nav-link" href="/relatorios/controladoria/faturamentonfinter/">Faturamento NF Inter</a></li>
+                                            <li><a class="nav-link" href="/relatorios/estoque/faturamentonffab">Faturamento NF Fabricante Denuo</a></li>
+                                            <li><a class="nav-link" href="/relatorios/estoque/faturamentonffabinter">Faturamento NF Fabricante Inter</a></li>
+                                            <li><a class="nav-link" href="/relatorios/rh/cirurgiasvalorizadas">Cirurgias Valorizadas Denuo</a></li>
+                                            <li><a class="nav-link" href="/relatorios/rh/cirurgiasvalorizadasinter">Cirurgias Valorizadas Inter</a></li>
+                                            <li><a class="nav-link" href="/relatorios/subdistribuidor">Sub Distribuidor Faturado Denuo</a></li>
+                                            <li><a class="nav-link" href="/relatorios/subdistribuidorNFaturado">Sub Distribuidor Não Faturado Denuo</a></li>
+                                            <li><a class="nav-link" href="/relatorios/subdistribuidorFaturadoInter">Sub Distribuidor Faturado Intermedic</a></li>
+                                            <li><a class="nav-link" href="/relatorios/subdistribuidorNFaturadoInter">Sub Distribuidor Não Faturado Intermedic</a></li>
+                                            <li><a class="nav-link" href="/relatorios/gerencial/tabelas">Tabelas Denuo</a></li>
+                                            <li><a class="nav-link" href="/relatorios/gerencial/tabelasinter">Tabelas Inter</a></li>
+                                            <li><a class="nav-link" href="/relatorios/gerencial/tabelasprodncadastrados">Tabelas Prod Não Cadastrados Denuo</a></li>
+                                            <li><a class="nav-link" href="/relatorios/gerencial/tabelasprodncadastradosinter">Tabelas Prod Não Cadastrados Inter</a></li>
+                                            <li><a class="nav-link" href="/relatorios/gerencial/cirurgiasnfaturadas">Cirurgias Não Faturadas Denuo</a></li>
+                                            <li><a class="nav-link" href="/relatorios/gerencial/cirurgiasnfaturadasinter">Cirurgias Não Faturadas Inter</a></li>
+                                        </ul>
+                                    </div>
+                                </li>
+                            }
+                            @if (User.IsInRole("Admin") || User.IsInRole("SubDistribuidor") || User.IsInRole("Diretoria"))
+                            {
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link align-items-center rounded dropdown-toggle" data-bs-toggle="collapse"
+                                   data-bs-target="#subdistribuidor-collapse" aria-expanded="false">
+                                        Sub Distribuidor
+                                    </a>
+                                    <div class="collapse" id="subdistribuidor-collapse">
+                                        <ul class="list-unstyled fw-normal pb-1 small">
+                                            <li><a class="nav-link" href="/relatorios/subdistribuidor">Sub Distribuidor Faturado Denuo</a></li>
+                                            <li><a class="nav-link" href="/relatorios/subdistribuidorNFaturado">Sub Distribuidor Não Faturado Denuo</a></li>
+                                            <li><a class="nav-link" href="/relatorios/subdistribuidorFaturadoInter">Sub Distribuidor Faturado Intermedic</a></li>
+                                            <li><a class="nav-link" href="/relatorios/subdistribuidorNFaturadoInter">Sub Distribuidor Não Faturado Intermedic</a></li>
+                                            <li><a class="nav-link" href="/relatorios/subdistribuidor/subdistribuidorporfabricante">Sub Distribuidor Por Fabricante Denuo</a></li>
+                                            <li><a class="nav-link" href="/relatorios/subdistribuidor/subdistribuidorporfabricanteinter">Sub Distribuidor Por Fabricante Intermedic</a></li>
+                                            <li><a class="nav-link" href="/relatorios/estoque/saldoestoque">Saldo Estoque Denuo</a></li>
+                                            <li><a class="nav-link" href="/relatorios/estoque/saldoestoqueinter">Saldo Estoque Inter</a></li>
+                                        </ul>
+                                    </div>
+                                </li>
+                            }
+                     </ul>
+                  </div>
+               </li>
+               @if(User.IsInRole("Admin") || User.IsInRole("Patrimonio") || User.IsInRole("Diretoria"))
+               {
+                   <li class="nav-item dropdown">
+                       <a class="nav-link align-items-center rounded dropdown-toggle" data-bs-toggle="collapse" 
+                    data-bs-target="#formularios-collapse" aria-expanded="false"> 
+                           <i class="fa-solid fa-clipboard-list"></i>Formularios
+                       </a>
+                       <div class="collapse" id="formularios-collapse">
+                           <ul class="list-unstyled fw-normal pb-1 small">
+                               <li class="nav-item dropdown">
+                                    <a class="nav-link align-items-center rounded dropdown-toggle" data-bs-toggle="collapse"
+                                   data-bs-target="#patrimonio-collapse" aria-expanded="false">
+                                        Consulta Por Kit Base
+                                    </a>
+                                    <div class="collapse" id="patrimonio-collapse">
+                                        <ul class="list-unstyled fw-normal pb-1 small">
+                                            <li><a class="nav-link" href="/formularios/patrimonio/relatoriopatrimonio/03">Consulta Por Kit Base Denuo</a></li>
+                                            <li><a class="nav-link" href="/formularios/patrimonio/relatoriopatrimonio/01">Consulta Por Kit Base Intermedic</a></li>
+                                        </ul>
+                                    </div>
+                                </li>
+                               <li class="nav-item dropdown">
+                                    <a class="nav-link align-items-center rounded dropdown-toggle" data-bs-toggle="collapse"
+                                   data-bs-target="#req30-collapse" aria-expanded="false">
+                                        Itens Faltantes
+                                    </a>
+                                    <div class="collapse" id="req30-collapse">
+                                        <ul class="list-unstyled fw-normal pb-1 small">
+                                            <li><a class="nav-link" href="/formularios/req30/03" target="_blank">Itens Faltantes Denuo</a></li>
+                                            <li><a class="nav-link" href="/formularios/req30/01" target="_blank">Itens Faltantes Intermedic</a></li>
+                                        </ul>
+                                    </div>
+                                </li>
+                               
+                               <li class="nav-item dropdown">
+                                    <a class="nav-link align-items-center rounded dropdown-toggle" data-bs-toggle="collapse"
+                                   data-bs-target="#conspa3-collapse" aria-expanded="false">
+                                        Consulta Por Patrimônio
+                                    </a>
+                                    <div class="collapse" id="conspa3-collapse">
+                                        <ul class="list-unstyled fw-normal pb-1 small">
+                                            <li><a class="nav-link" href="/formularios/conspa3/03" target="_blank">Consulta Por Patrimônio Denuo</a></li>
+                                            <li><a class="nav-link" href="/formularios/conspa3/01" target="_blank">Consulta Por Patrimônio Intermedic</a></li>
+                                        </ul>
+                                    </div>
+                                </li>
+                               <li class="nav-item dropdown">
+                                    <a class="nav-link align-items-center rounded dropdown-toggle" data-bs-toggle="collapse"
+                                   data-bs-target="#disppatrt-collapse" aria-expanded="false">
+                                        Consulta Todos Patrimônios
+                                    </a>
+                                    <div class="collapse" id="disppatrt-collapse">
+                                        <ul class="list-unstyled fw-normal pb-1 small">
+                                            <li><a class="nav-link" href="/formularios/RelatorioPatrimonioTodos/03" target="_blank">Consulta Todos Patrimônios  Denuo</a></li>
+                                            <li><a class="nav-link" href="/formularios/RelatorioPatrimonioTodos/01" target="_blank">Consulta Todos Patrimônios  Intermedic</a></li>
+                                        </ul>
+                                    </div>
+                                </li>
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link align-items-center rounded dropdown-toggle" data-bs-toggle="collapse"
+                                   data-bs-target="#req09-collapse" aria-expanded="false">
+                                        Todos Itens Faltantes Patrimonios
+                                    </a>
+                                    <div class="collapse" id="req09-collapse">
+                                        <ul class="list-unstyled fw-normal pb-1 small">
+                                            <li><a class="nav-link" href="/formularios/patrimonio/RelatorioItensFaltantes/03" target="_blank">Relatorio Itens Faltantes Denuo</a></li>
+                                            <li><a class="nav-link" href="/formularios/patrimonio/RelatorioItensFaltantes/01" target="_blank">Relatorio Itens Faltantes Intermedic</a></li>
+                                        </ul>
+                                    </div>
+                                </li>
+                           </ul>
+                       </div>
+                   </li>
+               }
+            </ul>
+        </div>
+        <div class="content">
+             @RenderBody()
+        </div>
+    </div>
+
+    <script src="~/lib/jquery/dist/jquery.min.js" asp-append-version="true"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js" asp-append-version="true"></script>
+    <script src="~/lib/jquery.mask/jquery.mask.min.js" asp-append-version="true"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/js/loading-bar.js" asp-append-version="true"></script>
+    <script src="~/lib/jquery.redirect/dist/jquery.redirect.js" asp-append-version="true"></script>
+
+    <script>
+        $("#check").on('change',function (){
+            document.getElementById("mySidenav").style.width = "250px";
+        });
+
+        $("#checkFeche").on('change',function(){
+            document.getElementById("mySidenav").style.width = "0";
+        })
+    </script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

@@ -1,9 +1,15 @@
 ﻿@page
 @model SGID.Pages.Relatorios.RH.BaixaLicitacoesInterModel
-
 @{
     ViewData["Title"] = "Baixa Licitações Inter";
-    Layout = "_LayoutGeral";
+    if (User.IsInRole("Diretoria") && !User.IsInRole("Admin"))
+    {
+        Layout = "_LayoutDiretoria";
+    }
+    else
+    {
+        Layout = "_LayoutGeral";
+    }
 }
 
 @using (@Html.BeginForm(FormMethod.Post))

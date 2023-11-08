@@ -2,7 +2,14 @@
 @model SGID.Pages.DashBoards.DashBoardDiretorio2Model
 @{
     ViewData["Title"] = "DASHBOARD";
-    Layout = "_LayoutGeral";
+    if (User.IsInRole("Diretoria") && !User.IsInRole("Admin"))
+    {
+        Layout = "_LayoutDiretoria";
+    }
+    else
+    {
+        Layout = "_LayoutGeral";
+    }
 }
 
 

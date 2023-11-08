@@ -1,0 +1,102 @@
+﻿@page "{Vendedor}/{DataInicio}/{DataFim}"
+@model SGID.Pages.Relatorios.Visitas.RelatorioVisitasIndividualModel
+@{
+    ViewData["Title"] = "Relatorio de Visitas ";
+    if (User.IsInRole("Diretoria") && !User.IsInRole("Admin"))
+    {
+        Layout = "_LayoutDiretoria";
+    }
+    else
+    {
+        Layout = "_LayoutGeral";
+    }
+}
+
+<div class="panel">
+    <div class="panel-body">
+        <table id="demo-dt-addrow" class="table table-striped table-bordered" cellspacing="0" width="100%">
+            <thead>
+                <tr>
+                    <th class="text-center" colspan="10">
+                        VISITAS
+                    </th>
+                </tr>
+                <tr>
+                    <th class="text-center">
+                        VENDEDOR
+                    </th>
+                    <th class="text-center">
+                        CLIENTE
+                    </th>
+                    <th class="text-center">
+                        DATA DA VISITA
+                    </th>
+                    <th class="text-center">
+                        ASSUNTO
+                    </th>
+                    <th class="text-center">
+                        MOTIVO
+                    </th>
+                    <th class="text-center">
+                        ENDERECO
+                    </th>
+                    <th class="text-center">
+                        BAIRRO
+                    </th>
+                    <th class="text-center">
+                        STATUS
+                    </th>
+                    <th class="text-center">
+                        OBSERVAÇÕES
+                    </th>
+                    <th class="text-center">
+                        RESUMO VISITA
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var data in Model.Visitas)
+                {
+                    <tr>
+                        <td>@data.Vendedor.Replace("."," ")</td>
+                        <td>@Html.DisplayFor(model=> data.Medico)</td>
+                        <td>@data.DataHora.ToString("dd/MM/yyyy HH:mm")</td>
+                        <td>@Html.DisplayFor(model=> data.Assunto)</td>
+                        <td>@Html.DisplayFor(model=> data.Motvisita)</td>
+                        <td>@Html.DisplayFor(model=> data.Endereco)</td>
+                        <td>@Html.DisplayFor(model=> data.Bairro)</td>
+                        <td>
+                            @if(data.Status == 0)
+                            {
+                                <span>MARCADA</span>
+                            }
+                            else if (data.Status == 1)
+                            {
+                                <span>REALIZADA</span>
+                            }
+                            else if (data.Status == 2)
+                            {
+                                <span>REMARCADA</span>
+                            }
+                            else
+                            {
+                                <span>CANCELADA</span>
+                            }
+                        </td>
+                        <td>@Html.DisplayFor(model=> data.Observacao)</td>
+                        <td>
+                            @if (data.Status == 3)
+                            {
+                                <span>@Html.DisplayFor(model=> data.MotivoRej)</span>
+                            }
+                            else
+                            {
+                                <span>@Html.DisplayFor(model=> data.ResumoVisita)</span>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

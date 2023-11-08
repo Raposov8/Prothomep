@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using SGID.Data;
@@ -6,13 +7,13 @@ using SGID.Models.Diretoria;
 
 namespace SGID.Pages.Relatorios.Visitas
 {
+    [Authorize]
     public class RelatorioVisitasModel : PageModel
     {
         private ApplicationDbContext SGID { get; set; }
 
         public DateTime Inicio { get; set; }
         public DateTime Fim { get; set; }
-
 
         public List<Data.ViewModel.Visitas> Visitas { get; set; } = new List<Data.ViewModel.Visitas>();
         public List<RankingVendedores> Vendedores { get; set; } = new List<RankingVendedores>();

@@ -2,7 +2,14 @@
 @model SGID.Pages.RH.GestaoPessoalModel
 @{
     ViewData["Title"] = "Solicitação de Acesso";
-    Layout = "_LayoutGeral";
+    if (User.IsInRole("Diretoria") && !User.IsInRole("Admin"))
+    {
+        Layout = "_LayoutDiretoria";
+    }
+    else
+    {
+        Layout = "_LayoutGeral";
+    }
 }
 
 <div class="row">

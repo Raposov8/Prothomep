@@ -2,7 +2,14 @@
 @model SGID.Pages.Relatorios.Controladoria.DemonstracaoModel
 @{
     ViewData["Title"] = "Relatorio Demonstração Denuo";
-    Layout = "_LayoutGeral";
+    if (User.IsInRole("Diretoria") && !User.IsInRole("Admin"))
+    {
+        Layout = "_LayoutDiretoria";
+    }
+    else
+    {
+        Layout = "_LayoutGeral";
+    }
 
     var count = 0;
 }
