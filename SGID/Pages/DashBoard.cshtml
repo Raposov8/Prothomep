@@ -2,13 +2,17 @@
 @model SGID.Pages.DashBoardModel
 @{
     ViewData["Title"] = "DASHBOARD";
-    if (User.IsInRole("Diretoria") && !User.IsInRole("Admin"))
+    if (User.IsInRole("Admin"))
+    {
+        Layout = "_LayoutNovo";
+    }
+    else if (User.IsInRole("Diretoria"))
     {
         Layout = "_LayoutDiretoria";
     }
     else
     {
-        Layout = "_LayoutGeral";
+        Layout = "_LayoutNovo";
     }
 }
 
@@ -17,18 +21,18 @@
 
 <!-- Campo de Pesquisa-->
 <div class="row">
-    <div class="offset-4 offset-sm-4 offset-xs-4 col-md-3 col-sm-3 col-xs-3">
+    <div class="offset-4 offset-sm-4 offset-4 col-md-3 col-sm-3 col-3">
         <input class="form-control" type="search" id="searchInput" name="searchInput" oninput="this.value = this.value.toUpperCase()" />
     </div>
-    <div class="offset-2 offset-sm-2 offset-xs-2 col-md-3 col-sm-3 col-xs-3">
+    <div class="offset-2 offset-sm-2 offset-2 col-md-3 col-sm-3 col-3">
         <a href="/cirurgias/novoagendamento/03" class="float-end" style="text-decoration:none;"><i class="fa-regular fa-calendar-days"></i> Novo Orçamento</a>
     </div>
 </div>
 <br />
 
 <!-- Cards -->
-<div class="row justify-content-center col-xs-12 col-sm-12 col-md-12 col-xl-12">
-    <div class="col-xs-3 col-sm-3 col-md-3 col-xl-3">
+<div class="row justify-content-center col-12 col-sm-12 col-md-12 col-xl-12">
+    <div class="col-3 col-sm-3 col-md-3 col-xl-3">
         <div class="panel panel-colorful" style="background-color:lightgray">
             <div class="panel-heading">
                 <h2 style="margin:0%;color:black" class="panel-title text-center">TOTAL DE COTAÇÔES</h2>
@@ -38,7 +42,7 @@
             </div>
         </div>
     </div>
-    <div class="col-xs-3 col-sm-3 col-md-3 col-xl-3">
+    <div class="col-3 col-sm-3 col-md-3 col-xl-3">
         <div class="panel panel-colorful" style="background-color:lightgray">
             <div class="panel-heading">
                 <h2 style="margin:0%;" class="panel-title text-center">NÃO RESPONDIDAS</h2>
@@ -48,7 +52,7 @@
             </div>
         </div>
     </div>
-    <div class="col-xs-3 col-sm-3 col-md-3 col-xl-3">
+    <div class="col-3 col-sm-3 col-md-3 col-xl-3">
         <div class="panel panel-colorful" style="background-color:lightgray">
             <div class="panel-heading">
                 <h2 style="margin:0%;color:#c00000" class="panel-title text-center">PENDENTE COMERCIAL</h2>
@@ -58,7 +62,7 @@
             </div>
         </div>
     </div>
-    <div class="col-xs-3 col-sm-3 col-md-3 col-xl-3">
+    <div class="col-3 col-sm-3 col-md-3 col-xl-3">
         <div class="panel panel-colorful" style="background-color:lightgray">
             <div class="panel-heading">
                 <h2 style="margin:0%;" class="panel-title text-center">RESPONDIDO PELO COMERCIAL</h2>
@@ -68,7 +72,7 @@
             </div>
         </div>
     </div>
-    <div class="col-xs-3 col-sm-3 col-md-3 col-xl-3">
+    <div class="col-3 col-sm-3 col-md-3 col-xl-3">
         <div class="panel panel-colorful" style="background-color:lightgray">
             <div class="panel-heading">
                 <h2 style="margin:0%;color:#00b050" class="panel-title text-center">PENDENTE CLIENTE</h2>
@@ -78,7 +82,7 @@
             </div>
         </div>
     </div>
-    <div class="col-xs-3 col-sm-3 col-md-3 col-xl-3">
+    <div class="col-3 col-sm-3 col-md-3 col-xl-3">
         <div class="panel panel-colorful" style="background-color:lightgray">
             <div class="panel-heading">
                 <h2 style="margin:0%;color:#00b050" class="panel-title text-center">APROVADAS</h2>
@@ -88,7 +92,7 @@
             </div>
         </div>
     </div>
-    <div class="col-xs-3 col-sm-3 col-md-3 col-xl-3">
+    <div class="col-3 col-sm-3 col-md-3 col-xl-3">
         <div class="panel panel-colorful" style="background-color:lightgray">
             <div class="panel-heading">
                 <h2 style="margin:0%;" class="panel-title text-center">PERDIDAS</h2>
@@ -98,7 +102,7 @@
             </div>
         </div>
     </div>
-    <div class="col-xs-3 col-sm-3 col-md-3 col-xl-3">
+    <div class="col-3 col-sm-3 col-md-3 col-xl-3">
         <div class="panel panel-colorful" style="background-color:lightgray">
             <div class="panel-heading">
                 <h2 style="margin:0%;color:#c00000" class="panel-title text-center">EMERGÊNCIA</h2>
@@ -111,7 +115,7 @@
 </div>
 
 <!--Tabela-->
-<div class="col-xs-12 col-sm-12 col-md-12">
+<div class="col-12 col-sm-12 col-md-12">
     <div class="panel">
         <div class="panel-body">
             <table id="demo-dt-addrow" class="table table-striped table-bordered" cellspacing="0" width="50%">
@@ -571,6 +575,7 @@
                                     <label class="Label">Tipo</label>
                                     <select class="form-control" id="Tipo" name="Tipo">
                                         <option value="2">ELETIVA</option>
+                                        <option value="3">EMERGENCIA</option>
                                         <option value="1">URGENTE</option>
                                     </select>
                                 </div>

@@ -317,7 +317,7 @@ namespace SGID.Pages.Logistica
 
                     Agendamento.UsuarioLogistica = User.Identity.Name.Split("@")[0].ToUpper();
                     Agendamento.DataLogistica = DateTime.Now;
-                    Agendamento.StatusLogistica = 1;
+                    Agendamento.StatusLogistica = 7;
 
                     SGID.Agendamentos.Update(Agendamento);
                     SGID.SaveChanges();
@@ -396,7 +396,7 @@ namespace SGID.Pages.Logistica
 
                     Agendamento.UsuarioLogistica = User.Identity.Name.Split("@")[0].ToUpper();
                     Agendamento.DataLogistica = DateTime.Now;
-                    Agendamento.StatusLogistica = 3;
+                    Agendamento.StatusLogistica = 2;
 
 
                     SGID.Agendamentos.Update(Agendamento);

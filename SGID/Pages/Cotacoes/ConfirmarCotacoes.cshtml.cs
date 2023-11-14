@@ -381,13 +381,27 @@ namespace SGID.Pages.Cotacoes
 
                 #endregion
 
-
-
                 var Agendamento = SGID.Agendamentos.FirstOrDefault(x => x.Id == id);
 
-                Agendamento.UsuarioComercialAprova = User.Identity.Name.Split("@")[0].ToUpper();
-                Agendamento.DataComercialAprova = DateTime.Now;
-                Agendamento.StatusLogistica = 2;
+                Agendamento.DataCirurgia = DataCirurgia;
+                Agendamento.DataEntrega = Entrega;
+
+                if(Agendamento.StatusPedido == 3)
+                {
+                    Agendamento.UsuarioComercialAprova = User.Identity.Name.Split("@")[0].ToUpper();
+                    Agendamento.DataComercialAprova = DateTime.Now;
+                    Agendamento.StatusPedido = 7;
+                    Agendamento.StatusLogistica = 0;
+                }
+                else
+                {
+                    Agendamento.UsuarioComercialAprova = User.Identity.Name.Split("@")[0].ToUpper();
+                    Agendamento.DataComercialAprova = DateTime.Now;
+                    Agendamento.StatusPedido = 7;
+                    Agendamento.StatusLogistica = 1;
+                }
+
+                
 
                 SGID.Agendamentos.Update(Agendamento);
                 SGID.SaveChanges();

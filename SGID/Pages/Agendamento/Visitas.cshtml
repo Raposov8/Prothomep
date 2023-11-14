@@ -8,7 +8,7 @@
     }
     else
     {
-        Layout = "_LayoutGeral";
+        Layout = "_LayoutNovo";
     }
 }
 
@@ -57,7 +57,7 @@
                 <!--Modal body-->
                 <div class="modal-body">
                     <div class="row">
-                        <div class="card" style="padding:10px;">
+                        <div class="card" style="padding:10px;" id="MyForm">
                             <div class="col-md-12">
                                 <div class="row">
                                     <div class="form-group col-sm-6 col-md-6">
@@ -65,15 +65,18 @@
                                         <div class="autocomplete col-md-12">
                                             <input class="form-control" id="Medico" name="Medico" oninput="this.value = this.value.toUpperCase()" required>
                                             <input id="Id2" type="hidden">
+                                            <span class="text-danger field-validation-valid" id="MedicoError"></span>
                                         </div>
                                     </div>
                                     <div class="form-group col-sm-4 col-md-4">
                                         <label class="Label">Ultima Visita</label>
                                         <input type="date" class="form-control" id="DataUltima" name="DataUltima" required />
+                                        <span class="text-danger field-validation-valid" id="DataUltimaError"></span>
                                     </div>
                                     <div class="form-group col-sm-4 col-md-4">
                                         <label class="Label">Data & Hora</label>
                                         <input type="datetime-local" class="form-control" id="Data" name="Data" required />
+                                        <span class="text-danger field-validation-valid" id="DataError"></span>
                                     </div>
                                     <div class="form-group col-sm-6 col-md-6">
                                         <label class="Label">Tipo</label>
@@ -89,6 +92,7 @@
                                     <div class="form-group col-sm-8 col-md-8">
                                         <label class="Label">Endereço</label>
                                         <input type="text" class="form-control" id="Endereco" name="Endereco" oninput="this.value = this.value.toUpperCase()" required />
+                                        <span class="text-danger field-validation-valid" id="EnderecoError"></span>
                                     </div>
                                     <div class="form-group col-sm-4 col-md-4">
                                         <label class="Label">Bairro</label>
@@ -98,16 +102,17 @@
 
                                             </div>
                                         </div>
+                                        <span class="text-danger field-validation-valid" id="BairroError"></span>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="form-group col-sm-6 col-md-6">
                                         <label class="Label">Email</label>
-                                        <input type="text" class="form-control" id="Email" name="Email" required />
+                                        <input type="text" class="form-control" id="Email" name="Email"/>
                                     </div>
                                     <div class="form-group col-sm-6 col-md-6">
                                         <label class="Label">Telefone</label>
-                                        <input type="text" class="form-control" id="Telefone" name="Telefone" required />
+                                        <input type="text" class="form-control" id="Telefone" name="Telefone"/>
                                     </div>
                                 </div>
                                 <div class="row">
@@ -119,32 +124,32 @@
                                         <label class="Label">Motivo da visita</label>
                                         <div class="row">
                                             <div class="col-sm-2 col-md-2">
-                                                <input hidden type="radio" class="btn-check" name="MotVis" id="MotVis1" value="VENDA" autocomplete="off"  required>
+                                                <input hidden type="radio" class="btn-check" name="MotVis" id="MotVis1" value="VENDA" autocomplete="off" required>
                                                 <label class="btn btn-outline-primary" for="MotVis1">VENDA</label>
                                             </div>
                                             <div class="col-sm-2 col-md-2">
-                                                <input hidden type="radio" class="btn-check" name="MotVis" id="MotVis2" value="INDICAÇÃO" autocomplete="off"  required>
+                                                <input hidden type="radio" class="btn-check" name="MotVis" id="MotVis2" value="INDICAÇÃO" autocomplete="off" >
                                                 <label class="btn btn-outline-primary" for="MotVis2">INDICAÇÃO</label>
                                             </div>
                                             <div class="col-sm-3 col-md-3">
-                                                <input hidden type="radio" class="btn-check" name="MotVis" id="MotVis3" value="ACOMPANHAMENTO" autocomplete="off"  required>
+                                                <input hidden type="radio" class="btn-check" name="MotVis" id="MotVis3" value="ACOMPANHAMENTO" autocomplete="off" >
                                                 <label class="btn btn-outline-primary" for="MotVis3">ACOMPANHAMENTO</label>
                                             </div>
                                             <div class="col-sm-3 col-md-3">
-                                            <input hidden type="radio" class="btn-check" name="MotVis" id="MotVis6" value="CAIXA INSTRUMENTAL" autocomplete="off" required>
+                                            <input hidden type="radio" class="btn-check" name="MotVis" id="MotVis6" value="CAIXA INSTRUMENTAL" autocomplete="off" >
                                                 <label class="btn btn-outline-primary" for="MotVis6">CAIXA INSTRUMENTAL</label>
                                             </div>
                                         </div>
                                         <div class="row">
                                             <div class="col-sm-2 col-md-2">
-                                                <input hidden type="radio" class="btn-check" name="MotVis" id="MotVis4" value="RECLAMAÇÃO" autocomplete="off" required>
+                                                <input hidden type="radio" class="btn-check" name="MotVis" id="MotVis4" value="RECLAMAÇÃO" autocomplete="off" >
                                                 <label class="btn btn-outline-primary" for="MotVis4">RECLAMAÇÃO</label>
                                             </div>
                                             <div class="col-sm-2 col-md-2">
-                                                <input hidden type="radio" class="btn-check" name="MotVis" id="MotVis5" value="EVENTO" autocomplete="off" required>
+                                                <input hidden type="radio" class="btn-check" name="MotVis" id="MotVis5" value="EVENTO" autocomplete="off" >
                                                 <label class="btn btn-outline-primary" for="MotVis5">EVENTO</label>
                                             </div>
-                                            
+                                            <span class="text-danger field-validation-valid" id="MotVisError"></span>
                                         </div>
                                     </div>
                                     
@@ -442,29 +447,41 @@
                                 </div>
                             </div>
                                 <div class="row">
-                                    <div class="form-group col-sm-3 col-md-3">
+                                
+                                    <div class="form-group col-sm-12 col-md-12">
                                         <label class="Label">Assunto</label>
-                                        <input class="form-control" id="Assunto2" name="Assunto2" oninput="this.value = this.value.toUpperCase()" required />
+                                        <input class="form-control" id="Assunto" name="Assunto" oninput="this.value = this.value.toUpperCase()" required />
                                     </div>
-                                    <div class="form-group col-sm-9 col-md-9">
+                                    <div class="form-group col-sm-12 col-md-12">
                                         <label class="Label">Motivo da visita</label>
                                         <div class="row">
                                             <div class="col-sm-2 col-md-2">
-                                                <input hidden type="radio" class="btn-check" name="MotVis2" id="MotVis5" value="VENDA" autocomplete="off" required>
-                                                <label class="btn btn-outline-primary" for="MotVis5">VENDA</label>
+                                            <input hidden type="radio" class="btn-check" name="MotVis2" id="MotVis11" value="VENDA" autocomplete="off" required>
+                                                <label class="btn btn-outline-primary" for="MotVis1">VENDA</label>
+                                            </div>
+                                            <div class="col-sm-2 col-md-2">
+                                            <input hidden type="radio" class="btn-check" name="MotVis2" id="MotVis10" value="INDICAÇÃO" autocomplete="off">
+                                                <label class="btn btn-outline-primary" for="MotVis10">INDICAÇÃO</label>
                                             </div>
                                             <div class="col-sm-3 col-md-3">
-                                                <input hidden type="radio" class="btn-check" name="MotVis2" id="MotVis6" value="INDICAÇÃO" autocomplete="off" required>
-                                                <label class="btn btn-outline-primary" for="MotVis6">INDICAÇÃO</label>
-                                            </div>
-                                            <div class="col-sm-4 col-md-4">
-                                                <input hidden type="radio" class="btn-check" name="MotVis2" id="MotVis7" value="ACOMPANHAMENTO" autocomplete="off" required>
-                                                <label class="btn btn-outline-primary" for="MotVis7">ACOMPANHAMENTO</label>
+                                            <input hidden type="radio" class="btn-check" name="MotVis2" id="MotVis9" value="ACOMPANHAMENTO" autocomplete="off">
+                                                <label class="btn btn-outline-primary" for="MotVis9">ACOMPANHAMENTO</label>
                                             </div>
                                             <div class="col-sm-3 col-md-3">
-                                                <input hidden type="radio" class="btn-check" name="MotVis2" id="MotVis8" value="RECLAMAÇÃO" autocomplete="off" required>
-                                                <label class="btn btn-outline-primary" for="MotVis8">RECLAMAÇÃO</label>
+                                            <input hidden type="radio" class="btn-check" name="MotVis2" id="MotVis8" value="CAIXA INSTRUMENTAL" autocomplete="off">
+                                                <label class="btn btn-outline-primary" for="MotVis8">CAIXA INSTRUMENTAL</label>
                                             </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-2 col-md-2">
+                                            <input hidden type="radio" class="btn-check" name="MotVis2" id="MotVis7" value="RECLAMAÇÃO" autocomplete="off">
+                                                <label class="btn btn-outline-primary" for="MotVis7">RECLAMAÇÃO</label>
+                                            </div>
+                                            <div class="col-sm-2 col-md-2">
+                                            <input hidden type="radio" class="btn-check" name="MotVis2" id="MotVis6" value="EVENTO" autocomplete="off">
+                                                <label class="btn btn-outline-primary" for="MotVis6">EVENTO</label>
+                                            </div>
+                                            <span class="text-danger field-validation-valid" id="MotVisError"></span>
                                         </div>
                                     </div>
                                     <div class="form-group col-sm-12 col-md-12">
@@ -498,7 +515,7 @@
 
 @section Scripts
 {
-    <link href="~/lib/fullcalendar/fullcalendar.min.css" rel='stylesheet' />
+    <link href="~/lib/fullcalendar/fullcalendar.min.css" rel='stylesheet'/>
     <script src="~/lib/moment.js/moment.min.js"></script>
     <script src="~/lib/fullcalendar/fullcalendar.min.js"></script>
     <script src='~/lib/fullcalendar/locale-all.min.js'></script>
@@ -763,42 +780,91 @@
 
             $("#Salvar2").on('click',function(){
             
-                var Id = $("#Id").val()
-                var Medico = $("#Medico").val()
-                var DataUltima = $("#DataUltima").val()
-                var Data = $("#Data").val()
-                var Local = $("#Local").val()
-                var Endereco = $("#Endereco").val()
-                var Bairro = $("#Bairro").val()
-                var Email = $("#Email").val()
-                var Telefone = $("#Telefone").val()
-                var Assunto = $("#Assunto").val()
+                var Id = $("#Id").val();
+                var Medico = $("#Medico").val();
+                var DataUltima = $("#DataUltima").val();
+                var Data = $("#Data").val();
+                var Local = $("#Local").val();
+                var Endereco = $("#Endereco").val();
+                var Bairro = $("#Bairro").val();
+                var Email = $("#Email").val();
+                var Telefone = $("#Telefone").val();
+                var Assunto = $("#Assunto").val();
                 var MotVis = $('input[name=MotVis]:checked').val();
-                var Obs = $("#Obs").val()
-                var Resu = $("#ResuVisi").val()
+                var Obs = $("#Obs").val();
+                var Resu = $("#ResuVisi").val();
 
 
+                 let radioValueCheck = true;
+                 let allAreFilled = true;
+                 document.getElementById("MyForm").querySelectorAll("[required]").forEach(function (i) 
+                 {
+                    
+                     if (i.type === "radio") {
+                         
+                         console.log(`[name=${i.name}]`);
+                         document.getElementById("MyForm").querySelectorAll(`[name=${i.name}]`).forEach(function (r) 
+                         {
+                             if (r.checked) radioValueCheck = false;
+                         })
+                         allAreFilled = radioValueCheck;
+                         if (radioValueCheck) 
+                         {
+                            $(`#${i.name}Error`).html(`${i.name} precisa ser preenchido`)
+                         }
+                     }
+                     if (!i.value) 
+                     { 
+                         allAreFilled = false;
+
+                         if (`${i.name}` == 'Data') 
+                         {
+                            $(`#${i.name}Error`).html(`Data & Hora precisa ser preenchido`)
+                         }
+                         else if (`${i.name}` == 'DataUltima') 
+                         {
+                            $(`#${i.name}Error`).html(`Ultima Vista precisa ser preenchido`)
+                         } 
+                         else 
+                         {
+                            $(`#${i.name}Error`).html(`${i.name} precisa ser preenchido`)
+                         }
+
+                         
+                         
+                     }
+                 })
 
 
-                var chamadaUrl = `/agendamento/visitas?id=${Id}&&Medico=${Medico}&&Local=${Local}&&Data=${Data}&&DataUltima=${DataUltima}&&Assunto=${Assunto}&&Endereco=${Endereco}&&Bairro=${Bairro}&&MotVis=${MotVis}&&Obs=${Obs}&&ResuVisi=${Resu}&&Telefone=${Telefone}&&Email=${Email}`
-                $.ajax({
-                    url: chamadaUrl,
-                    type: "POST",
-                    contentType: "application/json;",
-                    dataType: 'json',
-                    headers: {
-                        "RequestVerificationToken": $('input:hidden[name="__RequestVerificationToken"]').val()
-                    },
-                    success: function (data) {
+                if (!allAreFilled && radioValueCheck) 
+                {
+                    alert('Preencha os campos faltantes');
+                } 
+                else 
+                {
 
-                        if (data == "Sucesso") {
-                            location.reload()
+
+                    var chamadaUrl = `/agendamento/visitas?id=${Id}&&Medico=${Medico}&&Local=${Local}&&Data=${Data}&&DataUltima=${DataUltima}&&Assunto=${Assunto}&&Endereco=${Endereco}&&Bairro=${Bairro}&&MotVis=${MotVis}&&Obs=${Obs}&&ResuVisi=${Resu}&&Telefone=${Telefone}&&Email=${Email}`
+                    $.ajax({
+                        url: chamadaUrl,
+                        type: "POST",
+                        contentType: "application/json;",
+                        dataType: 'json',
+                        headers: 
+                        {
+                            "RequestVerificationToken": $('input:hidden[name="__RequestVerificationToken"]').val()
+                        },
+                        success: function (data) 
+                        {
+
+                            if (data == "Sucesso") {
+                                location.reload()
+                            }
                         }
-                    }
-                })
+                    })
+                }
             })
         })
-
     </script>
     <script>
 
@@ -829,9 +895,11 @@
                     /*append the DIV element as a child of the autocomplete container:*/
                     this.parentNode.appendChild(a);
                     /*for each item in the array...*/
-                    for (i = 0; i < arr.length; i++) {
+                    for (i = 0; i < arr.length; i++) 
+                    {
                         /*check if the item starts with the same letters as the text field value:*/
-                            if (arr[i].toUpperCase().includes(val.toUpperCase())) {
+                            if (arr[i].toUpperCase().includes(val.toUpperCase())) 
+                            {
                             /*create a DIV element for each matching element:*/
                             b = document.createElement("DIV");
                             /*make the matching letters bold:*/
@@ -853,16 +921,18 @@
                                     type: "GET",
                                     contentType: "application/json;",
                                     dataType: 'json',
-                                    headers: {
+                                    headers: 
+                                    {
                                         "RequestVerificationToken": $('input:hidden[name="__RequestVerificationToken"]').val()
                                     },
-                                    success: function(data) {
+                                    success: function(data) 
+                                    {
                                         
                                         $("#Endereco").val(data.endereco)
                                         $("#Bairro").val(data.bairro)
                                         if(data.quant > 0)
                                         {
-                                                $("#Quant").html(`<a href="/clientes/medicosarea/${data.bairro}" target="_blank" style="color:#c00000;text-decoration:none">Há ${data.quant} outros medicos neste bairro</a>`);
+                                            $("#Quant").html(`<a href="/clientes/medicosarea/${data.bairro}" target="_blank" style="color:#c00000;text-decoration:none">Há ${data.quant} outros medicos neste bairro</a>`);
                                         }   
                                         $("#DataUltima").val(data.ultima)
                                         $("#Telefone").val(data.telefone)
@@ -871,7 +941,6 @@
                                 })   
                             });
                             a.appendChild(b);
-                                
                         }
                     }
                 });

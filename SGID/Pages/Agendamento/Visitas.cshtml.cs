@@ -247,7 +247,7 @@ namespace SGID.Pages.Agendamento
                     Empresa = User.Identity.Name.Split("@")[1].ToUpper() == "INTERMEDIC.COM.BR" ? "INTERMEDIC":"DENUO"
                 };
 
-                if(!SGID.Visitas.Any(x=> x.DataHora == Visita.DataHora && x.Medico == Visita.Medico))
+                if(!SGID.Visitas.Any(x => x.DataHora == Visita.DataHora && x.Medico == Visita.Medico))
                 {
                     SGID.Visitas.Add(Visita);
                     SGID.SaveChanges();

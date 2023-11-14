@@ -8,7 +8,7 @@
     }
     else
     {
-        Layout = "_LayoutGeral";
+        Layout = "_LayoutNovo";
     }
 
     var count = 0;
@@ -208,6 +208,7 @@
                                                 </td>
                                                 <td class="text-center">
                                                     <a href="/Formularios/Patrimonio/RelatorioPatrimonio/@Model.Agendamento.Empresa?handler=Confirmar&&Patrimonio=@data.Descri&&Empresa=@Model.Agendamento.Empresa" target="_blank"><i class="fa-solid fa-magnifying-glass"></i></a>
+                                                    <a class="fa-regular fa-trash-can add-tooltip" onclick="removePatri(this)" style="text-decoration:none;" id="Excluir" data-container="body" data-placement="top" data-original-title="Excluir Recurso" aria-hidden="true"></a>
                                                 </td>
                                             </tr>
                                             countPatri++;
@@ -234,6 +235,7 @@
                                             </th>
                                             <th class="text-center">
                                                 Ações
+                                                <a class="details2" data-id="10" data-toggle="modal" data-target="#details-modal"><i class="fa-solid fa-circle-plus" style="color:green"></i></a>
                                             </th>
                                         </tr>
                                     </thead>
@@ -253,6 +255,7 @@
                                                     <input type="number" id="Avulsos[@countAvulso].Und" name="Avulsos[@countAvulso].Und" value="@data.Und" />
                                                 </td>
                                                 <td class="text-center">
+
                                                 </td>
                                             </tr>
                                             countAvulso++;

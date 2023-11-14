@@ -8,7 +8,7 @@
     }
     else
     {
-        Layout = "_LayoutGeral";
+        Layout = "_LayoutNovo";
     }
 }
 
@@ -35,12 +35,12 @@
             <thead>
                 <tr>
                     <th class="text-center" colspan="4">
-                        VENDEDORES
+                        REPRESENTANTES
                     </th>
                 </tr>
                 <tr>
                     <th class="text-center">
-                        VENDEDOR
+                        REPRESENTANTE
                     </th>
                     <th class="text-center">
                         Nº DE VISITAS
@@ -56,7 +56,7 @@
                     <tr>
                         <td>@data.Nome.Replace("."," ")</td>
                         <td>@Html.DisplayFor(model=> data.Quant)</td>
-                        <td><a target="_blank" href="/relatorios/visitas/relatoriovisitasindividual/@data.Nome/@Model.Inicio.ToString("yyyy-MM-dd")/@Model.Fim.ToString("yyyy-MM-dd")">Individual</a></td>
+                        <td><a target="_blank" href="/relatorios/visitas/relatoriovisitasindividual/@data.Nome/@Model.Inicio.ToString("yyyy-MM-dd")/@Model.Fim.ToString("yyyy-MM-dd")">Visualizar Relatorio</a></td>
                     </tr>
                 }
             </tbody>
@@ -80,7 +80,7 @@
                         EMPRESA
                     </th>
                     <th class="text-center">
-                        VENDEDOR
+                        REPRESENTANTE
                     </th>
                     <th class="text-center">
                         CLIENTE

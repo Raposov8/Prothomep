@@ -20,6 +20,8 @@ namespace SGID.Pages.Logistica
 
         public string Empresa { get; set; } = "";
         public int Aprovadas { get; set; } = 0;
+
+        public int Confirmadas { get; set; } = 0;
         public int Pendente { get; set; } = 0;
         public int Separacao { get; set; } = 0;
         public int EmRota { get; set; } = 0;
@@ -44,7 +46,7 @@ namespace SGID.Pages.Logistica
                     1 => SGID.Agendamentos.Where(x => x.StatusPedido == 3 && x.DataCirurgia != null && x.StatusLogistica == 0 && x.Empresa == "01")
                         .OrderBy(x => x.Tipo).ThenBy(x => x.DataCirurgia).ToList(),
                     //Pendente
-                    2 => SGID.Agendamentos.Where(x => x.StatusLogistica == 1 && x.Empresa == "01")
+                    2 => SGID.Agendamentos.Where(x => (x.StatusLogistica == 1 || x.StatusLogistica == 7) && x.Empresa == "01")
                         .OrderBy(x => x.Tipo).ThenBy(x => x.DataCirurgia).ToList(),
                     //Separação
                     3 => SGID.Agendamentos.Where(x => x.StatusLogistica == 2 && x.Empresa == "01")
@@ -61,12 +63,17 @@ namespace SGID.Pages.Logistica
                     //Inspeção
                     7 => SGID.Agendamentos.Where(x => x.StatusLogistica == 6 && x.Empresa == "01")
                         .OrderBy(x => x.Tipo).ThenBy(x => x.DataCirurgia).ToList(),
+                    //Confirmadas
+                    8 => SGID.Agendamentos.Where(x => x.StatusPedido == 7 && x.DataCirurgia != null && x.StatusLogistica == 0 && x.Empresa == "01")
+                        .OrderBy(x => x.Tipo).ThenBy(x => x.DataCirurgia).ToList(),
                     _ => new List<Agendamentos>()
                 };
 
                 Aprovadas = SGID.Agendamentos.Where(x => x.StatusPedido == 3 && x.DataCirurgia != null && x.StatusLogistica == 0 && x.Empresa == "01").Count();
 
-                Pendente = SGID.Agendamentos.Where(x => x.StatusLogistica == 1 && x.Empresa == "01").Count();
+                Confirmadas = SGID.Agendamentos.Where(x => x.StatusPedido == 7 && x.DataCirurgia != null && x.StatusLogistica == 0 && x.Empresa == "01").Count();
+
+                Pendente = SGID.Agendamentos.Where(x => (x.StatusLogistica == 1 || x.StatusLogistica == 7) && x.Empresa == "01").Count();
 
                 Separacao = SGID.Agendamentos.Where(x => x.StatusLogistica == 2 && x.Empresa == "01").Count();
 
@@ -86,7 +93,7 @@ namespace SGID.Pages.Logistica
                     1 => SGID.Agendamentos.Where(x => x.StatusPedido == 3 && x.DataCirurgia != null && x.StatusLogistica == 0 && x.Empresa == "03")
                         .OrderBy(x => x.Tipo).ThenBy(x => x.DataCirurgia).ToList(),
                     //Pendente
-                    2 => SGID.Agendamentos.Where(x => x.StatusLogistica == 1 && x.Empresa == "03")
+                    2 => SGID.Agendamentos.Where(x => (x.StatusLogistica == 1 || x.StatusLogistica == 7)&& x.Empresa == "03")
                         .OrderBy(x => x.Tipo).ThenBy(x => x.DataCirurgia).ToList(),
                     //Separação
                     3 => SGID.Agendamentos.Where(x => x.StatusLogistica == 2 && x.Empresa == "03")
@@ -103,12 +110,17 @@ namespace SGID.Pages.Logistica
                     //Inspeção
                     7 => SGID.Agendamentos.Where(x => x.StatusLogistica == 6 && x.Empresa == "03")
                         .OrderBy(x => x.Tipo).ThenBy(x => x.DataCirurgia).ToList(),
+                    //Confirmadas
+                    8 => SGID.Agendamentos.Where(x => x.StatusPedido == 7 && x.DataCirurgia != null && x.StatusLogistica == 0 && x.Empresa == "03")
+                        .OrderBy(x => x.Tipo).ThenBy(x => x.DataCirurgia).ToList(),
                     _ => new List<Agendamentos>()
                 };
 
                 Aprovadas = SGID.Agendamentos.Where(x => x.StatusPedido == 3 && x.DataCirurgia != null && x.StatusLogistica == 0 && x.Empresa == "03").Count();
 
-                Pendente = SGID.Agendamentos.Where(x => x.StatusLogistica == 1 && x.Empresa == "03").Count();
+                Confirmadas = SGID.Agendamentos.Where(x => x.StatusPedido == 7 && x.DataCirurgia != null && x.StatusLogistica == 0 && x.Empresa == "03").Count();
+
+                Pendente = SGID.Agendamentos.Where(x => (x.StatusLogistica == 1 || x.StatusLogistica == 7) && x.Empresa == "03").Count();
 
                 Separacao = SGID.Agendamentos.Where(x => x.StatusLogistica == 2 && x.Empresa == "03").Count();
 

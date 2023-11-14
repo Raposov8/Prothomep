@@ -8,7 +8,7 @@
     }
     else
     {
-        Layout = "_LayoutGeral";
+        Layout = "_LayoutNovo";
     }
 }
 
@@ -35,6 +35,23 @@
                     <a class="produto" href="/logistica/listarlogistica/03/1"><h3 class="text-center" style="margin-top:0%; color:green;font-size:80px">@Model.Aprovadas</h3></a>
                 }
                 
+            </div>
+        </div>
+    </div>
+    <div class="col-xs-3 col-sm-3 col-md-3 col-xl-3">
+        <div class="panel panel-colorful" style="background-color:lightgray">
+            <div class="panel-heading">
+                <h2 style="margin:0%;color:green" class="panel-title text-center">CONFIRMADAS</h2>
+            </div>
+            <div class="panel-body" style="padding-top:0px;">
+                @if (Model.Empresa == "01")
+                {
+                    <a class="produto" href="/logistica/listarlogistica/01/8"><h3 class="text-center" style="margin-top:0%; color:green;font-size:80px">@Model.Confirmadas</h3></a>
+                }
+                else
+                {
+                    <a class="produto" href="/logistica/listarlogistica/03/8"><h3 class="text-center" style="margin-top:0%; color:green;font-size:80px">@Model.Confirmadas</h3></a>
+                }
             </div>
         </div>
     </div>
@@ -272,7 +289,6 @@
                         <td>
                             @if (Model.Empresa == "01")
                             {
-                                <a href="/logistica/ListarLogistica/01/01?handler=EnviarComercial&&IdA=@Pedido.Id"><i class="fa-solid fa-paper-plane"></i></a>
 
                                 <a href="/logistica/ChecarAgendamento/@Pedido.Id" class="fa-solid fa-truck-fast add-tooltip" style="text-decoration:none;" data-container="body" data-placement="top" data-original-title="Confirmar Cotação" aria-hidden="true"></a>
                                 
@@ -282,7 +298,6 @@
                             }
                             else
                             {
-                                <a href="/logistica/ListarLogistica/03/01?handler=EnviarComercial&&IdA=@Pedido.Id"><i class="fa-solid fa-paper-plane"></i></a>
 
                                 <a href="/logistica/ChecarAgendamento/@Pedido.Id" class="fa-solid fa-truck-fast add-tooltip" style="text-decoration:none;" data-container="body" data-placement="top" data-original-title="Confirmar Cotação" aria-hidden="true"></a>
                                 
@@ -411,6 +426,7 @@
                                     <label class="Label">Tipo</label>
                                     <select class="form-control" id="Tipo" name="Tipo">
                                         <option value="2">ELETIVA</option>
+                                        <option value="3">EMERGENCIA</option>
                                         <option value="1">URGENTE</option>
                                     </select>
                                 </div>

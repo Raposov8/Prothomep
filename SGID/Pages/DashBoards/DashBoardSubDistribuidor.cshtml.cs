@@ -7,6 +7,7 @@ using SGID.Models;
 using SGID.Models.Controladoria;
 using SGID.Models.Denuo;
 using System;
+using SGID.Models.Financeiro;
 
 namespace SGID.Pages.DashBoards
 {
@@ -165,45 +166,91 @@ namespace SGID.Pages.DashBoards
 
                 #region Baixa 
 
-                var baixa = (from SE1 in ProtheusDenuo.Se1010s
-                             join SA3 in ProtheusDenuo.Sa3010s on SE1.E1Vend1 equals SA3.A3Cod
-                             where (int)(object)SE1.E1Baixa >= (int)(object)DataInicio
-                             && (int)(object)SE1.E1Baixa <= (int)(object)DataFim
-                             && SA3.A3Xlogin == "PLINIO.ALVIM"
-                             select new
+                var baixa = (from SE50 in ProtheusDenuo.Se5010s
+                             join SE10 in ProtheusDenuo.Se1010s on new { PRE = SE50.E5Prefixo, Num = SE50.E5Numero, Par = SE50.E5Parcela, Tipo = SE50.E5Tipo, Cliente = SE50.E5Cliente, Loja = SE50.E5Loja }
+                             equals new { PRE = SE10.E1Prefixo, Num = SE10.E1Num, Par = SE10.E1Parcela, Tipo = SE10.E1Tipo, Cliente = SE10.E1Cliente, Loja = SE10.E1Loja }
+                             join SA10 in ProtheusDenuo.Sa1010s on SE50.E5Cliente equals SA10.A1Cod
+                             join SA30 in ProtheusDenuo.Sa3010s on SA10.A1Vend equals SA30.A3Cod
+                             where SE50.DELET != "*" && SE10.DELET != "*" && SE50.E5Recpag == "R"
+                             && (SE50.E5Tipodoc == "VL" || SE50.E5Tipodoc == "RA")
+                             && (SE50.E5Naturez == "111001" || SE50.E5Naturez == "111004" || SE50.E5Naturez == "111006")
+                             && (SE50.E5Banco == "001" || SE50.E5Banco == "237" || SE50.E5Banco == "341")
+                             && (int)(object)SE50.E5Data >= (int)(object)DataInicio
+                             && (int)(object)SE50.E5Data <= (int)(object)DataFim
+                             && SA10.A1Clinter == "S"
+                             select new RelatorioAreceberBaixa
                              {
-                                 SE1.E1Num,
-                                 SE1.E1Parcela,
-                                 SE1.E1Tipo,
-                                 SE1.E1Naturez,
-                                 SE1.E1Nomclie,
-                                 SE1.E1Emissao,
-                                 SE1.E1Valor,
-                                 SE1.E1Baixa,
-                                 SA3.A3Nome,
-                                 SA3.A3Xlogin,
-                                 SA3.A3Cod
-                             }).OrderBy(x=>x.E1Num).ToList();
+                                 Prefixo = SE50.E5Prefixo,
+                                 Numero = SE50.E5Numero,
+                                 Parcela = SE50.E5Parcela,
+                                 TP = SE50.E5Tipo,
+                                 CliFor = SE50.E5Clifor,
+                                 NomeFor = SA10.A1Nome,
+                                 Naturez = SE50.E5Naturez,
+                                 Vencimento = SE10.E1Vencto,
+                                 Historico = SE50.E5Histor,
+                                 DataBaixa = SE50.E5Data,
+                                 ValorOrig = SE10.E1Valor,
+                                 JurMulta = SE50.E5Vljuros + SE50.E5Vlmulta,
+                                 Correcao = SE50.E5Vlcorre,
+                                 Descon = SE50.E5Vldesco,
+                                 Abatimento = 0,
+                                 Imposto = 0,
+                                 ValorAcess = 0,
+                                 TotalBaixado = SE50.E5Valor,
+                                 Banco = SE50.E5Banco,
+                                 DtDigi = SE50.E5Dtdigit,
+                                 Mot = SE50.E5Motbx,
+                                 Orig = SE50.E5Filorig,
+                                 Vendedor = SA30.A3Nome,
+                                 TipoCliente = SA10.A1Clinter,
+                                 CodigoCliente = SA10.A1Xgrinte,
+                                 Login = SA30.A3Xlogin,
+                                 Gestor = SA30.A3Xlogsup
+                             }).ToList();
 
-                var baixaInter = (from SE1 in ProtheusInter.Se1010s
-                             join SA3 in ProtheusInter.Sa3010s on SE1.E1Vend1 equals SA3.A3Cod
-                             where (int)(object)SE1.E1Baixa >= (int)(object)DataInicio
-                             && (int)(object)SE1.E1Baixa <= (int)(object)DataFim
-                             && SA3.A3Xlogin == "PLINIO.ALVIM"
-                             select new
-                             {
-                                 SE1.E1Num,
-                                 SE1.E1Parcela,
-                                 SE1.E1Tipo,
-                                 SE1.E1Naturez,
-                                 SE1.E1Nomcli,
-                                 SE1.E1Emissao,
-                                 SE1.E1Valor,
-                                 SE1.E1Baixa,
-                                 SA3.A3Nome,
-                                 SA3.A3Xlogin,
-                                 SA3.A3Cod
-                             }).OrderBy(x => x.E1Num).ToList();
+                var baixaInter = (from SE50 in ProtheusInter.Se5010s
+                                  join SE10 in ProtheusInter.Se1010s on new { PRE = SE50.E5Prefixo, Num = SE50.E5Numero, Par = SE50.E5Parcela, Tipo = SE50.E5Tipo, Cliente = SE50.E5Cliente, Loja = SE50.E5Loja }
+                                  equals new { PRE = SE10.E1Prefixo, Num = SE10.E1Num, Par = SE10.E1Parcela, Tipo = SE10.E1Tipo, Cliente = SE10.E1Cliente, Loja = SE10.E1Loja }
+                                  join SA10 in ProtheusInter.Sa1010s on SE50.E5Cliente equals SA10.A1Cod
+                                  join SA30 in ProtheusInter.Sa3010s on SA10.A1Vend equals SA30.A3Cod
+                                  where SE50.DELET != "*" && SE10.DELET != "*" && SE50.E5Recpag == "R"
+                                  && (SE50.E5Tipodoc == "VL" || SE50.E5Tipodoc == "RA")
+                                  && (SE50.E5Naturez == "111001" || SE50.E5Naturez == "111004" || SE50.E5Naturez == "111006")
+                                  && (SE50.E5Banco == "001" || SE50.E5Banco == "237" || SE50.E5Banco == "341")
+                                  && (int)(object)SE50.E5Data >= (int)(object)DataInicio
+                                  && (int)(object)SE50.E5Data <= (int)(object)DataFim
+                                  && SA10.A1Clinter == "S"
+                                  select new RelatorioAreceberBaixa
+                                  {
+                                      Prefixo = SE50.E5Prefixo,
+                                      Numero = SE50.E5Numero,
+                                      Parcela = SE50.E5Parcela,
+                                      TP = SE50.E5Tipo,
+                                      CliFor = SE50.E5Clifor,
+                                      NomeFor = SA10.A1Nome,
+                                      Naturez = SE50.E5Naturez,
+                                      Vencimento = SE10.E1Vencto,
+                                      Historico = SE50.E5Histor,
+                                      DataBaixa = SE50.E5Data,
+                                      ValorOrig = SE10.E1Valor,
+                                      JurMulta = SE50.E5Vljuros + SE50.E5Vlmulta,
+                                      Correcao = SE50.E5Vlcorre,
+                                      Descon = SE50.E5Vldesco,
+                                      Abatimento = 0,
+                                      Imposto = 0,
+                                      ValorAcess = 0,
+                                      TotalBaixado = SE50.E5Valor,
+                                      Banco = SE50.E5Banco,
+                                      DtDigi = SE50.E5Dtdigit,
+                                      Mot = SE50.E5Motbx,
+                                      Orig = SE50.E5Filorig,
+                                      Vendedor = SA30.A3Nome,
+                                      TipoCliente = SA10.A1Clinter,
+                                      CodigoCliente = SA10.A1Xgrinte,
+                                      Login = SA30.A3Xlogin,
+                                      Gestor = SA30.A3Xlogsup
+                                  }).ToList();
 
                 #endregion
 
@@ -213,8 +260,8 @@ namespace SGID.Pages.DashBoards
                 EmAberto = EmAbertoInter.DistinctBy(x => x.Num).Count() + EmAbertoDenuo.DistinctBy(x => x.Num).Count();
                 EmAbertoValor = EmAbertoInter.Sum(x => x.Total) + EmAbertoDenuo.Sum(x => x.Total);
 
-                Baixado = baixa.DistinctBy(x => x.E1Num).Count() + baixaInter.DistinctBy(x => x.E1Num).Count();
-                ValorBaixado = baixa.Sum(x => x.E1Valor) + baixaInter.Sum(x => x.E1Valor);
+                Baixado = baixa.DistinctBy(x => x.Numero).Count() + baixaInter.DistinctBy(x => x.Numero).Count();
+                ValorBaixado = baixa.Sum(x => x.TotalBaixado) + baixaInter.Sum(x => x.TotalBaixado);
 
                 Meta = time.Meta;
                 Comissao = ValorBaixado * (time.Porcentagem / 100);

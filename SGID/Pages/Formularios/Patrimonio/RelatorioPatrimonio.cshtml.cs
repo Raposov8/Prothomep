@@ -38,8 +38,7 @@ namespace SGID.Pages.Formularios.Patrimonio
                                 where PA10.DELET != "*" && PA10.Pa1Msblql != "1" && PA10.Pa1Status != "B"
                                 && c.DELET != "*" && a.DELET != "*" && PA10.DELET != "*"
                                 && ((int)(object)c.PacDtcir >= 20200701 || c.PacDtcir == null)
-                                select PA10.Pa1Despat
-                                   ).Distinct().ToList();
+                                select PA10.Pa1Despat ).Distinct().ToList();
         }
 
         public IActionResult OnGetConfirmar(string Patrimonio, string Empresa)

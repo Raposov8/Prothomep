@@ -23,19 +23,18 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.6.1/fullcalendar.min.css" type="text/css" rel="stylesheet"/>
 </head>
 <body>
-    <header class="col-sm-12 col-md-12 col-xl-12">
-        <nav class="navbar navbar-expand-sm navbar-expand-md navbar-toggleable-sm navbar-toggleable-md navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container">
-                <div class="col-sm-2 col-md-2">
+    <header class="col-12 col-sm-12 col-md-12 col-xl-12">
+        <nav class="navbar  navbar-expand-md navbar-expand-xl navbar-toggleable-xl navbar-toggleable-md navbar-light bg-white border-bottom box-shadow mb-3">
+                <div class="col-2 col-sm-2 col-md-2">
                     <input type="checkbox" id="check"/>
                     <label for="check">
                         <i class="fas fa-bars fa-xl" id="btn"></i>
                     </label>
                 </div>
-                <div class="col-sm-2 col-md-2">
+                <div class="col-2 col-sm-2 col-md-2">
                     <img src="/imagens/gid.png" alt="GID Logo" height="66" width="120"/>
                 </div>
-                <div class="col-sm-2 col-md-2">
+                <div class="col-2 col-sm-2 col-md-2">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="dropdown03" data-bs-toggle="dropdown" aria-expanded="false">
@@ -55,7 +54,6 @@
                         </li>
                     </ul>
                 </div>
-            </div>
         </nav>
     </header>
     <div class="container-lg container-xl container-xxl" style="margin-left:0px;margin-right:0px;">
@@ -405,7 +403,6 @@
                                                 <li><a class="nav-link" href="/relatorios/cirurgias/cirurgiasdevolucaofatvendedor/">Cirurgias Devolução Fat Denuo</a></li>
                                                 <li><a class="nav-link" href="/relatorios/cirurgias/cirurgiasfaturadas/">Cirurgias Faturadas Denuo</a></li>
                                                 <li><a class="nav-link" href="/relatorios/cirurgias/cirurgiasvalorizadas/">Cirurgias Valorizadas Denuo</a></li>
-                                                <li><a class="nav-link" href="/relatorios/estoque/saldoestoque">Saldo Estoque Denuo</a></li>
                                             </ul>
                                         </div>
                                     </li>
@@ -425,7 +422,6 @@
                                                 <li><a class="nav-link" href="/relatorios/cirurgias/cirurgiasdevolucaofatvendedorinter/">Cirurgias Devolução Fat Inter</a></li>
                                                 <li><a class="nav-link" href="/relatorios/cirurgias/cirurgiasfaturadasinter/">Cirurgias Faturadas Inter</a></li>
                                                 <li><a class="nav-link" href="/relatorios/cirurgias/cirurgiasvalorizadasinter/">Cirurgias Valorizadas Inter</a></li>
-                                                <li><a class="nav-link" href="/relatorios/estoque/saldoestoqueinter">Saldo Estoque Inter</a></li>
                                             </ul>
                                         </div>
                                     </li>
@@ -731,6 +727,18 @@
                        </a>
                        <div class="collapse" id="formularios-collapse">
                            <ul class="list-unstyled fw-normal pb-1 small">
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link align-items-center rounded dropdown-toggle" data-bs-toggle="collapse"
+                                       data-bs-target="#saldoestoque-collapse" aria-expanded="false">
+                                        Saldo Estoque
+                                    </a>
+                                    <div class="collapse" id="saldoestoque-collapse">
+                                        <ul class="list-unstyled fw-normal pb-1 small">
+                                            <li><a class="nav-link" href="/relatorios/estoque/saldoestoque">Saldo Estoque Denuo</a></li>
+                                            <li><a class="nav-link" href="/relatorios/estoque/saldoestoqueinter">Saldo Estoque Inter</a></li>
+                                        </ul>
+                                    </div>
+                                </li>
                                <li class="nav-item dropdown">
                                     <a class="nav-link align-items-center rounded dropdown-toggle" data-bs-toggle="collapse"
                                    data-bs-target="#patrimonio-collapse" aria-expanded="false">

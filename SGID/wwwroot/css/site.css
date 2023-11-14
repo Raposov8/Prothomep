@@ -302,6 +302,10 @@ body {
     border-bottom-color: #bce8f1;
 }
 
+nav{
+    width:100%
+}
+
 /* sidebar */
 
 * {

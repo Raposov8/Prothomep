@@ -8,7 +8,7 @@
     }
     else
     {
-        Layout = "_LayoutGeral";
+        Layout = "_LayoutNovo";
     }
 }
 
@@ -40,7 +40,27 @@
                 <h2 style="margin:0%;" class="panel-title text-center">AGENDAR</h2>
             </div>
             <div class="panel-body" style="padding-top:0px;">
-                <a class="produto" href="/cotacoes/dashboardcotacoes/2"><h3 class="text-center" style="margin-top:0%;font-size:80px">@Model.PendenteEstoque</h3></a>
+                <a class="produto" href="/cotacoes/dashboardcotacoes/2"><h3 class="text-center" style="margin-top:0%;font-size:80px">@Model.Aprovadas</h3></a>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-4 col-md-4">
+        <div class="panel panel-colorful" style="background-color:lightgray">
+            <div class="panel-heading">
+                <h2 style="margin:0%;" class="panel-title text-center">PENDENTE ESTOQUE</h2>
+            </div>
+            <div class="panel-body" style="padding-top:0px;">
+                <a class="produto" href="/cotacoes/dashboardcotacoes/4"><h3 class="text-center" style="margin-top:0%;font-size:80px">@Model.AguardandoConfirmacao</h3></a>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-4 col-md-4">
+        <div class="panel panel-colorful" style="background-color:lightgray">
+            <div class="panel-heading">
+                <h2 style="margin:0%;" class="panel-title text-center">RESPONDIDO ESTOQUE</h2>
+            </div>
+            <div class="panel-body" style="padding-top:0px;">
+                <a class="produto" href="/cotacoes/dashboardcotacoes/5"><h3 class="text-center" style="margin-top:0%;font-size:80px">@Model.RespondidasEstoque</h3></a>
             </div>
         </div>
     </div>
@@ -162,26 +182,13 @@
                             <td>Confirmado</td>
                         }
                         <td>
-
-                            @if (User.IsInRole("Admin") || User.IsInRole("Diretoria") || (User.Identity.Name.Split("@")[0].ToUpper() == data.VendedorLogin))
+                            @if (data.StatusCotacao == 0)
                             {
-                                @if (data.StatusCotacao == 0)
-                                {
-                                    <a class="details" href="/cotacoes/aceitarcotacoes/@data.Id"><i class="fa-solid fa-circle-plus" style="color:green"></i></a>
-                                    <a class="rejeicao" data-id="@data.Id"><i class="fa-regular fa-circle-xmark" style="color:red"></i></a>
-                                }
+                                <a class="details" href="/cotacoes/aceitarcotacoes/@data.Id"><i class="fa-solid fa-circle-plus" style="color:green"></i></a>
+                                
+                                <a class="rejeicao" data-id="@data.Id"><i class="fa-regular fa-circle-xmark" style="color:red"></i></a>
                             }
-                            else if (User.IsInRole("Admin") || User.IsInRole("Diretoria") || (User.IsInRole("GestorComercial")))
-                            {
-                                @if (data.StatusCotacao == 0)
-                                {
-                                    <a class="details" href="/cotacoes/aceitarcotacoes/@data.Id"><i class="fa-solid fa-circle-plus" style="color:green"></i></a>
-                                    
-                                    <a class="rejeicao" data-id="@data.Id"><i class="fa-regular fa-circle-xmark" style="color:red"></i></a>
-                                    
-                                }
-                            }
-                            @if (data.StatusCotacao == 1 && data.StatusLogistica == 0)
+                            @if (data.StatusCotacao == 1 && data.StatusPedido != 3 && data.StatusPedido != 7)
                             {
                                 <a href="/cotacoes/aceitarcotacoes/@data.Id" class="fa-solid fa-pen add-tooltip" style="text-decoration:none;" data-container="body" data-placement="top" data-original-title="Editar Cotação" aria-hidden="true"></a>
 
@@ -189,10 +196,9 @@
 
                                 <a class="rejeicao" data-id="@data.Id"><i class="fa-regular fa-circle-xmark" style="color:red"></i></a>
                             }
-                            @if (data.StatusLogistica == 1)
+                            @if (data.StatusPedido == 3 || data.StatusPedido == 7)
                             {
                                 <a href="/cotacoes/ConfirmarCotacoes/@data.Id" class="fa-solid fa-pen add-tooltip" style="text-decoration:none;" data-container="body" data-placement="top" data-original-title="Confirmar Cotação" aria-hidden="true"></a>
-
                             }
                         </td>
                     </tr>
@@ -360,6 +366,7 @@
                                     <label class="Label">Tipo</label>
                                     <select class="form-control" id="Tipo" name="Tipo">
                                         <option value="2">ELETIVA</option>
+                                        <option value="3">EMERGENCIA</option>
                                         <option value="1">URGENTE</option>
                                     </select>
                                 </div>
