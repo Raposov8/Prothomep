@@ -23,7 +23,9 @@ namespace SGID.Pages.Cirurgias
         private readonly IWebHostEnvironment _WEB;
 
         public NovoAgendamento Novo { get; set; } = new NovoAgendamento();
-        
+
+        public List<string> SearchProduto { get; set; } = new List<string>();
+
         public NovoAgendamentoModel(ApplicationDbContext sgid, TOTVSINTERContext protheus, TOTVSDENUOContext denuo, IWebHostEnvironment wEB)
         { 
             SGID = sgid;
@@ -50,6 +52,8 @@ namespace SGID.Pages.Cirurgias
                     Procedimentos = SGID.Procedimentos.Where(x => x.Bloqueado == 0 && x.Empresa == "01").ToList(),
                     Patrimonios = ProtheusInter.Pa1010s.Where(x=> x.DELET != "*" && x.Pa1Msblql != "1").Select(x=> x.Pa1Despat).Distinct().ToList()
                 };
+
+                SearchProduto = ProtheusInter.Sb1010s.Where(x => x.DELET != "*" && x.B1Msblql != "1").Select(x => x.B1Desc).Distinct().ToList();
             }
             else
             {
@@ -73,6 +77,8 @@ namespace SGID.Pages.Cirurgias
                                    select PA10.Pa1Despat
                                    ).Distinct().ToList()
                 };
+
+                SearchProduto = ProtheusDenuo.Sb1010s.Where(x => x.DELET != "*" && x.B1Msblql != "1").Select(x => x.B1Desc).Distinct().ToList();
             }
         }
 
@@ -121,6 +127,8 @@ namespace SGID.Pages.Cirurgias
                     var Codigo = ProtheusInter.Sa1010s.FirstOrDefault(x => x.A1Nome == Medico && x.A1Clinter == "M" && x.DELET != "*" && x.A1Msblql != "1")?.A1Vend;
 
                     agendamento.VendedorLogin = ProtheusInter.Sa3010s.FirstOrDefault(x => x.A3Cod == Codigo).A3Xlogin;
+
+                    
                 }
                 else
                 {
@@ -433,13 +441,15 @@ namespace SGID.Pages.Cirurgias
                                       from a in st.DefaultIfEmpty()
                                       where PA10.DELET != "*" && PA10.Pa1Msblql != "1" && PA10.Pa1Status != "B"
                                       && c.DELET != "*" && a.DELET != "*" && (PA10.Pa1Despat == teste || PA10.Pa1Codigo == teste)
-                                      select new
+                                      select new Patrimonio
                                       {
                                           Descri = PA10.Pa1Despat,
                                           KitBas = PA10.Pa1Kitbas,
                                           Codigo = PA10.Pa1Codigo
                                       }).FirstOrDefault();
 
+
+                    if (ViewObject.Codigo != teste) ViewObject.Codigo = "";
 
                     return new JsonResult(ViewObject);
                 }
@@ -456,14 +466,14 @@ namespace SGID.Pages.Cirurgias
                                       && c.DELET != "*" && a.DELET != "*"
                                       && ((int)(object)c.PacDtcir >= 20200701 || c.PacDtcir == null)
                                       && (PA10.Pa1Despat == teste || PA10.Pa1Codigo == teste)
-                                      select new
+                                      select new Patrimonio
                                       {
                                           Descri = PA10.Pa1Despat,
                                           KitBas = PA10.Pa1Kitbas,
                                           Codigo = PA10.Pa1Codigo
                                       }).FirstOrDefault();
 
-
+                    if (ViewObject.Codigo != teste) ViewObject.Codigo = "";
 
                     return new JsonResult(ViewObject);
                 }

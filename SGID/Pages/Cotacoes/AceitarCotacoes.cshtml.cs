@@ -331,6 +331,7 @@ namespace SGID.Pages.Cotacoes
 
                         produto.Quantidade = produtoUpdate.Und;
                         produto.ValorTotal = produtoUpdate.Und * produtoUpdate.PrcUnid;
+                        produto.ValorUnitario = produtoUpdate.PrcUnid;
 
                         SGID.ProdutosAgendamentos.Update(produto);
                         SGID.SaveChanges();
@@ -352,7 +353,8 @@ namespace SGID.Pages.Cotacoes
                         CodigoProduto = produto.Item,
                         Quantidade = produto.Und,
                         ValorTotal = produto.Und * produto.PrcUnid,
-                        CodigoTabela = CodTabela
+                        CodigoTabela = CodTabela,
+                        ValorUnitario = produto.PrcUnid
                     };
 
                     SGID.ProdutosAgendamentos.Add(ProdXAgenda);

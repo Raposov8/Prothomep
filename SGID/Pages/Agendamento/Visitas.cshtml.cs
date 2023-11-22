@@ -97,6 +97,18 @@ namespace SGID.Pages.Agendamento
                 {
                     visitas = SGID.Visitas.ToList();
                 }
+                else if (User.IsInRole("GerenteProdutos"))
+                {
+                    if (User.Identity.Name.Split("@")[1].ToUpper() == "INTERMEDIC.COM.BR")
+                    {
+
+                        visitas = SGID.Visitas.Where(c => c.Empresa == "INTERMEDIC").ToList();
+                    }
+                    else
+                    {
+                        visitas = SGID.Visitas.Where(c => c.Empresa == "DENUO").ToList();
+                    }
+                }
                 else if (User.IsInRole("GestorComercial"))
                 {
                     if (User.Identity.Name.Split("@")[1].ToUpper() == "INTERMEDIC.COM.BR")

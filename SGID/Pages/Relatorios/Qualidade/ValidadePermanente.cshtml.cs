@@ -84,8 +84,7 @@ namespace SGID.Pages.Relatorios.Qualidade
                                ItSaida = SD20.D2Item,
                                QtdSaida = SD20.D2Quant,
                                Saldo = SB60.B6Saldo
-                           }
-                           ).ToList();
+                           }).ToList();
 
                 Relatorios = query.Concat(query2).OrderBy(x => x.ValidLote).ToList();
 

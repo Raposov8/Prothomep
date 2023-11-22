@@ -266,8 +266,8 @@
                         </div>
                     </div>
                     <div class="row justify-content-center">
-                        <div style="color:#00b050" class="col-md-2"><button class="btn btn-button btn-success float-end" style="font-size:12px;" type="submit"><i class="fa-solid fa-thumbs-up"></i> Aceitar Cotação</button></div> |
-                        <div style="color:#c00000" class="col-md-2"><button class="btn btn-button btn-danger" style="font-size:12px;" type="submit"><i class="fa-solid fa-xmark"></i> Reprovar Cotação</button></div>
+                        <div style="color:#00b050" class="col-md-2"><button class="btn btn-button btn-success float-end" style="font-size:12px;" type="submit"><i class="fa-solid fa-thumbs-up"></i> Enviar para ESTOQUE</button></div> |
+                        <div style="color:#c00000" class="col-md-2"><button class="btn btn-button btn-danger" style="font-size:12px;" href="/dashboardcotacoes/2"><i class="fa-solid fa-xmark"></i> Voltar</button></div>
                     </div>
                 </div>
             </div>
@@ -358,7 +358,8 @@
         var countPatri = @countPatri;
         var countAvulso = @countAvulso;
         var data = "";
-        $(document).ready(function () {
+        $(document).ready(function () 
+        {
 
             @if (Model.Agendamento.DataCirurgia != null)
             {
@@ -369,9 +370,9 @@
                 @:$("#DataCirurgia").val(data);
             }
 
-            @if(@Model.Agendamento.DataEntrega!= null)
+            @if (Model.Agendamento.DataEntrega != null)
             {
-                @:data2 = "@Model.Agendamento.DataEntrega.Value.ToString("yyyy-MM-dd'T'HH:mm")";
+            @:data2 = "@Model.Agendamento.DataEntrega.Value.ToString("yyyy-MM-dd'T'HH:mm")";
 
                 @:console.log(data2);
 

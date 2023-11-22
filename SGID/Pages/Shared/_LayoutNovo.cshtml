@@ -100,7 +100,7 @@
                                     </div>
                                 </li>
                                     
-                                    <li><a class="nav-link" href="/cotacoes/dashboardcotacoes/0">Cotações</a></li>
+                                    <li><a class="nav-link" href="/cotacoes/dashboardcotacoes/0"><i class="fa-solid fa-money-bill-1-wave"></i> Cotações</a></li>
                                                 
                                     <li class="nav-item dropdown">
                                     <a class="nav-link align-items-center rounded dropdown-toggle" data-bs-toggle="collapse"
@@ -680,21 +680,23 @@
                             <i class="fa-solid fa-clipboard-list"></i> Formularios
                         </a>
                         <ul class="dropdown-menu novo1" aria-labelledby="dropdowm06">
-                            <li class="nav-item dropdown">
-                                <a class="nav-link align-items-center rounded dropdown-toggle" data-bs-toggle="collapse"
-                                   data-bs-target="#saldoestoque-collapse" aria-expanded="false">
-                                    Saldo Estoque
-                                </a>
-                                <div class="collapse" id="saldoestoque-collapse">
-                                    <ul class="list-unstyled fw-normal pb-1 small">
-                                        <li><a class="nav-link" href="/relatorios/estoque/saldoestoque">Saldo Estoque Denuo</a></li>
-                                        <li><a class="nav-link" href="/relatorios/estoque/saldoestoqueinter">Saldo Estoque Inter</a></li>
-                                    </ul>
-                                </div>
-                            </li>
-                            <li class="nav-item dropdown">
+                            @if (User.IsInRole("Admin") || User.IsInRole("Patrimonio"))
+                            {
+                                <li class="nav-item dropdown">
                                     <a class="nav-link align-items-center rounded dropdown-toggle" data-bs-toggle="collapse"
-                                       data-bs-target="#patrimonio-collapse" aria-expanded="false">
+                                    data-bs-target="#saldoestoque-collapse" aria-expanded="false">
+                                        Saldo Estoque
+                                    </a>
+                                    <div class="collapse" id="saldoestoque-collapse">
+                                        <ul class="list-unstyled fw-normal pb-1 small">
+                                            <li><a class="nav-link" href="/relatorios/estoque/saldoestoque">Saldo Estoque Denuo</a></li>
+                                            <li><a class="nav-link" href="/relatorios/estoque/saldoestoqueinter">Saldo Estoque Inter</a></li>
+                                        </ul>
+                                    </div>
+                                </li>
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link align-items-center rounded dropdown-toggle" data-bs-toggle="collapse"
+                                    data-bs-target="#patrimonio-collapse" aria-expanded="false">
                                         Consulta Por Kit Base
                                     </a>
                                     <div class="collapse" id="patrimonio-collapse">
@@ -704,9 +706,9 @@
                                         </ul>
                                     </div>
                                 </li>
-                            <li class="nav-item dropdown">
+                                <li class="nav-item dropdown">
                                     <a class="nav-link align-items-center rounded dropdown-toggle" data-bs-toggle="collapse"
-                                       data-bs-target="#req30-collapse" aria-expanded="false">
+                                    data-bs-target="#req30-collapse" aria-expanded="false">
                                         Itens Faltantes
                                     </a>
                                     <div class="collapse" id="req30-collapse">
@@ -716,9 +718,9 @@
                                         </ul>
                                     </div>
                                 </li>
-                            <li class="nav-item dropdown">
+                                <li class="nav-item dropdown">
                                     <a class="nav-link align-items-center rounded dropdown-toggle" data-bs-toggle="collapse"
-                                       data-bs-target="#conspa3-collapse" aria-expanded="false">
+                                    data-bs-target="#conspa3-collapse" aria-expanded="false">
                                         Consulta Por Patrimônio
                                     </a>
                                     <div class="collapse" id="conspa3-collapse">
@@ -728,9 +730,9 @@
                                         </ul>
                                     </div>
                                 </li>
-                            <li class="nav-item dropdown">
+                                <li class="nav-item dropdown">
                                     <a class="nav-link align-items-center rounded dropdown-toggle" data-bs-toggle="collapse"
-                                       data-bs-target="#disppatrt-collapse" aria-expanded="false">
+                                    data-bs-target="#disppatrt-collapse" aria-expanded="false">
                                         Consulta Todos Patrimônios
                                     </a>
                                     <div class="collapse" id="disppatrt-collapse">
@@ -740,9 +742,9 @@
                                         </ul>
                                     </div>
                                 </li>
-                            <li class="nav-item dropdown">
+                                <li class="nav-item dropdown">
                                     <a class="nav-link align-items-center rounded dropdown-toggle" data-bs-toggle="collapse"
-                                       data-bs-target="#req09-collapse" aria-expanded="false">
+                                    data-bs-target="#req09-collapse" aria-expanded="false">
                                         Todos Itens Faltantes Patrimonios
                                     </a>
                                     <div class="collapse" id="req09-collapse">
@@ -752,6 +754,7 @@
                                         </ul>
                                     </div>
                                 </li>
+                            }
                         </ul>
                     </li>
                 </ul>
@@ -769,7 +772,7 @@
                                     <a href="/account/register"><i class="fa-solid fa-user-plus" style="margin-right:5px;"></i>Cadastro Usuario</a>
                                 </li>
                                 <li>
-                                    <a class="nav-link" href="/useradmin/listarusuarios/1"><i class="fa-solid fa-user"></i>Usuários</a>
+                                    <a class="nav-link" href="/useradmin/listarusuarios/1"><i class="fa-solid fa-user"></i> Usuários</a>
                                 </li>
                             }
                             <li class="dropdown-item" >

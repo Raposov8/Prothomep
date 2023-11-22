@@ -31,6 +31,8 @@ namespace SGID.Pages.Cirurgias
         public string Anexo4 { get; set; }
         public string Anexo5 { get; set; }
 
+        public List<string> SearchProduto { get; set; } = new List<string>();
+
         public EditarAgendamentoModel(ApplicationDbContext sgid, TOTVSINTERContext protheus, TOTVSDENUOContext denuo, IWebHostEnvironment wEB)
         {
             SGID = sgid;
@@ -94,7 +96,8 @@ namespace SGID.Pages.Cirurgias
                     Procedimentos = SGID.Procedimentos.Where(x => x.Bloqueado == 0 && x.Empresa == "01").ToList(),
                     Patrimonios = ProtheusInter.Pa1010s.Where(x => x.DELET != "*" && x.Pa1Msblql != "1").Select(x => x.Pa1Despat).Distinct().ToList()
                 };
-              
+
+                SearchProduto = ProtheusInter.Sb1010s.Where(x => x.DELET != "*" && x.B1Msblql != "1").Select(x => x.B1Desc).Distinct().ToList();
 
                 codigos.ForEach(x =>
                 {
@@ -177,6 +180,8 @@ namespace SGID.Pages.Cirurgias
                                    select PA10.Pa1Despat
                                    ).Distinct().ToList()
                 };
+
+                SearchProduto = ProtheusDenuo.Sb1010s.Where(x => x.DELET != "*" && x.B1Msblql != "1").Select(x => x.B1Desc).Distinct().ToList();
 
                 codigos.ForEach(x =>
                 {

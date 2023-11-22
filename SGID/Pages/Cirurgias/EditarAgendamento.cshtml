@@ -430,7 +430,9 @@
                 <div class="row">
                     <div class="col-md-12">
                         <label>Codigo Produto</label>
-                        <input type="text" class="form-control" id="CodProd" name="CodProd" />
+                        <div class="autocomplete">
+                            <input type="text" class="form-control" id="CodProd" name="CodProd" />
+                        </div>
                     </div>
 
                 </div>
@@ -1249,6 +1251,7 @@
         var Hospital = [];
         var Convenio = [];
         var Clientes = [];
+        var Produtos = [];
 
         @foreach (var data in Model.Novo.Clientes)
         {
@@ -1273,6 +1276,11 @@
         @foreach (var data in Model.Novo.Convenio)
         {
             @:Convenio.push("@data")
+        }
+
+        @foreach (var data in Model.SearchProduto)
+        {
+            @:Produtos.push("@data")
         }
 
         $(document).ready(function () {
@@ -1375,6 +1383,7 @@
                 });
             }
 
+            autocomplete(document.getElementById("CodProd"), Produtos);
             autocomplete(document.getElementById("CodPatri"), Patri);
             autocomplete(document.getElementById("Medico"), Medicos);
             autocomplete(document.getElementById("Hospital"), Hospital);

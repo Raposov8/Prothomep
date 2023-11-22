@@ -28,6 +28,7 @@ namespace SGID.Pages.Logistica
         public int Entregue { get; set; } = 0;
         public int Retorno { get; set; } = 0;
         public int Inspecao { get; set; } = 0;
+        public int Respostas { get; set; } = 0;
 
         public ListarLogisticaModel(TOTVSDENUOContext protheusDenuo, TOTVSINTERContext protheusInter,ApplicationDbContext sgid)
         {
@@ -46,7 +47,7 @@ namespace SGID.Pages.Logistica
                     1 => SGID.Agendamentos.Where(x => x.StatusPedido == 3 && x.DataCirurgia != null && x.StatusLogistica == 0 && x.Empresa == "01")
                         .OrderBy(x => x.Tipo).ThenBy(x => x.DataCirurgia).ToList(),
                     //Pendente
-                    2 => SGID.Agendamentos.Where(x => (x.StatusLogistica == 1 || x.StatusLogistica == 7) && x.Empresa == "01")
+                    2 => SGID.Agendamentos.Where(x => x.StatusLogistica == 1 && x.Empresa == "01")
                         .OrderBy(x => x.Tipo).ThenBy(x => x.DataCirurgia).ToList(),
                     //Separação
                     3 => SGID.Agendamentos.Where(x => x.StatusLogistica == 2 && x.Empresa == "01")
@@ -66,14 +67,17 @@ namespace SGID.Pages.Logistica
                     //Confirmadas
                     8 => SGID.Agendamentos.Where(x => x.StatusPedido == 7 && x.DataCirurgia != null && x.StatusLogistica == 0 && x.Empresa == "01")
                         .OrderBy(x => x.Tipo).ThenBy(x => x.DataCirurgia).ToList(),
-                    _ => new List<Agendamentos>()
+                    //Respondidas Comercial
+                    9 => SGID.Agendamentos.Where(x => x.StatusLogistica == 7 && x.Empresa == "01")
+                        .OrderBy(x => x.Tipo).ThenBy(x => x.DataCirurgia).ToList(),
+                    _ => new List<Agendamentos>(),
                 };
 
                 Aprovadas = SGID.Agendamentos.Where(x => x.StatusPedido == 3 && x.DataCirurgia != null && x.StatusLogistica == 0 && x.Empresa == "01").Count();
 
                 Confirmadas = SGID.Agendamentos.Where(x => x.StatusPedido == 7 && x.DataCirurgia != null && x.StatusLogistica == 0 && x.Empresa == "01").Count();
 
-                Pendente = SGID.Agendamentos.Where(x => (x.StatusLogistica == 1 || x.StatusLogistica == 7) && x.Empresa == "01").Count();
+                Pendente = SGID.Agendamentos.Where(x => x.StatusLogistica == 1 && x.Empresa == "01").Count();
 
                 Separacao = SGID.Agendamentos.Where(x => x.StatusLogistica == 2 && x.Empresa == "01").Count();
 
@@ -84,6 +88,8 @@ namespace SGID.Pages.Logistica
                 Retorno = SGID.Agendamentos.Where(x => x.StatusLogistica == 5 && x.Empresa == "01").Count();
 
                 Inspecao = SGID.Agendamentos.Where(x => x.StatusLogistica == 6 && x.Empresa == "01").Count();
+
+                Respostas = SGID.Agendamentos.Where(x => x.StatusLogistica == 7 && x.Empresa == "01").Count();
             }
             else
             {
@@ -93,7 +99,7 @@ namespace SGID.Pages.Logistica
                     1 => SGID.Agendamentos.Where(x => x.StatusPedido == 3 && x.DataCirurgia != null && x.StatusLogistica == 0 && x.Empresa == "03")
                         .OrderBy(x => x.Tipo).ThenBy(x => x.DataCirurgia).ToList(),
                     //Pendente
-                    2 => SGID.Agendamentos.Where(x => (x.StatusLogistica == 1 || x.StatusLogistica == 7)&& x.Empresa == "03")
+                    2 => SGID.Agendamentos.Where(x => x.StatusLogistica == 1 && x.Empresa == "03")
                         .OrderBy(x => x.Tipo).ThenBy(x => x.DataCirurgia).ToList(),
                     //Separação
                     3 => SGID.Agendamentos.Where(x => x.StatusLogistica == 2 && x.Empresa == "03")
@@ -113,14 +119,17 @@ namespace SGID.Pages.Logistica
                     //Confirmadas
                     8 => SGID.Agendamentos.Where(x => x.StatusPedido == 7 && x.DataCirurgia != null && x.StatusLogistica == 0 && x.Empresa == "03")
                         .OrderBy(x => x.Tipo).ThenBy(x => x.DataCirurgia).ToList(),
-                    _ => new List<Agendamentos>()
+                    //Respondidas Comercial
+                    9 => SGID.Agendamentos.Where(x => x.StatusLogistica == 7 && x.Empresa == "03")
+                        .OrderBy(x => x.Tipo).ThenBy(x => x.DataCirurgia).ToList(),
+                    _ => new List<Agendamentos>(),
                 };
 
                 Aprovadas = SGID.Agendamentos.Where(x => x.StatusPedido == 3 && x.DataCirurgia != null && x.StatusLogistica == 0 && x.Empresa == "03").Count();
 
                 Confirmadas = SGID.Agendamentos.Where(x => x.StatusPedido == 7 && x.DataCirurgia != null && x.StatusLogistica == 0 && x.Empresa == "03").Count();
 
-                Pendente = SGID.Agendamentos.Where(x => (x.StatusLogistica == 1 || x.StatusLogistica == 7) && x.Empresa == "03").Count();
+                Pendente = SGID.Agendamentos.Where(x => x.StatusLogistica == 1  && x.Empresa == "03").Count();
 
                 Separacao = SGID.Agendamentos.Where(x => x.StatusLogistica == 2 && x.Empresa == "03").Count();
 
@@ -131,6 +140,8 @@ namespace SGID.Pages.Logistica
                 Retorno = SGID.Agendamentos.Where(x => x.StatusLogistica == 5 && x.Empresa == "03").Count();
 
                 Inspecao = SGID.Agendamentos.Where(x => x.StatusLogistica == 6 && x.Empresa == "03").Count();
+
+                Respostas = SGID.Agendamentos.Where(x => x.StatusLogistica == 7 && x.Empresa == "03").Count();
             }
 
             Empresa = empresa;
