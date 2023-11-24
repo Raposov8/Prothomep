@@ -253,11 +253,15 @@
                                 <br />
                                 <div class="col-md-12">
                                     <label>Observação</label>
-                                    <input class="col-md-12" id="Observacao" oninput="this.value = this.value.toUpperCase()" />
+                                    <textarea class="col-md-12" id="Observacao" oninput="this.value = this.value.toUpperCase()">
+
+                                    </textarea>
+                                    
                                 </div>
                                 <div class="col-md-12">
                                     <label>Resumo Visita</label>
-                                    <input class="col-md-12" id="Resumo" oninput="this.value = this.value.toUpperCase()" />
+                                    <textarea class="col-md-12" id="Resumo" oninput="this.value = this.value.toUpperCase()" >
+                                    </textarea>
                                 </div>
                                 <div class="col-md-12">
                                     <label>Resumo Visita <span id="ResumoVisi2"></span></label>
@@ -556,8 +560,8 @@
                             $("#MotVisView").html(data.motvisita);
                             $("#DataUltimaView").html(data.dataUltima);
                             $("#BairroView").html(data.bairro);
-                            $("#Observacao").val(data.observacao);
-                            $("#Resumo").val(data.resuVi);
+                            $("#Observacao").text(data.observacao);
+                            $("#Resumo").text(data.resuVi);
                             $("#TelefoneView").html(data.telefone);
                             $("#EmailView").html(data.email);
 
@@ -579,12 +583,12 @@
                             if(data.status != 0)
                             {
                                 $('#Cancelada').css('display', 'none')
-                                $('#Salvar').css('display', 'none')
+                                
                             }
                             else
                             {
                                 $('#Cancelada').css('display', 'block')
-                                $('#Salvar').css('display', 'block')
+                                
                             }
 
                             $('#loading-modal').modal('hide');
@@ -643,24 +647,13 @@
                     $('#details-modal').modal('hide');
                 }, 1000)
 
-                var chamadaUrl = `/agendamento/visitas?handler=Endereco&&Medico=${teste}`
-                $.ajax({
-                    url: chamadaUrl,
-                    type: "GET",
-                    contentType: "application/json;",
-                    dataType: 'json',
-                    headers: {
-                        "RequestVerificationToken": $('input:hidden[name="__RequestVerificationToken"]').val()
-                    },
-                    success: function (data) {
 
-                        $("#Endereco").val(data.endereco)
-                        $("#Bairro").val(data.bairro)
-                        $("#DataUltima").val(data.ultima)
-                        $("#Email").val(data.email)
-                        $("#Telefone").val(data.telefone)
-                    }
-                })
+                $("#Endereco").val($("#EnderecoProxima").val())
+                $("#Bairro").val($("#BairroProxima").val())
+                $("#DataUltima").val($("#DataHoraProxima").val())
+                $("#Email").val($("#EmailProxima").val())
+                $("#Telefone").val($("#TelefoneProxima").val())
+
 
                 setTimeout(function () {
                     $('#novavisita-modal').modal('show');

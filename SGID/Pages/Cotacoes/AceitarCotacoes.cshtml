@@ -501,7 +501,7 @@
                 tr.fadeOut(400, function () {
                     tr.remove();
 
-                    count = 0;
+                    countPatri = 0;
 
                     var valor = $("#Patrimonio>tbody").find("tr");
 
@@ -516,11 +516,11 @@
                                 var id = input.id.split('.')[1];
                                 var name = input.name.split('.')[1];
 
-                                input.id = `Patris[${count}].${id}`;
-                                input.name = `Patris[${count}].${name}`;
+                                input.id = `Patris[${countPatri}].${id}`;
+                                input.name = `Patris[${countPatri}].${name}`;
                             }
                         })
-                        count++
+                        countPatri++
                     })
                 });
 
@@ -534,7 +534,7 @@
                 tr.fadeOut(400, function () {
                     tr.remove();
 
-                    count = 0;
+                    countAvulso = 0;
 
                     var valor = $("#Avulso>tbody").find("tr");
 
@@ -549,11 +549,11 @@
                                 var id = input.id.split('.')[1];
                                 var name = input.name.split('.')[1];
 
-                                input.id = `Avulsos[${count}].${id}`;
-                                input.name = `Avulsos[${count}].${name}`;
+                                input.id = `Avulsos[${countAvulso}].${id}`;
+                                input.name = `Avulsos[${countAvulso}].${name}`;
                             }
                         })
-                        count++
+                        countAvulso++
                     })
                 });
 
@@ -718,9 +718,11 @@
                                                       <a class="fa-regular fa-trash-can add-tooltip" onclick="removePatri(this)" style="text-decoration:none;" id="Excluir" data-container="body" data-placement="top" data-original-title="Excluir Recurso" aria-hidden="true"></a>
                                                   </td>
                                                   </tr>`;
-                                    countPatri++;
+                                    
                                     $("#Patrimonio>tbody").append(linha);
                                     $("#CodPatri").val("");
+
+                                    countPatri++;
                                 }
                             }
                             else {
@@ -769,9 +771,11 @@
                                                               <a class="fa-regular fa-trash-can add-tooltip" onclick="removePatri(this)" style="text-decoration:none;" id="Excluir" data-container="body" data-placement="top" data-original-title="Excluir Recurso" aria-hidden="true"></a>
                                                           </td>
                                                           </tr>`;
-                                countPatri++;
+                                
                                 $("#Patrimonio>tbody").append(linha);
                                 $("#CodPatri").val("");
+
+                                countPatri++;
                             }
                         }
                         else {
