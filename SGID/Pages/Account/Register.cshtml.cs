@@ -39,7 +39,7 @@ namespace SGID.Pages.Account
             }
             else
             {
-                ViewData["RoleId"] = new SelectList(_db.Roles.Where(x => x.NormalizedName == "VENDA").ToList(), "Name", "Name");
+                ViewData["RoleId"] = new SelectList(_db.Roles.Where(x => x.NormalizedName == "VENDA").OrderBy(x => x.Name).ToList(), "Name", "Name");
             }
         }
 
@@ -71,7 +71,7 @@ namespace SGID.Pages.Account
                                 }
                                 else
                                 {
-                                    ViewData["RoleId"] = new SelectList(_db.Roles.Where(x => x.NormalizedName == "VENDA").ToList(), "Name", "Name");
+                                    ViewData["RoleId"] = new SelectList(_db.Roles.Where(x => x.NormalizedName == "VENDA").OrderBy(x => x.Name).ToList(), "Name", "Name");
                                 }
                                 return Page();
                             }
@@ -119,7 +119,7 @@ namespace SGID.Pages.Account
                 }
                 else
                 {
-                    ViewData["RoleId"] = new SelectList(_db.Roles.Where(x => x.NormalizedName == "VENDA").ToList(), "Name", "Name");
+                    ViewData["RoleId"] = new SelectList(_db.Roles.Where(x => x.NormalizedName == "VENDA").OrderBy(x => x.Name).ToList(), "Name", "Name");
                 }
             }
             catch (Exception excep)

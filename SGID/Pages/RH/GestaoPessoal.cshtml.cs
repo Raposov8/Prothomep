@@ -86,10 +86,12 @@ namespace SGID.Pages.RH
 
                 mensagem = EmailTemplate.LerArquivoHtml($"{_WEB.WebRootPath}/template/TemplateEmail.html",template);
 
-                SmtpClient client = new SmtpClient();
-                client.Host = "smtp.office365.com";
-                client.EnableSsl = true;
-                client.Credentials = new System.Net.NetworkCredential("ti@intermedic.com.br", "interadm2018!*");
+                SmtpClient client = new SmtpClient
+                {
+                    Host = "smtp.office365.com",
+                    EnableSsl = true,
+                    Credentials = new System.Net.NetworkCredential("ti@intermedic.com.br", "interadm2018!*")
+                };
                 MailMessage mail = new MailMessage();
                 mail.Sender = new MailAddress("ti@intermedic.com.br", "ENVIADOR");
                 mail.From = new MailAddress("ti@intermedic.com.br", "ENVIADOR");

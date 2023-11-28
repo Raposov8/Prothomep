@@ -319,9 +319,7 @@ namespace SGID.Pages.Logistica
                     SGID.SaveChanges();
                 }
 
-                if (Reprovado != 0)
-                {
-                    #region Patrimonios
+                #region Patrimonios
                     var AgendamentoPatris = SGID.PatrimoniosAgendamentos.Where(x => x.AgendamentoId == id).ToList();
 
                     AgendamentoPatris.ForEach(produto =>
@@ -347,7 +345,7 @@ namespace SGID.Pages.Logistica
                     });
                     #endregion
 
-                    #region Avulsos
+                #region Avulsos
 
                     var AgendamentoAvulsos = SGID.AvulsosAgendamento.Where(x => x.AgendamentoId == id).ToList();
 
@@ -387,97 +385,17 @@ namespace SGID.Pages.Logistica
                     });
                     #endregion
 
-                    var Agendamento = SGID.Agendamentos.FirstOrDefault(x => x.Id == id);
+                var Agendamento = SGID.Agendamentos.FirstOrDefault(x => x.Id == id);
 
-                    Agendamento.UsuarioLogistica = User.Identity.Name.Split("@")[0].ToUpper();
-                    Agendamento.DataLogistica = DateTime.Now;
-                    Agendamento.StatusLogistica = 7;
+                Agendamento.UsuarioLogistica = User.Identity.Name.Split("@")[0].ToUpper();
+                Agendamento.DataLogistica = DateTime.Now;
+                Agendamento.StatusLogistica = 7;
 
-                    SGID.Agendamentos.Update(Agendamento);
-                    SGID.SaveChanges();
+                SGID.Agendamentos.Update(Agendamento);
+                SGID.SaveChanges();
 
-                    return LocalRedirect($"/logistica/listarlogistica/{Empresa}/2");
-                }
-                else
-                {
-                    #region Patrimonios
-                    var AgendamentoPatris = SGID.PatrimoniosAgendamentos.Where(x => x.AgendamentoId == id).ToList();
-
-                    AgendamentoPatris.ForEach(produto =>
-                    {
-                        var patriUpdate = Patris.FirstOrDefault(x => x.Descri == produto.Patrimonio && x.Codigo == produto.Codigo);
-
-                        SGID.PatrimoniosAgendamentos.Remove(produto);
-                        SGID.SaveChanges();
-
-                    });
-
-                    Patris.ForEach(patri =>
-                    {
-                        var ProdXAgenda = new PatrimonioAgendamento
-                        {
-                            AgendamentoId = id,
-                            Patrimonio = patri.Descri,
-                            Codigo = patri.Codigo
-                        };
-
-                        SGID.PatrimoniosAgendamentos.Add(ProdXAgenda);
-                        SGID.SaveChanges();
-                    });
-                    #endregion
-
-                    #region Avulsos
-
-                    var AgendamentoAvulsos = SGID.AvulsosAgendamento.Where(x => x.AgendamentoId == id).ToList();
-
-                    AgendamentoAvulsos.ForEach(avus =>
-                    {
-                        var Avulso = Avulsos.FirstOrDefault(c => c.Item == avus.Produto);
-
-                        if (Avulso != null)
-                        {
-                            avus.Quantidade = Avulso.Und;
-
-                            SGID.AvulsosAgendamento.Update(avus);
-                            Avulsos.Remove(Avulso);
-                            SGID.SaveChanges();
-
-                        }
-                        else
-                        {
-                            SGID.AvulsosAgendamento.Remove(avus);
-                            SGID.SaveChanges();
-                        }
-                    });
-
-                    Avulsos.ForEach(avulso =>
-                    {
-                        var agendamento = new AvulsosAgendamento
-                        {
-                            AgendamentoId = id,
-                            Produto = avulso.Item,
-                            Quantidade = avulso.Und
-                        };
-
-
-                        SGID.AvulsosAgendamento.Add(agendamento);
-                        SGID.SaveChanges();
-
-                    });
-                    #endregion
-
-                    var Agendamento = SGID.Agendamentos.FirstOrDefault(x => x.Id == id);
-
-                    Agendamento.UsuarioLogistica = User.Identity.Name.Split("@")[0].ToUpper();
-                    Agendamento.DataLogistica = DateTime.Now;
-                    Agendamento.StatusLogistica = 2;
-
-
-                    SGID.Agendamentos.Update(Agendamento);
-                    SGID.SaveChanges();
-
-                    return LocalRedirect($"/logistica/listarlogistica/{Empresa}/4");
-                }
+                return LocalRedirect($"/logistica/listarlogistica/{Empresa}/2");
+                
             }
             catch (Exception E)
             {

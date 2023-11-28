@@ -314,7 +314,6 @@ namespace SGID.Pages.Agendamento
                 }
 
                 return new JsonResult("Sucesso");
-
             }
             catch (Exception e)
             {

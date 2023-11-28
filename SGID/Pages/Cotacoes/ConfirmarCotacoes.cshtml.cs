@@ -307,114 +307,138 @@ namespace SGID.Pages.Cotacoes
 
         public IActionResult OnPostAsync(int id, string NomePaciente, DateTime? DataCirurgia, int Urgencia
             , string NomeMedico, string CRM, string NomeHospital, string NomeVendedor, string Obs,
-            List<Produto> Avulsos, List<Produto> Produtos, List<Patrimonio> Patris, string CodTabela, DateTime? Entrega)
+            List<Produto> Avulsos, List<Produto> Produtos, List<Patrimonio> Patris, string CodTabela, DateTime? Entrega,int Protheus)
         {
             try
             {
+                if (Protheus == 0) {
 
-                #region Patrimonios
-                var AgendamentoPatris = SGID.PatrimoniosAgendamentos.Where(x => x.AgendamentoId == id).ToList();
+                    #region Patrimonios
+                    var AgendamentoPatris = SGID.PatrimoniosAgendamentos.Where(x => x.AgendamentoId == id).ToList();
 
-                AgendamentoPatris.ForEach(produto =>
-                {
-                    var patriUpdate = Patris.FirstOrDefault(x => x.Descri == produto.Patrimonio && x.Codigo == produto.Codigo);
-
-                    SGID.PatrimoniosAgendamentos.Remove(produto);
-                    SGID.SaveChanges();
-
-                });
-
-                Patris.ForEach(patri =>
-                {
-                    var ProdXAgenda = new PatrimonioAgendamento
+                    AgendamentoPatris.ForEach(produto =>
                     {
-                        AgendamentoId = id,
-                        Patrimonio = patri.Descri,
-                        Codigo = patri.Codigo,
-                        Observacao = patri.Obs,
-                        CheckPatrimonio = patri.Check
-                    };
+                        var patriUpdate = Patris.FirstOrDefault(x => x.Descri == produto.Patrimonio && x.Codigo == produto.Codigo);
 
-                    SGID.PatrimoniosAgendamentos.Add(ProdXAgenda);
-                    SGID.SaveChanges();
-                });
-                #endregion
-
-                #region Avulsos
-
-                var AgendamentoAvulsos = SGID.AvulsosAgendamento.Where(x => x.AgendamentoId == id).ToList();
-
-                AgendamentoAvulsos.ForEach(avus =>
-                {
-                    var Avulso = Avulsos.FirstOrDefault(c => c.Item == avus.Produto);
-
-                    if (Avulso != null)
-                    {
-                        avus.Quantidade = Avulso.Und;
-
-                        SGID.AvulsosAgendamento.Update(avus);
-                        Avulsos.Remove(Avulso);
+                        SGID.PatrimoniosAgendamentos.Remove(produto);
                         SGID.SaveChanges();
 
+                    });
+
+                    Patris.ForEach(patri =>
+                    {
+                        var ProdXAgenda = new PatrimonioAgendamento
+                        {
+                            AgendamentoId = id,
+                            Patrimonio = patri.Descri,
+                            Codigo = patri.Codigo,
+                            Observacao = patri.Obs,
+                            CheckPatrimonio = patri.Check
+                        };
+
+                        SGID.PatrimoniosAgendamentos.Add(ProdXAgenda);
+                        SGID.SaveChanges();
+                    });
+                    #endregion
+
+                    #region Avulsos
+
+                    var AgendamentoAvulsos = SGID.AvulsosAgendamento.Where(x => x.AgendamentoId == id).ToList();
+
+                    AgendamentoAvulsos.ForEach(avus =>
+                    {
+                        var Avulso = Avulsos.FirstOrDefault(c => c.Item == avus.Produto);
+
+                        if (Avulso != null)
+                        {
+                            avus.Quantidade = Avulso.Und;
+
+                            SGID.AvulsosAgendamento.Update(avus);
+                            Avulsos.Remove(Avulso);
+                            SGID.SaveChanges();
+
+                        }
+                        else
+                        {
+                            SGID.AvulsosAgendamento.Remove(avus);
+                            SGID.SaveChanges();
+                        }
+
+                    });
+
+                    Avulsos.ForEach(avulso =>
+                    {
+                        var agendamento = new AvulsosAgendamento
+                        {
+                            AgendamentoId = id,
+                            Produto = avulso.Item,
+                            Quantidade = avulso.Und
+                        };
+
+                        SGID.AvulsosAgendamento.Add(agendamento);
+                        SGID.SaveChanges();
+
+                    });
+
+                    #endregion
+
+                    var Agendamento = SGID.Agendamentos.FirstOrDefault(x => x.Id == id);
+
+                    Agendamento.DataCirurgia = DataCirurgia;
+                    Agendamento.DataEntrega = Entrega;
+
+                    if (Agendamento.StatusPedido == 3)
+                    {
+                        Agendamento.UsuarioComercialAprova = User.Identity.Name.Split("@")[0].ToUpper();
+                        Agendamento.DataComercialAprova = DateTime.Now;
+                        Agendamento.StatusPedido = 7;
+                        Agendamento.StatusLogistica = 0;
                     }
                     else
                     {
-                        SGID.AvulsosAgendamento.Remove(avus);
-                        SGID.SaveChanges();
+                        Agendamento.UsuarioComercialAprova = User.Identity.Name.Split("@")[0].ToUpper();
+                        Agendamento.DataComercialAprova = DateTime.Now;
+                        Agendamento.StatusPedido = 7;
+                        Agendamento.StatusLogistica = 1;
                     }
-                    
-                });
 
-                Avulsos.ForEach(avulso =>
-                {
-                    var agendamento = new AvulsosAgendamento
-                    {
-                        AgendamentoId = id,
-                        Produto = avulso.Item,
-                        Quantidade = avulso.Und
-                    };
 
-                    SGID.AvulsosAgendamento.Add(agendamento);
+
+                    SGID.Agendamentos.Update(Agendamento);
                     SGID.SaveChanges();
 
-                });
+                    if (!string.IsNullOrEmpty(Obs) && !string.IsNullOrWhiteSpace(Obs))
+                    {
+                        var Observacao = new ObsAgendamento { AgendamentoId = Agendamento.Id, User = Agendamento.UsuarioComercialAprova, Obs = Obs, DataCriacao = DateTime.Now };
 
-                #endregion
+                        SGID.ObsAgendamentos.Add(Observacao);
+                        SGID.SaveChanges();
+                    }
 
-                var Agendamento = SGID.Agendamentos.FirstOrDefault(x => x.Id == id);
-
-                Agendamento.DataCirurgia = DataCirurgia;
-                Agendamento.DataEntrega = Entrega;
-
-                if(Agendamento.StatusPedido == 3)
-                {
-                    Agendamento.UsuarioComercialAprova = User.Identity.Name.Split("@")[0].ToUpper();
-                    Agendamento.DataComercialAprova = DateTime.Now;
-                    Agendamento.StatusPedido = 7;
-                    Agendamento.StatusLogistica = 0;
+                    return LocalRedirect("/cotacoes/DashBoardCotacoes/3");
                 }
                 else
                 {
-                    Agendamento.UsuarioComercialAprova = User.Identity.Name.Split("@")[0].ToUpper();
-                    Agendamento.DataComercialAprova = DateTime.Now;
-                    Agendamento.StatusPedido = 7;
-                    Agendamento.StatusLogistica = 1;
-                }
+                    var Agendamento = SGID.Agendamentos.FirstOrDefault(x => x.Id == id);
 
-                
+                    Agendamento.DataCirurgia = DataCirurgia;
+                    Agendamento.DataEntrega = Entrega;
 
-                SGID.Agendamentos.Update(Agendamento);
-                SGID.SaveChanges();
+                    Agendamento.StatusLogistica = 2;
 
-                if (!string.IsNullOrEmpty(Obs) && !string.IsNullOrWhiteSpace(Obs))
-                {
-                    var Observacao = new ObsAgendamento { AgendamentoId = Agendamento.Id, User = Agendamento.UsuarioComercialAprova, Obs = Obs, DataCriacao = DateTime.Now };
-
-                    SGID.ObsAgendamentos.Add(Observacao);
+                    SGID.Agendamentos.Update(Agendamento);
                     SGID.SaveChanges();
-                }
 
-                return LocalRedirect("/cotacoes/DashBoardCotacoes/3");
+                    if (!string.IsNullOrEmpty(Obs) && !string.IsNullOrWhiteSpace(Obs))
+                    {
+                        var Observacao = new ObsAgendamento { AgendamentoId = Agendamento.Id, User = Agendamento.UsuarioComercialAprova, Obs = Obs, DataCriacao = DateTime.Now };
+
+                        SGID.ObsAgendamentos.Add(Observacao);
+                        SGID.SaveChanges();
+                    }
+
+                    return LocalRedirect("/cotacoes/DashBoardCotacoes/3");
+                }
             }
             catch (Exception E)
             {

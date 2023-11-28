@@ -25,35 +25,35 @@
 <body>
     <header class="col-12 col-sm-12 col-md-12 col-xl-12">
         <nav class="navbar  navbar-expand-md navbar-expand-xl navbar-toggleable-xl navbar-toggleable-md navbar-light bg-white border-bottom box-shadow mb-3">
-                <div class="col-2 col-sm-2 col-md-2">
-                    <input type="checkbox" id="check"/>
-                    <label for="check">
-                        <i class="fas fa-bars fa-xl" id="btn"></i>
-                    </label>
-                </div>
-                <div class="col-2 col-sm-2 col-md-2">
-                    <img src="/imagens/gid.png" alt="GID Logo" height="66" width="120"/>
-                </div>
-                <div class="col-2 col-sm-2 col-md-2">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="dropdown03" data-bs-toggle="dropdown" aria-expanded="false">
-                                <img class="img-circle img-xs" src="/imagens/Pic1.png" alt="Profile Picture"> Olá @User.Identity.Name.Split("@")[0]
-                            </a>
-                            <ul class="dropdown-menu" aria-labelledby="dropdowm03">
-                                @if (User.IsInRole("Admin"))
-                                {
-                                    <li class="dropdown-item" >
-                                        <a href="/account/register"><i class="fa-solid fa-user-plus" style="margin-right:5px;"></i>Cadastro Usuario</a>
-                                    </li>
-                                }
+            <div class="col-2 col-sm-2 col-md-2">
+                <input type="checkbox" id="check"/>
+                <label for="check">
+                    <i class="fas fa-bars fa-xl" id="btn"></i>
+                </label>
+            </div>
+            <div class="col-2 col-sm-2 col-md-2">
+                <img src="/imagens/gid.png" alt="GID Logo" height="66" width="120"/>
+            </div>
+            <div class="col-2 col-sm-2 col-md-2">
+                <ul class="navbar-nav flex-grow-1">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="dropdown03" data-bs-toggle="dropdown" aria-expanded="false">
+                            <img class="img-circle img-xs" src="/imagens/Pic1.png" alt="Profile Picture"> Olá @User.Identity.Name.Split("@")[0]
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="dropdowm03">
+                            @if (User.IsInRole("Admin"))
+                            {
                                 <li class="dropdown-item" >
-                                    <a href="/account/LogOut"><i class="fa-solid fa-right-from-bracket" style="margin-right:5px;"></i>Logout</a>
+                                    <a href="/account/register"><i class="fa-solid fa-user-plus" style="margin-right:5px;"></i>Cadastro Usuario</a>
                                 </li>
-                            </ul>
-                        </li>
-                    </ul>
-                </div>
+                            }
+                            <li class="dropdown-item" >
+                                <a href="/account/LogOut"><i class="fa-solid fa-right-from-bracket" style="margin-right:5px;"></i>Logout</a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
         </nav>
     </header>
     <div class="container-lg container-xl container-xxl" style="margin-left:0px;margin-right:0px;">
