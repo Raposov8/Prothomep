@@ -1,0 +1,79 @@
+﻿@page
+@model SGID.Pages.Integracao.ListarCotacoesInpartModel
+@{
+    ViewData["Title"] = "Listar Cotacoes Inpart";
+    if (User.IsInRole("Diretoria") && !User.IsInRole("Admin"))
+    {
+        Layout = "_LayoutDiretoria";
+    }
+    else
+    {
+        Layout = "_LayoutNovo";
+    }
+}
+
+
+
+<!--Tabela-->
+<div class="col-12 col-sm-12 col-md-12">
+    <div class="panel">
+        <div class="panel-body">
+            <table id="demo-dt-addrow" class="table table-striped table-bordered" cellspacing="0" width="50%">
+                <thead>
+                    <tr>
+                        <th class="text-center">
+                            COD. SOLICITAÇÃO
+                        </th>
+                        <th class="text-center">
+                            PACIENTE
+                        </th>
+                        <th class="text-center">
+                            DATA CIRURGIA
+                        </th>
+                        <th class="text-center">
+                            CLIENTE
+                        </th>
+                        <th class="text-center">
+                            CLIENTE DE ENTREGA
+                        </th>
+                        <th class="text-center">
+                            NOME DO MEDICO
+                        </th>
+                        <th class="text-center">
+                            NOME DO PROCEDIMENTO
+                        </th>
+                        <th class="text-center">
+                            STATUS PEDIDO
+                        </th>
+                        <th class="text-center">
+                            VENDEDOR
+                        </th>
+                        <th class="text-center">
+                            DATA ALTERAÇÃO
+                        </th>
+                        <th class="text-center">
+                            AÇÃO
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var data in Model.Cotacoes)
+                    {
+                        <tr>
+                            <td>@data.medico.nmMedico</td>
+                            <td>@data.hospital.razaoSocial</td>
+                            <td>
+                                @data.dtCirurgia.Value.ToString("dd/MM/yyyy")
+                            </td>
+                            <td>@data.nmHoraCirurgia</td>
+                            
+                            <td>
+
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

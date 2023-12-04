@@ -394,7 +394,7 @@
                                         }
                                         @if (User.IsInRole("Admin") || User.IsInRole("GestorComercial") || User.IsInRole("Diretoria"))
                                         {
-                                                @if (User.Identity.Name.Split("@")[1] == "denuo.com.br" || User.IsInRole("Admin") || User.IsInRole("Diretoria"))
+                                                @if (User.Identity.Name.Split("@")[1] == "denuo.com.br" || User.IsInRole("Admin") || User.IsInRole("Diretoria") || User.IsInRole("ComercialDuo"))
                                                 {
                                                     <li class="nav-item dropdown">
                                                         <a class="nav-link align-items-center rounded dropdown-toggle" data-bs-toggle="collapse"
@@ -410,7 +410,7 @@
                                                         </div>
                                                     </li>
                                                 }
-                                                @if (User.Identity.Name.Split("@")[1] == "intermedic.com.br" || User.IsInRole("Admin") || User.IsInRole("Diretoria"))
+                                                @if (User.Identity.Name.Split("@")[1] == "intermedic.com.br" || User.IsInRole("Admin") || User.IsInRole("Diretoria")  || User.IsInRole("ComercialDuo"))
                                                 {
                                                     <li class="nav-item dropdown">
                                                         <a class="nav-link align-items-center rounded dropdown-toggle" data-bs-toggle="collapse"

@@ -789,7 +789,7 @@
 
 
                  let radioValueCheck = true;
-                 let allAreFilled = true;
+                 var allAreFilled = true;
                  document.getElementById("MyForm").querySelectorAll("[required]").forEach(function (i) 
                  {
                     
@@ -800,7 +800,7 @@
                          {
                              if (r.checked) radioValueCheck = false;
                          })
-                         allAreFilled = radioValueCheck;
+
                          if (radioValueCheck) 
                          {
                             $(`#${i.name}Error`).html(`${i.name} precisa ser preenchido`)
@@ -808,6 +808,7 @@
                      }
                      if (!i.value) 
                      { 
+
                          allAreFilled = false;
 
                          if (`${i.name}` == 'Data') 
@@ -835,7 +836,6 @@
                 } 
                 else 
                 {
-
 
                     var chamadaUrl = `/agendamento/visitas?id=${Id}&&Medico=${Medico}&&Local=${Local}&&Data=${Data}&&DataUltima=${DataUltima}&&Assunto=${Assunto}&&Endereco=${Endereco}&&Bairro=${Bairro}&&MotVis=${MotVis}&&Obs=${Obs}&&ResuVisi=${Resu}&&Telefone=${Telefone}&&Email=${Email}`
                     $.ajax({

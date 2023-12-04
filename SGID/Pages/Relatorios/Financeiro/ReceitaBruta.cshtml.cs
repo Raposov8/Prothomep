@@ -102,6 +102,7 @@ namespace SGID.Pages.Relatorios.Financeiro
                                  Vendedor = "",
                                  Fabricante = SB10.B1Fabric,
                                  UnidadeNegocio = SB10.B1Xunnego == "000001" ? "OUTROS" : SB10.B1Xunnego == "000002" ? "TORAX" : SB10.B1Xunnego == "000003" ? "COLUNA" : SB10.B1Xunnego == "000004" ? "NEURO" : SB10.B1Xunnego == "000005" ? "ORTOPEDIA" : SB10.B1Xunnego == "000006" ? "BUCOMAXILO" : SB10.B1Xunnego == "000007" ? "MATRIX" : SB10.B1Xunnego == "000008" ? "DENTAL" : SB10.B1Xunnego == "000009" ? "CMF" : ""
+                             
                              }).ToList();
 
                 Relatorios.AddRange(teste);

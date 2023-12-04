@@ -165,7 +165,7 @@ namespace SGID.Pages.Relatorios.Controladoria
                                           Valicm = SD10.D1Valicm,
                                           Descon = SD10.D1Valdesc,
                                           DTDIGIT = SD10.D1Dtdigit,
-                                          TotalBruto = SD10.D1Total - SD10.D1Valdesc + SD10.D1Valipi
+                                          TotalBruto = SD10.D1Total - SD10.D1Valdesc + SD10.D1Valipi + SD10.D1Despesa
                                       }
                                          ).GroupBy(x => new
                                          {
@@ -424,7 +424,7 @@ namespace SGID.Pages.Relatorios.Controladoria
                                           Valicm = SD10.D1Valicm,
                                           Descon = SD10.D1Valdesc,
                                           DTDIGIT = SD10.D1Dtdigit,
-                                          TotalBruto = SD10.D1Total - SD10.D1Valdesc + SD10.D1Valipi
+                                          TotalBruto = SD10.D1Total - SD10.D1Valdesc + SD10.D1Valipi + SD10.D1Despesa
                                       }
                                          ).GroupBy(x => new
                                          {

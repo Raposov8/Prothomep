@@ -184,3 +184,23 @@
         </div>
     </div>
 </div>
+
+
+@section scripts {
+    <script>
+        $(function () {
+
+            $("#searchInput").keyup(function () {
+                var rows = $("#demo-dt-addrow").find("tr").hide();
+                if (this.value.length) {
+                    var data = this.value.split(" ");
+                    $.each(data, function (i, v) {
+                        rows.filter(":contains('" + v + "')").show();
+                    });
+                } else rows.show();
+            });
+
+        })
+    </script>
+
+}

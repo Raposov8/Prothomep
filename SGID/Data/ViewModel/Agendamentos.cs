@@ -48,6 +48,11 @@ namespace SGID.Data.ViewModel
         public string? UsuarioAlterar { get; set; }
         public DateTime DataAlteracao { get; set; }
 
+        //INSTRUMENTACAO
+        public string? UsuarioInstrumentador { get; set; }
+        public string? UsuarioGestorInstrumentador { get; set; }
+        public DateTime? DataInstrumentador { get; set; }
+        public int StatusInstrumentador { get; set; }
 
         //COMERCIAL
         public string? UsuarioComercial { get; set; }
