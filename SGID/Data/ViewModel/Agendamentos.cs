@@ -53,6 +53,8 @@ namespace SGID.Data.ViewModel
         public string? UsuarioGestorInstrumentador { get; set; }
         public DateTime? DataInstrumentador { get; set; }
         public int StatusInstrumentador { get; set; }
+        public string? Latitude { get; set; }
+        public string? Longitude { get; set; }
 
         //COMERCIAL
         public string? UsuarioComercial { get; set; }

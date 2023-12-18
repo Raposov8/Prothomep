@@ -89,9 +89,9 @@
     <script>
         var Produtos = [];
 
-        @foreach (var data in Model.Relatorio.DistinctBy(x=> x.Produto))
+        @foreach (var data in Model.Produtos)
         {
-            @:Produtos.push("@data.Produto")
+            @:Produtos.push("@data")
         }
 
 

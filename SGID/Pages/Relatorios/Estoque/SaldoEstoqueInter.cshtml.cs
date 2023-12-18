@@ -17,6 +17,8 @@ namespace SGID.Pages.Relatorios.Estoque
         public List<string> Locals { get; set; } = new List<string>();
         public List<string> Locais { get; set; } = new List<string> { "01", "80", "70", "30" };
 
+        public List<string> Produtos { get; set; } = new List<string>();
+
         public SaldoEstoqueInterModel(TOTVSINTERContext protheus, ApplicationDbContext sgid)
         {
             Protheus = protheus;
@@ -42,6 +44,9 @@ namespace SGID.Pages.Relatorios.Estoque
                                  UM = SB10.B1Um,
                                  Empenho = SB20.B2Reserva,
                              }).ToList();
+
+                Produtos = Protheus.Sb2010s.Where(x => x.DELET != "*" && x.B2Qatu != 0
+                              && x.B2Filial == "01").Select(x => x.B2Cod).Distinct().ToList();
             }
             catch (Exception e)
             {
@@ -77,8 +82,11 @@ namespace SGID.Pages.Relatorios.Estoque
 
                 if (Produto != "" && Produto != null)
                 {
-                    Relatorio = Relatorio.Where(x => x.Produto == Produto).ToList();
+                    Relatorio = Relatorio.Where(x => x.Produto.Trim() == Produto.Trim()).ToList();
                 }
+
+                Produtos = Protheus.Sb2010s.Where(x => x.DELET != "*" && x.B2Qatu != 0
+                             && x.B2Filial == "01").Select(x => x.B2Cod).Distinct().ToList();
 
                 return Page();
             }
@@ -116,7 +124,7 @@ namespace SGID.Pages.Relatorios.Estoque
 
                 if (Produto != "" && Produto != null)
                 {
-                    Relatorio = Relatorio.Where(x => x.Produto == Produto).ToList();
+                    Relatorio = Relatorio.Where(x => x.Produto.Trim() == Produto.Trim()).ToList();
                 }
 
                 using ExcelPackage package = new ExcelPackage();

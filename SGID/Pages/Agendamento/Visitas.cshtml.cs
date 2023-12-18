@@ -203,7 +203,8 @@ namespace SGID.Pages.Agendamento
                        UltimaResp1 = "",
                        UltimaResp2 = "",
                        Email = x.Email ?? "",
-                       Telefone = x.Telefone ?? ""
+                       Telefone = x.Telefone ?? "",
+                       Latitude = x.Latitude == null ? 0:1,
                     }).FirstOrDefault(x=> x.Id == id);
 
 
@@ -332,7 +333,6 @@ namespace SGID.Pages.Agendamento
                 visita.Observacao = Observacao;
                 visita.ResumoVisita = Resumo;
                 visita.DataAlteracao = DateTime.Now;
-                visita.Status = 1;
                 
 
                 SGID.Visitas.Update(visita);
@@ -666,6 +666,30 @@ namespace SGID.Pages.Agendamento
             return new JsonResult("");
         }
 
+        public JsonResult OnPostFinalizar(int id,string Latitude,string Longitude)
+        {
+            try
+            {
+                var visita = SGID.Visitas.FirstOrDefault(x => x.Id == id);
+
+                visita.Longitude = Longitude;
+                visita.Latitude = Latitude;
+                visita.DataFinalizada = DateTime.Now;
+                visita.Status = 1;
+
+                SGID.Visitas.Update(visita);
+                SGID.SaveChanges();
+
+                return new JsonResult("");
+
+            }
+            catch (Exception e)
+            {
+                string user = User.Identity.Name.Split("@")[0].ToUpper();
+                Logger.Log(e, SGID, "Post Finalizar Visita", user);
+                return new JsonResult("");
+            }
+        }
         public class EventViewModel
         {
             public int Id { get; set; }

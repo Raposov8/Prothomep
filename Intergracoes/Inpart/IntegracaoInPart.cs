@@ -13,28 +13,35 @@ namespace Intergracoes.Inpart
 {
     public class IntegracaoInPart
     {
-        private string BaseUrl { get; set; } = "https://integracao-api.inpartsaudeteste.com.br/api";
-        private string Auth { get; set; } = "";
+        public string BaseUrl { get; set; } = @"https://integracao-api.inpartsaudeteste.com.br/api";
+        public string Auth { get; set; } = "";
 
         public async Task<string> Authenticacao()
         {
+            try
+            {
+                var credenciais = new
+                {
+                    usuario = "intermedicsp.integracao",
+                    senha = "intermedicsp@28319"
+                };
 
-            var credenciais = new 
-            { 
-                usuario = "intermedicsp.integracao",
-                senha = "intermedicsp@28319"
-            };
 
+                var client = new HttpClient();
 
-            var client = new HttpClient();
+                var content = new StringContent(JsonConvert.SerializeObject(credenciais), Encoding.UTF8, "application/json");
+                content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
 
-            var content = new StringContent(JsonConvert.SerializeObject(credenciais), Encoding.UTF8, "application/json");
-            content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+                var resultPost = await client.PostAsync($"{BaseUrl}/autenticacao", content);
+                var data = JsonConvert.DeserializeObject<Token>(resultPost.Content.ReadAsStringAsync().Result);
 
-            var resultPost = await client.PostAsync($"{BaseUrl}/",content);
-            var data = JsonConvert.DeserializeObject<Token>(resultPost.Content.ReadAsStringAsync().Result);
-           
-            return data.AccessToken;
+                return data.AccessToken;
+            }
+            catch (Exception e)
+            {
+                var email = e.Message;
+                return "";
+            }
 
         }
 
@@ -44,7 +51,7 @@ namespace Intergracoes.Inpart
 
             var client = new HttpClient();
 
-            var credenciais = Authenticacao();
+            var credenciais = await Authenticacao();
 
             client.DefaultRequestHeaders.Add("Authorization", $"Bearer {credenciais}");
 

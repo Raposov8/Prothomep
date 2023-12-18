@@ -22,37 +22,25 @@
                 <thead>
                     <tr>
                         <th class="text-center">
-                            COD. SOLICITAÇÃO
+                            Medico
                         </th>
                         <th class="text-center">
-                            PACIENTE
+                            Cliente
                         </th>
                         <th class="text-center">
-                            DATA CIRURGIA
+                            Hospital
                         </th>
                         <th class="text-center">
-                            CLIENTE
+                            Data Cirurgia
                         </th>
                         <th class="text-center">
-                            CLIENTE DE ENTREGA
+                            Nome Paciente
                         </th>
                         <th class="text-center">
-                            NOME DO MEDICO
+                            Status
                         </th>
                         <th class="text-center">
-                            NOME DO PROCEDIMENTO
-                        </th>
-                        <th class="text-center">
-                            STATUS PEDIDO
-                        </th>
-                        <th class="text-center">
-                            VENDEDOR
-                        </th>
-                        <th class="text-center">
-                            DATA ALTERAÇÃO
-                        </th>
-                        <th class="text-center">
-                            AÇÃO
+                            AÇÕES
                         </th>
                     </tr>
                 </thead>
@@ -60,15 +48,20 @@
                     @foreach (var data in Model.Cotacoes)
                     {
                         <tr>
-                            <td>@data.medico.nmMedico</td>
-                            <td>@data.hospital.razaoSocial</td>
+                            <td>@data.medico?.nmMedico</td>
+                            <td>@data.nmCliente</td>
+                            <td>@data.hospital?.razaoSocial</td>
                             <td>
-                                @data.dtCirurgia.Value.ToString("dd/MM/yyyy")
+                                @data.dtCirurgia.Value.ToString("dd/MM/yyyy") @data.nmHoraCirurgia
                             </td>
-                            <td>@data.nmHoraCirurgia</td>
-                            
                             <td>
-
+                                @data.nmPaciente
+                            </td>
+                            <td>
+                                @data.status
+                            </td>
+                            <td>
+                                <a class="Inpart" data-id="@data.idCotacao"><i class="fa-solid fa-bars"></i></a>
                             </td>
                         </tr>
                     }
@@ -77,3 +70,180 @@
         </div>
     </div>
 </div>
+
+
+<!--Descricao-->
+<div class="modal fade" id="descricao-modal" role="dialog" tabindex="-1" aria-labelledby="demo-default-modal" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <!--Modal header-->
+            <div class="modal-header">
+                <div class="col-md-1">
+                    <a class="close" data-dismiss="modal"><i class="fa-regular fa-circle-xmark" style="color:red"></i></a>
+                </div>
+            </div>
+            <!--Modal body-->
+            <div class="modal-body">
+                <div class="row">
+                    <div class="card" style="padding:10px;">
+                        <div class="col-md-12">
+                            <div class="row">
+                                <div class="form-group col-md-2">
+                                    <label class="Label">Id Cotação</label>
+                                    <input class="form-control" id="Idcotacao" name="Idcotacao" />
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label class="Label">Cliente Faturamento</label>
+                                    <input class="form-control" id="NmCliente" name="NmCliente" />
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label class="Label">CNPJ</label>
+                                    <input type="text" class="form-control" id="CNPJ" name="CNPJ" />
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label class="Label">Nome Paciente</label>
+                                    <input class="form-control" id="NmPaciente" name="NmPaciente" />
+                                </div>
+                                <div class="form-group col-md-3">
+                                    <label class="Label">Data Cotação</label>
+                                    <input type="datetime-local" class="form-control" id="DtCotacao" name="DtCotacao" />
+                                </div>
+                                <div class="form-group col-md-3">
+                                    <label class="Label">Data Cirurgia</label>
+                                    <input type="datetime-local" class="form-control" id="DataCirurgia" name="DataCirurgia" />
+                                </div>
+                                <div class="form-group col-md-2">
+                                    <label class="Label">Hora</label>
+                                    <input type="text" class="form-control" id="Hora" name="Hora" />
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group col-md-3">
+                                    <label class="Label">Status</label>
+                                    <input type="text" class="form-control" id="Status" name="Status" />
+                                </div>
+                                <div class="form-group col-md-3">
+                                    <label class="Label">Tipo Cotacao</label>
+                                    <input type="text" class="form-control" id="TipoCotacao" name="TipoCotacao" />
+                                </div>
+                                <div class="form-group col-md-3">
+                                    <label class="Label">Medico</label>
+                                    <input type="text" class="form-control" id="Medico" name="Convenio" />
+                                </div>
+                                <div class="form-group col-md-3">
+                                    <label class="Label">Hospital</label>
+                                    <input class="form-control" id="Hospital" name="Hospital" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--Modal footer-->
+                <div class="modal-footer" style="padding-left:20px;">
+                    <div class="panel">
+                        <div class="panel-body">
+                            <table id="Produto" name="Produto" class="table-striped table-bordered" cellspacing="0" width="100%">
+                                <thead>
+                                    <tr>
+                                        <th class="text-center">
+                                            Cod Produto Inpart
+                                        </th>
+                                        <th class="text-center">
+                                            Cod Produto Distribuidor
+                                        </th>
+                                        <th class="text-center">
+                                            Cod Produto Fabricante
+                                        </th>
+                                        <th class="text-center">
+                                            Quantidade
+                                        </th>
+                                        <th class="text-center">
+                                            Preco
+                                        </th>
+                                        <th class="text-center">
+                                            Status Item
+                                        </th>
+                                        <th class="text-center">
+                                            Nome Fabricante
+                                        </th>
+                                        <th class="text-center">
+                                            Nome Distribuidor
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section scripts
+                                {
+    <script>
+        $(document).ready(function () {
+
+            $("a.Inpart").on("click",function(){
+
+                var formato = { minimumFractionDigits: 2, style: 'currency', currency: 'BRL' }
+                console.log(1)
+                var id = $(this).data('id');
+
+                console.log(id)
+
+                var chamadaUrl = `/integracao/listarcotacoesinpart?handler=Cotacao&&id=${id}`;
+                $.ajax({
+                    url: chamadaUrl,
+                    type: "GET",
+                    contentType: "application/json;",
+                    dataType: 'json',
+                    headers: {
+                        "RequestVerificationToken": $('input:hidden[name="__RequestVerificationToken"]').val()
+                    },
+                    success: function (data) {
+
+                        $("#Idcotacao").val(data.idCotacao)
+                        $("#NmCliente").val(data.nmCliente)
+                        $("#CNPJ").val(data.cnpj)
+                        $("#NmPaciente").val(data.nmPaciente)
+                        $("#DtCotacao").val(data.dtCotacao)
+                        $("#DataCirurgia").val(data.dtCirurgia)
+                        $("#Hora").val(data.nmHoraCirurgia)
+                        $("#Status").val(data.status)
+                        $("#TipoCotacao").val(data.nmTipoCotacao)
+                        $("#Medico").val(data.medico.nmMedico)
+                        $("#Hospital").val(data.hospital.razaoSocial)
+
+                        $("#Produto>tbody>tr").detach()
+                        data.cotacaoItemList.forEach(function (produto) 
+                        {
+                            var linha = ` <tr>
+                                               <td>${produto.cdProdutoInpart}</td>
+                                               <td>${produto.cdProdutoDistribuidor}</td>
+                                               <td>${produto.cdProdutoFabricante}</td>
+                                               <td>${produto.vlQuantidade}</td>
+                                               <td>${produto.vlPrecoItem.toLocaleString('pt-BR', formato)}</td>
+                                               <td>${produto.cdStatusItem}</td>
+                                               <td>${produto.fabricante.nmFabricante}</td>
+                                               <td>${produto.distribuidor.razaoSocial}</td>
+                                          </tr>`;
+
+                            $("#Produto>tbody").append(linha);
+                        })
+
+                        $("#descricao-modal").modal("show");
+                    }
+                })
+            })
+
+        })
+
+    </script>
+
+}

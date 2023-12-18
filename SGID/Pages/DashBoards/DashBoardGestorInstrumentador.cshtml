@@ -1,4 +1,4 @@
-﻿@page
+﻿@page "{id}"
 @model SGID.Pages.DashBoards.DashBoardGestorInstrumentadorModel
 @{
     ViewData["Title"] = "DASHBOARD";
@@ -16,23 +16,43 @@
 @Html.AntiForgeryToken()
 
 <div class="row justify-content-center">
-    <div class="col-sm-3 col-md-3">
+    <div class="col-sm-3 col-md-4">
         <div class="panel panel-colorful" style="background-color:lightgray">
             <div class="panel-heading">
-                <h2 style="margin:0%;color:black" class="panel-title text-center">CIRURGIAS REALIZADAS</h2>
+                <h2 style="margin:0%;color:black" class="panel-title text-center">AGENDADA</h2>
             </div>
             <div class="panel-body" style="padding-top:0px;">
-                <a class="produto" ><h3 class="text-center" style="margin-top:0%; color:black;font-size:50px">58</h3></a>
+                <a href="/DashBoards/DashBoardGestorInstrumentador/0" class="produto"><h3 class="text-center" style="margin-top:0%; color:black;font-size:50px">@Model.Cirurgias</h3></a>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-3 col-md-4">
+        <div class="panel panel-colorful" style="background-color:lightgray">
+            <div class="panel-heading">
+                <h2 style="margin:0%;color:black" class="panel-title text-center">CIRURGIAS</h2>
+            </div>
+            <div class="panel-body" style="padding-top:0px;">
+                <a href="/DashBoards/DashBoardGestorInstrumentador/1" class="produto"><h3 class="text-center" style="margin-top:0%; color:black;font-size:50px">@Model.Agendadas</h3></a>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-3 col-md-4">
+        <div class="panel panel-colorful" style="background-color:lightgray">
+            <div class="panel-heading">
+                <h2 style="margin:0%;color:black" class="panel-title text-center">EM ANDAMENTO</h2>
+            </div>
+            <div class="panel-body" style="padding-top:0px;">
+                <a href="/DashBoards/DashBoardGestorInstrumentador/2" class="produto"><h3 class="text-center" style="margin-top:0%; color:black;font-size:50px">@Model.Andamentos</h3></a>
             </div>
         </div>
     </div>
     <div class="col-sm-3 col-md-3">
         <div class="panel panel-colorful" style="background-color:lightgray">
             <div class="panel-heading">
-                <h2 style="margin:0%;color:black" class="panel-title text-center">ANDAMENTO</h2>
+                <h2 style="margin:0%;color:black" class="panel-title text-center">CONCLUIDAS</h2>
             </div>
             <div class="panel-body" style="padding-top:0px;">
-                <a class="produto"><h3 class="text-center" style="margin-top:0%; color:black;font-size:50px">12</h3></a>
+                <a href="/DashBoards/DashBoardGestorInstrumentador/3" class="produto"><h3 class="text-center" style="margin-top:0%; color:black;font-size:50px">@Model.Concluidas</h3></a>
             </div>
         </div>
     </div>
@@ -42,17 +62,7 @@
                 <h2 style="margin:0%;color:black" class="panel-title text-center">CANCELADAS</h2>
             </div>
             <div class="panel-body" style="padding-top:0px;">
-                <a class="produto"><h3 class="text-center" style="margin-top:0%; color:black;font-size:50px">3</h3></a>
-            </div>
-        </div>
-    </div>
-    <div class="col-sm-3 col-md-3">
-        <div class="panel panel-colorful" style="background-color:lightgray">
-            <div class="panel-heading">
-                <h2 style="margin:0%;color:black" class="panel-title text-center">AGENDADAS</h2>
-            </div>
-            <div class="panel-body" style="padding-top:0px;">
-                <a class="produto"><h3 class="text-center" style="margin-top:0%; color:black;font-size:50px">40</h3></a>
+                <a href="/DashBoards/DashBoardGestorInstrumentador/4" class="produto"><h3 class="text-center" style="margin-top:0%; color:black;font-size:50px">@Model.Canceladas</h3></a>
             </div>
         </div>
     </div>
@@ -116,68 +126,92 @@
                         <th class="text-center">
                             AÇÃO
                         </th>
-
                     </tr>
                 </thead>
                 <tbody>
                     @foreach(var data in Model.Agendamentos){
-                    <tr>
-                        <td>
-                             @if (data.Empresa == "01")
-                             {
-                                 <span>INTERMEDIC</span>
-                             }
-                             else
-                             {
-                                 <span>DENUO</span>
-                             }
-                        </td>
-                        <td>
-                             @if (data.DataCirurgia == null)
-                             {
-                                 <span>NÃO DATA REGISTRADA</span>
-                             }
-                             else
-                             {
-                                 <span>@data.DataCirurgia.Value.ToString("dd/MM/yyyy HH:mm")</span>
-                             }
-                        </td>
-                        <td>
-                            @data.Instrumentador
-                        </td>
-                        <td>
-                            @data.Id
-                        </td>
-                        <td>
-                            @data.Procedimento
-                        </td>
-                        <td>
-                            @data.Hospital
-                        </td>
-                        <td>
-                            @data.Medico
-                        </td>
-                        <td>
-                            @if (data.Tipo == 2)
-                            {
-                               <span>ELETIVA</span>
-                            }
-                            else if (data.Tipo == 3)
-                            {
-                               <span>EMERGENCIA</span>
-                            }
-                            else
-                            {
-                               <span>URGENTE</span>
-                            }
-                        </td>
-                        <td style="background-color:green;">
+                        <tr>
+                            <td>
+                                 @if (data.Empresa == "01")
+                                 {
+                                     <span>INTERMEDIC</span>
+                                 }
+                                 else
+                                 {
+                                     <span>DENUO</span>
+                                 }
+                            </td>
+                            <td>
+                                 @if (data.DataCirurgia == null)
+                                 {
+                                     <span>NÃO DATA REGISTRADA</span>
+                                 }
+                                 else
+                                 {
+                                     <span>@data.DataCirurgia.Value.ToString("dd/MM/yyyy HH:mm")</span>
+                                 }
+                            </td>
+                            <td>
+                                @data.Instrumentador
+                            </td>
+                            <td>
+                                @data.Id
+                            </td>
+                            <td>
+                                @data.Procedimento
+                            </td>
+                            <td>
+                                @data.Hospital
+                            </td>
+                            <td>
+                                @data.Medico
+                            </td>
+                            <td>
+                                @if (data.Tipo == 2)
+                                {
+                                   <span>ELETIVA</span>
+                                }
+                                else if (data.Tipo == 3)
+                                {
+                                   <span>EMERGENCIA</span>
+                                }
+                                else
+                                {
+                                   <span>URGENTE</span>
+                                }
+                            </td>
+                            <td>
+                                @if(data.StatusInstrumentador == 0)
+                                {
+                                   <span>SEM INSTRUMENTADOR</span>
+                                }
+                                else if (data.StatusInstrumentador == 1)
+                                {
+                                   <span>AGUARDANDO INSTRUMENTADOR CHEGAR</span>
+                                }
+                                else if (data.StatusInstrumentador == 2)
+                                {
+                                   <span>REALIZANDO CIRURGIA</span>
+                                }
+                                else if(data.StatusInstrumentador == 3)
+                                {
+                                   <span>CONCLUIDA</span>
+                                }
+                                else
+                                {
+                                   <span>CANCELADA</span>
+                                }
+                            </td>
+                            <td>
+                                  <a class="details" data-id="@data.Id" data-empresa="@data.Empresa" data-toggle="modal" data-target="#details-modal"><i class="fa-solid fa-user-plus"></i></a>
 
-                        </td>
-                        <td>
-
-                        </td>
-                    </tr> 
+                                  <a id="Location" data-id="@data.Id"><i class="fa-solid fa-location-dot"></i></a>
+                                  
+                                  <a href="/Instrumentador/dadoscirurgia/@data.Id"><i class="fa-solid fa-clipboard-check"></i></a>
+                                  <i class="fa-solid fa-building-circle-exclamation"></i>
+                                  <i class="fa-solid fa-clipboard-list"></i>
+                            </td>
+                        </tr> 
                     }
                 </tbody>
             </table>
@@ -186,13 +220,54 @@
 </div>
 
 
+<div class="modal fade" id="details-modal" role="dialog" tabindex="-1" aria-labelledby="demo-details-modal" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <!--Modal header-->
+            <div class="modal-header">
+                <div class="col-md-1">
+                    <a class="closeItens" data-dismiss="modal"><i class="fa-regular fa-circle-xmark" style="color:red"></i></a>
+                </div>
+            </div>
+    
+            <!--Modal body-->
+            <div class="modal-body">
+                <div class="col-md-12">
+                    <input hidden id="AgendaId" name="AgendaId" />
+                    <label>Instrumentador</label>
+                    <select type="text" class="form-control" id="InstruAgenda" name="InstruAgenda">
+                        
+                         <option value=""></option>
+
+                    </select>
+                </div>
+                <br />
+                <div class="col-md-12">
+                    <label>Observação</label>
+                    <textarea type="text" class="form-control" id="ObsAgenda" name="ObsAgenda">
+                    </textarea>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <div class="col-md-12">
+                    <button class="btn btn-button btn-success float-end" onclick="Enviar(1)">
+                        OK
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 @section scripts {
     <script>
         $(function () {
 
             $("#searchInput").keyup(function () {
                 var rows = $("#demo-dt-addrow").find("tr").hide();
-                if (this.value.length) {
+                if (this.value.length) 
+                {
                     var data = this.value.split(" ");
                     $.each(data, function (i, v) {
                         rows.filter(":contains('" + v + "')").show();
@@ -202,5 +277,131 @@
 
         })
     </script>
+    <script>
+        $(function () {
+            $('a.details').on('click', function () 
+            {
 
+                var id = $(this).data('id')
+                var empresa = $(this).data('empresa')
+
+                $("#AgendaId").val(id);
+
+                var chamadaUrl = `/DashBoards/DashBoardGestorInstrumentador/0?handler=Instrumentador&&Empresa=${empresa}`
+                $.ajax({
+                    url: chamadaUrl,
+                    type: "GET",
+                    contentType: "application/json;",
+                    dataType: 'json',
+                    headers: 
+                    {
+                        "RequestVerificationToken": $('input:hidden[name="__RequestVerificationToken"]').val()
+                    },
+                    success: function (data) {
+
+                        $("#InstruAgenda>option").detach()
+                        data.forEach(function (instru) 
+                        {
+                            var linha = `<option value="${instru.id}">${instru.nome}</option>`;
+
+
+                            $("#InstruAgenda").append(linha);
+                        })
+
+                        setTimeout(function () {
+                            $('#details-modal').modal('show')
+                        }, 2000)
+                    }
+                })
+            })
+
+
+            $("a.closeItens").on('click', function () {
+
+                $('#details-modal').modal('hide')
+            })
+
+            Enviar = function (id)
+            {
+                var Idagenda = $("#AgendaId").val();
+                var Instrumentador = $("#InstruAgenda").val();
+                var Obs = $("#ObsAgenda").val();
+
+                var chamadaUrl = `/DashBoards/DashBoardGestorInstrumentador/0?handler=Enviar&&IdAgenda=${Idagenda}&&InstruAgenda=${Instrumentador}&&Observacao=${Obs}`
+                $.ajax({
+                    url: chamadaUrl,
+                    type: "POST",
+                    contentType: "application/json;",
+                    dataType: 'json',
+                    headers:
+                    {
+                        "RequestVerificationToken": $('input:hidden[name="__RequestVerificationToken"]').val()
+                    },
+                    success: function (data) {
+
+                        location.reload();
+
+                    }
+                })
+
+            }
+    })
+    </script>
+    <script>
+        $(document).ready(function () {
+            
+            $("#Location").on("click", function () {
+                var id = $(this).data('id')
+                $("#AgendaId").val(id);
+                if (navigator.geolocation) {
+                    navigator.geolocation.getCurrentPosition(showPosition, showError);
+                }
+                else { alert("Geolocation is not supported by this browser.") }
+            })
+
+            function showPosition(position) {
+
+                var id = $("#AgendaId").val();
+
+                var latlondata = position.coords.latitude + "," + position.coords.longitude;
+
+                var chamadaUrl = `/DashBoards/DashBoardGestorInstrumentador/0?handler=Comercar&&IdAgenda=${id}&&Longitude=${position.coords.longitude}&&Latitude=${position.coords.latitude}`
+                $.ajax({
+                    url: chamadaUrl,
+                    type: "POST",
+                    contentType: "application/json;",
+                    dataType: 'json',
+                    headers:
+                    {
+                        "RequestVerificationToken": $('input:hidden[name="__RequestVerificationToken"]').val()
+                    },
+                    success: function (data) {
+
+                        location.reload();
+
+                    }
+                })
+               
+            }
+            function showError(error) 
+            {
+                if (error.code == 1) 
+                {
+                    alert("User denied the request for Geolocation.")
+                }
+                else if (err.code == 2) 
+                {
+                    alert("Location information is unavailable.")
+                }
+                else if (err.code == 3) 
+                {
+                    alert("The request to get user location timed out.")
+                }
+                else 
+                {
+                    alert("An unknown error occurred.")
+                }
+            }
+        })
+    </script>
 }

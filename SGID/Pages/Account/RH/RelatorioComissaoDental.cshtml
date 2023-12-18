@@ -1,0 +1,148 @@
+﻿@page
+@model SGID.Pages.Account.RH.RelatorioComissaoDentalModel
+@{
+    ViewData["Title"] = "Relatorio SubDistribuidor Faturado Denuo";
+    if (User.IsInRole("Diretoria") && !User.IsInRole("Admin"))
+    {
+        Layout = "_LayoutDiretoria";
+    }
+    else
+    {
+        Layout = "_LayoutNovo";
+    }
+}
+
+@using (@Html.BeginForm(FormMethod.Post))
+{
+    <div class="row">
+        <input hidden id="Mes" name="Mes" value="@Model.MesAno" />
+        <input hidden id="Ano" name="Ano" value="@Model.Ano" />
+        <input hidden id="IdTime" name="IdTime" value="@Model.IdTime" />
+        <div class="form-group mx-sm-3 mb-2 col-lg-1">
+            <button type="submit" class="btn btn-secondary mb-2" asp-page-handler="Export"><i class="fa-solid fa-file-excel"></i> Exportar Excel</button>
+        </div>
+    </div>
+}
+
+
+<div class="panel">
+    <div class="panel-body">
+        <table id="demo-dt-addrow" class="table table-striped table-bordered" cellspacing="0" width="100%">
+            <thead>
+                <tr>
+                    <th colspan="8" class="text-center">
+                        Faturamento Venda Direta
+                    </th>
+                </tr>
+                <tr>
+                    <th class="text-center">
+                        Empresa
+                    </th>
+                    <th class="text-center">
+                        NF
+                    </th>
+                    <th class="text-center">
+                        CLIENTE
+                    </th>
+                    <th class="text-center">
+                        VALOR
+                    </th>
+                    <th class="text-center">
+                        COMISSÃO
+                    </th>
+                    <th class="text-center">
+                        VENDEDOR
+                    </th>
+                    <th class="text-center">
+                        GESTOR
+                    </th>
+                    <th class="text-center">
+                        LINHA
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var data in Model.Faturamento)
+                {
+                    <tr>
+                        <td>DENUO</td>
+                        <td>@Html.DisplayFor(model => data.D2_DOC)</td>
+                        <td>@Html.DisplayFor(model => data.D2_CLIENTE)</td>
+                        <td>@string.Format("{0:N2}", data.D2_TOTAL)</td>
+                        <td>@string.Format("{0:N2}", data.D2_TOTAL * (Model.Representante.User.Porcentagem / 100))</td>
+                        <td>@Html.DisplayFor(model => data.A3_LOGIN)</td>
+                        <td>@Html.DisplayFor(model => Model.Representante.User.Lider.ToUpper())</td>
+                        <td>DENTAL</td>
+                    </tr>
+                }
+                <tr>
+                    <td colspan="3">Total:</td>
+                    <td>@string.Format("{0:N2}", Model.Faturamento.Sum(x => x.D2_TOTAL))</td>
+                    <td>@string.Format("{0:N2}", (Model.Faturamento.Sum(x => x.D2_TOTAL) * (Model.Representante.User.Porcentagem / 100)))</td>
+                    <td colspan="3"></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<div class="panel">
+    <div class="panel-body">
+        <table id="demo-dt-addrow" class="table table-striped table-bordered" cellspacing="0" width="100%">
+            <thead>
+                <tr>
+                    <th colspan="8" class="text-center">
+                        Devolução Venda Direta
+                    </th>
+                </tr>
+                <tr>
+                    <th class="text-center">
+                        Empresa
+                    </th>
+                    <th class="text-center">
+                        NF
+                    </th>
+                    <th class="text-center">
+                        CLIENTE
+                    </th>
+                    <th class="text-center">
+                        VALOR
+                    </th>
+                    <th class="text-center">
+                        COMISSÃO
+                    </th>
+                    <th class="text-center">
+                        VENDEDOR
+                    </th>
+                    <th class="text-center">
+                        GESTOR
+                    </th>
+                    <th class="text-center">
+                        LINHA
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var data in Model.Devolucao)
+                {
+                    <tr>
+                        <td>DENUO</td>
+                        <td>@Html.DisplayFor(model => data.NumNF)</td>
+                        <td>@Html.DisplayFor(model => data.Cliente)</td>
+                        <td>@string.Format("{0:N2}", data.Total)</td>
+                        <td>@string.Format("{0:N2}", data.Total * (Model.Representante.User.Porcentagem / 100))</td>
+                        <td>@Html.DisplayFor(model => data.Login)</td>
+                        <td>@Html.DisplayFor(model => Model.Representante.User.Lider)</td>
+                        <td>DENTAL</td>
+                    </tr>
+                }
+                <tr>
+                    <td colspan="3">Total:</td>
+                    <td>@string.Format("{0:N2}", Model.Devolucao.Sum(x => x.Total))</td>
+                    <td>@string.Format("{0:N2}", Model.Devolucao.Sum(x => x.Total) * (Model.Representante.User.Porcentagem / 100))</td>
+                    <td colspan="3"></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+

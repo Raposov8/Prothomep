@@ -27,5 +27,7 @@
         public string Codigo { get; set; }
         public string Entrega { get; set; }
         public string Medico { get; set; }
+
+        public string Fornecedor { get; set; }
     }
 }

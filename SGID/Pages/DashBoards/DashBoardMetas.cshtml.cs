@@ -601,8 +601,6 @@ namespace SGID.Pages.DashBoards
 
                     DataFim = $"{Ano}1231";
 
-
-
                 }
                 else
                 {

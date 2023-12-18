@@ -82,7 +82,8 @@ namespace SGID.Pages.Account.RH
                 }),
                 Teto = usuario.Teto,
                 TipoVendedor = usuario.TipoVendedor,
-                Salario = usuario.Salario
+                Salario = usuario.Salario,
+                //Setor = usuario.TipoFaturamento
             };
 
             return Page();
@@ -120,7 +121,7 @@ namespace SGID.Pages.Account.RH
                 usuario.TipoVendedor = Editar.TipoVendedor;
                 usuario.Teto = Editar.Teto;
                 usuario.Salario = Editar.Salario;
-
+                //usuario.TipoFaturamento = Editar.Setor;
 
                 _db.Times.Update(usuario);
                 _db.SaveChanges();
@@ -201,6 +202,9 @@ namespace SGID.Pages.Account.RH
             public string TipoVendedor { get; set; }
             [Display(Name = "Salario")]
             public double Salario { get; set; } = 0.0;
+
+            //[Display(Name = "Setor Comercial")]
+            //public string Setor { get; set; }
             public IEnumerable<SelectListItem> RolesList { get; set; }
         }
     }

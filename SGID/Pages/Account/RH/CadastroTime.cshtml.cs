@@ -14,6 +14,7 @@ using System.ServiceModel.Channels;
 using System.ComponentModel.DataAnnotations;
 using SGID.Models.Denuo;
 using SGID.Models.Inter;
+using OPMEnexo;
 
 namespace SGID.Pages.Account.RH
 {
@@ -91,8 +92,9 @@ namespace SGID.Pages.Account.RH
                                 IdUsuario = usuario.Id,
                                 TipoVendedor = Input.TipoVendedor,
                                 Teto = Input.Teto,
-                                Salario = Input.Salario
-                                
+                                Salario = Input.Salario,
+                                TipoFaturamento = Input.Setor
+                               
                             };
 
                             _db.Times.Add(time);
@@ -174,7 +176,10 @@ namespace SGID.Pages.Account.RH
                             PorcentagemGenProd = Input.PorcentagemProd,
                             IdUsuario = usuariop.Id,
                             TipoVendedor = Input.TipoVendedor,
-                            Teto = Input.Teto
+                            Teto = Input.Teto,
+                            Salario = Input.Salario,
+                            TipoFaturamento = Input.Setor
+
                         };
 
                         _db.Times.Add(time);
@@ -232,6 +237,8 @@ namespace SGID.Pages.Account.RH
             public string TipoVendedor { get; set; }
             [Display(Name = "Salario")]
             public double Salario { get; set; } = 0.0;
+            [Display(Name = "Setor Comercial")]
+            public string Setor { get; set; }
         }
     }
 

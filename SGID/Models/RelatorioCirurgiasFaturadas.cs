@@ -34,5 +34,8 @@
 
         //RH Eduardo
         public string Municipio { get; set; }
+
+        //ADM Rogerio 
+        public string Fornecedor { get; set; }
     }
 }

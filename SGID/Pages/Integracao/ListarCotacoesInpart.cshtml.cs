@@ -27,5 +27,16 @@ namespace SGID.Pages.Integracao
 
             Cotacoes = new IntegracaoInPart().ListarCotacoes().Result;
         }
+
+
+        public JsonResult OnGetCotacao(int id)
+        {
+
+            Cotacoes = new IntegracaoInPart().ListarCotacoes().Result;
+
+            var cotacao = Cotacoes.FirstOrDefault(x=> x.idCotacao == id);
+
+            return new JsonResult(cotacao);
+        }
     }
 }

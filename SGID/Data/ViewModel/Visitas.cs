@@ -25,5 +25,11 @@ namespace SGID.Data.ViewModel
         public int Status { get; set; }
         public string? MotivoRej { get; set; }
         public int? IdRemarcar { get; set; }
+
+
+        //Localicação
+        public string? Latitude { get; set; }
+        public string? Longitude { get; set; }
+        public DateTime? DataFinalizada { get; set; }
     }
 }

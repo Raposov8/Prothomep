@@ -1,0 +1,262 @@
+﻿@page
+@model SGID.Pages.Relatorios.AdmVendas.CirurgiaAFaturarInterModel
+@{
+    ViewData["Title"] = "Relatorio Cirurgias a Faturar Inter";
+    if (User.IsInRole("Diretoria") && !User.IsInRole("Admin"))
+    {
+        Layout = "_LayoutDiretoria";
+    }
+    else
+    {
+        Layout = "_LayoutNovo";
+    }
+}
+
+
+@using (@Html.BeginForm(FormMethod.Post))
+{
+    <div class="form-group mx-sm-3 mb-2 col-lg-3">
+        <select type="text" class="form-control" id="Cliente" name="Cliente" placeholder="Cliente">
+            <option value="">Todos...</option>
+            @foreach (var data in Model.Clientes)
+            {
+                <option value="@data">@data</option>
+            }
+        </select>
+    </div>
+    <div class="form-group mx-sm-3 mb-2 col-lg-3">
+        <select type="text" class="form-control" id="Tempo" name="Tempo" placeholder="Tempo">
+            <option value="">Todos...</option>
+            <option value="ATE 30">ATE 30</option>
+            <option value="31 A 60">31 A 60</option>
+            <option value="61 A 90">61 A 90</option>
+            <option value="91 A 120">91 A 120</option>
+            <option value="MAIS DE 120">MAIS DE 120</option>
+        </select>
+    </div>
+
+    <div class="form-group mx-sm-3 mb-2 col-lg-1">
+        <button type="submit" class="btn btn-primary mb-2">Pesquisar</button>
+    </div>
+    <div class="form-group mx-sm-3 mb-2 col-lg-1">
+        <button type="submit" class="btn btn-secondary mb-2" asp-page-handler="Export"><i class="fa-solid fa-file-excel"></i> Exportar Excel</button>
+    </div>
+}
+
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div id="GraficoAberto" style="height:300px;"></div>
+    </div>
+    <div class="col-md-6">
+        <div id="GraficoAbertoRange" style="height:300px;"></div>
+    </div>
+</div>
+
+<div class="panel">
+    <div class="panel-body">
+        <table id="demo-dt-addrow" class="table table-striped table-bordered" cellspacing="0" width="100%">
+            <thead>
+                <tr>
+                    <th class="text-center">
+                        VENDEDOR
+                    </th>
+                    <th class="text-center">
+                        CLIENTE FAT
+                    </th>
+                    <th class="text-center">
+                        GRUPO CLIENTE
+                    </th>
+                    <th class="text-center">
+                        CLIENTE ENTREGA
+                    </th>
+                    <th class="text-center">
+                        MEDICO
+                    </th>
+                    <th class="text-center">
+                        CONVENIO
+                    </th>
+                    <th class="text-center">
+                        CIRURGIA
+                    </th>
+                    <th class="text-center">
+                        HOJE
+                    </th>
+                    <th class="text-center">
+                        DIAS
+                    </th>
+                    <th class="text-center">
+                        ANGING
+                    </th>
+                    <th class="text-center">
+                        PACIENTE
+                    </th>
+                    <th class="text-center">
+                        MATRIC
+                    </th>
+                    <th class="text-center">
+                        INPART
+                    </th>
+                    <th class="text-center">
+                        VALOR TOTAL
+                    </th>
+                    <th class="text-center">
+                        PVFATURA
+                    </th>
+                    <th class="text-center">
+                        STATUS
+                    </th>
+                    <th class="text-center">
+                        DATA ENV. RAH
+                    </th>
+                    <th class="text-center">
+                        DATA REC. RAH
+                    </th>
+                    <th class="text-center">
+                        DATA VALORIZADA
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var data in Model.Relatorio)
+                {
+                    <tr>
+                        <td>@Html.DisplayFor(model => data.Vendedor)</td>
+                        <td>@Html.DisplayFor(model => data.Cliente)</td>
+                        <td>@Html.DisplayFor(model => data.GrupoCliente)</td>
+                        <td>@Html.DisplayFor(model => data.ClienteEntrega)</td>
+                        <td>@Html.DisplayFor(model => data.Medico)</td>
+                        <td>@Html.DisplayFor(model => data.Convenio)</td>
+                        <td>@Html.DisplayFor(model => data.Cirurgia)</td>
+                        <td>@Html.DisplayFor(model => data.Hoje)</td>
+                        <td>@Html.DisplayFor(model => data.Dias)</td>
+                        <td>@Html.DisplayFor(model => data.Anging)</td>
+                        <td>@Html.DisplayFor(model => data.Paciente)</td>
+                        <td>@Html.DisplayFor(model => data.Matric)</td>
+                        <td>@Html.DisplayFor(model => data.INPART)</td>
+                        <td>@string.Format("{0:N2}", data.Valor)</td>
+                        <td>@Html.DisplayFor(model => data.PVFaturamento)</td>
+                        <td>@Html.DisplayFor(model => data.Status)</td>
+                        <td>@Html.DisplayFor(model => data.DataEnvRA)</td>
+                        <td>@Html.DisplayFor(model => data.DataRecRA)</td>
+                        <td>@Html.DisplayFor(model => data.DataValorizacao)</td>
+                    </tr>
+                }
+                <tr>
+                    <td colspan="13"></td>
+                    <td>Total:</td>
+                    <td>@string.Format("{0:N2}", Model.Total)</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@section scripts
+{
+    <script>
+        $("#Tempo").val("@Model.Anging").change();
+        $("#Cliente").val("@Model.Cliente").change();
+        //$("#NReduz option[value=val2]").attr('selected','selected');
+    </script>
+    <script>
+        $(document).ready(function () {
+
+            google.charts.load('current', { 'packages': ['corechart'] });
+            google.charts.setOnLoadCallback(drawChart2);
+
+            var formato = { minimumFractionDigits: 2, style: 'currency', currency: 'BRL' }
+
+            var grafico2 = [];
+
+            grafico2.push(['Tempo', 'Valor']);
+            function move(obj) {
+                let elem = document.getElementById("greenBar");
+                var width = obj;
+
+                elem.style.width = width + '%';
+                elem.style.backgroundColor = '#00e600';
+                elem.innerHTML = width * 1 + '%';
+            }
+
+            function drawChart2() 
+            {
+
+                var data = new google.visualization.arrayToDataTable(
+                    grafico2
+                );
+
+                var options = {
+                    title: 'Tempo em Aberto',
+                    legend: { position: "none" },
+                };
+
+
+                var chart = new google.visualization.PieChart(document.getElementById('GraficoAbertoRange'));
+
+                chart.draw(data, options);
+            }
+
+            var count = 0;
+
+            grafico2 = [];
+
+            grafico2.push(['Tempo', 'Valor']);
+
+            @foreach (var data in Model.Relatorio.GroupBy(x => x.Anging).Select(x => new { x.Key, Valor = x.Sum(c => c.Valor) }).ToList())
+            {
+
+                @:grafico2.push(['@data.Key', @data.Valor])
+
+            }
+
+                drawChart2()
+
+        })
+
+    </script>
+
+    <script>
+        $(document).ready(function () {
+
+            google.charts.load('current', { 'packages': ['corechart'] });
+            google.charts.setOnLoadCallback(drawChart);
+
+            var grafico = [];
+
+            grafico.push(['Clientes', 'Valor']);
+
+            function drawChart() {
+
+                var data = new google.visualization.arrayToDataTable(
+                    grafico
+                );
+
+                var options = {
+                    title: 'Valores em Aberto',
+                    legend: { position: "none" },
+
+                };
+
+
+                var chart = new google.visualization.PieChart(document.getElementById('GraficoAberto'));
+
+                chart.draw(data, options);
+            }
+
+
+            grafico = [];
+
+            grafico.push(['Clientes', 'Valor']);
+
+            @foreach (var data in Model.Draw1.OrderByDescending(x => x.Valor).ToList())
+            {
+
+                @:grafico.push(['@data.Cliente', @data.Valor])
+
+            }
+
+                drawChart()
+
+        })
+    </script>
+}

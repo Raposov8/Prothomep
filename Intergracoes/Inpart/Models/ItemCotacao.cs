@@ -21,7 +21,7 @@ namespace Intergracoes.Inpart.Models
          public int? idCotacaoItem { get; set; }
          public int? idFabricante { get; set; }
          public int? idCliente { get; set; }
-         public bool flConsignadoPermanente { get; set; }
+         public bool? flConsignadoPermanente { get; set; }
          public double? vlQuantidadeAutorizada { get; set; }
          public double? vlPrecoPrestador { get; set; }
          public int? iditemnegociacao { get; set; }

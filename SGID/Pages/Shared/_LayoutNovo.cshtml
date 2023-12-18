@@ -20,6 +20,7 @@
 
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 
+
     <link href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.6.1/fullcalendar.min.css" type="text/css" rel="stylesheet"/>
 </head>
 <body>
@@ -38,6 +39,12 @@
                             <i class="fa-solid fa-table-cells-large"></i> APPS
                         </a>
                         <ul class="dropdown-menu novo1" aria-labelledby="dropdowm04">
+                            @if (User.IsInRole("Admin") || User.IsInRole("GestorVenda"))
+                            {
+                                <li>
+                                    <a class="nav-link" href="/integracao/listarcotacoesinpart"><i class="fa-solid fa-clipboard-user"></i> INPART</a>
+                                </li>
+                            }
                             @if (User.IsInRole("Admin") || User.IsInRole("Diretoria"))
                             {
                                 <li>
@@ -118,12 +125,12 @@
                             {
                                 <li class="nav-item dropdown">
                                     <a class="nav-link align-items-center rounded dropdown-toggle" data-bs-toggle="collapse"
-                                       data-bs-target="#rh-collapse" aria-expanded="false">
+                                       data-bs-target="#GestorInstru-collapse" aria-expanded="false">
                                         <i class="fa-solid fa-user-nurse"></i> Instrumentadores
                                     </a>
-                                    <div class="collapse" id="rh-collapse">
+                                    <div class="collapse" id="GestorInstru-collapse">
                                         <ul class="list-unstyled fw-normal pb-1 small">
-                                            <li><a class="nav-link" href="/dashboards/DashBoardGestorInstrumentador/"> Dashboard </a></li>
+                                            <li><a class="nav-link" href="/dashboards/DashBoardGestorInstrumentador/0"> Dashboard </a></li>
                                         </ul>
                                     </div>
                                 </li>
@@ -222,7 +229,6 @@
                                         </ul>
                                     </div>
                                 </li>
-
                             }
                             @if (User.IsInRole("Admin") || User.IsInRole("Estoque") || User.IsInRole("Diretoria"))
                             {
@@ -291,17 +297,7 @@
                                         </ul>
                                     </div>
                                 </li>
-                                <li class="nav-item dropdown">
-                                    <a class="nav-link align-items-center rounded dropdown-toggle" data-bs-toggle="collapse"
-                                       data-bs-target="#cirurgias-collapse" aria-expanded="false">
-                                        <i class="fa-solid fa-heart-pulse"></i> Cirurgias
-                                    </a>
-                                    <div class="collapse" id="cirurgias-collapse">
-                                        <ul class="list-unstyled fw-normal pb-1 small">
-                                            <li><a class="nav-link" href="/cirurgias/agendamentos">Painel Cirurgias</a></li>
-                                        </ul>
-                                    </div>
-                                </li>
+                                
                             }
                             @if (User.IsInRole("Admin"))
                             {
@@ -482,14 +478,14 @@
                                                 </a>
                                                 <div class="collapse" id="admvendas1-collapse">
                                                     <ul class="list-unstyled fw-normal pb-1 small">
-                                                        <li><a class="nav-link teste" href="/relatorios/rh/CirurgiaAFaturar">Cirugias A Faturar Denuo</a></li>
-                                                        <li><a class="nav-link teste" href="/relatorios/rh/CirurgiaAFaturarInter">Cirugias A Faturar Inter</a></li>
+                                                        <li><a class="nav-link teste" href="/relatorios/admvendas/CirurgiaAFaturar">Cirurgias A Faturar Denuo</a></li>
+                                                    <li><a class="nav-link teste" href="/relatorios/admvendas/CirurgiaAFaturarInter">Cirurgias A Faturar Inter</a></li>
                                                         <li><a class="nav-link teste" href="/relatorios/rh/CirurgiasDevolucaoFat">Cirurgias Devolução Denuo</a></li>
                                                         <li><a class="nav-link teste" href="/relatorios/rh/CirurgiasDevolucaoFatInter">Cirurgias Devolução Inter</a></li>
                                                         <li><a class="nav-link teste" href="/relatorios/admvendas/CirurgiasFaturadas">Cirurgias Faturadas Denuo</a></li>
                                                         <li><a class="nav-link teste" href="/relatorios/admvendas/CirurgiasFaturadasInter">Cirurgias Faturadas Inter</a></li>
-                                                        <li><a class="nav-link teste" href="/relatorios/rh/CirurgiasValorizadas">Cirugias Valorizadas Denuo</a></li>
-                                                        <li><a class="nav-link teste" href="/relatorios/rh/CirurgiasValorizadasInterr">Cirugias Valorizadas Inter</a></li>
+                                                        <li><a class="nav-link teste" href="/relatorios/rh/CirurgiasValorizadas">Cirurgias Valorizadas Denuo</a></li>
+                                                        <li><a class="nav-link teste" href="/relatorios/rh/CirurgiasValorizadasInterr">Cirurgias Valorizadas Inter</a></li>
                                                         <li><a class="nav-link teste" href="/relatorios/admvendas/pedidostriagem">Pedidos Triagem Denuo</a></li>
                                                         <li><a class="nav-link teste" href="/relatorios/admvendas/pedidostriageminter">Pedidos Triagem Inter</a></li>
                                                         <li><a class="nav-link teste" href="/relatorios/admvendas/cadastromedicos/1">Cadastros Médicos Denuo</a></li>
@@ -782,14 +778,14 @@
                             @if (User.IsInRole("Admin"))
                             {
                                 <li class="dropdown-item" >
-                                    <a href="/account/register"><i class="fa-solid fa-user-plus" style="margin-right:5px;"></i>Cadastro Usuario</a>
+                                    <a class="nav-link" href="/account/register"><i class="fa-solid fa-user-plus" style="margin-right:5px;"></i>Cadastro Usuario</a>
                                 </li>
                                 <li>
                                     <a class="nav-link" href="/useradmin/listarusuarios/1"><i class="fa-solid fa-user"></i> Usuários</a>
                                 </li>
                             }
                             <li class="dropdown-item" >
-                                <a href="/account/LogOut"><i class="fa-solid fa-right-from-bracket" style="margin-right:5px;"></i>Logout</a>
+                                <a class="nav-link" href="/account/LogOut"><i class="fa-solid fa-right-from-bracket" style="margin-right:5px;"></i>Logout</a>
                             </li>
                         </ul>
                     </li>

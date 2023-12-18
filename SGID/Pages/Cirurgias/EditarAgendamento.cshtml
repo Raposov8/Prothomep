@@ -80,7 +80,9 @@
                     </div>
                     <div class="form-group col-md-2">
                         <label class="Label">Vendedor</label>
-                        <input type="text" class="form-control" id="Vendedor" name="Vendedor" value="@Model.Agendamento.Vendedor" oninput="this.value = this.value.toUpperCase()" />
+                        <div class="autocomplete col-md-12">
+                            <input type="text" class="form-control" id="Vendedor" name="Vendedor" value="@Model.Agendamento.Vendedor" oninput="this.value = this.value.toUpperCase()" />
+                        </div>
                     </div>
                 </div>
                 <div class="row">
@@ -1099,7 +1101,7 @@
             $('#CodCondPag').on('change', function () {
                 var codigo = $("#CodCondPag").val();
                 var empresa = $("#Empresa").val();
-                var chamadaUrl = `/cirurgias/novoagendamento/01?handler=Condicoes&&Codigo=${codigo}&&Empresa=${empresa}`;
+                var chamadaUrl = `/cirurgias/novoagendamento/01?handler=Condicoes&&Empresa=${empresa}&&Codigo=${codigo}`;
                 $.ajax({
                     url: chamadaUrl,
                     type: "GET",
@@ -1119,10 +1121,37 @@
                 })
             });
 
+            $('#CondPag').keydown(function (e) {
+                var key = e.which;
+                if (key == 13) {
+                    var codigo = $("#CondPag").val();
+                    var empresa = $("#Empresa").val();
+                    var chamadaUrl = `/cirurgias/novoagendamento/01?handler=Condicoes&&Empresa=${empresa}&&Codigo=${codigo}`;
+                    $.ajax({
+                        url: chamadaUrl,
+                        type: "GET",
+                        contentType: "application/json;",
+                        dataType: 'json',
+                        headers: {
+                            "RequestVerificationToken": $('input:hidden[name="__RequestVerificationToken"]').val()
+                        },
+                        success: function (data) {
+
+                            if (data != null) {
+                                $("#CodCondPag").val(data);
+                            } else {
+                                alert("Cond não existe")
+                            }
+                        }
+                    })
+                }
+            });
+
+
             $('#CodTabela').on('change', function () {
                 var codigo = $("#CodTabela").val();
                 var empresa = $("#Empresa").val();
-                var chamadaUrl = `/cirurgias/novoagendamento/01?handler=Tabela&&Codigo=${codigo}&&Empresa=${empresa}`;
+                var chamadaUrl = `/cirurgias/novoagendamento/01?handler=Tabela&&Empresa=${empresa}&&Codigo=${codigo}`;
                 $.ajax({
                     url: chamadaUrl,
                     type: "GET",
@@ -1140,7 +1169,34 @@
                         }
                     }
                 })
+            
             });
+
+        $('#Tabela').keydown(function (e) {
+            var key = e.which;
+            if (key == 13) {
+                var codigo = $("#Tabela").val();
+                var empresa = $("#Empresa").val();
+                    var chamadaUrl = `/cirurgias/novoagendamento/01?handler=Tabela&&Empresa=${empresa}&&Codigo=${codigo}`;
+                $.ajax({
+                    url: chamadaUrl,
+                    type: "GET",
+                    contentType: "application/json;",
+                    dataType: 'json',
+                    headers: {
+                        "RequestVerificationToken": $('input:hidden[name="__RequestVerificationToken"]').val()
+                    },
+                    success: function (data) {
+
+                        if (data != null) {
+                            $("#CodTabela").val(data);
+                        } else {
+                            alert("Tabela não existe")
+                        }
+                    }
+                })
+            }
+        });
 
             $('#CodHospital').on('change', function () {
                 var hospital = $("#CodHospital").val();
@@ -1256,6 +1312,9 @@
         var Convenio = [];
         var Clientes = [];
         var Produtos = [];
+        var Condicoes = [];
+        var Tabelas = [];
+        var Vendedores = [];
 
         @foreach (var data in Model.Novo.Clientes)
         {
@@ -1287,28 +1346,43 @@
             @:Produtos.push("@data")
         }
 
-        $(document).ready(function () {
+        @foreach (var data in Model.Novo.Condicoes)
+        {
+            @:Condicoes.push("@data")
+        }
 
-            function autocomplete(inp, arr) {
-                /*the autocomplete function takes two arguments,
-                the text field element and an array of possible autocompleted values:*/
-                var currentFocus;
-                /*execute a function when someone writes in the text field:*/
-                inp.addEventListener("input", function (e) {
-                    var a, b, i, val = this.value;
-                    /*close any already open lists of autocompleted values*/
-                    closeAllLists();
-                    if (!val) { return false; }
-                    currentFocus = -1;
-                    /*create a DIV element that will contain the items (values):*/
-                    a = document.createElement("DIV");
-                    a.setAttribute("id", this.id + "autocomplete-list");
-                    a.setAttribute("class", "autocomplete-items form-control");
-                    /*append the DIV element as a child of the autocomplete container:*/
-                    this.parentNode.appendChild(a);
-                    /*for each item in the array...*/
-                    for (i = 0; i < arr.length; i++) {
-                        /*check if the item starts with the same letters as the text field value:*/
+        @foreach (var data in Model.Novo.Tabelas)
+        {
+            @:Tabelas.push("@data")
+        }
+
+        @foreach (var data in Model.Novo.Vendedores)
+        {
+            @:Vendedores.push("@data")
+        }
+
+            $(document).ready(function () {
+
+                function autocomplete(inp, arr) {
+                    /*the autocomplete function takes two arguments,
+                    the text field element and an array of possible autocompleted values:*/
+                    var currentFocus;
+                    /*execute a function when someone writes in the text field:*/
+                    inp.addEventListener("input", function (e) {
+                        var a, b, i, val = this.value;
+                        /*close any already open lists of autocompleted values*/
+                        closeAllLists();
+                        if (!val) { return false; }
+                        currentFocus = -1;
+                        /*create a DIV element that will contain the items (values):*/
+                        a = document.createElement("DIV");
+                        a.setAttribute("id", this.id + "autocomplete-list");
+                        a.setAttribute("class", "autocomplete-items form-control");
+                        /*append the DIV element as a child of the autocomplete container:*/
+                        this.parentNode.appendChild(a);
+                        /*for each item in the array...*/
+                        for (i = 0; i < arr.length; i++) {
+                            /*check if the item starts with the same letters as the text field value:*/
                             if (arr[i].toUpperCase().includes(val.toUpperCase())) {
                                 /*create a DIV element for each matching element:*/
                                 b = document.createElement("DIV");
@@ -1316,84 +1390,127 @@
                                 /*b.innerHTML = "<strong>" + arr[i].substr(0, val.length) + "</strong>";
                                 b.innerHTML += arr[i].substr(val.length);*/
                                 b.innerHTML = arr[i];
-                            /*insert a input field that will hold the current array item's value:*/
-                            b.innerHTML += "<input type='hidden' value='" + arr[i] + "'>";
-                            /*execute a function when someone clicks on the item value (DIV element):*/
-                            b.addEventListener("click", function (e) {
-                                /*insert the value for the autocomplete text field:*/
-                                inp.value = this.getElementsByTagName("input")[0].value;
-                                /*close the list of autocompleted values,
-                                (or any other open lists of autocompleted values:*/
-                                closeAllLists();
-                            });
-                            a.appendChild(b);
+                                /*insert a input field that will hold the current array item's value:*/
+                                b.innerHTML += "<input type='hidden' value='" + arr[i] + "'>";
+                                /*execute a function when someone clicks on the item value (DIV element):*/
+                                b.addEventListener("click", function (e) {
+                                    /*insert the value for the autocomplete text field:*/
+                                    inp.value = this.getElementsByTagName("input")[0].value;
+                                    /*close the list of autocompleted values,
+                                    (or any other open lists of autocompleted values:*/
+                                    closeAllLists();
+                                });
+                                a.appendChild(b);
+                            }
+                        }
+                    });
+                    /*execute a function presses a key on the keyboard:*/
+                    inp.addEventListener("keydown", function (e) {
+                        var x = document.getElementById(this.id + "autocomplete-list");
+                        if (x) x = x.getElementsByTagName("div");
+                        if (e.keyCode == 40) {
+                            /*If the arrow DOWN key is pressed,
+                            increase the currentFocus variable:*/
+                            currentFocus++;
+                            /*and and make the current item more visible:*/
+                            addActive(x);
+                        } else if (e.keyCode == 38) { //up
+                            /*If the arrow UP key is pressed,
+                            decrease the currentFocus variable:*/
+                            currentFocus--;
+                            /*and and make the current item more visible:*/
+                            addActive(x);
+                        } else if (e.keyCode == 13) {
+                            /*If the ENTER key is pressed, prevent the form from being submitted,*/
+                            e.preventDefault();
+                            if (currentFocus > -1) {
+                                /*and simulate a click on the "active" item:*/
+                                if (x) x[currentFocus].click();
+                            }
+                        }
+                    });
+                    function addActive(x) {
+                        /*a function to classify an item as "active":*/
+                        if (!x) return false;
+                        /*start by removing the "active" class on all items:*/
+                        removeActive(x);
+                        if (currentFocus >= x.length) currentFocus = 0;
+                        if (currentFocus < 0) currentFocus = (x.length - 1);
+                        /*add class "autocomplete-active":*/
+                        x[currentFocus].classList.add("autocomplete-active");
+                    }
+                    function removeActive(x) {
+                        /*a function to remove the "active" class from all autocomplete items:*/
+                        for (var i = 0; i < x.length; i++) {
+                            x[i].classList.remove("autocomplete-active");
                         }
                     }
-                });
-                /*execute a function presses a key on the keyboard:*/
-                inp.addEventListener("keydown", function (e) {
-                    var x = document.getElementById(this.id + "autocomplete-list");
-                    if (x) x = x.getElementsByTagName("div");
-                    if (e.keyCode == 40) {
-                        /*If the arrow DOWN key is pressed,
-                        increase the currentFocus variable:*/
-                        currentFocus++;
-                        /*and and make the current item more visible:*/
-                        addActive(x);
-                    } else if (e.keyCode == 38) { //up
-                        /*If the arrow UP key is pressed,
-                        decrease the currentFocus variable:*/
-                        currentFocus--;
-                        /*and and make the current item more visible:*/
-                        addActive(x);
-                    } else if (e.keyCode == 13) {
-                        /*If the ENTER key is pressed, prevent the form from being submitted,*/
-                        e.preventDefault();
-                        if (currentFocus > -1) {
-                            /*and simulate a click on the "active" item:*/
-                            if (x) x[currentFocus].click();
+                    function closeAllLists(elmnt) {
+                        /*close all autocomplete lists in the document,
+                        except the one passed as an argument:*/
+                        var x = document.getElementsByClassName("autocomplete-items");
+                        for (var i = 0; i < x.length; i++) {
+                            if (elmnt != x[i] && elmnt != inp) {
+                                x[i].parentNode.removeChild(x[i]);
+                            }
                         }
                     }
-                });
-                function addActive(x) {
-                    /*a function to classify an item as "active":*/
-                    if (!x) return false;
-                    /*start by removing the "active" class on all items:*/
-                    removeActive(x);
-                    if (currentFocus >= x.length) currentFocus = 0;
-                    if (currentFocus < 0) currentFocus = (x.length - 1);
-                    /*add class "autocomplete-active":*/
-                    x[currentFocus].classList.add("autocomplete-active");
+                    /*execute a function when someone clicks in the document:*/
+                    document.addEventListener("click", function (e) {
+                        closeAllLists(e.target);
+                    });
                 }
-                function removeActive(x) {
-                    /*a function to remove the "active" class from all autocomplete items:*/
-                    for (var i = 0; i < x.length; i++) {
-                        x[i].classList.remove("autocomplete-active");
-                    }
-                }
-                function closeAllLists(elmnt) {
-                    /*close all autocomplete lists in the document,
-                    except the one passed as an argument:*/
-                    var x = document.getElementsByClassName("autocomplete-items");
-                    for (var i = 0; i < x.length; i++) {
-                        if (elmnt != x[i] && elmnt != inp) {
-                            x[i].parentNode.removeChild(x[i]);
-                        }
-                    }
-                }
-                /*execute a function when someone clicks in the document:*/
-                document.addEventListener("click", function (e) {
-                    closeAllLists(e.target);
-                });
-            }
 
-            autocomplete(document.getElementById("CodProd"), Produtos);
-            autocomplete(document.getElementById("CodPatri"), Patri);
-            autocomplete(document.getElementById("Medico"), Medicos);
-            autocomplete(document.getElementById("Hospital"), Hospital);
-            autocomplete(document.getElementById("Convenio"), Convenio);
-            autocomplete(document.getElementById("Cliente"),Clientes);
-        })
+                autocomplete(document.getElementById("CodProd"), Produtos);
+                autocomplete(document.getElementById("CodPatri"), Patri);
+                autocomplete(document.getElementById("Medico"), Medicos);
+                autocomplete(document.getElementById("Hospital"), Hospital);
+                autocomplete(document.getElementById("Convenio"), Convenio);
+                autocomplete(document.getElementById("Cliente"), Clientes);
+                autocomplete(document.getElementById("CondPag"), Condicoes);
+                autocomplete(document.getElementById("Tabela"), Tabelas);
+                autocomplete(document.getElementById("Vendedor"), Vendedores);
+
+
+                $('#Medico').keydown(function (e) {
+                    var key = e.which;
+                    if (key == 13) {
+                        var codigo = $("#Medico").val();
+
+                        console.log(codigo)
+
+                        var teste = Medicos.find(function (lon) {
+                            return lon == codigo
+                        });
+
+                        console.log(teste)
+
+                        if (teste != undefined) {
+
+                            var empresa = $("#Empresa").val();
+                            var chamadaUrl = `/cirurgias/novoagendamento/01?handler=Vendedor&&Codigo=${codigo}&&Empresa=${empresa}`;
+                            $.ajax({
+                                url: chamadaUrl,
+                                type: "GET",
+                                contentType: "application/json;",
+                                dataType: 'json',
+                                headers: {
+                                    "RequestVerificationToken": $('input:hidden[name="__RequestVerificationToken"]').val()
+                                },
+                                success: function (data) {
+
+                                    $("#Vendedor").val(data);
+                                }
+                            })
+                        }
+                        else {
+                            $("#Medico").val("");
+                            alert("Médico está sem CRM Favor contatar Adm Vendas")
+
+                        }
+                    }
+                });
+            })
     </script>
 
 }

@@ -93,35 +93,39 @@
                     <th class="text-center">
                         Especialidade
                     </th>
+                    <th class="text-center">
+                        Fornecedor
+                    </th>
                 </tr>
             </thead>
             <tbody>
                 @foreach (var data in Model.Relatorio)
                 {
                     <tr>
-                        <td>@Html.DisplayFor(model=> data.Filial)</td>
-                        <td>@Html.DisplayFor(model=> data.Pedido)</td>
-                        <td>@Html.DisplayFor(model=> data.Unumage)</td>
-                        <td>@Html.DisplayFor(model=> data.XDtcir) </td>
-                        <td>@Html.DisplayFor(model=> data.Nf)</td>
-                        <td>@Html.DisplayFor(model=> data.Serie)</td>
-                        <td>@Html.DisplayFor(model=> data.Emissao)</td>
+                        <td>@Html.DisplayFor(model => data.Filial)</td>
+                        <td>@Html.DisplayFor(model => data.Pedido)</td>
+                        <td>@Html.DisplayFor(model => data.Unumage)</td>
+                        <td>@Html.DisplayFor(model => data.XDtcir) </td>
+                        <td>@Html.DisplayFor(model => data.Nf)</td>
+                        <td>@Html.DisplayFor(model => data.Serie)</td>
+                        <td>@Html.DisplayFor(model => data.Emissao)</td>
                         <td>@string.Format("{0:N2}", data.Total)</td>
                         <td>@string.Format("{0:N2}", data.Descon)</td>
-                        <td>@Html.DisplayFor(model=> data.Clifor)</td>
-                        <td>@Html.DisplayFor(model=> data.Loja)</td>
-                        <td>@Html.DisplayFor(model=> data.Nome)</td>
-                        <td>@Html.DisplayFor(model=> data.A3Nome)</td>
-                        <td>@Html.DisplayFor(model=> data.XNMMed)</td>
-                        <td>@Html.DisplayFor(model=> data.XNMPac)</td>
-                        <td>@Html.DisplayFor(model=> data.XNMPla)</td>
-                        <td>@Html.DisplayFor(model=> data.Linha)</td>
+                        <td>@Html.DisplayFor(model => data.Clifor)</td>
+                        <td>@Html.DisplayFor(model => data.Loja)</td>
+                        <td>@Html.DisplayFor(model => data.Nome)</td>
+                        <td>@Html.DisplayFor(model => data.A3Nome)</td>
+                        <td>@Html.DisplayFor(model => data.XNMMed)</td>
+                        <td>@Html.DisplayFor(model => data.XNMPac)</td>
+                        <td>@Html.DisplayFor(model => data.XNMPla)</td>
+                        <td>@Html.DisplayFor(model => data.Linha)</td>
+                        <td>@Html.DisplayFor(model => data.Fornecedor)</td>
                     </tr>
                 }
                 <tr>
                     <td colspan="6"></td>
                     <td>TOTAL: </td>
-                    <td>@string.Format("{0:N2}", Model.Relatorio.Sum(x=>x.Total))</td>
+                    <td>@string.Format("{0:N2}", Model.Relatorio.Sum(x => x.Total))</td>
                 </tr>
             </tbody>
         </table>

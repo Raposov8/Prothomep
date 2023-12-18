@@ -94,7 +94,10 @@ namespace SGID.Pages.Cirurgias
                     Intrumentador = ProtheusInter.Pah010s.Where(x => x.DELET != "*" && x.PahMsblql != "1").OrderBy(x => x.PahNome).Select(x => x.PahNome).ToList(),
                     Hospital = ProtheusInter.Sa1010s.Where(x => x.DELET != "*" && x.A1Clinter == "H" && x.A1Msblql != "1").OrderBy(x => x.A1Nome).Select(x => x.A1Nreduz).ToList(),
                     Procedimentos = SGID.Procedimentos.Where(x => x.Bloqueado == 0 && x.Empresa == "01").ToList(),
-                    Patrimonios = ProtheusInter.Pa1010s.Where(x => x.DELET != "*" && x.Pa1Msblql != "1").Select(x => x.Pa1Despat).Distinct().ToList()
+                    Patrimonios = ProtheusInter.Pa1010s.Where(x => x.DELET != "*" && x.Pa1Msblql != "1").Select(x => x.Pa1Despat).Distinct().ToList(),
+                    Tabelas = ProtheusInter.Da0010s.Where(x => x.DELET != "*").Select(x => x.Da0Descri).ToList(),
+                    Condicoes = ProtheusInter.Se4010s.Where(x => x.DELET != "*" && x.E4Msblql != "1").Select(x => x.E4Descri).ToList(),
+                    Vendedores = ProtheusInter.Sa3010s.Where(x => x.DELET != "*" && x.A3Msblql != "1").Select(x => x.A3Nreduz).ToList(),
                 };
 
                 SearchProduto = ProtheusInter.Sb1010s.Where(x => x.DELET != "*" && x.B1Msblql != "1").Select(x => x.B1Desc).Distinct().ToList();
@@ -178,7 +181,10 @@ namespace SGID.Pages.Cirurgias
                                    && c.DELET != "*" && a.DELET != "*"
                                    && ((int)(object)c.PacDtcir >= 20200701 || c.PacDtcir == null)
                                    select PA10.Pa1Despat
-                                   ).Distinct().ToList()
+                                   ).Distinct().ToList(),
+                    Tabelas = ProtheusDenuo.Da0010s.Where(x => x.DELET != "*").Select(x => x.Da0Descri).ToList(),
+                    Condicoes = ProtheusDenuo.Se4010s.Where(x => x.DELET != "*" && x.E4Msblql != "1").Select(x => x.E4Descri).ToList(),
+                    Vendedores = ProtheusInter.Sa3010s.Where(x => x.DELET != "*" && x.A3Msblql != "1").Select(x => x.A3Nreduz).ToList(),
                 };
 
                 SearchProduto = ProtheusDenuo.Sb1010s.Where(x => x.DELET != "*" && x.B1Msblql != "1").Select(x => x.B1Desc).Distinct().ToList();
@@ -284,6 +290,17 @@ namespace SGID.Pages.Cirurgias
 
                 agendamento.UsuarioAlterar = User.Identity.Name.Split("@")[0].ToUpper();
 
+                if (Empresa == "01")
+                {
+                    //Intermedic
+                    agendamento.VendedorLogin = ProtheusInter.Sa3010s.FirstOrDefault(x => x.A3Nreduz == Vendedor).A3Xlogin;
+                }
+                else
+                {
+                    //Denuo
+                    agendamento.VendedorLogin = ProtheusDenuo.Sa3010s.FirstOrDefault(x => x.A3Nreduz == Vendedor).A3Xlogin;
+                }
+
                 SGID.Agendamentos.Update(agendamento);
                 SGID.SaveChanges();
 
@@ -294,7 +311,6 @@ namespace SGID.Pages.Cirurgias
                     SGID.ObsAgendamentos.Add(Observacao);
                     SGID.SaveChanges();
                 }
-
 
                 var AgendamentoProduto = SGID.ProdutosAgendamentos.Where(x => x.AgendamentoId == agendamento.Id).ToList();
 

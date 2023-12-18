@@ -13,5 +13,8 @@ namespace SGID.Models.Cirurgias
         public List<string> Hospital { get; set; } = new List<string>();
         public List<Procedimento> Procedimentos { get; set; } = new List<Procedimento>();
         public List<string> Patrimonios { get; set; } = new List<string>();
+        public List<string> Condicoes { get; set; } = new List<string>();
+        public List<string> Tabelas { get; set; } = new List<string>();
+        public List<string> Vendedores { get; set; } = new List<string>();
     }
 }

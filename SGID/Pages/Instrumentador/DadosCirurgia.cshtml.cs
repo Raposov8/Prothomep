@@ -46,6 +46,14 @@ namespace SGID.Pages.Instrumentador
                 AgendamentoId = Id
             };
 
+            var agendamento = SGID.Agendamentos.FirstOrDefault(x => x.Id == Id);
+
+            agendamento.StatusInstrumentador = 3;
+
+            SGID.DadosCirurgias.Add(dados);
+            SGID.Agendamentos.Update(agendamento);
+            SGID.SaveChanges();
+
             string Pasta = $"{_WEB.WebRootPath}/AnexosDados";
 
             if (!Directory.Exists(Pasta))
@@ -141,6 +149,7 @@ namespace SGID.Pages.Instrumentador
                 SGID.AnexosDadosCirurgias.Add(anexoAgenda);
                 SGID.SaveChanges();
             }
+
             #endregion
 
             return LocalRedirect("/instrumentador/dashboardinstrumentador");

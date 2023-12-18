@@ -333,7 +333,6 @@ namespace SGID.Pages.Relatorios.RH
                         D2Cod = x.Key.D2Cod,
                         B1Desc = x.Key.B1Desc,
                         Municipio = x.Key.A1Mun
-
                     }).OrderBy(x => x.A3Nome).ToList();
                 }
                 

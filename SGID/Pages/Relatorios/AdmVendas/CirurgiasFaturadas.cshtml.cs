@@ -76,7 +76,8 @@ namespace SGID.Pages.Relatorios.AdmVendas
                                      NomPla = SC50.C5XNmpla,
                                      SC50.C5Utpoper,
                                      SA30.A3Xdescun,
-                                     Entrega = SC50.C5Nomclie
+                                     Entrega = SC50.C5Nomclie,
+                                     Fornece = SB10.B1Fabric
                                  });
 
 
@@ -100,7 +101,8 @@ namespace SGID.Pages.Relatorios.AdmVendas
                         x.NomPla,
                         x.C5Utpoper,
                         x.A3Xdescun,
-                        x.Entrega
+                        x.Entrega,
+                        x.Fornece
                     }).Select(x => new RelatorioCirurgiasFaturadas
                     {
                         Filial = x.Key.Filial,
@@ -125,8 +127,8 @@ namespace SGID.Pages.Relatorios.AdmVendas
                         XNMPla = x.Key.NomPla,
                         Utpoper = x.Key.C5Utpoper,
                         Linha = x.Key.A3Xdescun,
-                        Entrega = x.Key.Entrega
-
+                        Entrega = x.Key.Entrega,
+                        Fornecedor = x.Key.Fornece
                     }).OrderBy(x => x.A3Nome).ToList();
 
 
@@ -164,7 +166,8 @@ namespace SGID.Pages.Relatorios.AdmVendas
                                          SD10.D1Datori,
                                          SD10.D1Emissao,
                                          SA30.A3Xdescun,
-                                         SC50.C5Nomclie
+                                         SC50.C5Nomclie,
+                                         SB10.B1Fabric
                                      }
                                  ).ToList();
 
@@ -213,7 +216,8 @@ namespace SGID.Pages.Relatorios.AdmVendas
                                         D1Seriori = x.D1Seriori,
                                         D1Datori = x.D1Datori,
                                         Linha = x.A3Xdescun,
-                                        Entrega = x.C5Nomclie
+                                        Entrega = x.C5Nomclie,
+                                        Fornecedor = x.B1Fabric
                                     });
                                 }
                             });
@@ -271,7 +275,8 @@ namespace SGID.Pages.Relatorios.AdmVendas
                                  NomPla = SC50.C5XNmpla,
                                  SC50.C5Utpoper,
                                  SA30.A3Xdescun,
-                                 Entrega = SC50.C5Nomclie
+                                 Entrega = SC50.C5Nomclie,
+                                 Fornece = SB10.B1Fabric
                              });
 
 
@@ -295,7 +300,8 @@ namespace SGID.Pages.Relatorios.AdmVendas
                     x.NomPla,
                     x.C5Utpoper,
                     x.A3Xdescun,
-                    x.Entrega
+                    x.Entrega,
+                    x.Fornece
                 }).Select(x => new RelatorioCirurgiasFaturadas
                 {
                     Filial = x.Key.Filial,
@@ -320,8 +326,8 @@ namespace SGID.Pages.Relatorios.AdmVendas
                     XNMPla = x.Key.NomPla,
                     Utpoper = x.Key.C5Utpoper,
                     Linha = x.Key.A3Xdescun,
-                    Entrega = x.Key.Entrega
-
+                    Entrega = x.Key.Entrega,
+                    Fornecedor = x.Key.Fornece
                 }).OrderBy(x => x.A3Nome).ToList();
                 #endregion
 
@@ -359,7 +365,8 @@ namespace SGID.Pages.Relatorios.AdmVendas
                                  SD10.D1Datori,
                                  SD10.D1Emissao,
                                  SA30.A3Xdescun,
-                                 SC50.C5Nomclie
+                                 SC50.C5Nomclie,
+                                 SB10.B1Fabric
                              }
                          )
                          .GroupBy(x => new
@@ -378,7 +385,8 @@ namespace SGID.Pages.Relatorios.AdmVendas
                              x.D1Seriori,
                              x.D1Datori,
                              x.A3Xdescun,
-                             x.C5Nomclie
+                             x.C5Nomclie,
+                             x.B1Fabric
                          });
 
                 Relatorio2 = teste.Select(x => new RelatorioDevolucaoFat
@@ -401,7 +409,8 @@ namespace SGID.Pages.Relatorios.AdmVendas
                     D1Seriori = x.Key.D1Seriori,
                     D1Datori = x.Key.D1Datori,
                     Linha = x.Key.A3Xdescun,
-                    Entrega = x.Key.C5Nomclie
+                    Entrega = x.Key.C5Nomclie,
+                    Fornecedor = x.Key.B1Fabric
                 }).ToList();
 
 
@@ -430,6 +439,7 @@ namespace SGID.Pages.Relatorios.AdmVendas
                 sheet.Cells[1, 16].Value = "Convênio";
                 sheet.Cells[1, 17].Value = "Especialidade";
                 sheet.Cells[1, 18].Value = "Cliente Entrega";
+                sheet.Cells[1, 19].Value = "Fornecedor";
 
                 int i = 2;
 
@@ -453,6 +463,7 @@ namespace SGID.Pages.Relatorios.AdmVendas
                     sheet.Cells[i, 16].Value = Pedido.XNMPla;
                     sheet.Cells[i, 17].Value = Pedido.Linha;
                     sheet.Cells[i, 18].Value = Pedido.Entrega;
+                    sheet.Cells[i, 19].Value = Pedido.Fornecedor;
 
                     i++;
                 });
@@ -483,6 +494,7 @@ namespace SGID.Pages.Relatorios.AdmVendas
                 sheet.Cells[i, 17].Value = "D1_DATORI";
                 sheet.Cells[i, 18].Value = "Especialidade";
                 sheet.Cells[i, 19].Value = "Cliente Entrega";
+                sheet.Cells[i, 20].Value = "Fornecedor";
 
                 i++;
 
@@ -507,6 +519,7 @@ namespace SGID.Pages.Relatorios.AdmVendas
                     sheet.Cells[i, 17].Value = Pedido.D1Datori;
                     sheet.Cells[i, 18].Value = Pedido.Linha;
                     sheet.Cells[i, 19].Value = Pedido.Entrega;
+                    sheet.Cells[i, 20].Value = Pedido.Fornecedor;
 
 
                     i++;

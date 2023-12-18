@@ -50,7 +50,10 @@ namespace SGID.Pages.Cirurgias
                     Intrumentador = ProtheusInter.Pah010s.Where(x => x.DELET != "*" && x.PahMsblql != "1").OrderBy(x => x.PahNome).Select(x => x.PahNome).ToList(),
                     Hospital = ProtheusInter.Sa1010s.Where(x => x.DELET != "*" && x.A1Clinter == "H" && x.A1Msblql != "1").OrderBy(x => x.A1Nome).Select(x => x.A1Nreduz).ToList(),
                     Procedimentos = SGID.Procedimentos.Where(x => x.Bloqueado == 0 && x.Empresa == "01").ToList(),
-                    Patrimonios = ProtheusInter.Pa1010s.Where(x=> x.DELET != "*" && x.Pa1Msblql != "1").Select(x=> x.Pa1Despat).Distinct().ToList()
+                    Patrimonios = ProtheusInter.Pa1010s.Where(x=> x.DELET != "*" && x.Pa1Msblql != "1").Select(x=> x.Pa1Despat).Distinct().ToList(),
+                    Tabelas = ProtheusInter.Da0010s.Where(x => x.DELET != "*").Select(x => x.Da0Descri).ToList(),
+                    Condicoes = ProtheusInter.Se4010s.Where(x => x.DELET != "*" && x.E4Msblql != "1").Select(x => x.E4Descri).ToList(),
+                    Vendedores = ProtheusInter.Sa3010s.Where(x => x.DELET != "*" && x.A3Msblql != "1").Select(x => x.A3Nreduz).ToList(),
                 };
 
                 SearchProduto = ProtheusInter.Sb1010s.Where(x => x.DELET != "*" && x.B1Msblql != "1").Select(x => x.B1Desc).Distinct().ToList();
@@ -75,7 +78,10 @@ namespace SGID.Pages.Cirurgias
                                    && c.DELET != "*" && a.DELET != "*"
                                    && ((int)(object)c.PacDtcir >= 20200701 || c.PacDtcir == null)
                                    select PA10.Pa1Despat
-                                   ).Distinct().ToList()
+                                   ).Distinct().ToList(),
+                    Tabelas = ProtheusDenuo.Da0010s.Where(x => x.DELET != "*").Select(x=> x.Da0Descri).ToList(),
+                    Condicoes = ProtheusDenuo.Se4010s.Where(x => x.DELET != "*" && x.E4Msblql != "1").Select(x=> x.E4Descri).ToList(),
+                    Vendedores = ProtheusInter.Sa3010s.Where(x => x.DELET != "*" && x.A3Msblql != "1").Select(x => x.A3Nreduz).ToList(),
                 };
 
                 SearchProduto = ProtheusDenuo.Sb1010s.Where(x => x.DELET != "*" && x.B1Msblql != "1").Select(x => x.B1Desc).Distinct().ToList();
@@ -124,18 +130,14 @@ namespace SGID.Pages.Cirurgias
                 {
                     
                     //Intermedic
-                    var Codigo = ProtheusInter.Sa1010s.FirstOrDefault(x => x.A1Nome == Medico && x.A1Clinter == "M" && x.DELET != "*" && x.A1Msblql != "1")?.A1Vend;
-
-                    agendamento.VendedorLogin = ProtheusInter.Sa3010s.FirstOrDefault(x => x.A3Cod == Codigo).A3Xlogin;
+                    agendamento.VendedorLogin = ProtheusInter.Sa3010s.FirstOrDefault(x => x.A3Nreduz == Vendedor).A3Xlogin;
 
                     
                 }
                 else
                 {
                     //Denuo
-                    var Codigo = ProtheusDenuo.Sa1010s.FirstOrDefault(x => x.A1Nome == Medico && x.A1Clinter == "M" && x.DELET != "*" && x.A1Msblql != "1")?.A1Vend;
-
-                    agendamento.VendedorLogin = ProtheusDenuo.Sa3010s.FirstOrDefault(x => x.A3Cod == Codigo).A3Xlogin;
+                    agendamento.VendedorLogin = ProtheusDenuo.Sa3010s.FirstOrDefault(x => x.A3Nreduz == Vendedor).A3Xlogin;
 
                 }
 
@@ -620,21 +622,28 @@ namespace SGID.Pages.Cirurgias
 
             return new JsonResult("");
         }
-        public JsonResult OnGetCondicoes(string Codigo,string Empresa)
+        public JsonResult OnGetCondicoes(string Empresa, string Codigo)
         {
             try
             {
+
+                var teste = this.Request.QueryString.ToString().Substring(39).Replace("%20", " ").Replace("%C3%83", "Ã");
+
                 if (Empresa == "01")
                 {
                     //Intermedic
-                    var Cliente = ProtheusInter.Se4010s.FirstOrDefault(x => x.DELET != "*" && x.E4Msblql != "1" && x.E4Codigo == Codigo).E4Descri;
+                    var Cliente = ProtheusInter.Se4010s.FirstOrDefault(x => x.DELET != "*" && x.E4Msblql != "1" && x.E4Codigo == Codigo)?.E4Descri;
+
+                    Cliente ??= ProtheusInter.Se4010s.FirstOrDefault(x => x.DELET != "*" && x.E4Msblql != "1" && x.E4Descri == teste)?.E4Codigo;
 
                     return new JsonResult(Cliente);
                 }
                 else
                 {
                     //Denuo
-                    var Cliente = ProtheusDenuo.Se4010s.FirstOrDefault(x => x.DELET != "*" && x.E4Msblql != "1" && x.E4Codigo == Codigo).E4Descri;
+                    var Cliente = ProtheusDenuo.Se4010s.FirstOrDefault(x => x.DELET != "*" && x.E4Msblql != "1" && x.E4Codigo == Codigo)?.E4Descri;
+
+                    Cliente ??= ProtheusDenuo.Se4010s.FirstOrDefault(x => x.DELET != "*" && x.E4Msblql != "1" && x.E4Descri == teste)?.E4Codigo;
 
                     return new JsonResult(Cliente);
                 }
@@ -655,7 +664,9 @@ namespace SGID.Pages.Cirurgias
                 {
                     //Intermedic
                     //&& (int)(object)x.Da0Datate >= data
-                    var Cliente = ProtheusInter.Da0010s.FirstOrDefault(x => x.Da0Codtab == Codigo && x.DELET != "*" ).Da0Descri;
+                    var Cliente = ProtheusInter.Da0010s.FirstOrDefault(x => x.Da0Codtab == Codigo && x.DELET != "*" )?.Da0Descri;
+
+                    Cliente ??= ProtheusInter.Da0010s.FirstOrDefault(x => x.Da0Descri == Codigo && x.DELET != "*")?.Da0Codtab;
 
                     return new JsonResult(Cliente);
                 }
@@ -663,7 +674,9 @@ namespace SGID.Pages.Cirurgias
                 {
                     //Denuo
                     //&& (int)(object)x.Da0Datate >= data
-                    var Cliente = ProtheusDenuo.Da0010s.FirstOrDefault(x => x.Da0Codtab == Codigo && x.DELET != "*").Da0Descri;
+                    var Cliente = ProtheusDenuo.Da0010s.FirstOrDefault(x => x.Da0Codtab == Codigo && x.DELET != "*")?.Da0Descri;
+
+                    Cliente ??= ProtheusDenuo.Da0010s.FirstOrDefault(x => x.Da0Descri == Codigo && x.DELET != "*")?.Da0Codtab;
 
                     return new JsonResult(Cliente);
                 }

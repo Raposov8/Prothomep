@@ -237,7 +237,8 @@ namespace SGID.Pages.Account.RH
                                       TipoCliente = SA10.A1Clinter,
                                       CodigoCliente = SA10.A1Xgrinte,
                                       Login = SA30.A3Xlogin,
-                                      Gestor = SA30.A3Xlogsup
+                                      Gestor = SA30.A3Xlogsup,
+                                      Empresa = "INTERMEDIC"
                                   }).ToList();
                 #endregion
 
@@ -414,7 +415,8 @@ namespace SGID.Pages.Account.RH
                                       TipoCliente = SA10.A1Clinter,
                                       CodigoCliente = SA10.A1Xgrinte,
                                       Login = SA30.A3Xlogin,
-                                      Gestor = SA30.A3Xlogsup
+                                      Gestor = SA30.A3Xlogsup,
+                                      Empresa = "DENUO"
                                   }).ToList();
 
                 #endregion
@@ -720,7 +722,8 @@ namespace SGID.Pages.Account.RH
                                       TipoCliente = SA10.A1Clinter,
                                       CodigoCliente = SA10.A1Xgrinte,
                                       Login = SA30.A3Xlogin,
-                                      Gestor = SA30.A3Xlogsup
+                                      Gestor = SA30.A3Xlogsup,
+                                      Empresa = "INTERMEDIC"
                                   }).ToList();
                 #endregion
 
@@ -897,7 +900,8 @@ namespace SGID.Pages.Account.RH
                                       TipoCliente = SA10.A1Clinter,
                                       CodigoCliente = SA10.A1Xgrinte,
                                       Login = SA30.A3Xlogin,
-                                      Gestor = SA30.A3Xlogsup
+                                      Gestor = SA30.A3Xlogsup,
+                                      Empresa = "DENUO"
                                   }).ToList();
 
                 #endregion

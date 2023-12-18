@@ -57,7 +57,9 @@
                         </div>
                         <div class="form-group col-sm-3 col-md-3">
                             <label class="Label">Condições de Pagto.</label>
-                            <input type="text" class="form-control" id="CondPag" name="CondPag" oninput="this.value = this.value.toUpperCase()" required />
+                            <div class="autocomplete col-md-12">
+                                <input type="text" class="form-control" id="CondPag" name="CondPag" oninput="this.value = this.value.toUpperCase()" required />
+                            </div>
                         </div>
                         <div class="form-group col-sm-2 col-md-2">
                             <label class="Label">Codigo Tabela</label>
@@ -65,7 +67,9 @@
                         </div>
                         <div class="form-group col-sm-4 col-md-4">
                             <label class="Label">Tabela (R$)</label>
-                            <input class="form-control" id="Tabela" name="Tabela" oninput="this.value = this.value.toUpperCase()" required />
+                            <div class="autocomplete col-md-12">
+                                <input class="form-control" id="Tabela" name="Tabela" oninput="this.value = this.value.toUpperCase()" required />
+                            </div>
                         </div>
                         <div class="form-group col-sm-4 col-md-4">
                             <label class="Label">Médico</label>
@@ -76,7 +80,9 @@
                         </div>
                         <div class="form-group col-sm-2 col-md-2">
                             <label class="Label">Vendedor</label>
-                            <input type="text" class="form-control" id="Vendedor" name="Vendedor" oninput="this.value = this.value.toUpperCase()" required />
+                            <div class="autocomplete col-md-12">
+                                <input type="text" class="form-control" id="Vendedor" name="Vendedor" oninput="this.value = this.value.toUpperCase()" required />
+                            </div>
                         </div>
                     </div>
                     <div class="row">
@@ -786,7 +792,7 @@
         $('#CodCondPag').on('change',function(){
             var codigo =  $("#CodCondPag").val();
             var empresa = $("#Empresa").val();
-            var chamadaUrl = `/cirurgias/novoagendamento/01?handler=Condicoes&&Codigo=${codigo}&&Empresa=${empresa}`;
+                var chamadaUrl = `/cirurgias/novoagendamento/01?handler=Condicoes&&Empresa=${empresa}&&Codigo=${codigo}`;
             $.ajax({
                 url: chamadaUrl,
                 type: "GET",
@@ -806,10 +812,38 @@
             })
         });
 
+        $('#CondPag').keydown(function (e) {
+            var key = e.which;
+            if (key == 13) 
+            {
+                var codigo = $("#CondPag").val();
+                var empresa = $("#Empresa").val();
+                    var chamadaUrl = `/cirurgias/novoagendamento/01?handler=Condicoes&&Empresa=${empresa}&&Codigo=${codigo}`;
+                $.ajax({
+                    url: chamadaUrl,
+                    type: "GET",
+                    contentType: "application/json;",
+                    dataType: 'json',
+                    headers: {
+                        "RequestVerificationToken": $('input:hidden[name="__RequestVerificationToken"]').val()
+                    },
+                    success: function (data) {
+
+                        if (data != null) {
+                            $("#CodCondPag").val(data);
+                        } else {
+                            alert("Cond não existe")
+                        }
+                    }
+                })
+            }
+        });
+            
+
         $('#CodTabela').on('change',function(){
             var codigo =  $("#CodTabela").val();
             var empresa = $("#Empresa").val();
-            var chamadaUrl = `/cirurgias/novoagendamento/01?handler=Tabela&&Codigo=${codigo}&&Empresa=${empresa}`;
+                var chamadaUrl = `/cirurgias/novoagendamento/01?handler=Tabela&&Empresa=${empresa}&&Codigo=${codigo}`;
             $.ajax({
                 url: chamadaUrl,
                 type: "GET",
@@ -827,6 +861,33 @@
                     }
                 }
             })
+            
+        });
+
+        $('#Tabela').keydown(function (e) {
+                var key = e.which;
+                if (key == 13) {
+                    var codigo = $("#Tabela").val();
+                    var empresa = $("#Empresa").val();
+                    var chamadaUrl = `/cirurgias/novoagendamento/01?handler=Tabela&&Empresa=${empresa}&&Codigo=${codigo}`;
+                    $.ajax({
+                        url: chamadaUrl,
+                        type: "GET",
+                        contentType: "application/json;",
+                        dataType: 'json',
+                        headers: {
+                            "RequestVerificationToken": $('input:hidden[name="__RequestVerificationToken"]').val()
+                        },
+                        success: function (data) {
+
+                            if (data != null) {
+                                $("#CodTabela").val(data);
+                            } else {
+                                alert("Tabela não existe")
+                            }
+                        }
+                    })
+                }
         });
 
         $('#CodHospital').on('change', function () {
@@ -1029,6 +1090,9 @@
     var Convenio = [];
     var Clientes = [];
     var Produtos = [];
+    var Condicoes = [];
+    var Tabelas = [];
+    var Vendedores = [];
 
     @foreach (var data in Model.Novo.Clientes)
     {
@@ -1058,6 +1122,21 @@
     @foreach(var data in Model.SearchProduto)
     {
         @:Produtos.push("@data")
+    }
+
+    @foreach (var data in Model.Novo.Condicoes)
+    {
+        @:Condicoes.push("@data")
+    }
+
+    @foreach (var data in Model.Novo.Tabelas)
+    {
+        @:Tabelas.push("@data")
+    }
+
+    @foreach (var data in Model.Novo.Vendedores)
+    {
+        @:Vendedores.push("@data")
     }
 
     $(document).ready(function()
@@ -1168,6 +1247,10 @@
         autocomplete(document.getElementById("Hospital"), Hospital);
         autocomplete(document.getElementById("Convenio"),Convenio);
         autocomplete(document.getElementById("Cliente"),Clientes);
+        autocomplete(document.getElementById("CondPag"), Condicoes);
+        autocomplete(document.getElementById("Tabela"), Tabelas);
+        autocomplete(document.getElementById("Vendedor"), Vendedores);
+                
 
         $('#Medico').keydown(function (e) {
             var key = e.which;

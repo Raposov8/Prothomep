@@ -54,6 +54,16 @@
                                 @Html.TextBoxFor(model => model.Input.PorcentagemSegun, "{0:N2}", new { @class = "form-control", @placehold= "Porcentagem" })
                             </div>
                         </div>
+                        <div class="form-group col-md-4">
+                            @Html.LabelFor(model => model.Input.Setor, new { @class = "col-md-12 control-label" })
+                            <div class="col-md-12">
+                                <select class="form-control" id="Input.Setor" name="Input.Setor">
+                                    <option value="C">Comercial</option>
+                                    <option value="S">SubDistribuidor</option>
+                                    <option value="L">Licitações</option>
+                                </select>
+                            </div>
+                        </div>
                     </div>
                     <div class="row">
                         <div class="form-group col-md-4">

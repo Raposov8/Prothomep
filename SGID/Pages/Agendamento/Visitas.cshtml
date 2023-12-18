@@ -294,6 +294,13 @@
                             <div class="col-md-3">
                                 <div style="color:#00b050" id="Salvar">
                                     <button class="btn btn-button btn-success float-end" style="font-size:12px;" type="submit">
+                                        <i class="fa-solid fa-thumbs-up"></i> Editar Visita
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div style="color:#00b050" id="Finalizar">
+                                    <button class="btn btn-button btn-success float-end" style="font-size:12px;" type="submit">
                                         <i class="fa-solid fa-thumbs-up"></i> Finalizar Visita
                                     </button>
                                 </div>
@@ -591,6 +598,16 @@
                                 
                             }
 
+                            if(data.latitude != 0)
+                            {
+                                $('#Finalizar').css('display', 'none')
+                            }
+                            else 
+                            {
+                                $('#Finalizar').css('display', 'block')
+
+                            }
+
                             $('#loading-modal').modal('hide');
 
                             setTimeout(function () {
@@ -636,6 +653,52 @@
                     }
                 })
             })
+
+            $("#Finalizar").on('click', function () {
+
+                if (navigator.geolocation) {
+                    navigator.geolocation.getCurrentPosition(showPosition, showError);
+                }
+                else { alert("Geolocation is not supported by this browser.") }
+            })
+
+
+            function showPosition(position) {
+
+                var Id = $("#id").val();
+
+                var latlondata = position.coords.latitude + "," + position.coords.longitude;
+
+                var chamadaUrl = `/agendamento/visitas?handler=Finalizar&&id=${Id}&&Latitude=${position.coords.latitude}&&Longitude=${position.coords.longitude}`;
+                $.ajax({
+                    url: chamadaUrl,
+                    type: "POST",
+                    contentType: "application/json;",
+                    dataType: 'json',
+                    headers: {
+                        "RequestVerificationToken": $('input:hidden[name="__RequestVerificationToken"]').val()
+                    },
+                    success: function () {
+
+                        location.reload();
+                    }
+                })
+
+            }
+            function showError(error) {
+                if (error.code == 1) {
+                    alert("User denied the request for Geolocation.")
+                }
+                else if (err.code == 2) {
+                    alert("Location information is unavailable.")
+                }
+                else if (err.code == 3) {
+                    alert("The request to get user location timed out.")
+                }
+                else {
+                    alert("An unknown error occurred.")
+                }
+            }
 
             $("#Proxima").on('click', function () {
 
@@ -824,8 +887,6 @@
                             $(`#${i.name}Error`).html(`${i.name} precisa ser preenchido`)
                          }
 
-                         
-                         
                      }
                  })
 

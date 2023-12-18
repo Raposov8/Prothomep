@@ -74,10 +74,9 @@ namespace SGID.Pages.Account.RH
                          && (((int)(object)SD20.D2Cf >= 5102 && (int)(object)SD20.D2Cf <= 5114) || ((int)(object)SD20.D2Cf >= 6102 && (int)(object)SD20.D2Cf <= 6114) ||
                          ((int)(object)SD20.D2Cf >= 7102 && (int)(object)SD20.D2Cf <= 7114) || CF.Contains((int)(object)SD20.D2Cf)) && ((int)(object)SD20.D2Emissao >= (int)(object)DataInicio && (int)(object)SD20.D2Emissao <= (int)(object)DataFim)
                          && SD20.D2Quant != 0 && SC50.C5Utpoper == "F" && SA10.A1Clinter != "S" && SA10.A1Cgc != "04715053000140" && SA10.A1Cgc != "04715053000220" && SA10.A1Cgc != "01390500000140" && (int)(object)SD20.D2Emissao >= 20200701
-                         select new RelatorioFaturamentoTime
+                         select new
                          {
                              NF = SD20.D2Doc,
-                             Cliente = SA10.A1Nome,
                              Total = SD20.D2Total,
                              Data = SD20.D2Emissao,
                              Login = SA30.A3Xlogin,
@@ -90,7 +89,6 @@ namespace SGID.Pages.Account.RH
             var resultadoInter = query.GroupBy(x => new
             {
                 x.NF,
-                x.Cliente,
                 x.Data,
                 x.Login,
                 x.Gestor,
@@ -99,9 +97,7 @@ namespace SGID.Pages.Account.RH
                 x.Codigo
             }).Select(x => new RelatorioFaturamentoTime
             {
-                Empresa = "INTERMEDIC",
                 NF = x.Key.NF,
-                Cliente = x.Key.Cliente,
                 Total = x.Sum(c => c.Total),
                 Data = x.Key.Data,
                 Login = x.Key.Login.Trim(),
@@ -177,7 +173,6 @@ namespace SGID.Pages.Account.RH
 
             DevolucaoInter = teste.Select(x => new RelatorioDevolucaoFat
             {
-                Empresa = "INTERMEDIC",
                 Filial = x.Key.D1Filial,
                 Clifor = x.Key.D1Fornece,
                 Loja = x.Key.D1Loja,
@@ -245,8 +240,7 @@ namespace SGID.Pages.Account.RH
                                   TipoCliente = SA10.A1Clinter,
                                   CodigoCliente = SA10.A1Xgrinte,
                                   Login = SA30.A3Xlogin,
-                                  Gestor = SA30.A3Xlogsup,
-                                  Empresa = "INTERMEDIC"
+                                  Gestor = SA30.A3Xlogsup
                               }).ToList();
             #endregion
 
@@ -266,10 +260,9 @@ namespace SGID.Pages.Account.RH
                              && ((int)(object)SD20.D2Cf >= 5102 && (int)(object)SD20.D2Cf <= 5114 || (int)(object)SD20.D2Cf >= 6102 && (int)(object)SD20.D2Cf <= 6114 ||
                              (int)(object)SD20.D2Cf >= 7102 && (int)(object)SD20.D2Cf <= 7114 || CF.Contains((int)(object)SD20.D2Cf)) && ((int)(object)SD20.D2Emissao >= (int)(object)DataInicio && (int)(object)SD20.D2Emissao <= (int)(object)DataFim)
                              && SD20.D2Quant != 0 && SC50.C5Utpoper == "F" && SC50.C5Xtipopv != "D" && SA10.A1Clinter != "S" && SA10.A1Cgc != "04715053000140" && SA10.A1Cgc != "04715053000220" && SA10.A1Cgc != "01390500000140" && (int)(object)SD20.D2Emissao >= 20200801
-                          select new RelatorioFaturamentoTime
+                          select new
                           {
                               NF = SD20.D2Doc,
-                              Cliente = SA10.A1Nome,
                               Total = SD20.D2Total,
                               Login = SA30.A3Xlogin,
                               Data = SD20.D2Emissao,
@@ -281,7 +274,6 @@ namespace SGID.Pages.Account.RH
             var resultadoDenuo = query2.GroupBy(x => new
             {
                 x.NF,
-                x.Cliente,
                 x.Login,
                 x.Gestor,
                 x.Data,
@@ -289,9 +281,7 @@ namespace SGID.Pages.Account.RH
                 x.Codigo
             }).Select(x => new RelatorioFaturamentoTime
             {
-                Empresa = "DENUO",
                 NF = x.Key.NF,
-                Cliente = x.Key.Cliente,
                 Total = x.Sum(c => c.Total),
                 Login = x.Key.Login.Trim(),
                 Data = x.Key.Data,
@@ -362,7 +352,6 @@ namespace SGID.Pages.Account.RH
 
             DevolucaoDenuo = teste2.Select(x => new RelatorioDevolucaoFat
             {
-                Empresa = "DENUO",
                 Filial = x.Key.D1Filial,
                 Clifor = x.Key.D1Fornece,
                 Loja = x.Key.D1Loja,
@@ -389,11 +378,11 @@ namespace SGID.Pages.Account.RH
 
             #region Baixa
 
-            var BaixaDenuo = (from SE50 in ProtheusInter.Se5010s
-                              join SE10 in ProtheusInter.Se1010s on new { PRE = SE50.E5Prefixo, Num = SE50.E5Numero, Par = SE50.E5Parcela, Tipo = SE50.E5Tipo, Cliente = SE50.E5Cliente, Loja = SE50.E5Loja }
+            var BaixaDenuo = (from SE50 in ProtheusDenuo.Se5010s
+                              join SE10 in ProtheusDenuo.Se1010s on new { PRE = SE50.E5Prefixo, Num = SE50.E5Numero, Par = SE50.E5Parcela, Tipo = SE50.E5Tipo, Cliente = SE50.E5Cliente, Loja = SE50.E5Loja }
                               equals new { PRE = SE10.E1Prefixo, Num = SE10.E1Num, Par = SE10.E1Parcela, Tipo = SE10.E1Tipo, Cliente = SE10.E1Cliente, Loja = SE10.E1Loja }
-                              join SA10 in ProtheusInter.Sa1010s on SE50.E5Cliente equals SA10.A1Cod
-                              join SA30 in ProtheusInter.Sa3010s on SA10.A1Vend equals SA30.A3Cod
+                              join SA10 in ProtheusDenuo.Sa1010s on SE50.E5Cliente equals SA10.A1Cod
+                              join SA30 in ProtheusDenuo.Sa3010s on SA10.A1Vend equals SA30.A3Cod
                               where SE50.DELET != "*" && SE10.DELET != "*" && SE50.E5Recpag == "R"
                               && (SE50.E5Tipodoc == "VL" || SE50.E5Tipodoc == "RA")
                               && (SE50.E5Naturez == "111001" || SE50.E5Naturez == "111004" || SE50.E5Naturez == "111006")
@@ -428,10 +417,8 @@ namespace SGID.Pages.Account.RH
                                   TipoCliente = SA10.A1Clinter,
                                   CodigoCliente = SA10.A1Xgrinte,
                                   Login = SA30.A3Xlogin,
-                                  Gestor = SA30.A3Xlogsup,
-                                  Empresa = "DENUO"
-                              }
-                              ).ToList();
+                                  Gestor = SA30.A3Xlogsup
+                              }).ToList();
 
             #endregion
 
