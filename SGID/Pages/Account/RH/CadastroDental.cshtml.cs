@@ -52,7 +52,9 @@ namespace SGID.Pages.Account.RH
                             Meta = Input.Meta,
                             Porcentagem = Input.Porcentagem,
                             PorcentagemSeg = Input.PorcentagemSegun,
-                            IdUsuario = ""
+                            IdUsuario = "",
+                            Salario = Input.Salario,
+                            Garantia = Input.Garantia
                         };
 
                         _db.TimeDentals.Add(time);
@@ -83,6 +85,8 @@ namespace SGID.Pages.Account.RH
             public double Teto { get; set; } = 0.0;
             [Display(Name = "Salario")]
             public double Salario { get; set; } = 0.0;
+            [Display(Name = "Garantia")]
+            public double Garantia { get; set; } = 0.0;
         }
     }
 }

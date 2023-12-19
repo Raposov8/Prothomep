@@ -66,6 +66,12 @@
                         @Html.TextBoxFor(model => model.Editar.Salario, "{0:N2}", new { @class = "form-control", @placehold= "Salario" })
                     </div>
                 </div>
+                <div class="form-group col-md-4">
+                    @Html.LabelFor(model => model.Editar.Garantia, new { @class = "col-md-12 control-label" })
+                    <div class="col-md-12">
+                        @Html.TextBoxFor(model => model.Editar.Garantia, "{0:N2}", new { @class = "form-control", @placehold = "Salario" })
+                    </div>
+                </div>
             </div>
 
 

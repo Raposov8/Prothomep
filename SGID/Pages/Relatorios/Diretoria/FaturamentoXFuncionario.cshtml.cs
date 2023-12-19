@@ -273,8 +273,19 @@ namespace SGID.Pages.Relatorios.Diretoria
                         time.Meta = time.User.Meta / 12;
                         time.MetaAtingimento = ((time.Faturado / (time.User.Meta / 12)) * 100);
                         time.Salario = time.User.Salario;
+                        time.Garantia = time.User.Garantia;
 
-                        time.Total = time.Salario + time.Comissao;
+                        time.Total = time.Salario + time.Garantia + time.Comissao;
+
+                        if (time.Teto > 0 && time.Total > time.Teto)
+                        {
+                            time.Paga = time.Teto;
+                        }
+                        else
+                        {
+                            time.Paga = time.Total;
+                        }
+
                         UsuariosDental.Add(time);
                     }
                     else
@@ -287,6 +298,16 @@ namespace SGID.Pages.Relatorios.Diretoria
                         time.Salario = time.User.Salario;
 
                         time.Total = time.Salario + time.Comissao;
+
+                        if (time.Teto > 0 && time.Total > time.Teto)
+                        {
+                            time.Paga = time.Teto;
+                        }
+                        else
+                        {
+                            time.Paga = time.Total;
+                        }
+
                         UsuariosDental.Add(time);
                     }
                 });
@@ -436,48 +457,101 @@ namespace SGID.Pages.Relatorios.Diretoria
 
                 #region Baixa
 
-                var BaixaInter = (from SE50 in ProtheusInter.Se5010s
-                                  join SE10 in ProtheusInter.Se1010s on new { PRE = SE50.E5Prefixo, Num = SE50.E5Numero, Par = SE50.E5Parcela, Tipo = SE50.E5Tipo, Cliente = SE50.E5Cliente, Loja = SE50.E5Loja }
-                                  equals new { PRE = SE10.E1Prefixo, Num = SE10.E1Num, Par = SE10.E1Parcela, Tipo = SE10.E1Tipo, Cliente = SE10.E1Cliente, Loja = SE10.E1Loja }
-                                  join SA10 in ProtheusInter.Sa1010s on SE50.E5Cliente equals SA10.A1Cod
-                                  join SC50 in ProtheusInter.Sc5010s on SE10.E1Pedido equals SC50.C5Num
-                                  join SA30 in ProtheusInter.Sa3010s on SC50.C5Vend1 equals SA30.A3Cod
-                                  where SE50.DELET != "*" && SE10.DELET != "*" && SE50.E5Recpag == "R"
-                                  && (SE50.E5Tipodoc == "VL" || SE50.E5Tipodoc == "RA")
-                                  && (SE50.E5Naturez == "111001" || SE50.E5Naturez == "111004" || SE50.E5Naturez == "111006")
-                                  && (SE50.E5Banco == "001" || SE50.E5Banco == "237" || SE50.E5Banco == "341")
-                                  && (int)(object)SE50.E5Data >= (int)(object)DataInicio
-                                  && (int)(object)SE50.E5Data <= (int)(object)DataFim
-                                  select new RelatorioAreceberBaixa
-                                  {
-                                      Prefixo = SE50.E5Prefixo,
-                                      Numero = SE50.E5Numero,
-                                      Parcela = SE50.E5Parcela,
-                                      TP = SE50.E5Tipo,
-                                      CliFor = SE50.E5Clifor,
-                                      NomeFor = SA10.A1Nome,
-                                      Naturez = SE50.E5Naturez,
-                                      Vencimento = SE10.E1Vencto,
-                                      Historico = SE50.E5Histor,
-                                      DataBaixa = SE50.E5Data,
-                                      ValorOrig = SE10.E1Valor,
-                                      JurMulta = SE50.E5Vljuros + SE50.E5Vlmulta,
-                                      Correcao = SE50.E5Vlcorre,
-                                      Descon = SE50.E5Vldesco,
-                                      Abatimento = 0,
-                                      Imposto = 0,
-                                      ValorAcess = 0,
-                                      TotalBaixado = SE50.E5Valor,
-                                      Banco = SE50.E5Banco,
-                                      DtDigi = SE50.E5Dtdigit,
-                                      Mot = SE50.E5Motbx,
-                                      Orig = SE50.E5Filorig,
-                                      Vendedor = SA30.A3Nome,
-                                      TipoCliente = SA10.A1Clinter,
-                                      CodigoCliente = SA10.A1Xgrinte,
-                                      Login = SA30.A3Xlogin,
-                                      Gestor = SA30.A3Xlogsup
-                                  }).ToList();
+                #region BaixaSub
+
+                var BaixaSubInter = (from SE50 in ProtheusInter.Se5010s
+                                     join SE10 in ProtheusInter.Se1010s on new { PRE = SE50.E5Prefixo, Num = SE50.E5Numero, Par = SE50.E5Parcela, Tipo = SE50.E5Tipo, Cliente = SE50.E5Cliente, Loja = SE50.E5Loja }
+                                     equals new { PRE = SE10.E1Prefixo, Num = SE10.E1Num, Par = SE10.E1Parcela, Tipo = SE10.E1Tipo, Cliente = SE10.E1Cliente, Loja = SE10.E1Loja }
+                                     join SA10 in ProtheusInter.Sa1010s on SE50.E5Cliente equals SA10.A1Cod
+                                     join SC50 in ProtheusInter.Sc5010s on SE10.E1Pedido equals SC50.C5Num into sr
+                                     from c in sr.DefaultIfEmpty()
+                                     where SE50.DELET != "*" && SE10.DELET != "*" && SE50.E5Recpag == "R"
+                                     && (SE50.E5Tipodoc == "VL" || SE50.E5Tipodoc == "RA")
+                                     && (SE50.E5Naturez == "111001" || SE50.E5Naturez == "111004" || SE50.E5Naturez == "111006")
+                                     && (SE50.E5Banco == "001" || SE50.E5Banco == "237" || SE50.E5Banco == "341")
+                                     && (int)(object)SE50.E5Data >= (int)(object)DataInicio
+                                     && (int)(object)SE50.E5Data <= (int)(object)DataFim
+                                     && SA10.A1Clinter == "S"
+                                     select new RelatorioAreceberBaixa
+                                     {
+                                         Prefixo = SE50.E5Prefixo,
+                                         Numero = SE50.E5Numero,
+                                         Parcela = SE50.E5Parcela,
+                                         TP = SE50.E5Tipo,
+                                         CliFor = SE50.E5Clifor,
+                                         NomeFor = SA10.A1Nome,
+                                         Naturez = SE50.E5Naturez,
+                                         Vencimento = SE10.E1Vencto,
+                                         Historico = SE50.E5Histor,
+                                         DataBaixa = SE50.E5Data,
+                                         ValorOrig = SE10.E1Valor,
+                                         JurMulta = SE50.E5Vljuros + SE50.E5Vlmulta,
+                                         Correcao = SE50.E5Vlcorre,
+                                         Descon = SE50.E5Vldesco,
+                                         Abatimento = 0,
+                                         Imposto = 0,
+                                         ValorAcess = 0,
+                                         TotalBaixado = SE50.E5Valor,
+                                         Banco = SE50.E5Banco,
+                                         DtDigi = SE50.E5Dtdigit,
+                                         Mot = SE50.E5Motbx,
+                                         Orig = SE50.E5Filorig,
+                                         Vendedor = c.C5Nomvend,
+                                         TipoCliente = SA10.A1Clinter,
+                                         Empresa = "INTERMEDIC"
+                                     }
+                             ).ToList();
+                #endregion
+
+                #region BaixaLicitacoes
+
+                var BaixaLicitacoesInter = (from SE50 in ProtheusInter.Se5010s
+                                            join SE10 in ProtheusInter.Se1010s on new { PRE = SE50.E5Prefixo, Num = SE50.E5Numero, Par = SE50.E5Parcela, Tipo = SE50.E5Tipo, Cliente = SE50.E5Cliente, Loja = SE50.E5Loja }
+                                            equals new { PRE = SE10.E1Prefixo, Num = SE10.E1Num, Par = SE10.E1Parcela, Tipo = SE10.E1Tipo, Cliente = SE10.E1Cliente, Loja = SE10.E1Loja }
+                                            join SA10 in ProtheusInter.Sa1010s on SE50.E5Cliente equals SA10.A1Cod
+                                            join SC50 in ProtheusInter.Sc5010s on SE10.E1Pedido equals SC50.C5Num
+                                            join SA30 in ProtheusInter.Sa3010s on SC50.C5Vend1 equals SA30.A3Cod
+                                            where SE50.DELET != "*" && SE10.DELET != "*" && SE50.E5Recpag == "R"
+                                            && (SE50.E5Tipodoc == "VL" || SE50.E5Tipodoc == "RA")
+                                            && (SE50.E5Naturez == "111001" || SE50.E5Naturez == "111004" || SE50.E5Naturez == "111006")
+                                            && (SE50.E5Banco == "001" || SE50.E5Banco == "237" || SE50.E5Banco == "341")
+                                            && (int)(object)SE50.E5Data >= (int)(object)DataInicio
+                                            && (int)(object)SE50.E5Data <= (int)(object)DataFim
+                                            && (SA10.A1Xgrinte == "000011" || SA10.A1Xgrinte == "000012")
+                                            select new RelatorioAreceberBaixa
+                                            {
+                                                Prefixo = SE50.E5Prefixo,
+                                                Numero = SE50.E5Numero,
+                                                Parcela = SE50.E5Parcela,
+                                                TP = SE50.E5Tipo,
+                                                CliFor = SE50.E5Clifor,
+                                                NomeFor = SA10.A1Nome,
+                                                Naturez = SE50.E5Naturez,
+                                                Vencimento = SE10.E1Vencto,
+                                                Historico = SE50.E5Histor,
+                                                DataBaixa = SE50.E5Data,
+                                                ValorOrig = SE10.E1Valor,
+                                                JurMulta = SE50.E5Vljuros + SE50.E5Vlmulta,
+                                                Correcao = SE50.E5Vlcorre,
+                                                Descon = SE50.E5Vldesco,
+                                                Abatimento = 0,
+                                                Imposto = 0,
+                                                ValorAcess = 0,
+                                                TotalBaixado = SE50.E5Valor,
+                                                Banco = SE50.E5Banco,
+                                                DtDigi = SE50.E5Dtdigit,
+                                                Mot = SE50.E5Motbx,
+                                                Orig = SE50.E5Filorig,
+                                                Vendedor = SC50.C5Nomvend,
+                                                TipoCliente = SA10.A1Clinter,
+                                                CodigoCliente = SA10.A1Xgrinte,
+                                                Login = SA30.A3Xlogin,
+                                                Gestor = SA30.A3Xlogsup,
+                                                DataPedido = SC50.C5Emissao
+                                            }).ToList();
+
+                #endregion
+
                 #endregion
 
                 #endregion
@@ -614,48 +688,102 @@ namespace SGID.Pages.Relatorios.Diretoria
 
                 #region Baixa
 
-                var BaixaDenuo = (from SE50 in ProtheusDenuo.Se5010s
-                                  join SE10 in ProtheusDenuo.Se1010s on new { PRE = SE50.E5Prefixo, Num = SE50.E5Numero, Par = SE50.E5Parcela, Tipo = SE50.E5Tipo, Cliente = SE50.E5Cliente, Loja = SE50.E5Loja }
-                                  equals new { PRE = SE10.E1Prefixo, Num = SE10.E1Num, Par = SE10.E1Parcela, Tipo = SE10.E1Tipo, Cliente = SE10.E1Cliente, Loja = SE10.E1Loja }
-                                  join SA10 in ProtheusDenuo.Sa1010s on SE50.E5Cliente equals SA10.A1Cod
-                                  join SC50 in ProtheusDenuo.Sc5010s on SE10.E1Pedido equals SC50.C5Num
-                                  join SA30 in ProtheusDenuo.Sa3010s on SC50.C5Vend1 equals SA30.A3Cod
-                                  where SE50.DELET != "*" && SE10.DELET != "*" && SE50.E5Recpag == "R"
-                                  && (SE50.E5Tipodoc == "VL" || SE50.E5Tipodoc == "RA")
-                                  && (SE50.E5Naturez == "111001" || SE50.E5Naturez == "111004" || SE50.E5Naturez == "111006")
-                                  && (SE50.E5Banco == "001" || SE50.E5Banco == "237" || SE50.E5Banco == "341")
-                                  && (int)(object)SE50.E5Data >= (int)(object)DataInicio
-                                  && (int)(object)SE50.E5Data <= (int)(object)DataFim
-                                  select new RelatorioAreceberBaixa
-                                  {
-                                      Prefixo = SE50.E5Prefixo,
-                                      Numero = SE50.E5Numero,
-                                      Parcela = SE50.E5Parcela,
-                                      TP = SE50.E5Tipo,
-                                      CliFor = SE50.E5Clifor,
-                                      NomeFor = SA10.A1Nome,
-                                      Naturez = SE50.E5Naturez,
-                                      Vencimento = SE10.E1Vencto,
-                                      Historico = SE50.E5Histor,
-                                      DataBaixa = SE50.E5Data,
-                                      ValorOrig = SE10.E1Valor,
-                                      JurMulta = SE50.E5Vljuros + SE50.E5Vlmulta,
-                                      Correcao = SE50.E5Vlcorre,
-                                      Descon = SE50.E5Vldesco,
-                                      Abatimento = 0,
-                                      Imposto = 0,
-                                      ValorAcess = 0,
-                                      TotalBaixado = SE50.E5Valor,
-                                      Banco = SE50.E5Banco,
-                                      DtDigi = SE50.E5Dtdigit,
-                                      Mot = SE50.E5Motbx,
-                                      Orig = SE50.E5Filorig,
-                                      Vendedor = SA30.A3Nome,
-                                      TipoCliente = SA10.A1Clinter,
-                                      CodigoCliente = SA10.A1Xgrinte,
-                                      Login = SA30.A3Xlogin,
-                                      Gestor = SA30.A3Xlogsup
-                                  }).ToList();
+                #region BaixaSub
+
+                var BaixaSubDenuo = (from SE50 in ProtheusDenuo.Se5010s
+                                     join SE10 in ProtheusDenuo.Se1010s on new { PRE = SE50.E5Prefixo, Num = SE50.E5Numero, Par = SE50.E5Parcela, Tipo = SE50.E5Tipo, Cliente = SE50.E5Cliente, Loja = SE50.E5Loja }
+                                     equals new { PRE = SE10.E1Prefixo, Num = SE10.E1Num, Par = SE10.E1Parcela, Tipo = SE10.E1Tipo, Cliente = SE10.E1Cliente, Loja = SE10.E1Loja }
+                                     join SA10 in ProtheusDenuo.Sa1010s on SE50.E5Cliente equals SA10.A1Cod
+                                     join SC50 in ProtheusDenuo.Sc5010s on SE10.E1Pedido equals SC50.C5Num into sr
+                                     from c in sr.DefaultIfEmpty()
+                                     where SE50.DELET != "*" && SE10.DELET != "*" && SE50.E5Recpag == "R"
+                                     && (SE50.E5Tipodoc == "VL" || SE50.E5Tipodoc == "RA")
+                                     && (SE50.E5Naturez == "111001" || SE50.E5Naturez == "111004" || SE50.E5Naturez == "111006")
+                                     && (SE50.E5Banco == "001" || SE50.E5Banco == "237" || SE50.E5Banco == "341")
+                                     && (int)(object)SE50.E5Data >= (int)(object)DataInicio
+                                     && (int)(object)SE50.E5Data <= (int)(object)DataFim
+                                     && SA10.A1Clinter == "S"
+                                     select new RelatorioAreceberBaixa
+                                     {
+                                         Prefixo = SE50.E5Prefixo,
+                                         Numero = SE50.E5Numero,
+                                         Parcela = SE50.E5Parcela,
+                                         TP = SE50.E5Tipo,
+                                         CliFor = SE50.E5Clifor,
+                                         NomeFor = SA10.A1Nome,
+                                         Naturez = SE50.E5Naturez,
+                                         Vencimento = SE10.E1Vencto,
+                                         Historico = SE50.E5Histor,
+                                         DataBaixa = SE50.E5Data,
+                                         ValorOrig = SE10.E1Valor,
+                                         JurMulta = SE50.E5Vljuros + SE50.E5Vlmulta,
+                                         Correcao = SE50.E5Vlcorre,
+                                         Descon = SE50.E5Vldesco,
+                                         Abatimento = 0,
+                                         Imposto = 0,
+                                         ValorAcess = 0,
+                                         TotalBaixado = SE50.E5Valor,
+                                         Banco = SE50.E5Banco,
+                                         DtDigi = SE50.E5Dtdigit,
+                                         Mot = SE50.E5Motbx,
+                                         Orig = SE50.E5Filorig,
+                                         Vendedor = c.C5Nomvend,
+                                         TipoCliente = SA10.A1Clinter,
+                                         Empresa = "DENUO"
+                                     }
+                             ).ToList();
+
+                #endregion
+
+                #region BaixaLicitacoes
+
+                var BaixaLicitacoesDenuo = (from SE50 in ProtheusDenuo.Se5010s
+                                            join SE10 in ProtheusDenuo.Se1010s on new { PRE = SE50.E5Prefixo, Num = SE50.E5Numero, Par = SE50.E5Parcela, Tipo = SE50.E5Tipo, Cliente = SE50.E5Cliente, Loja = SE50.E5Loja }
+                                            equals new { PRE = SE10.E1Prefixo, Num = SE10.E1Num, Par = SE10.E1Parcela, Tipo = SE10.E1Tipo, Cliente = SE10.E1Cliente, Loja = SE10.E1Loja }
+                                            join SA10 in ProtheusDenuo.Sa1010s on SE50.E5Cliente equals SA10.A1Cod
+                                            join SC50 in ProtheusDenuo.Sc5010s on SE10.E1Pedido equals SC50.C5Num
+                                            join SA30 in ProtheusDenuo.Sa3010s on SC50.C5Vend1 equals SA30.A3Cod
+                                            where SE50.DELET != "*" && SE10.DELET != "*" && SE50.E5Recpag == "R"
+                                            && (SE50.E5Tipodoc == "VL" || SE50.E5Tipodoc == "RA")
+                                            && (SE50.E5Naturez == "111001" || SE50.E5Naturez == "111004" || SE50.E5Naturez == "111006")
+                                            && (SE50.E5Banco == "001" || SE50.E5Banco == "237" || SE50.E5Banco == "341")
+                                            && (int)(object)SE50.E5Data >= (int)(object)DataInicio
+                                            && (int)(object)SE50.E5Data <= (int)(object)DataFim
+                                            && (SA10.A1Xgrinte == "000011" || SA10.A1Xgrinte == "000012")
+                                            select new RelatorioAreceberBaixa
+                                            {
+                                                Prefixo = SE50.E5Prefixo,
+                                                Numero = SE50.E5Numero,
+                                                Parcela = SE50.E5Parcela,
+                                                TP = SE50.E5Tipo,
+                                                CliFor = SE50.E5Clifor,
+                                                NomeFor = SA10.A1Nome,
+                                                Naturez = SE50.E5Naturez,
+                                                Vencimento = SE10.E1Vencto,
+                                                Historico = SE50.E5Histor,
+                                                DataBaixa = SE50.E5Data,
+                                                ValorOrig = SE10.E1Valor,
+                                                JurMulta = SE50.E5Vljuros + SE50.E5Vlmulta,
+                                                Correcao = SE50.E5Vlcorre,
+                                                Descon = SE50.E5Vldesco,
+                                                Abatimento = 0,
+                                                Imposto = 0,
+                                                ValorAcess = 0,
+                                                TotalBaixado = SE50.E5Valor,
+                                                Banco = SE50.E5Banco,
+                                                DtDigi = SE50.E5Dtdigit,
+                                                Mot = SE50.E5Motbx,
+                                                Orig = SE50.E5Filorig,
+                                                Vendedor = SC50.C5Nomvend,
+                                                TipoCliente = SA10.A1Clinter,
+                                                CodigoCliente = SA10.A1Xgrinte,
+                                                Login = SA30.A3Xlogin,
+                                                Gestor = SA30.A3Xlogsup,
+                                                DataPedido = SC50.C5Emissao,
+                                                Empresa = "DENUO"
+                                            }).ToList();
+
+                #endregion
 
                 #endregion
 
@@ -711,7 +839,7 @@ namespace SGID.Pages.Relatorios.Diretoria
                                 {
                                     time.FaturadoEquipe = 0;
                                     time.FaturadoProduto += resultadoInter.Where(x => x.Linha == prod.Produto.Trim() && x.DOR != "082" && x.Gestor != "RONAN.JOVINO").Sum(x => x.Total) - DevolucaoInter.Where(x => x.Linha.Trim() == prod.Produto.Trim() && x.DOR != "082" && x.Gestor != "RONAN.JOVINO").Sum(x => x.Total);
-                                    time.FaturadoProduto += resultadoDenuo.Where(x => x.Linha.Trim() == prod.Produto.Trim() && (x.Gestor != "RONAN.JOVINO") || x.Login == "RICARDO.RAMOS" || x.Login == "JULIANO.SOARES" || x.Login == "ELAINE.MARTINS" || x.Login == "DENIS.SOUZA").Sum(x => x.Total) - DevolucaoDenuo.Where(x => x.Linha.Trim() == prod.Produto.Trim() && (x.Gestor != "RONAN.JOVINO") || x.Login == "RICARDO.RAMOS" || x.Login == "JULIANO.SOARES" || x.Login == "ELAINE.MARTINS" || x.Login == "DENIS.SOUZA").Sum(x => x.Total);
+                                    time.FaturadoProduto += resultadoDenuo.Where(x => x.Linha.Trim() == prod.Produto.Trim() ).Sum(x => x.Total) - DevolucaoDenuo.Where(x => x.Linha.Trim() == prod.Produto.Trim() ).Sum(x => x.Total);
                                     i++;
                                 }
                                 else
@@ -726,6 +854,7 @@ namespace SGID.Pages.Relatorios.Diretoria
                                 time.FaturadoProduto += resultadoDenuo.Where(x => x.Linha.Trim() == prod.Produto.Trim() && x.Gestor != "RONAN.JOVINO" && x.Gestor != "TIAGO.FONSECA").Sum(x => x.Total) - DevolucaoDenuo.Where(x => x.Linha.Trim() == prod.Produto.Trim() && x.Gestor != "RONAN.JOVINO" && x.Gestor != "TIAGO.FONSECA").Sum(x => x.Total);
                             }
                         });
+
                         time.Comissao = time.Faturado * (time.User.Porcentagem / 100);
                         time.ComissaoEquipe = time.FaturadoEquipe * (time.User.PorcentagemSeg / 100);
                         time.ComissaoProduto = time.FaturadoProduto * (time.User.PorcentagemGenProd / 100);
@@ -734,7 +863,19 @@ namespace SGID.Pages.Relatorios.Diretoria
                         time.Meta = time.User.Meta / 12;
                         time.MetaAtingimento = (((time.Faturado + time.FaturadoProduto) / (time.User.Meta / 12)) * 100);
 
-                        time.Total = time.Salario + time.Comissao + time.ComissaoEquipe + time.ComissaoProduto;
+                        time.Teto = time.User.Teto;
+                        time.Garantia = time.User.Garantia;
+
+                        time.Total = time.Salario + time.Garantia + time.Comissao + time.ComissaoEquipe + time.ComissaoProduto;
+
+                        if (time.Teto > 0 && time.Total > time.Teto)
+                        {
+                            time.Paga = time.Teto;
+                        }
+                        else
+                        {
+                            time.Paga = time.Total;
+                        }
 
 
                         if (time.User.TipoVendedor == "INTERIOR")
@@ -760,7 +901,7 @@ namespace SGID.Pages.Relatorios.Diretoria
                     {
 
 
-                        time.Faturado = BaixaDenuo.Where(x => x.CodigoCliente == "000011" || x.CodigoCliente == "000012").Sum(x => x.TotalBaixado) + BaixaInter.Where(x => x.CodigoCliente == "000011" || x.CodigoCliente == "000012").Sum(x => x.TotalBaixado);
+                        time.Faturado = BaixaLicitacoesDenuo.Where(x => x.CodigoCliente == "000011" || x.CodigoCliente == "000012").Sum(x => x.TotalBaixado) + BaixaLicitacoesInter.Where(x => x.CodigoCliente == "000011" || x.CodigoCliente == "000012").Sum(x => x.TotalBaixado);
 
                         time.Comissao = time.Faturado * (time.User.Porcentagem / 100);
 
@@ -768,14 +909,27 @@ namespace SGID.Pages.Relatorios.Diretoria
                         time.Meta = time.User.Meta / 12;
                         time.MetaAtingimento = ((time.Faturado / (time.User.Meta / 12)) * 100);
 
-                        time.Total = time.Salario + time.Comissao;
+                        time.Teto = time.User.Teto;
+
+                        time.Garantia = time.User.Garantia;
+
+                        time.Total = time.Salario + time.Garantia + time.Comissao;
+
+                        if (time.Teto > 0 && time.Total > time.Teto)
+                        {
+                            time.Paga = time.Teto;
+                        }
+                        else
+                        {
+                            time.Paga = time.Total;
+                        }
 
                         UsuariosLicitacoes.Add(time);
                     }
                     else
                     {
 
-                        time.Faturado = BaixaDenuo.Where(x => x.TipoCliente == "S").Sum(x => x.TotalBaixado) + BaixaInter.Where(x => x.TipoCliente == "S").Sum(x => x.TotalBaixado);
+                        time.Faturado = BaixaSubDenuo.Where(x => x.TipoCliente == "S").Sum(x => x.TotalBaixado) + BaixaSubInter.Where(x => x.TipoCliente == "S").Sum(x => x.TotalBaixado);
 
                         time.Comissao = time.Faturado * (time.User.Porcentagem / 100);
 
@@ -783,7 +937,20 @@ namespace SGID.Pages.Relatorios.Diretoria
                         time.Meta = time.User.Meta / 12;
                         time.MetaAtingimento = ((time.Faturado / (time.User.Meta / 12)) * 100);
 
-                        time.Total = time.Salario + time.Comissao;
+                        time.Teto = time.User.Teto;
+
+                        time.Garantia = time.User.Garantia;
+
+                        time.Total = time.Salario + time.Garantia + time.Comissao;
+
+                        if (time.Teto > 0 && time.Total > time.Teto)
+                        {
+                            time.Paga = time.Teto;
+                        }
+                        else
+                        {
+                            time.Paga = time.Total;
+                        }
 
                         UsuariosSub.Add(time);
                     }
@@ -814,7 +981,19 @@ namespace SGID.Pages.Relatorios.Diretoria
                     time.Meta = 5200000;
                     time.MetaAtingimento = ((time.Faturado / time.Meta) * 100);
 
+                    time.Teto = time.User.Teto;
+
                     time.Total = time.Salario + time.Comissao;
+
+                    if (time.Teto > 0 && time.Total > time.Teto)
+                    {
+                        time.Paga = time.Teto;
+                    }
+                    else
+                    {
+                        time.Paga = time.Total;
+                    }
+
                     Usuarios.Add(time);
                 });
 
@@ -967,48 +1146,101 @@ namespace SGID.Pages.Relatorios.Diretoria
 
                     #region Baixa
 
-                    var BaixaInter = (from SE50 in ProtheusInter.Se5010s
-                                      join SE10 in ProtheusInter.Se1010s on new { PRE = SE50.E5Prefixo, Num = SE50.E5Numero, Par = SE50.E5Parcela, Tipo = SE50.E5Tipo, Cliente = SE50.E5Cliente, Loja = SE50.E5Loja }
-                                      equals new { PRE = SE10.E1Prefixo, Num = SE10.E1Num, Par = SE10.E1Parcela, Tipo = SE10.E1Tipo, Cliente = SE10.E1Cliente, Loja = SE10.E1Loja }
-                                      join SA10 in ProtheusInter.Sa1010s on SE50.E5Cliente equals SA10.A1Cod
-                                      join SC50 in ProtheusInter.Sc5010s on SE10.E1Pedido equals SC50.C5Num
-                                      join SA30 in ProtheusInter.Sa3010s on SC50.C5Vend1 equals SA30.A3Cod
-                                      where SE50.DELET != "*" && SE10.DELET != "*" && SE50.E5Recpag == "R"
-                                      && (SE50.E5Tipodoc == "VL" || SE50.E5Tipodoc == "RA")
-                                      && (SE50.E5Naturez == "111001" || SE50.E5Naturez == "111004" || SE50.E5Naturez == "111006")
-                                      && (SE50.E5Banco == "001" || SE50.E5Banco == "237" || SE50.E5Banco == "341")
-                                      && (int)(object)SE50.E5Data >= (int)(object)DataInicio
-                                      && (int)(object)SE50.E5Data <= (int)(object)DataFim
-                                      select new RelatorioAreceberBaixa
-                                      {
-                                          Prefixo = SE50.E5Prefixo,
-                                          Numero = SE50.E5Numero,
-                                          Parcela = SE50.E5Parcela,
-                                          TP = SE50.E5Tipo,
-                                          CliFor = SE50.E5Clifor,
-                                          NomeFor = SA10.A1Nome,
-                                          Naturez = SE50.E5Naturez,
-                                          Vencimento = SE10.E1Vencto,
-                                          Historico = SE50.E5Histor,
-                                          DataBaixa = SE50.E5Data,
-                                          ValorOrig = SE10.E1Valor,
-                                          JurMulta = SE50.E5Vljuros + SE50.E5Vlmulta,
-                                          Correcao = SE50.E5Vlcorre,
-                                          Descon = SE50.E5Vldesco,
-                                          Abatimento = 0,
-                                          Imposto = 0,
-                                          ValorAcess = 0,
-                                          TotalBaixado = SE50.E5Valor,
-                                          Banco = SE50.E5Banco,
-                                          DtDigi = SE50.E5Dtdigit,
-                                          Mot = SE50.E5Motbx,
-                                          Orig = SE50.E5Filorig,
-                                          Vendedor = SA30.A3Nome,
-                                          TipoCliente = SA10.A1Clinter,
-                                          CodigoCliente = SA10.A1Xgrinte,
-                                          Login = SA30.A3Xlogin,
-                                          Gestor = SA30.A3Xlogsup
-                                      }).ToList();
+                    #region BaixaSub
+
+                    var BaixaSubInter = (from SE50 in ProtheusInter.Se5010s
+                                         join SE10 in ProtheusInter.Se1010s on new { PRE = SE50.E5Prefixo, Num = SE50.E5Numero, Par = SE50.E5Parcela, Tipo = SE50.E5Tipo, Cliente = SE50.E5Cliente, Loja = SE50.E5Loja }
+                                         equals new { PRE = SE10.E1Prefixo, Num = SE10.E1Num, Par = SE10.E1Parcela, Tipo = SE10.E1Tipo, Cliente = SE10.E1Cliente, Loja = SE10.E1Loja }
+                                         join SA10 in ProtheusInter.Sa1010s on SE50.E5Cliente equals SA10.A1Cod
+                                         join SC50 in ProtheusInter.Sc5010s on SE10.E1Pedido equals SC50.C5Num into sr
+                                         from c in sr.DefaultIfEmpty()
+                                         where SE50.DELET != "*" && SE10.DELET != "*" && SE50.E5Recpag == "R"
+                                         && (SE50.E5Tipodoc == "VL" || SE50.E5Tipodoc == "RA")
+                                         && (SE50.E5Naturez == "111001" || SE50.E5Naturez == "111004" || SE50.E5Naturez == "111006")
+                                         && (SE50.E5Banco == "001" || SE50.E5Banco == "237" || SE50.E5Banco == "341")
+                                         && (int)(object)SE50.E5Data >= (int)(object)DataInicio
+                                         && (int)(object)SE50.E5Data <= (int)(object)DataFim
+                                         && SA10.A1Clinter == "S"
+                                         select new RelatorioAreceberBaixa
+                                         {
+                                             Prefixo = SE50.E5Prefixo,
+                                             Numero = SE50.E5Numero,
+                                             Parcela = SE50.E5Parcela,
+                                             TP = SE50.E5Tipo,
+                                             CliFor = SE50.E5Clifor,
+                                             NomeFor = SA10.A1Nome,
+                                             Naturez = SE50.E5Naturez,
+                                             Vencimento = SE10.E1Vencto,
+                                             Historico = SE50.E5Histor,
+                                             DataBaixa = SE50.E5Data,
+                                             ValorOrig = SE10.E1Valor,
+                                             JurMulta = SE50.E5Vljuros + SE50.E5Vlmulta,
+                                             Correcao = SE50.E5Vlcorre,
+                                             Descon = SE50.E5Vldesco,
+                                             Abatimento = 0,
+                                             Imposto = 0,
+                                             ValorAcess = 0,
+                                             TotalBaixado = SE50.E5Valor,
+                                             Banco = SE50.E5Banco,
+                                             DtDigi = SE50.E5Dtdigit,
+                                             Mot = SE50.E5Motbx,
+                                             Orig = SE50.E5Filorig,
+                                             Vendedor = c.C5Nomvend,
+                                             TipoCliente = SA10.A1Clinter,
+                                             Empresa = "INTERMEDIC"
+                                         }
+                                 ).ToList();
+                    #endregion
+
+                    #region BaixaLicitacoes
+
+                    var BaixaLicitacoesInter = (from SE50 in ProtheusInter.Se5010s
+                                                join SE10 in ProtheusInter.Se1010s on new { PRE = SE50.E5Prefixo, Num = SE50.E5Numero, Par = SE50.E5Parcela, Tipo = SE50.E5Tipo, Cliente = SE50.E5Cliente, Loja = SE50.E5Loja }
+                                                equals new { PRE = SE10.E1Prefixo, Num = SE10.E1Num, Par = SE10.E1Parcela, Tipo = SE10.E1Tipo, Cliente = SE10.E1Cliente, Loja = SE10.E1Loja }
+                                                join SA10 in ProtheusInter.Sa1010s on SE50.E5Cliente equals SA10.A1Cod
+                                                join SC50 in ProtheusInter.Sc5010s on SE10.E1Pedido equals SC50.C5Num
+                                                join SA30 in ProtheusInter.Sa3010s on SC50.C5Vend1 equals SA30.A3Cod
+                                                where SE50.DELET != "*" && SE10.DELET != "*" && SE50.E5Recpag == "R"
+                                                && (SE50.E5Tipodoc == "VL" || SE50.E5Tipodoc == "RA")
+                                                && (SE50.E5Naturez == "111001" || SE50.E5Naturez == "111004" || SE50.E5Naturez == "111006")
+                                                && (SE50.E5Banco == "001" || SE50.E5Banco == "237" || SE50.E5Banco == "341")
+                                                && (int)(object)SE50.E5Data >= (int)(object)DataInicio
+                                                && (int)(object)SE50.E5Data <= (int)(object)DataFim
+                                                && (SA10.A1Xgrinte == "000011" || SA10.A1Xgrinte == "000012")
+                                                select new RelatorioAreceberBaixa
+                                                {
+                                                    Prefixo = SE50.E5Prefixo,
+                                                    Numero = SE50.E5Numero,
+                                                    Parcela = SE50.E5Parcela,
+                                                    TP = SE50.E5Tipo,
+                                                    CliFor = SE50.E5Clifor,
+                                                    NomeFor = SA10.A1Nome,
+                                                    Naturez = SE50.E5Naturez,
+                                                    Vencimento = SE10.E1Vencto,
+                                                    Historico = SE50.E5Histor,
+                                                    DataBaixa = SE50.E5Data,
+                                                    ValorOrig = SE10.E1Valor,
+                                                    JurMulta = SE50.E5Vljuros + SE50.E5Vlmulta,
+                                                    Correcao = SE50.E5Vlcorre,
+                                                    Descon = SE50.E5Vldesco,
+                                                    Abatimento = 0,
+                                                    Imposto = 0,
+                                                    ValorAcess = 0,
+                                                    TotalBaixado = SE50.E5Valor,
+                                                    Banco = SE50.E5Banco,
+                                                    DtDigi = SE50.E5Dtdigit,
+                                                    Mot = SE50.E5Motbx,
+                                                    Orig = SE50.E5Filorig,
+                                                    Vendedor = SC50.C5Nomvend,
+                                                    TipoCliente = SA10.A1Clinter,
+                                                    CodigoCliente = SA10.A1Xgrinte,
+                                                    Login = SA30.A3Xlogin,
+                                                    Gestor = SA30.A3Xlogsup,
+                                                    DataPedido = SC50.C5Emissao
+                                                }).ToList();
+
+                    #endregion
+
                     #endregion
 
                     #endregion
@@ -1077,9 +1309,20 @@ namespace SGID.Pages.Relatorios.Diretoria
                             time.Salario = time.User.Salario;
                             time.Meta = time.User.Meta / 12;
                             time.MetaAtingimento = (((time.Faturado + time.FaturadoProduto) / (time.User.Meta / 12)) * 100);
+                            time.Garantia = time.User.Garantia;
 
-                            time.Total = time.Salario + time.Comissao + time.ComissaoEquipe + time.ComissaoProduto;
+                            time.Teto = time.User.Teto;
 
+                            time.Total = time.Salario + time.Garantia + time.Comissao + time.ComissaoEquipe + time.ComissaoProduto;
+
+                            if (time.Teto > 0 && time.Total > time.Teto)
+                            {
+                                time.Paga = time.Teto;
+                            }
+                            else
+                            {
+                                time.Paga = time.Total;
+                            }
 
                             if (time.User.TipoVendedor == "INTERIOR")
                             {
@@ -1103,8 +1346,7 @@ namespace SGID.Pages.Relatorios.Diretoria
                         else if (x.TipoFaturamento != "S")
                         {
 
-
-                            time.Faturado = BaixaInter.Where(x => x.CodigoCliente == "000011" || x.CodigoCliente == "000012").Sum(x => x.TotalBaixado);
+                            time.Faturado = BaixaLicitacoesInter.Where(x => x.CodigoCliente == "000011" || x.CodigoCliente == "000012").Sum(x => x.TotalBaixado);
 
                             time.Comissao = time.Faturado * (time.User.Porcentagem / 100);
 
@@ -1113,14 +1355,26 @@ namespace SGID.Pages.Relatorios.Diretoria
                             time.Meta = time.User.Meta / 12;
                             time.MetaAtingimento = ((time.Faturado / (time.User.Meta / 12)) * 100);
 
-                            time.Total = time.Salario + time.Comissao;
+                            time.Teto = time.User.Teto;
+                            time.Garantia = time.User.Garantia;
+
+                            time.Total = time.Salario + time.Garantia + time.Comissao;
+
+                            if (time.Teto > 0 && time.Total > time.Teto)
+                            {
+                                time.Paga = time.Teto;
+                            }
+                            else
+                            {
+                                time.Paga = time.Total;
+                            }
 
                             UsuariosLicitacoes.Add(time);
                         }
                         else
                         {
 
-                            time.Faturado = BaixaInter.Where(x => x.TipoCliente == "S").Sum(x => x.TotalBaixado);
+                            time.Faturado = BaixaSubInter.Where(x => x.TipoCliente == "S").Sum(x => x.TotalBaixado);
 
                             time.Comissao = time.Faturado * (time.User.Porcentagem / 100);
 
@@ -1128,7 +1382,19 @@ namespace SGID.Pages.Relatorios.Diretoria
                             time.Meta = time.User.Meta / 12;
                             time.MetaAtingimento = ((time.Faturado / (time.User.Meta / 12)) * 100);
 
+                            time.Teto = time.User.Teto;
+                            time.Garantia = time.User.Garantia;
+
                             time.Total = time.Salario + time.Comissao;
+
+                            if (time.Teto > 0 && time.Total > time.Teto)
+                            {
+                                time.Paga = time.Teto;
+                            }
+                            else
+                            {
+                                time.Paga = time.Total;
+                            }
 
                             UsuariosSub.Add(time);
                         }
@@ -1158,7 +1424,18 @@ namespace SGID.Pages.Relatorios.Diretoria
                         time.Meta = 2600000;
                         time.MetaAtingimento = ((time.Faturado / time.Meta) * 100);
 
+                        time.Teto = time.User.Teto;
+
                         time.Total = time.Salario + time.Comissao;
+
+                        if (time.Teto > 0 && time.Total > time.Teto)
+                        {
+                            time.Paga = time.Teto;
+                        }
+                        else
+                        {
+                            time.Paga = time.Total;
+                        }
                         Usuarios.Add(time);
                     });
 
@@ -1366,8 +1643,9 @@ namespace SGID.Pages.Relatorios.Diretoria
                             time.Meta = time.User.Meta / 12;
                             time.MetaAtingimento = ((time.Faturado / (time.User.Meta / 12)) * 100);
                             time.Salario = time.User.Salario;
+                            time.Garantia = time.User.Garantia;
 
-                            time.Total = time.Salario + time.Comissao;
+                            time.Total = time.Salario + time.Garantia + time.Comissao;
                             UsuariosDental.Add(time);
                         }
                         else
@@ -1378,8 +1656,19 @@ namespace SGID.Pages.Relatorios.Diretoria
                             time.Meta = time.User.Meta / 12;
                             time.MetaAtingimento = ((time.Faturado / (time.User.Meta / 12)) * 100);
                             time.Salario = time.User.Salario;
+                            time.Garantia = time.User.Garantia;
 
-                            time.Total = time.Salario + time.Comissao;
+                            time.Total = time.Salario + time.Garantia + time.Comissao;
+
+                            if (time.Teto > 0 && time.Total > time.Teto)
+                            {
+                                time.Paga = time.Teto;
+                            }
+                            else
+                            {
+                                time.Paga = time.Total;
+                            }
+
                             UsuariosDental.Add(time);
                         }
                     });
@@ -1520,48 +1809,102 @@ namespace SGID.Pages.Relatorios.Diretoria
 
                     #region Baixa
 
-                    var BaixaDenuo = (from SE50 in ProtheusDenuo.Se5010s
-                                      join SE10 in ProtheusDenuo.Se1010s on new { PRE = SE50.E5Prefixo, Num = SE50.E5Numero, Par = SE50.E5Parcela, Tipo = SE50.E5Tipo, Cliente = SE50.E5Cliente, Loja = SE50.E5Loja }
-                                      equals new { PRE = SE10.E1Prefixo, Num = SE10.E1Num, Par = SE10.E1Parcela, Tipo = SE10.E1Tipo, Cliente = SE10.E1Cliente, Loja = SE10.E1Loja }
-                                      join SA10 in ProtheusDenuo.Sa1010s on SE50.E5Cliente equals SA10.A1Cod
-                                      join SC50 in ProtheusDenuo.Sc5010s on SE10.E1Pedido equals SC50.C5Num
-                                      join SA30 in ProtheusDenuo.Sa3010s on SC50.C5Vend1 equals SA30.A3Cod
-                                      where SE50.DELET != "*" && SE10.DELET != "*" && SE50.E5Recpag == "R"
-                                      && (SE50.E5Tipodoc == "VL" || SE50.E5Tipodoc == "RA")
-                                      && (SE50.E5Naturez == "111001" || SE50.E5Naturez == "111004" || SE50.E5Naturez == "111006")
-                                      && (SE50.E5Banco == "001" || SE50.E5Banco == "237" || SE50.E5Banco == "341")
-                                      && (int)(object)SE50.E5Data >= (int)(object)DataInicio
-                                      && (int)(object)SE50.E5Data <= (int)(object)DataFim
-                                      select new RelatorioAreceberBaixa
-                                      {
-                                          Prefixo = SE50.E5Prefixo,
-                                          Numero = SE50.E5Numero,
-                                          Parcela = SE50.E5Parcela,
-                                          TP = SE50.E5Tipo,
-                                          CliFor = SE50.E5Clifor,
-                                          NomeFor = SA10.A1Nome,
-                                          Naturez = SE50.E5Naturez,
-                                          Vencimento = SE10.E1Vencto,
-                                          Historico = SE50.E5Histor,
-                                          DataBaixa = SE50.E5Data,
-                                          ValorOrig = SE10.E1Valor,
-                                          JurMulta = SE50.E5Vljuros + SE50.E5Vlmulta,
-                                          Correcao = SE50.E5Vlcorre,
-                                          Descon = SE50.E5Vldesco,
-                                          Abatimento = 0,
-                                          Imposto = 0,
-                                          ValorAcess = 0,
-                                          TotalBaixado = SE50.E5Valor,
-                                          Banco = SE50.E5Banco,
-                                          DtDigi = SE50.E5Dtdigit,
-                                          Mot = SE50.E5Motbx,
-                                          Orig = SE50.E5Filorig,
-                                          Vendedor = SA30.A3Nome,
-                                          TipoCliente = SA10.A1Clinter,
-                                          CodigoCliente = SA10.A1Xgrinte,
-                                          Login = SA30.A3Xlogin,
-                                          Gestor = SA30.A3Xlogsup
-                                      }).ToList();
+                    #region BaixaSub
+
+                    var BaixaSubDenuo = (from SE50 in ProtheusDenuo.Se5010s
+                                         join SE10 in ProtheusDenuo.Se1010s on new { PRE = SE50.E5Prefixo, Num = SE50.E5Numero, Par = SE50.E5Parcela, Tipo = SE50.E5Tipo, Cliente = SE50.E5Cliente, Loja = SE50.E5Loja }
+                                         equals new { PRE = SE10.E1Prefixo, Num = SE10.E1Num, Par = SE10.E1Parcela, Tipo = SE10.E1Tipo, Cliente = SE10.E1Cliente, Loja = SE10.E1Loja }
+                                         join SA10 in ProtheusDenuo.Sa1010s on SE50.E5Cliente equals SA10.A1Cod
+                                         join SC50 in ProtheusDenuo.Sc5010s on SE10.E1Pedido equals SC50.C5Num into sr
+                                         from c in sr.DefaultIfEmpty()
+                                         where SE50.DELET != "*" && SE10.DELET != "*" && SE50.E5Recpag == "R"
+                                         && (SE50.E5Tipodoc == "VL" || SE50.E5Tipodoc == "RA")
+                                         && (SE50.E5Naturez == "111001" || SE50.E5Naturez == "111004" || SE50.E5Naturez == "111006")
+                                         && (SE50.E5Banco == "001" || SE50.E5Banco == "237" || SE50.E5Banco == "341")
+                                         && (int)(object)SE50.E5Data >= (int)(object)DataInicio
+                                         && (int)(object)SE50.E5Data <= (int)(object)DataFim
+                                         && SA10.A1Clinter == "S"
+                                         select new RelatorioAreceberBaixa
+                                         {
+                                             Prefixo = SE50.E5Prefixo,
+                                             Numero = SE50.E5Numero,
+                                             Parcela = SE50.E5Parcela,
+                                             TP = SE50.E5Tipo,
+                                             CliFor = SE50.E5Clifor,
+                                             NomeFor = SA10.A1Nome,
+                                             Naturez = SE50.E5Naturez,
+                                             Vencimento = SE10.E1Vencto,
+                                             Historico = SE50.E5Histor,
+                                             DataBaixa = SE50.E5Data,
+                                             ValorOrig = SE10.E1Valor,
+                                             JurMulta = SE50.E5Vljuros + SE50.E5Vlmulta,
+                                             Correcao = SE50.E5Vlcorre,
+                                             Descon = SE50.E5Vldesco,
+                                             Abatimento = 0,
+                                             Imposto = 0,
+                                             ValorAcess = 0,
+                                             TotalBaixado = SE50.E5Valor,
+                                             Banco = SE50.E5Banco,
+                                             DtDigi = SE50.E5Dtdigit,
+                                             Mot = SE50.E5Motbx,
+                                             Orig = SE50.E5Filorig,
+                                             Vendedor = c.C5Nomvend,
+                                             TipoCliente = SA10.A1Clinter,
+                                             Empresa = "DENUO"
+                                         }
+                                 ).ToList();
+
+                    #endregion
+
+                    #region BaixaLicitacoes
+
+                    var BaixaLicitacoesDenuo = (from SE50 in ProtheusDenuo.Se5010s
+                                                join SE10 in ProtheusDenuo.Se1010s on new { PRE = SE50.E5Prefixo, Num = SE50.E5Numero, Par = SE50.E5Parcela, Tipo = SE50.E5Tipo, Cliente = SE50.E5Cliente, Loja = SE50.E5Loja }
+                                                equals new { PRE = SE10.E1Prefixo, Num = SE10.E1Num, Par = SE10.E1Parcela, Tipo = SE10.E1Tipo, Cliente = SE10.E1Cliente, Loja = SE10.E1Loja }
+                                                join SA10 in ProtheusDenuo.Sa1010s on SE50.E5Cliente equals SA10.A1Cod
+                                                join SC50 in ProtheusDenuo.Sc5010s on SE10.E1Pedido equals SC50.C5Num
+                                                join SA30 in ProtheusDenuo.Sa3010s on SC50.C5Vend1 equals SA30.A3Cod
+                                                where SE50.DELET != "*" && SE10.DELET != "*" && SE50.E5Recpag == "R"
+                                                && (SE50.E5Tipodoc == "VL" || SE50.E5Tipodoc == "RA")
+                                                && (SE50.E5Naturez == "111001" || SE50.E5Naturez == "111004" || SE50.E5Naturez == "111006")
+                                                && (SE50.E5Banco == "001" || SE50.E5Banco == "237" || SE50.E5Banco == "341")
+                                                && (int)(object)SE50.E5Data >= (int)(object)DataInicio
+                                                && (int)(object)SE50.E5Data <= (int)(object)DataFim
+                                                && (SA10.A1Xgrinte == "000011" || SA10.A1Xgrinte == "000012")
+                                                select new RelatorioAreceberBaixa
+                                                {
+                                                    Prefixo = SE50.E5Prefixo,
+                                                    Numero = SE50.E5Numero,
+                                                    Parcela = SE50.E5Parcela,
+                                                    TP = SE50.E5Tipo,
+                                                    CliFor = SE50.E5Clifor,
+                                                    NomeFor = SA10.A1Nome,
+                                                    Naturez = SE50.E5Naturez,
+                                                    Vencimento = SE10.E1Vencto,
+                                                    Historico = SE50.E5Histor,
+                                                    DataBaixa = SE50.E5Data,
+                                                    ValorOrig = SE10.E1Valor,
+                                                    JurMulta = SE50.E5Vljuros + SE50.E5Vlmulta,
+                                                    Correcao = SE50.E5Vlcorre,
+                                                    Descon = SE50.E5Vldesco,
+                                                    Abatimento = 0,
+                                                    Imposto = 0,
+                                                    ValorAcess = 0,
+                                                    TotalBaixado = SE50.E5Valor,
+                                                    Banco = SE50.E5Banco,
+                                                    DtDigi = SE50.E5Dtdigit,
+                                                    Mot = SE50.E5Motbx,
+                                                    Orig = SE50.E5Filorig,
+                                                    Vendedor = SC50.C5Nomvend,
+                                                    TipoCliente = SA10.A1Clinter,
+                                                    CodigoCliente = SA10.A1Xgrinte,
+                                                    Login = SA30.A3Xlogin,
+                                                    Gestor = SA30.A3Xlogsup,
+                                                    DataPedido = SC50.C5Emissao,
+                                                    Empresa = "DENUO"
+                                                }).ToList();
+
+                    #endregion
 
                     #endregion
 
@@ -1610,7 +1953,7 @@ namespace SGID.Pages.Relatorios.Diretoria
                                     if (i == 0)
                                     {
                                         time.FaturadoEquipe = 0;
-                                        time.FaturadoProduto += resultadoDenuo.Where(x => x.Linha.Trim() == prod.Produto.Trim() && (x.Gestor != "RONAN.JOVINO") || x.Login == "RICARDO.RAMOS" || x.Login == "JULIANO.SOARES" || x.Login == "ELAINE.MARTINS" || x.Login == "DENIS.SOUZA").Sum(x => x.Total) - DevolucaoDenuo.Where(x => x.Linha.Trim() == prod.Produto.Trim() && (x.Gestor != "RONAN.JOVINO") || x.Login == "RICARDO.RAMOS" || x.Login == "JULIANO.SOARES" || x.Login == "ELAINE.MARTINS" || x.Login == "DENIS.SOUZA").Sum(x => x.Total);
+                                        time.FaturadoProduto += resultadoDenuo.Where(x => x.Linha.Trim() == prod.Produto.Trim() ).Sum(x => x.Total) - DevolucaoDenuo.Where(x => x.Linha.Trim() == prod.Produto.Trim() ).Sum(x => x.Total);
                                         i++;
                                     }
                                     else
@@ -1630,9 +1973,18 @@ namespace SGID.Pages.Relatorios.Diretoria
                             time.Salario = time.User.Salario;
                             time.Meta = time.User.Meta / 12;
                             time.MetaAtingimento = (((time.Faturado + time.FaturadoProduto) / (time.User.Meta / 12)) * 100);
-
+                            time.Garantia = time.User.Garantia;
+                            
                             time.Total = time.Salario + time.Comissao + time.ComissaoEquipe + time.ComissaoProduto;
 
+                            if (time.Teto > 0 && time.Total > time.Teto)
+                            {
+                                time.Paga = time.Teto;
+                            }
+                            else
+                            {
+                                time.Paga = time.Total;
+                            }
 
                             if (time.User.TipoVendedor == "INTERIOR")
                             {
@@ -1657,30 +2009,50 @@ namespace SGID.Pages.Relatorios.Diretoria
                         {
 
 
-                            time.Faturado = BaixaDenuo.Where(x => x.CodigoCliente == "000011" || x.CodigoCliente == "000012").Sum(x => x.TotalBaixado);
+                            time.Faturado = BaixaLicitacoesDenuo.Where(x => x.CodigoCliente == "000011" || x.CodigoCliente == "000012").Sum(x => x.TotalBaixado);
 
                             time.Comissao = time.Faturado * (time.User.Porcentagem / 100);
 
                             time.Salario = time.User.Salario;
                             time.Meta = time.User.Meta / 12;
                             time.MetaAtingimento = ((time.Faturado / (time.User.Meta / 12)) * 100);
+                            time.Garantia = time.User.Garantia;
 
-                            time.Total = time.Salario + time.Comissao;
+                            time.Total = time.Salario + time.Garantia + time.Comissao;
+
+                            if (time.Teto > 0 && time.Total > time.Teto)
+                            {
+                                time.Paga = time.Teto;
+                            }
+                            else
+                            {
+                                time.Paga = time.Total;
+                            }
 
                             UsuariosLicitacoes.Add(time);
                         }
                         else
                         {
 
-                            time.Faturado = BaixaDenuo.Where(x => x.TipoCliente == "S").Sum(x => x.TotalBaixado);
+                            time.Faturado = BaixaSubDenuo.Where(x => x.TipoCliente == "S").Sum(x => x.TotalBaixado);
 
                             time.Comissao = time.Faturado * (time.User.Porcentagem / 100);
 
                             time.Salario = time.User.Salario;
                             time.Meta = time.User.Meta / 12;
                             time.MetaAtingimento = ((time.Faturado / (time.User.Meta / 12)) * 100);
+                            time.Garantia = time.User.Garantia;
 
-                            time.Total = time.Salario + time.Comissao;
+                            time.Total = time.Salario + time.Garantia + time.Comissao;
+
+                            if (time.Teto > 0 && time.Total > time.Teto)
+                            {
+                                time.Paga = time.Teto;
+                            }
+                            else
+                            {
+                                time.Paga = time.Total;
+                            }
 
                             UsuariosSub.Add(time);
                         }
@@ -1711,6 +2083,16 @@ namespace SGID.Pages.Relatorios.Diretoria
                         time.MetaAtingimento = ((time.Faturado / time.Meta) * 100);
 
                         time.Total = time.Salario + time.Comissao;
+
+                        if (time.Teto > 0 && time.Total > time.Teto)
+                        {
+                            time.Paga = time.Teto;
+                        }
+                        else
+                        {
+                            time.Paga = time.Total;
+                        }
+
                         Usuarios.Add(time);
                     });
 
@@ -1947,8 +2329,18 @@ namespace SGID.Pages.Relatorios.Diretoria
                         time.Meta = time.User.Meta / 12;
                         time.MetaAtingimento = ((time.Faturado / (time.User.Meta / 12)) * 100);
                         time.Salario = time.User.Salario;
+                        time.Garantia = time.User.Garantia;
 
-                        time.Total = time.Salario + time.Comissao;
+                        time.Total = time.Salario + time.Garantia + time.Comissao;
+
+                        if (time.Teto > 0 && time.Total > time.Teto)
+                        {
+                            time.Paga = time.Teto;
+                        }
+                        else
+                        {
+                            time.Paga = time.Total;
+                        }
                         UsuariosDental.Add(time);
                     }
                     else
@@ -1959,8 +2351,17 @@ namespace SGID.Pages.Relatorios.Diretoria
                         time.Meta = time.User.Meta / 12;
                         time.MetaAtingimento = ((time.Faturado / (time.User.Meta / 12)) * 100);
                         time.Salario = time.User.Salario;
+                        time.Garantia = time.User.Garantia;
 
-                        time.Total = time.Salario + time.Comissao;
+                        time.Total = time.Salario + time.Garantia + time.Comissao;
+                        if (time.Teto > 0 && time.Total > time.Teto)
+                        {
+                            time.Paga = time.Teto;
+                        }
+                        else
+                        {
+                            time.Paga = time.Total;
+                        }
                         UsuariosDental.Add(time);
                     }
                 });
@@ -2385,7 +2786,7 @@ namespace SGID.Pages.Relatorios.Diretoria
                                 {
                                     time.FaturadoEquipe = 0;
                                     time.FaturadoProduto += resultadoInter.Where(x => x.Linha == prod.Produto.Trim() && x.DOR != "082" && x.Gestor != "RONAN.JOVINO").Sum(x => x.Total) - DevolucaoInter.Where(x => x.Linha.Trim() == prod.Produto.Trim() && x.DOR != "082" && x.Gestor != "RONAN.JOVINO").Sum(x => x.Total);
-                                    time.FaturadoProduto += resultadoDenuo.Where(x => x.Linha.Trim() == prod.Produto.Trim() && (x.Gestor != "RONAN.JOVINO") || x.Login == "RICARDO.RAMOS" || x.Login == "JULIANO.SOARES" || x.Login == "ELAINE.MARTINS" || x.Login == "DENIS.SOUZA").Sum(x => x.Total) - DevolucaoDenuo.Where(x => x.Linha.Trim() == prod.Produto.Trim() && (x.Gestor != "RONAN.JOVINO") || x.Login == "RICARDO.RAMOS" || x.Login == "JULIANO.SOARES" || x.Login == "ELAINE.MARTINS" || x.Login == "DENIS.SOUZA").Sum(x => x.Total);
+                                    time.FaturadoProduto += resultadoDenuo.Where(x => x.Linha.Trim() == prod.Produto.Trim() ).Sum(x => x.Total) - DevolucaoDenuo.Where(x => x.Linha.Trim() == prod.Produto.Trim() ).Sum(x => x.Total);
                                     i++;
                                 }
                                 else
@@ -2408,7 +2809,17 @@ namespace SGID.Pages.Relatorios.Diretoria
                         time.Meta = time.User.Meta / 12;
                         time.MetaAtingimento = (((time.Faturado + time.FaturadoProduto) / (time.User.Meta / 12)) * 100);
 
-                        time.Total = time.Salario + time.Comissao + time.ComissaoEquipe + time.ComissaoProduto;
+                        time.Garantia= time.Garantia;
+                        time.Total = time.Salario + time.Garantia + time.Comissao + time.ComissaoEquipe + time.ComissaoProduto;
+
+                        if (time.Teto > 0 && time.Total > time.Teto)
+                        {
+                            time.Paga = time.Teto;
+                        }
+                        else
+                        {
+                            time.Paga = time.Total;
+                        }
 
 
                         if (time.User.TipoVendedor == "INTERIOR")
@@ -2441,8 +2852,18 @@ namespace SGID.Pages.Relatorios.Diretoria
                         time.Salario = time.User.Salario;
                         time.Meta = time.User.Meta / 12;
                         time.MetaAtingimento = ((time.Faturado / (time.User.Meta / 12)) * 100);
+                        time.Garantia = time.User.Garantia;
 
-                        time.Total = time.Salario + time.Comissao;
+                        time.Total = time.Salario + time.Garantia + time.Comissao;
+
+                        if (time.Teto > 0 && time.Total > time.Teto)
+                        {
+                            time.Paga = time.Teto;
+                        }
+                        else
+                        {
+                            time.Paga = time.Total;
+                        }
 
                         UsuariosLicitacoes.Add(time);
                     }
@@ -2457,7 +2878,18 @@ namespace SGID.Pages.Relatorios.Diretoria
                         time.Meta = time.User.Meta / 12;
                         time.MetaAtingimento = ((time.Faturado / (time.User.Meta / 12)) * 100);
 
-                        time.Total = time.Salario + time.Comissao;
+                        time.Garantia = time.User.Garantia;
+
+                        time.Total = time.Salario + time.Garantia + time.Comissao;
+
+                        if (time.Teto > 0 && time.Total > time.Teto)
+                        {
+                            time.Paga = time.Teto;
+                        }
+                        else
+                        {
+                            time.Paga = time.Total;
+                        }
 
                         UsuariosSub.Add(time);
                     }
@@ -2489,6 +2921,16 @@ namespace SGID.Pages.Relatorios.Diretoria
                     time.MetaAtingimento = ((time.Faturado / time.Meta) * 100);
 
                     time.Total = time.Salario + time.Comissao;
+
+                    if (time.Teto > 0 && time.Total > time.Teto)
+                    {
+                        time.Paga = time.Teto;
+                    }
+                    else
+                    {
+                        time.Paga = time.Total;
+                    }
+
                     Usuarios.Add(time);
                 });
 
@@ -2751,9 +3193,18 @@ namespace SGID.Pages.Relatorios.Diretoria
                             time.Salario = time.User.Salario;
                             time.Meta = time.User.Meta / 12;
                             time.MetaAtingimento = (((time.Faturado + time.FaturadoProduto) / (time.User.Meta / 12)) * 100);
+                            time.Garantia = time.User.Garantia;
 
-                            time.Total = time.Salario + time.Comissao + time.ComissaoEquipe + time.ComissaoProduto;
+                            time.Total = time.Salario + time.Garantia + time.Comissao + time.ComissaoEquipe + time.ComissaoProduto;
 
+                            if (time.Teto > 0 && time.Total > time.Teto)
+                            {
+                                time.Paga = time.Teto;
+                            }
+                            else
+                            {
+                                time.Paga = time.Total;
+                            }
 
                             if (time.User.TipoVendedor == "INTERIOR")
                             {
@@ -2787,7 +3238,18 @@ namespace SGID.Pages.Relatorios.Diretoria
                             time.Meta = time.User.Meta / 12;
                             time.MetaAtingimento = ((time.Faturado / (time.User.Meta / 12)) * 100);
 
-                            time.Total = time.Salario + time.Comissao;
+                            time.Garantia = time.User.Garantia;
+
+                            time.Total = time.Salario + time.Garantia + time.Comissao;
+
+                            if (time.Teto > 0 && time.Total > time.Teto)
+                            {
+                                time.Paga = time.Teto;
+                            }
+                            else
+                            {
+                                time.Paga = time.Total;
+                            }
 
                             UsuariosLicitacoes.Add(time);
                         }
@@ -2802,7 +3264,18 @@ namespace SGID.Pages.Relatorios.Diretoria
                             time.Meta = time.User.Meta / 12;
                             time.MetaAtingimento = ((time.Faturado / (time.User.Meta / 12)) * 100);
 
-                            time.Total = time.Salario + time.Comissao;
+                            time.Garantia = time.User.Garantia;
+
+                            time.Total = time.Salario + time.Garantia + time.Comissao;
+
+                            if (time.Teto > 0 && time.Total > time.Teto)
+                            {
+                                time.Paga = time.Teto;
+                            }
+                            else
+                            {
+                                time.Paga = time.Total;
+                            }
 
                             UsuariosSub.Add(time);
                         }
@@ -2833,6 +3306,16 @@ namespace SGID.Pages.Relatorios.Diretoria
                         time.MetaAtingimento = ((time.Faturado / time.Meta) * 100);
 
                         time.Total = time.Salario + time.Comissao;
+
+                        if (time.Teto > 0 && time.Total > time.Teto)
+                        {
+                            time.Paga = time.Teto;
+                        }
+                        else
+                        {
+                            time.Paga = time.Total;
+                        }
+
                         Usuarios.Add(time);
                     });
 
@@ -3040,6 +3523,7 @@ namespace SGID.Pages.Relatorios.Diretoria
                             time.Meta = time.User.Meta / 12;
                             time.MetaAtingimento = ((time.Faturado / (time.User.Meta / 12)) * 100);
                             time.Salario = time.User.Salario;
+                            time.Garantia = time.User.Garantia;
 
                             time.Total = time.Salario + time.Comissao;
                             UsuariosDental.Add(time);
@@ -3053,7 +3537,19 @@ namespace SGID.Pages.Relatorios.Diretoria
                             time.MetaAtingimento = ((time.Faturado / (time.User.Meta / 12)) * 100);
                             time.Salario = time.User.Salario;
 
-                            time.Total = time.Salario + time.Comissao;
+                            time.Garantia = time.User.Garantia;
+
+                            time.Total = time.Salario + time.Garantia + time.Comissao;
+
+                            if (time.Teto > 0 && time.Total > time.Teto)
+                            {
+                                time.Paga = time.Teto;
+                            }
+                            else
+                            {
+                                time.Paga = time.Total;
+                            }
+
                             UsuariosDental.Add(time);
                         }
                     });
@@ -3284,7 +3780,7 @@ namespace SGID.Pages.Relatorios.Diretoria
                                     if (i == 0)
                                     {
                                         time.FaturadoEquipe = 0;
-                                        time.FaturadoProduto += resultadoDenuo.Where(x => x.Linha.Trim() == prod.Produto.Trim() && (x.Gestor != "RONAN.JOVINO") || x.Login == "RICARDO.RAMOS" || x.Login == "JULIANO.SOARES" || x.Login == "ELAINE.MARTINS" || x.Login == "DENIS.SOUZA").Sum(x => x.Total) - DevolucaoDenuo.Where(x => x.Linha.Trim() == prod.Produto.Trim() && (x.Gestor != "RONAN.JOVINO") || x.Login == "RICARDO.RAMOS" || x.Login == "JULIANO.SOARES" || x.Login == "ELAINE.MARTINS" || x.Login == "DENIS.SOUZA").Sum(x => x.Total);
+                                        time.FaturadoProduto += resultadoDenuo.Where(x => x.Linha.Trim() == prod.Produto.Trim() ).Sum(x => x.Total) - DevolucaoDenuo.Where(x => x.Linha.Trim() == prod.Produto.Trim() ).Sum(x => x.Total);
                                         i++;
                                     }
                                     else
@@ -3304,9 +3800,18 @@ namespace SGID.Pages.Relatorios.Diretoria
                             time.Salario = time.User.Salario;
                             time.Meta = time.User.Meta / 12;
                             time.MetaAtingimento = (((time.Faturado + time.FaturadoProduto) / (time.User.Meta / 12)) * 100);
+                            time.Garantia = time.User.Garantia;
 
-                            time.Total = time.Salario + time.Comissao + time.ComissaoEquipe + time.ComissaoProduto;
+                            time.Total = time.Salario + time.Garantia + time.Comissao + time.ComissaoEquipe + time.ComissaoProduto;
 
+                            if (time.Teto > 0 && time.Total > time.Teto)
+                            {
+                                time.Paga = time.Teto;
+                            }
+                            else
+                            {
+                                time.Paga = time.Total;
+                            }
 
                             if (time.User.TipoVendedor == "INTERIOR")
                             {
@@ -3338,8 +3843,18 @@ namespace SGID.Pages.Relatorios.Diretoria
                             time.Salario = time.User.Salario;
                             time.Meta = time.User.Meta / 12;
                             time.MetaAtingimento = ((time.Faturado / (time.User.Meta / 12)) * 100);
+                            time.Garantia = time.User.Garantia;
 
-                            time.Total = time.Salario + time.Comissao;
+                            time.Total = time.Salario + time.Garantia + time.Comissao;
+
+                            if (time.Teto > 0 && time.Total > time.Teto)
+                            {
+                                time.Paga = time.Teto;
+                            }
+                            else
+                            {
+                                time.Paga = time.Total;
+                            }
 
                             UsuariosLicitacoes.Add(time);
                         }
@@ -3353,8 +3868,18 @@ namespace SGID.Pages.Relatorios.Diretoria
                             time.Salario = time.User.Salario;
                             time.Meta = time.User.Meta / 12;
                             time.MetaAtingimento = ((time.Faturado / (time.User.Meta / 12)) * 100);
+                            time.Garantia = time.User.Garantia;
 
-                            time.Total = time.Salario + time.Comissao;
+                            time.Total = time.Salario + time.Garantia + time.Comissao;
+
+                            if (time.Teto > 0 && time.Total > time.Teto)
+                            {
+                                time.Paga = time.Teto;
+                            }
+                            else
+                            {
+                                time.Paga = time.Total;
+                            }
 
                             UsuariosSub.Add(time);
                         }
@@ -3384,7 +3909,18 @@ namespace SGID.Pages.Relatorios.Diretoria
                         time.Meta = 2600000;
                         time.MetaAtingimento = ((time.Faturado / time.Meta) * 100);
 
+                        time.Teto = time.User.Teto;
+
                         time.Total = time.Salario + time.Comissao;
+
+                        if (time.Teto > 0 && time.Total > time.Teto)
+                        {
+                            time.Paga = time.Teto;
+                        }
+                        else
+                        {
+                            time.Paga = time.Total;
+                        }
                         Usuarios.Add(time);
                     });
 

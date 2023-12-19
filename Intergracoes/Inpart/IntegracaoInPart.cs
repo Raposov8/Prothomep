@@ -55,7 +55,7 @@ namespace Intergracoes.Inpart
 
             client.DefaultRequestHeaders.Add("Authorization", $"Bearer {credenciais}");
 
-            var resultPost = await client.GetAsync($"{BaseUrl}/cotacao");
+            var resultPost = await client.GetAsync($"{BaseUrl}/cotacao?$top=100&$skip=19160");
             var data = JsonConvert.DeserializeObject<List<Cotacao>>(resultPost.Content.ReadAsStringAsync().Result);
 
             return data;

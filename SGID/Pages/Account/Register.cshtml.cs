@@ -99,7 +99,7 @@ namespace SGID.Pages.Account
                         mail.From = new MailAddress("ti@intermedic.com.br", "ENVIADOR");
                         mail.To.Add(new MailAddress(Input.Email, "RECEBEDOR"));
                         mail.Bcc.Add(new MailAddress("ti@intermedic.com.br"));
-                        mail.Subject = "Solicitação de Acesso";
+                        mail.Subject = "Primeiro Acesso";
                         mail.Body = mensagem;
                         mail.IsBodyHtml = true;
                         mail.Priority = MailPriority.High;

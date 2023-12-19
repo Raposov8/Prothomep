@@ -52,7 +52,15 @@
                             <td>@data.nmCliente</td>
                             <td>@data.hospital?.razaoSocial</td>
                             <td>
-                                @data.dtCirurgia.Value.ToString("dd/MM/yyyy") @data.nmHoraCirurgia
+                                @if(data.dtCirurgia == null)
+                                {
+
+                                }
+                                else
+                                {
+                                    <span>@data.dtCirurgia.Value.ToString("dd/MM/yyyy") @data.nmHoraCirurgia</span>
+                                }
+                                
                             </td>
                             <td>
                                 @data.nmPaciente

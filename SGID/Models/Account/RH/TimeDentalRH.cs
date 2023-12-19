@@ -14,6 +14,7 @@ namespace SGID.Models.Account.RH
         public double Meta { get; set; }
         public double MetaAtingimento { get; set; }
         public double Salario { get; set; }
+        public double Garantia { get; set; }
 
         public double Total { get; set; }
         public double Teto { get; set; }

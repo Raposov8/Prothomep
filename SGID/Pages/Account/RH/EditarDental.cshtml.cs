@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using SGID.Data;
+using SGID.Data.Migrations;
 using SGID.Data.Models;
 using SGID.Data.ViewModel;
 using System.ComponentModel.DataAnnotations;
@@ -45,7 +46,8 @@ namespace SGID.Pages.Account.RH
                 Porcentagem = usuario.Porcentagem,
                 PorcentagemSegun = usuario.PorcentagemSeg,
                 Salario = usuario.Salario,
-                Teto = usuario.Teto
+                Teto = usuario.Teto,
+                Garantia = usuario.Garantia
             };
 
             return Page();
@@ -66,6 +68,7 @@ namespace SGID.Pages.Account.RH
 
                 usuario.Teto = Editar.Teto;
                 usuario.Salario = Editar.Salario;
+                usuario.Garantia = Editar.Garantia;
 
 
                 _db.TimeDentals.Update(usuario);
@@ -102,6 +105,8 @@ namespace SGID.Pages.Account.RH
             public double Teto { get; set; } = 0.0;
             [Display(Name = "Salario")]
             public double Salario { get; set; } = 0.0;
+            [Display(Name = "Garantia")]
+            public double Garantia { get; set; } = 0.0;
         }
     }
 }

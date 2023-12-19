@@ -81,8 +81,8 @@ namespace SGID.Pages.Account.RH
                     Value = x
                 }),
                 Teto = usuario.Teto,
-                TipoVendedor = usuario.TipoVendedor,
                 Salario = usuario.Salario,
+                Garantia = usuario.Garantia
                 //Setor = usuario.TipoFaturamento
             };
 
@@ -118,9 +118,9 @@ namespace SGID.Pages.Account.RH
                 usuario.PorcentagemSeg = Editar.PorcentagemSegun;
                 usuario.GerenProd = GerenProd;
                 usuario.PorcentagemGenProd = Editar.PorcentagemProd;
-                usuario.TipoVendedor = Editar.TipoVendedor;
                 usuario.Teto = Editar.Teto;
                 usuario.Salario = Editar.Salario;
+                usuario.Garantia = Editar.Garantia;
                 //usuario.TipoFaturamento = Editar.Setor;
 
                 _db.Times.Update(usuario);
@@ -202,6 +202,8 @@ namespace SGID.Pages.Account.RH
             public string TipoVendedor { get; set; }
             [Display(Name = "Salario")]
             public double Salario { get; set; } = 0.0;
+            [Display(Name = "Garantia")]
+            public double Garantia { get; set; } = 0.0;
 
             //[Display(Name = "Setor Comercial")]
             //public string Setor { get; set; }

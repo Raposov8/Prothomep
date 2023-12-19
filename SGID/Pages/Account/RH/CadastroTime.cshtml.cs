@@ -93,8 +93,9 @@ namespace SGID.Pages.Account.RH
                                 TipoVendedor = Input.TipoVendedor,
                                 Teto = Input.Teto,
                                 Salario = Input.Salario,
-                                TipoFaturamento = Input.Setor
-                               
+                                TipoFaturamento = Input.Setor,
+                                Garantia = Input.Garantia
+
                             };
 
                             _db.Times.Add(time);
@@ -178,7 +179,8 @@ namespace SGID.Pages.Account.RH
                             TipoVendedor = Input.TipoVendedor,
                             Teto = Input.Teto,
                             Salario = Input.Salario,
-                            TipoFaturamento = Input.Setor
+                            TipoFaturamento = Input.Setor,
+                            Garantia = Input.Garantia
 
                         };
 
@@ -239,6 +241,8 @@ namespace SGID.Pages.Account.RH
             public double Salario { get; set; } = 0.0;
             [Display(Name = "Setor Comercial")]
             public string Setor { get; set; }
+            [Display(Name = "Garantia")]
+            public double Garantia { get; set; } = 0.0;
         }
     }
 

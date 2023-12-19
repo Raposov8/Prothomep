@@ -14,5 +14,7 @@ namespace SGID.Data.ViewModel
         public string? Color { get; set; }
         public double Teto { get; set; }
         public double Salario { get; set; }
+
+        public DateTime? Desativar { get; set; }
     }
 }

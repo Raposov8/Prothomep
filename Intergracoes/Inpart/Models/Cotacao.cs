@@ -32,11 +32,11 @@ namespace Intergracoes.Inpart.Models
         public DateTime? dtCirurgia { get; set; }
         public string? nmResponsavel { get; set; }
         public string? nmHoraCirurgia { get; set; }
-        public int? codPedidoHospital { get; set; }
+        public string? codPedidoHospital { get; set; }
         public string? codAssociado { get; set; }
-        public int? codCirurgia { get; set; }
+        public string? codCirurgia { get; set; }
         public string? codInternacao { get; set; }
-        public int? codPaciente { get; set; }
+        public string? codPaciente { get; set; }
         public DateTime? dtAlteracaoCliente { get; set; }
         public List<ItemCotacao> cotacaoItemList { get; set; }
         public Hospital hospital { get; set; }

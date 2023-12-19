@@ -1493,7 +1493,7 @@ namespace SGID.Pages.DashBoards
                                 {
                                     time.FaturadoEquipe = 0;
                                     time.FaturadoProduto += resultadoInter.Where(x => x.Linha == prod.Produto.Trim() && x.DOR != "082" && x.Gestor != "RONAN.JOVINO").Sum(x => x.Total) - DevolucaoInter.Where(x => x.Linha.Trim() == prod.Produto.Trim() && x.DOR != "082" && x.Gestor != "RONAN.JOVINO").Sum(x => x.Total);
-                                    time.FaturadoProduto += resultadoDenuo.Where(x => x.Linha.Trim() == prod.Produto.Trim() && (x.Gestor != "RONAN.JOVINO") || x.Login == "RICARDO.RAMOS" || x.Login == "JULIANO.SOARES" || x.Login == "ELAINE.MARTINS" || x.Login == "DENIS.SOUZA").Sum(x => x.Total) - DevolucaoDenuo.Where(x => x.Linha.Trim() == prod.Produto.Trim() && (x.Gestor != "RONAN.JOVINO") || x.Login == "RICARDO.RAMOS" || x.Login == "JULIANO.SOARES" || x.Login == "ELAINE.MARTINS" || x.Login == "DENIS.SOUZA").Sum(x => x.Total);
+                                    time.FaturadoProduto += resultadoDenuo.Where(x => x.Linha.Trim() == prod.Produto.Trim() ).Sum(x => x.Total) - DevolucaoDenuo.Where(x => x.Linha.Trim() == prod.Produto.Trim() ).Sum(x => x.Total);
                                     i++;
                                 }
                                 else

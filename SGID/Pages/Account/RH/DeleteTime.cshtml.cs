@@ -5,6 +5,7 @@ using SGID.Data.ViewModel;
 using SGID.Data;
 using SGID.Data.Models;
 using Microsoft.AspNetCore.Authorization;
+using DocumentFormat.OpenXml.Bibliography;
 
 namespace SGID.Pages.Account.RH
 {
@@ -62,6 +63,7 @@ namespace SGID.Pages.Account.RH
                     var user = await _userManager.FindByIdAsync(Integrante.IdUsuario);
 
                     Integrante.Status = false;
+                    Integrante.Desativar = DateTime.Now;
 
                     _db.Times.Update(Integrante);
                     _db.SaveChanges();
