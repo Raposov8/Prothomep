@@ -31,13 +31,27 @@
                 <option value="INTERMEDIC">INTERMEDIC</option>
             </select>
         </div>
+        <div class="form-group mx-sm-3 mb-2 col-lg-2">
+            <label>Linhas</label>
+            <select type="text" class="form-control" id="Linha" name="Linha">
+                <option value="">TODOS...</option>
+                <option value="ORTOPEDIA">ORTOPEDIA</option>
+                <option value="INTERIOR">INTERIOR</option>
+                <option value="LICITACOES">LICITAÇÕES</option>
+                <option value="SUB">SUB-DISTRIBUIDOR</option>
+                <option value="BUCO">BUCOMAXILO</option>
+                <option value="TORAX">TORAX</option>
+                <option value="DENTAL">BUCOMAXILO</option>
+                <option value="ADMINISTRATIVO">ADMINISTRATIVO</option>
+            </select>
+        </div>
         <div class="form-group mx-sm-3 mb-2 col-lg-1">
             <label></label>
             <button type="submit" class="btn btn-primary mb-2">Pesquisar</button>
         </div>
-        <!--<div class="form-group mx-sm-3 mb-2 col-lg-1">
+        <div class="form-group mx-sm-3 mb-2 col-lg-1">
             <button type="submit" class="btn btn-secondary mb-2" asp-page-handler="Export"><i class="fa-solid fa-file-excel"></i> Exportar Excel</button>
-        </div>-->
+        </div>
     </div>
 }
 
@@ -92,7 +106,7 @@
                 @foreach (var item in Model.UsuariosLicitacoes)
                 {
                     <tr>
-                        <td>@item.User.Integrante.ToUpper().Split("@")[0].Replace("."," ")</td>
+                        <td><a style="text-decoration: none;" target="_blank" href="/account/rh/RelatorioComissao?IdTime=@item.User.Id&&Mes=@Model.Mes&&Ano=@Model.Ano">@item.User.Integrante.ToUpper().Split("@")[0].Replace(".", " ")</a></td>
                         <td>@Model.Mes/@Model.Ano</td>
                         <td>0</td>
                         <td>@string.Format("{0:N2}",item.Faturado)</td>
@@ -119,7 +133,7 @@
 
                 @if (Model.UsuariosLicitacoes.Count > 0)
                 {
-                    <tr>
+                    <tr style="background-color:#808080;color:white">
                         <td>LICITAÇÕES</td>
                         <td>@Model.Mes/@Model.Ano</td>
                         <td>0</td>
@@ -149,7 +163,7 @@
                 @foreach (var item in Model.UsuariosSub)
                 {
                     <tr>
-                        <td>@item.User.Integrante.ToUpper().Split("@")[0].Replace("."," ")</td>
+                        <td><a style="text-decoration: none;" target="_blank" href="/account/rh/RelatorioComissao?IdTime=@item.User.Id&&Mes=@Model.Mes&&Ano=@Model.Ano">@item.User.Integrante.ToUpper().Split("@")[0].Replace(".", " ")</a></td>
                         <td>@Model.Mes/@Model.Ano</td>
                         <td>0</td>
                         <td>@string.Format("{0:N2}",item.Faturado)</td>
@@ -176,7 +190,7 @@
 
                 @if (Model.UsuariosSub.Count > 0)
                 {
-                    <tr>
+                    <tr style="background-color:#808080;color:white">
                         <td>SUB-DISTRIBUIDOR</td>
                         <td>@Model.Mes/@Model.Ano</td>
                         <td>0</td>
@@ -204,7 +218,7 @@
                 @foreach (var item in Model.ComercialOrtopedia)
                 {
                     <tr>
-                        <td>@item.User.Integrante.ToUpper().Split("@")[0].Replace("."," ")</td>
+                        <td><a style="text-decoration: none;" target="_blank" href="/account/rh/RelatorioComissao?IdTime=@item.User.Id&&Mes=@Model.Mes&&Ano=@Model.Ano">@item.User.Integrante.ToUpper().Split("@")[0].Replace(".", " ")</a></td>
                         <td>@Model.Mes/@Model.Ano</td>
                         <td>@string.Format("{0:N2}",item.Faturado)</td>
                         <td>0</td>
@@ -231,7 +245,7 @@
 
                 @if (Model.ComercialOrtopedia.Count > 0)
                 {
-                    <tr>
+                    <tr style="background-color:#808080;color:white">
                         <td>ORTOPEDIA</td>
                         <td>@Model.Mes/@Model.Ano</td>
                         <td>@string.Format("{0:N2}", Model.ComercialOrtopedia.Sum(x => x.Faturado))</td>
@@ -260,7 +274,7 @@
                 @foreach (var item in Model.ComercialBuco)
                 {
                     <tr>
-                        <td>@item.User.Integrante.ToUpper().Split("@")[0].Replace("."," ")</td>
+                        <td><a style="text-decoration: none;" target="_blank" href="/account/rh/RelatorioComissao?IdTime=@item.User.Id&&Mes=@Model.Mes&&Ano=@Model.Ano">@item.User.Integrante.ToUpper().Split("@")[0].Replace(".", " ")</a></td>
                         <td>@Model.Mes/@Model.Ano</td>
                         <td>@string.Format("{0:N2}",item.Faturado)</td>
                         <td>0</td>
@@ -287,7 +301,7 @@
 
                 @if (Model.ComercialBuco.Count > 0)
                 {
-                    <tr>
+                    <tr style="background-color:#808080;color:white">
                         <td>BUCOMAXILO</td>
                         <td>@Model.Mes/@Model.Ano</td>
                         <td>@string.Format("{0:N2}", Model.ComercialBuco.Sum(x => x.Faturado))</td>
@@ -315,7 +329,7 @@
                 @foreach (var item in Model.ComercialTorax)
                 {
                     <tr>
-                        <td>@item.User.Integrante.ToUpper().Split("@")[0].Replace("."," ")</td>
+                        <td><a style="text-decoration: none;" target="_blank" href="/account/rh/RelatorioComissao?IdTime=@item.User.Id&&Mes=@Model.Mes&&Ano=@Model.Ano">@item.User.Integrante.ToUpper().Split("@")[0].Replace(".", " ")</a></td>
                         <td>@Model.Mes/@Model.Ano</td>
                         <td>@string.Format("{0:N2}",item.Faturado)</td>
                         <td>0</td>
@@ -342,7 +356,7 @@
 
                 @if (Model.ComercialTorax.Count > 0)
                 {
-                    <tr>
+                    <tr style="background-color:#808080;color:white">
                         <td>TORAX</td>
                         <td>@Model.Mes/@Model.Ano</td>
                         <td>@string.Format("{0:N2}", Model.ComercialTorax.Sum(x => x.Faturado))</td>
@@ -370,7 +384,7 @@
                 @foreach (var item in Model.ComercialInterior)
                 {
                     <tr>
-                        <td>@item.User.Integrante.ToUpper().Split("@")[0].Replace("."," ")</td>
+                        <td><a style="text-decoration: none;" target="_blank" href="/account/rh/RelatorioComissao?IdTime=@item.User.Id&&Mes=@Model.Mes&&Ano=@Model.Ano">@item.User.Integrante.ToUpper().Split("@")[0].Replace(".", " ")</a></td>
                         <td>@Model.Mes/@Model.Ano</td>
                         <td>@string.Format("{0:N2}",item.Faturado)</td>
                         <td>0</td>
@@ -397,7 +411,7 @@
 
                 @if (Model.ComercialInterior.Count > 0)
                 {
-                    <tr>
+                    <tr style="background-color:#808080;color:white">
                         <td>INTERIOR</td>
                         <td>@Model.Mes/@Model.Ano</td>
                         <td>@string.Format("{0:N2}", Model.ComercialInterior.Sum(x => x.Faturado))</td>
@@ -425,7 +439,7 @@
                 @foreach(var item in Model.UsuariosDental)
                 {
                     <tr>
-                        <td>@item.User.Integrante.ToUpper().Split("@")[0].Replace("."," ")</td>
+                        <td><a style="text-decoration: none;" target="_blank" href="/account/rh/RelatorioComissaoDental?IdTime=@item.User.Id&&Mes=@Model.Mes&&Ano=@Model.Ano">@item.User.Integrante.ToUpper().Split("@")[0].Replace(".", " ")</a></td>
                         <td>@Model.Mes/@Model.Ano</td>
                         <td>@string.Format("{0:N2}",item.Faturado)</td>
                         <td>0</td>
@@ -451,7 +465,7 @@
 
                 @if (Model.UsuariosDental.Count > 0)
                 {
-                    <tr>
+                    <tr style="background-color:#808080;color:white">
                         <td>DENTAL</td>
                         <td>@Model.Mes/@Model.Ano</td>
                         <td>@string.Format("{0:N2}", Model.UsuariosDental.Sum(x => x.Faturado))</td>
@@ -481,7 +495,7 @@
                 @foreach (var item in Model.Usuarios)
                 {
                     <tr>
-                        <td>@item.User.Integrante.ToUpper().Split("@")[0].Replace("."," ")</td>
+                        <td>@item.User.Integrante.ToUpper().Split("@")[0].Replace(".", " ")</td>
                         <td>@Model.Mes/@Model.Ano</td>
                         <td>@string.Format("{0:N2}",item.Faturado)</td>
                         <td>0</td>
@@ -499,7 +513,7 @@
 
                 @if (Model.Usuarios.Count > 0)
                 {
-                    <tr>
+                    <tr style="background-color:#808080;color:white">
                         <td>ADMINISTRATIVO</td>
                         <td>@Model.Mes/@Model.Ano</td>
                         <td>@string.Format("{0:N2}", Model.Usuarios.First().Faturado)</td>
@@ -516,7 +530,7 @@
                     </tr>
                 }
 
-                <tr>
+                <tr style="background-color:#808080;color:white">
                     <td>Total: </td>
                     <td>@Model.Mes/@Model.Ano</td>
                     <td>@string.Format("{0:N2}", Model.ComercialOrtopedia.Sum(x => x.Faturado) + Model.ComercialBuco.Sum(x => x.Faturado) + Model.ComercialTorax.Sum(x => x.Faturado) + Model.ComercialInterior.Sum(x => x.Faturado) + Model.UsuariosDental.Sum(x => x.Faturado))</td>
@@ -541,7 +555,6 @@
                         @string.Format("{0:N2}", Model.UsuariosSub.Sum(x => x.Paga) + Model.UsuariosLicitacoes.Sum(x => x.Paga) + Model.ComercialOrtopedia.Sum(x => x.Paga) + Model.ComercialBuco.Sum(x => x.Paga) + Model.ComercialTorax.Sum(x => x.Paga) + Model.ComercialInterior.Sum(x => x.Paga) + Model.UsuariosDental.Sum(x => x.Paga) + Model.Usuarios.Sum(x => x.Paga))
                     </td>
                 </tr>
-
             </tbody>
         </table>
     </div>

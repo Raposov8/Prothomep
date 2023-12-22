@@ -12,6 +12,13 @@
     }
 }
 
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div id="GraficoAberto" style="height:300px;"></div>
+    </div>
+</div>
+
+
 <div class="panel">
     <div class="panel-body">
         <table id="demo-dt-addrow" class="table table-striped table-bordered" cellspacing="0" width="100%">
@@ -35,9 +42,9 @@
                 @foreach (var data in Model.Relatorio)
                 {
                     <tr>
-                        <td>@Html.DisplayFor(model=> data.Cliente)</td>
-                        <td>@Html.DisplayFor(model=> data.DataEmissao)</td>
-                        <td>@Html.DisplayFor(model=> data.DataVencimento)</td>
+                        <td>@Html.DisplayFor(model => data.Cliente)</td>
+                        <td>@Html.DisplayFor(model => data.DataEmissao)</td>
+                        <td>@Html.DisplayFor(model => data.DataVencimento)</td>
                         <td>@string.Format("{0:N2}", data.Valor)</td>
                     </tr>
                 }
@@ -45,9 +52,57 @@
                     <td></td>
                     <td></td>
                     <td>Total:</td>
-                    <td>@string.Format("{0:N2}", Model.Relatorio.Sum(x=> x.Valor))</td>
+                    <td>@string.Format("{0:N2}", Model.Relatorio.Sum(x => x.Valor))</td>
                 </tr>
             </tbody>
         </table>
     </div>
 </div>
+
+
+@section scripts
+{
+    <script>
+        $(document).ready(function () {
+
+            google.charts.load('current', { 'packages': ['corechart'] });
+            google.charts.setOnLoadCallback(drawChart);
+
+            var grafico = [];
+
+            grafico.push(['Clientes', 'Valor']);
+
+            function drawChart() {
+
+                var data = new google.visualization.arrayToDataTable(
+                    grafico
+                );
+
+                var options = {
+                    title: 'Titulos Vencidos',
+                    legend: { position: "none" },
+                };
+
+
+                var chart = new google.visualization.PieChart(document.getElementById('GraficoAberto'));
+
+                chart.draw(data, options);
+            }
+
+
+            grafico = [];
+
+            grafico.push(['Clientes', 'Valor']);
+
+            @foreach (var data in Model.Relatorio.GroupBy(x => x.Cliente).Select(x => new { x.Key, Valor = x.Sum(c => c.Valor) }).ToList())
+            {
+
+                @:grafico.push(['@data.Key', @data.Valor])
+
+            }
+
+            drawChart()
+
+        })
+    </script>
+}

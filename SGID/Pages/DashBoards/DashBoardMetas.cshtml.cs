@@ -26,7 +26,6 @@ namespace SGID.Pages.DashBoards
 
         public List<ValoresEmAberto> Faturamento { get; set; } = new List<ValoresEmAberto>();
 
-
         #region Comissoes
 
         public List<Time> UsersComercial { get; set; }
@@ -600,7 +599,6 @@ namespace SGID.Pages.DashBoards
                     DataInicio = $"{Ano}0101";
 
                     DataFim = $"{Ano}1231";
-
                 }
                 else
                 {

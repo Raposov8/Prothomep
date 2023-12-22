@@ -25,7 +25,7 @@ namespace Intergracoes.Inpart.Models
          public double? vlQuantidadeAutorizada { get; set; }
          public double? vlPrecoPrestador { get; set; }
          public int? iditemnegociacao { get; set; }
-         public int? utilizaValorProcedimento { get; set; }
+         public string? utilizaValorProcedimento { get; set; }
          public double? vlPrecoNegociadoInicial { get; set; }
          public Fabricante fabricante { get; set; }
          public Distribuidor distribuidor { get; set; }
