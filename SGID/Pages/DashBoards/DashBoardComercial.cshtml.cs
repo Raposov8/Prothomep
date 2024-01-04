@@ -108,7 +108,6 @@ namespace SGID.Pages.DashBoards
                     var resultado = query.GroupBy(x => new
                     {
                         x.NF,
-                        x.Total
                     }).Select(x => new RelatorioCirurgiasFaturadas
                     {
                         Nf = x.Key.NF,
@@ -328,7 +327,6 @@ namespace SGID.Pages.DashBoards
                                  && ((int)(object)SD20.D2Cf >= 5102 && (int)(object)SD20.D2Cf <= 5114 || (int)(object)SD20.D2Cf >= 6102 && (int)(object)SD20.D2Cf <= 6114 ||
                                  (int)(object)SD20.D2Cf >= 7102 && (int)(object)SD20.D2Cf <= 7114 || CF.Contains((int)(object)SD20.D2Cf)) && ((int)(object)SD20.D2Emissao >= (int)(object)DataInicio && (int)(object)SD20.D2Emissao <= (int)(object)DataFim)
                                  && SD20.D2Quant != 0 && SC50.C5Utpoper == "F" && SA10.A1Clinter != "S" && SA10.A1Cgc != "04715053000140" && SA10.A1Cgc != "04715053000220" && SA10.A1Cgc != "01390500000140" && (int)(object)SD20.D2Emissao >= 20200701
-                                 && SA10.A1Xgrinte != "000011" && SA10.A1Xgrinte != "000012"
                                  && SA30.A3Xlogin == user
                                  select new
                                  {
@@ -340,7 +338,6 @@ namespace SGID.Pages.DashBoards
                     var resultado = query.GroupBy(x => new
                     {
                         x.NF,
-                        x.Total
                     }).Select(x => new RelatorioCirurgiasFaturadas
                     {
                         Nf = x.Key.NF,
@@ -547,7 +544,6 @@ namespace SGID.Pages.DashBoards
                     var resultado = query.GroupBy(x => new
                     {
                         x.NF,
-                        x.Total
                     }).Select(x => new RelatorioCirurgiasFaturadas
                     {
                         Nf = x.Key.NF,
@@ -781,7 +777,6 @@ namespace SGID.Pages.DashBoards
                                  && ((int)(object)SD20.D2Cf >= 5102 && (int)(object)SD20.D2Cf <= 5114 || (int)(object)SD20.D2Cf >= 6102 && (int)(object)SD20.D2Cf <= 6114 ||
                                  (int)(object)SD20.D2Cf >= 7102 && (int)(object)SD20.D2Cf <= 7114 || CF.Contains((int)(object)SD20.D2Cf)) && ((int)(object)SD20.D2Emissao >= (int)(object)DataInicio && (int)(object)SD20.D2Emissao <= (int)(object)DataFim)
                                  && SD20.D2Quant != 0 && SC50.C5Utpoper == "F" && SA10.A1Clinter != "S" && SA10.A1Cgc != "04715053000140" && SA10.A1Cgc != "04715053000220" && SA10.A1Cgc != "01390500000140" && (int)(object)SD20.D2Emissao >= 20200701
-                                 && SA10.A1Xgrinte != "000011" && SA10.A1Xgrinte != "000012"
                                  && SA30.A3Xlogin == user
                                  select new
                                  {
@@ -793,7 +788,6 @@ namespace SGID.Pages.DashBoards
                     var resultado = query.GroupBy(x => new
                     {
                         x.NF,
-                        x.Total
                     }).Select(x => new RelatorioCirurgiasFaturadas
                     {
                         Nf = x.Key.NF,

@@ -52,7 +52,7 @@ namespace SGID.Pages.Relatorios.AdmVendas
                              where SD20.DELET != "*" && SA10.DELET != "*" && SB10.DELET != "*" && SF20.DELET != "*" && SC50.DELET != "*" && SA30.DELET != "*"
                              && ((int)(object)SD20.D2Cf >= 5102 && (int)(object)SD20.D2Cf <= 5114 || (int)(object)SD20.D2Cf >= 6102 && (int)(object)SD20.D2Cf <= 6114 ||
                              (int)(object)SD20.D2Cf >= 7102 && (int)(object)SD20.D2Cf <= 7114 || CF.Contains((int)(object)SD20.D2Cf)) && ((int)(object)SD20.D2Emissao >= (int)(object)DataInicio.ToString("yyyy/MM/dd").Replace("/", "") && (int)(object)SD20.D2Emissao <= (int)(object)DataFim.ToString("yyyy/MM/dd").Replace("/", ""))
-                             && SD20.D2Quant != 0 && SC50.C5Utpoper == "F"  && SA10.A1Clinter != "S" && SA10.A1Cgc != "04715053000140" && SA10.A1Cgc != "04715053000220" && SA10.A1Cgc != "01390500000140" && (int)(object)SD20.D2Emissao >= 20200801
+                             && SD20.D2Quant != 0 && (SC50.C5Utpoper == "F" || SC50.C5Utpoper == "K") && SA10.A1Clinter != "S" && SA10.A1Cgc != "04715053000140" && SA10.A1Cgc != "04715053000220" && SA10.A1Cgc != "01390500000140" && (int)(object)SD20.D2Emissao >= 20200801
                              select new
                              {
                                  Filial = SD20.D2Filial,
@@ -77,8 +77,9 @@ namespace SGID.Pages.Relatorios.AdmVendas
                                  NomPla = SC50.C5XNmpla,
                                  SC50.C5Utpoper,
                                  SA30.A3Xdescun,
-                                 SC50.C5Nomclie,
-                                 SB10.B1Fabric
+                                 Entrega = SC50.C5Nomclie,
+                                 Fornece = SB10.B1Fabric,
+                                 TipoCirur = SC50.C5Utpoper
                              });
 
 
@@ -102,10 +103,10 @@ namespace SGID.Pages.Relatorios.AdmVendas
                     x.NomPla,
                     x.C5Utpoper,
                     x.A3Xdescun,
-                    x.C5Nomclie,
-                    x.B1Fabric
-                })
-                .Select(x => new RelatorioCirurgiasFaturadas
+                    x.Entrega,
+                    x.Fornece,
+                    x.TipoCirur
+                }).Select(x => new RelatorioCirurgiasFaturadas
                 {
                     Filial = x.Key.Filial,
                     Clifor = x.Key.Clifor,
@@ -129,8 +130,9 @@ namespace SGID.Pages.Relatorios.AdmVendas
                     XNMPla = x.Key.NomPla,
                     Utpoper = x.Key.C5Utpoper,
                     Linha = x.Key.A3Xdescun,
-                    Entrega = x.Key.C5Nomclie,
-                    Fornecedor = x.Key.B1Fabric
+                    Entrega = x.Key.Entrega,
+                    Fornecedor = x.Key.Fornece,
+                    TipoCirur = x.Key.TipoCirur
                 }).OrderBy(x => x.A3Nome).ToList();
 
 
@@ -242,7 +244,7 @@ namespace SGID.Pages.Relatorios.AdmVendas
                              where SD20.DELET != "*" && SA10.DELET != "*" && SB10.DELET != "*" && SF20.DELET != "*" && SC50.DELET != "*" && SA30.DELET != "*"
                              && ((int)(object)SD20.D2Cf >= 5102 && (int)(object)SD20.D2Cf <= 5114 || (int)(object)SD20.D2Cf >= 6102 && (int)(object)SD20.D2Cf <= 6114 ||
                              (int)(object)SD20.D2Cf >= 7102 && (int)(object)SD20.D2Cf <= 7114 || CF.Contains((int)(object)SD20.D2Cf)) && ((int)(object)SD20.D2Emissao >= (int)(object)DataInicio.ToString("yyyy/MM/dd").Replace("/", "") && (int)(object)SD20.D2Emissao <= (int)(object)DataFim.ToString("yyyy/MM/dd").Replace("/", ""))
-                             && SD20.D2Quant != 0 && SC50.C5Utpoper == "F" && SA10.A1Clinter != "S" && SA10.A1Cgc != "04715053000140" && SA10.A1Cgc != "04715053000220" && SA10.A1Cgc != "01390500000140" && (int)(object)SD20.D2Emissao >= 20200801
+                             && SD20.D2Quant != 0 && (SC50.C5Utpoper == "F" || SC50.C5Utpoper == "K") && SA10.A1Clinter != "S" && SA10.A1Cgc != "04715053000140" && SA10.A1Cgc != "04715053000220" && SA10.A1Cgc != "01390500000140" && (int)(object)SD20.D2Emissao >= 20200801
                              select new
                              {
                                  Filial = SD20.D2Filial,
@@ -268,7 +270,8 @@ namespace SGID.Pages.Relatorios.AdmVendas
                                  SC50.C5Utpoper,
                                  SA30.A3Xdescun,
                                  Entrega = SC50.C5Nomclie,
-                                 Fornece = SB10.B1Fabric
+                                 Fornece = SB10.B1Fabric,
+                                 TipoCirur = SC50.C5Utpoper
                              });
 
 
@@ -293,7 +296,8 @@ namespace SGID.Pages.Relatorios.AdmVendas
                     x.C5Utpoper,
                     x.A3Xdescun,
                     x.Entrega,
-                    x.Fornece
+                    x.Fornece,
+                    x.TipoCirur
                 }).Select(x => new RelatorioCirurgiasFaturadas
                 {
                     Filial = x.Key.Filial,
@@ -319,7 +323,8 @@ namespace SGID.Pages.Relatorios.AdmVendas
                     Utpoper = x.Key.C5Utpoper,
                     Linha = x.Key.A3Xdescun,
                     Entrega = x.Key.Entrega,
-                    Fornecedor = x.Key.Fornece
+                    Fornecedor = x.Key.Fornece,
+                    TipoCirur = x.Key.TipoCirur
                 }).OrderBy(x => x.A3Nome).ToList();
                 #endregion
 
@@ -432,6 +437,7 @@ namespace SGID.Pages.Relatorios.AdmVendas
                 sheet.Cells[1, 17].Value = "Especialidade";
                 sheet.Cells[1, 18].Value = "Cliente Entrega";
                 sheet.Cells[1, 19].Value = "Fornecedor";
+                sheet.Cells[1, 20].Value = "Tipo Faturamento";
 
                 int i = 2;
 
@@ -456,6 +462,7 @@ namespace SGID.Pages.Relatorios.AdmVendas
                     sheet.Cells[i, 17].Value = Pedido.Linha;
                     sheet.Cells[i, 18].Value = Pedido.Entrega;
                     sheet.Cells[i, 19].Value = Pedido.Fornecedor;
+                    sheet.Cells[i, 20].Value = Pedido.TipoCirur == "K" ? "KAMIKAZE" : "NORMAL";
 
                     i++;
                 });

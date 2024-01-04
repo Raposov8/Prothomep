@@ -81,7 +81,7 @@ namespace SGID.Pages.Account
                         var template = new
                         {
                             Titulo = "Bem-vindo(a) ao",
-                            Titulo2 = "GID",
+                            Titulo2 = "SGID",
                             Email = Input.Email,
                             Senha = Input.Password,
                             Nome = Input.Email.Split("@")[0].Replace("."," ").ToUpper(),
@@ -99,7 +99,7 @@ namespace SGID.Pages.Account
                         mail.From = new MailAddress("ti@intermedic.com.br", "ENVIADOR");
                         mail.To.Add(new MailAddress(Input.Email, "RECEBEDOR"));
                         mail.Bcc.Add(new MailAddress("ti@intermedic.com.br"));
-                        mail.Subject = "Primeiro Acesso";
+                        mail.Subject = "Primeiro Acesso ao SGID";
                         mail.Body = mensagem;
                         mail.IsBodyHtml = true;
                         mail.Priority = MailPriority.High;

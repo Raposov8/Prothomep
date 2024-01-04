@@ -37,5 +37,6 @@
 
         //ADM Rogerio 
         public string Fornecedor { get; set; }
+        public string TipoCirur { get; set; }
     }
 }

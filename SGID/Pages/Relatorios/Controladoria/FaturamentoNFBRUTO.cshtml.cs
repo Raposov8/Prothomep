@@ -53,7 +53,7 @@ namespace SGID.Pages.Relatorios.Controladoria
                                      where SD20.DELET != "*" && SA10.DELET != "*" && SB10.DELET != "*" && SF20.DELET != "*" && SC50.DELET != "*" &&
                                      (((int)(object)SD20.D2Cf >= 5102 && (int)(object)SD20.D2Cf <= 5114) || ((int)(object)SD20.D2Cf >= 6102 && (int)(object)SD20.D2Cf <= 6114)
                                      || ((int)(object)SD20.D2Cf >= 7102 && (int)(object)SD20.D2Cf <= 7114) || CF.Contains((int)(object)SD20.D2Cf))
-                                     && (int)(object)SD20.D2Emissao >= InicioAno && (int)(object)SD20.D2Emissao <= FimAno
+                                     && (int)(object)SD20.D2Emissao >= InicioAno && (int)(object)SD20.D2Emissao <= FimAno && SD20.D2Quant != 0
                                      select new
                                      {
                                          Filial = SD20.D2Filial,
@@ -311,7 +311,7 @@ namespace SGID.Pages.Relatorios.Controladoria
                                      where SD20.DELET != "*" && SA10.DELET != "*" && SB10.DELET != "*" && SF20.DELET != "*" && SC50.DELET != "*" &&
                                      (((int)(object)SD20.D2Cf >= 5102 && (int)(object)SD20.D2Cf <= 5114) || ((int)(object)SD20.D2Cf >= 6102 && (int)(object)SD20.D2Cf <= 6114)
                                      || ((int)(object)SD20.D2Cf >= 7102 && (int)(object)SD20.D2Cf <= 7114) || CF.Contains((int)(object)SD20.D2Cf))
-                                     && (int)(object)SD20.D2Emissao >= InicioAno && (int)(object)SD20.D2Emissao <= FimAno
+                                     && (int)(object)SD20.D2Emissao >= InicioAno && (int)(object)SD20.D2Emissao <= FimAno && SD20.D2Quant != 0
                                      select new
                                      {
                                          Filial = SD20.D2Filial,

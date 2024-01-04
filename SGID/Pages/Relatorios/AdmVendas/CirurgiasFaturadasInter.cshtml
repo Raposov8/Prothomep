@@ -96,6 +96,9 @@
                     <th class="text-center">
                         Fornecedor
                     </th>
+                    <th class="text-center">
+                        Tipo Faturamento
+                    </th>
                 </tr>
             </thead>
             <tbody>
@@ -120,6 +123,17 @@
                         <td>@Html.DisplayFor(model=> data.XNMPla)</td>
                         <td>@Html.DisplayFor(model=> data.Linha)</td>
                         <td>@Html.DisplayFor(model => data.Fornecedor)</td>
+
+                        <td>@if (data.TipoCirur == "K")
+                            {
+                                <span>KAMIKAZE</span>
+                            }
+                            else
+                            {
+                                <span>NORMAL</span>
+                            }
+                        </td>
+                        
                     </tr>
                 }
                 <tr>

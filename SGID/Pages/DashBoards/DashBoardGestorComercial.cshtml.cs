@@ -114,7 +114,6 @@ namespace SGID.Pages.DashBoards
                     {
                         x.Login,
                         x.NF,
-                        x.Total
                     }).Select(x => new RelatorioCirurgiasFaturadas
                     {
                         A3Nome = x.Key.Login,
@@ -193,7 +192,7 @@ namespace SGID.Pages.DashBoards
                     {
                         #region Gestor
 
-                        if (user == "ARTEMIO.COSTA") user = "LEONARDO.BRITO";
+                        if (user == "ARTEMIO.COSTA")  user = "LEONARDO.BRITO";
 
                         var vendedores = ProtheusDenuo.Sa3010s.Where(x => (x.A3Xlogsup == user || x.A3Xlogin == user) && x.DELET != "*" && x.A3Msblql != "1").Select(x => new
                         {
@@ -302,7 +301,6 @@ namespace SGID.Pages.DashBoards
                         {
                             x.Login,
                             x.NF,
-                            x.Total
                         }).Select(x => new RelatorioCirurgiasFaturadas
                         {
                             A3Nome = x.Key.Login,
@@ -447,7 +445,6 @@ namespace SGID.Pages.DashBoards
                         {
                             x.Login,
                             x.NF,
-                            x.Total
                         }).Select(x => new RelatorioCirurgiasFaturadas
                         {
                             A3Nome = x.Key.Login,
@@ -483,6 +480,7 @@ namespace SGID.Pages.DashBoards
                     }
 
                 }
+
                 Equipe = Equipe.OrderBy(x => x.Nome).ToList();
             }
             catch (Exception ex)

@@ -46,7 +46,7 @@ namespace SGID.Pages.Relatorios.Financeiro
                               && (int)(object)SD20.D2Emissao <= (int)(object)DataFim.ToString("yyyy/MM/dd").Replace("/", "")
                               && (((int)(object)SD20.D2Cf >= 5102 && (int)(object)SD20.D2Cf <= 5114) || ((int)(object)SD20.D2Cf >= 6102 && (int)(object)SD20.D2Cf <= 6114) ||
                               ((int)(object)SD20.D2Cf >= 7102 && (int)(object)SD20.D2Cf <= 7114) || CF.Contains((int)(object)SD20.D2Cf))
-                              && SF20.DELET != "*" && SD20.DELET != "*"
+                              && SF20.DELET != "*" && SD20.DELET != "*" && SD20.D2Quant != 0
                               select new ReceitaBruta
                               {
                                   Produto = SB10.B1Cod,
@@ -136,7 +136,7 @@ namespace SGID.Pages.Relatorios.Financeiro
                               && (int)(object)SD20.D2Emissao <= (int)(object)DataFim.ToString("yyyy/MM/dd").Replace("/", "")
                               && (((int)(object)SD20.D2Cf >= 5102 && (int)(object)SD20.D2Cf <= 5114) || ((int)(object)SD20.D2Cf >= 6102 && (int)(object)SD20.D2Cf <= 6114) ||
                               ((int)(object)SD20.D2Cf >= 7102 && (int)(object)SD20.D2Cf <= 7114) || CF.Contains((int)(object)SD20.D2Cf))
-                              && SF20.DELET != "*" && SD20.DELET != "*"
+                              && SF20.DELET != "*" && SD20.DELET != "*" && SD20.D2Quant != 0
                               select new ReceitaBruta
                               {
                                   Produto = SB10.B1Cod,

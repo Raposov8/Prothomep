@@ -73,35 +73,35 @@ namespace SGID.Pages.Relatorios.Controladoria
                                          Descon = SD20.D2Descon,
                                          TotalBrut = SD20.D2Valbrut
                                      })
-                                            .GroupBy(x => new
-                                            {
-                                                x.Filial,
-                                                x.Cliente,
-                                                x.Loja,
-                                                x.Nome,
-                                                x.Tipo,
-                                                x.Est,
-                                                x.Mun,
-                                                x.NF,
-                                                x.Serie,
-                                                x.Emissao
-                                            })
-                                            .Select(x => new RegistrosNF
-                                            {
-                                                Filial = x.Key.Filial,
-                                                CliFor = x.Key.Cliente,
-                                                Loja = x.Key.Loja,
-                                                Nome = x.Key.Nome,
-                                                Tipo = x.Key.Tipo == "G" ? "INTERGRUPO" : x.Key.Tipo == "H" ? "HOSPITAL" : x.Key.Tipo == "M" ? "MEDICO" : x.Key.Tipo == "I" ? "INSTRUMENTADOR" : x.Key.Tipo == "N" ? "NORMAL" : x.Key.Tipo == "C" ? "CONVENIO" : x.Key.Tipo == "P" ? "PARTICULAR" : x.Key.Tipo == "S" ? "SUB-DISTRIBUIDOR" : "OUTROS",
-                                                NF = x.Key.NF,
-                                                Serie = x.Key.Serie,
-                                                Emissao = $"{x.Key.Emissao.Substring(6, 2)}/{x.Key.Emissao.Substring(4, 2)}/{x.Key.Emissao.Substring(0, 4)}",
-                                                Total = x.Sum(c => c.TotalBrut),
-                                                Valipi = x.Sum(c => c.Valipi),
-                                                Valicm = x.Sum(c => c.Valicm),
-                                                Descon = x.Sum(c => c.Descon),
-                                                Mes = x.Key.Emissao.Substring(4, 2)
-                                            }).ToList();
+                                     .GroupBy(x => new
+                                     {
+                                         x.Filial,
+                                         x.Cliente,
+                                         x.Loja,
+                                         x.Nome,
+                                         x.Tipo,
+                                         x.Est,
+                                         x.Mun,
+                                         x.NF,
+                                         x.Serie,
+                                         x.Emissao
+                                     })
+                                     .Select(x => new RegistrosNF
+                                     {
+                                         Filial = x.Key.Filial,
+                                         CliFor = x.Key.Cliente,
+                                         Loja = x.Key.Loja,
+                                         Nome = x.Key.Nome,
+                                         Tipo = x.Key.Tipo == "G" ? "INTERGRUPO" : x.Key.Tipo == "H" ? "HOSPITAL" : x.Key.Tipo == "M" ? "MEDICO" : x.Key.Tipo == "I" ? "INSTRUMENTADOR" : x.Key.Tipo == "N" ? "NORMAL" : x.Key.Tipo == "C" ? "CONVENIO" : x.Key.Tipo == "P" ? "PARTICULAR" : x.Key.Tipo == "S" ? "SUB-DISTRIBUIDOR" : "OUTROS",
+                                         NF = x.Key.NF,
+                                         Serie = x.Key.Serie,
+                                         Emissao = $"{x.Key.Emissao.Substring(6, 2)}/{x.Key.Emissao.Substring(4, 2)}/{x.Key.Emissao.Substring(0, 4)}",
+                                         Total = x.Sum(c => c.TotalBrut),
+                                         Valipi = x.Sum(c => c.Valipi),
+                                         Valicm = x.Sum(c => c.Valicm),
+                                         Descon = x.Sum(c => c.Descon),
+                                         Mes = x.Key.Emissao.Substring(4, 2)
+                                     }).ToList();
 
                 var TipoFaturados = queryFaturado.Select(x => x.Tipo).Distinct().ToList();
                 queryFaturado.ForEach(c =>
