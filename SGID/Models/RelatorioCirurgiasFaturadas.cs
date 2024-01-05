@@ -32,11 +32,13 @@
         public string Linha { get; set; }
         public string Entrega { get; set; }
 
-        //RH Eduardo
+        //RH Mara
         public string Municipio { get; set; }
 
         //ADM Rogerio 
         public string Fornecedor { get; set; }
         public string TipoCirur { get; set; }
+        public string LicitacaoCodigo { get; set; }
+
     }
 }
