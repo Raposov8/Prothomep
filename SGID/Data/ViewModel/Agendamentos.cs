@@ -25,8 +25,8 @@ namespace SGID.Data.ViewModel
         public string Paciente { get; set; }
         public string CodHospital { get; set; }
         public string Hospital { get; set; }
-        public string CodConvenio { get; set; }
-        public string Convenio { get; set; }
+        public string? CodConvenio { get; set; }
+        public string? Convenio { get; set; }
         public string Instrumentador { get; set; }
         public DateTime? DataCirurgia { get; set; }
         public DateTime DataAutorizacao { get; set; }

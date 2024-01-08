@@ -237,9 +237,14 @@
                                 <span>DENUO</span>
                             }
                         </td>
-                        @if (Pedido.Tipo == 2)
+                        @if (Pedido.Tipo == 3)
                         {
                             <td style="background-color:green;">
+                            </td>
+                        }
+                        else if (Pedido.Tipo == 2)
+                        {
+                            <td style="background-color:yellow;">
                             </td>
                         }
                         else

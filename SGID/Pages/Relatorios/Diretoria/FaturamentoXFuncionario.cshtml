@@ -157,9 +157,7 @@
                         <td>@string.Format("{0:N2}", Model.UsuariosLicitacoes.Sum(x => x.Paga))</td>
                     </tr>
                 }
-
-                
-
+           
                 @foreach (var item in Model.UsuariosSub)
                 {
                     <tr>
@@ -221,7 +219,7 @@
                         <td><a style="text-decoration: none;" target="_blank" href="/account/rh/RelatorioComissao?IdTime=@item.User.Id&&Mes=@Model.Mes&&Ano=@Model.Ano">@item.User.Integrante.ToUpper().Split("@")[0].Replace(".", " ")</a></td>
                         <td>@Model.Mes/@Model.Ano</td>
                         <td>@string.Format("{0:N2}",item.Faturado)</td>
-                        <td>0</td>
+                        <td>@string.Format("{0:N2}",item.Baixa)</td>
                         <td>@string.Format("{0:N2}",item.Meta)</td>
                         <td>
                             @if (item.Meta > 0)
@@ -249,7 +247,7 @@
                         <td>ORTOPEDIA</td>
                         <td>@Model.Mes/@Model.Ano</td>
                         <td>@string.Format("{0:N2}", Model.ComercialOrtopedia.Sum(x => x.Faturado))</td>
-                        <td>0</td>
+                        <td>@string.Format("{0:N2}", Model.ComercialOrtopedia.Sum(x => x.Baixa))</td>
                         <td>@string.Format("{0:N2}", Model.ComercialOrtopedia.Sum(x => x.Meta))</td>
                         <td>
                             @if(Model.ComercialOrtopedia.Sum(x => x.Meta)>0)
@@ -277,7 +275,7 @@
                         <td><a style="text-decoration: none;" target="_blank" href="/account/rh/RelatorioComissao?IdTime=@item.User.Id&&Mes=@Model.Mes&&Ano=@Model.Ano">@item.User.Integrante.ToUpper().Split("@")[0].Replace(".", " ")</a></td>
                         <td>@Model.Mes/@Model.Ano</td>
                         <td>@string.Format("{0:N2}",item.Faturado)</td>
-                        <td>0</td>
+                        <td>@string.Format("{0:N2}", item.Baixa)</td>
                         <td>@string.Format("{0:N2}",item.Meta)</td>
                         <td>
                             @if (item.Meta > 0)
@@ -305,7 +303,7 @@
                         <td>BUCOMAXILO</td>
                         <td>@Model.Mes/@Model.Ano</td>
                         <td>@string.Format("{0:N2}", Model.ComercialBuco.Sum(x => x.Faturado))</td>
-                        <td>0</td>
+                        <td>@string.Format("{0:N2}", Model.ComercialBuco.Sum(x => x.Baixa))</td>
                         <td>@string.Format("{0:N2}", Model.ComercialBuco.Sum(x => x.Meta))</td>
                         <td>@if(Model.ComercialBuco.Sum(x => x.Meta)>0)
                             {
@@ -332,7 +330,7 @@
                         <td><a style="text-decoration: none;" target="_blank" href="/account/rh/RelatorioComissao?IdTime=@item.User.Id&&Mes=@Model.Mes&&Ano=@Model.Ano">@item.User.Integrante.ToUpper().Split("@")[0].Replace(".", " ")</a></td>
                         <td>@Model.Mes/@Model.Ano</td>
                         <td>@string.Format("{0:N2}",item.Faturado)</td>
-                        <td>0</td>
+                        <td>@string.Format("{0:N2}",item.Baixa)</td>
                         <td>@string.Format("{0:N2}",item.Meta)</td>
                         <td>
                             @if (item.Meta > 0)
@@ -360,7 +358,7 @@
                         <td>TORAX</td>
                         <td>@Model.Mes/@Model.Ano</td>
                         <td>@string.Format("{0:N2}", Model.ComercialTorax.Sum(x => x.Faturado))</td>
-                        <td>0</td>
+                        <td>@string.Format("{0:N2}", Model.ComercialTorax.Sum(x => x.Baixa))</td>
                         <td>@string.Format("{0:N2}", Model.ComercialTorax.Sum(x => x.Meta))</td>
                         <td>@if(Model.ComercialTorax.Sum(x => x.Meta) > 0)
                             {
@@ -387,7 +385,7 @@
                         <td><a style="text-decoration: none;" target="_blank" href="/account/rh/RelatorioComissao?IdTime=@item.User.Id&&Mes=@Model.Mes&&Ano=@Model.Ano">@item.User.Integrante.ToUpper().Split("@")[0].Replace(".", " ")</a></td>
                         <td>@Model.Mes/@Model.Ano</td>
                         <td>@string.Format("{0:N2}",item.Faturado)</td>
-                        <td>0</td>
+                        <td>@string.Format("{0:N2}",item.Baixa)</td>
                         <td>@string.Format("{0:N2}",item.Meta)</td>
                         <td>
                             @if (item.Meta > 0)
@@ -415,7 +413,7 @@
                         <td>INTERIOR</td>
                         <td>@Model.Mes/@Model.Ano</td>
                         <td>@string.Format("{0:N2}", Model.ComercialInterior.Sum(x => x.Faturado))</td>
-                        <td>0</td>
+                        <td>@string.Format("{0:N2}", Model.ComercialInterior.Sum(x => x.Baixa))</td>
                         <td>@string.Format("{0:N2}", Model.ComercialInterior.Sum(x => x.Meta))</td>
                         <td>@if(Model.ComercialInterior.Sum(x => x.Meta) > 0)
                             {
@@ -489,8 +487,6 @@
                         <td>@string.Format("{0:N2}", Model.UsuariosDental.Sum(x => x.Paga))</td>
                     </tr>
                 }
-
-                
 
                 @foreach (var item in Model.Usuarios)
                 {

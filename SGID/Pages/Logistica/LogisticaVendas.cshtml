@@ -80,9 +80,14 @@
                         <td>@Pedido.Hospital</td>
                         <td>@Pedido.Medico</td>
                         <td>@Pedido.DataCirurgia.Value.ToString("dd/MM/yyyy HH:mm") </td>
-                        @if (Pedido.Tipo == 2)
+                        @if (Pedido.Tipo == 3)
                         {
                             <td style="background-color:green;">
+                            </td>
+                        }
+                        else if(Pedido.Tipo == 2)
+                        {
+                            <td style="background-color:yellow;">
                             </td>
                         }
                         else

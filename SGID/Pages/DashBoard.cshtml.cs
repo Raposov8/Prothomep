@@ -50,7 +50,7 @@ namespace SGID.Pages
             }
             else if (User.IsInRole("CoordenadorInstrumentador"))
             {
-                return LocalRedirect("/dashboards/DashBoardGestorInstrumentador");
+                return LocalRedirect("/dashboards/DashBoardGestorInstrumentador/0");
             }
             else if (User.IsInRole("Diretoria"))
             {

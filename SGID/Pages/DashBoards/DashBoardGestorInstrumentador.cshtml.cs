@@ -25,26 +25,32 @@ namespace SGID.Pages.DashBoards
         public void OnGet(int id)
         {
 
-            if (id == 0)
-            {
-                Agendamentos = SGID.Agendamentos.Where(x => x.StatusPedido == 7 && x.StatusInstrumentador == 0).ToList();
-            }
-            else if (id == 1)
-            {
-                Agendamentos = SGID.Agendamentos.Where(x => x.StatusPedido == 7 && x.StatusInstrumentador == 1).ToList();
-            }
             else if (id == 2)
             {
-                Agendamentos = SGID.Agendamentos.Where(x => x.StatusPedido == 7 && x.StatusInstrumentador == 2).ToList();
+                Agendamentos = ;
             }
             else if (id == 3)
             {
-                Agendamentos = SGID.Agendamentos.Where(x => x.StatusPedido == 7 && x.StatusInstrumentador == 3).ToList();
+                Agendamentos = ;
             }
             else
             {
-                Agendamentos = SGID.Agendamentos.Where(x => x.StatusPedido == 7 && x.StatusInstrumentador == 4).ToList();
+                Agendamentos = 
             }
+
+            Agendamentos = id switch
+            {
+                0 => SGID.Agendamentos.Where(x => x.StatusPedido == 7 && x.StatusInstrumentador == 0).ToList(),
+                //Pendente Comercial Ida e volta da cotação
+                1 => SGID.Agendamentos.Where(x => x.StatusPedido == 7 && x.StatusInstrumentador == 1).ToList(),
+                //Retorno Cliente
+                2 => SGID.Agendamentos.Where(x => x.StatusPedido == 7 && x.StatusInstrumentador == 2).ToList(),
+                //NRespondidas
+                3 => SGID.Agendamentos.Where(x => x.StatusPedido == 7 && x.StatusInstrumentador == 3).ToList(),
+                //
+                _ => SGID.Agendamentos.Where(x => x.StatusPedido == 7 && x.StatusInstrumentador == 4).ToList(),
+            };
+
 
             Cirurgias = SGID.Agendamentos.Where(x => x.StatusPedido == 7 && x.StatusInstrumentador == 0).Count();
 
@@ -80,7 +86,6 @@ namespace SGID.Pages.DashBoards
         {
 
             var Instrumentador = SGID.Instrumentadores.FirstOrDefault(x => x.Id == InstruAgenda);
-
 
             var agendamento = SGID.Agendamentos.FirstOrDefault(x => x.Id == IdAgenda);
 
