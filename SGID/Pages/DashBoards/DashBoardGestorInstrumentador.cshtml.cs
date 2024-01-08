@@ -25,19 +25,6 @@ namespace SGID.Pages.DashBoards
         public void OnGet(int id)
         {
 
-            else if (id == 2)
-            {
-                Agendamentos = ;
-            }
-            else if (id == 3)
-            {
-                Agendamentos = ;
-            }
-            else
-            {
-                Agendamentos = 
-            }
-
             Agendamentos = id switch
             {
                 0 => SGID.Agendamentos.Where(x => x.StatusPedido == 7 && x.StatusInstrumentador == 0).ToList(),

@@ -40,6 +40,7 @@ namespace SGID.Pages.Relatorios.RH
                              join SA10 in Protheus.Sa1010s on SE50.E5Cliente equals SA10.A1Cod
                              join SC50 in Protheus.Sc5010s on SE10.E1Pedido equals SC50.C5Num
                              join SA30 in Protheus.Sa3010s on SC50.C5Vend1 equals SA30.A3Cod
+                             join SD20 in Protheus.Sd2010s on new { Filial = SC50.C5Filial, Num = SC50.C5Num } equals new { Filial = SD20.D2Filial, Num = SD20.D2Pedido }
                              where SE50.DELET != "*" && SE10.DELET != "*" && SE50.E5Recpag == "R"
                              && (SE50.E5Tipodoc == "VL" || SE50.E5Tipodoc == "RA")
                              && (SE50.E5Naturez == "111001" || SE50.E5Naturez == "111004" || SE50.E5Naturez == "111006")
@@ -76,7 +77,7 @@ namespace SGID.Pages.Relatorios.RH
                                  CodigoCliente = SA10.A1Xgrinte,
                                  Login = SA30.A3Xlogin,
                                  Gestor = SA30.A3Xlogsup,
-                                 DataPedido = SC50.C5Emissao
+                                 DataPedido = SD20.D2Emissao
                              }).ToList();
             }
             catch (Exception e)
@@ -104,6 +105,7 @@ namespace SGID.Pages.Relatorios.RH
                              join SA10 in Protheus.Sa1010s on SE50.E5Cliente equals SA10.A1Cod
                              join SC50 in Protheus.Sc5010s on SE10.E1Pedido equals SC50.C5Num
                              join SA30 in Protheus.Sa3010s on SC50.C5Vend1 equals SA30.A3Cod
+                             join SD20 in Protheus.Sd2010s on new { Filial = SC50.C5Filial, Num = SC50.C5Num } equals new { Filial = SD20.D2Filial, Num = SD20.D2Pedido }
                              where SE50.DELET != "*" && SE10.DELET != "*" && SE50.E5Recpag == "R"
                              && (SE50.E5Tipodoc == "VL" || SE50.E5Tipodoc == "RA")
                              && (SE50.E5Naturez == "111001" || SE50.E5Naturez == "111004" || SE50.E5Naturez == "111006")
@@ -140,7 +142,7 @@ namespace SGID.Pages.Relatorios.RH
                                  CodigoCliente = SA10.A1Xgrinte,
                                  Login = SA30.A3Xlogin,
                                  Gestor = SA30.A3Xlogsup,
-                                 DataPedido = SC50.C5Emissao
+                                 DataPedido = SD20.D2Emissao
                              }).ToList();
 
 
