@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using OfficeOpenXml;
@@ -8,6 +9,7 @@ using SGID.Models.Financeiro;
 
 namespace SGID.Pages.Relatorios.RH
 {
+    [Authorize]
     public class BaixaLicitacoesModel : PageModel
     {
         private TOTVSDENUOContext Protheus { get; set; }

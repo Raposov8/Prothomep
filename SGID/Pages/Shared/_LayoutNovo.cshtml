@@ -77,6 +77,17 @@
                                     </div>
                                 </li>
                             }
+                            @if (User.IsInRole("Admin") || User.IsInRole("CoordenadorInstrumentador") || User.IsInRole("GestorVenda"))
+                            {
+                                @if (User.IsInRole("GestorVenda") || User.IsInRole("Admin")) {
+                                    <li>
+                                        <a class="nav-link" href="/dashboards/DashBoardGestorInstrumentador/0"><i class="fa-solid fa-user-nurse"></i> DashBoard Instrumentadores</a>
+                                    </li>
+                                }
+                                <li>
+                                    <a class="nav-link" href="/Instrumentador/ListarInstrumentadores"><i class="fa-solid fa-user-nurse"></i> Recursos(Instrumentadores)</a>
+                                </li>
+                            }
                             @if (User.IsInRole("Admin") || User.IsInRole("Comercial") || User.IsInRole("GestorComercial") || User.IsInRole("Diretoria"))
                             {
                                 if (User.Identity.Name.Split("@")[1].ToUpper() == "INTERMEDIC.COM.BR")
@@ -344,8 +355,6 @@
                                 <i class="fa-solid fa-clipboard-list"></i> Relatórios
                             </a>
                             <ul class="dropdown-menu novo1" aria-labelledby="dropdowm05">
-                                <li class="nav-item dropdown">
-                                    <ul class="list-unstyled fw-normal pb-1 small">
                                         @if (User.IsInRole("Admin") || User.IsInRole("Comercial"))
                                         {
                                                 @if (User.Identity.Name.Split("@")[1] == "denuo.com.br" || User.IsInRole("Admin") || User.IsInRole("ComercialDuo"))
@@ -766,8 +775,7 @@
                                     </div>
                                 </li>
                             }
-                        </ul>
-                    </li>
+                       
                 </ul>
             </div>
             <div class="col-12 col-sm-4 col-md-2">

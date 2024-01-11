@@ -28,14 +28,12 @@ namespace SGID.Pages.Relatorios.Controladoria
         {
             try
             {
-
-                var data = Convert.ToInt32(DateTime.Now.ToString("yyyy/MM/dd").Replace("/", ""));
-
                 Relatorio = (from SD20 in Protheus.Sd2010s
                              join SA10 in Protheus.Sa1010s on new { Cliente = SD20.D2Cliente, Loja = SD20.D2Loja } equals new { Cliente = SA10.A1Cod, Loja = SA10.A1Loja }
-                             join SD10 in Protheus.Sd1010s on new { Cliente = SD20.D2Filial + SD20.D2Doc + SD20.D2Serie + SD20.D2Cliente + SD20.D2Loja } equals new {Cliente = SD10.D1Filial + SD10.D1Nfori + SD10.D1Seriori + SD10.D1Fornece + SD10.D1Loja} into Sr
+                             join SD10 in Protheus.Sd1010s on new { Filial = SD20.D2Filial,Doc = SD20.D2Doc,Serie = SD20.D2Serie ,Cliente = SD20.D2Cliente,Loja = SD20.D2Loja } equals new {Filial = SD10.D1Filial,Doc = SD10.D1Nfori,Serie = SD10.D1Seriori,Cliente = SD10.D1Fornece ,Loja = SD10.D1Loja} into Sr
                              from m in Sr.DefaultIfEmpty()
-                             where SD20.DELET != "*" && SA10.DELET != "*" && SD20.D2Cf == "5912" && SD20.D2Tipo == "N"
+                             where SD20.DELET != "*" && SA10.DELET != "*" && (SD20.D2Cf == "5912" || SD20.D2Cf == "6912") && SD20.D2Tipo == "N"
+                             && m.D1Cf == null
                              select new RelatorioConserto
                              {
 
@@ -51,7 +49,7 @@ namespace SGID.Pages.Relatorios.Controladoria
                              }
                              ).ToList();
 
-                Relatorio = Relatorio.Where(x => x.CF == null).DistinctBy(x => x.Nf).ToList();
+                Relatorio = Relatorio.DistinctBy(x => x.Nf).ToList();
 
                 Relatorio = Relatorio.OrderByDescending(x => x.Dias).ToList();
             }

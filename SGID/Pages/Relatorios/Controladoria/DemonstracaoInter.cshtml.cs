@@ -5,6 +5,7 @@ using OfficeOpenXml;
 using SGID.Data;
 using SGID.Data.Models;
 using SGID.Models;
+using SGID.Models.Controladoria;
 using SGID.Models.Inter;
 
 namespace SGID.Pages.Relatorios.Controladoria
@@ -26,30 +27,28 @@ namespace SGID.Pages.Relatorios.Controladoria
         {
             try
             {
-                var data = Convert.ToInt32(DateTime.Now.ToString("yyyy/MM/dd").Replace("/", ""));
 
                 Relatorio = (from SD20 in Protheus.Sd2010s
                              join SA10 in Protheus.Sa1010s on new { Cliente = SD20.D2Cliente, Loja = SD20.D2Loja } equals new { Cliente = SA10.A1Cod, Loja = SA10.A1Loja }
-                             join SD10 in Protheus.Sd1010s on new { Cliente = SD20.D2Filial + SD20.D2Doc + SD20.D2Serie + SD20.D2Cliente + SD20.D2Loja } equals new { Cliente = SD10.D1Filial + SD10.D1Nfori + SD10.D1Seriori + SD10.D1Fornece + SD10.D1Loja } into Sr
+                             join SD10 in Protheus.Sd1010s on new { Filial = SD20.D2Filial, Doc = SD20.D2Doc, Serie = SD20.D2Serie, Cliente = SD20.D2Cliente, Loja = SD20.D2Loja } equals new { Filial = SD10.D1Filial, Doc = SD10.D1Nfori, Serie = SD10.D1Seriori, Cliente = SD10.D1Fornece, Loja = SD10.D1Loja } into Sr
                              from m in Sr.DefaultIfEmpty()
-                             where SD20.DELET != "*" && SA10.DELET != "*" && SD20.D2Cf == "5912" && SD20.D2Tipo == "N"
-                             && SD20.D2Serie == "2"
+                             where SD20.DELET != "*" && SA10.DELET != "*" && (SD20.D2Cf == "5912" || SD20.D2Cf == "6912") && SD20.D2Tipo == "N"
+                             && SD20.D2Serie == "2" && m.D1Cf == null
                              select new RelatorioConserto
                              {
-
                                  Filial = SD20.D2Filial,
                                  Nf = SD20.D2Doc,
                                  Serie = SD20.D2Serie,
                                  Emissao = Convert.ToDateTime($"{SD20.D2Emissao.Substring(4, 2)}/{SD20.D2Emissao.Substring(6, 2)}/{SD20.D2Emissao.Substring(0, 4)}"),
                                  CodCli = SD20.D2Cliente,
                                  Loja = SD20.D2Loja,
-                                 Cliente = SA10.A1Nome,
                                  Dias = (int)(DateTime.Now - Convert.ToDateTime($"{SD20.D2Emissao.Substring(4, 2)}/{SD20.D2Emissao.Substring(6, 2)}/{SD20.D2Emissao.Substring(0, 4)}")).TotalDays,
+                                 Cliente = SA10.A1Nome,
                                  CF = m.D1Cf
                              }
                              ).ToList();
 
-                Relatorio = Relatorio.Where(x => x.CF == null).DistinctBy(x => x.Nf).ToList();
+                Relatorio = Relatorio.DistinctBy(x => x.Nf).ToList();
 
                 Relatorio = Relatorio.OrderByDescending(x => x.Dias).ToList();
             }

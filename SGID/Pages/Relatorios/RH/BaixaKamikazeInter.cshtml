@@ -1,0 +1,142 @@
+﻿@page
+@model SGID.Pages.Relatorios.RH.BaixaKamikazeInterModel
+@{
+    ViewData["Title"] = "Baixa Licitações Denuo";
+    if (User.IsInRole("Diretoria") && !User.IsInRole("Admin"))
+    {
+        Layout = "_LayoutDiretoria";
+    }
+    else
+    {
+        Layout = "_LayoutNovo";
+    }
+}
+
+@using (@Html.BeginForm(FormMethod.Post))
+{
+    <div class="row">
+        <div class="form-group mx-sm-3 mb-2 col-lg-2">
+            <input type="date" class="form-control" id="Datainicio" name="Datainicio" value="@Model.Inicio.ToString("yyyy-MM-dd")" placeholder="Data Inicio">
+        </div>
+        <div class="form-group mx-sm-3 mb-2 col-lg-2">
+            <input type="date" class="form-control" id="Datafim" name="Datafim" value="@Model.Fim.ToString("yyyy-MM-dd")" placeholder="Data Fim">
+        </div>
+        <div class="form-group mx-sm-3 mb-2 col-lg-1">
+            <button type="submit" class="btn btn-primary mb-2">Pesquisar</button>
+        </div>
+        <div class="form-group mx-sm-3 mb-2 col-lg-1">
+            <button type="submit" class="btn btn-secondary mb-2" asp-page-handler="Export"><i class="fa-solid fa-file-excel"></i> Exportar Excel</button>
+        </div>
+    </div>
+}
+
+
+<div class="panel">
+    <div class="panel-body">
+        <table id="demo-dt-addrow" class="table table-striped table-bordered" cellspacing="0" width="100%">
+            <thead>
+                <tr>
+                    <th class="text-center">
+                        PRF
+                    </th>
+                    <th class="text-center">
+                        NUMERO
+                    </th>
+                    <th class="text-center">
+                        PRC
+                    </th>
+                    <th class="text-center">
+                        TP
+                    </th>
+                    <th class="text-center">
+                        CLI/FOR
+                    </th>
+                    <th class="text-center">
+                        NOME CLI/FOR
+                    </th>
+                    <th class="text-center">
+                        NATUREZA
+                    </th>
+                    <th class="text-center">
+                        VENCTO
+                    </th>
+                    <th class="text-center">
+                        HISTORICO
+                    </th>
+                    <th class="text-center">
+                        DT BAIXA
+                    </th>
+                    <th class="text-center">
+                        VALOR ORIGINAL
+                    </th>
+                    <th class="text-center">
+                        JUR/MULTA
+                    </th>
+                    <th class="text-center">
+                        CORRECAO
+                    </th>
+                    <th class="text-center">
+                        DESCONTOS
+                    </th>
+                    <th class="text-center">
+                        ABATIM.
+                    </th>
+                    <th class="text-center">
+                        IMPOSTOS
+                    </th>
+                    <th class="text-center">
+                        VALOR ACESSORIO
+                    </th>
+                    <th class="text-center">
+                        TOTAL BAIXADO
+                    </th>
+                    <th class="text-center">
+                        BCO
+                    </th>
+                    <th class="text-center">
+                        DT DIG
+                    </th>
+                    <th class="text-center">
+                        MOT
+                    </th>
+                    <th class="text-center">
+                        ORIG
+                    </th>
+                    <th class="text-center">
+                        VENDEDOR
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var data in Model.Relatorio)
+                {
+                    <tr>
+                        <td>@Html.DisplayFor(model => data.Prefixo)</td>
+                        <td>@Html.DisplayFor(model => data.Numero)</td>
+                        <td>@Html.DisplayFor(model => data.Parcela)</td>
+                        <td>@Html.DisplayFor(model => data.TP)</td>
+                        <td>@Html.DisplayFor(model => data.CliFor)</td>
+                        <td>@Html.DisplayFor(model => data.NomeFor)</td>
+                        <td>@Html.DisplayFor(model => data.Naturez)</td>
+                        <td>@Html.DisplayFor(model => data.Vencimento)</td>
+                        <td>@Html.DisplayFor(model => data.Historico)</td>
+                        <td>@Html.DisplayFor(model => data.DataBaixa)</td>
+                        <td>@string.Format("{0:N2}", data.ValorOrig)</td>
+                        <td>@string.Format("{0:N2}", data.JurMulta)</td>
+                        <td>@string.Format("{0:N2}", data.Correcao)</td>
+                        <td>@string.Format("{0:N2}", data.Descon)</td>
+                        <td>@string.Format("{0:N2}", data.Abatimento)</td>
+                        <td>@string.Format("{0:N2}", data.Imposto)</td>
+                        <td>@string.Format("{0:N2}", data.ValorAcess)</td>
+                        <td>@string.Format("{0:N2}", data.TotalBaixado)</td>
+                        <td>@Html.DisplayFor(model => data.Banco)</td>
+                        <td>@Html.DisplayFor(model => data.DtDigi)</td>
+                        <td>@Html.DisplayFor(model => data.Mot)</td>
+                        <td>@Html.DisplayFor(model => data.Orig)</td>
+                        <td>@Html.DisplayFor(model => data.Vendedor)</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

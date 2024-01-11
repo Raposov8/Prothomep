@@ -15,10 +15,10 @@
 <!-- Campo de Pesquisa-->
 <div class="row">
     <div class="offset-4 offset-sm-4 offset-xs-4 col-md-3 col-sm-3 col-xs-3">
-        <h2>Lista de Instrumentadores</h2>
+        <input class="form-control" type="search" id="searchInput" name="searchInput" oninput="this.value = this.value.toUpperCase()" />
     </div>
     <div class="offset-2 offset-sm-2 offset-xs-2 col-md-3 col-sm-3 col-xs-3">
-        <input class="form-control" type="search" id="searchInput" name="searchInput" oninput="this.value = this.value.toUpperCase()" />
+        <h2>Lista de Instrumentadores</h2>
     </div>
 </div>
 <br />
@@ -30,6 +30,9 @@
             <table id="demo-dt-addrow" class="table table-striped table-bordered" cellspacing="0" width="50%">
                 <thead>
                     <tr>
+                        <th class="text-center">
+                            EMPRESA
+                        </th>
                         <th class="text-center">
                             STATUS
                         </th>
@@ -57,37 +60,41 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
                         @foreach(var data in Model.Instrumentadores)
                         {
-                            <td style="background-color:green;">
+                            <tr>
+                                <td>
+                                    @data.EmpresaProtheus
+                                </td>
+                                <td style="background-color:green;">
 
-                            </td>
-                            <td>
-                                @data.Nome
-                            </td>
-                            <td>
-                                @data.CPF
-                            </td>
-                            <td>
-                                @data.Telefone<br/>@data.Telefone2
-                            </td>
-                            <td>
-                                @data.Email
-                            </td>
-                            <td>
-                                @data.Municipio
-                            </td>
-                            <td>
-                                
-                            </td>
-                            <td>
-                                <a href="/instrumentador/editarinstrumentador/@data.Id" class="float-end" style="text-decoration:none;"><i class="fa-solid fa-pen-to-square"></i></a> |
-                                <i class="fa-solid fa-envelope-open-text"></i> | 
-                                <i class="fa-solid fa-lock"></i>
-                            </td>
+                                </td>
+                                <td>
+                                    @data.Nome
+                                </td>
+                                <td>
+                                    @data.CPF
+                                </td>
+                                <td>
+                                    @data.Telefone<br/>@data.Telefone2
+                                </td>
+                                <td>
+                                    @data.Email
+                                </td>
+                                <td>
+                                    @data.Municipio
+                                </td>
+                                <td>
+                                    
+                                </td>
+                                <td>
+                                    <a href="/instrumentador/editarinstrumentador/@data.Id" style="text-decoration:none;"><i class="fa-solid fa-pen-to-square"></i></a> |
+                                    <i class="fa-solid fa-envelope-open-text"></i> | 
+                                    <i class="fa-solid fa-lock"></i>
+                                </td>
+                            </tr>
                         }
-                    </tr>
+                    
                 </tbody>
             </table>
         </div>

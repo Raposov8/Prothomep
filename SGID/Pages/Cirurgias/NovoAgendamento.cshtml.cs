@@ -601,15 +601,12 @@ namespace SGID.Pages.Cirurgias
                     //Intermedic
                     var Cliente = ProtheusInter.Sa1010s.FirstOrDefault(x => x.A1Nome == Codigo && x.DELET != "*" && x.A1Msblql != "1")?.A1Nvend;
 
-
                     return new JsonResult(Cliente);
-
                 }
                 else
                 {
                     //Denuo
                     var Cliente = ProtheusDenuo.Sa1010s.FirstOrDefault(x => x.A1Nome == Codigo && x.DELET != "*" && x.A1Msblql != "1")?.A1Nvend;
-
 
                     return new JsonResult(Cliente);
                 }

@@ -15,7 +15,7 @@ namespace SGID.Pages.Instrumentador
 
         public void OnGet()
         {
-            Instrumentadores = SGID.Instrumentadores.ToList();
+            Instrumentadores = SGID.Instrumentadores.OrderBy(x=> x.EmpresaProtheus).ThenBy(x=> x.Nome).ToList();
         }
 
         

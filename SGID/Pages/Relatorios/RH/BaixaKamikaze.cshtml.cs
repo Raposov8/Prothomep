@@ -1,25 +1,25 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using SGID.Models.Inter;
 using OfficeOpenXml;
 using SGID.Data;
 using SGID.Data.Models;
+using SGID.Models.Denuo;
 using SGID.Models.Financeiro;
-using Microsoft.AspNetCore.Authorization;
 
 namespace SGID.Pages.Relatorios.RH
 {
     [Authorize]
-    public class BaixaLicitacoesInterModel : PageModel
+    public class BaixaKamikazeModel : PageModel
     {
-        private TOTVSINTERContext Protheus { get; set; }
+        private TOTVSDENUOContext Protheus { get; set; }
         private ApplicationDbContext SGID { get; set; }
         public List<RelatorioAreceberBaixa> Relatorio { get; set; } = new List<RelatorioAreceberBaixa>();
 
         public DateTime Inicio { get; set; }
         public DateTime Fim { get; set; }
 
-        public BaixaLicitacoesInterModel(TOTVSINTERContext denuo, ApplicationDbContext sgid)
+        public BaixaKamikazeModel(TOTVSDENUOContext denuo, ApplicationDbContext sgid)
         {
             Protheus = denuo;
             SGID = sgid;
@@ -49,7 +49,7 @@ namespace SGID.Pages.Relatorios.RH
                              && (SE50.E5Banco == "001" || SE50.E5Banco == "237" || SE50.E5Banco == "341")
                              && (int)(object)SE50.E5Data >= (int)(object)Datainicio.ToString("yyyy/MM/dd").Replace("/", "")
                              && (int)(object)SE50.E5Data <= (int)(object)Datafim.ToString("yyyy/MM/dd").Replace("/", "")
-                             && (SA10.A1Xgrinte == "000011" || SA10.A1Xgrinte == "000012")
+                             && SC50.C5Utpoper == "K"
                              select new RelatorioAreceberBaixa
                              {
                                  Prefixo = SE50.E5Prefixo,
@@ -81,11 +81,12 @@ namespace SGID.Pages.Relatorios.RH
                                  Gestor = SA30.A3Xlogsup,
                                  DataPedido = SD20.D2Emissao
                              }).ToList();
+
             }
             catch (Exception e)
             {
                 string user = User.Identity.Name.Split("@")[0].ToUpper();
-                Logger.Log(e, SGID, "Relatorio BaixaLicitacoes Inter", user);
+                Logger.Log(e, SGID, "Relatorio BaixaKamikaze Denuo", user);
             }
 
             return Page();
@@ -95,8 +96,6 @@ namespace SGID.Pages.Relatorios.RH
         {
             try
             {
-                Inicio = Datainicio;
-                Fim = Datafim;
 
                 Inicio = Datainicio;
                 Fim = Datafim;
@@ -114,7 +113,7 @@ namespace SGID.Pages.Relatorios.RH
                              && (SE50.E5Banco == "001" || SE50.E5Banco == "237" || SE50.E5Banco == "341")
                              && (int)(object)SE50.E5Data >= (int)(object)Datainicio.ToString("yyyy/MM/dd").Replace("/", "")
                              && (int)(object)SE50.E5Data <= (int)(object)Datafim.ToString("yyyy/MM/dd").Replace("/", "")
-                             && (SA10.A1Xgrinte == "000011" || SA10.A1Xgrinte == "000012")
+                             && SC50.C5Utpoper == "K"
                              select new RelatorioAreceberBaixa
                              {
                                  Prefixo = SE50.E5Prefixo,
@@ -179,6 +178,7 @@ namespace SGID.Pages.Relatorios.RH
                 sheet.Cells[1, 24].Value = "TIPOCLIENTE";
                 sheet.Cells[1, 25].Value = "DATA FATURAMENTO";
 
+
                 int i = 2;
 
                 Relatorio.ForEach(Pedido =>
@@ -226,12 +226,12 @@ namespace SGID.Pages.Relatorios.RH
                 sheet.Cells[sheet.Dimension.Address].AutoFitColumns();
                 using MemoryStream stream = new MemoryStream();
                 package.SaveAs(stream);
-                return File(stream.ToArray(), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "BaixaLicitacoesInter.xlsx");
+                return File(stream.ToArray(), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "BaixaLicitacoesDenuo.xlsx");
             }
             catch (Exception e)
             {
                 string user = User.Identity.Name.Split("@")[0].ToUpper();
-                Logger.Log(e, SGID, "Relatorio BaixaLicitacoes Inter Excel", user);
+                Logger.Log(e, SGID, "Relatorio BaixaKamikaze Denuo Excel", user);
 
                 return LocalRedirect("/error");
             }
