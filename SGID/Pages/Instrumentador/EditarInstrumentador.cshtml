@@ -70,6 +70,24 @@
                         <input type="text" class="form-control" id="Telefone2" name="Telefone2" value="@Model.Instrumentador.Telefone2" oninput="this.value = this.value.toUpperCase()" />
                     </div>
                 </div>
+                <div class="row">
+                    <div class="form-group col-md-4">
+                        <label>Tipo</label>
+                        <select class="form-control" id="Tipo" name="Tipo">
+                            <option value="CLT">CLT</option>
+                            <option value="NF">NF</option>
+                            <option value="RPA">RPA</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label>Nome Empresa</label>
+                        <input type="text" class="form-control" id="NomeEmpresa" name="NomeEmpresa" value="@Model.Instrumentador.NomeEmpresa" oninput="this.value = this.value.toUpperCase()" />
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label>CNPJ</label>
+                        <input type="text" class="form-control" id="CNPJ" name="CNPJ" value="@Model.Instrumentador.CNPJ" oninput="this.value = this.value.toUpperCase()" />
+                    </div>
+                </div>
             </div>
             <div class="row">
                 <div class="col-md-12 Titulo">

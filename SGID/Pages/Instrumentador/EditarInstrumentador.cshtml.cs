@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using SGID.Data;
 using SGID.Data.Models;
 using SGID.Data.ViewModel;
+using SGID.Models.Estoque.RelatorioFaturamentoNFFab;
 
 namespace SGID.Pages.Instrumentador
 {
@@ -20,7 +21,8 @@ namespace SGID.Pages.Instrumentador
 
         public IActionResult OnPost(int Id,string Nome, DateTime DtNascimento, string Endereco, string Municipio, string Bairro,
             string Estado, string Pais, string Email, string Telefone1, string Telefone2, string CBO, string RG, string CPF,
-            string PisPasep, string TipoChave, string ChavePix, string Banco, string AG, string CC, string Remuneracao, string ServCon)
+            string PisPasep, string TipoChave, string ChavePix, string Banco, string AG, string CC, string Remuneracao, string ServCon,
+            string NomeEmpresa, string CNPJ, string Tipo)
         {
             try
             {
@@ -49,12 +51,16 @@ namespace SGID.Pages.Instrumentador
                 Instrumentador.CC = CC;
                 Instrumentador.Remuneracao = Remuneracao;
                 Instrumentador.ServCon = ServCon;
-                
+                Instrumentador.NomeEmpresa = NomeEmpresa;
+                Instrumentador.CNPJ = CNPJ;
+                Instrumentador.Tipo = Tipo;
+
+
 
                 SGID.Instrumentadores.Update(Instrumentador);
                 SGID.SaveChanges();
 
-                return LocalRedirect("/DashBoards/GestorInstrumentador");
+                return LocalRedirect("/DashBoards/DashboardGestorInstrumentador/0");
             }
             catch (Exception E)
             {

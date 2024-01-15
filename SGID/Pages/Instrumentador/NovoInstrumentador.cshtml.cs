@@ -18,7 +18,8 @@ namespace SGID.Pages.Instrumentador
 
         public IActionResult OnPost(string Nome,DateTime DtNascimento, string Endereco,string Municipio,string Bairro,
             string Estado,string Pais,string Email,string Telefone1,string Telefone2,string CBO,string RG,string CPF,
-            string PisPasep,string TipoChave,string ChavePix,string Banco,string AG,string CC,string Remuneracao,string ServCon)
+            string PisPasep,string TipoChave,string ChavePix,string Banco,string AG,string CC,string Remuneracao,string ServCon,
+            string NomeEmpresa,string CNPJ,string Tipo)
         {
             try
             {
@@ -45,13 +46,16 @@ namespace SGID.Pages.Instrumentador
                     Ag = AG,
                     CC = CC,
                     Remuneracao = Remuneracao,
-                    ServCon = ServCon
+                    ServCon = ServCon,
+                    NomeEmpresa = NomeEmpresa,
+                    CNPJ = CNPJ,
+                    Tipo = Tipo
                 };
 
                 SGID.Instrumentadores.Add(Instrumentador);
                 SGID.SaveChanges();
 
-                return LocalRedirect("/DashBoards/DashBoardGestorInstrumentador");
+                return LocalRedirect("/DashBoards/DashBoardGestorInstrumentador/0");
             }
             catch(Exception E)
             {

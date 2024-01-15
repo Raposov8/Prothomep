@@ -276,7 +276,8 @@ namespace SGID.Pages.Relatorios.RH
                                      SC50.C5Utpoper,
                                      SD20.D2Cod,
                                      SB10.B1Desc,
-                                     SA10.A1Mun
+                                     SA10.A1Mun,
+                                     SA10.A1Xgrinte
                                  });
 
 
@@ -291,10 +292,6 @@ namespace SGID.Pages.Relatorios.RH
                         x.Serie,
                         x.Emissao,
                         x.Pedido,
-                        x.Total,
-                        x.Valipi,
-                        x.Valicm,
-                        x.Descon,
                         x.Unumage,
                         x.C5Emissao,
                         x.A3Nome,
@@ -305,7 +302,8 @@ namespace SGID.Pages.Relatorios.RH
                         x.C5Utpoper,
                         x.D2Cod,
                         x.B1Desc,
-                        x.A1Mun
+                        x.A1Mun,
+                        x.A1Xgrinte
                     }).Select(x => new RelatorioCirurgiasFaturadas
                     {
                         Filial = x.Key.Filial,
@@ -331,7 +329,8 @@ namespace SGID.Pages.Relatorios.RH
                         Utpoper = x.Key.C5Utpoper,
                         D2Cod = x.Key.D2Cod,
                         B1Desc = x.Key.B1Desc,
-                        Municipio = x.Key.A1Mun
+                        Municipio = x.Key.A1Mun,
+                        LicitacaoCodigo = x.Key.A1Xgrinte
                     }).OrderBy(x => x.A3Nome).ToList();
                 }
                 
@@ -588,7 +587,8 @@ namespace SGID.Pages.Relatorios.RH
                                      SC50.C5Utpoper,
                                      SD20.D2Cod,
                                      SB10.B1Desc,
-                                     SA10.A1Mun
+                                     SA10.A1Mun,
+                                     SA10.A1Xgrinte
                                  });
 
 
@@ -603,10 +603,6 @@ namespace SGID.Pages.Relatorios.RH
                         x.Serie,
                         x.Emissao,
                         x.Pedido,
-                        x.Total,
-                        x.Valipi,
-                        x.Valicm,
-                        x.Descon,
                         x.Unumage,
                         x.C5Emissao,
                         x.A3Nome,
@@ -617,7 +613,8 @@ namespace SGID.Pages.Relatorios.RH
                         x.C5Utpoper,
                         x.D2Cod,
                         x.B1Desc,
-                        x.A1Mun
+                        x.A1Mun,
+                        x.A1Xgrinte
                     }).Select(x => new RelatorioCirurgiasFaturadas
                     {
                         Filial = x.Key.Filial,
@@ -643,8 +640,8 @@ namespace SGID.Pages.Relatorios.RH
                         Utpoper = x.Key.C5Utpoper,
                         D2Cod = x.Key.D2Cod,
                         B1Desc = x.Key.B1Desc,
-                        Municipio = x.Key.A1Mun
-
+                        Municipio = x.Key.A1Mun,
+                        LicitacaoCodigo = x.Key.A1Xgrinte
                     }).OrderBy(x => x.A3Nome).ToList();
                 }
 
@@ -674,6 +671,7 @@ namespace SGID.Pages.Relatorios.RH
                 if (!User.IsInRole("GestorComercial"))
                 {
                     sheet.Cells[1, 19].Value = "Municipio";
+                    sheet.Cells[1, 20].Value = "Codigo";
                 }
 
                 int i = 2;
@@ -698,7 +696,12 @@ namespace SGID.Pages.Relatorios.RH
                     sheet.Cells[i, 16].Value = Pedido.XNMPla;
                     sheet.Cells[i, 17].Value = Pedido.D2Cod;
                     sheet.Cells[i, 18].Value = Pedido.B1Desc;
-                    sheet.Cells[i, 19].Value = Pedido.Municipio;
+                    
+                    if (!User.IsInRole("GestorComercial"))
+                    {
+                        sheet.Cells[i, 19].Value = Pedido.Municipio;
+                        sheet.Cells[i, 20].Value = Pedido.LicitacaoCodigo;
+                    }
 
                     i++;
                 });
