@@ -591,22 +591,6 @@ namespace SGID.Pages.DashBoards
             {
                 string user = User.Identity.Name.Split("@")[0].ToUpper();
                 string[] CF = new string[] { "5551", "6551", "6107", "6109" };
-                string DataInicio = "";
-                string DataFim = "";
-
-                if (Mes == "13")
-                {
-                    DataInicio = $"{Ano}0101";
-
-                    DataFim = $"{Ano}1231";
-                }
-                else
-                {
-                    DataInicio = $"{Ano}{Mes}01";
-
-                    DataFim = $"{Ano}{Mes}31";
-                }
-
 
                 #region EmAberto
 
@@ -623,13 +607,16 @@ namespace SGID.Pages.DashBoards
                                               && SA1.A1Loja == SC5.C5Lojacli && SA1.DELET != "*" && SA3.A3Cod == SC5.C5Vend1 && SA3.DELET != "*"
                                               && (SC5.C5Utpoper == "F" || SC5.C5Utpoper == "T") && SB1.DELET != "*" && SC6.C6Produto == SB1.B1Cod
                                               && SA1.A1Cgc != "04715053000140" && SA1.A1Cgc != "04715053000220" && SA1.A1Cgc != "01390500000140"
-                                              && (int)(object)SC5.C5Emissao >= (int)(object)DataInicio
-                                              && (int)(object)SC5.C5Emissao <= (int)(object)DataFim
                                               orderby SC5.C5Num, SC5.C5Emissao descending
-                                              select SC6.C6Valor
-                                         ).Sum();
+                                              select new
+                                              {
+                                                  SA3.A3Xdescun,
+                                                  SC6.C6Valor,
+                                                  C5Emissao = Convert.ToInt32(SC5.C5Emissao)
+                                              }
+                                         ).ToList();
 
-                ValoresEmAberto.Add(new ValoresEmAberto { Nome = "INTERMEDIC", Valor = resultadoEmAbertoInter });
+                ValoresEmAberto.Add(new ValoresEmAberto { Nome = "INTERMEDIC", Valor = resultadoEmAbertoInter.Sum(x=> x.C6Valor) });
                 #endregion
 
                 #region Denuo
@@ -646,13 +633,17 @@ namespace SGID.Pages.DashBoards
                                               && (SC5.C5Utpoper == "F" || SC5.C5Utpoper == "T") && SB1.DELET != "*" && SC6.C6Produto == SB1.B1Cod
                                               && SA1.A1Cgc != "04715053000140" && SA1.A1Cgc != "04715053000220" && SA1.A1Cgc != "01390500000140"
                                               && SC5.C5Xtipopv != "D"
-                                              && (int)(object)SC5.C5Emissao >= (int)(object)DataInicio
-                                              && (int)(object)SC5.C5Emissao <= (int)(object)DataFim
                                               orderby SC5.C5Num, SC5.C5Emissao descending
-                                              select SC6.C6Valor)
-                                              .Sum();
+                                              select new
+                                              {
+                                                  SA3.A3Xdescun,
+                                                  SC6.C6Valor,
+                                                  C5Emissao = Convert.ToInt32(SC5.C5Emissao)
+                                              }
+                                              )
+                                              .ToList();
 
-                ValoresEmAberto.Add(new ValoresEmAberto { Nome = "DENUO", Valor = resultadoEmAbertoDenuo });
+                ValoresEmAberto.Add(new ValoresEmAberto { Nome = "DENUO", Valor = resultadoEmAbertoDenuo.Sum(x=>x.C6Valor) });
                 #endregion
 
                 #region Dental
@@ -669,8 +660,6 @@ namespace SGID.Pages.DashBoards
                                                && (SC5.C5Utpoper == "F" || SC5.C5Utpoper == "T") && SB1.DELET != "*" && SC6.C6Produto == SB1.B1Cod
                                                && SA1.A1Cgc != "04715053000140" && SA1.A1Cgc != "04715053000220" && SA1.A1Cgc != "01390500000140"
                                                && SC5.C5Xtipopv == "D"
-                                               && (int)(object)SC5.C5Emissao >= (int)(object)DataInicio
-                                               && (int)(object)SC5.C5Emissao <= (int)(object)DataFim
                                                orderby SC5.C5Num, SC5.C5Emissao descending
                                                select SC6.C6Valor
                                               ).Sum();
@@ -688,8 +677,6 @@ namespace SGID.Pages.DashBoards
                                             SA30.DELET != "*" && SA10.A1Clinter == "S" && SC50.C5Nota == "" &&
                                             SC60.C6Qtdven - SC60.C6Qtdent != 0
                                             && SA10.A1Cgc.Substring(0, 8) != "04715053"
-                                            && (int)(object)SC50.C5Emissao >= (int)(object)DataInicio
-                                            && (int)(object)SC50.C5Emissao <= (int)(object)DataFim
                                             orderby SA10.A1Nome, SC50.C5Emissao
                                             select (SC60.C6Qtdven - SC60.C6Qtdent) * SC60.C6Prcven
                              ).Sum();
@@ -708,8 +695,6 @@ namespace SGID.Pages.DashBoards
                                             where SC50.DELET != "*" && SA10.DELET != "*" && SC60.DELET != "*" &&
                                             SA30.DELET != "*" && SA10.A1Clinter == "S" && SC50.C5Nota == "" &&
                                             SC60.C6Qtdven - SC60.C6Qtdent != 0
-                                            && (int)(object)SC50.C5Emissao >= (int)(object)DataInicio
-                                            && (int)(object)SC50.C5Emissao <= (int)(object)DataFim
                                             orderby SA10.A1Nome, SC50.C5Emissao
                                             select (SC60.C6Qtdven - SC60.C6Qtdent) * SC60.C6Prcven
                              ).Sum();
@@ -721,11 +706,84 @@ namespace SGID.Pages.DashBoards
 
                 #endregion
 
+                #region BOXS
+                var LinhasValor = new List<RelatorioFaturamentoLinhas>();
+
+
+                LinhasValor.Add(new RelatorioFaturamentoLinhas { Nome = "ATÉ 3 MESES" });
+                LinhasValor.Add(new RelatorioFaturamentoLinhas { Nome = "3 A 6 MESES" });
+                LinhasValor.Add(new RelatorioFaturamentoLinhas { Nome = "6 A 9 MESES" });
+                LinhasValor.Add(new RelatorioFaturamentoLinhas { Nome = "MAIS DE 9 MESES" });
+                
+
+
+
+                var resultado = resultadoEmAbertoInter.Concat(resultadoEmAbertoDenuo).ToList();
+
+
+                LinhasValor.ForEach(x =>
+                {
+                    
+
+                    if (x.Nome == "ATÉ 3 MESES")
+                    {
+                        DateTime ago = DateTime.Now.AddMonths(-3);
+
+                        var Data = Convert.ToInt32(ago.ToString("yyyy/MM/dd").Replace("/", ""));
+
+                        var Resultado2 = resultado.Where(x => x.C5Emissao >= Data).ToList();
+
+                        x.Faturamento = Resultado2.Sum(x=> x.C6Valor);
+                    }
+                    else if(x.Nome == "3 A 6 MESES")
+                    {
+                        DateTime ago = DateTime.Now.AddMonths(-6);
+                        DateTime After = ago.AddMonths(3);
+
+                        var Data = Convert.ToInt32(ago.ToString("yyyy/MM/dd").Replace("/", ""));
+                        var Data2 = Convert.ToInt32(After.ToString("yyyy/MM/dd").Replace("/", ""));
+
+                        var Resultado2 = resultado.Where(x => x.C5Emissao >= Data && x.C5Emissao < Data2).ToList();
+
+                        x.Faturamento = Resultado2.Sum(x => x.C6Valor);
+                    }
+                    else if (x.Nome == "6 A 9 MESES")
+                    {
+                        DateTime ago = DateTime.Now.AddMonths(-9);
+                        DateTime After = ago.AddMonths(3);
+
+                        var Data = Convert.ToInt32(ago.ToString("yyyy/MM/dd").Replace("/", ""));
+                        var Data2 = Convert.ToInt32(After.ToString("yyyy/MM/dd").Replace("/", ""));
+
+                        var Resultado2 = resultado.Where(x => x.C5Emissao >= Data && x.C5Emissao < Data2).ToList();
+
+                        x.Faturamento = Resultado2.Sum(x => x.C6Valor);
+                    }
+                    else
+                    {
+                        DateTime ago = DateTime.Now.AddMonths(-9);
+
+                        var Data = Convert.ToInt32(ago.ToString("yyyy/MM/dd").Replace("/", ""));
+
+                        var Resultado2 = resultado.Where(x => x.C5Emissao < Data).ToList();
+
+                        x.Faturamento = Resultado2.Sum(x => x.C6Valor);
+                    }
+
+                });
+
+                LinhasValor.Add(new RelatorioFaturamentoLinhas { Nome = "TOTAL", Faturamento = resultado.Sum(x=>x.C6Valor) });
+
+
+
+                #endregion 
+
 
                 var valores = new
                 {
                     Valores = ValoresEmAberto,
-                    ValorTotal = ValoresEmAberto.Sum(x => x.Valor)
+                    ValorTotal = ValoresEmAberto.Sum(x => x.Valor),
+                    Linhas = LinhasValor
                 };
 
                 return new JsonResult(valores);

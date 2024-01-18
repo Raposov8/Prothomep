@@ -575,7 +575,7 @@ namespace SGID.Pages.Cirurgias
                     }
                 }
 
-                return LocalRedirect("/dashboard/3");
+                return LocalRedirect("/dashboards/dashboard/3");
             }
             catch (Exception e)
             {

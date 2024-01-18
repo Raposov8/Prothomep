@@ -27,14 +27,15 @@ namespace SGID.Pages.DashBoards
 
             Agendamentos = id switch
             {
+                //Cirurgias há Sinalizar
                 0 => SGID.Agendamentos.Where(x => x.StatusPedido == 7 && x.StatusInstrumentador == 0).ToList(),
-                //Pendente Comercial Ida e volta da cotação
+                //Cirurgias Aguardando Instrumentador
                 1 => SGID.Agendamentos.Where(x => x.StatusPedido == 7 && x.StatusInstrumentador == 1).ToList(),
-                //Retorno Cliente
+                //Em Cirurgia
                 2 => SGID.Agendamentos.Where(x => x.StatusPedido == 7 && x.StatusInstrumentador == 2).ToList(),
-                //NRespondidas
+                //Concluidas
                 3 => SGID.Agendamentos.Where(x => x.StatusPedido == 7 && x.StatusInstrumentador == 3).ToList(),
-                //
+                //Canceladas
                 _ => SGID.Agendamentos.Where(x => x.StatusPedido == 7 && x.StatusInstrumentador == 4).ToList(),
             };
 

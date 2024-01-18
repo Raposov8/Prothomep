@@ -247,6 +247,11 @@ namespace SGID.Pages.DashBoards
 
                         Meta = time.Meta - FaturadoMesValor;
                     }
+
+                    if (Convert.ToInt32(DataInicio)  >= 20240101 )
+                    {
+                        Comissao = 0;
+                    }
                     return Page();
                 }
                 else
@@ -443,6 +448,11 @@ namespace SGID.Pages.DashBoards
                         Comissao = FaturadoMesValor * (time.Porcentagem / 100);
 
                         Meta = time.Meta - FaturadoMesValor;
+                    }
+
+                    if (Convert.ToInt32(DataInicio)  >= 20240101 )
+                    {
+                        Comissao = 0;
                     }
                     return Page();
                 }
@@ -684,6 +694,11 @@ namespace SGID.Pages.DashBoards
                         Meta = time.Meta - FaturadoMesValor;
                     }
 
+                    if (Convert.ToInt32(DataInicio)  >= 20240101 )
+                    {
+                        Comissao = 0;
+                    }
+
                     var Valores = new
                     {
                         CirurgiasValorizadas,
@@ -893,6 +908,11 @@ namespace SGID.Pages.DashBoards
                         Comissao = FaturadoMesValor * (time.Porcentagem / 100);
 
                         Meta = time.Meta - FaturadoMesValor;
+                    }
+
+                    if (Convert.ToInt32(DataInicio)  >= 20240101 )
+                    {
+                        Comissao = 0;
                     }
 
                     var Valores = new

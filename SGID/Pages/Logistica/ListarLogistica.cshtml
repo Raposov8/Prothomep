@@ -736,7 +736,7 @@
             console.log(Motivo)
             console.log(Obs)
 
-            var chamadaUrl = `/dashboard/0?handler=RecusarPedido&&AgendamentoId=${id}&&MotivoReij=${Motivo}&&ObsReij=${Obs}`
+            var chamadaUrl = `/dashboards/dashboard/0?handler=RecusarPedido&&AgendamentoId=${id}&&MotivoReij=${Motivo}&&ObsReij=${Obs}`
             $.ajax({
                 url: chamadaUrl,
                 type: "POST",
@@ -758,8 +758,8 @@
         $(function(){
             $("a.MotivoRej").on('click', function () {
                 var id = $(this).data('id')
-               
-                var chamadaUrl = `/dashboard/0?handler=RecusaPedido&&AgendamentoId=${id}`
+
+                var chamadaUrl = `/dashboards/dashboard/0?handler=RecusaPedido&&AgendamentoId=${id}`
                 $.ajax({
                     url: chamadaUrl,
                     type: "GET",

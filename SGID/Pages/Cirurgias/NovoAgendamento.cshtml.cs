@@ -277,7 +277,7 @@ namespace SGID.Pages.Cirurgias
                     SGID.SaveChanges();
                 }
 
-                return LocalRedirect("/dashboard/0");
+                return LocalRedirect("/dashboards/dashboard/0");
             }
             catch (Exception e)
             {
@@ -292,7 +292,8 @@ namespace SGID.Pages.Cirurgias
         {
             try
             {
-                if (Empresa == "01") {
+                if (Empresa == "01") 
+                {
 
                         //Intermedic
                         var produto = (from SB10 in ProtheusInter.Sb1010s
@@ -334,7 +335,7 @@ namespace SGID.Pages.Cirurgias
                         if (produto != null)
                         {
                             var preco = (from DA10 in ProtheusInter.Da1010s
-                                         where DA10.DELET != "*" && DA10.Da1Codtab == CodTab && DA10.Da1Codpro == Codigo.ToUpper()
+                                         where DA10.DELET != "*" && DA10.Da1Codtab == CodTab && DA10.Da1Codpro == produto.B1Cod
                                          select DA10.Da1Prcven).FirstOrDefault();
                             
                                 var ViewProduto = new Produto
@@ -396,7 +397,7 @@ namespace SGID.Pages.Cirurgias
                     if (produto != null)
                     {
                             var preco = (from DA10 in ProtheusDenuo.Da1010s
-                                         where DA10.DELET != "*" && DA10.Da1Codtab == CodTab && DA10.Da1Codpro == Codigo.ToUpper()
+                                         where DA10.DELET != "*" && DA10.Da1Codtab == CodTab && DA10.Da1Codpro == produto.B1Cod
                                          select DA10.Da1Prcven).FirstOrDefault();
 
                        
@@ -424,7 +425,7 @@ namespace SGID.Pages.Cirurgias
             catch (Exception e)
             {
                 string user = User.Identity.Name.Split("@")[0].ToUpper();
-                Logger.Log(e, SGID, "NovoAgendamento AdicionarPatri",user);
+                Logger.Log(e, SGID, "NovoAgendamento AdicionarProd",user);
             }
 
             return new JsonResult("");

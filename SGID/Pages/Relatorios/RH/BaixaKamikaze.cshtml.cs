@@ -226,7 +226,7 @@ namespace SGID.Pages.Relatorios.RH
                 sheet.Cells[sheet.Dimension.Address].AutoFitColumns();
                 using MemoryStream stream = new MemoryStream();
                 package.SaveAs(stream);
-                return File(stream.ToArray(), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "BaixaLicitacoesDenuo.xlsx");
+                return File(stream.ToArray(), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "BaixaKamikazeDenuo.xlsx");
             }
             catch (Exception e)
             {

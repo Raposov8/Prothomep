@@ -13,6 +13,11 @@ namespace SGID.Pages.Instrumentador
 
         public RecursoIntrumentador Instrumentador { get; set; }
 
+        public EditarInstrumentadorModel(ApplicationDbContext sgid)
+        {
+            SGID = sgid;
+        }
+
         public void OnGet(int Id)
         {
             Instrumentador = SGID.Instrumentadores.FirstOrDefault(x => x.Id == Id);

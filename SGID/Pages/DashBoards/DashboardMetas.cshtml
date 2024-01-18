@@ -64,7 +64,6 @@
     <div class="col-md-12"><text style="cursor: default; user-select: none; -webkit-font-smoothing: antialiased; font-family: Roboto; font-size: 16px;color:#757575">FATURAMENTO CIRURGIAS INTERMEDIC & DENUO</text></div>
 </div>
 <div id="Tipos" class="row justify-content-center">
-
     <div class="col-xs-2 col-sm-2 col-md-2 col-xl-2">
         <div class="panel panel-colorful" style="background-color:#203864">
             <div class="panel-heading">
@@ -197,6 +196,63 @@
                     </tbody>
                 </table>
                 <a><div id="FolhaRed"><label class="btn btn-outline-primary">Saiba Mais...</label></div></a>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12"><text style="cursor: default; user-select: none; -webkit-font-smoothing: antialiased; font-family: Roboto; font-size: 16px;color:#757575">PEDIDOS EM ABERTO INTERMEDIC & DENUO</text></div>
+</div>
+<div class="row">
+    <div id="PedidosTipos" class="row justify-content-center">
+        <div class="col-xs-2 col-sm-2 col-md-2 col-xl-2">
+            <div class="panel panel-colorful" style="background-color:#8faadc">
+                <div class="panel-heading">
+                    <h2 style="margin:0%;color:#ffffff;font-size:20px;" class="panel-title text-center">ATÉ 3 MESES</h2>
+                </div>
+                <div class="panel-body" style="padding-top:0px;">
+                    <a class="produto"><h3 class="text-center" style="margin-top:0%; color:#ffffff;font-size:20px">0</h3></a>
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-2 col-sm-2 col-md-2 col-xl-2">
+            <div class="panel panel-colorful" style="background-color:#8faadc">
+                <div class="panel-heading">
+                    <h2 style="margin:0%;color:#ffffff;font-size:20px;" class="panel-title text-center">3 A 6 MESES</h2>
+                </div>
+                <div class="panel-body" style="padding-top:0px;">
+                    <a class="produto"><h3 class="text-center" style="margin-top:0%; color:#ffffff;font-size:20px">0</h3></a>
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-2 col-sm-2 col-md-2 col-xl-2">
+            <div class="panel panel-colorful" style="background-color:#8faadc">
+                <div class="panel-heading">
+                    <h2 style="margin:0%;color:#ffffff;font-size:20px;" class="panel-title text-center">6 A 9 MESES</h2>
+                </div>
+                <div class="panel-body" style="padding-top:0px;">
+                    <a class="produto"><h3 class="text-center" style="margin-top:0%; color:#ffffff;font-size:20px">0</h3></a>
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-2 col-sm-2 col-md-2 col-xl-2">
+            <div class="panel panel-colorful" style="background-color:#8faadc">
+                <div class="panel-heading">
+                    <h2 style="margin:0%;color:#ffffff;font-size:20px;" class="panel-title text-center">MAIS DE 9 MESES</h2>
+                </div>
+                <div class="panel-body" style="padding-top:0px;">
+                    <a class="produto"><h3 class="text-center" style="margin-top:0%; color:#ffffff;font-size:20px">0</h3></a>
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-2 col-sm-2 col-md-2 col-xl-2">
+            <div class="panel panel-colorful" style="background-color:#203864">
+                <div class="panel-heading">
+                    <h2 style="margin:0%;color:#ffffff;font-size:20px;" class="panel-title text-center">TOTAL</h2>
+                </div>
+                <div class="panel-body" style="padding-top:0px;">
+                    <a class="produto"><h3 class="text-center" style="margin-top:0%; color:#ffffff;font-size:20px">0</h3></a>
+                </div>
             </div>
         </div>
     </div>
@@ -339,6 +395,43 @@
                         //$('#TotalAberto').html(`<div style="color:#3366cc"><b>Total: ${data.valorTotal.toLocaleString('pt-BR', formato)}</b></div>`);
 
                         move(50)
+
+                        $("#PedidosTipos>div").remove();
+
+                        var linha = '';
+
+                        Numero = 1;
+
+                        data.linhas.forEach(x => {
+
+                            linha = `<div class="col-xs-2 col-sm-2 col-md-2 col-xl-2">
+                                                  <div class="panel panel-colorful" style="background-color:#8faadc">
+                                              <div class="panel-heading">
+                                                  <h2 style="margin:0%;color:#ffffff;font-size:20px;" class="panel-title text-center"> ${x.nome}</h2>
+                                              </div>
+                                              <div class="panel-body" style="padding-top:0px;">
+                                                  <a href='/relatorios/diretoria/CirurgiaPorTempo/${Numero}' target='_blank'><h3 class="text-center" style="margin-top:0%; color:#ffffff;font-size:20px">${x.faturamento.toLocaleString('pt-BR', formato)}</h3></a>
+                                              </div>
+                                          </div>
+                                      </div>`
+
+                            if(Numero == 5){
+                                linha = `<div class="col-xs-2 col-sm-2 col-md-2 col-xl-2">
+                                                          <div class="panel panel-colorful" style="background-color:#8faadc">
+                                                      <div class="panel-heading">
+                                                          <h2 style="margin:0%;color:#ffffff;font-size:20px;" class="panel-title text-center"> ${x.nome}</h2>
+                                                      </div>
+                                                      <div class="panel-body" style="padding-top:0px;">
+                                                          <a><h3 class="text-center" style="margin-top:0%; color:#ffffff;font-size:20px">${x.faturamento.toLocaleString('pt-BR', formato)}</h3></a>
+                                                      </div>
+                                                  </div>
+                                              </div>`
+                            }
+
+                            $("#PedidosTipos").append(linha);
+                            Numero++;
+                        })
+                       
 
                     }
                 })

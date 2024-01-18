@@ -38,5 +38,10 @@ namespace SGID.Pages.Integracao
 
             return new JsonResult(cotacao);
         }
+
+        public IActionResult OnPost()
+        {
+            return LocalRedirect("");
+        }
     }
 }

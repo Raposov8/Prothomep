@@ -1,12 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using SGID.Models.Inter;
-using OfficeOpenXml.FormulaParsing.Excel.Functions.Math;
 using SGID.Data;
-using SGID.Data.Migrations;
 using SGID.Data.ViewModel;
 using SGID.Models.Denuo;
-using SGID.Models.DTO;
 using SGID.Models.Email;
 using System.Net.Mail;
 
@@ -32,7 +29,7 @@ namespace SGID.Pages.Formularios.Estoque
 
         public void OnGet()
         {
-            Ocorrencias = SGID.Ocorrencias.ToList();
+            Ocorrencias = SGID.Ocorrencias.OrderByDescending(x=> x.Id).ToList();
         }
 
         public JsonResult OnGetEnviar(int Id)
@@ -145,7 +142,8 @@ namespace SGID.Pages.Formularios.Estoque
 
                 return new JsonResult("E-mail enviado com sucesso");
 
-            }catch(Exception e)
+            }
+            catch(Exception e)
             {
                 return new JsonResult("Error: E-mail não enviado");
             }

@@ -164,6 +164,11 @@
          var teste = '@Model.Instrumentador.ServCon'
 
          $('#ServCon').val(teste.replace('&#xAA;', 'ª').replace('&#xC7;', 'Ç').replace('&#xC3;', 'Ã'))
+
+        @if (Model.Instrumentador.Tipo != null)
+        {
+            @:$("#Tipo").val("@Model.Instrumentador.Tipo").change();
+        }
     })
 
 </script>

@@ -536,7 +536,7 @@ namespace SGID.Pages.Relatorios.Controladoria
                 Relatorio = Relatorio.OrderBy(x => x.Tipo).ToList();
                 #endregion
 
-
+                #region Excel
                 using ExcelPackage package = new ExcelPackage();
                 package.Workbook.Worksheets.Add("Faturamento NF Bruto");
 
@@ -719,6 +719,8 @@ namespace SGID.Pages.Relatorios.Controladoria
                 sheet.Cells[sheet.Dimension.Address].AutoFitColumns();
                 using MemoryStream stream = new MemoryStream();
                 package.SaveAs(stream);
+                #endregion
+
                 return File(stream.ToArray(), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "FaturamentoNFBRUTO.xlsx");
             }
             catch (Exception e)

@@ -566,7 +566,7 @@
             var Motivo = $("#MotRejeicao").val();
             var Obs = $("#ObsRejeicao").val();
 
-            var chamadaUrl = `/dashboard/0?handler=RecusarPedido&&AgendamentoId=${id}&&MotivoReij=${Motivo}&&ObsReij=${Obs}`
+            var chamadaUrl = `/dashboards/dashboard/0?handler=RecusarPedido&&AgendamentoId=${id}&&MotivoReij=${Motivo}&&ObsReij=${Obs}`
             $.ajax({
                 url: chamadaUrl,
                 type: "POST",
