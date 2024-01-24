@@ -183,6 +183,9 @@
                                 </tbody>
                             </table>
                         </div>
+                        <div id="EnviarAgendamento">
+                            <div style="color:#00b050" class="col-md-2" id="Enviar"><button class="btn btn-button btn-success float-end" style="font-size:12px;" type="submit"><i class="fa-solid fa-thumbs-up"></i> Novo Agendamento</button></div>
+                        </div>
                     </div>
                     
                 </div>
@@ -246,8 +249,16 @@
                         })
 
                         $("#descricao-modal").modal("show");
+                        
                     }
                 })
+            })
+
+            $("#Enviar").click(function () {
+
+                var Inpart = $("#Idcotacao").val()
+
+                window.open(`/cirurgias/novoagendamento/01?handler=Inpart&&IdInpart=${Inpart}`, '_blank');
             })
 
         })

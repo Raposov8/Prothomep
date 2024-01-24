@@ -45,7 +45,7 @@
                                     <a class="nav-link" href="/integracao/listarcotacoesinpart"><i class="fa-solid fa-clipboard-user"></i> INPART</a>
                                 </li>
                             }
-                            @if (User.IsInRole("Admin") || User.IsInRole("Diretoria"))
+                            @if (User.IsInRole("Admin") || User.IsInRole("Diretoria") || User.IsInRole("GestorFinanceiro"))
                             {
                                 <li>
                                     <a class="nav-link" href="/dashboards/DashBoardMetas"><i class="fa-solid fa-clipboard-user"></i> DashBoard Diretoria</a>
@@ -136,12 +136,12 @@
                             {
                                 <li class="nav-item dropdown">
                                     <a class="nav-link align-items-center rounded dropdown-toggle" data-bs-toggle="collapse"
-                                       data-bs-target="#GestorInstru-collapse" aria-expanded="false">
+                                       data-bs-target="#Instru-collapse" aria-expanded="false">
                                         <i class="fa-solid fa-user-nurse"></i> Instrumentadores
                                     </a>
-                                    <div class="collapse" id="GestorInstru-collapse">
+                                    <div class="collapse" id="Instru-collapse">
                                         <ul class="list-unstyled fw-normal pb-1 small">
-                                            <li><a class="nav-link" href="/dashboards/DashBoardGestorInstrumentador/0"> Dashboard </a></li>
+                                            <li><a class="nav-link" href="/dashboards/DashBoardInstrumentador"> Dashboard </a></li>
                                         </ul>
                                     </div>
                                 </li>

@@ -22,8 +22,7 @@ builder.Services.AddDbContext<TOTVSDENUOContext>(options =>
     {
         ops.EnableRetryOnFailure();
         ops.CommandTimeout(600);
-    }
-    ));
+    }));
 builder.Services.AddDbContext<TOTVSINTERContext>(options =>
     options.UseSqlServer(connectionProtheusInter,ops =>
     {

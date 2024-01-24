@@ -711,8 +711,7 @@ namespace SGID.Pages.DashBoards
 
 
                 LinhasValor.Add(new RelatorioFaturamentoLinhas { Nome = "ATÉ 3 MESES" });
-                LinhasValor.Add(new RelatorioFaturamentoLinhas { Nome = "3 A 6 MESES" });
-                LinhasValor.Add(new RelatorioFaturamentoLinhas { Nome = "6 A 9 MESES" });
+                LinhasValor.Add(new RelatorioFaturamentoLinhas { Nome = "3 A 9 MESES" });
                 LinhasValor.Add(new RelatorioFaturamentoLinhas { Nome = "MAIS DE 9 MESES" });
                 
 
@@ -723,8 +722,6 @@ namespace SGID.Pages.DashBoards
 
                 LinhasValor.ForEach(x =>
                 {
-                    
-
                     if (x.Nome == "ATÉ 3 MESES")
                     {
                         DateTime ago = DateTime.Now.AddMonths(-3);
@@ -734,23 +731,13 @@ namespace SGID.Pages.DashBoards
                         var Resultado2 = resultado.Where(x => x.C5Emissao >= Data).ToList();
 
                         x.Faturamento = Resultado2.Sum(x=> x.C6Valor);
+
+                        x.Estilo = "#097609";
                     }
-                    else if(x.Nome == "3 A 6 MESES")
-                    {
-                        DateTime ago = DateTime.Now.AddMonths(-6);
-                        DateTime After = ago.AddMonths(3);
-
-                        var Data = Convert.ToInt32(ago.ToString("yyyy/MM/dd").Replace("/", ""));
-                        var Data2 = Convert.ToInt32(After.ToString("yyyy/MM/dd").Replace("/", ""));
-
-                        var Resultado2 = resultado.Where(x => x.C5Emissao >= Data && x.C5Emissao < Data2).ToList();
-
-                        x.Faturamento = Resultado2.Sum(x => x.C6Valor);
-                    }
-                    else if (x.Nome == "6 A 9 MESES")
+                    else if(x.Nome == "3 A 9 MESES")
                     {
                         DateTime ago = DateTime.Now.AddMonths(-9);
-                        DateTime After = ago.AddMonths(3);
+                        DateTime After = ago.AddMonths(6);
 
                         var Data = Convert.ToInt32(ago.ToString("yyyy/MM/dd").Replace("/", ""));
                         var Data2 = Convert.ToInt32(After.ToString("yyyy/MM/dd").Replace("/", ""));
@@ -758,6 +745,8 @@ namespace SGID.Pages.DashBoards
                         var Resultado2 = resultado.Where(x => x.C5Emissao >= Data && x.C5Emissao < Data2).ToList();
 
                         x.Faturamento = Resultado2.Sum(x => x.C6Valor);
+
+                        x.Estilo = "#ED8205";
                     }
                     else
                     {
@@ -768,13 +757,12 @@ namespace SGID.Pages.DashBoards
                         var Resultado2 = resultado.Where(x => x.C5Emissao < Data).ToList();
 
                         x.Faturamento = Resultado2.Sum(x => x.C6Valor);
+
+                        x.Estilo = "#B80101";
+
                     }
 
                 });
-
-                LinhasValor.Add(new RelatorioFaturamentoLinhas { Nome = "TOTAL", Faturamento = resultado.Sum(x=>x.C6Valor) });
-
-
 
                 #endregion 
 
@@ -783,7 +771,8 @@ namespace SGID.Pages.DashBoards
                 {
                     Valores = ValoresEmAberto,
                     ValorTotal = ValoresEmAberto.Sum(x => x.Valor),
-                    Linhas = LinhasValor
+                    Linhas = LinhasValor,
+                    LinhasValor = resultado.Sum(x => x.C6Valor)
                 };
 
                 return new JsonResult(valores);

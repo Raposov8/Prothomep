@@ -10,6 +10,10 @@ using SGID.Models.Denuo;
 using SGID.Models.DTO;
 using SGID.Models.Email;
 using System.Net.Mail;
+using Intergracoes.Inpart;
+using Intergracoes.Inpart.Models;
+using OfficeOpenXml.FormulaParsing.Excel.Functions.Math;
+using SGID.Models.Estoque.RelatorioFaturamentoNFFab;
 
 namespace SGID.Pages.Cirurgias
 {
@@ -24,7 +28,11 @@ namespace SGID.Pages.Cirurgias
 
         public NovoAgendamento Novo { get; set; } = new NovoAgendamento();
 
+        public Agendamentos Agendamento { get; set; } = new Agendamentos();
+        public List<Produto> Produtos { get; set; } = new List<Produto>();
+
         public List<string> SearchProduto { get; set; } = new List<string>();
+        public List<Cotacao> Cotacoes { get; set; }
 
         public NovoAgendamentoModel(ApplicationDbContext sgid, TOTVSINTERContext protheus, TOTVSDENUOContext denuo, IWebHostEnvironment wEB)
         { 
@@ -37,7 +45,6 @@ namespace SGID.Pages.Cirurgias
         {
 
             Novo = new NovoAgendamento();
-
 
             if (id == "01")
             {
@@ -86,6 +93,347 @@ namespace SGID.Pages.Cirurgias
 
                 SearchProduto = ProtheusDenuo.Sb1010s.Where(x => x.DELET != "*" && x.B1Msblql != "1").Select(x => x.B1Desc).Distinct().ToList();
             }
+        }
+
+        public void OnGetInpart(string id,int IdInpart)
+        {
+            Cotacoes = new IntegracaoInPart().ListarCotacoes().Result;
+
+            var cotacao = Cotacoes.FirstOrDefault(x => x.idCotacao == IdInpart);
+
+
+            if (id == "01")
+            {
+                //Intermedic
+                Novo = new NovoAgendamento
+                {
+                    Clientes = ProtheusInter.Sa1010s.Where(x => x.DELET != "*" && x.A1Msblql != "1" && (x.A1Clinter == "C" || x.A1Clinter == "H" || x.A1Clinter == "M")).OrderBy(x => x.A1Nome).Select(x => x.A1Nreduz).ToList(),
+                    Convenio = ProtheusInter.Sa1010s.Where(x => x.DELET != "*" && x.A1Clinter == "C" && x.A1Msblql != "1").OrderBy(x => x.A1Nome).Select(x => x.A1Nome).ToList(),
+                    Medico = ProtheusInter.Sa1010s.Where(x => x.DELET != "*" && x.A1Clinter == "M" && x.A1Msblql != "1" && !string.IsNullOrWhiteSpace(x.A1Vend) && x.A1Crm != "").OrderBy(x => x.A1Nome).Select(x => x.A1Nome).ToList(),
+                    Intrumentador = ProtheusInter.Pah010s.Where(x => x.DELET != "*" && x.PahMsblql != "1").OrderBy(x => x.PahNome).Select(x => x.PahNome).ToList(),
+                    Hospital = ProtheusInter.Sa1010s.Where(x => x.DELET != "*" && x.A1Clinter == "H" && x.A1Msblql != "1").OrderBy(x => x.A1Nome).Select(x => x.A1Nreduz).ToList(),
+                    Procedimentos = SGID.Procedimentos.Where(x => x.Bloqueado == 0 && x.Empresa == "01").ToList(),
+                    Patrimonios = ProtheusInter.Pa1010s.Where(x => x.DELET != "*" && x.Pa1Msblql != "1").Select(x => x.Pa1Despat).Distinct().ToList(),
+                    Tabelas = ProtheusInter.Da0010s.Where(x => x.DELET != "*").Select(x => x.Da0Descri).ToList(),
+                    Condicoes = ProtheusInter.Se4010s.Where(x => x.DELET != "*" && x.E4Msblql != "1").Select(x => x.E4Descri).ToList(),
+                    Vendedores = ProtheusInter.Sa3010s.Where(x => x.DELET != "*" && x.A3Msblql != "1").Select(x => x.A3Nreduz).ToList(),
+                };
+
+                SearchProduto = ProtheusInter.Sb1010s.Where(x => x.DELET != "*" && x.B1Msblql != "1").Select(x => x.B1Desc).Distinct().ToList();
+
+                Agendamento.Empresa = "01";
+            }
+            else
+            {
+                //Denuo
+                Novo = new NovoAgendamento
+                {
+                    Clientes = ProtheusDenuo.Sa1010s.Where(x => x.DELET != "*" && x.A1Msblql != "1" && (x.A1Clinter == "C" || x.A1Clinter == "H" || x.A1Clinter == "M")).OrderBy(x => x.A1Nome).Select(x => x.A1Nreduz).ToList(),
+                    Convenio = ProtheusDenuo.Sa1010s.Where(x => x.DELET != "*" && x.A1Clinter == "C" && x.A1Msblql != "1").OrderBy(x => x.A1Nome).Select(x => x.A1Nome).ToList(),
+                    Medico = ProtheusDenuo.Sa1010s.Where(x => x.DELET != "*" && x.A1Clinter == "M" && x.A1Msblql != "1" && !string.IsNullOrWhiteSpace(x.A1Vend) && x.A1Crm != "").OrderBy(x => x.A1Nome).Select(x => x.A1Nome).ToList(),
+                    Intrumentador = ProtheusDenuo.Pah010s.Where(x => x.DELET != "*" && x.PahMsblql != "1").OrderBy(x => x.PahNome).Select(x => x.PahNome).ToList(),
+                    Hospital = ProtheusDenuo.Sa1010s.Where(x => x.DELET != "*" && x.A1Clinter == "H" && x.A1Msblql != "1").OrderBy(x => x.A1Nome).Select(x => x.A1Nreduz).ToList(),
+                    Procedimentos = SGID.Procedimentos.Where(x => x.Bloqueado == 0 && x.Empresa == "03").ToList(),
+                    Patrimonios = (from PA10 in ProtheusDenuo.Pa1010s
+                                   join PAC in ProtheusDenuo.Pac010s on PA10.Pa1Numage equals PAC.PacNumage into sr
+                                   from c in sr.DefaultIfEmpty()
+                                   join SA10 in ProtheusDenuo.Sa1010s on new { Codigo = c.PacClient, Loja = c.PacLojent } equals new { Codigo = SA10.A1Cod, Loja = SA10.A1Loja } into st
+                                   from a in st.DefaultIfEmpty()
+                                   where PA10.DELET != "*" && PA10.Pa1Msblql != "1" && PA10.Pa1Status != "B"
+                                   && c.DELET != "*" && a.DELET != "*"
+                                   && ((int)(object)c.PacDtcir >= 20200701 || c.PacDtcir == null)
+                                   select PA10.Pa1Despat
+                                   ).Distinct().ToList(),
+                    Tabelas = ProtheusDenuo.Da0010s.Where(x => x.DELET != "*").Select(x => x.Da0Descri).ToList(),
+                    Condicoes = ProtheusDenuo.Se4010s.Where(x => x.DELET != "*" && x.E4Msblql != "1").Select(x => x.E4Descri).ToList(),
+                    Vendedores = ProtheusInter.Sa3010s.Where(x => x.DELET != "*" && x.A3Msblql != "1").Select(x => x.A3Nreduz).ToList(),
+                };
+
+                SearchProduto = ProtheusDenuo.Sb1010s.Where(x => x.DELET != "*" && x.B1Msblql != "1").Select(x => x.B1Desc).Distinct().ToList();
+                Agendamento.Empresa = "03";
+            }
+
+            Agendamento.Paciente = cotacao.nmPaciente.ToUpper();
+            Agendamento.DataCirurgia = cotacao.dtCirurgia;
+
+            #region Cliente
+
+            try
+            {
+                var data = Convert.ToInt32(DateTime.Now.ToString("yyyy/MM/dd").Replace("/", ""));
+                if (Agendamento.Empresa == "01")
+                {
+
+                    //Intermedic
+                    var Cliente = ProtheusInter.Sa1010s.Select(x => new
+                    {
+                        Codigo = x.A1Cod,
+                        Nreduz = x.A1Nreduz,
+                        Cond = x.A1Cond,
+                        Descon = x.A1Desccon,
+                        Tabela = x.A1Tabela,
+                        x.DELET,
+                        x.A1Msblql,
+                        x.A1Nome,
+                        x.A1Cgc
+                    }).FirstOrDefault(x => x.A1Cgc == cotacao.cnpj && x.DELET != "*" && x.A1Msblql != "1");
+
+                    
+
+                    //&& (int)(object)x.Da0Datate >= data
+
+                    var Tabela = ProtheusInter.Da0010s.FirstOrDefault(x => x.Da0Codtab == Cliente.Tabela && x.DELET != "*")?.Da0Descri;
+
+                    var TabelaCliente = new
+                    {
+                        Cliente.Codigo,
+                        Cliente.Nreduz,
+                        Cliente.Cond,
+                        Cliente.Descon,
+                        Cliente.Tabela,
+                        CondTabela = Tabela
+                    };
+
+                    Agendamento.Cliente = $"{TabelaCliente.Codigo} {TabelaCliente.Nreduz}";
+                    Agendamento.CodCondPag = TabelaCliente.Cond;
+                    Agendamento.CondPag = TabelaCliente.Descon;
+                    Agendamento.CodTabela = TabelaCliente.Tabela;
+                    Agendamento.Tabela = TabelaCliente.CondTabela;
+                }
+                else
+                {
+                    //Denuo
+
+                    var Cliente = ProtheusDenuo.Sa1010s.Select(x => new
+                    {
+                        Codigo = x.A1Cod,
+                        Nreduz = x.A1Nreduz,
+                        Cond = x.A1Cond,
+                        Descon = x.A1Desccon,
+                        Tabela = x.A1Tabela,
+                        x.DELET,
+                        x.A1Msblql,
+                        x.A1Nome,
+                        x.A1Cgc
+                    }).FirstOrDefault(x => x.A1Cgc == cotacao.cnpj && x.DELET != "*" && x.A1Msblql != "1");
+
+                    var Tabela = ProtheusDenuo.Da0010s.FirstOrDefault(x => x.Da0Codtab == Cliente.Tabela && x.DELET != "*" && (int)(object)x.Da0Datate >= data)?.Da0Descri;
+
+
+                    var TabelaCliente = new
+                    {
+                        Cliente.Codigo,
+                        Cliente.Nreduz,
+                        Cliente.Cond,
+                        Cliente.Descon,
+                        Cliente.Tabela,
+                        CondTabela = Tabela
+                    };
+
+                    Agendamento.Cliente = $"{TabelaCliente.Codigo} {TabelaCliente.Nreduz}";
+                    Agendamento.CodCondPag = TabelaCliente.Cond;
+                    Agendamento.CondPag = TabelaCliente.Descon;
+                    Agendamento.CodTabela = TabelaCliente.Tabela;
+                    Agendamento.Tabela = TabelaCliente.CondTabela;
+                }
+            }
+            catch
+            {
+
+            }
+
+            #endregion
+
+            #region Vendedor
+            try
+            {
+                if (Agendamento.Empresa == "01")
+                {
+                    //Intermedic
+                    var Cliente = ProtheusInter.Sa1010s.FirstOrDefault(x => x.A1Nome == cotacao.medico.nmMedico.ToUpper() && x.DELET != "*" && x.A1Msblql != "1")?.A1Nvend;
+                    Agendamento.Medico = cotacao.medico.nmMedico.ToUpper();
+                    Agendamento.Vendedor = Cliente;
+                }
+                else
+                {
+                    //Denuo
+                    var Cliente = ProtheusDenuo.Sa1010s.FirstOrDefault(x => x.A1Nome == cotacao.medico.nmMedico.ToUpper() && x.DELET != "*" && x.A1Msblql != "1")?.A1Nvend;
+                    Agendamento.Medico = cotacao.medico.nmMedico.ToUpper();
+                    Agendamento.Vendedor = Cliente;
+                }
+            }
+            catch
+            {
+
+            }
+
+            #endregion
+
+            #region Convenio
+            try
+            {
+                if (Agendamento.Empresa == "01")
+                {
+                    //Intermedic
+                    var Cliente = ProtheusInter.Sa1010s.FirstOrDefault(x => x.A1Nome == cotacao.nmConvenio.ToUpper() && x.A1Clinter == "C" && x.DELET != "*" && x.A1Msblql != "1")?.A1Cod;
+
+                    Agendamento.Convenio = cotacao.nmConvenio;
+                    Agendamento.CodConvenio = Cliente;
+                }
+                else
+                {
+                    //Denuo
+                    var Cliente = ProtheusDenuo.Sa1010s.FirstOrDefault(x => x.A1Nome == cotacao.nmConvenio.ToUpper() && x.A1Clinter == "C" && x.DELET != "*" && x.A1Msblql != "1")?.A1Cod;
+
+                    Agendamento.Convenio = cotacao.nmConvenio;
+                    Agendamento.CodConvenio = Cliente;
+                }
+            }
+            catch
+            {
+
+            }
+
+            #endregion
+
+            #region Hospital
+
+            if (Agendamento.Empresa == "01")
+            {
+                //Intermedic
+                var Cliente = ProtheusInter.Sa1010s.FirstOrDefault(x => x.A1Nreduz == cotacao.hospital.razaoSocial.ToUpper() && x.A1Clinter == "H" && x.DELET != "*" && x.A1Msblql != "1")?.A1Cod;
+
+                if(Cliente == null)
+                {
+                    Cliente = ProtheusInter.Sa1010s.FirstOrDefault(x => x.A1Nome == cotacao.hospital.razaoSocial.ToUpper() && x.A1Clinter == "H" && x.DELET != "*" && x.A1Msblql != "1")?.A1Cod;
+                }
+
+                Agendamento.Hospital = cotacao.hospital.razaoSocial;
+                Agendamento.CodHospital = Cliente;
+
+            }
+            else
+            {
+                //Denuo
+                var Cliente = ProtheusDenuo.Sa1010s.FirstOrDefault(x => x.A1Nreduz == cotacao.hospital.razaoSocial.ToUpper() && x.A1Clinter == "H" && x.DELET != "*" && x.A1Msblql != "1")?.A1Cod;
+
+                if (Cliente == null)
+                {
+                    Cliente = ProtheusDenuo.Sa1010s.FirstOrDefault(x => x.A1Nome == cotacao.hospital.razaoSocial.ToUpper() && x.A1Clinter == "H" && x.DELET != "*" && x.A1Msblql != "1")?.A1Cod;
+                }
+
+                Agendamento.Hospital = cotacao.hospital.razaoSocial;
+                Agendamento.CodHospital = Cliente;
+            }
+
+            #endregion
+
+            #region Produtos
+            
+
+            if (Agendamento.Empresa == "01")
+            {
+
+                var produtos = cotacao.cotacaoItemList.Where(x=> x.distribuidor.cgc == "01390500000140").ToList();
+
+                //Intermedic
+                produtos.ForEach(codigo =>
+                {
+
+                    var produto = (from SB10 in ProtheusInter.Sb1010s
+                                   where SB10.B1Cod.Replace(".", "").Replace(" ", "").Replace("-","") == codigo.cdProdutoDistribuidor && SB10.B1Msblql != "1"
+                                   && SB10.DELET != "*"
+                                   select new
+                                   {
+                                       SB10.B1Cod,
+                                       SB10.B1Msblql,
+                                       SB10.B1Solicit,
+                                       SB10.B1Desc,
+                                       SB10.B1Fabric,
+                                       SB10.B1Tipo,
+                                       SB10.B1Lotesbp,
+                                       SB10.B1Um,
+                                       SB10.B1Reganvi,
+                                       SB10.B1Xtuss
+                                   }).FirstOrDefault();
+
+                    if (produto != null)
+                    {
+                        var preco = (from DA10 in ProtheusInter.Da1010s
+                                     where DA10.DELET != "*" && DA10.Da1Codtab == Agendamento.CodTabela && DA10.Da1Codpro == produto.B1Cod
+                                     select DA10.Da1Prcven).FirstOrDefault();
+
+                        var ViewProduto = new Produto
+                        {
+                            Item = produto.B1Cod,
+                            Licit = produto.B1Solicit,
+                            Produtos = produto.B1Desc,
+                            Tuss = produto.B1Xtuss,
+                            Anvisa = produto.B1Reganvi,
+                            Marca = produto.B1Fabric,
+                            Und = 1,
+                            PrcUnid = preco,
+                            SegUnd = produto.B1Um,
+                            VlrTotal = preco,
+                        };
+
+                        Produtos.Add(ViewProduto);
+                    }
+                });
+            }
+            else
+            {
+                var produtos = cotacao.cotacaoItemList.Where(x => x.distribuidor.cgc == "04715053000140").ToList();
+                //Denuo
+
+                produtos.ForEach(codigo =>
+                {
+
+                    var produto = (from SB10 in ProtheusDenuo.Sb1010s
+                                   where SB10.B1Cod.Replace(".", "").Replace(" ", "").Replace("-", "") == codigo.cdProdutoDistribuidor && SB10.B1Msblql != "1"
+                                   && SB10.DELET != "*"
+                                   select new
+                                   {
+                                       SB10.B1Cod,
+                                       SB10.B1Msblql,
+                                       SB10.B1Solicit,
+                                       SB10.B1Desc,
+                                       SB10.B1Fabric,
+                                       SB10.B1Tipo,
+                                       SB10.B1Lotesbp,
+                                       SB10.B1Um,
+                                       SB10.B1Reganvi,
+                                       SB10.B1Xtuss
+                                   }).FirstOrDefault();
+
+                    if (produto != null)
+                    {
+                        var preco = (from DA10 in ProtheusDenuo.Da1010s
+                                     where DA10.DELET != "*" && DA10.Da1Codtab == Agendamento.CodTabela && DA10.Da1Codpro == produto.B1Cod
+                                     select DA10.Da1Prcven).FirstOrDefault();
+
+                        var ViewProduto = new Produto
+                        {
+                            Item = produto.B1Cod,
+                            Licit = produto.B1Solicit,
+                            Produtos = produto.B1Desc,
+                            Tuss = produto.B1Xtuss,
+                            Anvisa = produto.B1Reganvi,
+                            Marca = produto.B1Fabric,
+                            Und = 1,
+                            PrcUnid = preco,
+                            SegUnd = produto.B1Um,
+                            VlrTotal = preco,
+                        };
+
+                        Produtos.Add(ViewProduto);
+                    }
+                });
+
+            }
+
+
+            #endregion
         }
 
         public IActionResult OnPostAsync(string Empresa,string Cliente,string CondPag, string Tabela,string Vendedor,

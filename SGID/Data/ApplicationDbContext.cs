@@ -22,11 +22,12 @@ namespace SGID.Data
         //Instrumentador
         public DbSet<AgendamentoInstrumentador> AgendamentoInstrumentadors { get; set; }
         public DbSet<RecursoIntrumentador> Instrumentadores { get; set; }
+        public DbSet<DadosCirurgia> DadosCirurgias { get; set; }
+        public DbSet<AnexosDadosCirurgia> AnexosDadosCirurgias { get; set; }
+        public DbSet<DadosCirugiasProdutos> DadosCirugiasProdutos { get; set; }
 
 
         //Comercial Cotações
-        public DbSet<DadosCirurgia> DadosCirurgias { get; set; }
-        public DbSet<AnexosDadosCirurgia> AnexosDadosCirurgias { get; set; }
         public DbSet<AvulsosAgendamento> AvulsosAgendamento { get; set; }
         public DbSet<Procedimento> Procedimentos { get; set; }
 

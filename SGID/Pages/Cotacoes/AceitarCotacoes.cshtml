@@ -885,26 +885,26 @@
         })
     </script>
 
-    <script>
+<script>
 
-        $(document).ready(function () {
-            $(window).keydown(function (event) {
-                if (event.keyCode == 13) {
-                    event.preventDefault();
-                    return false;
-                }
-            });
+    $(document).ready(function () {
+        $(window).keydown(function (event) {
+            if (event.keyCode == 13) {
+                event.preventDefault();
+                return false;
+            }
         });
+    });
 
     var Patri = [];
     var Produto = [];
 
     @foreach (var d in Model.SearchPatri)
     {
-            @:Patri.push("@d");
+        @:Patri.push("@d");
     }
 
-        @foreach (var d in Model.SearchProduto)
+    @foreach (var d in Model.SearchProduto)
     {
         @:Produto.push("@d");
     }

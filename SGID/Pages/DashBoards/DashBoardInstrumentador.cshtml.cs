@@ -4,34 +4,40 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using SGID.Data;
 using SGID.Data.Models;
+using SGID.Models.Denuo;
 using SGID.Models.DTO;
+using SGID.Models.Inter;
 
 namespace SGID.Pages.DashBoards
 {
-    [Authorize(Roles = "Admin,Instrumentador,Diretoria")]
+    [Authorize]
     public class DashBoardInstrumentadorModel : PageModel
     {
         public ApplicationDbContext SGID { get; set; }
+        private TOTVSDENUOContext DENUO { get; set; }
+        private TOTVSINTERContext INTER { get; set; }
 
         public int MeusAgendamentos { get; set; }
 
         public int Recusados { get; set; }
 
-        public DashBoardInstrumentadorModel(ApplicationDbContext sGID)
+        public DashBoardInstrumentadorModel(ApplicationDbContext sGID,TOTVSDENUOContext denuo,TOTVSINTERContext inter)
         {
             SGID = sGID;
+            INTER = inter;
+            DENUO = denuo;
         }
 
         public void OnGet()
         {
             if (User.IsInRole("Admin") || User.IsInRole("Diretoria"))
             {
-                MeusAgendamentos = SGID.Agendamentos.Count();
+                MeusAgendamentos = SGID.Agendamentos.Where(x=> x.StatusPedido == 7).Count();
             }
             else
             {
 
-                MeusAgendamentos = SGID.Agendamentos.Count();
+                MeusAgendamentos = SGID.Agendamentos.Where(x => x.StatusPedido == 7).Count();
             }
         }
 
@@ -98,15 +104,25 @@ namespace SGID.Pages.DashBoards
             {
                 var agendamento = SGID.Agendamentos.Select(x => new
                 {
-                    x.Cliente,
+                    x.Hospital,
                     x.Id,
                     x.Observacao,
-                    x.Paciente
+                    x.Paciente,
+                    x.Empresa,
+                    x.CodHospital
                 }).FirstOrDefault(x => x.Id == id);
+
+
+                var endereco = "";
+
+                if (agendamento.Empresa == "01") endereco = INTER.Sa1010s.FirstOrDefault(x => x.A1Cod == agendamento.CodHospital).A1End;
+                else endereco = DENUO.Sa1010s.FirstOrDefault(x => x.A1Cod == agendamento.CodHospital).A1End;
+
 
                 var agenda = new
                 {
                     Agendamento = agendamento,
+                    endereco
                 };
 
                 return new JsonResult(agenda);

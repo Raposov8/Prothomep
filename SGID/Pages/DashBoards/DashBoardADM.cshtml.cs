@@ -393,23 +393,6 @@ namespace SGID.Pages.DashBoards
                 string DataInicio = "";
                 string DataFim = "";
 
-                if (Mes == "13")
-                {
-                    DataInicio = $"{Ano}0101";
-
-                    DataFim = $"{Ano}1231";
-
-
-
-                }
-                else
-                {
-                    DataInicio = $"{Ano}{Mes}01";
-
-                    DataFim = $"{Ano}{Mes}31";
-                }
-
-
                 #region EmAberto
 
                 #region Intermedic
@@ -425,8 +408,6 @@ namespace SGID.Pages.DashBoards
                                               && SA1.A1Loja == SC5.C5Lojacli && SA1.DELET != "*" && SA3.A3Cod == SC5.C5Vend1 && SA3.DELET != "*"
                                               && (SC5.C5Utpoper == "F" || SC5.C5Utpoper == "T") && SB1.DELET != "*" && SC6.C6Produto == SB1.B1Cod
                                               && SA1.A1Cgc != "04715053000140" && SA1.A1Cgc != "04715053000220" && SA1.A1Cgc != "01390500000140"
-                                              && (int)(object)SC5.C5Emissao >= (int)(object)DataInicio
-                                              && (int)(object)SC5.C5Emissao <= (int)(object)DataFim
                                               orderby SC5.C5Num, SC5.C5Emissao descending
                                               select SC6.C6Valor
                                          ).Sum();
@@ -448,8 +429,6 @@ namespace SGID.Pages.DashBoards
                                               && (SC5.C5Utpoper == "F" || SC5.C5Utpoper == "T") && SB1.DELET != "*" && SC6.C6Produto == SB1.B1Cod
                                               && SA1.A1Cgc != "04715053000140" && SA1.A1Cgc != "04715053000220" && SA1.A1Cgc != "01390500000140"
                                               && SC5.C5Xtipopv != "D"
-                                              && (int)(object)SC5.C5Emissao >= (int)(object)DataInicio
-                                              && (int)(object)SC5.C5Emissao <= (int)(object)DataFim
                                               orderby SC5.C5Num, SC5.C5Emissao descending
                                               select SC6.C6Valor)
                                               .Sum();
@@ -458,7 +437,6 @@ namespace SGID.Pages.DashBoards
                 #endregion
 
                 #endregion
-
 
                 var valores = new
                 {

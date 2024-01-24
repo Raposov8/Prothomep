@@ -10,6 +10,8 @@
     {
         Layout = "_LayoutNovo";
     }
+
+    var count = 0;
 }
 
 <div class="row">
@@ -49,39 +51,39 @@
                     <div class="row">
                         <div class="form-group col-sm-4 col-md-4">
                             <label class="Label">Cliente Faturamento </label>
-                            <input class="form-control" id="Cliente" name="Cliente" oninput="this.value = this.value.toUpperCase()" required >
+                            <input class="form-control" id="Cliente" name="Cliente" value="@Model.Agendamento.Cliente" oninput="this.value = this.value.toUpperCase()" required >
                         </div>
                         <div class="form-group col-sm-3 col-md-3">
                             <label class="Label">Codigo Cond. Pag.</label>
-                            <input class="form-control" id="CodCondPag" name="CodCondPag" oninput="this.value = this.value.toUpperCase()" required/>
+                            <input class="form-control" id="CodCondPag" name="CodCondPag" value="@Model.Agendamento.CodCondPag" oninput="this.value = this.value.toUpperCase()" required/>
                         </div>
                         <div class="form-group col-sm-3 col-md-3">
                             <label class="Label">Condições de Pagto.</label>
                             <div class="autocomplete col-md-12">
-                                <input type="text" class="form-control" id="CondPag" name="CondPag" oninput="this.value = this.value.toUpperCase()" required />
+                            <input type="text" class="form-control" id="CondPag" name="CondPag" value="@Model.Agendamento.CondPag" oninput="this.value = this.value.toUpperCase()" required />
                             </div>
                         </div>
                         <div class="form-group col-sm-2 col-md-2">
                             <label class="Label">Codigo Tabela</label>
-                            <input class="form-control" id="CodTabela" name="CodTabela" oninput="this.value = this.value.toUpperCase()" required />
+                            <input class="form-control" id="CodTabela" name="CodTabela" value="@Model.Agendamento.CodTabela" oninput="this.value = this.value.toUpperCase()" required />
                         </div>
                         <div class="form-group col-sm-4 col-md-4">
                             <label class="Label">Tabela (R$)</label>
                             <div class="autocomplete col-md-12">
-                                <input class="form-control" id="Tabela" name="Tabela" oninput="this.value = this.value.toUpperCase()" required />
+                                <input class="form-control" id="Tabela" name="Tabela" value="@Model.Agendamento.Tabela" oninput="this.value = this.value.toUpperCase()" required />
                             </div>
                         </div>
                         <div class="form-group col-sm-4 col-md-4">
                             <label class="Label">Médico</label>
                             <div class="autocomplete col-md-12"  >
-                              <input type="text" class="form-control" id="Medico" name="Medico" oninput="this.value = this.value.toUpperCase()" required />
+                              <input type="text" class="form-control" id="Medico" name="Medico" value="@Model.Agendamento.Medico" oninput="this.value = this.value.toUpperCase()" required />
                             </div>
                             
                         </div>
                         <div class="form-group col-sm-2 col-md-2">
                             <label class="Label">Vendedor</label>
                             <div class="autocomplete col-md-12">
-                                <input type="text" class="form-control" id="Vendedor" name="Vendedor" oninput="this.value = this.value.toUpperCase()" required />
+                                <input type="text" class="form-control" id="Vendedor" name="Vendedor" value="@Model.Agendamento.Vendedor" oninput="this.value = this.value.toUpperCase()" required />
                             </div>
                         </div>
                     </div>
@@ -92,26 +94,26 @@
                         </div>
                         <div class="form-group col-sm-4 col-md-4">
                             <label class="Label">Paciente</label>
-                            <input type="text" class="form-control" id="Paciente" name="Paciente" oninput="this.value = this.value.toUpperCase()" required/>
+                            <input type="text" class="form-control" id="Paciente" name="Paciente" value="@Model.Agendamento.Paciente" oninput="this.value = this.value.toUpperCase()" required/>
                         </div>
                         <div class="form-group col-sm-2 col-md-2">
                             <label class="Label">Codigo Hospital</label>
-                        <input type="text" class="form-control" id="CodHospital" name="CodHospital" oninput="this.value = this.value.toUpperCase()" required/>
+                        <input type="text" class="form-control" id="CodHospital" name="CodHospital" value="@Model.Agendamento.CodHospital" oninput="this.value = this.value.toUpperCase()" required/>
                         </div>
                         <div class="form-group col-sm-4 col-md-4">
                             <label class="Label">Hospital</label>
                             <div class="autocomplete col-md-12">
-                                <input type="text" class="form-control" id="Hospital" name="Hospital" oninput="this.value = this.value.toUpperCase()" required/>
+                                <input type="text" class="form-control" id="Hospital" name="Hospital" value="@Model.Agendamento.Hospital" oninput="this.value = this.value.toUpperCase()" required/>
                             </div>
                         </div>
                         <div class="form-group col-sm-2 col-md-2">
                             <label class="Label">Codigo</label>
-                        <input type="text" class="form-control" id="CodConvenio" name="CodConvenio" />
+                            <input type="text" class="form-control" id="CodConvenio" name="CodConvenio" value="@Model.Agendamento.CodConvenio" />
                         </div>
                         <div class="form-group col-sm-4 col-md-4">
                             <label class="Label">Convênio</label>
                             <div class="autocomplete col-md-12">
-                                <input type="text" class="form-control" id="Convenio" name="Convenio" oninput="this.value = this.value.toUpperCase()" />
+                                <input type="text" class="form-control" id="Convenio" value="@Model.Agendamento.Convenio" name="Convenio" oninput="this.value = this.value.toUpperCase()" />
                             </div>
                         </div>
                         <div class="form-group col-sm-4 col-md-4">
@@ -259,6 +261,62 @@
                             </tr>
                         </thead>
                         <tbody>
+                        @foreach (var data in Model.Produtos)
+                        {
+                            <tr>
+                                <td>
+                                    @data.Item
+                                    <input type="hidden" id="Produtos[@count].Item" name="Produtos[@count].Item" value="@data.Item" />
+                                </td>
+                                <td>
+                                    @data.Licit
+                                    <input type="hidden" id="Produtos[@count].Licit" name="Produtos[@count].Licit" value="@data.Licit" />
+                                </td>
+                                <td>
+                                    @data.Produtos
+                                    <input type="hidden" id="Produtos[@count].Produtos" name="Produtos[@count].Produtos" value="@data.Produtos" />
+                                </td>
+                                <td>
+                                    @data.Tuss
+                                    <input type="hidden" id="Produtos[@count].Tuss" name="Produtos[@count].Tuss" value="@data.Tuss" />
+                                </td>
+                                <td>
+                                    @data.Anvisa
+                                    <input type="hidden" id="Produtos[@count].Anvisa" name="Produtos[@count].Anvisa" value="@data.Anvisa" />
+                                </td>
+                                <td>
+                                    @data.Marca
+                                    <input type="hidden" id="Produtos[@count].Marca" name="Produtos[@count].Marca" value="@data.Marca" />
+                                </td>
+                                <td>
+                                    <input type="number" style="Width:60px;" class="teste" id="Produtos[@count].Und" min="0" name="Produtos[@count].Und" value="@data.Und" />
+                                </td>
+                                <td>
+                                    @data.SegUnd
+                                    <input type="hidden" id="Produtos[@count].SegUnd" name="Produtos[@count].SegUnd" value="@data.SegUnd" />
+                                </td>
+                                <td>
+                                    <input class="testeValor" id="Produtos[@count].PrcUnid" name="Produtos[@count].PrcUnid" value="@data.PrcUnid" />
+                                </td>
+                                <td>
+                                    <input class="total_@count" id="Produtos[@count].VlrTotal" name="Produtos[@count].VlrTotal" value="@data.VlrTotal.ToString("N2")" />
+                                </td>
+                                <td>
+                                    @data.TipoOp
+                                    <input type="hidden" id="Produtos[@count].TipoOp" name="Produtos[@count].TipoOp" value="@data.TipoOp" />
+                                </td>
+                                <td>
+                                    @data.Lote
+                                    <input type="hidden" id="Produtos[@count].Lote" name="Produtos[@count].Lote" value="@data.Lote" />
+                                </td>
+                                <td>
+                                    <a href="/" class="fas fa-eye add-tooltip" style="text-decoration:none;" data-container="body" data-placement="top" data-original-title="Visualizar Recurso" aria-hidden="true"></a>
+
+                                    <a class="fa-regular fa-trash-can add-tooltip" onclick="remove(this)" style="text-decoration:none;" id="Excluir" data-container="body" data-placement="top" data-original-title="Excluir Recurso" aria-hidden="true"></a>
+                                </td>
+                            </tr>
+                            count++;
+                        }
                         </tbody>
                     </table>
                 </div>
@@ -387,10 +445,21 @@
         $('#Empresa').val(`@ViewContext.RouteData.Values["id"]`)
         $("#Instrumentador").val("** NENHUM **                            ")
 
+        count = @count;
+
         //Inicializador
         $("#Hora").mask("00:00");
 
         $("#HoraFinal").mask("00:00");
+
+        @if (Model.Agendamento.DataCirurgia != null)
+        {
+            @:data = "@Model.Agendamento.DataCirurgia.Value.ToString("yyyy-MM-dd'T'HH:mm")";
+
+            @:console.log(data);
+
+            @:$("#DataAgendamento").val(data);
+        }
 
         remove = function(item) {
               
@@ -447,8 +516,8 @@
                            var id = input.id.split('.')[1];
                            var name = input.name.split('.')[1];
 
-                                input.id = `Patris[${countPatri}].${id}`;
-                                input.name = `Patris[${countPatri}].${name}`;
+                           input.id = `Patris[${countPatri}].${id}`;
+                           input.name = `Patris[${countPatri}].${name}`;
                        }
                     })
                     countPatri++

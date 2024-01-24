@@ -128,16 +128,23 @@
 <br />
 <div class="row">
     <div class="col-md-4">
-        <div id="GraficoAberto" style="height:100%"></div>
+        <div id="GraficoAberto" style="height:400px;"></div>
     </div>
     <div class="col-md-4">
         <div id="GraficoFatu" style="height:100%"></div>
     </div>
     <div class="col-md-4">
-        <div class="row justify-content-center">
-            <div class="col-md-6"><text style="cursor: default; user-select: none; -webkit-font-smoothing: antialiased; font-family: Roboto; font-size: 16px;color:#757575">TITULOS VENCIDOS</text></div>
-        </div>
-        <br />
+        <div id="GraficoEmAbertoMeses" style="height:90%"></div>
+        <div id="TOTAL"></div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="row justify-content-center">
+        <div class="col-md-6"><text style="cursor: default; user-select: none; -webkit-font-smoothing: antialiased; font-family: Roboto; font-size: 16px;color:#757575">TITULOS VENCIDOS</text></div>
+    </div>
+    <br />
+    <div class="col-md-4">
         <div class="panel">
             <div class="panel-body">
                 <table id="Vencidos" class="table-striped table-bordered" cellspacing="0" width="100%">
@@ -158,6 +165,8 @@
                 <a href="/relatorios/diretoria/TitulosVencidos" target="_blank"><label class="btn btn-outline-primary">Saiba Mais...</label></a>
             </div>
         </div>
+    </div>
+    <div class="col-md-4">
         <div class="panel">
             <div class="panel-body">
                 <table id="VencidosInter" class="table-striped table-bordered" cellspacing="0" width="100%">
@@ -178,6 +187,8 @@
                 <a href="/relatorios/diretoria/TitulosVencidosInter" target="_blank"><label class="btn btn-outline-primary">Saiba Mais...</label></a>
             </div>
         </div>
+    </div>
+    <div class="col-md-4">
         <div class="panel">
             <div class="panel-body">
                 <table id="Folha" class="table-striped table-bordered" cellspacing="0" width="100%">
@@ -196,63 +207,6 @@
                     </tbody>
                 </table>
                 <a><div id="FolhaRed"><label class="btn btn-outline-primary">Saiba Mais...</label></div></a>
-            </div>
-        </div>
-    </div>
-</div>
-<div class="row">
-    <div class="col-md-12"><text style="cursor: default; user-select: none; -webkit-font-smoothing: antialiased; font-family: Roboto; font-size: 16px;color:#757575">PEDIDOS EM ABERTO INTERMEDIC & DENUO</text></div>
-</div>
-<div class="row">
-    <div id="PedidosTipos" class="row justify-content-center">
-        <div class="col-xs-2 col-sm-2 col-md-2 col-xl-2">
-            <div class="panel panel-colorful" style="background-color:#8faadc">
-                <div class="panel-heading">
-                    <h2 style="margin:0%;color:#ffffff;font-size:20px;" class="panel-title text-center">ATÉ 3 MESES</h2>
-                </div>
-                <div class="panel-body" style="padding-top:0px;">
-                    <a class="produto"><h3 class="text-center" style="margin-top:0%; color:#ffffff;font-size:20px">0</h3></a>
-                </div>
-            </div>
-        </div>
-        <div class="col-xs-2 col-sm-2 col-md-2 col-xl-2">
-            <div class="panel panel-colorful" style="background-color:#8faadc">
-                <div class="panel-heading">
-                    <h2 style="margin:0%;color:#ffffff;font-size:20px;" class="panel-title text-center">3 A 6 MESES</h2>
-                </div>
-                <div class="panel-body" style="padding-top:0px;">
-                    <a class="produto"><h3 class="text-center" style="margin-top:0%; color:#ffffff;font-size:20px">0</h3></a>
-                </div>
-            </div>
-        </div>
-        <div class="col-xs-2 col-sm-2 col-md-2 col-xl-2">
-            <div class="panel panel-colorful" style="background-color:#8faadc">
-                <div class="panel-heading">
-                    <h2 style="margin:0%;color:#ffffff;font-size:20px;" class="panel-title text-center">6 A 9 MESES</h2>
-                </div>
-                <div class="panel-body" style="padding-top:0px;">
-                    <a class="produto"><h3 class="text-center" style="margin-top:0%; color:#ffffff;font-size:20px">0</h3></a>
-                </div>
-            </div>
-        </div>
-        <div class="col-xs-2 col-sm-2 col-md-2 col-xl-2">
-            <div class="panel panel-colorful" style="background-color:#8faadc">
-                <div class="panel-heading">
-                    <h2 style="margin:0%;color:#ffffff;font-size:20px;" class="panel-title text-center">MAIS DE 9 MESES</h2>
-                </div>
-                <div class="panel-body" style="padding-top:0px;">
-                    <a class="produto"><h3 class="text-center" style="margin-top:0%; color:#ffffff;font-size:20px">0</h3></a>
-                </div>
-            </div>
-        </div>
-        <div class="col-xs-2 col-sm-2 col-md-2 col-xl-2">
-            <div class="panel panel-colorful" style="background-color:#203864">
-                <div class="panel-heading">
-                    <h2 style="margin:0%;color:#ffffff;font-size:20px;" class="panel-title text-center">TOTAL</h2>
-                </div>
-                <div class="panel-body" style="padding-top:0px;">
-                    <a class="produto"><h3 class="text-center" style="margin-top:0%; color:#ffffff;font-size:20px">0</h3></a>
-                </div>
             </div>
         </div>
     </div>
@@ -280,16 +234,18 @@
 @section scripts
     {
     <script type="text/javascript">
-        google.charts.load('current', { packages: ['bar'], language: 'pt-BR' });
+        google.charts.load('current', { packages: ["corechart","bar"], language: 'pt-BR' });
         google.charts.setOnLoadCallback(drawChart);
 
         var formato = { minimumFractionDigits: 2, style: 'currency', currency: 'BRL' }
 
         var grafico = [];
         var grafico2 = [];
+        var grafico3 = [];
 
         grafico.push(['UNIDADES DE NEGOCIOS', 'Valores', { role: 'style' }]);
         grafico2.push(['UNIDADES DE NEGOCIOS', 'Valores']);
+        grafico2.push(['MESES', 'Valores', { role: 'style' }]);
 
 
         function move(obj) {
@@ -350,6 +306,34 @@
             chart.draw(data, google.charts.Bar.convertOptions(options));
         }
 
+        function drawChart3() {
+
+            var data = google.visualization.arrayToDataTable(
+                grafico3
+            );
+
+            console.log(grafico3)
+
+            var options = {
+                title: 'EM ABERTO CIRURGIAS',
+                legend: { position: "none" },
+                colors: ['#097609', '#ED8205', '#B80101']
+            };
+
+            var chart = new google.visualization.PieChart(document.getElementById('GraficoEmAbertoMeses'));
+
+            google.visualization.events.addListener(chart, 'select', function (e) {
+                var selection = chart.getSelection();
+                if (selection.length) {
+                    var row = selection[0].row;
+                    let link = data.getValue(row, 3);
+                    window.open(link, '_blank');
+                }
+            });
+
+            chart.draw(data, options);
+        }
+
     </script>
     <script>
         $(document).ready(function () {
@@ -396,43 +380,23 @@
 
                         move(50)
 
-                        $("#PedidosTipos>div").remove();
+                        grafico3 = [];
 
-                        var linha = '';
+                        var numero = 1;
 
-                        Numero = 1;
+                        grafico3.push(['MESES', 'Valores', { role: 'style' },'link']);
+
 
                         data.linhas.forEach(x => {
 
-                            linha = `<div class="col-xs-2 col-sm-2 col-md-2 col-xl-2">
-                                                  <div class="panel panel-colorful" style="background-color:#8faadc">
-                                              <div class="panel-heading">
-                                                  <h2 style="margin:0%;color:#ffffff;font-size:20px;" class="panel-title text-center"> ${x.nome}</h2>
-                                              </div>
-                                              <div class="panel-body" style="padding-top:0px;">
-                                                  <a href='/relatorios/diretoria/CirurgiaPorTempo/${Numero}' target='_blank'><h3 class="text-center" style="margin-top:0%; color:#ffffff;font-size:20px">${x.faturamento.toLocaleString('pt-BR', formato)}</h3></a>
-                                              </div>
-                                          </div>
-                                      </div>`
-
-                            if(Numero == 5){
-                                linha = `<div class="col-xs-2 col-sm-2 col-md-2 col-xl-2">
-                                                          <div class="panel panel-colorful" style="background-color:#8faadc">
-                                                      <div class="panel-heading">
-                                                          <h2 style="margin:0%;color:#ffffff;font-size:20px;" class="panel-title text-center"> ${x.nome}</h2>
-                                                      </div>
-                                                      <div class="panel-body" style="padding-top:0px;">
-                                                          <a><h3 class="text-center" style="margin-top:0%; color:#ffffff;font-size:20px">${x.faturamento.toLocaleString('pt-BR', formato)}</h3></a>
-                                                      </div>
-                                                  </div>
-                                              </div>`
-                            }
-
-                            $("#PedidosTipos").append(linha);
-                            Numero++;
+                            grafico3.push([x.nome, x.faturamento, `color:${x.estilo}`,`/relatorios/diretoria/cirurgiaportempo/${numero}`]);
+                            console.log(x.estilo)
+                            numero++;
                         })
-                       
 
+                        $('#TOTAL').html(`<div style="color:#3366cc"><b>Total: ${data.linhasValor.toLocaleString('pt-BR', formato)}</b></div>`);
+
+                        drawChart3()
                     }
                 })
 

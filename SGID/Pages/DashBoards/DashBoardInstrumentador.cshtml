@@ -89,12 +89,12 @@
                     right: 'agendaDay,agendaWeek,month'
                 },
                 initialView: 'agendaDay',
-                events: '/instrumentador/dashboardinstrumentador?handler=events',
+                events: '/dashboards/dashboardinstrumentador?handler=events',
                 eventLimit: true,
                 eventClick: function (info) {
 
                     $('#loading-modal').modal('show');
-                    var chamadaUrl = `/instrumentador/dashboardinstrumentador?handler=details&&id=${info.id}`
+                    var chamadaUrl = `/dashboards/dashboardinstrumentador?handler=details&&id=${info.id}`
                     $.ajax({
                         url: chamadaUrl,
                         type: "GET",
@@ -107,8 +107,8 @@
 
                             $("#BoxDados").show();
                             $("#BoxObs").show();
-                            $("#Cliente").html(`Cliente: ${data.agendamento.cliente}`);
-                            $("#End").html(`End: ${data.agendamento.loja}`);
+                            $("#Cliente").html(`Cliente: ${data.agendamento.hospital}`);
+                            $("#End").html(`End: ${data.endereco}`);
                             $("#Paciente").html(`Paciente: ${data.agendamento.paciente}`);
                             $("#Obs").html(`Obs: ${data.agendamento.observacao}`);
                             $("#Dados").html("Reportar Cirurgia")

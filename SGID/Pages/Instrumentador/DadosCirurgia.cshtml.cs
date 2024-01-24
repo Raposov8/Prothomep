@@ -1,34 +1,47 @@
+using DocumentFormat.OpenXml.Office2010.Excel;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using OPMEnexo;
 using SGID.Data;
 using SGID.Data.ViewModel;
+using SGID.Models.Denuo;
 using SGID.Models.DTO;
+using SGID.Models.Inter;
 
 namespace SGID.Pages.Instrumentador
 {
-    [Authorize(Roles = "Admin,Instrumentador,Diretoria")]
+    [Authorize]
     public class DadosCirurgiaModel : PageModel
     {
         private ApplicationDbContext SGID { get; set; }
-
+        private TOTVSINTERContext INTER { get; set; }
+        private TOTVSDENUOContext DENUO { get; set; }
         public Agendamentos Agendamento { get; set; }
         private readonly IWebHostEnvironment _WEB;
 
-        public DadosCirurgiaModel(ApplicationDbContext sgid, IWebHostEnvironment wEB)
+        public List<string> SearchProduto { get; set; } = new List<string>();
+
+        public DadosCirurgiaModel(ApplicationDbContext sgid, IWebHostEnvironment wEB,TOTVSDENUOContext denuo,TOTVSINTERContext inter)
         {
             SGID = sgid;
             _WEB = wEB;
+            INTER = inter;
+            DENUO = denuo;
         }
 
         public void OnGet(int id)
         {
            Agendamento = SGID.Agendamentos.FirstOrDefault(x => x.Id == id);
+
+
+            if(Agendamento.Empresa == "01") SearchProduto = INTER.Sb1010s.Where(x => x.DELET != "*" && x.B1Msblql != "1").Select(x => x.B1Desc).Distinct().ToList();
+            else SearchProduto = DENUO.Sb1010s.Where(x => x.DELET != "*" && x.B1Msblql != "1").Select(x => x.B1Desc).Distinct().ToList();
         }
 
         public IActionResult OnPostAsync(int Id,string Codigo,string NomePaciente,string NomeMedico,string NomeCliente,int Status,
             DateTime DataCirurgia,string Hora,string Procedimento,string Obs, IFormCollection Anexos01, IFormCollection Anexos02, 
-            IFormCollection Anexos03, IFormCollection Anexos04, IFormCollection Anexos05)
+            IFormCollection Anexos03, IFormCollection Anexos04, IFormCollection Anexos05, List<Produto> Produtos)
         {
 
             var dados = new DadosCirurgia
@@ -40,7 +53,6 @@ namespace SGID.Pages.Instrumentador
                 NomeCliente = NomeCliente,
                 Status = Status,
                 DataCirurgia = DataCirurgia,
-                HoraCirurgia = Hora,
                 ProcedimentosExec = Procedimento,
                 ObsIntercorrencia = Obs,
                 AgendamentoId = Id
@@ -152,7 +164,21 @@ namespace SGID.Pages.Instrumentador
 
             #endregion
 
-            return LocalRedirect("/instrumentador/dashboardinstrumentador");
+            Produtos.ForEach(produto =>
+            {
+                var ProdXAgenda = new DadosCirugiasProdutos
+                {
+                    DadosCirurgiaId = dados.Id, 
+                    Quantidade = produto.Und,
+                    Produto = produto.Item
+                };
+
+                SGID.DadosCirugiasProdutos.Add(ProdXAgenda);
+                SGID.SaveChanges();
+
+            });
+
+            return LocalRedirect("/dashboards/dashboard");
         }
     }
 }
