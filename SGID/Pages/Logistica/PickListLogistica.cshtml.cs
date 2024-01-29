@@ -19,7 +19,6 @@ namespace SGID.Pages.Logistica
         private TOTVSINTERContext ProtheusInter { get; set; }
         private readonly IWebHostEnvironment _WEB;
         public Agendamentos Agendamento { get; set; }
-
         public List<Produto> Produtos { get; set; } = new List<Produto>();
         public List<Patrimonio> Patrimonios { get; set; } = new List<Patrimonio>();
         public List<Produto> Avulsos { get; set; } = new List<Produto>();

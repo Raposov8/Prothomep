@@ -66,7 +66,7 @@ namespace SGID.Pages.Instrumentador
             SGID.Agendamentos.Update(agendamento);
             SGID.SaveChanges();
 
-            string Pasta = $"{_WEB.WebRootPath}/AnexosDados";
+            string Pasta = $"{_WEB.WebRootPath}/AnexosDadosCirurgia";
 
             if (!Directory.Exists(Pasta))
             {
@@ -178,7 +178,7 @@ namespace SGID.Pages.Instrumentador
 
             });
 
-            return LocalRedirect("/dashboards/dashboard");
+            return LocalRedirect("/dashboard/0");
         }
     }
 }
