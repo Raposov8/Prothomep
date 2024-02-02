@@ -8,7 +8,7 @@ using SGID.Data.Models;
 
 namespace SGID.Pages.Account
 {
-    [Authorize(Roles="Admin")]
+    //[Authorize(Roles="Admin")]
     public class RoleModel : PageModel
     {
         private readonly RoleManager<IdentityRole> _roleManager;

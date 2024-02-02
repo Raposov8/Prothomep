@@ -46,7 +46,7 @@ namespace SGID.Pages.Qualidade
 
                 foreach (var anexo in Anexos.Files)
                 {
-                    string Caminho = $"{Pasta}/TemporarioProdutoInter{Data}.csv";
+                    string Caminho = $"{Pasta}/TemporarioALterarProdutoInter{Data}.csv";
 
                     using (Stream fileStream = new FileStream(Caminho, FileMode.Create))
                     {
@@ -60,7 +60,7 @@ namespace SGID.Pages.Qualidade
 
                 int i = 1;
 
-                using (var reader = new StreamReader($"{Pasta}/TemporarioProdutoInter{Data}.csv"))
+                using (var reader = new StreamReader($"{Pasta}/TemporarioALterarProdutoInter{Data}.csv"))
                 {
                     while (!reader.EndOfStream)
                     {

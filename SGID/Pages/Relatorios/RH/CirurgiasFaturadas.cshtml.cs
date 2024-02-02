@@ -672,6 +672,7 @@ namespace SGID.Pages.Relatorios.RH
                 {
                     sheet.Cells[1, 19].Value = "Municipio";
                     sheet.Cells[1, 20].Value = "Codigo";
+                    sheet.Cells[1, 21].Value = "Tipo Faturamento";
                 }
 
                 int i = 2;
@@ -701,6 +702,7 @@ namespace SGID.Pages.Relatorios.RH
                     {
                         sheet.Cells[i, 19].Value = Pedido.Municipio;
                         sheet.Cells[i, 20].Value = Pedido.LicitacaoCodigo;
+                        sheet.Cells[i, 21].Value = Pedido.Utpoper;
                     }
 
                     i++;

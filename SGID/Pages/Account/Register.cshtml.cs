@@ -11,7 +11,7 @@ using System.Net.Mail;
 
 namespace SGID.Pages.Account
 {
-    [Authorize(Roles = "Admin,GestorVenda")]
+    //[Authorize(Roles = "Admin,GestorVenda")]
     public class RegisterModel : PageModel
     {
         private readonly ILogger<RegisterModel> _logger;
@@ -33,6 +33,7 @@ namespace SGID.Pages.Account
         }
         public void OnGet()
         {
+
             if (User.IsInRole("Admin"))
             {
                 ViewData["RoleId"] = new SelectList(_db.Roles.Where(x => x.NormalizedName != "INSTRUMENTADOR").OrderBy(x => x.Name).ToList(), "Name", "Name");
