@@ -1238,6 +1238,8 @@ namespace SGID.Pages.DashBoards
                     }
 
 
+                    var Hoje = DateTime.Now.ToString("dd/MM/yyyy");
+
                     var Valores = new
                     {
                         CirurgiasValorizadas,
@@ -1250,7 +1252,8 @@ namespace SGID.Pages.DashBoards
                         CirurgiasLicitacoesValor,
                         Meta,
                         Comissao,
-                        Empresa
+                        Id,
+                        Hoje
                     };
 
                     return new JsonResult(Valores);
@@ -1586,6 +1589,39 @@ namespace SGID.Pages.DashBoards
 
                     }*/
 
+                    #region EmAberto
+                    var resultadoEmAberto = (from SC5 in ProtheusDenuo.Sc5010s
+                                             from SC6 in ProtheusDenuo.Sc6010s
+                                             from SA1 in ProtheusDenuo.Sa1010s
+                                             from SA3 in ProtheusDenuo.Sa3010s
+                                             from SF4 in ProtheusDenuo.Sf4010s
+                                             from SB1 in ProtheusDenuo.Sb1010s
+                                             where SC5.DELET != "*" && SC6.C6Filial == SC5.C5Filial && SC6.C6Num == SC5.C5Num
+                                             && SC6.C6Nota == "" && SC6.C6Blq != "R" && SC6.DELET != "*"
+                                             && SF4.F4Codigo == SC6.C6Tes && SF4.F4Duplic == "S" && SF4.DELET != "*" && SA1.A1Cod == SC5.C5Cliente
+                                             && SA1.A1Loja == SC5.C5Lojacli && SA1.DELET != "*" && SA3.A3Cod == SC5.C5Vend1 && SA3.DELET != "*"
+                                             && (SC5.C5Utpoper == "F" || SC5.C5Utpoper == "T") && SB1.DELET != "*" && SC6.C6Produto == SB1.B1Cod
+                                             && SA1.A1Cgc != "04715053000140" && SA1.A1Cgc != "04715053000220" && SA1.A1Cgc != "01390500000140" &&
+                                             SA3.A3Xlogin == user
+                                             orderby SC5.C5Num, SC5.C5Emissao descending
+                                             select new RelatorioCirurgiasFaturar
+                                             {
+                                                 Num = SC5.C5Num,
+                                                 Valor = SC6.C6Valor,
+                                             }
+                                         ).GroupBy(x => new
+                                         {
+                                             x.Num,
+                                         }).Select(x => new RelatorioCirurgiasFaturar
+                                         {
+                                             Num = x.Key.Num,
+                                             Valor = x.Sum(c => c.Valor)
+                                         }).ToList();
+                    #endregion
+
+                    CirurgiasEmAberto = resultadoEmAberto.DistinctBy(x => x.Num).Count();
+                    CirurgiasEmAbertoValor = resultadoEmAberto.Sum(x => x.Valor);
+
                     user = user.ToLower();
 
                     var time = SGID.Times.FirstOrDefault(x => x.Integrante == user);
@@ -1599,6 +1635,8 @@ namespace SGID.Pages.DashBoards
                         Meta = time.Meta - FaturadoMesValor;
                     }
 
+                    var Hoje = DateTime.Now.ToString("dd/MM/yyyy");
+
                     var Valores = new
                     {
                         CirurgiasValorizadas,
@@ -1611,7 +1649,8 @@ namespace SGID.Pages.DashBoards
                         CirurgiasLicitacoesValor,
                         Meta,
                         Comissao,
-                        Id
+                        Id,
+                        Hoje
                     };
 
                     return new JsonResult(Valores);

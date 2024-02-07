@@ -476,10 +476,8 @@ namespace SGID.Pages.Cirurgias
 
                 if (Empresa == "01")
                 {
-                    
                     //Intermedic
                     agendamento.VendedorLogin = ProtheusInter.Sa3010s.FirstOrDefault(x => x.A3Nreduz == Vendedor).A3Xlogin;
-
                     
                 }
                 else
