@@ -38,29 +38,29 @@ namespace SGID.Pages.Relatorios
                 Inicio = Datainicio;
                 Fim = DataFim;
 
-                var lista = (from SD10 in Protheus.Sd2010s
-                             join SF10 in Protheus.Sf4010s on SD10.D2Tes equals SF10.F4Codigo
-                             join SB10 in Protheus.Sb1010s on SD10.D2Cod equals SB10.B1Cod
-                             join SC60 in Protheus.Sc6010s on new { Filial = SD10.D2Filial, NumP = SD10.D2Pedido, Item = SD10.D2Itempv } equals new { Filial = SC60.C6Filial, NumP = SC60.C6Num, Item = SC60.C6Item }
+                var lista = (from SD20 in Protheus.Sd2010s
+                             join SF40 in Protheus.Sf4010s on SD20.D2Tes equals SF40.F4Codigo
+                             join SB10 in Protheus.Sb1010s on SD20.D2Cod equals SB10.B1Cod
+                             join SC60 in Protheus.Sc6010s on new { Filial = SD20.D2Filial, NumP = SD20.D2Pedido, Item = SD20.D2Itempv } equals new { Filial = SC60.C6Filial, NumP = SC60.C6Num, Item = SC60.C6Item }
                              join SC50 in Protheus.Sc5010s on new { Filial2 = SC60.C6Filial, NumC = SC60.C6Num } equals new { Filial2 = SC50.C5Filial, NumC = SC50.C5Num }
                              join SA10 in Protheus.Sa1010s on new { Codigo = SC50.C5Cliente, Loja = SC50.C5Lojacli } equals new { Codigo = SA10.A1Cod, Loja = SA10.A1Loja }
                              join SA30 in Protheus.Sa3010s on SC50.C5Vend1 equals SA30.A3Cod
-                             where SD10.DELET != "*" && SC60.DELET != "*" && SC50.DELET != "*"
-                             && SF10.DELET != "*" && SA10.DELET != "*" && SB10.DELET != "*"
-                             && SF10.F4Duplic == "S" && SA10.A1Clinter == "S"
-                             && (int)(object)SD10.D2Emissao >= (int)(object) Datainicio.ToString("yyyy/MM/dd").Replace("/", "") && (int)(object)SD10.D2Emissao <= (int)(object)DataFim.ToString("yyyy/MM/dd").Replace("/", "")
-                             orderby SD10.D2Emissao
+                             where SD20.DELET != "*" && SC60.DELET != "*" && SC50.DELET != "*"
+                             && SF40.DELET != "*" && SA10.DELET != "*" && SB10.DELET != "*"
+                             && SF40.F4Duplic == "S" && SA10.A1Clinter == "S"
+                             && (int)(object)SD20.D2Emissao >= (int)(object) Datainicio.ToString("yyyy/MM/dd").Replace("/", "") && (int)(object)SD20.D2Emissao <= (int)(object)DataFim.ToString("yyyy/MM/dd").Replace("/", "")
+                             orderby SD20.D2Emissao
                              select new RelatorioSubDistribuidor
                              {
                                  Nome = SA30.A3Nome,
                                  Nreduz = SA10.A1Nreduz,
-                                 Doc = SD10.D2Doc,
+                                 Doc = SD20.D2Doc,
                                  Cod = SB10.B1Cod,
                                  Desc = SB10.B1Desc,
-                                 Quant = SD10.D2Quant,
-                                 Total = SD10.D2Total,
-                                 Descon = SD10.D2Descon,
-                                 Emissao = $"{SD10.D2Emissao.Substring(6, 2)}/{SD10.D2Emissao.Substring(4, 2)}/{SD10.D2Emissao.Substring(0, 4)}",
+                                 Quant = SD20.D2Quant,
+                                 Total = SD20.D2Total,
+                                 Descon = SD20.D2Descon,
+                                 Emissao = $"{SD20.D2Emissao.Substring(6, 2)}/{SD20.D2Emissao.Substring(4, 2)}/{SD20.D2Emissao.Substring(0, 4)}",
                                  Num = SC50.C5Num,
                                  Utpoper = SC50.C5Utpoper,
                                  Fabricante = SB10.B1Fabric
@@ -92,29 +92,30 @@ namespace SGID.Pages.Relatorios
         {
             try
             {
-                var lista = (from SD10 in Protheus.Sd2010s
-                             join SF10 in Protheus.Sf4010s on SD10.D2Tes equals SF10.F4Codigo
-                             join SB10 in Protheus.Sb1010s on SD10.D2Cod equals SB10.B1Cod
-                             join SC60 in Protheus.Sc6010s on new { Filial = SD10.D2Filial, NumP = SD10.D2Pedido, Item = SD10.D2Itempv } equals new { Filial = SC60.C6Filial, NumP = SC60.C6Num, Item = SC60.C6Item }
+                var lista = (from SD20 in Protheus.Sd2010s
+                             join SF40 in Protheus.Sf4010s on SD20.D2Tes equals SF40.F4Codigo
+                             join SB10 in Protheus.Sb1010s on SD20.D2Cod equals SB10.B1Cod
+                             join SC60 in Protheus.Sc6010s on new { Filial = SD20.D2Filial, NumP = SD20.D2Pedido, Item = SD20.D2Itempv } equals new { Filial = SC60.C6Filial, NumP = SC60.C6Num, Item = SC60.C6Item }
                              join SC50 in Protheus.Sc5010s on new { Filial2 = SC60.C6Filial, NumC = SC60.C6Num } equals new { Filial2 = SC50.C5Filial, NumC = SC50.C5Num }
                              join SA10 in Protheus.Sa1010s on new { Codigo = SC50.C5Cliente, Loja = SC50.C5Lojacli } equals new { Codigo = SA10.A1Cod, Loja = SA10.A1Loja }
                              join SA30 in Protheus.Sa3010s on SC50.C5Vend1 equals SA30.A3Cod
-                             where SD10.DELET != "*" && SC60.DELET != "*" && SC50.DELET != "*"
-                             && SF10.DELET != "*" && SA10.DELET != "*" && SB10.DELET != "*"
-                             && SF10.F4Duplic == "S" && SA10.A1Clinter == "S"
-                             && Convert.ToInt32(SD10.D2Emissao) >= Convert.ToInt32(Datainicio.ToString("yyyy/MM/dd").Replace("/", "")) && Convert.ToInt32(SD10.D2Emissao) <= Convert.ToInt32(DataFim.ToString("yyyy/MM/dd").Replace("/", ""))
-                             orderby SD10.D2Emissao
+                             where SD20.DELET != "*" && SC60.DELET != "*" && SC50.DELET != "*"
+                             && SF40.DELET != "*" && SA10.DELET != "*" && SB10.DELET != "*"
+                             && SF40.F4Duplic == "S" && SA10.A1Clinter == "S"
+                             && Convert.ToInt32(SD20.D2Emissao) >= Convert.ToInt32(Datainicio.ToString("yyyy/MM/dd").Replace("/", "")) 
+                             && Convert.ToInt32(SD20.D2Emissao) <= Convert.ToInt32(DataFim.ToString("yyyy/MM/dd").Replace("/", ""))
+                             orderby SD20.D2Emissao
                              select new RelatorioSubDistribuidor
                              {
                                  Nome = SA30.A3Nome,
                                  Nreduz = SA10.A1Nreduz,
-                                 Doc = SD10.D2Doc,
+                                 Doc = SD20.D2Doc,
                                  Cod = SB10.B1Cod,
                                  Desc = SB10.B1Desc,
-                                 Quant = SD10.D2Quant,
-                                 Total = SD10.D2Total,
-                                 Descon = SD10.D2Descon,
-                                 Emissao = SD10.D2Emissao,
+                                 Quant = SD20.D2Quant,
+                                 Total = SD20.D2Total,
+                                 Descon = SD20.D2Descon,
+                                 Emissao = SD20.D2Emissao,
                                  Num = SC50.C5Num,
                                  Utpoper = SC50.C5Utpoper,
                                  Fabricante = SB10.B1Fabric
