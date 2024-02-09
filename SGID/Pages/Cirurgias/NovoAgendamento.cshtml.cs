@@ -63,7 +63,7 @@ namespace SGID.Pages.Cirurgias
                     Vendedores = ProtheusInter.Sa3010s.Where(x => x.DELET != "*" && x.A3Msblql != "1").Select(x => x.A3Nreduz).ToList(),
                 };
 
-                SearchProduto = ProtheusInter.Sb1010s.Where(x => x.DELET != "*" && x.B1Msblql != "1").Select(x => x.B1Desc).Distinct().ToList();
+                SearchProduto = ProtheusInter.Sb1010s.Where(x => x.DELET != "*" && x.B1Msblql != "1" && x.B1Tipo != "KT").Select(x => x.B1Desc).Distinct().ToList();
             }
             else
             {
@@ -88,10 +88,10 @@ namespace SGID.Pages.Cirurgias
                                    ).Distinct().ToList(),
                     Tabelas = ProtheusDenuo.Da0010s.Where(x => x.DELET != "*").Select(x=> x.Da0Descri).ToList(),
                     Condicoes = ProtheusDenuo.Se4010s.Where(x => x.DELET != "*" && x.E4Msblql != "1").Select(x=> x.E4Descri).ToList(),
-                    Vendedores = ProtheusInter.Sa3010s.Where(x => x.DELET != "*" && x.A3Msblql != "1").Select(x => x.A3Nreduz).ToList(),
+                    Vendedores = ProtheusDenuo.Sa3010s.Where(x => x.DELET != "*" && x.A3Msblql != "1").Select(x => x.A3Nreduz).ToList(),
                 };
 
-                SearchProduto = ProtheusDenuo.Sb1010s.Where(x => x.DELET != "*" && x.B1Msblql != "1").Select(x => x.B1Desc).Distinct().ToList();
+                SearchProduto = ProtheusDenuo.Sb1010s.Where(x => x.DELET != "*" && x.B1Msblql != "1" && x.B1Tipo!="KT").Select(x => x.B1Desc).Distinct().ToList();
             }
         }
 
@@ -119,7 +119,7 @@ namespace SGID.Pages.Cirurgias
                     Vendedores = ProtheusInter.Sa3010s.Where(x => x.DELET != "*" && x.A3Msblql != "1").Select(x => x.A3Nreduz).ToList(),
                 };
 
-                SearchProduto = ProtheusInter.Sb1010s.Where(x => x.DELET != "*" && x.B1Msblql != "1").Select(x => x.B1Desc).Distinct().ToList();
+                SearchProduto = ProtheusInter.Sb1010s.Where(x => x.DELET != "*" && x.B1Msblql != "1" && x.B1Tipo != "KT").Select(x => x.B1Desc).Distinct().ToList();
 
                 Agendamento.Empresa = "01";
             }
@@ -146,10 +146,10 @@ namespace SGID.Pages.Cirurgias
                                    ).Distinct().ToList(),
                     Tabelas = ProtheusDenuo.Da0010s.Where(x => x.DELET != "*").Select(x => x.Da0Descri).ToList(),
                     Condicoes = ProtheusDenuo.Se4010s.Where(x => x.DELET != "*" && x.E4Msblql != "1").Select(x => x.E4Descri).ToList(),
-                    Vendedores = ProtheusInter.Sa3010s.Where(x => x.DELET != "*" && x.A3Msblql != "1").Select(x => x.A3Nreduz).ToList(),
+                    Vendedores = ProtheusDenuo.Sa3010s.Where(x => x.DELET != "*" && x.A3Msblql != "1").Select(x => x.A3Nreduz).ToList(),
                 };
 
-                SearchProduto = ProtheusDenuo.Sb1010s.Where(x => x.DELET != "*" && x.B1Msblql != "1").Select(x => x.B1Desc).Distinct().ToList();
+                SearchProduto = ProtheusDenuo.Sb1010s.Where(x => x.DELET != "*" && x.B1Msblql != "1" && x.B1Tipo != "KT").Select(x => x.B1Desc).Distinct().ToList();
                 Agendamento.Empresa = "03";
             }
 

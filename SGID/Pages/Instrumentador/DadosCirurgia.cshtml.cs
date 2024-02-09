@@ -35,8 +35,8 @@ namespace SGID.Pages.Instrumentador
            Agendamento = SGID.Agendamentos.FirstOrDefault(x => x.Id == id);
 
 
-            if(Agendamento.Empresa == "01") SearchProduto = INTER.Sb1010s.Where(x => x.DELET != "*" && x.B1Msblql != "1").Select(x => x.B1Desc).Distinct().ToList();
-            else SearchProduto = DENUO.Sb1010s.Where(x => x.DELET != "*" && x.B1Msblql != "1").Select(x => x.B1Desc).Distinct().ToList();
+            if(Agendamento.Empresa == "01") SearchProduto = INTER.Sb1010s.Where(x => x.DELET != "*" && x.B1Msblql != "1" && x.B1Tipo != "KT").Select(x => x.B1Desc).Distinct().ToList();
+            else SearchProduto = DENUO.Sb1010s.Where(x => x.DELET != "*" && x.B1Msblql != "1" && x.B1Tipo != "KT").Select(x => x.B1Desc).Distinct().ToList();
         }
 
         public IActionResult OnPostAsync(int Id,string Codigo,string NomePaciente,string NomeMedico,string NomeCliente,int Status,

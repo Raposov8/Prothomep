@@ -67,7 +67,6 @@ namespace SGID.Pages.Account.RH
             try
             {
                 
-
                 string Tempo = $"{Mes}/01/{Ano}";
 
                 MesAno = Mes;
