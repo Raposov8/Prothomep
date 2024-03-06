@@ -20,5 +20,9 @@ namespace SGID.Data.ViewModel
         public double Salario { get; set; }
         public double Garantia { get; set; }
         public bool PJ { get; set; }
+        public double AtingimentoMeta { get; set; }
+        public string? TipoComissao { get; set; }
+        public double PorcentagemEtapaUm { get; set; }
+        public double PorcentagemEtapaDois { get; set; }
     }
 }

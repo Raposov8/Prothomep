@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SGID.Data;
 
@@ -11,9 +12,11 @@ using SGID.Data;
 namespace SGID.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240219114559_DataAutorizacao")]
+    partial class DataAutorizacao
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1215,9 +1218,6 @@ namespace SGID.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<double>("AtingimentoMeta")
-                        .HasColumnType("float");
-
                     b.Property<string>("Color")
                         .HasColumnType("nvarchar(max)");
 
@@ -1248,12 +1248,6 @@ namespace SGID.Data.Migrations
                     b.Property<double>("Porcentagem")
                         .HasColumnType("float");
 
-                    b.Property<double>("PorcentagemEtapaDois")
-                        .HasColumnType("float");
-
-                    b.Property<double>("PorcentagemEtapaUm")
-                        .HasColumnType("float");
-
                     b.Property<double>("PorcentagemSeg")
                         .HasColumnType("float");
 
@@ -1265,9 +1259,6 @@ namespace SGID.Data.Migrations
 
                     b.Property<double>("Teto")
                         .HasColumnType("float");
-
-                    b.Property<string>("TipoComissao")
-                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 

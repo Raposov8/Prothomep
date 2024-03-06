@@ -303,9 +303,7 @@
                                                 <td class="text-center">
                                                     <input type="number" id="Avulsos[@countAvulso].Und" name="Avulsos[@countAvulso].Und" value="@data.Und" />
                                                 </td>
-                                                <td class="text-center">
-                                                    
-
+                                                <td class="text-center">  
                                                     <a class="fa-regular fa-trash-can add-tooltip" onclick="removeAvulso(this)" style="text-decoration:none;" id="Excluir" data-container="body" data-placement="top" data-original-title="Excluir Recurso" aria-hidden="true"></a>
                                                 </td>
                                             </tr>
@@ -341,7 +339,7 @@
                     <div class="row">
                         <div class="col-md-12">
                             <label>Codigo Produto</label>
-                            <input type="text" class="form-control" id="CodProd" name="CodProd" />
+                        <input type="text" class="form-control" id="CodProd" name="CodProd" autocomplete="off" />
                         </div>
                     </div>
                 </div>
@@ -373,7 +371,7 @@
                 <div class="row">
                     <div class="col-md-12">
                         <label>Codigo Produto</label>
-                        <input type="text" class="form-control" id="CodProd2" name="CodProd2" />
+                        <input type="text" class="form-control" id="CodProd2" name="CodProd2" autocomplete="off" />
                     </div>
                 </div>
             </div>
@@ -406,7 +404,7 @@
                     <div class="col-md-12">
                         <label>Nome Patrimonio</label>
                         <div class="autocomplete">
-                            <input type="text" class="form-control" id="CodPatri" name="CodPatri" oninput="this.value = this.value.toUpperCase()"/>
+                            <input type="text" class="form-control" id="CodPatri" name="CodPatri" autocomplete="off" oninput="this.value = this.value.toUpperCase()" />
                         </div>
                     </div>
                 </div>
@@ -882,6 +880,25 @@
                     }
                 })
             })
+        })
+    </script>
+
+    <script>
+        $(document).ready(function () {
+
+            $('#DataCirurgia').change(function () {
+                
+                var fromDateValue = $(this).val();
+                console.log(fromDateValue)
+                var toDateValue = new Date(fromDateValue);
+                console.log(toDateValue)
+
+                toDateValue.setDate(toDateValue.getDate() - 1);
+                console.log(toDateValue)
+
+                $('#Entrega').val(new Date(toDateValue.toString().split('GMT')[0] + ' UTC').toISOString().substring(0, 16));
+            });
+        
         })
     </script>
 

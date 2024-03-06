@@ -110,7 +110,7 @@
                                     <div class="collapse" id="visitas-collapse">
                                         <ul class="list-unstyled fw-normal pb-1 small">
                                             <li><a class="nav-link" href="/agendamento/visitas"> Painel Visitas</a></li>
-                                            @if (User.IsInRole("Admin") || User.IsInRole("Diretoria"))
+                                            @if (User.IsInRole("Admin") || User.IsInRole("Diretoria") || User.Identity.Name.ToUpper() == "ANDRE.SALES@INTERMEDIC.COM.BR")
                                             {
                                                 <li><a class="nav-link" href="/relatorios/visitas/relatoriovisitas">Relatorio Visitas</a></li>
                                             }
@@ -310,7 +310,7 @@
                                 </li>
                                 
                             }
-                            @if (User.IsInRole("Admin"))
+                            @if (User.IsInRole("Admin") || User.IsInRole("Importacao"))
                             {
                                 <li class="nav-item dropdown">
                                     <a class="nav-link align-items-center rounded dropdown-toggle" data-bs-toggle="collapse"
@@ -496,7 +496,7 @@
                                                         <li><a class="nav-link teste" href="/relatorios/admvendas/CirurgiasFaturadas">Cirurgias Faturadas Denuo</a></li>
                                                         <li><a class="nav-link teste" href="/relatorios/admvendas/CirurgiasFaturadasInter">Cirurgias Faturadas Inter</a></li>
                                                         <li><a class="nav-link teste" href="/relatorios/rh/CirurgiasValorizadas">Cirurgias Valorizadas Denuo</a></li>
-                                                        <li><a class="nav-link teste" href="/relatorios/rh/CirurgiasValorizadasInterr">Cirurgias Valorizadas Inter</a></li>
+                                                        <li><a class="nav-link teste" href="/relatorios/rh/CirurgiasValorizadasInter">Cirurgias Valorizadas Inter</a></li>
                                                         <li><a class="nav-link teste" href="/relatorios/admvendas/pedidostriagem">Pedidos Triagem Denuo</a></li>
                                                         <li><a class="nav-link teste" href="/relatorios/admvendas/pedidostriageminter">Pedidos Triagem Inter</a></li>
                                                         <li><a class="nav-link teste" href="/relatorios/admvendas/cadastromedicos/1">Cadastros Médicos Denuo</a></li>
@@ -604,6 +604,18 @@
                                                         <li><a class="nav-link teste" href="/relatorios/cirurgias/cadastrosmedicosinter/1">Cadastros Médicos Inter</a></li>
                                                         <li><a class="nav-link teste" href="/relatorios/rh/cirurgiasvalorizadas">Cirurgias Valorizadas Denuo</a></li>
                                                         <li><a class="nav-link teste" href="/relatorios/rh/cirurgiasvalorizadasinter">Cirurgias Valorizadas Inter</a></li>
+                                                    </ul>
+                                                </div>
+                                            </li>
+                                            <li class="nav-item dropdown">
+                                                <a class="nav-link align-items-center rounded dropdown-toggle" data-bs-toggle="collapse"
+                                                   data-bs-target="#logistica1-collapse" aria-expanded="false">
+                                                    Logistica
+                                                </a>
+                                                <div class="collapse" id="logistica1-collapse">
+                                                    <ul class="list-unstyled fw-normal pb-1 small">
+                                                        <li><a class="nav-link" href="/relatorios/logistica/GiroPatrimonio">Ocorrências</a></li>
+                                                        <li><a class="nav-link" href="/relatorios/logistica/GiroPatrimonioInter">Expedição Retirada Denuo</a></li>
                                                     </ul>
                                                 </div>
                                             </li>

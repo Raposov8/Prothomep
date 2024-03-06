@@ -45,6 +45,7 @@ namespace SGID.Pages.Relatorios.Qualidade
                              && (int)(object)SD20.D2Dtvalid >= (int)(object)DataInicio.ToString("yyyy/MM/dd").Replace("/", "") && (int)(object)SD20.D2Dtvalid <= (int)(object)DataFim.ToString("yyyy/MM/dd").Replace("/", "")
                              select new RelatorioValidadePermanente
                              {
+                                 Filial = SD20.D2Filial,
                                  Codigo = SD20.D2Cod,
                                  Lote = SD20.D2Lotectl,
                                  Processo = SC50.C5Uproces,
@@ -71,6 +72,7 @@ namespace SGID.Pages.Relatorios.Qualidade
                            && (int)(object)SD20.D2Dtvalid >= (int)(object)DataInicio.ToString("yyyy/MM/dd").Replace("/", "") && (int)(object)SD20.D2Dtvalid <= (int)(object)DataFim.ToString("yyyy/MM/dd").Replace("/", "")
                            select new RelatorioValidadePermanente
                            {
+                               Filial = SD20.D2Filial,
                                Codigo = SD20.D2Cod,
                                Lote = SD20.D2Lotectl,
                                Processo = SC50.C5Uproces,

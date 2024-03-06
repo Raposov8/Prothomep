@@ -6,7 +6,6 @@ using SGID.Data;
 using SGID.Data.Models;
 using SGID.Data.ViewModel;
 using SGID.Models.Account.RH;
-using SGID.Models.Controladoria.FaturamentoNF;
 using SGID.Models.Denuo;
 using SGID.Models.RH;
 
@@ -16,9 +15,7 @@ namespace SGID.Pages.Account.RH
     {
         private ApplicationDbContext SGID { get; set; }
         private TOTVSDENUOContext Protheus { get; set; }
-
         public string TextoMensagem { get; set; } = "";
-
         public string Mes { get; set; }
 
         public string MesAno { get; set; }
@@ -485,8 +482,28 @@ namespace SGID.Pages.Account.RH
                         User = x,
                     };
 
+                    if (time.User.TipoComissao == "M")
+                    {
+                        time.Faturado += Faturamento.Where(x => x.A3_LOGIN == usuario).Sum(x => x.D2_TOTAL) + Devolucao.Where(x => x.Login == usuario).Sum(x => x.Total);
 
-                    if (usuario != "MARCOS.PARRA")
+                        var valorEtapa1 = time.Meta * (time.User.AtingimentoMeta / 100);
+
+                        if (valorEtapa1 >= time.Faturado)
+                        {
+                            time.Comissao = time.Faturado * (time.User.PorcentagemEtapaUm / 100);
+                        }
+                        else
+                        {
+                            time.Comissao = valorEtapa1 * (time.User.PorcentagemEtapaUm / 100);
+
+                            time.Comissao += (time.Faturado- valorEtapa1) * (time.User.PorcentagemEtapaDois / 100);
+
+                        }
+                        
+                        
+                        Usuarios.Add(time);
+                    }
+                    else if (usuario != "MARCOS.PARRA")
                     {
 
                         time.Faturado += Faturamento.Where(x => x.A3_LOGIN == usuario).Sum(x => x.D2_TOTAL) + Devolucao.Where(x => x.Login == usuario).Sum(x => x.Total);
@@ -719,10 +736,6 @@ namespace SGID.Pages.Account.RH
 
                 #endregion
 
-
-
-
-
                 using ExcelPackage package = new ExcelPackage();
                 package.Workbook.Worksheets.Add("Comissoes");
 
@@ -756,7 +769,28 @@ namespace SGID.Pages.Account.RH
                     };
 
 
-                    if (usuario != "MARCOS.PARRA")
+                    if (time.User.TipoComissao == "M")
+                    {
+                        time.Faturado += Faturamento.Where(x => x.A3_LOGIN == usuario).Sum(x => x.D2_TOTAL) + Devolucao.Where(x => x.Login == usuario).Sum(x => x.Total);
+
+                        var valorEtapa1 = time.Meta * (time.User.AtingimentoMeta / 100);
+
+                        if (valorEtapa1 >= time.Faturado)
+                        {
+                            time.Comissao = time.Faturado * (time.User.PorcentagemEtapaUm / 100);
+                        }
+                        else
+                        {
+                            time.Comissao = valorEtapa1 * (time.User.PorcentagemEtapaUm / 100);
+
+                            time.Comissao += (time.Faturado - valorEtapa1) * (time.User.PorcentagemEtapaDois / 100);
+
+                        }
+
+
+                        Usuarios.Add(time);
+                    }
+                    else if(usuario != "MARCOS.PARRA")
                     {
 
                         time.Faturado += Faturamento.Where(x => x.A3_LOGIN == usuario).Sum(x => x.D2_TOTAL) + Devolucao.Where(x => x.Login == usuario).Sum(x => x.Total);

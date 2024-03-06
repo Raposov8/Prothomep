@@ -12,8 +12,13 @@
     }
 }
 
-<h2>Editar</h2>
+<style>
+    .sumiu {
+        display: none;
+    }
+</style>
 
+<h2>Editar</h2>
 
 <div class="card" style="padding:10px;">
     @using (Html.BeginForm(FormMethod.Post))
@@ -38,18 +43,59 @@
                         @Html.TextBoxFor(model => model.Editar.Meta,"{0:N2}", new { @class = "form-control", @placehold="Meta" })
                     </div>
                 </div>
+                <div class="form-group col-md-4">
+                    @Html.LabelFor(model => model.Editar.TipoComissao, new { @class = "col-md-12 control-label" })
+                    <div class="col-md-12">
+                        <select class="form-control" id="Editar.TipoComissao" name="Editar.TipoComissao">
+                            <option value="P">Padrão</option>
+                            <option value="M">Atingimento de meta</option>
+                        </select>
+                    </div>
+                </div>
             </div>
-            <div class="row">
+            <div id="P" class="row">
                 <div class="form-group col-md-4">
                     @Html.LabelFor(model => model.Editar.Porcentagem, new { @class = "col-md-12 control-label" })
                     <div class="col-md-12">
-                        @Html.TextBoxFor(model => model.Editar.Porcentagem, "{0:N2}", new { @class = "form-control", @placehold= "Porcentagem" })
+                        @Html.TextBoxFor(model => model.Editar.Porcentagem, "{0:N2}", new { @class = "form-control", @placehold = "Porcentagem" })
                     </div>
                 </div>
                 <div class="form-group col-md-4">
                     @Html.LabelFor(model => model.Editar.PorcentagemSegun, new { @class = "col-md-12 control-label" })
                     <div class="col-md-12">
-                        @Html.TextBoxFor(model => model.Editar.PorcentagemSegun, "{0:N2}", new { @class = "form-control", @placehold= "Porcentagem" })
+                        @Html.TextBoxFor(model => model.Editar.PorcentagemSegun, "{0:N2}", new { @class = "form-control", @placehold = "Porcentagem" })
+                    </div>
+                </div>
+            </div>
+            <div id="M" class="row sumiu">
+                <div class="form-group col-md-4">
+                    @Html.LabelFor(model => model.Editar.PorcentagemMeta1, new { @class = "col-md-12 control-label" })
+                    <div class="col-md-12">
+                        @Html.TextBoxFor(model => model.Editar.PorcentagemMeta1, "{0:N2}", new { @class = "form-control", @placehold = "Porcentagem" })
+                    </div>
+                </div>
+                <div class="form-group col-md-4">
+                    @Html.LabelFor(model => model.Editar.PorcentagemMeta2, new { @class = "col-md-12 control-label" })
+                    <div class="col-md-12">
+                        @Html.TextBoxFor(model => model.Editar.PorcentagemMeta2, "{0:N2}", new { @class = "form-control", @placehold = "Porcentagem" })
+                    </div>
+                </div>
+                <div class="form-group col-md-4">
+                    @Html.LabelFor(model => model.Editar.AtingimentoMeta, new { @class = "col-md-12 control-label" })
+                    <div class="col-md-12">
+                        <select class="form-control" id="Editar.AtingimentoMeta" name="Editar.AtingimentoMeta">
+                            <option value="0">0 %</option>
+                            <option value="10">10 %</option>
+                            <option value="20">20 %</option>
+                            <option value="30">30 %</option>
+                            <option value="40">40 %</option>
+                            <option value="50">50 %</option>
+                            <option value="60">60 %</option>
+                            <option value="70">70 %</option>
+                            <option value="80">80 %</option>
+                            <option value="90">90 %</option>
+                            <option value="100">100 %</option>
+                        </select>
                     </div>
                 </div>
             </div>
@@ -86,3 +132,50 @@
         </div>
     }
 </div>
+
+@section scripts {
+    <script>
+        $(document).ready(function () {
+            if ('@Model.Editar.TipoComissao' == 'P') 
+            {
+
+                $("#M").addClass("sumiu");
+
+                $("#P").removeClass("sumiu");
+
+            }
+            else 
+            {
+                $("#P").addClass("sumiu");
+
+                $("#M").removeClass("sumiu");
+
+            }
+            $('select[name="Editar.TipoComissao"]').val('@Model.Editar.TipoComissao')
+            $('select[name="Editar.AtingimentoMeta"]').val('@Model.Editar.AtingimentoMeta')
+           
+        })
+    </script>
+    <script>
+        $(document).ready(function () {
+            $('select[name="Editar.TipoComissao"]').change(function () {
+                var tmeta = $(this).val()
+
+                if (tmeta == 'P') {
+
+                    $("#M").addClass("sumiu");
+
+                    $("#P").removeClass("sumiu");
+
+                }
+                else 
+                {
+                    $("#P").addClass("sumiu");
+
+                    $("#M").removeClass("sumiu");
+                }
+            })
+
+        })
+    </script>
+}

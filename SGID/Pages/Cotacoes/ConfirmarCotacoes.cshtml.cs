@@ -311,7 +311,8 @@ namespace SGID.Pages.Cotacoes
         {
             try
             {
-                if (Protheus == 0) {
+                if (Protheus == 0) 
+                {
 
                     #region Patrimonios
                     var AgendamentoPatris = SGID.PatrimoniosAgendamentos.Where(x => x.AgendamentoId == id).ToList();

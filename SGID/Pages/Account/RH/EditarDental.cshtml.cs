@@ -47,8 +47,12 @@ namespace SGID.Pages.Account.RH
                 PorcentagemSegun = usuario.PorcentagemSeg,
                 Salario = usuario.Salario,
                 Teto = usuario.Teto,
-                Garantia = usuario.Garantia
-            };
+                Garantia = usuario.Garantia,
+                AtingimentoMeta = usuario.AtingimentoMeta,
+                PorcentagemMeta1 = usuario.PorcentagemEtapaUm,
+                PorcentagemMeta2 = usuario.PorcentagemEtapaDois,
+                TipoComissao = usuario.TipoComissao,
+        };
 
             return Page();
         }
@@ -69,9 +73,13 @@ namespace SGID.Pages.Account.RH
                 usuario.Teto = Editar.Teto;
                 usuario.Salario = Editar.Salario;
                 usuario.Garantia = Editar.Garantia;
+                usuario.AtingimentoMeta = Editar.AtingimentoMeta;
+                usuario.PorcentagemEtapaUm = Editar.PorcentagemMeta1;
+                usuario.PorcentagemEtapaDois = Editar.PorcentagemMeta2;
+                usuario.TipoComissao = Editar.TipoComissao;
 
 
-                _db.TimeDentals.Update(usuario);
+        _db.TimeDentals.Update(usuario);
                 _db.SaveChanges();
 
 
@@ -107,6 +115,14 @@ namespace SGID.Pages.Account.RH
             public double Salario { get; set; } = 0.0;
             [Display(Name = "Garantia")]
             public double Garantia { get; set; } = 0.0;
+            [Display(Name = "Atingimento Meta")]
+            public double AtingimentoMeta { get; set; } = 0.0;
+            [Display(Name = "% Etapa 1")]
+            public double PorcentagemMeta1 { get; set; } = 0.0;
+            [Display(Name = "% Etapa 2")]
+            public double PorcentagemMeta2 { get; set; } = 0.0;
+            [Display(Name = "Tipo Comissão")]
+            public string? TipoComissao { get; set; } = "";
         }
     }
 }

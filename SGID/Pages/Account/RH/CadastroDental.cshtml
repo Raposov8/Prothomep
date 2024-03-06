@@ -12,6 +12,12 @@
     ViewData["Title"] = "Register Comercial";
 }
 
+<style>
+    .sumiu {
+        display: none;
+    }
+</style>
+
 <h1>@ViewData["Title"]</h1>
 
 <div class="card" style="padding:10px;">
@@ -34,8 +40,17 @@
                                 @Html.TextBoxFor(model => model.Input.Meta,"{0:N2}", new { @class = "form-control", @placehold="Meta" })
                             </div>
                         </div>
+                        <div class="form-group col-md-4">
+                            @Html.LabelFor(model => model.Input.TipoComissao, new { @class = "col-md-12 control-label" })
+                            <div class="col-md-12">
+                                <select class="form-control" id="Input.TipoComissao" name="Input.TipoComissao">
+                                    <option value="P">Padrão</option>
+                                    <option value="M">Atingimento de meta</option>
+                                </select>
+                            </div>
+                        </div>
                     </div>
-                    <div class="row">
+                    <div id="P" class="row">
                         <div class="form-group col-md-4">
                             @Html.LabelFor(model => model.Input.Porcentagem, new { @class = "col-md-12 control-label" })
                             <div class="col-md-12">
@@ -46,6 +61,37 @@
                             @Html.LabelFor(model => model.Input.PorcentagemSegun, new { @class = "col-md-12 control-label" })
                             <div class="col-md-12">
                                 @Html.TextBoxFor(model => model.Input.PorcentagemSegun, "{0:N2}", new { @class = "form-control", @placehold= "Porcentagem" })
+                            </div>
+                        </div>
+                    </div>
+                    <div id="M" class="row sumiu">
+                        <div class="form-group col-md-4">
+                            @Html.LabelFor(model => model.Input.PorcentagemMeta1, new { @class = "col-md-12 control-label" })
+                            <div class="col-md-12">
+                                @Html.TextBoxFor(model => model.Input.PorcentagemMeta1, "{0:N2}", new { @class = "form-control", @placehold = "Porcentagem" })
+                            </div>
+                        </div>
+                        <div class="form-group col-md-4">
+                            @Html.LabelFor(model => model.Input.PorcentagemMeta2, new { @class = "col-md-12 control-label" })
+                            <div class="col-md-12">
+                                @Html.TextBoxFor(model => model.Input.PorcentagemMeta2, "{0:N2}", new { @class = "form-control", @placehold = "Porcentagem" })
+                            </div>
+                        </div>
+                        <div class="form-group col-md-4">
+                            @Html.LabelFor(model => model.Input.AtingimentoMeta, new { @class = "col-md-12 control-label" })
+                            <div class="col-md-12">
+                                <select class="form-control" id="Input_AtingimentoMeta" name="Input.AtingimentoMeta">
+                                    <option value="10">10 %</option>
+                                    <option value="20">20 %</option>
+                                    <option value="30">30 %</option>
+                                    <option value="40">40 %</option>
+                                    <option value="50">50 %</option>
+                                    <option value="60">60 %</option>
+                                    <option value="70">70 %</option>
+                                    <option value="80">80 %</option>
+                                    <option value="90">90 %</option>
+                                    <option value="100">100 %</option>
+                                </select>
                             </div>
                         </div>
                     </div>
@@ -80,3 +126,29 @@
         </div>
     </div>
 </div>
+
+@section scripts {
+
+    <script>
+        $(document).ready(function () {
+            $('select[name="Input.TipoComissao"]').change(function () {
+                var tmeta = $(this).val()
+
+                if (tmeta == 'P') {
+
+                    $("#M").addClass("sumiu");
+
+                    $("#P").removeClass("sumiu");
+
+                }
+                else 
+                {
+                    $("#P").addClass("sumiu");
+
+                    $("#M").removeClass("sumiu");
+                }
+            })
+            
+        })
+    </script>
+}

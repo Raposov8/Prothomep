@@ -29,7 +29,7 @@ namespace SGID.Data.ViewModel
         public string? Convenio { get; set; }
         public string Instrumentador { get; set; }
         public DateTime? DataCirurgia { get; set; }
-        public DateTime DataAutorizacao { get; set; }
+        public DateTime? DataAutorizacao { get; set; }
         public string Procedimento { get; set; }
         public string? NumAutorizacao { get; set; }
         public string? Senha { get; set; }

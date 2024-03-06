@@ -428,15 +428,10 @@ namespace SGID.Pages.Cotacoes
                 Agendamento.DataAlteracao = DateTime.Now;
                 Agendamento.DataEntrega = Entrega;
 
-                if (Agendamento.StatusPedido == 2)
-                {
-                    Agendamento.StatusCotacao = 1;
-                    Agendamento.StatusPedido = 5;
-                    Agendamento.UsuarioComercial = User.Identity.Name.Split("@")[0].ToUpper();
-                    Agendamento.DataCotacao = DateTime.Now;
-                }
-
-
+                Agendamento.StatusCotacao = 1;
+                Agendamento.StatusPedido = 5;
+                Agendamento.UsuarioComercial = User.Identity.Name.Split("@")[0].ToUpper();
+                Agendamento.DataCotacao = DateTime.Now;
 
                 SGID.Agendamentos.Update(Agendamento);
                 SGID.SaveChanges();

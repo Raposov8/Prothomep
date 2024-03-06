@@ -1333,7 +1333,7 @@ namespace SGID.Pages.DashBoards
                                      where SD10.DELET != "*" && SF20.DELET != "*" && SA10.DELET != "*" && SB10.DELET != "*" && SA30.DELET != "*"
                                      && SA30.A3Xunnego != "000008" && (SD10.D1Cf == "1202" || SD10.D1Cf == "2202" || SD10.D1Cf == "3202" || SD10.D1Cf == "1553" || SD10.D1Cf == "2553")
                                      && (int)(object)SD10.D1Dtdigit >= (int)(object)DataInicio && (int)(object)SD10.D1Dtdigit <= (int)(object)DataFim
-                                     && (int)(object)SD10.D1Dtdigit >= 20200701 && SC50.C5Utpoper == "F" && (SA30.A3Xlogin == user || SA30.A3Xlogsup == user)
+                                     && (int)(object)SD10.D1Dtdigit >= 20200701 && SC50.C5Utpoper == "F" && SA30.A3Xlogin == user
                                      select new
                                      {
                                          SD10.D1Filial,

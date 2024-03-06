@@ -54,7 +54,11 @@ namespace SGID.Pages.Account.RH
                             PorcentagemSeg = Input.PorcentagemSegun,
                             IdUsuario = "",
                             Salario = Input.Salario,
-                            Garantia = Input.Garantia
+                            Garantia = Input.Garantia,
+                            AtingimentoMeta = Input.AtingimentoMeta,
+                            PorcentagemEtapaDois = Input.PorcentagemMeta2,
+                            PorcentagemEtapaUm = Input.PorcentagemMeta1,
+                            TipoComissao = Input.TipoComissao
                         };
 
                         _db.TimeDentals.Add(time);
@@ -87,6 +91,14 @@ namespace SGID.Pages.Account.RH
             public double Salario { get; set; } = 0.0;
             [Display(Name = "Garantia")]
             public double Garantia { get; set; } = 0.0;
+            [Display(Name = "Atingimento Meta")]
+            public double AtingimentoMeta { get; set; } = 0.0;
+            [Display(Name = "% Etapa 1")]
+            public double PorcentagemMeta1 { get; set; } = 0.0;
+            [Display(Name = "% Etapa 2")]
+            public double PorcentagemMeta2 { get; set; } = 0.0;
+            [Display(Name = "Tipo Comissão")]
+            public string? TipoComissao { get; set; } = "";
         }
     }
 }

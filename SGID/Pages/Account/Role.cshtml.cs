@@ -55,7 +55,6 @@ namespace SGID.Pages.Account
         }
 
 
-
         public class InputModel
         {
             [Required]

@@ -34,14 +34,14 @@
                     <div class="row">
                         <div class="form-group col-sm-2 col-md-2">
                             <label class="Label">Empresa</label>
-                            <select class="form-control" id="Empresa" name="Empresa">
+                            <select class="form-control" id="Agendamento_Empresa" name="Agendamento.Empresa">
                                 <option value="03">Denuo</option>
                                 <option value="01">Intermedic</option>
                             </select>
                         </div>
                         <div class="form-group col-sm-2 col-md-2">
                             <label class="Label">Tipo</label>
-                            <select class="form-control" id="Tipo" name="Tipo">
+                        <select class="form-control" id="Agendamento_Tipo" name="Agendamento.Tipo">
                                 <option value="3">ELETIVA</option>
                                 <option value="2">EMERGENCIA</option>
                                 <option value="1">URGENTE</option>
@@ -51,74 +51,87 @@
                     <div class="row">
                         <div class="form-group col-sm-4 col-md-4">
                             <label class="Label">Cliente Faturamento </label>
-                            <input class="form-control" id="Cliente" name="Cliente" value="@Model.Agendamento.Cliente" oninput="this.value = this.value.toUpperCase()" required >
+                            @Html.TextBoxFor(model => model.Agendamento.Cliente, new { @class = "form-control", @onkeyup = "InputToUpper(this);", @required = "required" })
+                            @Html.ValidationMessageFor(model => model.Agendamento.Cliente, "", new { @class = "text-danger" })
                         </div>
                         <div class="form-group col-sm-3 col-md-3">
                             <label class="Label">Codigo Cond. Pag.</label>
-                            <input class="form-control" id="CodCondPag" name="CodCondPag" value="@Model.Agendamento.CodCondPag" oninput="this.value = this.value.toUpperCase()" required/>
+                            @Html.TextBoxFor(model => model.Agendamento.CodCondPag, new { @class = "form-control", @onkeyup = "InputToUpper(this);", @required = "required" })
+                            @Html.ValidationMessageFor(model => model.Agendamento.CodCondPag, "", new { @class = "text-danger" })
                         </div>
                         <div class="form-group col-sm-3 col-md-3">
                             <label class="Label">Condições de Pagto.</label>
                             <div class="autocomplete col-md-12">
-                            <input type="text" class="form-control" id="CondPag" name="CondPag" value="@Model.Agendamento.CondPag" oninput="this.value = this.value.toUpperCase()" required />
+                            @Html.TextBoxFor(model => model.Agendamento.CondPag, new { @class = "form-control", @onkeyup = "InputToUpper(this);", @required = "required" })
+                            @Html.ValidationMessageFor(model => model.Agendamento.CondPag, "", new { @class = "text-danger" })
                             </div>
                         </div>
                         <div class="form-group col-sm-2 col-md-2">
                             <label class="Label">Codigo Tabela</label>
-                            <input class="form-control" id="CodTabela" name="CodTabela" value="@Model.Agendamento.CodTabela" oninput="this.value = this.value.toUpperCase()" required />
+                            @Html.TextBoxFor(model => model.Agendamento.CodTabela, new { @class = "form-control", @onkeyup = "InputToUpper(this);", @required = "required" })
+                            @Html.ValidationMessageFor(model => model.Agendamento.CodTabela, "", new { @class = "text-danger" })
                         </div>
                         <div class="form-group col-sm-4 col-md-4">
                             <label class="Label">Tabela (R$)</label>
                             <div class="autocomplete col-md-12">
-                                <input class="form-control" id="Tabela" name="Tabela" value="@Model.Agendamento.Tabela" oninput="this.value = this.value.toUpperCase()" required />
+                            @Html.TextBoxFor(model => model.Agendamento.Tabela, new { @class = "form-control", @onkeyup = "InputToUpper(this);", @required = "required" })
+                            @Html.ValidationMessageFor(model => model.Agendamento.Tabela, "", new { @class = "text-danger" })
                             </div>
                         </div>
                         <div class="form-group col-sm-4 col-md-4">
                             <label class="Label">Médico</label>
                             <div class="autocomplete col-md-12"  >
-                              <input type="text" class="form-control" id="Medico" name="Medico" value="@Model.Agendamento.Medico" oninput="this.value = this.value.toUpperCase()" required />
+                            @Html.TextBoxFor(model => model.Agendamento.Medico, new { @class = "form-control", @onkeyup = "InputToUpper(this);", @required = "required" })
+                            @Html.ValidationMessageFor(model => model.Agendamento.Medico, "", new { @class = "text-danger" })
                             </div>
                             
                         </div>
                         <div class="form-group col-sm-2 col-md-2">
                             <label class="Label">Vendedor</label>
                             <div class="autocomplete col-md-12">
-                                <input type="text" class="form-control" id="Vendedor" name="Vendedor" value="@Model.Agendamento.Vendedor" oninput="this.value = this.value.toUpperCase()" required />
+                            @Html.TextBoxFor(model => model.Agendamento.Vendedor, new { @class = "form-control", @onkeyup = "InputToUpper(this);", @required = "required" })
+                            @Html.ValidationMessageFor(model => model.Agendamento.Vendedor, "", new { @class = "text-danger" })
                             </div>
                         </div>
                     </div>
                     <div class="row">
                         <div class="form-group col-sm-2 col-md-2">
                             <label class="Label">Matricula</label>
-                            <input type="text" class="form-control" id="Matricula" name="Matricula" oninput="this.value = this.value.toUpperCase()" />
+                            @Html.TextBoxFor(model => model.Agendamento.Matricula, new { @class = "form-control", @onkeyup = "InputToUpper(this);" })
+                            @Html.ValidationMessageFor(model => model.Agendamento.Matricula, "", new { @class = "text-danger" })
                         </div>
                         <div class="form-group col-sm-4 col-md-4">
                             <label class="Label">Paciente</label>
-                            <input type="text" class="form-control" id="Paciente" name="Paciente" value="@Model.Agendamento.Paciente" oninput="this.value = this.value.toUpperCase()" required/>
+                            @Html.TextBoxFor(model => model.Agendamento.Paciente, new { @class = "form-control", @onkeyup = "InputToUpper(this);", @required = "required" })
+                            @Html.ValidationMessageFor(model => model.Agendamento.Paciente, "", new { @class = "text-danger" })
                         </div>
                         <div class="form-group col-sm-2 col-md-2">
                             <label class="Label">Codigo Hospital</label>
-                        <input type="text" class="form-control" id="CodHospital" name="CodHospital" value="@Model.Agendamento.CodHospital" oninput="this.value = this.value.toUpperCase()" required/>
+                            @Html.TextBoxFor(model => model.Agendamento.CodHospital, new { @class = "form-control", @onkeyup = "InputToUpper(this);", @required = "required" })
+                            @Html.ValidationMessageFor(model => model.Agendamento.CodHospital, "", new { @class = "text-danger" })
                         </div>
                         <div class="form-group col-sm-4 col-md-4">
                             <label class="Label">Hospital</label>
                             <div class="autocomplete col-md-12">
-                                <input type="text" class="form-control" id="Hospital" name="Hospital" value="@Model.Agendamento.Hospital" oninput="this.value = this.value.toUpperCase()" required/>
+                            @Html.TextBoxFor(model => model.Agendamento.Hospital, new { @class = "form-control", @onkeyup = "InputToUpper(this);", @required = "required" })
+                            @Html.ValidationMessageFor(model => model.Agendamento.Hospital, "", new { @class = "text-danger" })
                             </div>
                         </div>
                         <div class="form-group col-sm-2 col-md-2">
                             <label class="Label">Codigo</label>
-                            <input type="text" class="form-control" id="CodConvenio" name="CodConvenio" value="@Model.Agendamento.CodConvenio" />
+                            @Html.TextBoxFor(model => model.Agendamento.CodConvenio, new { @class = "form-control", @onkeyup = "InputToUpper(this);" })
+                        @Html.ValidationMessageFor(model => model.Agendamento.CodConvenio, "", new { @class = "text-danger" })
                         </div>
                         <div class="form-group col-sm-4 col-md-4">
                             <label class="Label">Convênio</label>
                             <div class="autocomplete col-md-12">
-                                <input type="text" class="form-control" id="Convenio" value="@Model.Agendamento.Convenio" name="Convenio" oninput="this.value = this.value.toUpperCase()" />
+                            @Html.TextBoxFor(model => model.Agendamento.Convenio, new { @class = "form-control", @onkeyup = "InputToUpper(this);" })
+                            @Html.ValidationMessageFor(model => model.Agendamento.Convenio, "", new { @class = "text-danger" })
                             </div>
                         </div>
                         <div class="form-group col-sm-4 col-md-4">
                             <label class="Label">Instrumentador</label>
-                            <select class="form-control" id="Instrumentador" name="Instrumentador">
+                            <select class="form-control" id="Agendamento_Instrumentador" name="Agendamento.Instrumentador">
                             @foreach (var data in Model.Novo.Intrumentador)
                             {
                                 <option value="@data">@data</option>
@@ -129,15 +142,15 @@
                     <div class="row">
                         <div class="form-group col-sm-3 col-md-3">
                             <label class="Label">Data Cirurgia</label>
-                            <input type="datetime-local" class="form-control" id="DataAgendamento" name="DataAgendamento"  oninput="this.value = this.value.toUpperCase()" />
+                            <input type="datetime-local" class="form-control" id="Agendamento_DataAgendamento" name="Agendamento.DataAgendamento"  oninput="this.value = this.value.toUpperCase()" />
                         </div>
                         <div class="form-group col-sm-2 col-md-2">
                             <label class="Label">Data Autorização</label>
-                            <input type="date" class="form-control" id="DataAutorizacao" name="DataAutorizacao"  oninput="this.value = this.value.toUpperCase()" />
+                            <input type="date" class="form-control" id="Agendamento_DataAutorizacao" name="Agendamento.DataAutorizacao"  oninput="this.value = this.value.toUpperCase()" />
                         </div>
                         <div class="form-group col-sm-4 col-md-4">
                             <label class="Label">Procedimento</label>
-                            <select class="form-control" id="Procedimento" name="Procedimento">
+                            <select class="form-control" id="Agendamento_Procedimento" name="Agendamento.Procedimento">
                                 @foreach(var data in Model.Novo.Procedimentos)
                                 {
                                     <option value="@data.Nome">@data.Nome</option>
@@ -146,22 +159,24 @@
                         </div>
                         <div class="form-group col-sm-2 col-md-2">
                             <label class="Label">Autorizado ?</label>
-                            <select class="form-control" id="Autorizado" name="Autorizado">
-                                <option value="1">SIM</option>
+                            <select class="form-control" id="Agendamento_Autorizado" name="Agendamento.Autorizado">
                                 <option value="2">NÃO</option>
+                                <option value="1">SIM</option>
                             </select>
                         </div>
                         <div class="form-group col-sm-2 col-md-2">
                             <label style="font-size:10px;">Nº Autorização</label>
-                            <input type="text" class="form-control" id="NumAutorizacao" name="NumAutorizacao"  oninput="this.value = this.value.toUpperCase()" />
+                            @Html.TextBoxFor(model => model.Agendamento.NumAutorizacao, new { @class = "form-control", @onkeyup = "InputToUpper(this);" })
+                            @Html.ValidationMessageFor(model => model.Agendamento.NumAutorizacao, "", new { @class = "text-danger" })
                         </div>
                         <div class="form-group col-sm-2 col-md-2">
                             <label class="Label">Senha</label>
-                            <input type="text" class="form-control" id="Senha" name="Senha"  oninput="this.value = this.value.toUpperCase()" />
+                            @Html.TextBoxFor(model => model.Agendamento.Senha, new { @class = "form-control",  @onkeyup = "InputToUpper(this);" })
+                            @Html.ValidationMessageFor(model => model.Agendamento.Senha, "", new { @class = "text-danger" })
                         </div>
                         <div class="form-group col-sm-2 col-md-2">
                             <label class="Label">Indicação</label>
-                            <select class="form-control" id="Indicacao" name="Indicacao">
+                            <select class="form-control" id="Agendamento_Indicacao" name="Agendamento.Indicacao">
                                 <option value="1ª opção">1ª opção</option>
                                 <option value="2ª opção">2ª opção</option>
                                 <option value="3ª opção">3ª opção</option>
@@ -173,7 +188,8 @@
                     <div class="row">
                         <div class="form-group col-sm-12 col-md-12">
                             <label class="Label">Observação</label>
-                        <input type="text" class="form-control" id="Obs" name="Obs" oninput="this.value = this.value.toUpperCase()" />
+                            @Html.TextBoxFor(model => model.Agendamento.Obs, new { @class = "form-control", @onkeyup = "InputToUpper(this);" })
+                            @Html.ValidationMessageFor(model => model.Agendamento.Obs, "", new { @class = "text-danger" })
                         </div>
                     </div>
                     <div class="row">
@@ -368,7 +384,7 @@
                     <div class="col-md-12">
                         <label>Codigo Produto</label>
                         <div class="autocomplete">
-                            <input type="text" class="form-control" id="CodProd" name="CodProd" />
+                            <input type="text" class="form-control" id="CodProd" name="CodProd" autocomplete="off" />
                         </div>
                     </div>
 
@@ -404,7 +420,7 @@
                     <div class="col-md-12">
                         <label>Codigo Produto</label>
                         <div class="autocomplete" >
-                            <input type="text" class="form-control" id="CodPatri" name="CodPatri" oninput="this.value = this.value.toUpperCase()" />
+                            <input type="text" class="form-control" id="CodPatri" name="CodPatri" autocomplete="off" oninput="this.value = this.value.toUpperCase()" />
                         </div>
                     </div>
                 </div>
@@ -442,8 +458,10 @@
     var count = 0;
     var countPatri = 0;
     $(document).ready(function() {
-        $('#Empresa').val(`@ViewContext.RouteData.Values["id"]`)
-        $("#Instrumentador").val("** NENHUM **                            ")
+        
+
+        $('#Agendamento_Empresa').val(`@ViewContext.RouteData.Values["id"]`)
+        $("#Agendamento_Instrumentador").val("** NENHUM **                            ")
 
         count = @count;
 
@@ -452,13 +470,13 @@
 
         $("#HoraFinal").mask("00:00");
 
-        @if (Model.Agendamento.DataCirurgia != null)
+        @if (Model.Agendamento.DataAgendamento != null)
         {
-            @:data = "@Model.Agendamento.DataCirurgia.Value.ToString("yyyy-MM-dd'T'HH:mm")";
+            @:data = "@Model.Agendamento.DataAgendamento.Value.ToString("yyyy-MM-dd'T'HH:mm")";
 
             @:console.log(data);
 
-            @:$("#DataAgendamento").val(data);
+            @:$("#Agendamento_DataAgendamento").val(data);
         }
 
         remove = function(item) {
@@ -531,8 +549,8 @@
                 var key = e.which;
                 if (key == 13) {
                     var codigo = $("#CodProd").val();
-                    var empresa =$("#Empresa").val();
-                    var tabela = $("#CodTabela").val();
+                    var empresa = $("#Agendamento_Empresa").val();
+                    var tabela = $("#Agendamento_CodTabela").val();
                     var chamadaUrl = `/cirurgias/novoagendamento/01?handler=AdicionarProd&&Codigo=${codigo}&&Empresa=${empresa}&&CodTab=${tabela}`
                     $.ajax({
                         url: chamadaUrl,
@@ -632,7 +650,7 @@
                                 }
                             }
                             else {
-                                var tabela = $("#CodTabela").val();
+                                var tabela = $("#Agendamento_CodTabela").val();
                                 alert(`Produto não existe ou está bloqueado ou não esta homologa para essa empresa`)
                             }
                         }
@@ -642,8 +660,8 @@
 
         $("#Adicionar").click(function () {
                 var codigo = $("#CodProd").val();
-                var empresa = $("#Empresa").val();
-                var tabela = $("#CodTabela").val();
+                var empresa = $("#Agendamento_Empresa").val();
+                var tabela = $("#Agendamento_CodTabela").val();
                 var chamadaUrl = `/cirurgias/novoagendamento/01?handler=AdicionarProd&&Codigo=${codigo}&&Empresa=${empresa}&&CodTab=${tabela}`
                 $.ajax({
                     url: chamadaUrl,
@@ -750,7 +768,7 @@
                         }
                         else 
                         {
-                            var tabela = $("#CodTabela").val();
+                            var tabela = $("#Agendamento_CodTabela").val();
                             alert(`Produto não existe ou está bloqueado ou não esta homologa para essa empresa`)
                         }
                     }
@@ -762,7 +780,7 @@
                 if (key == 13) {
 
                     var codigo = $("#CodPatri").val();
-                    var empresa = $("#Empresa").val();
+                    var empresa = $("#Agendamento_Empresa").val();
                     var chamadaUrl = `/cirurgias/novoagendamento/01?handler=AdicionarPatri&&Empresa=${empresa}&&Codigo=${codigo}`
                     $.ajax({
                         url: chamadaUrl,
@@ -811,56 +829,56 @@
             })
 
         $("#AdicionarPatri").click(function () {
-                var codigo = $("#CodPatri").val();
-                var empresa = $("#Empresa").val();
-                var chamadaUrl = `/cirurgias/novoagendamento/01?handler=AdicionarPatri&&Empresa=${empresa}&&Codigo=${codigo}`
-                $.ajax({
-                    url: chamadaUrl,
-                    type: "POST",
-                    contentType: "application/json;",
-                    dataType: 'json',
-                    headers: {
-                        "RequestVerificationToken": $('input:hidden[name="__RequestVerificationToken"]').val()
-                    },
-                    success: function (data) {
+            var codigo = $("#Agendamento_CodPatri").val();
+            var empresa = $("#Agendamento_Empresa").val();
+            var chamadaUrl = `/cirurgias/novoagendamento/01?handler=AdicionarPatri&&Empresa=${empresa}&&Codigo=${codigo}`
+            $.ajax({
+                url: chamadaUrl,
+                type: "POST",
+                contentType: "application/json;",
+                dataType: 'json',
+                headers: {
+                    "RequestVerificationToken": $('input:hidden[name="__RequestVerificationToken"]').val()
+                },
+                success: function (data) {
 
-                        if (data != "") {
-                            if (typeof data === 'string' || data instanceof String) {
-                                alert(data)
-                            }
-                            else {
-                                var linha = `<tr>
-                                                         <td>
-                                                         ${data.descri}
-                                                         <input type="hidden" id="Patris[${countPatri}].Descri" name="Patris[${countPatri}].Descri" value="${data.descri}" />
-                                                         </td>
-                                                         <td>
-                                                         ${data.kitBas}
-                                                         <input type="hidden" id="Patris[${countPatri}].KitBas" name="Patris[${countPatri}].KitBas" value="${data.kitBas}" />
-                                                         </td>
-                                                         <td>
-                                                             <a class="fas fa-eye add-tooltip" style="text-decoration:none;" data-container="body" data-placement="top" data-original-title="Visualizar Recurso" aria-hidden="true"></a>
-
-                                                             <a class="fa-regular fa-trash-can add-tooltip" onclick="removePatri(this)" style="text-decoration:none;" id="Excluir" data-container="body" data-placement="top" data-original-title="Excluir Recurso" aria-hidden="true"></a>
-                                                         </td>
-                                                         </tr>`;
-                                
-                                $("#Patrimonio>tbody").append(linha);
-                                $("#CodPatri").val("");
-                                countPatri++;
-                            }
+                    if (data != "") {
+                        if (typeof data === 'string' || data instanceof String) {
+                            alert(data)
                         }
                         else {
+                            var linha = `<tr>
+                                                     <td>
+                                                     ${data.descri}
+                                                     <input type="hidden" id="Patris[${countPatri}].Descri" name="Patris[${countPatri}].Descri" value="${data.descri}" />
+                                                     </td>
+                                                     <td>
+                                                     ${data.kitBas}
+                                                     <input type="hidden" id="Patris[${countPatri}].KitBas" name="Patris[${countPatri}].KitBas" value="${data.kitBas}" />
+                                                     </td>
+                                                     <td>
+                                                         <a class="fas fa-eye add-tooltip" style="text-decoration:none;" data-container="body" data-placement="top" data-original-title="Visualizar Recurso" aria-hidden="true"></a>
 
-                            alert(`Patrimonio não existe ou está bloqueado`)
+                                                         <a class="fa-regular fa-trash-can add-tooltip" onclick="removePatri(this)" style="text-decoration:none;" id="Excluir" data-container="body" data-placement="top" data-original-title="Excluir Recurso" aria-hidden="true"></a>
+                                                     </td>
+                                                     </tr>`;
+                            
+                            $("#Patrimonio>tbody").append(linha);
+                            $("#CodPatri").val("");
+                            countPatri++;
                         }
                     }
-                })
+                    else {
+
+                        alert(`Patrimonio não existe ou está bloqueado`)
+                    }
+                }
             })
+        })
         
-        $('#CodCondPag').on('change',function(){
-            var codigo =  $("#CodCondPag").val();
-            var empresa = $("#Empresa").val();
+        $('#Agendamento_CodCondPag').on('change', function () {
+            var codigo =  $("#Agendamento_CodCondPag").val();
+            var empresa = $("#Agendamento_Empresa").val();
                 var chamadaUrl = `/cirurgias/novoagendamento/01?handler=Condicoes&&Empresa=${empresa}&&Codigo=${codigo}`;
             $.ajax({
                 url: chamadaUrl,
@@ -873,7 +891,7 @@
                 success: function(data) {
 
                     if(data!=null){
-                        $("#CondPag").val(data);
+                        $("#Agendamento_CondPag").val(data);
                     }else{
                         alert("CodCond não existe")
                     }
@@ -881,13 +899,13 @@
             })
         });
 
-        $('#CondPag').keydown(function (e) {
+        $('#Agendamento_CondPag').keydown(function (e) {
             var key = e.which;
             if (key == 13) 
             {
-                var codigo = $("#CondPag").val();
-                var empresa = $("#Empresa").val();
-                    var chamadaUrl = `/cirurgias/novoagendamento/01?handler=Condicoes&&Empresa=${empresa}&&Codigo=${codigo}`;
+                var codigo = $("#Agendamento_CondPag").val();
+                var empresa = $("#Agendamento_Empresa").val();
+                var chamadaUrl = `/cirurgias/novoagendamento/01?handler=Condicoes&&Empresa=${empresa}&&Codigo=${codigo}`;
                 $.ajax({
                     url: chamadaUrl,
                     type: "GET",
@@ -899,7 +917,7 @@
                     success: function (data) {
 
                         if (data != null) {
-                            $("#CodCondPag").val(data);
+                                $("#Agendamento_CodCondPag").val(data);
                         } else {
                             alert("Cond não existe")
                         }
@@ -907,12 +925,11 @@
                 })
             }
         });
-            
 
-        $('#CodTabela').on('change',function(){
-            var codigo =  $("#CodTabela").val();
-            var empresa = $("#Empresa").val();
-                var chamadaUrl = `/cirurgias/novoagendamento/01?handler=Tabela&&Empresa=${empresa}&&Codigo=${codigo}`;
+        $('#Agendamento_CodTabela').on('change', function () {
+            var codigo = $("#Agendamento_CodTabela").val();
+            var empresa = $("#Agendamento_Empresa").val();
+            var chamadaUrl = `/cirurgias/novoagendamento/01?handler=Tabela&&Empresa=${empresa}&&Codigo=${codigo}`;
             $.ajax({
                 url: chamadaUrl,
                 type: "GET",
@@ -924,7 +941,7 @@
                 success: function(data) {
 
                     if(data!=null){
-                        $("#Tabela").val(data);
+                            $("#Agendamento_Tabela").val(data);
                     }else{
                         alert("CodTabela não existe")
                     }
@@ -933,11 +950,11 @@
             
         });
 
-        $('#Tabela').keydown(function (e) {
+        $('#Agendamento_Tabela').keydown(function (e) {
                 var key = e.which;
                 if (key == 13) {
-                    var codigo = $("#Tabela").val();
-                    var empresa = $("#Empresa").val();
+                    var codigo = $("#Agendamento_Tabela").val();
+                    var empresa = $("#Agendamento_Empresa").val();
                     var chamadaUrl = `/cirurgias/novoagendamento/01?handler=Tabela&&Empresa=${empresa}&&Codigo=${codigo}`;
                     $.ajax({
                         url: chamadaUrl,
@@ -950,7 +967,7 @@
                         success: function (data) {
 
                             if (data != null) {
-                                $("#CodTabela").val(data);
+                                $("#Agendamento_CodTabela").val(data);
                             } else {
                                 alert("Tabela não existe")
                             }
@@ -959,9 +976,9 @@
                 }
         });
 
-        $('#CodHospital').on('change', function () {
-            var hospital = $("#CodHospital").val();
-            var empresa = $("#Empresa").val();
+        $('#Agendamento_CodHospital').on('change', function () {
+            var hospital = $("#Agendamento_CodHospital").val();
+            var empresa = $("#Agendamento_Empresa").val();
             var chamadaUrl = `/cirurgias/novoagendamento/01?handler=Hospital&&Codigo=${hospital}&&Empresa=${empresa}`;
             $.ajax({
                 url: chamadaUrl,
@@ -973,17 +990,17 @@
                 },
                 success: function (data) {
 
-                    $("#Hospital").val(data);
+                    $("#Agendamento_Hospital").val(data);
                 }
             })
         })
 
-        $('#Hospital').keydown(function (e) {
+        $('#Agendamento_Hospital').keydown(function (e) {
             var key = e.which;
             if(key == 13)
             {
-                var hospital = $("#Hospital").val();
-                var empresa = $("#Empresa").val();
+                var hospital = $("#Agendamento_Hospital").val();
+                var empresa = $("#Agendamento_Empresa").val();
                 var chamadaUrl = `/cirurgias/novoagendamento/01?handler=CodHospital&&Codigo=${hospital}&&Empresa=${empresa}`;
                 $.ajax({
                     url: chamadaUrl,
@@ -995,15 +1012,15 @@
                     },
                     success: function (data) {
 
-                        $("#CodHospital").val(data);
+                        $("#Agendamento_CodHospital").val(data);
                     }
                 })
             }
         })
 
-        $('#CodConvenio').on('change',function(){
-            var codigo = $("#CodConvenio").val();
-            var empresa = $("#Empresa").val();
+        $('#Agendamento_CodConvenio').on('change', function () {
+            var codigo = $("#Agendamento_CodConvenio").val();
+            var empresa = $("#Agendamento_Empresa").val();
             var chamadaUrl = `/cirurgias/novoagendamento/01?handler=Convenio&&Codigo=${codigo}&&Empresa=${empresa}`;
             $.ajax({
                 url: chamadaUrl,
@@ -1015,17 +1032,17 @@
                 },
                 success: function (data) {
 
-                    $("#Convenio").val(data);
+                    $("#Agendamento_Convenio").val(data);
                 }
             })
         })
 
-        $('#Convenio').keydown(function (e) {
+        $('#Agendamento_Convenio').keydown(function (e) {
             var key = e.which;
             if(key == 13)
             {
-                var codigo = $("#Convenio").val();
-                var empresa = $("#Empresa").val();
+                var codigo = $("#Agendamento_Convenio").val();
+                var empresa = $("#Agendamento_Empresa").val();
                 var chamadaUrl = `/cirurgias/novoagendamento/01?handler=CodConvenio&&Codigo=${codigo}&&Empresa=${empresa}`;
                 $.ajax({
                     url: chamadaUrl,
@@ -1037,18 +1054,18 @@
                     },
                     success: function (data) {
 
-                        $("#CodConvenio").val(data);
+                        $("#Agendamento_CodConvenio").val(data);
                     }
                 })
             }
         })
        
-        $('#Cliente').keydown(function(e){
+        $('#Agendamento_Cliente').keydown(function (e) {
             var key = e.which;
             if(key == 13)
             {
-                var cliente = $('#Cliente').val();
-                var empresa = $("#Empresa").val();
+                var cliente = $('#Agendamento_Cliente').val();
+                var empresa = $("#Agendamento_Empresa").val();
                 var chamadaUrl = `/cirurgias/novoagendamento/01?handler=Cliente&&Codigo=${cliente}&&Empresa=${empresa}`;
                 $.ajax({
                     url: chamadaUrl,
@@ -1060,11 +1077,11 @@
                     },
                     success: function (data) {
                         if(data.codigo != null){
-                            $("#Cliente").val(`${data.codigo} ${data.nreduz}`);
-                            $("#CodCondPag").val(data.cond);
-                            $("#CondPag").val(data.descon);
-                            $("#CodTabela").val(data.tabela);
-                            $("#Tabela").val(data.condTabela);
+                            $("#Agendamento_Cliente").val(`${data.codigo} ${data.nreduz}`);
+                            $("#Agendamento_CodCondPag").val(data.cond);
+                            $("#Agendamento_CondPag").val(data.descon);
+                            $("#Agendamento_CodTabela").val(data.tabela);
+                            $("#Agendamento_Tabela").val(data.condTabela);
                             $("#cliente-modal").modal('hide')
                         }
                         else
@@ -1082,13 +1099,13 @@
 <script>
     $(document).ready(function(){
         
-        $('#Empresa').on('change', function () {
+        $('#Agendamento_Empresa').on('change', function () {
             var empresa = $(this).val();
             $("#loading-modal").modal('show')
             window.location.href = `/cirurgias/novoagendamento/${empresa}`
         })
 
-        $('#Tipo').on('change',function(){
+        $('#Agendamento_Tipo').on('change', function () {
             var tipo = $("#Tipo").val()
             if(tipo == 1){
                 var data = new Date($.now());
@@ -1312,19 +1329,20 @@
 
         autocomplete(document.getElementById("CodProd"), Produtos);
         autocomplete(document.getElementById("CodPatri"), Patri);
-        autocomplete(document.getElementById("Medico"),Medicos);
-        autocomplete(document.getElementById("Hospital"), Hospital);
-        autocomplete(document.getElementById("Convenio"),Convenio);
-        autocomplete(document.getElementById("Cliente"),Clientes);
-        autocomplete(document.getElementById("CondPag"), Condicoes);
-        autocomplete(document.getElementById("Tabela"), Tabelas);
-        autocomplete(document.getElementById("Vendedor"), Vendedores);
-                
+        
+        autocomplete(document.getElementById("Agendamento_Medico"), Medicos);
+        autocomplete(document.getElementById("Agendamento_Hospital"), Hospital);
+        autocomplete(document.getElementById("Agendamento_Convenio"), Convenio);
+        autocomplete(document.getElementById("Agendamento_Cliente"), Clientes);
+        autocomplete(document.getElementById("Agendamento_CondPag"), Condicoes);
+        autocomplete(document.getElementById("Agendamento_Tabela"), Tabelas);
+        autocomplete(document.getElementById("Agendamento_Vendedor"), Vendedores);
 
-        $('#Medico').keydown(function (e) {
+
+        $('#Agendamento_Medico').keydown(function (e) {
             var key = e.which;
             if (key == 13) {
-                var codigo = $("#Medico").val();
+                        var codigo = $("#Agendamento_Medico").val();
 
                 console.log(codigo)
 
@@ -1348,19 +1366,28 @@
                         },
                         success: function (data) {
 
-                            $("#Vendedor").val(data);
+                           $("#Agendamento_Vendedor").val(data);
                         }
                     })
                 }
                 else 
                 {
-                    $("#Medico").val("");
+                            $("#Agendamento_Medico").val("");
                     alert("Médico está sem CRM Favor contatar Adm Vendas")
                     
                 }
             }
         });
+
+                
     })
+</script>
+<script>
+        function InputToUpper(obj) {
+            if (obj.value != "") {
+                obj.value = obj.value.toUpperCase();
+            }
+        }
 </script>
 }
 

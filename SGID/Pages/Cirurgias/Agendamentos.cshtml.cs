@@ -80,7 +80,7 @@ namespace SGID.Pages.Cirurgias
 					x.Cliente,
 					x.CondPag,
 					x.Convenio,
-					DataAutorizacao = x.DataAutorizacao.ToString("dd/MM/yyyy"),
+					DataAutorizacao = x.DataAutorizacao.Value.ToString("dd/MM/yyyy"),
 					DataCirurgia = x.DataCirurgia.Value.ToString("dd/MM/yyyy HH:mm"),
 					x.Hospital,
 					x.Id,
@@ -263,7 +263,11 @@ namespace SGID.Pages.Cirurgias
 
 				agendamento.DataCirurgia = DataCirurgia;
 
-				SGID.Agendamentos.Update(agendamento);
+                
+                agendamento.DataEntrega = DataCirurgia.AddDays(-1);
+                
+
+                SGID.Agendamentos.Update(agendamento);
 				SGID.SaveChanges();
 				
                 return new JsonResult("");

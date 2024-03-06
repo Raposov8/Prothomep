@@ -312,8 +312,6 @@
                 grafico3
             );
 
-            console.log(grafico3)
-
             var options = {
                 title: 'EM ABERTO CIRURGIAS',
                 legend: { position: "none" },
@@ -390,7 +388,6 @@
                         data.linhas.forEach(x => {
 
                             grafico3.push([x.nome, x.faturamento, `color:${x.estilo}`,`/relatorios/diretoria/cirurgiaportempo/${numero}`]);
-                            console.log(x.estilo)
                             numero++;
                         })
 

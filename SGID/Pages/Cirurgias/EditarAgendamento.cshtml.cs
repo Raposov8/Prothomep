@@ -290,6 +290,8 @@ namespace SGID.Pages.Cirurgias
 
                 agendamento.UsuarioAlterar = User.Identity.Name.Split("@")[0].ToUpper();
 
+                
+
                 if (Empresa == "01")
                 {
                     //Intermedic

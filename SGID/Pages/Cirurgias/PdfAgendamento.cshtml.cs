@@ -56,12 +56,8 @@ namespace SGID.Pages.Cirurgias
                 codigos.ForEach(x =>
                 {
                     var produto = (from SB10 in ProtheusInter.Sb1010s
-                                   join SB80 in ProtheusInter.Sb8010s on SB10.B1Cod equals SB80.B8Produto
-                                   join DA10 in ProtheusInter.Da1010s on SB10.B1Cod equals DA10.Da1Codpro
                                    where SB10.B1Cod == x.produto && SB10.B1Msblql != "1"
-                                   && SB10.DELET != "*" && DA10.DELET != "*" && DA10.Da1Codtab == x.Tabela
-                                   && SB80.DELET != "*" && SB80.B8Saldo > 0 && (int)(object)SB80.B8Dtvalid > data
-                                   && SB80.B8Local != "30"
+                                   && SB10.DELET != "*"
                                    select new
                                    {
                                        SB10.B1Cod,
@@ -69,12 +65,8 @@ namespace SGID.Pages.Cirurgias
                                        SB10.B1Solicit,
                                        SB10.B1Desc,
                                        SB10.B1Fabric,
-                                       SB10.B1Exdtval,
-                                       DA10.Da1Prcven,
                                        SB10.B1Tipo,
                                        SB10.B1Lotesbp,
-                                       DA10.Da1Vlrdes,
-                                       SB80.B8Dtvalid,
                                        SB10.B1Um,
                                        SB10.B1Reganvi,
                                        SB10.B1Xtuss
@@ -88,11 +80,11 @@ namespace SGID.Pages.Cirurgias
                         Tuss = produto.B1Xtuss,
                         Anvisa = produto.B1Reganvi,
                         Marca = produto.B1Fabric,
-                        Validade = produto.B8Dtvalid,
+                        //Validade = produto.B8Dtvalid,
                         Und = x.unidade,
                         PrcUnid = x.valorunitario,
                         SegUnd = produto.B1Um,
-                        Descon = produto.Da1Vlrdes,
+                        //Descon = produto.Da1Vlrdes,
                         VlrTotal = x.valor,
                         TipoOp = produto.B1Tipo,
                     };
@@ -109,12 +101,8 @@ namespace SGID.Pages.Cirurgias
                 codigos.ForEach(x =>
                 {
                     var produto = (from SB10 in ProtheusDenuo.Sb1010s
-                                   join SB80 in ProtheusDenuo.Sb8010s on SB10.B1Cod equals SB80.B8Produto
-                                   join DA10 in ProtheusDenuo.Da1010s on SB10.B1Cod equals DA10.Da1Codpro
                                    where SB10.B1Cod == x.produto && SB10.B1Msblql != "1"
-                                   && SB10.DELET != "*" && DA10.DELET != "*" && DA10.Da1Codtab == x.Tabela
-                                   && SB80.DELET != "*" && SB80.B8Saldo > 0 && (int)(object)SB80.B8Dtvalid > data
-                                   && SB80.B8Local != "30"
+                                   && SB10.DELET != "*"
                                    select new
                                    {
                                        SB10.B1Cod,
@@ -122,12 +110,8 @@ namespace SGID.Pages.Cirurgias
                                        SB10.B1Solicit,
                                        SB10.B1Desc,
                                        SB10.B1Fabric,
-                                       SB10.B1Exdtval,
-                                       DA10.Da1Prcven,
                                        SB10.B1Tipo,
                                        SB10.B1Lotesbp,
-                                       DA10.Da1Vlrdes,
-                                       SB80.B8Dtvalid,
                                        SB10.B1Um,
                                        SB10.B1Reganvi,
                                        SB10.B1Xtuss
@@ -140,12 +124,12 @@ namespace SGID.Pages.Cirurgias
                         Produtos = produto.B1Desc,
                         Tuss = produto.B1Xtuss,
                         Anvisa = produto.B1Reganvi,
-                        Validade = produto.B8Dtvalid,
+                        //Validade = produto.B8Dtvalid,
                         Marca = produto.B1Fabric,
                         Und = x.unidade,
                         PrcUnid = x.valorunitario,
                         SegUnd = produto.B1Um,
-                        Descon = produto.Da1Vlrdes,
+                        //Descon = produto.Da1Vlrdes,
                         VlrTotal = x.valor,
                         TipoOp = produto.B1Tipo,
                     };

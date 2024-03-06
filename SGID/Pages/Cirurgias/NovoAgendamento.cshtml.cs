@@ -12,8 +12,7 @@ using SGID.Models.Email;
 using System.Net.Mail;
 using Intergracoes.Inpart;
 using Intergracoes.Inpart.Models;
-using OfficeOpenXml.FormulaParsing.Excel.Functions.Math;
-using SGID.Models.Estoque.RelatorioFaturamentoNFFab;
+using System.ComponentModel.DataAnnotations;
 
 namespace SGID.Pages.Cirurgias
 {
@@ -27,12 +26,13 @@ namespace SGID.Pages.Cirurgias
         private readonly IWebHostEnvironment _WEB;
 
         public NovoAgendamento Novo { get; set; } = new NovoAgendamento();
-
-        public Agendamentos Agendamento { get; set; } = new Agendamentos();
         public List<Produto> Produtos { get; set; } = new List<Produto>();
 
         public List<string> SearchProduto { get; set; } = new List<string>();
         public List<Cotacao> Cotacoes { get; set; }
+
+        [BindProperty]
+        public AgendamentoModel Agendamento { get; set;} = new AgendamentoModel();
 
         public NovoAgendamentoModel(ApplicationDbContext sgid, TOTVSINTERContext protheus, TOTVSDENUOContext denuo, IWebHostEnvironment wEB)
         { 
@@ -154,7 +154,7 @@ namespace SGID.Pages.Cirurgias
             }
 
             Agendamento.Paciente = cotacao.nmPaciente.ToUpper();
-            Agendamento.DataCirurgia = cotacao.dtCirurgia;
+            Agendamento.DataAgendamento = cotacao.dtCirurgia;
 
             #region Cliente
 
@@ -436,194 +436,201 @@ namespace SGID.Pages.Cirurgias
             #endregion
         }
 
-        public IActionResult OnPostAsync(string Empresa,string Cliente,string CondPag, string Tabela,string Vendedor,
-            string Medico,string Matricula, string Paciente,string Convenio,string Instrumentador,string Hospital,
-            DateTime? DataAgendamento,DateTime DataAutorizacao,string NumAutorizacao,string Senha,int Tipo,int Autorizado, string Obs,
-            List<Produto> Produtos,List<Patrimonio> Patris, IFormCollection Anexos,string CodHospital,string CodConvenio,string CodTabela
-            ,string CodCondPag,string Procedimento,string Indicacao)
+        public IActionResult OnPostAsync(List<Produto> Produtos,List<Patrimonio> Patris, IFormCollection Anexos)
         {
             try
             {
-                var agendamento = new Agendamentos
+                if (ModelState.IsValid)
                 {
-                    DataCriacao = DateTime.Now,
-                    DataAlteracao = DateTime.Now,
-                    Empresa = Empresa,
-                    CodHospital = CodHospital,
-                    Hospital = Hospital,
-                    Cliente = Cliente,
-                    CodCondPag = CodCondPag,
-                    CondPag = CondPag,
-                    CodTabela = CodTabela,
-                    Tabela = Tabela,
-                    Vendedor = Vendedor,
-                    Medico = Medico,
-                    Matricula = Matricula,
-                    Paciente = Paciente,
-                    CodConvenio = CodConvenio,
-                    Convenio = Convenio,
-                    Instrumentador = Instrumentador,
-                    DataCirurgia = DataAgendamento,
-                    DataAutorizacao = DataAutorizacao,
-                    NumAutorizacao = NumAutorizacao,
-                    Senha = Senha,
-                    Tipo = Tipo,
-                    Procedimento = Procedimento,
-                    Autorizado = Autorizado,
-                    Indicacao = Indicacao,
-                    UsuarioCriacao = User.Identity.Name.Split("@")[0].ToUpper()
-                };
-
-                if (Empresa == "01")
-                {
-                    //Intermedic
-                    agendamento.VendedorLogin = ProtheusInter.Sa3010s.FirstOrDefault(x => x.A3Nreduz == Vendedor).A3Xlogin;
-                    
-                }
-                else
-                {
-                    //Denuo
-                    agendamento.VendedorLogin = ProtheusDenuo.Sa3010s.FirstOrDefault(x => x.A3Nreduz == Vendedor).A3Xlogin;
-
-                }
-
-
-                SGID.Agendamentos.Add(agendamento);
-                SGID.SaveChanges();
-
-                if (!string.IsNullOrEmpty(Obs) && !string.IsNullOrWhiteSpace(Obs))
-                {
-                    var Observacao = new ObsAgendamento { AgendamentoId = agendamento.Id, User = agendamento.UsuarioCriacao, Obs = Obs, DataCriacao = DateTime.Now };
-
-                    SGID.ObsAgendamentos.Add(Observacao);
-                    SGID.SaveChanges();
-                }
-
-                Produtos.ForEach(produto =>
-                {
-                    var ProdXAgenda = new ProdutosAgendamentos
+                    var agendamento = new Agendamentos
                     {
-                        AgendamentoId = agendamento.Id,
-                        CodigoProduto = produto.Item,
-                        Quantidade = produto.Und,
-                        ValorUnitario = produto.PrcUnid,
-                        ValorTotal = produto.VlrTotal,
-                        CodigoTabela = CodTabela,
+                        DataCriacao = DateTime.Now,
+                        DataAlteracao = DateTime.Now,
+                        Empresa = Agendamento.Empresa,
+                        CodHospital = Agendamento.CodHospital,
+                        Hospital = Agendamento.Hospital,
+                        Cliente = Agendamento.Cliente,
+                        CodCondPag = Agendamento.CodCondPag,
+                        CondPag = Agendamento.CondPag,
+                        CodTabela = Agendamento.CodTabela,
+                        Tabela = Agendamento.Tabela,
+                        Vendedor = Agendamento.Vendedor,
+                        Medico = Agendamento.Medico,
+                        Matricula = Agendamento.Matricula,
+                        Paciente = Agendamento.Paciente,
+                        CodConvenio = Agendamento.CodConvenio,
+                        Convenio = Agendamento.Convenio,
+                        Instrumentador = Agendamento.Instrumentador,
+                        DataCirurgia = Agendamento.DataAgendamento,
+                        DataAutorizacao = Agendamento.DataAutorizacao,
+                        NumAutorizacao = Agendamento.NumAutorizacao,
+                        Senha = Agendamento.Senha,
+                        Tipo = Agendamento.Tipo,
+                        Procedimento = Agendamento.Procedimento,
+                        Autorizado = Agendamento.Autorizado,
+                        Indicacao = Agendamento.Indicacao,
+                        UsuarioCriacao = User.Identity.Name.Split("@")[0].ToUpper()
                     };
 
-                    SGID.ProdutosAgendamentos.Add(ProdXAgenda);
-                    SGID.SaveChanges();
-                });
-
-                Patris.ForEach(patri =>
-                {
-                    var ProdXAgenda = new PatrimonioAgendamento
+                    if (Agendamento.DataAgendamento != null)
                     {
-                        AgendamentoId = agendamento.Id,
-                        Patrimonio = patri.Descri
-                    };
-
-                    SGID.PatrimoniosAgendamentos.Add(ProdXAgenda);
-                    SGID.SaveChanges();
-                });
-
-                string Pasta = $"{_WEB.WebRootPath}/AnexosAgendamento";
-
-                if (!Directory.Exists(Pasta))
-                {
-                    Directory.CreateDirectory(Pasta);
-                }
-                //Anexos
-                #region Anexos
-                int i = 1;
-
-                foreach (var anexo in Anexos.Files)
-                {
-                    var anexoAgenda = new AnexosAgendamentos
-                    {
-                        AgendamentoId = agendamento.Id,
-                        AnexoCam = $"{agendamento.Id}0{i}.{anexo.FileName.Split(".").Last()}",
-                        NumeroAnexo = $"0{i}"
-                    };
-
-                    string Caminho = $"{Pasta}/{anexoAgenda.AnexoCam}";
-                    using (Stream fileStream = new FileStream(Caminho, FileMode.Create))
-                    {
-                        anexo.CopyTo(fileStream);
+                        agendamento.DataEntrega = Agendamento.DataAgendamento.Value.AddDays(-1);
                     }
 
-                    SGID.AnexosAgendamentos.Add(anexoAgenda);
-                    SGID.SaveChanges();
-                    
-                    i++;
-                }
-
-                #endregion
-
-                try
-                {
-                    #region Email
-
-                    string VendedorEmail = "";
-                    if (Empresa == "01")
+                    if (Agendamento.Empresa == "01")
                     {
-                        VendedorEmail = ProtheusInter.Sa3010s.FirstOrDefault(x => x.A3Xlogin == agendamento.VendedorLogin)?.A3Email;
+                        //Intermedic
+                        agendamento.VendedorLogin = ProtheusInter.Sa3010s.FirstOrDefault(x => x.A3Nreduz == Agendamento.Vendedor).A3Xlogin;
+
                     }
                     else
                     {
-                        VendedorEmail = ProtheusDenuo.Sa3010s.FirstOrDefault(x => x.A3Xlogin == agendamento.VendedorLogin)?.A3Email;
+                        //Denuo
+                        agendamento.VendedorLogin = ProtheusDenuo.Sa3010s.FirstOrDefault(x => x.A3Nreduz == Agendamento.Vendedor).A3Xlogin;
+
                     }
 
-                    if (VendedorEmail.Contains(';'))
+
+                    SGID.Agendamentos.Add(agendamento);
+                    SGID.SaveChanges();
+
+                    if (!string.IsNullOrEmpty(Agendamento.Obs) && !string.IsNullOrWhiteSpace(Agendamento.Obs))
                     {
-                        VendedorEmail = VendedorEmail.Split(";")[0];
+                        var Observacao = new ObsAgendamento { AgendamentoId = agendamento.Id, User = agendamento.UsuarioCriacao, Obs = Agendamento.Obs, DataCriacao = DateTime.Now };
+
+                        SGID.ObsAgendamentos.Add(Observacao);
+                        SGID.SaveChanges();
                     }
 
-                    var mensagem = "";
-
-                    mensagem += $"";
-
-                    var template = new
+                    Produtos.ForEach(produto =>
                     {
-                        Titulo = $"Novo Orçamento Nº {agendamento.Id} - {Paciente}"
-                    };
+                        var ProdXAgenda = new ProdutosAgendamentos
+                        {
+                            AgendamentoId = agendamento.Id,
+                            CodigoProduto = produto.Item,
+                            Quantidade = produto.Und,
+                            ValorUnitario = produto.PrcUnid,
+                            ValorTotal = produto.VlrTotal,
+                            CodigoTabela = Agendamento.CodTabela,
+                        };
 
-                    mensagem = EmailTemplate.LerArquivoHtml($"{_WEB.WebRootPath}/template/TemplateCotacao.html", template);
+                        SGID.ProdutosAgendamentos.Add(ProdXAgenda);
+                        SGID.SaveChanges();
+                    });
 
-                    SmtpClient client = new SmtpClient();
-                    client.Host = "smtp.office365.com";
-                    client.EnableSsl = true;
-                    client.Credentials = new System.Net.NetworkCredential("ti@intermedic.com.br", "interadm2018!*");
-                    MailMessage mail = new MailMessage();
-                    mail.Sender = new MailAddress("ti@intermedic.com.br", "ENVIADOR");
-                    mail.From = new MailAddress("ti@intermedic.com.br", "ENVIADOR");
-                    mail.To.Add(new MailAddress($"{VendedorEmail}", "RECEBEDOR"));
-                    mail.Subject = $"Novo Orçamento Nº {agendamento.Id} - {Paciente}";
-                    mail.Body = mensagem;
-                    mail.IsBodyHtml = true;
-                    mail.Priority = MailPriority.High;
+                    Patris.ForEach(patri =>
+                    {
+                        var ProdXAgenda = new PatrimonioAgendamento
+                        {
+                            AgendamentoId = agendamento.Id,
+                            Patrimonio = patri.Descri
+                        };
 
-                    client.Send(mail);
+                        SGID.PatrimoniosAgendamentos.Add(ProdXAgenda);
+                        SGID.SaveChanges();
+                    });
+
+                    string Pasta = $"{_WEB.WebRootPath}/AnexosAgendamento";
+
+                    if (!Directory.Exists(Pasta))
+                    {
+                        Directory.CreateDirectory(Pasta);
+                    }
+
+                    //Anexos
+                    #region Anexos
+                    int i = 1;
+
+                    foreach (var anexo in Anexos.Files)
+                    {
+                        var anexoAgenda = new AnexosAgendamentos
+                        {
+                            AgendamentoId = agendamento.Id,
+                            AnexoCam = $"{agendamento.Id}0{i}.{anexo.FileName.Split(".").Last()}",
+                            NumeroAnexo = $"0{i}"
+                        };
+
+                        string Caminho = $"{Pasta}/{anexoAgenda.AnexoCam}";
+                        using (Stream fileStream = new FileStream(Caminho, FileMode.Create))
+                        {
+                            anexo.CopyTo(fileStream);
+                        }
+
+                        SGID.AnexosAgendamentos.Add(anexoAgenda);
+                        SGID.SaveChanges();
+
+                        i++;
+                    }
 
                     #endregion
-                }
-                catch(Exception e)
-                {
-                    string user = User.Identity.Name.Split("@")[0].ToUpper();
-                    Logger.Log(e, SGID, "NovoAgendamento", user);
+
+                    try
+                    {
+                        #region Email
+
+                        string VendedorEmail = "";
+                        if (Agendamento.Empresa == "01")
+                        {
+                            VendedorEmail = ProtheusInter.Sa3010s.FirstOrDefault(x => x.A3Xlogin == agendamento.VendedorLogin)?.A3Email;
+                        }
+                        else
+                        {
+                            VendedorEmail = ProtheusDenuo.Sa3010s.FirstOrDefault(x => x.A3Xlogin == agendamento.VendedorLogin)?.A3Email;
+                        }
+
+                        if (VendedorEmail.Contains(';'))
+                        {
+                            VendedorEmail = VendedorEmail.Split(";")[0];
+                        }
+
+                        var mensagem = "";
+
+                        mensagem += $"";
+
+                        var template = new
+                        {
+                            Titulo = $"Novo Orçamento Nº {agendamento.Id} - {Agendamento.Paciente}"
+                        };
+
+                        mensagem = EmailTemplate.LerArquivoHtml($"{_WEB.WebRootPath}/template/TemplateCotacao.html", template);
+
+                        SmtpClient client = new SmtpClient();
+                        client.Host = "smtp.office365.com";
+                        client.EnableSsl = true;
+                        client.Credentials = new System.Net.NetworkCredential("ti@intermedic.com.br", "interadm2018!*");
+                        MailMessage mail = new MailMessage();
+                        mail.Sender = new MailAddress("ti@intermedic.com.br", "ENVIADOR");
+                        mail.From = new MailAddress("ti@intermedic.com.br", "ENVIADOR");
+                        mail.To.Add(new MailAddress($"{VendedorEmail}", "RECEBEDOR"));
+                        mail.Subject = $"Novo Orçamento Nº {agendamento.Id} - {Agendamento.Paciente}";
+                        mail.Body = mensagem;
+                        mail.IsBodyHtml = true;
+                        mail.Priority = MailPriority.High;
+
+                        client.Send(mail);
+
+                        #endregion
+                    }
+                    catch (Exception e)
+                    {
+                        string user = User.Identity.Name.Split("@")[0].ToUpper();
+                        Logger.Log(e, SGID, "NovoAgendamento Email", user);
+                    }
+
+                    if (User.IsInRole("Estoque"))
+                    {
+                        agendamento.Autorizado = 1;
+                        agendamento.StatusPedido = 3;
+                        agendamento.Tipo = 1;
+
+                        SGID.Agendamentos.Update(agendamento);
+                        SGID.SaveChanges();
+                    }
+
+                    return LocalRedirect("/dashboards/dashboard/0");
                 }
 
-                if (User.IsInRole("Estoque"))
-                {
-                    agendamento.Autorizado = 1;
-                    agendamento.StatusPedido = 3;
-                    agendamento.Tipo = 1;
-
-                    SGID.Agendamentos.Update(agendamento);
-                    SGID.SaveChanges();
-                }
-
-                return LocalRedirect("/dashboards/dashboard/0");
+                return Page();
             }
             catch (Exception e)
             {
@@ -1139,6 +1146,34 @@ namespace SGID.Pages.Cirurgias
                 Logger.Log(e, SGID, "NovoAgendamento CodConvenio", user);
             }
             return new JsonResult("");
+        }
+
+        public class AgendamentoModel
+        {
+            public string Empresa { get; set; }
+            public string Cliente { get; set; }
+            public string CondPag { get; set; }
+            public string Tabela { get; set; }
+            public string Vendedor { get; set; }
+            public string Medico { get; set; }
+            public string? Matricula { get; set; }
+            public string Paciente { get; set; }
+            public string? Convenio { get; set; }
+            public string Instrumentador { get; set; }
+            public string Hospital { get; set; }
+            public DateTime? DataAgendamento { get; set; }
+            public DateTime? DataAutorizacao { get; set; }
+            public string? NumAutorizacao { get; set; }
+            public string? Senha { get; set; }
+            public int Tipo { get; set; }
+            public int Autorizado { get; set; }
+            public string? Obs { get; set; }
+            public string CodHospital { get; set; }
+            public string? CodConvenio { get; set; }
+            public string CodTabela { get; set; }
+            public string CodCondPag { get; set; }
+            public string Procedimento { get; set; }
+            public string Indicacao { get; set; }
         }
     }
 }

@@ -155,7 +155,7 @@ namespace SGID.Pages.DashBoards
                 x.Cliente,
                 x.CondPag,
                 x.Convenio,
-                DataAutorizacao = x.DataAutorizacao.ToString("dd/MM/yyyy"),
+                DataAutorizacao = x.DataAutorizacao == null ? "SEM REGISTRO" : x.DataAutorizacao.Value.ToString("dd/MM/yyyy"),
                 DataCirurgia = x.DataCirurgia == null ? "SEM REGISTRO" : x.DataCirurgia.Value.ToString("dd/MM/yyyy"),
                 x.Hospital,
                 x.Id,

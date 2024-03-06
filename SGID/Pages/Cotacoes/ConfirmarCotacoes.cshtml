@@ -292,7 +292,7 @@
                 <div class="row">
                     <div class="col-md-12">
                         <label>Codigo Produto</label>
-                        <input type="text" class="form-control" id="CodProd2" name="CodProd2" />
+                        <input type="text" class="form-control" id="CodProd2" name="CodProd2" autocomplete="off" />
                     </div>
                 </div>
             </div>
@@ -325,7 +325,7 @@
                     <div class="col-md-12">
                         <label>Nome Patrimonio</label>
                         <div class="autocomplete">
-                            <input type="text" class="form-control" id="CodPatri" name="CodPatri" oninput="this.value = this.value.toUpperCase()" />
+                            <input type="text" class="form-control" id="CodPatri" name="CodPatri" autocomplete="off" oninput="this.value = this.value.toUpperCase()" />
                         </div>
                     </div>
                 </div>
@@ -663,6 +663,25 @@
                     }
                 })
             })
+        })
+    </script>
+
+    <script>
+        $(document).ready(function () {
+
+            $('#DataCirurgia').change(function () {
+
+                var fromDateValue = $(this).val();
+                console.log(fromDateValue)
+                var toDateValue = new Date(fromDateValue);
+                console.log(toDateValue)
+
+                toDateValue.setDate(toDateValue.getDate() - 1);
+                console.log(toDateValue)
+
+                $('#Entrega').val(new Date(toDateValue.toString().split('GMT')[0] + ' UTC').toISOString().substring(0, 16));
+            });
+
         })
     </script>
 
