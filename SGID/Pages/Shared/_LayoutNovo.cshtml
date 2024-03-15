@@ -26,13 +26,13 @@
 <body>
     <div class="col-12 col-sm-12 col-md-12 col-xl-12">
        <nav class="navbar navbar-expand-sm navbar-expand-md navbar-expand-xl navbar-toggleable-sm navbar-toggleable-md navbar-toggleable-xl navbar-light bg-white border-bottom box-shadow mb-3" style="width:100%">
-            <div class="col-12 col-sm-4 col-md-2">
+           <div class="col-12 col-sm-4 col-md-2">
                 <img src="/imagens/gid.png" alt="GID Logo" height="66" width="120" />
             </div>
-            <div class="col-12 col-sm-4 col-md-2">
+           <div class="col-12 col-sm-4 col-md-2">
                 <a class="nav-link" href="/dashboard/3"><i class="fa-solid fa-house"></i> Home</a>
             </div>
-            <div class="col-12 col-sm-4 col-md-2">
+           <div class="col-12 col-sm-4 col-md-2">
                 <ul class="navbar-nav">
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="dropdown04" data-bs-toggle="dropdown" aria-expanded="false">
@@ -42,7 +42,10 @@
                             @if (User.IsInRole("Admin") || User.IsInRole("GestorVenda"))
                             {
                                 <li>
-                                    <a class="nav-link" href="/integracao/listarcotacoesinpart"><i class="fa-solid fa-clipboard-user"></i> INPART</a>
+                                    <a class="nav-link" href="/integracao/listarcotacoesinpart/01"><i class="fa-solid fa-clipboard-user"></i> INPART INTERMEDIC</a>
+                                </li>
+                                <li>
+                                    <a class="nav-link" href="/integracao/listarcotacoesinpart/03"><i class="fa-solid fa-clipboard-user"></i> INPART DENUO</a>
                                 </li>
                             }
                             @if (User.IsInRole("Admin") || User.IsInRole("Diretoria") || User.IsInRole("GestorFinanceiro"))
@@ -128,6 +131,24 @@
                                     <div class="collapse" id="cirurgias3-collapse">
                                         <ul class="list-unstyled fw-normal pb-1 small">
                                             <li><a class="nav-link" href="/cirurgias/agendamentos">Painel Cirurgias</a></li>
+                                        </ul>
+                                    </div>
+                                </li>
+                            }
+                            @if (User.IsInRole("Admin") || User.IsInRole("Dental"))
+                            {
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link align-items-center rounded dropdown-toggle" data-bs-toggle="collapse"
+                                       data-bs-target="#visitas2-collapse" aria-expanded="false">
+                                        <i class="fa-solid fa-calendar-days"></i> Visitas
+                                    </a>
+                                    <div class="collapse" id="visitas2-collapse">
+                                        <ul class="list-unstyled fw-normal pb-1 small">
+                                            <li><a class="nav-link" href="/agendamento/visitas"> Painel Visitas</a></li>
+                                            @if (User.IsInRole("Admin"))
+                                            {
+                                                <li><a class="nav-link" href="/relatorios/visitas/relatoriovisitas">Relatorio Visitas</a></li>
+                                            }
                                         </ul>
                                     </div>
                                 </li>
@@ -350,14 +371,14 @@
                     </li>
                 </ul>
             </div>
-            <div class="col-12 col-sm-4 col-md-2">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item dropdown" >
-                            <a class="nav-link dropdown-toggle" href="#" id="dropdown05" data-bs-toggle="dropdown" aria-expanded="false">
-                                <i class="fa-solid fa-clipboard-list"></i> Relatórios
-                            </a>
-                            <ul class="dropdown-menu novo1" aria-labelledby="dropdowm05">
-                                        @if (User.IsInRole("Admin") || User.IsInRole("Comercial"))
+           <div class="col-12 col-sm-4 col-md-2">
+                <ul class="navbar-nav flex-grow-1">
+                    <li class="nav-item dropdown" >
+                        <a class="nav-link dropdown-toggle" href="#" id="dropdown05" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fa-solid fa-clipboard-list"></i> Relatórios
+                        </a>
+                        <ul class="dropdown-menu novo1" aria-labelledby="dropdowm05">
+                            @if (User.IsInRole("Admin") || User.IsInRole("Comercial"))
                                         {
                                                 @if (User.Identity.Name.Split("@")[1] == "denuo.com.br" || User.IsInRole("Admin") || User.IsInRole("ComercialDuo"))
                                                 {
@@ -399,7 +420,7 @@
                                                     </li>
                                                 }
                                         }
-                                        @if (User.IsInRole("Admin") || User.IsInRole("GestorComercial") || User.IsInRole("Diretoria"))
+                            @if (User.IsInRole("Admin") || User.IsInRole("GestorComercial") || User.IsInRole("Diretoria"))
                                         {
                                                 @if (User.Identity.Name.Split("@")[1] == "denuo.com.br" || User.IsInRole("Admin") || User.IsInRole("Diretoria") || User.IsInRole("ComercialDuo"))
                                                 {
@@ -434,7 +455,7 @@
                                                     </li>
                                                 }
                                         }
-                                        @if (User.IsInRole("Admin") || User.IsInRole("Controladoria") || User.IsInRole("Diretoria"))
+                            @if (User.IsInRole("Admin") || User.IsInRole("Controladoria") || User.IsInRole("Diretoria"))
                                         {
                                             <li class="nav-item dropdown">
                                                 <a class="nav-link align-items-center rounded dropdown-toggle" data-bs-toggle="collapse"
@@ -480,7 +501,7 @@
                                                 </div>
                                             </li>
                                         }
-                                        @if (User.IsInRole("Admin") || User.IsInRole("GestorVenda") || User.IsInRole("Venda") || User.IsInRole("Diretoria"))
+                            @if (User.IsInRole("Admin") || User.IsInRole("GestorVenda") || User.IsInRole("Venda") || User.IsInRole("Diretoria"))
                                         {
                                             <li class="nav-item dropdown">
                                                 <a class="nav-link align-items-center rounded dropdown-toggle" data-bs-toggle="collapse"
@@ -507,7 +528,7 @@
                                                 </div>
                                             </li>
                                         }
-                                        @if (User.IsInRole("Admin") || User.IsInRole("RH") || User.IsInRole("Diretoria"))
+                            @if (User.IsInRole("Admin") || User.IsInRole("RH") || User.IsInRole("Diretoria"))
                                         {
                                             <li class="nav-item dropdown">
                                                 <a class="nav-link align-items-center rounded dropdown-toggle" data-bs-toggle="collapse"
@@ -572,7 +593,7 @@
                                                 </div>
                                             </li>
                                         }
-                                        @if (User.IsInRole("Admin") || User.IsInRole("Estoque") || User.IsInRole("GestorEstoque") || User.IsInRole("Diretoria"))
+                            @if (User.IsInRole("Admin") || User.IsInRole("Estoque") || User.IsInRole("GestorEstoque") || User.IsInRole("Diretoria"))
                                         {
                                             <li class="nav-item dropdown">
                                                 <a class="nav-link align-items-center rounded dropdown-toggle" data-bs-toggle="collapse"
@@ -620,7 +641,7 @@
                                                 </div>
                                             </li>
                                         }
-                                        @if (User.IsInRole("Admin") || User.IsInRole("Financeiro") || User.IsInRole("Diretoria"))
+                            @if (User.IsInRole("Admin") || User.IsInRole("Financeiro") || User.IsInRole("Diretoria"))
                                         {
                                             <li class="nav-item dropdown">
                                                 <a class="nav-link align-items-center rounded dropdown-toggle" data-bs-toggle="collapse"
@@ -640,7 +661,7 @@
                                                 </div>
                                             </li>
                                         }
-                                        @if (User.IsInRole("Admin") || User.IsInRole("Qualidade") || User.IsInRole("Diretoria"))
+                            @if (User.IsInRole("Admin") || User.IsInRole("Qualidade") || User.IsInRole("Diretoria"))
                                         {
                                             <li class="nav-item dropdown">
                                                 <a class="nav-link align-items-center rounded dropdown-toggle" data-bs-toggle="collapse"
@@ -658,7 +679,7 @@
                                                 </div>
                                             </li>
                                         }
-                                        @if (User.IsInRole("Admin") || User.IsInRole("Dental"))
+                            @if (User.IsInRole("Admin") || User.IsInRole("Dental"))
                                         {
                                             <li class="nav-item dropdown">
                                                 <a class="nav-link align-items-center rounded dropdown-toggle" data-bs-toggle="collapse"
@@ -672,7 +693,7 @@
                                                 </div>
                                             </li>
                                         }
-                                        @if (User.IsInRole("Admin") || User.IsInRole("Financeiro") || User.IsInRole("Diretoria"))
+                            @if (User.IsInRole("Admin") || User.IsInRole("Financeiro") || User.IsInRole("Diretoria"))
                                         {
                                             <li class="nav-item dropdown">
                                                 <a class="nav-link align-items-center rounded dropdown-toggle" data-bs-toggle="collapse"
@@ -701,7 +722,7 @@
                                                 </div>
                                             </li>
                                         }
-                                        @if (User.IsInRole("Admin") || User.IsInRole("SubDistribuidor") || User.IsInRole("Diretoria"))
+                            @if (User.IsInRole("Admin") || User.IsInRole("SubDistribuidor") || User.IsInRole("Diretoria"))
                                         {
                                             <li class="nav-item dropdown">
                                                 <a class="nav-link align-items-center rounded dropdown-toggle" data-bs-toggle="collapse"
@@ -722,13 +743,11 @@
                                                 </div>
                                             </li>
                                         }
-                                    </ul>
-                                </li>
-                            </ul>
-                        </li>
-                    </ul>
-                </div>
-            <div class="col-12 col-sm-4 col-md-2">
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+           <div class="col-12 col-sm-4 col-md-2">
                 <ul class="navbar-nav flex-grow-1">
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="dropdown06" data-bs-toggle="dropdown" aria-expanded="false">
@@ -810,10 +829,11 @@
                                     </div>
                                 </li>
                             }
-                       
+                        </ul>
+                    </li>
                 </ul>
             </div>
-            <div class="col-12 col-sm-4 col-md-2">
+           <div class="col-12 col-sm-4 col-md-2">
                 <ul class="navbar-nav flex-grow-1">
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="dropdown03" data-bs-toggle="dropdown" aria-expanded="false">
@@ -852,7 +872,6 @@
     <script src="~/js/loading-bar.js" asp-append-version="true"></script>
     <script src="~/lib/jquery.redirect/dist/jquery.redirect.js" asp-append-version="true"></script>
 
- 
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

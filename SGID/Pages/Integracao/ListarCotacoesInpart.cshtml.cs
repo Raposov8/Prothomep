@@ -16,32 +16,42 @@ namespace SGID.Pages.Integracao
 
         public List<Cotacao> Cotacoes { get; set; }
 
+        public int Pagina { get; set; }
+        public string Empresa { get; set; }
+
         public ListarCotacoesInpartModel(TOTVSDENUOContext denuo,TOTVSINTERContext inter)
         {
             ProtheusDenuo = denuo;
             ProtheusInter = inter;
         }
 
-        public void OnGet()
+        public void OnGet(string empresa)
         {
+            Pagina = 1;
+            Empresa = empresa;
 
-            Cotacoes = new IntegracaoInPart().ListarCotacoes().Result;
+            Cotacoes = new IntegracaoInPart().ListarCotacoes(empresa,0).Result;
         }
 
 
-        public JsonResult OnGetCotacao(int id)
+        public JsonResult OnGetCotacao(int id,string empresa,int skip)
         {
 
-            Cotacoes = new IntegracaoInPart().ListarCotacoes().Result;
+            Cotacoes = new IntegracaoInPart().ListarCotacoes(empresa,skip-1).Result;
 
             var cotacao = Cotacoes.FirstOrDefault(x=> x.idCotacao == id);
 
             return new JsonResult(cotacao);
         }
 
-        public IActionResult OnPost()
+        public IActionResult OnPost(string empresa,int skip)
         {
-            return LocalRedirect("");
+            Pagina = skip;
+            Empresa = empresa;
+
+            Cotacoes = new IntegracaoInPart().ListarCotacoes(empresa, skip-1).Result;
+
+            return Page();
         }
     }
 }

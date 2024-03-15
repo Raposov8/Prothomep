@@ -71,6 +71,15 @@ namespace SGID.Pages.RH
 
                 mensagem += $"<br/> Data Edição: {solicita.DataCriacao}";
 
+                var teste = solicita.Contratacao == "S" ? "SIM" : "NÃO";
+
+                var aumento = $"Aumento de Quadro: {teste}";
+
+                if (teste == "NÃO")
+                {
+                    aumento += $"<br/> Nome Antigo Colaborador: {solicita.NomeSub} <br/> Cargo Antigo Colaborador: {solicita.CargoSub}";
+                }
+
                 var template = new
                 {
                     Titulo = "EDIT:Solicitação de",
@@ -80,7 +89,8 @@ namespace SGID.Pages.RH
                     Cargo = Cargo,
                     Nome = Nome,
                     Solicitacoes = mensagem,
-                    Obs = Obs
+                    Obs = Obs,
+                    Aumento = aumento
                 };
 
                 mensagem = EmailTemplate.LerArquivoHtml($"{_WEB.WebRootPath}/template/TemplateEmail.html", template);

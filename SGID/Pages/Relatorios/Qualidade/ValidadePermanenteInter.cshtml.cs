@@ -46,6 +46,7 @@ namespace SGID.Pages.Relatorios.Qualidade
                              && (int)(object)SD20.D2Dtvalid >= (int)(object)DataInicio.ToString("yyyy/MM/dd").Replace("/", "") && (int)(object)SD20.D2Dtvalid <= (int)(object)DataFim.ToString("yyyy/MM/dd").Replace("/", "")
                              select new RelatorioValidadePermanente
                              {
+                                 Filial = SD20.D2Filial,
                                  Codigo = SD20.D2Cod,
                                  Lote = SD20.D2Lotectl,
                                  Processo = SC50.C5Uproces,
@@ -72,6 +73,7 @@ namespace SGID.Pages.Relatorios.Qualidade
                            && (int)(object)SD20.D2Dtvalid >= (int)(object)DataInicio.ToString("yyyy/MM/dd").Replace("/", "") && (int)(object)SD20.D2Dtvalid <= (int)(object)DataFim.ToString("yyyy/MM/dd").Replace("/", "")
                            select new RelatorioValidadePermanente
                            {
+                               Filial = SD20.D2Filial,
                                Codigo = SD20.D2Cod,
                                Lote = SD20.D2Lotectl,
                                Processo = SC50.C5Uproces,
@@ -118,6 +120,7 @@ namespace SGID.Pages.Relatorios.Qualidade
                              && (int)(object)SD20.D2Dtvalid >= (int)(object)DataInicio.ToString("yyyy/MM/dd").Replace("/", "") && (int)(object)SD20.D2Dtvalid <= (int)(object)DataFim.ToString("yyyy/MM/dd").Replace("/", "")
                              select new RelatorioValidadePermanente
                              {
+                                 Filial = SD20.D2Filial,
                                  Codigo = SD20.D2Cod,
                                  Lote = SD20.D2Lotectl,
                                  Processo = SC50.C5Uproces,
@@ -144,6 +147,7 @@ namespace SGID.Pages.Relatorios.Qualidade
                            && (int)(object)SD20.D2Dtvalid >= (int)(object)DataInicio.ToString("yyyy/MM/dd").Replace("/", "") && (int)(object)SD20.D2Dtvalid <= (int)(object)DataFim.ToString("yyyy/MM/dd").Replace("/", "")
                            select new RelatorioValidadePermanente
                            {
+                               Filial = SD20.D2Filial,
                                Codigo = SD20.D2Cod,
                                Lote = SD20.D2Lotectl,
                                Processo = SC50.C5Uproces,
@@ -167,37 +171,39 @@ namespace SGID.Pages.Relatorios.Qualidade
 
                 var sheet = package.Workbook.Worksheets.SingleOrDefault(x => x.Name == "ValidadePermanente");
 
-                sheet.Cells[1, 1].Value = "Codigo";
-                sheet.Cells[1, 2].Value = "Lote";
-                sheet.Cells[1, 3].Value = "Processo";
-                sheet.Cells[1, 4].Value = "Agendamento";
-                sheet.Cells[1, 5].Value = "Patrimonio";
-                sheet.Cells[1, 6].Value = "Valid Lote";
-                sheet.Cells[1, 7].Value = "Operacao";
-                sheet.Cells[1, 8].Value = "NF Saida";
-                sheet.Cells[1, 9].Value = "Serie Saida";
-                sheet.Cells[1, 10].Value = "Emissao NF";
-                sheet.Cells[1, 11].Value = "IT Saida";
-                sheet.Cells[1, 12].Value = "QTD Saida";
-                sheet.Cells[1, 13].Value = "Saldo";
+                sheet.Cells[1, 1].Value = "Filial";
+                sheet.Cells[1, 2].Value = "Codigo";
+                sheet.Cells[1, 3].Value = "Lote";
+                sheet.Cells[1, 4].Value = "Processo";
+                sheet.Cells[1, 5].Value = "Agendamento";
+                sheet.Cells[1, 6].Value = "Patrimonio";
+                sheet.Cells[1, 7].Value = "Valid Lote";
+                sheet.Cells[1, 8].Value = "Operacao";
+                sheet.Cells[1, 9].Value = "NF Saida";
+                sheet.Cells[1, 10].Value = "Serie Saida";
+                sheet.Cells[1, 11].Value = "Emissao NF";
+                sheet.Cells[1, 12].Value = "IT Saida";
+                sheet.Cells[1, 13].Value = "QTD Saida";
+                sheet.Cells[1, 14].Value = "Saldo";
 
                 int i = 2;
 
                 Relatorios.ForEach(Pedido =>
                 {
-                    sheet.Cells[i, 1].Value = Pedido.Codigo;
-                    sheet.Cells[i, 2].Value = Pedido.Lote;
-                    sheet.Cells[i, 3].Value = Pedido.Processo;
-                    sheet.Cells[i, 4].Value = Pedido.Agendamento;
-                    sheet.Cells[i, 5].Value = Pedido.Patrimonio;
-                    sheet.Cells[i, 6].Value = Pedido.ValidLote;
-                    sheet.Cells[i, 7].Value = Pedido.Operacao;
-                    sheet.Cells[i, 8].Value = Pedido.NFSaida;
-                    sheet.Cells[i, 9].Value = Pedido.SerieSaida;
-                    sheet.Cells[i, 10].Value = Pedido.EmissaoNf;
-                    sheet.Cells[i, 11].Value = Pedido.ItSaida;
-                    sheet.Cells[i, 12].Value = Pedido.QtdSaida;
-                    sheet.Cells[i, 13].Value = Pedido.Saldo;
+                    sheet.Cells[i, 1].Value = Pedido.Filial;
+                    sheet.Cells[i, 2].Value = Pedido.Codigo;
+                    sheet.Cells[i, 3].Value = Pedido.Lote;
+                    sheet.Cells[i, 4].Value = Pedido.Processo;
+                    sheet.Cells[i, 5].Value = Pedido.Agendamento;
+                    sheet.Cells[i, 6].Value = Pedido.Patrimonio;
+                    sheet.Cells[i, 7].Value = Pedido.ValidLote;
+                    sheet.Cells[i, 8].Value = Pedido.Operacao;
+                    sheet.Cells[i, 9].Value = Pedido.NFSaida;
+                    sheet.Cells[i, 10].Value = Pedido.SerieSaida;
+                    sheet.Cells[i, 11].Value = Pedido.EmissaoNf;
+                    sheet.Cells[i, 12].Value = Pedido.ItSaida;
+                    sheet.Cells[i, 13].Value = Pedido.QtdSaida;
+                    sheet.Cells[i, 14].Value = Pedido.Saldo;
 
                     i++;
                 });

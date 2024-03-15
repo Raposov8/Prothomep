@@ -13,29 +13,51 @@ namespace Intergracoes.Inpart
 {
     public class IntegracaoInPart
     {
-        public string BaseUrl { get; set; } = @"https://integracao-api.inpartsaudeteste.com.br/api";
+        public string BaseUrl { get; set; } = @"https://integracao-api.inpartsaude.com.br/api";
         public string Auth { get; set; } = "";
 
-        public async Task<string> Authenticacao()
+        public async Task<string> Authenticacao(string Empresa)
         {
             try
             {
-                var credenciais = new
+                if(Empresa == "01")
                 {
-                    usuario = "intermedicsp.integracao",
-                    senha = "intermedicsp@28319"
-                };
+                    var credenciais = new
+                    {
+                        usuario = "Rogeriomartines.i",
+                        senha = "Roger@2024"
+                    };
+
+                    var client = new HttpClient();
+
+                    var content = new StringContent(JsonConvert.SerializeObject(credenciais), Encoding.UTF8, "application/json");
+                    content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+
+                    var resultPost = await client.PostAsync($"{BaseUrl}/autenticacao", content);
+                    var data = JsonConvert.DeserializeObject<Token>(resultPost.Content.ReadAsStringAsync().Result);
+
+                    return data.AccessToken;
+                }
+                else
+                {
+                    var credenciais = new
+                    {
+                        usuario = "integracaodenuo.d",
+                        senha = "Roger@2024"
+                    };
 
 
-                var client = new HttpClient();
+                    var client = new HttpClient();
 
-                var content = new StringContent(JsonConvert.SerializeObject(credenciais), Encoding.UTF8, "application/json");
-                content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+                    var content = new StringContent(JsonConvert.SerializeObject(credenciais), Encoding.UTF8, "application/json");
+                    content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
 
-                var resultPost = await client.PostAsync($"{BaseUrl}/autenticacao", content);
-                var data = JsonConvert.DeserializeObject<Token>(resultPost.Content.ReadAsStringAsync().Result);
+                    var resultPost = await client.PostAsync($"{BaseUrl}/autenticacao", content);
+                    var data = JsonConvert.DeserializeObject<Token>(resultPost.Content.ReadAsStringAsync().Result);
 
-                return data.AccessToken;
+                    return data.AccessToken;
+                }
+
             }
             catch (Exception e)
             {
@@ -46,16 +68,20 @@ namespace Intergracoes.Inpart
         }
 
 
-        public async Task<List<Cotacao>> ListarCotacoes()
+        public async Task<List<Cotacao>> ListarCotacoes(string Empresa, int skip)
         {
 
             var client = new HttpClient();
 
-            var credenciais = await Authenticacao();
+            var credenciais = await Authenticacao(Empresa);
 
             client.DefaultRequestHeaders.Add("Authorization", $"Bearer {credenciais}");
 
-            var resultPost = await client.GetAsync($"{BaseUrl}/cotacao?$top=100&$skip=19160");
+            var skipout = 19000;
+
+            skipout += (skip * 100);
+
+            var resultPost = await client.GetAsync($"{BaseUrl}/cotacao?$top=100&$skip={skipout}");
             var data = JsonConvert.DeserializeObject<List<Cotacao>>(resultPost.Content.ReadAsStringAsync().Result);
 
             return data;

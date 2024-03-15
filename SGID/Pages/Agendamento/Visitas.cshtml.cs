@@ -142,6 +142,14 @@ namespace SGID.Pages.Agendamento
                         visitas.AddRange(visita);
                     }
                 }
+                else if (User.IsInRole("GestorDental"))
+                {
+                    visitas = SGID.Visitas.Where(x => x.Empresa == "DDENTAL").ToList();
+                }
+                else if (User.IsInRole("Dental"))
+                {
+                    visitas = SGID.Visitas.Where(x => x.Vendedor == usuario).ToList();
+                }
                 else
                 {
 
@@ -257,7 +265,7 @@ namespace SGID.Pages.Agendamento
                     Observacao = Obs,
                     ResumoVisita = ResuVisi,
                     Vendedor = User.Identity.Name.Split("@")[0].ToUpper(),
-                    Empresa = User.Identity.Name.Split("@")[1].ToUpper() == "INTERMEDIC.COM.BR" ? "INTERMEDIC":"DENUO"
+                    Empresa = User.Identity.Name.Split("@")[1].ToUpper() == "INTERMEDIC.COM.BR" ? "INTERMEDIC": User.Identity.Name.Split("@")[1].ToUpper() == "DDENTAL.COM.BR" ? "DDENTAL":"DENUO"
                 };
 
                 if(!SGID.Visitas.Any(x => x.DataHora == Visita.DataHora && x.Medico == Visita.Medico))
@@ -283,6 +291,29 @@ namespace SGID.Pages.Agendamento
                                     Empresa = "INTERMEDIC"
                                 };
 
+
+                                SGID.VisitaClientes.Add(VisitaCliente);
+                                SGID.SaveChanges();
+                            }
+                        }
+                    }
+                    else if(User.Identity.Name.Split("@")[1].ToUpper() == "DDENTAL.COM.BR")
+                    {
+                        if (!ProtheusDenuo.Sa1010s.Any(x => x.DELET != "*" && x.A1Clinter == "M" && x.A1Msblql != "1" && !string.IsNullOrWhiteSpace(x.A1Vend) && x.A1Nome == Medico))
+                        {
+                            if (!SGID.VisitaClientes.Any(x => x.Medico == Medico && x.Empresa == "DDENTAL"))
+                            {
+                                var VisitaCliente = new VisitaCliente
+                                {
+                                    DataCriacao = DateTime.Now,
+                                    Medico = Medico,
+                                    Local = Local,
+                                    Assunto = Assunto,
+                                    Endereco = Endereco,
+                                    Bairro = Bairro,
+                                    Vendedor = User.Identity.Name.Split("@")[0].ToUpper(),
+                                    Empresa = "DDENTAL"
+                                };
 
                                 SGID.VisitaClientes.Add(VisitaCliente);
                                 SGID.SaveChanges();
@@ -443,6 +474,49 @@ namespace SGID.Pages.Agendamento
                             return new JsonResult(End);
                         }
                     }
+                    if (User.Identity.Name.Split("@")[1].ToUpper() == "DDENTAL.COM.BR")
+                    {
+                        var endereco = ProtheusDenuo.Sa1010s.FirstOrDefault(x => x.DELET != "*" && x.A1Clinter == "M" && x.A1Msblql != "1" && !string.IsNullOrWhiteSpace(x.A1Vend) && x.A1Nome == Medico);
+
+                        if (endereco == null)
+                        {
+                            var cliente = SGID.VisitaClientes.FirstOrDefault(x => x.Medico == Medico && x.Empresa == "DDENTAL");
+
+                            var Quants = ProtheusDenuo.Sa1010s.Where(x => x.DELET != "*" && x.A1Clinter == "M" && x.A1Bairro == cliente.Bairro).Count();
+
+                            var Data = (SGID.Visitas.OrderByDescending(x => x.DataHora).FirstOrDefault(x => x.Medico == Medico && x.Empresa == "DDENTAL")?.DataHora) ?? DateTime.Now;
+
+                            var End = new
+                            {
+                                Endereco = cliente.Endereco,
+                                Bairro = cliente.Bairro,
+                                Quant = Quants,
+                                Ultima = Data.ToString("yyyy-MM-dd"),
+                                Telefone = $"{cliente.Telefone}",
+                                Email = cliente.Email
+                            };
+
+                            return new JsonResult(End);
+                        }
+                        else
+                        {
+                            var Quants = ProtheusDenuo.Sa1010s.Where(x => x.DELET != "*" && x.A1Clinter == "M" && x.A1Bairro == endereco.A1Bairro).Count();
+
+                            var Data = (SGID.Visitas.OrderByDescending(x => x.DataHora).FirstOrDefault(x => x.Medico == Medico && x.Empresa == "DDENTAL")?.DataHora) ?? DateTime.Now;
+
+                            var End = new
+                            {
+                                Endereco = endereco.A1End,
+                                Bairro = endereco.A1Bairro,
+                                Quant = Quants,
+                                Ultima = Data.ToString("yyyy-MM-dd"),
+                                Telefone = $"{endereco.A1Ddd}{endereco.A1Tel}",
+                                Email = endereco.A1Email
+                            };
+
+                            return new JsonResult(End);
+                        }
+                    }
                     else
                     {
 
@@ -452,7 +526,7 @@ namespace SGID.Pages.Agendamento
                         {
                             var cliente = SGID.VisitaClientes.FirstOrDefault(x => x.Medico == Medico && x.Empresa=="DENUO");
 
-                            var Quants = ProtheusInter.Sa1010s.Where(x => x.DELET != "*" && x.A1Clinter == "M" && x.A1Bairro == cliente.Bairro).Count();
+                            var Quants = ProtheusDenuo.Sa1010s.Where(x => x.DELET != "*" && x.A1Clinter == "M" && x.A1Bairro == cliente.Bairro).Count();
 
                             var Data = (SGID.Visitas.OrderByDescending(x => x.DataHora).FirstOrDefault(x => x.Medico == Medico && x.Empresa == "INTERMEDIC")?.DataHora) ?? DateTime.Now;
 
@@ -525,6 +599,13 @@ namespace SGID.Pages.Agendamento
 
                     return new JsonResult(medicos);
                 }
+            }
+            else if (User.IsInRole("Dental"))
+            {
+                var medicos = ProtheusDenuo.Sa1010s.Where(x => x.DELET != "*" && x.A1Clinter == "M" && x.A1Msblql != "1" && !string.IsNullOrWhiteSpace(x.A1Vend) && x.A1Bairro == Bairro).ToList();
+
+
+                return new JsonResult(medicos);
             }
             else
             {
@@ -623,6 +704,29 @@ namespace SGID.Pages.Agendamento
                                     Empresa = "INTERMEDIC"
                                 };
 
+
+                                SGID.VisitaClientes.Add(VisitaCliente);
+                                SGID.SaveChanges();
+                            }
+                        }
+                    }
+                    if (User.Identity.Name.Split("@")[1].ToUpper() == "DDENTAL.COM.BR")
+                    {
+                        if (ProtheusDenuo.Sa1010s.FirstOrDefault(x => x.DELET != "*" && x.A1Clinter == "M" && x.A1Msblql != "1" && !string.IsNullOrWhiteSpace(x.A1Vend) && x.A1Nome == Medico) == null)
+                        {
+                            if (SGID.VisitaClientes.Any(x => x.Medico == Medico && x.Empresa == "DDENTAL"))
+                            {
+                                var VisitaCliente = new VisitaCliente
+                                {
+                                    DataCriacao = DateTime.Now,
+                                    Medico = Medico,
+                                    Local = Local,
+                                    Assunto = Assunto,
+                                    Endereco = Endereco,
+                                    Bairro = Bairro,
+                                    Vendedor = User.Identity.Name.Split("@")[0].ToUpper(),
+                                    Empresa = "DDENTAL"
+                                };
 
                                 SGID.VisitaClientes.Add(VisitaCliente);
                                 SGID.SaveChanges();

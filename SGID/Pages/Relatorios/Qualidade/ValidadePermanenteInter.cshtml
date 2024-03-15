@@ -38,6 +38,9 @@
             <thead>
                 <tr>
                     <th class="text-center">
+                        Filial
+                    </th>
+                    <th class="text-center">
                         Codigo
                     </th>
                     <th class="text-center">
@@ -82,6 +85,7 @@
                 @foreach(var data in Model.Relatorios)
                 {
                 <tr>
+                    <td>@Html.DisplayFor(model=> data.Filial)</td>
                     <td>@Html.DisplayFor(model=> data.Codigo)</td>
                     <td>@Html.DisplayFor(model=> data.Lote)</td>
                     <td>@Html.DisplayFor(model=> data.Processo)</td>

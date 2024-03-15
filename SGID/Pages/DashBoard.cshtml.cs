@@ -48,6 +48,10 @@ namespace SGID.Pages
             {
                 return LocalRedirect("/instrumentador/dashboardinstrumentador");
             }
+            else if (User.IsInRole("Dental"))
+            {
+                return LocalRedirect("/agendamento/visitas");
+            }
             else if (User.IsInRole("CoordenadorInstrumentador"))
             {
                 return LocalRedirect("/dashboards/DashBoardGestorInstrumentador/0");

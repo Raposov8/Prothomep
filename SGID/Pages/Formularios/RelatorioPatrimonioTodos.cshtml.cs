@@ -40,20 +40,22 @@ namespace SGID.Pages.Formularios
             {
                 this.Patrimonio = Patrimonio;
                 Relatorio = (from PA10 in ProtheusInter.Pa1010s
-                             join PAC in ProtheusInter.Pac010s on PA10.Pa1Numage equals PAC.PacNumage
-                             join SA10 in ProtheusInter.Sa1010s on new { Codigo = PAC.PacClient, Loja = PAC.PacLojent } equals new { Codigo = SA10.A1Cod, Loja = SA10.A1Loja }
+                             join PAC in ProtheusInter.Pac010s on PA10.Pa1Numage equals PAC.PacNumage into sr
+                             from c in sr.DefaultIfEmpty()
+                             join SA10 in ProtheusInter.Sa1010s on new { Codigo = c.PacClient, Loja = c.PacLojent } equals new { Codigo = SA10.A1Cod, Loja = SA10.A1Loja }into st
+                             from a in st.DefaultIfEmpty()
                              where PA10.DELET != "*" && PA10.Pa1Msblql != "1" && PA10.Pa1Status != "B"
-                             && PAC.DELET != "*" && SA10.DELET != "*"
+                             && c.DELET != "*" && a.DELET != "*"
                              select new Patrimonios
                              {
                                  Codigo = PA10.Pa1Codigo,
                                  DesPat = PA10.Pa1Despat,
                                  KitBas = PA10.Pa1Kitbas,
-                                 DTCirurgia = $"{PAC.PacDtcir.Substring(6, 2)}/{PAC.PacDtcir.Substring(4, 2)}/{PAC.PacDtcir.Substring(0, 4)}",
-                                 NMPac = PAC.PacNmpac,
+                                 DTCirurgia = $"{c.PacDtcir.Substring(6, 2)}/{c.PacDtcir.Substring(4, 2)}/{c.PacDtcir.Substring(0, 4)}",
+                                 NMPac = c.PacNmpac,
                                  Status = PA10.Pa1Status == "N" ? "EM ESTOQUE" : PA10.Pa1Status == "S" ? "EM USO" : PA10.Pa1Status == "R" ? "AGUARDANDO REPOSI플O" : PA10.Pa1Status == "Q" ? "INSPE플O DE QUALIDADE" : PA10.Pa1Status == "E" ? "EMPENHO" : "",
-                                 Cliente = PA10.Pa1Status == "S" ? SA10.A1Nreduz : "",
-                                 Agend = PA10.Pa1Status == "S" ? PAC.PacNumage : "",
+                                 Cliente = PA10.Pa1Status == "S" ? a.A1Nreduz : "",
+                                 Agend = PA10.Pa1Status == "S" ? c.PacNumage : "",
                                  QTDFALT = (from PA20 in ProtheusInter.Pa2010s
                                             join SB10 in ProtheusInter.Sb1010s on PA20.Pa2Comp equals SB10.B1Cod
                                             where PA20.DELET != "*" && SB10.DELET != "*" &&
@@ -63,7 +65,7 @@ namespace SGID.Pages.Formularios
                                                 SB10.B1Cod
                                             }).Count(),
                                  Empresa = Empresa,
-                                 Oper = PAC.PacTpoper,
+                                 Oper = c.PacTpoper,
                                  Valid = (from SB80 in ProtheusInter.Sb8010s
                                           join PA30 in ProtheusInter.Pa3010s on new { Filial = SB80.B8Filial, Local = SB80.B8Local, Produto = SB80.B8Produto, Lote = SB80.B8Lotectl, Codigo = PA10.Pa1Codigo } equals new { Filial = PA30.Pa3Filial, Local = PA30.Pa3Local, Produto = PA30.Pa3Produt, Lote = PA30.Pa3Lote, Codigo = PA30.Pa3Codigo }
                                           join SB10 in ProtheusInter.Sb1010s on PA30.Pa3Produt equals SB10.B1Cod
@@ -180,20 +182,22 @@ namespace SGID.Pages.Formularios
                 {
                     this.Patrimonio = Patrimonio;
                     Relatorio = (from PA10 in ProtheusInter.Pa1010s
-                                 join PAC in ProtheusInter.Pac010s on PA10.Pa1Numage equals PAC.PacNumage
-                                 join SA10 in ProtheusInter.Sa1010s on new { Codigo = PAC.PacClient, Loja = PAC.PacLojent } equals new { Codigo = SA10.A1Cod, Loja = SA10.A1Loja }
+                                 join PAC in ProtheusInter.Pac010s on PA10.Pa1Numage equals PAC.PacNumage into sr
+                                 from c in sr.DefaultIfEmpty()
+                                 join SA10 in ProtheusInter.Sa1010s on new { Codigo = c.PacClient, Loja = c.PacLojent } equals new { Codigo = SA10.A1Cod, Loja = SA10.A1Loja } into st
+                                 from a in st.DefaultIfEmpty()
                                  where PA10.DELET != "*" && PA10.Pa1Msblql != "1" && PA10.Pa1Status != "B"
-                                 && PAC.DELET != "*" && SA10.DELET != "*"
+                                 && c.DELET != "*" && a.DELET != "*"
                                  select new Patrimonios
                                  {
                                      Codigo = PA10.Pa1Codigo,
                                      DesPat = PA10.Pa1Despat,
                                      KitBas = PA10.Pa1Kitbas,
-                                     DTCirurgia = $"{PAC.PacDtcir.Substring(6, 2)}/{PAC.PacDtcir.Substring(4, 2)}/{PAC.PacDtcir.Substring(0, 4)}",
-                                     NMPac = PAC.PacNmpac,
+                                     DTCirurgia = $"{c.PacDtcir.Substring(6, 2)}/{c.PacDtcir.Substring(4, 2)}/{c.PacDtcir.Substring(0, 4)}",
+                                     NMPac = c.PacNmpac,
                                      Status = PA10.Pa1Status == "N" ? "EM ESTOQUE" : PA10.Pa1Status == "S" ? "EM USO" : PA10.Pa1Status == "R" ? "AGUARDANDO REPOSI플O" : PA10.Pa1Status == "Q" ? "INSPE플O DE QUALIDADE" : PA10.Pa1Status == "E" ? "EMPENHO" : "",
-                                     Cliente = PA10.Pa1Status == "S" ? SA10.A1Nreduz : "",
-                                     Agend = PA10.Pa1Status == "S" ? PAC.PacNumage : "",
+                                     Cliente = PA10.Pa1Status == "S" ? a.A1Nreduz : "",
+                                     Agend = PA10.Pa1Status == "S" ? c.PacNumage : "",
                                      QTDFALT = (from PA20 in ProtheusInter.Pa2010s
                                                 join SB10 in ProtheusInter.Sb1010s on PA20.Pa2Comp equals SB10.B1Cod
                                                 where PA20.DELET != "*" && SB10.DELET != "*" &&
@@ -203,14 +207,15 @@ namespace SGID.Pages.Formularios
                                                     SB10.B1Cod
                                                 }).Count(),
                                      Empresa = Empresa,
-                                     Oper = PAC.PacTpoper,
+                                     Oper = c.PacTpoper,
                                      Valid = (from SB80 in ProtheusInter.Sb8010s
                                               join PA30 in ProtheusInter.Pa3010s on new { Filial = SB80.B8Filial, Local = SB80.B8Local, Produto = SB80.B8Produto, Lote = SB80.B8Lotectl, Codigo = PA10.Pa1Codigo } equals new { Filial = PA30.Pa3Filial, Local = PA30.Pa3Local, Produto = PA30.Pa3Produt, Lote = PA30.Pa3Lote, Codigo = PA30.Pa3Codigo }
                                               join SB10 in ProtheusInter.Sb1010s on PA30.Pa3Produt equals SB10.B1Cod
                                               where SB80.DELET != "*" && PA30.DELET != "*" && SB10.DELET != "*" && SB10.B1Tipo == "PA"
-                                              select SB80.B8Dtvalid).FirstOrDefault()
+                                              select SB80.B8Dtvalid).FirstOrDefault(),
+                                     Filial = PA10.Pa1Filial
                                  }
-                                 ).ToList();
+                             ).OrderBy(x => x.DesPat).ThenBy(x => x.Status).ToList();
 
                     var query = ProtheusInter.Pa1010s.Where(x => x.DELET != "*" && x.Pa1Msblql != "1" && x.Pa1Status != "B")
                         .Select(x => new
@@ -326,7 +331,7 @@ namespace SGID.Pages.Formularios
                 sheet.Cells[2, 7].Value = "DT. CIR.";
                 sheet.Cells[2, 8].Value = "AGEND.";
                 sheet.Cells[2, 9].Value = "OPER.";
-                sheet.Cells[2, 9].Value = "VALID PA";
+                sheet.Cells[2, 10].Value = "VALID PA";
 
                 int i = 3;
 

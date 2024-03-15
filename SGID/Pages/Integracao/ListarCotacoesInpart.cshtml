@@ -1,4 +1,4 @@
-﻿@page
+﻿@page "{empresa}"
 @model SGID.Pages.Integracao.ListarCotacoesInpartModel
 @{
     ViewData["Title"] = "Listar Cotacoes Inpart";
@@ -12,6 +12,18 @@
     }
 }
 
+@using (@Html.BeginForm(FormMethod.Post))
+{
+    <div class="row">
+        <div class="form-group mx-sm-3 mb-2 col-lg-2">
+            <input type="text" class="form-control" id="skip" name="skip" value="@Model.Pagina" placeholder="Pagina">
+        </div>
+
+        <div class="form-group mx-sm-3 mb-2 col-lg-1">
+            <button type="submit" class="btn btn-primary mb-2">Pesquisar</button>
+        </div>
+    </div>
+}
 
 
 <!--Tabela-->
@@ -206,9 +218,10 @@
                 console.log(1)
                 var id = $(this).data('id');
 
-                console.log(id)
+                var empresa = "@Model.Empresa";
+                var skip = $("#skip").val();
 
-                var chamadaUrl = `/integracao/listarcotacoesinpart?handler=Cotacao&&id=${id}`;
+                var chamadaUrl = `/integracao/listarcotacoesinpart/${empresa}/?handler=Cotacao&&id=${id}&&skip=${skip}`;
                 $.ajax({
                     url: chamadaUrl,
                     type: "GET",
@@ -258,7 +271,10 @@
 
                 var Inpart = $("#Idcotacao").val()
 
-                window.open(`/cirurgias/novoagendamento/01?handler=Inpart&&IdInpart=${Inpart}`, '_blank');
+                var empresa = "@Model.Empresa";
+                var skip = $("#skip").val();
+
+                window.open(`/cirurgias/novoagendamento/${empresa}?handler=Inpart&&IdInpart=${Inpart}&&skip=${skip}`, '_blank');
             })
 
         })

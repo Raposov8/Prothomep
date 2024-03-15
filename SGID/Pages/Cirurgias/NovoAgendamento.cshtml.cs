@@ -95,9 +95,9 @@ namespace SGID.Pages.Cirurgias
             }
         }
 
-        public void OnGetInpart(string id,int IdInpart)
+        public void OnGetInpart(string id,int IdInpart,int skip)
         {
-            Cotacoes = new IntegracaoInPart().ListarCotacoes().Result;
+            Cotacoes = new IntegracaoInPart().ListarCotacoes(id,skip).Result;
 
             var cotacao = Cotacoes.FirstOrDefault(x => x.idCotacao == IdInpart);
 

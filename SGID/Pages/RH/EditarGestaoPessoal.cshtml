@@ -123,59 +123,6 @@
 @section scripts{
     <script>
         $(document).ready(function () {
-            $('#Empresa').val('@Model.Acesso.Empresa');
-            $('#Tipo').val(@Model.Acesso.Tipo);
-            $("#Obs").val('@Model.Acesso.Obs');
-
-            var contra = '@Model.Acesso.Contratacao';
-            if (contra=="")
-            {
-                $("#Contratacao").val('S');
-            }
-            else
-            {
-                $("#Contratacao").val('@Model.Acesso.Contratacao');
-            }
-            
-
-
-            $('input:checkbox[value="Protheus"]').prop('checked', @Model.Acesso.Protheus.ToString().ToLower());
-            $('input:checkbox[value="Ramal"]').prop('checked', @Model.Acesso.IsRamal.ToString().ToLower());
-            $('input:checkbox[value="Impressora"]').prop('checked', @Model.Acesso.Impressora.ToString().ToLower());
-            $('input:checkbox[value="Maquina"]').prop('checked', @Model.Acesso.Maquina.ToString().ToLower());
-            $('input:checkbox[value="Celular"]').prop('checked', @Model.Acesso.Celular.ToString().ToLower());
-
-        })
-
-        $('#DataEvento').blur(function () {
-
-            var val = $(this).val()
-
-            var data = new Date("@Model.Acesso.DataEvento.ToString("yyyy/MM/dd")")
-
-            /*if(data.getDay()==0 || data.getDay()>=5)
-            {
-                data.setDate(data.getDate() + 5)
-            }
-            else
-            {
-
-            }*/
-
-            if (new Date(val) <= data) {
-                $("#Error").removeClass("invisivel");
-                $("#Error").addClass("visivel");
-                $(this).val("")
-            }
-            else {
-                $("#Error").removeClass("visivel");
-                $("#Error").addClass("invisivel");
-            }
-        })
-    </script>
-
-    <script>
-        $(document).ready(function () {
 
             $('#Sub').hide();
 
@@ -280,4 +227,52 @@
             });
         });
     </script>
+    <script>
+        $(document).ready(function () {
+            $('#Empresa').val('@Model.Acesso.Empresa');
+            var tipo = '@Model.Acesso.Tipo'.replace('&#xE7;','ç').replace('&#xE3;','ã')
+            $('#Tipo').val(tipo);
+            $("#Obs").val('@Model.Acesso.Obs');
+
+            var contra = '@Model.Acesso.Contratacao';
+            if (contra=="" || contra=='S')
+            {
+                $("#Contratacao").val('S');
+            }
+            else
+            {
+                $('#Sub').show();
+                
+                $("#Contratacao").val('@Model.Acesso.Contratacao');
+            }
+            
+
+
+            $('input:checkbox[value="Protheus"]').prop('checked', @Model.Acesso.Protheus.ToString().ToLower());
+            $('input:checkbox[value="Ramal"]').prop('checked', @Model.Acesso.IsRamal.ToString().ToLower());
+            $('input:checkbox[value="Impressora"]').prop('checked', @Model.Acesso.Impressora.ToString().ToLower());
+            $('input:checkbox[value="Maquina"]').prop('checked', @Model.Acesso.Maquina.ToString().ToLower());
+            $('input:checkbox[value="Celular"]').prop('checked', @Model.Acesso.Celular.ToString().ToLower());
+
+        })
+
+        $('#DataEvento').blur(function () {
+
+            var val = $(this).val()
+
+            var data = new Date("@Model.Acesso.DataEvento.ToString("yyyy/MM/dd")")
+
+            if (new Date(val) <= data) {
+                $("#Error").removeClass("invisivel");
+                $("#Error").addClass("visivel");
+                $(this).val("")
+            }
+            else {
+                $("#Error").removeClass("visivel");
+                $("#Error").addClass("invisivel");
+            }
+        })
+    </script>
+
+    
 }
