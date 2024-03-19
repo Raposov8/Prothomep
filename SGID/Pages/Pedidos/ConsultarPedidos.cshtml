@@ -1,0 +1,89 @@
+﻿@page "{empresa}"
+@model SGID.Pages.Pedidos.ConsultarPedidosModel
+@{
+    ViewData["Title"] = "Pedidos";
+    if (User.IsInRole("Diretoria") && !User.IsInRole("Admin"))
+    {
+        Layout = "_LayoutDiretoria";
+    }
+    else
+    {
+        Layout = "_LayoutNovo";
+    }
+}
+
+
+
+<div class="panel">
+    <div class="panel-body">
+        <table id="dataTable" class="table table-bordered" cellspacing="0" width="100%">
+            <thead>
+                <tr>
+                    <th class="text-center">
+                        Numero Pedido
+                    </th>
+                    <th class="text-center">
+                        Data Cirurgia
+                    </th>
+                    <th class="text-center">
+                        Cliente
+                    </th>
+                    <th class="text-center">
+                        Medico
+                    </th>
+                    <th class="text-center">
+                        Paciente
+                    </th>
+                    <th class="text-center">
+                        Vendedor
+                    </th>
+                    <th class="text-center">
+                        Ações
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var data in Model.Pedidos)
+                {
+                    <tr>
+                        <td class="text-center">
+                            @data.NumeroPedido
+                        </td>
+                        <td class="text-center">
+                            @data.DataCirurgia
+                        </td>
+                        <td class="text-center">
+                            @data.Cliente
+                        </td>
+                        <td class="text-center">
+                            @data.Medico
+                        </td>
+                        <td class="text-center">
+                            @data.Paciente
+                        </td>
+                        <td class="text-center">
+                            @data.Vendedor
+                        </td>
+                        <td class="text-center">
+                            <a href="/pedidos/visualizarpedido/@Model.Empresa/@data.NumeroPedido"><i class="fa-solid fa-bars"></i></a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(function () {
+            new DataTable('#dataTable', {
+                pagingType: 'simple_numbers',
+                info: false,
+                ordering: false,
+                lengthChange: false,
+                autoWidth: false
+            });
+        })
+    </script>
+}

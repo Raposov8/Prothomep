@@ -1,0 +1,268 @@
+﻿@page "{empresa}/{id}"
+@model SGID.Pages.Pedidos.VisualizarPedidoModel
+@{
+    @if (Model.PedidoDenuo != null)
+    {
+        ViewData["Title"] = $"Pedido Nº {Model.PedidoDenuo.C5Num}";
+    }
+    else
+    {
+        ViewData["Title"] = $"Pedido Nº {Model.PedidoInter.C5Num}";
+    }
+    if (User.IsInRole("Diretoria") && !User.IsInRole("Admin"))
+    {
+        Layout = "_LayoutDiretoria";
+    }
+    else
+    {
+        Layout = "_LayoutNovo";
+    }
+}
+
+
+<div class="row">
+    <div class="col-md-6">
+        @if (Model.PedidoDenuo != null)
+        {
+            <h2 style="padding-left:20px;">Pedido Nº @Model.PedidoDenuo.C5Num</h2>
+        }
+        else
+        {
+            <h2 style="padding-left:20px;">Pedido Nº @Model.PedidoInter.C5Num</h2>
+        }
+    </div>
+</div>
+
+@Html.AntiForgeryToken()
+
+@using (@Html.BeginForm(FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    <div class="row">
+        <div class="card" style="padding:10px;">
+            <div class="col-md-12">
+                <div class="row">
+                    <div class="form-group col-sm-6 col-md-6">
+                        <label class="Label">Cliente Faturamento </label>
+                        @if (Model.PedidoDenuo != null)
+                        {
+                            <input type="text" class="form-control" value="@Model.PedidoDenuo.C5Nomcli" />
+                        }
+                        else
+                        {
+                            <input type="text" class="form-control" value="@Model.PedidoInter.C5Nomcli" />
+                        }
+
+                    </div>
+                    <div class="form-group col-sm-2 col-md-2">
+                        <label class="Label">Condições de Pagto.</label>
+                        @if (Model.PedidoDenuo != null)
+                        {
+                            <input type="text" class="form-control" value="@Model.PedidoDenuo.C5Descond" />
+                        }
+                        else
+                        {
+                            <input type="text" class="form-control" value="@Model.PedidoInter.C5Descond" />
+                        }
+                    </div>
+                    <div class="form-group col-sm-4 col-md-4">
+                        <label class="Label">Tabela (R$)</label>
+                        @if (Model.PedidoDenuo != null)
+                        {
+                            <input type="text" class="form-control" value="@Model.PedidoDenuo.C5Nomtabe" />
+                        }
+                        else
+                        {
+                            <input type="text" class="form-control" value="@Model.PedidoInter.C5Nomtabe" />
+                        }
+                    </div>
+                    <div class="form-group col-sm-4 col-md-4">
+                        <label class="Label">Médico</label>
+                        @if (Model.PedidoDenuo != null)
+                        {
+                            <input type="text" class="form-control" value="@Model.PedidoDenuo.C5XNmmed" />
+                        }
+                        else
+                        {
+                            <input type="text" class="form-control" value="@Model.PedidoInter.C5XNmmed" />
+                        }
+                    </div>
+                    <div class="form-group col-sm-4 col-md-4">
+                        <label class="Label">Vendedor</label>
+                        @if (Model.PedidoDenuo != null)
+                        {
+                            <input type="text" class="form-control" value="@Model.PedidoDenuo.C5Nomvend" />
+                        }
+                        else
+                        {
+                            <input type="text" class="form-control" value="@Model.PedidoInter.C5Nomvend" />
+                        }
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-sm-4 col-md-4">
+                        <label class="Label">Paciente</label>
+                        @if (Model.PedidoDenuo != null)
+                        {
+                            <input type="text" class="form-control" value="@Model.PedidoDenuo.C5XNmpla" />
+                        }
+                        else
+                        {
+                            <input type="text" class="form-control" value="@Model.PedidoInter.C5XNmpla" />
+                        }
+                    </div>
+                    <div class="form-group col-sm-4 col-md-4">
+                        <label class="Label">Hospital</label>
+                        @if (Model.PedidoDenuo != null)
+                        {
+                            <input type="text" class="form-control" value="@Model.PedidoDenuo.C5Nomclie" />
+                        }
+                        else
+                        {
+                            <input type="text" class="form-control" value="@Model.PedidoInter.C5Nomclie" />
+                        }
+                    </div>
+                    <div class="form-group col-sm-4 col-md-4">
+                        <label class="Label">Convênio</label>
+                        @if (Model.PedidoDenuo != null)
+                        {
+                            <input type="text" class="form-control" value="@Model.PedidoDenuo.C5XNmpla" />
+                        }
+                        else
+                        {
+                            <input type="text" class="form-control" value="@Model.PedidoInter.C5XNmpla" />
+                        }
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-sm-3 col-md-3">
+                        <label class="Label">Data Cirurgia</label>
+                        @if (Model.PedidoDenuo != null)
+                        {
+                            <input type="text" class="form-control" value="@Model.PedidoDenuo.C5XDtcir @Model.PedidoDenuo.C5XHrcir" />
+                        }
+                        else
+                        {
+                            <input type="text" class="form-control" value="@Model.PedidoInter.C5XDtcir @Model.PedidoInter.C5XHrcir" />
+                        }
+                    </div>
+                    <div class="form-group col-sm-2 col-md-2">
+                        <label class="Label">Data Autorização</label>
+                        @if (Model.PedidoDenuo != null)
+                        {
+                            <input type="text" class="form-control" value="@Model.PedidoDenuo.C5XDtaut" />
+                        }
+                        else
+                        {
+                            <input type="text" class="form-control" value="@Model.PedidoInter.C5XDtaut" />
+                        }
+                    </div>
+                    <div class="form-group col-sm-2 col-md-2">
+                        <label style="font-size:10px;">Nº Autorização</label>
+                        @if (Model.PedidoDenuo != null)
+                        {
+                            <input type="text" class="form-control" value="@Model.PedidoDenuo.C5XNuaut" />
+                        }
+                        else
+                        {
+                            <input type="text" class="form-control" value="@Model.PedidoInter.C5XNuaut" />
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="panel">
+            <div class="panel-body">
+                <table id="Produto" name="Produto" class="table table-striped table-bordered" cellspacing="0" width="100%">
+                    <thead>
+                        <tr>
+                            <th class="text-center">
+                                Item
+                            </th>
+                            <th class="text-center">
+                                Cod Produto
+                            </th>
+                            <th class="text-center">
+                                Produto Desc
+                            </th>
+                            <th class="text-center">
+                                Fabricante
+                            </th>
+                            <th class="text-center">
+                                Qtd. Vend
+                            </th>
+                            <th class="text-center">
+                                Preco Vend
+                            </th>
+                            <th class="text-center">
+                                Valor
+                            </th>
+                            <th class="text-center">
+                                Lote
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var data in Model.ItensDenuo)
+                        {
+                            <tr>
+                               <td>
+                                   @data.C6Item
+                               </td>
+                               <td>
+                                   @data.C6Produto
+                               </td>
+                               <td>
+                                   @data.C6Descri
+                               </td>
+                               <td>
+                                   @data.C6Fabrica
+                               </td>
+                               <td>
+                                   @data.C6Qtdven
+                               </td>
+                               <td>
+                                   @data.C6Prcven
+                               </td>
+                               <td>
+                                   @data.C6Valor
+                               </td>
+                               <td>
+                                   @data.C6Lotectl
+                               </td>
+                            </tr>
+                        }
+                        @foreach (var data in Model.ItensInter)
+                        {
+                            <tr>
+                                <td>
+                                    @data.C6Item
+                                </td>
+                                <td>
+                                    @data.C6Produto
+                                </td>
+                                <td>
+                                    @data.C6Descri
+                                </td>
+                                <td>
+                                    @data.C6Fabrica
+                                </td>
+                                <td>
+                                    @data.C6Qtdven
+                                </td>
+                                <td>
+                                    @data.C6Prcven
+                                </td>
+                                <td>
+                                    @data.C6Valor
+                                </td>
+                                <td>
+                                    @data.C6Lotectl
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+}

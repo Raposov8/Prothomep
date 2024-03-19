@@ -51,7 +51,7 @@ namespace SGID.Data.Models
                     Page = page,
                     DataError = DateTime.Now,
                     Description = mensagem,
-                    User = user
+                    User2 = user
                 };
                 dblog.Logs.Add(erro);
                 dblog.SaveChanges();

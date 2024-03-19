@@ -22,6 +22,6 @@ namespace SGID.Data.ViewModel
        public DateTime DataError { get; set; }
        
        [Required]
-       public string User { get; set; }
+       public string User2 { get; set; }
     }
 }

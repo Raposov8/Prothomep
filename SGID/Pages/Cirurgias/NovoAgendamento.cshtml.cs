@@ -640,7 +640,6 @@ namespace SGID.Pages.Cirurgias
                 return LocalRedirect("/error");
             }
         }
-
         public JsonResult OnPostAdicionarProd(string Codigo,string Empresa,string CodTab)
         {
             try
