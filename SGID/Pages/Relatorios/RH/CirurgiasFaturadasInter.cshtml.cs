@@ -37,7 +37,7 @@ namespace SGID.Pages.Relatorios.RH
                 Inicio = DataInicio;
                 Fim = DataFim;
 
-                string[] CF = new string[] { "5551", "6551", "6107", "6109" };
+                int[] CF = new int[] { 5551, 6551, 6107, 6109 };
 
                 var DataI = DataInicio.ToString("yyyy/MM/dd").Replace("/", "");
                 var DataF = DataFim.ToString("yyyy/MM/dd").Replace("/", "");
@@ -49,13 +49,13 @@ namespace SGID.Pages.Relatorios.RH
                              join SB10 in Protheus.Sb1010s on SD20.D2Cod equals SB10.B1Cod
                              join SF20 in Protheus.Sf2010s on new { Filial = SD20.D2Filial, Doc = SD20.D2Doc, Serie = SD20.D2Serie, Cliente = SD20.D2Cliente, Loja = SD20.D2Loja } equals new { Filial = SF20.F2Filial, Doc = SF20.F2Doc, Serie = SF20.F2Serie, Cliente = SF20.F2Cliente, Loja = SF20.F2Loja }
                              join SC50 in Protheus.Sc5010s on new { Filial = SD20.D2Filial, Num = SD20.D2Pedido } equals new { Filial = SC50.C5Filial, Num = SC50.C5Num }
+                             join SA30 in Protheus.Sa3010s on SC50.C5Vend1 equals SA30.A3Cod
                              join SC60 in Protheus.Sc6010s on new { Filial = SD20.D2Filial, Pedido = SD20.D2Pedido, Cliente = SD20.D2Cliente, Loja = SD20.D2Loja, Item = SD20.D2Itempv, Cod = SD20.D2Cod } equals new { Filial = SC60.C6Filial, Pedido = SC60.C6Num, Cliente = SC60.C6Cli, Loja = SC60.C6Loja, Item = SC60.C6Item, Cod = SC60.C6Produto }
                              where SD20.DELET != "*" && SA10.DELET != "*" && SB10.DELET != "*" && SF20.DELET != "*" && SC50.DELET != "*" && SC60.DELET != "*"
                              && (((int)(object)SD20.D2Cf >= 5102 && (int)(object)SD20.D2Cf <= 5114) || ((int)(object)SD20.D2Cf >= 6102 && (int)(object)SD20.D2Cf <= 6114) ||
-                             ((int)(object)SD20.D2Cf >= 7102 && (int)(object)SD20.D2Cf <= 7114) || CF.Contains(SD20.D2Cf)) && ((int)(object)SD20.D2Emissao >= (int)(object)DataI && (int)(object)SD20.D2Emissao <= (int)(object)DataF)
+                             ((int)(object)SD20.D2Cf >= 7102 && (int)(object)SD20.D2Cf <= 7114) || CF.Contains((int)(object)SD20.D2Cf)) && ((int)(object)SD20.D2Emissao >= (int)(object)DataInicio && (int)(object)SD20.D2Emissao <= (int)(object)DataFim)
                              && SD20.D2Quant != 0 && (SC50.C5Utpoper == "F" || SC50.C5Utpoper == "K") && SA10.A1Clinter != "S" && SA10.A1Cgc != "04715053000140" && SA10.A1Cgc != "04715053000220" && SA10.A1Cgc != "01390500000140" && (int)(object)SD20.D2Emissao >= 20200701
                              && SB10.B1Ugrpint != "082"
-
                              select new
                              {
                                  Filial = SD20.D2Filial,
@@ -73,7 +73,7 @@ namespace SGID.Pages.Relatorios.RH
                                  Descon = SD20.D2Descon,
                                  Unumage = SC50.C5Unumage,
                                  SC50.C5Emissao,
-                                 SC50.C5Nomvend,
+                                 SA30.A3Nome,
                                  DataCirurgia = SC50.C5XDtcir,
                                  NomMed = SC50.C5XNmmed,
                                  NomPac = SC50.C5XNmpac,
@@ -100,7 +100,7 @@ namespace SGID.Pages.Relatorios.RH
                     x.Pedido,
                     x.Unumage,
                     x.C5Emissao,
-                    x.C5Nomvend,
+                    x.A3Nome,
                     x.DataCirurgia,
                     x.NomMed,
                     x.NomPac,
@@ -128,7 +128,7 @@ namespace SGID.Pages.Relatorios.RH
                     Descon = x.Sum(c => c.Descon),
                     Unumage = x.Key.Unumage,
                     C5Emissao = x.Key.C5Emissao,
-                    A3Nome = x.Key.C5Nomvend,
+                    A3Nome = x.Key.A3Nome,
                     XDtcir = $"{x.Key.DataCirurgia.Substring(6, 2)}/{x.Key.DataCirurgia.Substring(4, 2)}/{x.Key.DataCirurgia.Substring(0, 4)}",
                     XNMMed = x.Key.NomMed,
                     XNMPac = x.Key.NomPac,
@@ -160,7 +160,7 @@ namespace SGID.Pages.Relatorios.RH
             try
             {
                 Relatorio = new List<RelatorioCirurgiasFaturadas>();
-                string[] CF = new string[] { "5551", "6551", "6107", "6109" };
+                int[] CF = new int[] { 5551, 6551, 6107, 6109 };
                 var user = User.Identity.Name.Split("@")[0].ToUpper();
 
                 var DataI = DataInicio.ToString("yyyy/MM/dd").Replace("/", "");
@@ -173,13 +173,13 @@ namespace SGID.Pages.Relatorios.RH
                              join SB10 in Protheus.Sb1010s on SD20.D2Cod equals SB10.B1Cod
                              join SF20 in Protheus.Sf2010s on new { Filial = SD20.D2Filial, Doc = SD20.D2Doc, Serie = SD20.D2Serie, Cliente = SD20.D2Cliente, Loja = SD20.D2Loja } equals new { Filial = SF20.F2Filial, Doc = SF20.F2Doc, Serie = SF20.F2Serie, Cliente = SF20.F2Cliente, Loja = SF20.F2Loja }
                              join SC50 in Protheus.Sc5010s on new { Filial = SD20.D2Filial, Num = SD20.D2Pedido } equals new { Filial = SC50.C5Filial, Num = SC50.C5Num }
+                             join SA30 in Protheus.Sa3010s on SC50.C5Vend1 equals SA30.A3Cod
                              join SC60 in Protheus.Sc6010s on new { Filial = SD20.D2Filial, Pedido = SD20.D2Pedido, Cliente = SD20.D2Cliente, Loja = SD20.D2Loja, Item = SD20.D2Itempv, Cod = SD20.D2Cod } equals new { Filial = SC60.C6Filial, Pedido = SC60.C6Num, Cliente = SC60.C6Cli, Loja = SC60.C6Loja, Item = SC60.C6Item, Cod = SC60.C6Produto }
                              where SD20.DELET != "*" && SA10.DELET != "*" && SB10.DELET != "*" && SF20.DELET != "*" && SC50.DELET != "*" && SC60.DELET != "*"
                              && (((int)(object)SD20.D2Cf >= 5102 && (int)(object)SD20.D2Cf <= 5114) || ((int)(object)SD20.D2Cf >= 6102 && (int)(object)SD20.D2Cf <= 6114) ||
-                             ((int)(object)SD20.D2Cf >= 7102 && (int)(object)SD20.D2Cf <= 7114) || CF.Contains(SD20.D2Cf)) && ((int)(object)SD20.D2Emissao >= (int)(object)DataI && (int)(object)SD20.D2Emissao <= (int)(object)DataF)
+                             ((int)(object)SD20.D2Cf >= 7102 && (int)(object)SD20.D2Cf <= 7114) || CF.Contains((int)(object)SD20.D2Cf)) && ((int)(object)SD20.D2Emissao >= (int)(object)DataInicio && (int)(object)SD20.D2Emissao <= (int)(object)DataFim)
                              && SD20.D2Quant != 0 && (SC50.C5Utpoper == "F" || SC50.C5Utpoper == "K") && SA10.A1Clinter != "S" && SA10.A1Cgc != "04715053000140" && SA10.A1Cgc != "04715053000220" && SA10.A1Cgc != "01390500000140" && (int)(object)SD20.D2Emissao >= 20200701
                              && SB10.B1Ugrpint != "082"
-                             
                              select new
                              {
                                  Filial = SD20.D2Filial,
@@ -197,7 +197,7 @@ namespace SGID.Pages.Relatorios.RH
                                  Descon = SD20.D2Descon,
                                  Unumage = SC50.C5Unumage,
                                  SC50.C5Emissao,
-                                 SC50.C5Nomvend,
+                                 SA30.A3Nome,
                                  DataCirurgia = SC50.C5XDtcir,
                                  NomMed = SC50.C5XNmmed,
                                  NomPac = SC50.C5XNmpac,
@@ -224,7 +224,7 @@ namespace SGID.Pages.Relatorios.RH
                     x.Pedido,
                     x.Unumage,
                     x.C5Emissao,
-                    x.C5Nomvend,
+                    x.A3Nome,
                     x.DataCirurgia,
                     x.NomMed,
                     x.NomPac,
@@ -252,7 +252,7 @@ namespace SGID.Pages.Relatorios.RH
                     Descon = x.Sum(c => c.Descon),
                     Unumage = x.Key.Unumage,
                     C5Emissao = x.Key.C5Emissao,
-                    A3Nome = x.Key.C5Nomvend,
+                    A3Nome = x.Key.A3Nome,
                     XDtcir = $"{x.Key.DataCirurgia.Substring(6, 2)}/{x.Key.DataCirurgia.Substring(4, 2)}/{x.Key.DataCirurgia.Substring(0, 4)}",
                     XNMMed = x.Key.NomMed,
                     XNMPac = x.Key.NomPac,
@@ -262,7 +262,6 @@ namespace SGID.Pages.Relatorios.RH
                     B1Desc = x.Key.B1Desc,
                     Municipio = x.Key.A1Mun,
                     LicitacaoCodigo = x.Key.A1Xgrinte
-
                 }).OrderBy(x => x.A3Nome).ToList();
 
                 using ExcelPackage package = new ExcelPackage();

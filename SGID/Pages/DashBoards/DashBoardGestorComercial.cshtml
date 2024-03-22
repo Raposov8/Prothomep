@@ -61,6 +61,12 @@
                     <th class="text-center">
                         Valor
                     </th>
+                    <th class="text-center">
+                        Licitações
+                    </th>
+                    <th class="text-center">
+                        Valor
+                    </th>
                 </tr>
             </thead>
             <tbody>
@@ -74,6 +80,8 @@
                         <td>@string.Format("{0:N2}", data.FaturadoMesValor)</td>
                         <td>@Html.DisplayFor(model=> data.CirurgiasValorizadas)</td>
                         <td>@string.Format("{0:N2}", data.CirurgiasValorizadasValor)</td>
+                        <td>@Html.DisplayFor(model => data.CirurgiasLicitacoes)</td>
+                        <td>@string.Format("{0:N2}", data.CirurgiasLicitacoesValor)</td>
                     </tr>
                 }
             </tbody>
@@ -88,6 +96,8 @@
                         <td>@string.Format("{0:N2}", Model.Equipe.Sum(x=> x.FaturadoMesValor))</td>
                         <td>@Model.Equipe.Sum(x=> x.CirurgiasValorizadas)</td>
                         <td>@string.Format("{0:N2}", Model.Equipe.Sum(x=> x.CirurgiasValorizadasValor))</td>
+                        <td>@Model.Equipe.Sum(x => x.CirurgiasLicitacoes)</td>
+                        <td>@string.Format("{0:N2}", Model.Equipe.Sum(x => x.CirurgiasLicitacoesValor))</td>
                     </tr>
                 }
             </tfoot>

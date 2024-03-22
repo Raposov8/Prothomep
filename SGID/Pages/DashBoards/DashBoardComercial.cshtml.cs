@@ -90,10 +90,10 @@ namespace SGID.Pages.DashBoards
                     CirurgiasValorizadasValor = resultadoValorizado.Sum(x => x.Valor);
 
 
-                    //if (Convert.ToInt16(Ano) < 2024)
-                    //{
+                    if (Convert.ToInt32(DataInicio) < 20240228)
+                    {
                         #region Faturamento
-                        var query = (from SD20 in ProtheusInter.Sd2010s
+                    var query = (from SD20 in ProtheusInter.Sd2010s
                                      join SA10 in ProtheusInter.Sa1010s on new { Cod = SD20.D2Cliente, Loja = SD20.D2Loja } equals new { Cod = SA10.A1Cod, Loja = SA10.A1Loja }
                                      join SB10 in ProtheusInter.Sb1010s on SD20.D2Cod equals SB10.B1Cod
                                      join SF20 in ProtheusInter.Sf2010s on new { Filial = SD20.D2Filial, Doc = SD20.D2Doc, Serie = SD20.D2Serie, Cliente = SD20.D2Cliente, Loja = SD20.D2Loja } equals new { Filial = SF20.F2Filial, Doc = SF20.F2Doc, Serie = SF20.F2Serie, Cliente = SF20.F2Cliente, Loja = SF20.F2Loja }
@@ -131,7 +131,7 @@ namespace SGID.Pages.DashBoards
                                      where SD10.DELET != "*" && SF20.DELET != "*" && SA10.DELET != "*" && SB10.DELET != "*" && SA30.DELET != "*"
                                      && SA30.A3Xunnego != "000008" && (SD10.D1Cf == "1202" || SD10.D1Cf == "2202" || SD10.D1Cf == "3202" || SD10.D1Cf == "1553" || SD10.D1Cf == "2553")
                                      && (int)(object)SD10.D1Dtdigit >= (int)(object)DataInicio && (int)(object)SD10.D1Dtdigit <= (int)(object)DataFim
-                                     && (int)(object)SD10.D1Dtdigit >= 20200701 && SC50.C5Utpoper == "F" && (SA30.A3Xlogin == user || SA30.A3Xlogsup == user)
+                                     && (int)(object)SD10.D1Dtdigit >= 20200701 && SC50.C5Utpoper == "F" && SA30.A3Xlogin == user
                                      select new
                                      {
                                          SD10.D1Filial,
@@ -208,8 +208,8 @@ namespace SGID.Pages.DashBoards
 
                         FaturadoMes = resultado.DistinctBy(x => x.Nf).Count();
                         FaturadoMesValor = resultado.Sum(x => x.Total) - RelatorioDev.Sum(x => x.Total);
-                    //}
-                    /*else
+                    }
+                    else
                     {
                         #region Faturamento
                         var query = (from SD20 in ProtheusInter.Sd2010s
@@ -222,21 +222,23 @@ namespace SGID.Pages.DashBoards
                                      && ((int)(object)SD20.D2Cf >= 5102 && (int)(object)SD20.D2Cf <= 5114 || (int)(object)SD20.D2Cf >= 6102 && (int)(object)SD20.D2Cf <= 6114 ||
                                      (int)(object)SD20.D2Cf >= 7102 && (int)(object)SD20.D2Cf <= 7114 || CF.Contains((int)(object)SD20.D2Cf)) && ((int)(object)SD20.D2Emissao >= (int)(object)DataInicio && (int)(object)SD20.D2Emissao <= (int)(object)DataFim)
                                      && SD20.D2Quant != 0 && SC50.C5Utpoper == "F" && SA10.A1Clinter != "S" && SA10.A1Cgc != "04715053000140" && SA10.A1Cgc != "04715053000220" && SA10.A1Cgc != "01390500000140" && (int)(object)SD20.D2Emissao >= 20200701
-                                     && SA30.A3Xlogin == user && SA10.A1Xgrinte != "000011" && SA10.A1Xgrinte != "000012"
+                                     && SA30.A3Xlogin == user 
                                      select new
                                      {
                                          NF = SD20.D2Doc,
                                          Total = SD20.D2Total,
-
+                                         SA10.A1Xgrinte
                                      });
 
                         var resultado = query.GroupBy(x => new
                         {
                             x.NF,
+                            x.A1Xgrinte
                         }).Select(x => new RelatorioCirurgiasFaturadas
                         {
                             Nf = x.Key.NF,
                             Total = x.Sum(c => c.Total),
+                            Linha = x.Key.A1Xgrinte
                         }).ToList();
                         #endregion
 
@@ -250,8 +252,7 @@ namespace SGID.Pages.DashBoards
                                      where SD10.DELET != "*" && SF20.DELET != "*" && SA10.DELET != "*" && SB10.DELET != "*" && SA30.DELET != "*"
                                      && SA30.A3Xunnego != "000008" && (SD10.D1Cf == "1202" || SD10.D1Cf == "2202" || SD10.D1Cf == "3202" || SD10.D1Cf == "1553" || SD10.D1Cf == "2553")
                                      && (int)(object)SD10.D1Dtdigit >= (int)(object)DataInicio && (int)(object)SD10.D1Dtdigit <= (int)(object)DataFim
-                                     && (int)(object)SD10.D1Dtdigit >= 20200701 && SC50.C5Utpoper == "F" && (SA30.A3Xlogin == user || SA30.A3Xlogsup == user)
-                                     && SA10.A1Xgrinte != "000011" && SA10.A1Xgrinte != "000012"
+                                     && (int)(object)SD10.D1Dtdigit >= 20200701 && SC50.C5Utpoper == "F" && SA30.A3Xlogin == user 
                                      select new
                                      {
                                          SD10.D1Filial,
@@ -270,7 +271,8 @@ namespace SGID.Pages.DashBoards
                                          SD10.D1Nfori,
                                          SD10.D1Seriori,
                                          SD10.D1Datori,
-                                         SD10.D1Emissao
+                                         SD10.D1Emissao,
+                                         SA10.A1Xgrinte
                                      }
                                      ).ToList();
 
@@ -319,15 +321,16 @@ namespace SGID.Pages.DashBoards
                                         A3Nome = x.A3Nome,
                                         D1Nfori = x.D1Nfori,
                                         D1Seriori = x.D1Seriori,
-                                        D1Datori = x.D1Datori
+                                        D1Datori = x.D1Datori,
+                                        Linha = x.A1Xgrinte
                                     });
                                 }
                             });
                         }
                         #endregion
 
-                        FaturadoMes = resultado.DistinctBy(x => x.Nf).Count();
-                        FaturadoMesValor = resultado.Sum(x => x.Total) - RelatorioDev.Sum(x => x.Total);
+                        FaturadoMes = resultado.Where(x => x.Linha != "000011" && x.Linha != "000012").DistinctBy(x => x.Nf).Count();
+                        FaturadoMesValor = resultado.Where(x=> x.Linha != "000011" && x.Linha != "000012").Sum(x => x.Total) - RelatorioDev.Where(x => x.Linha != "000011" && x.Linha != "000012").Sum(x => x.Total);
 
                         #region BaixaLicitacoes
 
@@ -345,7 +348,7 @@ namespace SGID.Pages.DashBoards
                                                     && (int)(object)SE50.E5Data >= (int)(object)DataInicio
                                                     && (int)(object)SE50.E5Data <= (int)(object)DataFim
                                                     && (SA10.A1Xgrinte == "000011" || SA10.A1Xgrinte == "000012")
-                                                    && (int)(object) SD20.D2Emissao >= 20240101
+                                                    && (int)(object) SD20.D2Emissao >= 20240301
                                                     && SA30.A3Xlogin == user
                                                     select new RelatorioAreceberBaixa
                                                     {
@@ -377,15 +380,75 @@ namespace SGID.Pages.DashBoards
                                                         Login = SA30.A3Xlogin,
                                                         Gestor = SA30.A3Xlogsup,
                                                         DataPedido = SD20.D2Emissao
+                                                    }).GroupBy(x => new
+                                                    {
+                                                        x.Prefixo,
+                                                        x.Numero,
+                                                        x.Parcela,
+                                                        x.TP,
+                                                        x.CliFor,
+                                                        x.NomeFor,
+                                                        x.Naturez,
+                                                        x.Vencimento,
+                                                        x.Historico,
+                                                        x.DataBaixa,
+                                                        x.ValorOrig,
+                                                        x.JurMulta,
+                                                        x.Correcao,
+                                                        x.Descon,
+                                                        x.Abatimento,
+                                                        x.Imposto,
+                                                        x.ValorAcess,
+                                                        x.TotalBaixado,
+                                                        x.Banco,
+                                                        x.DtDigi,
+                                                        x.Mot,
+                                                        x.Orig,
+                                                        x.Vendedor,
+                                                        x.TipoCliente,
+                                                        x.CodigoCliente,
+                                                        x.Login,
+                                                        x.Gestor,
+                                                        x.DataPedido
+                                                    }).Select(x => new RelatorioAreceberBaixa
+                                                    {
+                                                        Prefixo = x.Key.Prefixo,
+                                                        Numero = x.Key.Numero,
+                                                        Parcela = x.Key.Parcela,
+                                                        TP = x.Key.TP,
+                                                        CliFor = x.Key.CliFor,
+                                                        NomeFor = x.Key.NomeFor,
+                                                        Naturez = x.Key.Naturez,
+                                                        Vencimento = x.Key.Vencimento,
+                                                        Historico = x.Key.Historico,
+                                                        DataBaixa = x.Key.DataBaixa,
+                                                        ValorOrig = x.Key.ValorOrig,
+                                                        JurMulta = x.Key.JurMulta,
+                                                        Correcao = x.Key.Correcao,
+                                                        Descon = x.Key.Descon,
+                                                        Abatimento = x.Key.Abatimento,
+                                                        Imposto = x.Key.Imposto,
+                                                        ValorAcess = x.Key.ValorAcess,
+                                                        TotalBaixado = x.Key.TotalBaixado,
+                                                        Banco = x.Key.Banco,
+                                                        DtDigi = x.Key.DtDigi,
+                                                        Mot = x.Key.Mot,
+                                                        Orig = x.Key.Orig,
+                                                        Vendedor = x.Key.Vendedor,
+                                                        TipoCliente = x.Key.TipoCliente,
+                                                        CodigoCliente = x.Key.CodigoCliente,
+                                                        Login = x.Key.Login,
+                                                        Gestor = x.Key.Gestor,
+                                                        DataPedido = x.Key.DataPedido
                                                     }).ToList();
 
                         #endregion
 
 
-                        CirurgiasLicitacoesMes = BaixaLicitacoesInter.DistinctBy(x => x.Numero).Count();
-                        CirurgiasLicitacoesValor = BaixaLicitacoesInter.Sum(x => x.TotalBaixado);
+                        CirurgiasLicitacoesMes = resultado.Where(x => x.Linha == "000011" || x.Linha == "000012").DistinctBy(x => x.Nf).Count();
+                        CirurgiasLicitacoesValor = resultado.Where(x => x.Linha == "000011" || x.Linha == "000012").Sum(x => x.Total) - RelatorioDev.Where(x => x.Linha == "000011" || x.Linha == "000012").Sum(x => x.Total);
 
-                    }*/
+                    }
 
                     #region EmAberto
                     var resultadoEmAberto = (from SC5 in ProtheusInter.Sc5010s
@@ -503,10 +566,10 @@ namespace SGID.Pages.DashBoards
                     CirurgiasEmAberto = resultadoEmAberto.DistinctBy(x => x.Num).Count();
                     CirurgiasEmAbertoValor = resultadoEmAberto.Sum(x => x.Valor);
 
-                    //if (Convert.ToInt16(Ano) < 2024)
-                    //{
+                    if (Convert.ToInt32(DataInicio) < 20240228)
+                    {
                         #region Faturamento
-                        var query = (from SD20 in ProtheusDenuo.Sd2010s
+                    var query = (from SD20 in ProtheusDenuo.Sd2010s
                                      join SA10 in ProtheusDenuo.Sa1010s on new { Cod = SD20.D2Cliente, Loja = SD20.D2Loja } equals new { Cod = SA10.A1Cod, Loja = SA10.A1Loja }
                                      join SB10 in ProtheusDenuo.Sb1010s on SD20.D2Cod equals SB10.B1Cod
                                      join SF20 in ProtheusDenuo.Sf2010s on new { Filial = SD20.D2Filial, Doc = SD20.D2Doc, Serie = SD20.D2Serie, Cliente = SD20.D2Cliente, Loja = SD20.D2Loja } equals new { Filial = SF20.F2Filial, Doc = SF20.F2Doc, Serie = SF20.F2Serie, Cliente = SF20.F2Cliente, Loja = SF20.F2Loja }
@@ -544,7 +607,7 @@ namespace SGID.Pages.DashBoards
                                      where SD10.DELET != "*" && SF20.DELET != "*" && SA10.DELET != "*" && SB10.DELET != "*" && SA30.DELET != "*"
                                      && SA30.A3Xunnego != "000008" && (SD10.D1Cf == "1202" || SD10.D1Cf == "2202" || SD10.D1Cf == "3202" || SD10.D1Cf == "1553" || SD10.D1Cf == "2553")
                                      && (int)(object)SD10.D1Dtdigit >= (int)(object)DataInicio && (int)(object)SD10.D1Dtdigit <= (int)(object)DataFim
-                                     && (int)(object)SD10.D1Dtdigit >= 20200701 && SC50.C5Utpoper == "F" && (SA30.A3Xlogin == user || SA30.A3Xlogsup == user)
+                                     && (int)(object)SD10.D1Dtdigit >= 20200701 && SC50.C5Utpoper == "F" && SA30.A3Xlogin == user 
                                      select new
                                      {
                                          SD10.D1Filial,
@@ -621,8 +684,8 @@ namespace SGID.Pages.DashBoards
 
                         FaturadoMes = resultado.DistinctBy(x => x.Nf).Count();
                         FaturadoMesValor = resultado.Sum(x => x.Total) - RelatorioDev.Sum(x => x.Total);
-                    //}
-                    /*else
+                    }
+                    else
                     {
                         #region Faturamento
                         var query = (from SD20 in ProtheusDenuo.Sd2010s
@@ -635,21 +698,23 @@ namespace SGID.Pages.DashBoards
                                      && ((int)(object)SD20.D2Cf >= 5102 && (int)(object)SD20.D2Cf <= 5114 || (int)(object)SD20.D2Cf >= 6102 && (int)(object)SD20.D2Cf <= 6114 ||
                                      (int)(object)SD20.D2Cf >= 7102 && (int)(object)SD20.D2Cf <= 7114 || CF.Contains((int)(object)SD20.D2Cf)) && ((int)(object)SD20.D2Emissao >= (int)(object)DataInicio && (int)(object)SD20.D2Emissao <= (int)(object)DataFim)
                                      && SD20.D2Quant != 0 && SC50.C5Utpoper == "F" && SA10.A1Clinter != "S" && SA10.A1Cgc != "04715053000140" && SA10.A1Cgc != "04715053000220" && SA10.A1Cgc != "01390500000140" && (int)(object)SD20.D2Emissao >= 20200701
-                                     && SA30.A3Xlogin == user && SA10.A1Xgrinte != "000011" && SA10.A1Xgrinte != "000012"
+                                     && SA30.A3Xlogin == user 
                                      select new
                                      {
                                          NF = SD20.D2Doc,
                                          Total = SD20.D2Total,
-
+                                         Linha = SA10.A1Xgrinte 
                                      });
 
                         var resultado = query.GroupBy(x => new
                         {
                             x.NF,
+                            x.Linha
                         }).Select(x => new RelatorioCirurgiasFaturadas
                         {
                             Nf = x.Key.NF,
                             Total = x.Sum(c => c.Total),
+                            Linha = x.Key.Linha
                         }).ToList();
                         #endregion
 
@@ -663,8 +728,7 @@ namespace SGID.Pages.DashBoards
                                      where SD10.DELET != "*" && SF20.DELET != "*" && SA10.DELET != "*" && SB10.DELET != "*" && SA30.DELET != "*"
                                      && SA30.A3Xunnego != "000008" && (SD10.D1Cf == "1202" || SD10.D1Cf == "2202" || SD10.D1Cf == "3202" || SD10.D1Cf == "1553" || SD10.D1Cf == "2553")
                                      && (int)(object)SD10.D1Dtdigit >= (int)(object)DataInicio && (int)(object)SD10.D1Dtdigit <= (int)(object)DataFim
-                                     && (int)(object)SD10.D1Dtdigit >= 20200701 && SC50.C5Utpoper == "F" && (SA30.A3Xlogin == user || SA30.A3Xlogsup == user)
-                                     && SA10.A1Xgrinte != "000011" && SA10.A1Xgrinte != "000012"
+                                     && (int)(object)SD10.D1Dtdigit >= 20200701 && SC50.C5Utpoper == "F" && SA30.A3Xlogin == user 
                                      select new
                                      {
                                          SD10.D1Filial,
@@ -683,7 +747,8 @@ namespace SGID.Pages.DashBoards
                                          SD10.D1Nfori,
                                          SD10.D1Seriori,
                                          SD10.D1Datori,
-                                         SD10.D1Emissao
+                                         SD10.D1Emissao,
+                                         SA10.A1Xgrinte
                                      }
                                      ).ToList();
 
@@ -732,15 +797,16 @@ namespace SGID.Pages.DashBoards
                                         A3Nome = x.A3Nome,
                                         D1Nfori = x.D1Nfori,
                                         D1Seriori = x.D1Seriori,
-                                        D1Datori = x.D1Datori
+                                        D1Datori = x.D1Datori,
+                                        Linha = x.A1Xgrinte
                                     });
                                 }
                             });
                         }
                         #endregion
 
-                        FaturadoMes = resultado.DistinctBy(x => x.Nf).Count();
-                        FaturadoMesValor = resultado.Sum(x => x.Total) - RelatorioDev.Sum(x => x.Total);
+                        FaturadoMes = resultado.Where(x=> x.Linha != "000011" && x.Linha != "000012").DistinctBy(x => x.Nf).Count();
+                        FaturadoMesValor = resultado.Where(x => x.Linha != "000011" && x.Linha != "000012").Sum(x => x.Total) - RelatorioDev.Where(x => x.Linha != "000011" && x.Linha != "000012").Sum(x => x.Total);
 
                         #region BaixaLicitacoes
 
@@ -758,7 +824,7 @@ namespace SGID.Pages.DashBoards
                                                     && (int)(object)SE50.E5Data >= (int)(object)DataInicio
                                                     && (int)(object)SE50.E5Data <= (int)(object)DataFim
                                                     && (SA10.A1Xgrinte == "000011" || SA10.A1Xgrinte == "000012")
-                                                    && (int)(object)SD20.D2Emissao >= 20240101
+                                                    && (int)(object)SD20.D2Emissao >= 20240301
                                                     && SA30.A3Xlogin == user
                                                     select new RelatorioAreceberBaixa
                                                     {
@@ -790,15 +856,74 @@ namespace SGID.Pages.DashBoards
                                                         Login = SA30.A3Xlogin,
                                                         Gestor = SA30.A3Xlogsup,
                                                         DataPedido = SD20.D2Emissao
+                                                    }).GroupBy(x => new
+                                                    {
+                                                        x.Prefixo,
+                                                        x.Numero,
+                                                        x.Parcela,
+                                                        x.TP,
+                                                        x.CliFor,
+                                                        x.NomeFor,
+                                                        x.Naturez,
+                                                        x.Vencimento,
+                                                        x.Historico,
+                                                        x.DataBaixa,
+                                                        x.ValorOrig,
+                                                        x.JurMulta,
+                                                        x.Correcao,
+                                                        x.Descon,
+                                                        x.Abatimento,
+                                                        x.Imposto,
+                                                        x.ValorAcess,
+                                                        x.TotalBaixado,
+                                                        x.Banco,
+                                                        x.DtDigi,
+                                                        x.Mot,
+                                                        x.Orig,
+                                                        x.Vendedor,
+                                                        x.TipoCliente,
+                                                        x.CodigoCliente,
+                                                        x.Login,
+                                                        x.Gestor,
+                                                        x.DataPedido
+                                                    }).Select(x => new RelatorioAreceberBaixa
+                                                    {
+                                                        Prefixo = x.Key.Prefixo,
+                                                        Numero = x.Key.Numero,
+                                                        Parcela = x.Key.Parcela,
+                                                        TP = x.Key.TP,
+                                                        CliFor = x.Key.CliFor,
+                                                        NomeFor = x.Key.NomeFor,
+                                                        Naturez = x.Key.Naturez,
+                                                        Vencimento = x.Key.Vencimento,
+                                                        Historico = x.Key.Historico,
+                                                        DataBaixa = x.Key.DataBaixa,
+                                                        ValorOrig = x.Key.ValorOrig,
+                                                        JurMulta = x.Key.JurMulta,
+                                                        Correcao = x.Key.Correcao,
+                                                        Descon = x.Key.Descon,
+                                                        Abatimento = x.Key.Abatimento,
+                                                        Imposto = x.Key.Imposto,
+                                                        ValorAcess = x.Key.ValorAcess,
+                                                        TotalBaixado = x.Key.TotalBaixado,
+                                                        Banco = x.Key.Banco,
+                                                        DtDigi = x.Key.DtDigi,
+                                                        Mot = x.Key.Mot,
+                                                        Orig = x.Key.Orig,
+                                                        Vendedor = x.Key.Vendedor,
+                                                        TipoCliente = x.Key.TipoCliente,
+                                                        CodigoCliente = x.Key.CodigoCliente,
+                                                        Login = x.Key.Login,
+                                                        Gestor = x.Key.Gestor,
+                                                        DataPedido = x.Key.DataPedido
                                                     }).ToList();
 
                         #endregion
 
 
-                        CirurgiasLicitacoesMes = BaixaLicitacoesInter.DistinctBy(x => x.Numero).Count();
-                        CirurgiasLicitacoesValor = BaixaLicitacoesInter.Sum(x => x.TotalBaixado);
-
-                    }*/
+                        CirurgiasLicitacoesMes = resultado.Where(x => x.Linha == "000011" || x.Linha == "000012").DistinctBy(x => x.Nf).Count();
+                        CirurgiasLicitacoesValor =  resultado.Where(x => x.Linha == "000011" || x.Linha == "000012").Sum(x => x.Total) - RelatorioDev.Where(x => x.Linha == "000011" || x.Linha == "000012").Sum(x => x.Total);
+                    }
 
                     user = user.ToLower();
 
@@ -893,8 +1018,9 @@ namespace SGID.Pages.DashBoards
                     CirurgiasValorizadas = resultadoValorizado.DistinctBy(x => x.Num).Count();
                     CirurgiasValorizadasValor = resultadoValorizado.Sum(x => x.Valor);
 
-                    //if (Convert.ToInt16(Ano) < 2024)
-                    //{
+
+                    if (Convert.ToInt32(DataInicio) < 20240228)
+                    {
                         #region Faturamento
                         var query = (from SD20 in ProtheusInter.Sd2010s
                                      join SA10 in ProtheusInter.Sa1010s on new { Cod = SD20.D2Cliente, Loja = SD20.D2Loja } equals new { Cod = SA10.A1Cod, Loja = SA10.A1Loja }
@@ -934,7 +1060,7 @@ namespace SGID.Pages.DashBoards
                                      where SD10.DELET != "*" && SF20.DELET != "*" && SA10.DELET != "*" && SB10.DELET != "*" && SA30.DELET != "*"
                                      && SA30.A3Xunnego != "000008" && (SD10.D1Cf == "1202" || SD10.D1Cf == "2202" || SD10.D1Cf == "3202" || SD10.D1Cf == "1553" || SD10.D1Cf == "2553")
                                      && (int)(object)SD10.D1Dtdigit >= (int)(object)DataInicio && (int)(object)SD10.D1Dtdigit <= (int)(object)DataFim
-                                     && (int)(object)SD10.D1Dtdigit >= 20200701 && SC50.C5Utpoper == "F" && (SA30.A3Xlogin == user || SA30.A3Xlogsup == user)
+                                     && (int)(object)SD10.D1Dtdigit >= 20200701 && SC50.C5Utpoper == "F" && SA30.A3Xlogin == user
                                      select new
                                      {
                                          SD10.D1Filial,
@@ -1011,8 +1137,8 @@ namespace SGID.Pages.DashBoards
 
                         FaturadoMes = resultado.DistinctBy(x => x.Nf).Count();
                         FaturadoMesValor = resultado.Sum(x => x.Total) - RelatorioDev.Sum(x => x.Total);
-                    //}
-                    /*else
+                    }
+                    else
                     {
                         #region Faturamento
                         var query = (from SD20 in ProtheusInter.Sd2010s
@@ -1025,21 +1151,23 @@ namespace SGID.Pages.DashBoards
                                      && ((int)(object)SD20.D2Cf >= 5102 && (int)(object)SD20.D2Cf <= 5114 || (int)(object)SD20.D2Cf >= 6102 && (int)(object)SD20.D2Cf <= 6114 ||
                                      (int)(object)SD20.D2Cf >= 7102 && (int)(object)SD20.D2Cf <= 7114 || CF.Contains((int)(object)SD20.D2Cf)) && ((int)(object)SD20.D2Emissao >= (int)(object)DataInicio && (int)(object)SD20.D2Emissao <= (int)(object)DataFim)
                                      && SD20.D2Quant != 0 && SC50.C5Utpoper == "F" && SA10.A1Clinter != "S" && SA10.A1Cgc != "04715053000140" && SA10.A1Cgc != "04715053000220" && SA10.A1Cgc != "01390500000140" && (int)(object)SD20.D2Emissao >= 20200701
-                                     && SA30.A3Xlogin == user && SA10.A1Xgrinte != "000011" && SA10.A1Xgrinte != "000012"
+                                     && SA30.A3Xlogin == user
                                      select new
                                      {
                                          NF = SD20.D2Doc,
                                          Total = SD20.D2Total,
-
+                                         SA10.A1Xgrinte
                                      });
 
                         var resultado = query.GroupBy(x => new
                         {
                             x.NF,
+                            x.A1Xgrinte
                         }).Select(x => new RelatorioCirurgiasFaturadas
                         {
                             Nf = x.Key.NF,
                             Total = x.Sum(c => c.Total),
+                            Linha = x.Key.A1Xgrinte
                         }).ToList();
                         #endregion
 
@@ -1053,8 +1181,7 @@ namespace SGID.Pages.DashBoards
                                      where SD10.DELET != "*" && SF20.DELET != "*" && SA10.DELET != "*" && SB10.DELET != "*" && SA30.DELET != "*"
                                      && SA30.A3Xunnego != "000008" && (SD10.D1Cf == "1202" || SD10.D1Cf == "2202" || SD10.D1Cf == "3202" || SD10.D1Cf == "1553" || SD10.D1Cf == "2553")
                                      && (int)(object)SD10.D1Dtdigit >= (int)(object)DataInicio && (int)(object)SD10.D1Dtdigit <= (int)(object)DataFim
-                                     && (int)(object)SD10.D1Dtdigit >= 20200701 && SC50.C5Utpoper == "F" && (SA30.A3Xlogin == user || SA30.A3Xlogsup == user)
-                                     && SA10.A1Xgrinte != "000011" && SA10.A1Xgrinte != "000012"
+                                     && (int)(object)SD10.D1Dtdigit >= 20200701 && SC50.C5Utpoper == "F" && SA30.A3Xlogin == user
                                      select new
                                      {
                                          SD10.D1Filial,
@@ -1073,7 +1200,8 @@ namespace SGID.Pages.DashBoards
                                          SD10.D1Nfori,
                                          SD10.D1Seriori,
                                          SD10.D1Datori,
-                                         SD10.D1Emissao
+                                         SD10.D1Emissao,
+                                         SA10.A1Xgrinte
                                      }
                                      ).ToList();
 
@@ -1122,15 +1250,16 @@ namespace SGID.Pages.DashBoards
                                         A3Nome = x.A3Nome,
                                         D1Nfori = x.D1Nfori,
                                         D1Seriori = x.D1Seriori,
-                                        D1Datori = x.D1Datori
+                                        D1Datori = x.D1Datori,
+                                        Linha = x.A1Xgrinte
                                     });
                                 }
                             });
                         }
                         #endregion
 
-                        FaturadoMes = resultado.DistinctBy(x => x.Nf).Count();
-                        FaturadoMesValor = resultado.Sum(x => x.Total) - RelatorioDev.Sum(x => x.Total);
+                        FaturadoMes = resultado.Where(x => x.Linha != "000011" && x.Linha != "000012").DistinctBy(x => x.Nf).Count();
+                        FaturadoMesValor = resultado.Where(x => x.Linha != "000011" && x.Linha != "000012").Sum(x => x.Total) - RelatorioDev.Where(x => x.Linha != "000011" && x.Linha != "000012").Sum(x => x.Total);
 
                         #region BaixaLicitacoes
 
@@ -1148,7 +1277,7 @@ namespace SGID.Pages.DashBoards
                                                     && (int)(object)SE50.E5Data >= (int)(object)DataInicio
                                                     && (int)(object)SE50.E5Data <= (int)(object)DataFim
                                                     && (SA10.A1Xgrinte == "000011" || SA10.A1Xgrinte == "000012")
-                                                    && (int)(object)SD20.D2Emissao >= 20240101
+                                                    && (int)(object)SD20.D2Emissao >= 20240301
                                                     && SA30.A3Xlogin == user
                                                     select new RelatorioAreceberBaixa
                                                     {
@@ -1180,15 +1309,75 @@ namespace SGID.Pages.DashBoards
                                                         Login = SA30.A3Xlogin,
                                                         Gestor = SA30.A3Xlogsup,
                                                         DataPedido = SD20.D2Emissao
+                                                    }).GroupBy(x => new
+                                                    {
+                                                        x.Prefixo,
+                                                        x.Numero,
+                                                        x.Parcela,
+                                                        x.TP,
+                                                        x.CliFor,
+                                                        x.NomeFor,
+                                                        x.Naturez,
+                                                        x.Vencimento,
+                                                        x.Historico,
+                                                        x.DataBaixa,
+                                                        x.ValorOrig,
+                                                        x.JurMulta,
+                                                        x.Correcao,
+                                                        x.Descon,
+                                                        x.Abatimento,
+                                                        x.Imposto,
+                                                        x.ValorAcess,
+                                                        x.TotalBaixado,
+                                                        x.Banco,
+                                                        x.DtDigi,
+                                                        x.Mot,
+                                                        x.Orig,
+                                                        x.Vendedor,
+                                                        x.TipoCliente,
+                                                        x.CodigoCliente,
+                                                        x.Login,
+                                                        x.Gestor,
+                                                        x.DataPedido
+                                                    }).Select(x => new RelatorioAreceberBaixa
+                                                    {
+                                                        Prefixo = x.Key.Prefixo,
+                                                        Numero = x.Key.Numero,
+                                                        Parcela = x.Key.Parcela,
+                                                        TP = x.Key.TP,
+                                                        CliFor = x.Key.CliFor,
+                                                        NomeFor = x.Key.NomeFor,
+                                                        Naturez = x.Key.Naturez,
+                                                        Vencimento = x.Key.Vencimento,
+                                                        Historico = x.Key.Historico,
+                                                        DataBaixa = x.Key.DataBaixa,
+                                                        ValorOrig = x.Key.ValorOrig,
+                                                        JurMulta = x.Key.JurMulta,
+                                                        Correcao = x.Key.Correcao,
+                                                        Descon = x.Key.Descon,
+                                                        Abatimento = x.Key.Abatimento,
+                                                        Imposto = x.Key.Imposto,
+                                                        ValorAcess = x.Key.ValorAcess,
+                                                        TotalBaixado = x.Key.TotalBaixado,
+                                                        Banco = x.Key.Banco,
+                                                        DtDigi = x.Key.DtDigi,
+                                                        Mot = x.Key.Mot,
+                                                        Orig = x.Key.Orig,
+                                                        Vendedor = x.Key.Vendedor,
+                                                        TipoCliente = x.Key.TipoCliente,
+                                                        CodigoCliente = x.Key.CodigoCliente,
+                                                        Login = x.Key.Login,
+                                                        Gestor = x.Key.Gestor,
+                                                        DataPedido = x.Key.DataPedido
                                                     }).ToList();
 
                         #endregion
 
 
-                        CirurgiasLicitacoesMes = BaixaLicitacoesInter.DistinctBy(x => x.Numero).Count();
-                        CirurgiasLicitacoesValor = BaixaLicitacoesInter.Sum(x => x.TotalBaixado);
+                        CirurgiasLicitacoesMes = resultado.Where(x => x.Linha == "000011" || x.Linha == "000012").DistinctBy(x => x.Nf).Count();
+                        CirurgiasLicitacoesValor = resultado.Where(x => x.Linha == "000011" || x.Linha == "000012").Sum(x => x.Total) - RelatorioDev.Where(x => x.Linha == "000011" || x.Linha == "000012").Sum(x => x.Total);
 
-                    }*/
+                    }
 
                     #region EmAberto
                     var resultadoEmAberto = (from SC5 in ProtheusInter.Sc5010s
@@ -1237,26 +1426,7 @@ namespace SGID.Pages.DashBoards
                         Meta = time.Meta - FaturadoMesValor;
                     }
 
-
-                    var Hoje = DateTime.Now.ToString("dd/MM/yyyy");
-
-                    var Valores = new
-                    {
-                        CirurgiasValorizadas,
-                        CirurgiasValorizadasValor,
-                        FaturadoMes,
-                        FaturadoMesValor,
-                        CirurgiasEmAberto,
-                        CirurgiasEmAbertoValor,
-                        CirurgiasLicitacoesMes,
-                        CirurgiasLicitacoesValor,
-                        Meta,
-                        Comissao,
-                        Id,
-                        Hoje
-                    };
-
-                    return new JsonResult(Valores);
+                
                 }
                 else
                 {
@@ -1292,8 +1462,41 @@ namespace SGID.Pages.DashBoards
                     CirurgiasValorizadas = resultadoValorizado.DistinctBy(x => x.Num).Count();
                     CirurgiasValorizadasValor = resultadoValorizado.Sum(x => x.Valor);
 
-                    //if (Convert.ToInt16(Ano) < 2024)
-                    //{
+                    #region EmAberto
+                    var resultadoEmAberto = (from SC5 in ProtheusDenuo.Sc5010s
+                                             from SC6 in ProtheusDenuo.Sc6010s
+                                             from SA1 in ProtheusDenuo.Sa1010s
+                                             from SA3 in ProtheusDenuo.Sa3010s
+                                             from SF4 in ProtheusDenuo.Sf4010s
+                                             from SB1 in ProtheusDenuo.Sb1010s
+                                             where SC5.DELET != "*" && SC6.C6Filial == SC5.C5Filial && SC6.C6Num == SC5.C5Num
+                                             && SC6.C6Nota == "" && SC6.C6Blq != "R" && SC6.DELET != "*"
+                                             && SF4.F4Codigo == SC6.C6Tes && SF4.F4Duplic == "S" && SF4.DELET != "*" && SA1.A1Cod == SC5.C5Cliente
+                                             && SA1.A1Loja == SC5.C5Lojacli && SA1.DELET != "*" && SA3.A3Cod == SC5.C5Vend1 && SA3.DELET != "*"
+                                             && (SC5.C5Utpoper == "F" || SC5.C5Utpoper == "T") && SB1.DELET != "*" && SC6.C6Produto == SB1.B1Cod
+                                             && SA1.A1Cgc != "04715053000140" && SA1.A1Cgc != "04715053000220" && SA1.A1Cgc != "01390500000140" &&
+                                             SA3.A3Xlogin == user
+                                             orderby SC5.C5Num, SC5.C5Emissao descending
+                                             select new RelatorioCirurgiasFaturar
+                                             {
+                                                 Num = SC5.C5Num,
+                                                 Valor = SC6.C6Valor,
+                                             }
+                                         ).GroupBy(x => new
+                                         {
+                                             x.Num,
+                                         }).Select(x => new RelatorioCirurgiasFaturar
+                                         {
+                                             Num = x.Key.Num,
+                                             Valor = x.Sum(c => c.Valor)
+                                         }).ToList();
+                    #endregion
+
+                    CirurgiasEmAberto = resultadoEmAberto.DistinctBy(x => x.Num).Count();
+                    CirurgiasEmAbertoValor = resultadoEmAberto.Sum(x => x.Valor);
+
+                    if (Convert.ToInt32(DataInicio) < 20240228)
+                    {
                         #region Faturamento
                         var query = (from SD20 in ProtheusDenuo.Sd2010s
                                      join SA10 in ProtheusDenuo.Sa1010s on new { Cod = SD20.D2Cliente, Loja = SD20.D2Loja } equals new { Cod = SA10.A1Cod, Loja = SA10.A1Loja }
@@ -1410,8 +1613,8 @@ namespace SGID.Pages.DashBoards
 
                         FaturadoMes = resultado.DistinctBy(x => x.Nf).Count();
                         FaturadoMesValor = resultado.Sum(x => x.Total) - RelatorioDev.Sum(x => x.Total);
-                    //}
-                    /*else
+                    }
+                    else
                     {
                         #region Faturamento
                         var query = (from SD20 in ProtheusDenuo.Sd2010s
@@ -1424,21 +1627,23 @@ namespace SGID.Pages.DashBoards
                                      && ((int)(object)SD20.D2Cf >= 5102 && (int)(object)SD20.D2Cf <= 5114 || (int)(object)SD20.D2Cf >= 6102 && (int)(object)SD20.D2Cf <= 6114 ||
                                      (int)(object)SD20.D2Cf >= 7102 && (int)(object)SD20.D2Cf <= 7114 || CF.Contains((int)(object)SD20.D2Cf)) && ((int)(object)SD20.D2Emissao >= (int)(object)DataInicio && (int)(object)SD20.D2Emissao <= (int)(object)DataFim)
                                      && SD20.D2Quant != 0 && SC50.C5Utpoper == "F" && SA10.A1Clinter != "S" && SA10.A1Cgc != "04715053000140" && SA10.A1Cgc != "04715053000220" && SA10.A1Cgc != "01390500000140" && (int)(object)SD20.D2Emissao >= 20200701
-                                     && SA30.A3Xlogin == user && SA10.A1Xgrinte != "000011" && SA10.A1Xgrinte != "000012"
+                                     && SA30.A3Xlogin == user
                                      select new
                                      {
                                          NF = SD20.D2Doc,
                                          Total = SD20.D2Total,
-
+                                         Linha = SA10.A1Xgrinte
                                      });
 
                         var resultado = query.GroupBy(x => new
                         {
                             x.NF,
+                            x.Linha
                         }).Select(x => new RelatorioCirurgiasFaturadas
                         {
                             Nf = x.Key.NF,
                             Total = x.Sum(c => c.Total),
+                            Linha = x.Key.Linha
                         }).ToList();
                         #endregion
 
@@ -1452,8 +1657,7 @@ namespace SGID.Pages.DashBoards
                                      where SD10.DELET != "*" && SF20.DELET != "*" && SA10.DELET != "*" && SB10.DELET != "*" && SA30.DELET != "*"
                                      && SA30.A3Xunnego != "000008" && (SD10.D1Cf == "1202" || SD10.D1Cf == "2202" || SD10.D1Cf == "3202" || SD10.D1Cf == "1553" || SD10.D1Cf == "2553")
                                      && (int)(object)SD10.D1Dtdigit >= (int)(object)DataInicio && (int)(object)SD10.D1Dtdigit <= (int)(object)DataFim
-                                     && (int)(object)SD10.D1Dtdigit >= 20200701 && SC50.C5Utpoper == "F" && (SA30.A3Xlogin == user || SA30.A3Xlogsup == user)
-                                     && SA10.A1Xgrinte != "000011" && SA10.A1Xgrinte != "000012"
+                                     && (int)(object)SD10.D1Dtdigit >= 20200701 && SC50.C5Utpoper == "F" && SA30.A3Xlogin == user
                                      select new
                                      {
                                          SD10.D1Filial,
@@ -1472,7 +1676,8 @@ namespace SGID.Pages.DashBoards
                                          SD10.D1Nfori,
                                          SD10.D1Seriori,
                                          SD10.D1Datori,
-                                         SD10.D1Emissao
+                                         SD10.D1Emissao,
+                                         SA10.A1Xgrinte
                                      }
                                      ).ToList();
 
@@ -1521,15 +1726,18 @@ namespace SGID.Pages.DashBoards
                                         A3Nome = x.A3Nome,
                                         D1Nfori = x.D1Nfori,
                                         D1Seriori = x.D1Seriori,
-                                        D1Datori = x.D1Datori
+                                        D1Datori = x.D1Datori,
+                                        Linha = x.A1Xgrinte
                                     });
                                 }
                             });
                         }
                         #endregion
 
-                        FaturadoMes = resultado.DistinctBy(x => x.Nf).Count();
-                        FaturadoMesValor = resultado.Sum(x => x.Total) - RelatorioDev.Sum(x => x.Total);
+
+
+                        FaturadoMes = resultado.Where(x => x.Linha != "000011" && x.Linha != "000012").DistinctBy(x => x.Nf).Count();
+                        FaturadoMesValor = resultado.Where(x => x.Linha != "000011" && x.Linha != "000012").Sum(x => x.Total) - RelatorioDev.Where(x => x.Linha != "000011" && x.Linha != "000012").Sum(x => x.Total);
 
                         #region BaixaLicitacoes
 
@@ -1547,7 +1755,7 @@ namespace SGID.Pages.DashBoards
                                                     && (int)(object)SE50.E5Data >= (int)(object)DataInicio
                                                     && (int)(object)SE50.E5Data <= (int)(object)DataFim
                                                     && (SA10.A1Xgrinte == "000011" || SA10.A1Xgrinte == "000012")
-                                                    && (int)(object)SD20.D2Emissao >= 20240101
+                                                    && (int)(object)SD20.D2Emissao >= 20240301
                                                     && SA30.A3Xlogin == user
                                                     select new RelatorioAreceberBaixa
                                                     {
@@ -1579,48 +1787,74 @@ namespace SGID.Pages.DashBoards
                                                         Login = SA30.A3Xlogin,
                                                         Gestor = SA30.A3Xlogsup,
                                                         DataPedido = SD20.D2Emissao
+                                                    }).GroupBy(x => new
+                                                    {
+                                                        x.Prefixo,
+                                                        x.Numero,
+                                                        x.Parcela,
+                                                        x.TP,
+                                                        x.CliFor,
+                                                        x.NomeFor,
+                                                        x.Naturez,
+                                                        x.Vencimento,
+                                                        x.Historico,
+                                                        x.DataBaixa,
+                                                        x.ValorOrig,
+                                                        x.JurMulta,
+                                                        x.Correcao,
+                                                        x.Descon,
+                                                        x.Abatimento,
+                                                        x.Imposto,
+                                                        x.ValorAcess,
+                                                        x.TotalBaixado,
+                                                        x.Banco,
+                                                        x.DtDigi,
+                                                        x.Mot,
+                                                        x.Orig,
+                                                        x.Vendedor,
+                                                        x.TipoCliente,
+                                                        x.CodigoCliente,
+                                                        x.Login,
+                                                        x.Gestor,
+                                                        x.DataPedido
+                                                    }).Select(x => new RelatorioAreceberBaixa
+                                                    {
+                                                        Prefixo = x.Key.Prefixo,
+                                                        Numero = x.Key.Numero,
+                                                        Parcela = x.Key.Parcela,
+                                                        TP = x.Key.TP,
+                                                        CliFor = x.Key.CliFor,
+                                                        NomeFor = x.Key.NomeFor,
+                                                        Naturez = x.Key.Naturez,
+                                                        Vencimento = x.Key.Vencimento,
+                                                        Historico = x.Key.Historico,
+                                                        DataBaixa = x.Key.DataBaixa,
+                                                        ValorOrig = x.Key.ValorOrig,
+                                                        JurMulta = x.Key.JurMulta,
+                                                        Correcao = x.Key.Correcao,
+                                                        Descon = x.Key.Descon,
+                                                        Abatimento = x.Key.Abatimento,
+                                                        Imposto = x.Key.Imposto,
+                                                        ValorAcess = x.Key.ValorAcess,
+                                                        TotalBaixado = x.Key.TotalBaixado,
+                                                        Banco = x.Key.Banco,
+                                                        DtDigi = x.Key.DtDigi,
+                                                        Mot = x.Key.Mot,
+                                                        Orig = x.Key.Orig,
+                                                        Vendedor = x.Key.Vendedor,
+                                                        TipoCliente = x.Key.TipoCliente,
+                                                        CodigoCliente = x.Key.CodigoCliente,
+                                                        Login = x.Key.Login,
+                                                        Gestor = x.Key.Gestor,
+                                                        DataPedido = x.Key.DataPedido
                                                     }).ToList();
 
                         #endregion
 
 
-                        CirurgiasLicitacoesMes = BaixaLicitacoesInter.DistinctBy(x => x.Numero).Count();
-                        CirurgiasLicitacoesValor = BaixaLicitacoesInter.Sum(x => x.TotalBaixado);
-
-                    }*/
-
-                    #region EmAberto
-                    var resultadoEmAberto = (from SC5 in ProtheusDenuo.Sc5010s
-                                             from SC6 in ProtheusDenuo.Sc6010s
-                                             from SA1 in ProtheusDenuo.Sa1010s
-                                             from SA3 in ProtheusDenuo.Sa3010s
-                                             from SF4 in ProtheusDenuo.Sf4010s
-                                             from SB1 in ProtheusDenuo.Sb1010s
-                                             where SC5.DELET != "*" && SC6.C6Filial == SC5.C5Filial && SC6.C6Num == SC5.C5Num
-                                             && SC6.C6Nota == "" && SC6.C6Blq != "R" && SC6.DELET != "*"
-                                             && SF4.F4Codigo == SC6.C6Tes && SF4.F4Duplic == "S" && SF4.DELET != "*" && SA1.A1Cod == SC5.C5Cliente
-                                             && SA1.A1Loja == SC5.C5Lojacli && SA1.DELET != "*" && SA3.A3Cod == SC5.C5Vend1 && SA3.DELET != "*"
-                                             && (SC5.C5Utpoper == "F" || SC5.C5Utpoper == "T") && SB1.DELET != "*" && SC6.C6Produto == SB1.B1Cod
-                                             && SA1.A1Cgc != "04715053000140" && SA1.A1Cgc != "04715053000220" && SA1.A1Cgc != "01390500000140" &&
-                                             SA3.A3Xlogin == user
-                                             orderby SC5.C5Num, SC5.C5Emissao descending
-                                             select new RelatorioCirurgiasFaturar
-                                             {
-                                                 Num = SC5.C5Num,
-                                                 Valor = SC6.C6Valor,
-                                             }
-                                         ).GroupBy(x => new
-                                         {
-                                             x.Num,
-                                         }).Select(x => new RelatorioCirurgiasFaturar
-                                         {
-                                             Num = x.Key.Num,
-                                             Valor = x.Sum(c => c.Valor)
-                                         }).ToList();
-                    #endregion
-
-                    CirurgiasEmAberto = resultadoEmAberto.DistinctBy(x => x.Num).Count();
-                    CirurgiasEmAbertoValor = resultadoEmAberto.Sum(x => x.Valor);
+                        CirurgiasLicitacoesMes = resultado.Where(x => x.Linha == "000011" || x.Linha == "000012").DistinctBy(x => x.Nf).Count();
+                        CirurgiasLicitacoesValor = resultado.Where(x => x.Linha == "000011" || x.Linha == "000012").Sum(x => x.Total) - RelatorioDev.Where(x => x.Linha == "000011" || x.Linha == "000012").Sum(x => x.Total);
+                    }
 
                     user = user.ToLower();
 
@@ -1628,33 +1862,34 @@ namespace SGID.Pages.DashBoards
 
                     if (time != null)
                     {
+
                         Comissao = FaturadoMesValor * (time.Porcentagem / 100);
 
                         Comissao += CirurgiasLicitacoesValor * (time.Porcentagem / 100);
 
                         Meta = time.Meta - FaturadoMesValor;
                     }
-
-                    var Hoje = DateTime.Now.ToString("dd/MM/yyyy");
-
-                    var Valores = new
-                    {
-                        CirurgiasValorizadas,
-                        CirurgiasValorizadasValor,
-                        FaturadoMes,
-                        FaturadoMesValor,
-                        CirurgiasEmAberto,
-                        CirurgiasEmAbertoValor,
-                        CirurgiasLicitacoesMes,
-                        CirurgiasLicitacoesValor,
-                        Meta,
-                        Comissao,
-                        Id,
-                        Hoje
-                    };
-
-                    return new JsonResult(Valores);
                 }
+
+                var Hoje = DateTime.Now.ToString("dd/MM/yyyy");
+
+                var Valores = new
+                {
+                    CirurgiasValorizadas,
+                    CirurgiasValorizadasValor,
+                    FaturadoMes,
+                    FaturadoMesValor,
+                    CirurgiasEmAberto,
+                    CirurgiasEmAbertoValor,
+                    CirurgiasLicitacoesMes,
+                    CirurgiasLicitacoesValor,
+                    Meta,
+                    Comissao,
+                    Id,
+                    Hoje
+                };
+
+                return new JsonResult(Valores);
             }
             catch (Exception ex)
             {

@@ -546,7 +546,7 @@ namespace SGID.Pages.Account.RH
 
             if (Representante.User.TipoFaturamento != "S" && Representante.User.TipoFaturamento != "L")
             {
-                if (20231231 >= dataini)
+                if (20240231 >= dataini)
                 {
                     Representante.Faturado += resultadoInter.Where(x => x.Login == usuario.Integrante.ToUpper()).Sum(x => x.Total) - DevolucaoInter.Where(x => x.Login == usuario.Integrante.ToUpper()).Sum(x => x.Total);
 
@@ -618,8 +618,6 @@ namespace SGID.Pages.Account.RH
                 {
 
                     
-
-                    
                     Representante.Faturado += resultadoInter.Where(x => x.Login == usuario.Integrante.ToUpper() && (x.Codigo != "000011" || x.Codigo != "000012")).Sum(x => x.Total) - DevolucaoInter.Where(x => x.Login == usuario.Integrante.ToUpper() && (x.Codigo != "000011" || x.Codigo != "000012")).Sum(x => x.Total);
 
                     Representante.Faturado += resultadoDenuo.Where(x => x.Login == usuario.Integrante.ToUpper() && (x.Codigo != "000011" || x.Codigo != "000012")).Sum(x => x.Total) - DevolucaoDenuo.Where(x => x.Login == usuario.Integrante.ToUpper() && (x.Codigo != "000011" || x.Codigo != "000012")).Sum(x => x.Total);
@@ -635,24 +633,14 @@ namespace SGID.Pages.Account.RH
                     BaixaFaturamento.AddRange(BaixaLicitacoesDenuo.Where(x => (x.CodigoCliente == "000011" || x.CodigoCliente == "000012") && x.Login == usuario.Integrante.ToUpper()).ToList());
                     BaixaFaturamento.AddRange(BaixaLicitacoesInter.Where(x => (x.CodigoCliente == "000011" || x.CodigoCliente == "000012") && x.Login == usuario.Integrante.ToUpper()).ToList());
 
-                    if (usuario.Integrante.ToUpper() == "MICHEL.SAMPAIO")
-                    {
-                        Representante.FaturadoEquipe += resultadoInter.Where(x => x.Gestor == "ANDRE.SALES" && x.DOR != "082").Sum(x => x.Total) - DevolucaoInter.Where(x => x.Gestor == "ANDRE.SALES" && x.DOR != "082").Sum(x => x.Total);
-                        Representante.FaturadoEquipe += resultadoDenuo.Where(x => x.Gestor == "ANDRE.SALES" && x.DOR != "082").Sum(x => x.Total) - DevolucaoDenuo.Where(x => x.Gestor == "ANDRE.SALES" && x.DOR != "082").Sum(x => x.Total);
-                        GestorFaturamento.AddRange(resultadoInter.Where(x => x.Gestor == "ANDRE.SALES" && x.DOR != "082").ToList());
-                        GestorFaturamento.AddRange(resultadoDenuo.Where(x => x.Gestor == "ANDRE.SALES" && x.DOR != "082").ToList());
-                        GestorDevolucao.AddRange(DevolucaoInter.Where(x => x.Gestor == "ANDRE.SALES" && x.DOR != "082").ToList());
-                        GestorDevolucao.AddRange(DevolucaoDenuo.Where(x => x.Gestor == "ANDRE.SALES" && x.DOR != "082").ToList());
-                    }
-                    else
-                    {
-                        Representante.FaturadoEquipe += resultadoInter.Where(x => x.Gestor == usuario.Integrante.ToUpper() && x.DOR != "082").Sum(x => x.Total) - DevolucaoInter.Where(x => x.Gestor == usuario.Integrante.ToUpper() && x.DOR != "082").Sum(x => x.Total);
-                        Representante.FaturadoEquipe += resultadoDenuo.Where(x => x.Gestor == usuario.Integrante.ToUpper()).Sum(x => x.Total) - DevolucaoDenuo.Where(x => x.Gestor == usuario.Integrante.ToUpper().ToUpper()).Sum(x => x.Total);
-                        GestorFaturamento.AddRange(resultadoInter.Where(x => x.Gestor == usuario.Integrante.ToUpper()).ToList());
-                        GestorFaturamento.AddRange(resultadoDenuo.Where(x => x.Gestor == usuario.Integrante.ToUpper()).ToList());
-                        GestorDevolucao.AddRange(DevolucaoInter.Where(x => x.Gestor == usuario.Integrante.ToUpper()).ToList());
-                        GestorDevolucao.AddRange(DevolucaoDenuo.Where(x => x.Gestor == usuario.Integrante.ToUpper()).ToList());
-                    }
+                    
+                    Representante.FaturadoEquipe += resultadoInter.Where(x => x.Gestor == usuario.Integrante.ToUpper() && x.DOR != "082").Sum(x => x.Total) - DevolucaoInter.Where(x => x.Gestor == usuario.Integrante.ToUpper() && x.DOR != "082").Sum(x => x.Total);
+                    Representante.FaturadoEquipe += resultadoDenuo.Where(x => x.Gestor == usuario.Integrante.ToUpper()).Sum(x => x.Total) - DevolucaoDenuo.Where(x => x.Gestor == usuario.Integrante.ToUpper().ToUpper()).Sum(x => x.Total);
+                    GestorFaturamento.AddRange(resultadoInter.Where(x => x.Gestor == usuario.Integrante.ToUpper()).ToList());
+                    GestorFaturamento.AddRange(resultadoDenuo.Where(x => x.Gestor == usuario.Integrante.ToUpper()).ToList());
+                    GestorDevolucao.AddRange(DevolucaoInter.Where(x => x.Gestor == usuario.Integrante.ToUpper()).ToList());
+                    GestorDevolucao.AddRange(DevolucaoDenuo.Where(x => x.Gestor == usuario.Integrante.ToUpper()).ToList());
+                    
 
 
                     Produtos.ForEach(prod =>
@@ -662,28 +650,28 @@ namespace SGID.Pages.Account.RH
                         {
                             if (i == 0)
                             {
-                                Representante.FaturadoProduto += resultadoDenuo.Where(x => (x.Linha.Trim() == prod.Produto.Trim() && x.Gestor != "RONAN.JOVINO") || x.Login == "RICARDO.RAMOS" || x.Login == "JULIANO.SOARES" || x.Login == "ELAINE.MARTINS").Sum(x => x.Total) - DevolucaoDenuo.Where(x => (x.Linha.Trim() == prod.Produto.Trim() && x.Gestor != "RONAN.JOVINO") || x.Login == "RICARDO.RAMOS" || x.Login == "JULIANO.SOARES" || x.Login == "ELAINE.MARTINS").Sum(x => x.Total);
-                                Representante.FaturadoProduto += resultadoInter.Where(x => (x.Linha == prod.Produto && x.Gestor != "RONAN.JOVINO") || x.Login == "RICARDO.RAMOS" || x.Login == "JULIANO.SOARES" || x.Login == "ELAINE.MARTINS").Sum(x => x.Total) - DevolucaoInter.Where(x => (x.Linha.Trim() == prod.Produto && x.Gestor != "RONAN.JOVINO") || x.Login == "RICARDO.RAMOS" || x.Login == "JULIANO.SOARES" || x.Login == "ELAINE.MARTINS").Sum(x => x.Total);
-                                LinhaFaturamento.AddRange(resultadoDenuo.Where(x => (x.Linha.Trim() == prod.Produto.Trim() && x.Gestor != "RONAN.JOVINO") || x.Login == "RICARDO.RAMOS" || x.Login == "JULIANO.SOARES" || x.Login == "ELAINE.MARTINS").ToList());
-                                LinhaDevolucao.AddRange(DevolucaoDenuo.Where(x => (x.Linha.Trim() == prod.Produto.Trim() && x.Gestor != "RONAN.JOVINO") || x.Login == "RICARDO.RAMOS" || x.Login == "JULIANO.SOARES" || x.Login == "ELAINE.MARTINS").ToList());
+                                Representante.FaturadoProduto += resultadoDenuo.Where(x => x.Linha.Trim() == prod.Produto.Trim()).Sum(x => x.Total) - DevolucaoDenuo.Where(x => x.Linha.Trim() == prod.Produto.Trim() ).Sum(x => x.Total);
+                                Representante.FaturadoProduto += resultadoInter.Where(x => x.Linha.Trim() == prod.Produto.Trim() && x.DOR != "082").Sum(x => x.Total) - DevolucaoInter.Where(x => x.Linha.Trim() == prod.Produto && x.DOR != "082").Sum(x => x.Total);
+                                LinhaFaturamento.AddRange(resultadoDenuo.Where(x => x.Linha.Trim() == prod.Produto.Trim()).ToList());
+                                LinhaDevolucao.AddRange(DevolucaoDenuo.Where(x => x.Linha.Trim() == prod.Produto.Trim()).ToList());
                                 i++;
                             }
                             else
                             {
-                                Representante.FaturadoProduto += resultadoDenuo.Where(x => x.Linha.Trim() == prod.Produto.Trim() && x.Gestor != "RONAN.JOVINO").Sum(x => x.Total) - DevolucaoDenuo.Where(x => x.Linha.Trim() == prod.Produto.Trim() && x.Gestor != "RONAN.JOVINO").Sum(x => x.Total);
-                                Representante.FaturadoProduto += resultadoInter.Where(x => x.Linha == prod.Produto && x.Gestor != "RONAN.JOVINO").Sum(x => x.Total) - DevolucaoInter.Where(x => x.Linha.Trim() == prod.Produto && x.Gestor != "RONAN.JOVINO").Sum(x => x.Total);
-                                LinhaFaturamento.AddRange(resultadoInter.Where(x => x.Linha == prod.Produto && x.Gestor != "RONAN.JOVINO").ToList());
-                                LinhaDevolucao.AddRange(DevolucaoInter.Where(x => x.Linha == prod.Produto && x.Gestor != "RONAN.JOVINO").ToList());
-                                LinhaFaturamento.AddRange(resultadoDenuo.Where(x => (x.Linha.Trim() == prod.Produto.Trim() && x.Gestor != "RONAN.JOVINO")).ToList());
-                                LinhaDevolucao.AddRange(DevolucaoDenuo.Where(x => (x.Linha.Trim() == prod.Produto.Trim() && x.Gestor != "RONAN.JOVINO")).ToList());
+                                Representante.FaturadoProduto += resultadoDenuo.Where(x => x.Linha.Trim() == prod.Produto.Trim()).Sum(x => x.Total) - DevolucaoDenuo.Where(x => x.Linha.Trim() == prod.Produto.Trim() ).Sum(x => x.Total);
+                                Representante.FaturadoProduto += resultadoInter.Where(x => x.Linha == prod.Produto && x.DOR != "082").Sum(x => x.Total) - DevolucaoInter.Where(x => x.Linha.Trim() == prod.Produto && x.DOR != "082").Sum(x => x.Total);
+                                LinhaFaturamento.AddRange(resultadoInter.Where(x => x.Linha == prod.Produto && x.DOR != "082").ToList());
+                                LinhaDevolucao.AddRange(DevolucaoInter.Where(x => x.Linha == prod.Produto && x.DOR != "082").ToList());
+                                LinhaFaturamento.AddRange(resultadoDenuo.Where(x => x.Linha.Trim() == prod.Produto.Trim()).ToList());
+                                LinhaDevolucao.AddRange(DevolucaoDenuo.Where(x => x.Linha.Trim() == prod.Produto.Trim()).ToList());
                             }
                         }
                         else
                         {
                             Representante.FaturadoProduto += resultadoDenuo.Where(x => x.Linha.Trim() == prod.Produto.Trim() && x.Gestor != "RONAN.JOVINO" && x.Gestor != "TIAGO.FONSECA").Sum(x => x.Total) - DevolucaoDenuo.Where(x => x.Linha.Trim() == prod.Produto.Trim() && x.Gestor != "RONAN.JOVINO" && x.Gestor != "TIAGO.FONSECA").Sum(x => x.Total);
-                            Representante.FaturadoProduto += resultadoInter.Where(x => x.Linha == prod.Produto && x.Gestor != "RONAN.JOVINO" && x.Gestor != "TIAGO.FONSECA").Sum(x => x.Total) - DevolucaoInter.Where(x => x.Linha.Trim() == prod.Produto && x.Gestor != "RONAN.JOVINO" && x.Gestor != "TIAGO.FONSECA").Sum(x => x.Total);
-                            LinhaFaturamento.AddRange(resultadoInter.Where(x => x.Linha == prod.Produto && x.Gestor != "RONAN.JOVINO" && x.Gestor != "TIAGO.FONSECA").ToList());
-                            LinhaDevolucao.AddRange(DevolucaoInter.Where(x => x.Linha == prod.Produto && x.Gestor != "RONAN.JOVINO" && x.Gestor != "TIAGO.FONSECA").ToList());
+                            Representante.FaturadoProduto += resultadoInter.Where(x => x.Linha == prod.Produto && x.DOR != "082" && x.Gestor != "RONAN.JOVINO" && x.Gestor != "TIAGO.FONSECA").Sum(x => x.Total) - DevolucaoInter.Where(x => x.Linha.Trim() == prod.Produto && x.DOR != "082" && x.Gestor != "RONAN.JOVINO" && x.Gestor != "TIAGO.FONSECA").Sum(x => x.Total);
+                            LinhaFaturamento.AddRange(resultadoInter.Where(x => x.Linha == prod.Produto && x.DOR != "082" && x.Gestor != "RONAN.JOVINO" && x.Gestor != "TIAGO.FONSECA").ToList());
+                            LinhaDevolucao.AddRange(DevolucaoInter.Where(x => x.Linha == prod.Produto && x.DOR != "082" && x.Gestor != "RONAN.JOVINO" && x.Gestor != "TIAGO.FONSECA").ToList());
                             LinhaFaturamento.AddRange(resultadoDenuo.Where(x => x.Linha == prod.Produto && x.Gestor != "RONAN.JOVINO" && x.Gestor != "TIAGO.FONSECA").ToList());
                             LinhaDevolucao.AddRange(DevolucaoDenuo.Where(x => x.Linha == prod.Produto && x.Gestor != "RONAN.JOVINO" && x.Gestor != "TIAGO.FONSECA").ToList());
                         }

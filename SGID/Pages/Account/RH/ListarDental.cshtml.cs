@@ -839,11 +839,11 @@ namespace SGID.Pages.Account.RH
 
                     if (x.User.Integrante.ToUpper() == "MARCOS.PARRA")
                     {
-                        sheet.Cells[id, 5].Value = x.FaturadoEquipe;
+                        sheet.Cells[id, 5].Value = x.ComissaoEquipe;
                     }
                     else
                     {
-                        sheet.Cells[id, 5].Value = x.Faturado;
+                        sheet.Cells[id, 5].Value = x.Comissao;
                     }
 
                     

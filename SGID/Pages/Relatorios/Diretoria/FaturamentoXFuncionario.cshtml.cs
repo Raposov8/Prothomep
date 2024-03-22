@@ -937,7 +937,7 @@ namespace SGID.Pages.Relatorios.Diretoria
                     if (x.TipoFaturamento != "S" && x.TipoFaturamento != "L")
                     {
                         
-                        time.Linha = resultadoDenuo.FirstOrDefault(x => x.Login == usuario)?.Linha;
+                        time.Linha = ProtheusDenuo.Sa3010s.FirstOrDefault(x => x.A3Xlogin == usuario)?.A3Xdescun;
                         if (time.User.Integrante.ToUpper() == "EDUARDO.ARONI")
                         {
                             time.Linha = "ORTOPEDIA";
@@ -948,11 +948,11 @@ namespace SGID.Pages.Relatorios.Diretoria
                         }
                         else if (time.Linha == null)
                         {
-                            time.Linha = resultadoInter.FirstOrDefault(x => x.Login == usuario)?.Linha;
+                            time.Linha = ProtheusDenuo.Sa3010s.FirstOrDefault(x => x.A3Xlogin == usuario)?.A3Xdescun;
                         }
 
-                        //if (dataini <=  20231231)
-                        //{
+                        if (dataini <= 20230231)
+                        {
 
                             time.Faturado += resultadoInter.Where(x => x.Login == usuario).Sum(x => x.Total) - DevolucaoInter.Where(x => x.Login == usuario).Sum(x => x.Total);
                             time.Faturado += resultadoDenuo.Where(x => x.Login == usuario).Sum(x => x.Total) - DevolucaoDenuo.Where(x => x.Login == usuario).Sum(x => x.Total);
@@ -990,27 +990,19 @@ namespace SGID.Pages.Relatorios.Diretoria
                                     time.FaturadoProduto += resultadoDenuo.Where(x => x.Linha.Trim() == prod.Produto.Trim() && x.Gestor != "RONAN.JOVINO" && x.Gestor != "TIAGO.FONSECA").Sum(x => x.Total) - DevolucaoDenuo.Where(x => x.Linha.Trim() == prod.Produto.Trim() && x.Gestor != "RONAN.JOVINO" && x.Gestor != "TIAGO.FONSECA").Sum(x => x.Total);
                                 }
                             });
-                        //}
-                        /*else
+                        }
+                        else
                         {
                             time.Faturado += resultadoInter.Where(x => x.Login == usuario && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total) - DevolucaoInter.Where(x => x.Login == usuario && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total);
                             time.Faturado += resultadoDenuo.Where(x => x.Login == usuario && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total) - DevolucaoDenuo.Where(x => x.Login == usuario && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total);
-                            time.Baixa += BaixaLicitacoesDenuo.Where(x => Convert.ToInt32(x.DataPedido) > 20231231 && (x.CodigoCliente == "000011" || x.CodigoCliente == "000012") && x.Login == usuario).Sum(x => x.TotalBaixado);
-                            time.Baixa += BaixaLicitacoesInter.Where(x => Convert.ToInt32(x.DataPedido) > 20231231 && (x.CodigoCliente == "000011" || x.CodigoCliente == "000012") && x.Login == usuario).Sum(x => x.TotalBaixado);
-                            if (usuario == "MICHEL.SAMPAIO")
-                            {
-                                time.FaturadoEquipe += resultadoInter.Where(x => x.Gestor == "ANDRE.SALES" && x.DOR != "082" && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total) - DevolucaoInter.Where(x => x.Gestor == "ANDRE.SALES" && x.DOR != "082" && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total);
-                                time.FaturadoEquipe += resultadoDenuo.Where(x => x.Gestor == "ANDRE.SALES" && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total) - DevolucaoDenuo.Where(x => x.Gestor == "ANDRE.SALES" && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total);
-                                time.BaixaEquipe += BaixaLicitacoesDenuo.Where(x => Convert.ToInt32(x.DataPedido) > 20231231 && (x.CodigoCliente == "000011" || x.CodigoCliente == "000012") && x.Gestor == "ANDRE.SALES").Sum(x => x.TotalBaixado);
-                                time.BaixaEquipe += BaixaLicitacoesInter.Where(x => Convert.ToInt32(x.DataPedido) > 20231231 && (x.CodigoCliente == "000011" || x.CodigoCliente == "000012") && x.Gestor == "ANDRE.SALES").Sum(x => x.TotalBaixado);
-                            }
-                            else
-                            {
-                                time.FaturadoEquipe += resultadoInter.Where(x => x.Gestor == usuario && x.DOR != "082" && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total) - DevolucaoInter.Where(x => x.Gestor == usuario && x.DOR != "082" && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total);
-                                time.FaturadoEquipe += resultadoDenuo.Where(x => x.Gestor == usuario && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total) - DevolucaoDenuo.Where(x => x.Gestor == usuario && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total);
-                                time.BaixaEquipe += BaixaLicitacoesDenuo.Where(x => Convert.ToInt32(x.DataPedido) > 20231231 && (x.CodigoCliente == "000011" || x.CodigoCliente == "000012") && x.Gestor == usuario).Sum(x => x.TotalBaixado);
-                                time.BaixaEquipe += BaixaLicitacoesInter.Where(x => Convert.ToInt32(x.DataPedido) > 20231231 && (x.CodigoCliente == "000011" || x.CodigoCliente == "000012") && x.Gestor == usuario).Sum(x => x.TotalBaixado);
-                            }
+                            time.Faturado += BaixaLicitacoesDenuo.Where(x => Convert.ToInt32(x.DataPedido) > 20240231 && (x.CodigoCliente == "000011" || x.CodigoCliente == "000012") && x.Login == usuario).Sum(x => x.TotalBaixado);
+                            time.Faturado += BaixaLicitacoesInter.Where(x => Convert.ToInt32(x.DataPedido) > 20240231 && (x.CodigoCliente == "000011" || x.CodigoCliente == "000012") && x.Login == usuario).Sum(x => x.TotalBaixado);
+
+                            time.FaturadoEquipe += resultadoInter.Where(x => x.Gestor == usuario && x.DOR != "082" && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total) - DevolucaoInter.Where(x => x.Gestor == usuario && x.DOR != "082" && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total);
+                            time.FaturadoEquipe += resultadoDenuo.Where(x => x.Gestor == usuario && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total) - DevolucaoDenuo.Where(x => x.Gestor == usuario && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total);
+                            time.FaturadoEquipe += BaixaLicitacoesDenuo.Where(x => Convert.ToInt32(x.DataPedido) > 20240231 && (x.CodigoCliente == "000011" && x.CodigoCliente == "000012") && x.Gestor == usuario).Sum(x => x.TotalBaixado);
+                            time.FaturadoEquipe += BaixaLicitacoesInter.Where(x => Convert.ToInt32(x.DataPedido) > 20240231 && (x.CodigoCliente == "000011" && x.CodigoCliente == "000012") && x.Gestor == usuario).Sum(x => x.TotalBaixado);
+
                             int i = 0;
                             Produtos.ForEach(prod =>
                             {
@@ -1019,32 +1011,32 @@ namespace SGID.Pages.Relatorios.Diretoria
                                     if (i == 0)
                                     {
                                         time.FaturadoEquipe = 0;
-                                        time.FaturadoProduto += resultadoInter.Where(x => x.Linha == prod.Produto.Trim() && x.DOR != "082" && x.Gestor != "RONAN.JOVINO" && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total) - DevolucaoInter.Where(x => x.Linha.Trim() == prod.Produto.Trim() && x.DOR != "082" && x.Gestor != "RONAN.JOVINO" && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total);
+                                        time.FaturadoProduto += resultadoInter.Where(x => x.Linha == prod.Produto.Trim() && x.DOR != "082" && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total) - DevolucaoInter.Where(x => x.Linha.Trim() == prod.Produto.Trim() && x.DOR != "082" && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total);
                                         time.FaturadoProduto += resultadoDenuo.Where(x => x.Linha.Trim() == prod.Produto.Trim() && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total) - DevolucaoDenuo.Where(x => x.Linha.Trim() == prod.Produto.Trim() && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total);
-                                        time.BaixaProduto += BaixaLicitacoesDenuo.Where(x => Convert.ToInt32(x.DataPedido) > 20231231 && (x.CodigoCliente == "000011" || x.CodigoCliente == "000012") && x.Gestor != "RONAN.JOVINO" && x.Linha == prod.Produto.Trim()).Sum(x => x.TotalBaixado);
-                                        time.BaixaProduto += BaixaLicitacoesInter.Where(x => Convert.ToInt32(x.DataPedido) > 20231231 && (x.CodigoCliente == "000011" || x.CodigoCliente == "000012") && x.Linha.Trim() == prod.Produto.Trim()).Sum(x => x.TotalBaixado);
+                                        time.FaturadoProduto += BaixaLicitacoesDenuo.Where(x => Convert.ToInt32(x.DataPedido) > 20240231 && (x.CodigoCliente == "000011" && x.CodigoCliente == "000012") && x.Linha == prod.Produto.Trim()).Sum(x => x.TotalBaixado);
+                                        time.FaturadoProduto += BaixaLicitacoesInter.Where(x => Convert.ToInt32(x.DataPedido) > 20240231 && (x.CodigoCliente == "000011" && x.CodigoCliente == "000012") && x.Linha.Trim() == prod.Produto.Trim()).Sum(x => x.TotalBaixado);
                                         i++;
                                     }
                                     else
                                     {
-                                        time.FaturadoProduto += resultadoInter.Where(x => x.Linha == prod.Produto.Trim() && x.DOR != "082" && x.Gestor != "RONAN.JOVINO" && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total) - DevolucaoInter.Where(x => x.Linha.Trim() == prod.Produto.Trim() && x.DOR != "082" && x.Gestor != "RONAN.JOVINO" && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total);
+                                        time.FaturadoProduto += resultadoInter.Where(x => x.Linha == prod.Produto.Trim() && x.DOR != "082" && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total) - DevolucaoInter.Where(x => x.Linha.Trim() == prod.Produto.Trim() && x.DOR != "082" && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total);
                                         time.FaturadoProduto += resultadoDenuo.Where(x => x.Linha.Trim() == prod.Produto.Trim() && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total) - DevolucaoDenuo.Where(x => x.Linha.Trim() == prod.Produto.Trim() && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total);
-                                        time.BaixaProduto += BaixaLicitacoesDenuo.Where(x => Convert.ToInt32(x.DataPedido) > 20231231 && (x.CodigoCliente == "000011" || x.CodigoCliente == "000012") && x.Gestor != "RONAN.JOVINO" && x.Linha == prod.Produto.Trim()).Sum(x => x.TotalBaixado);
-                                        time.BaixaProduto += BaixaLicitacoesInter.Where(x => Convert.ToInt32(x.DataPedido) > 20231231 && (x.CodigoCliente == "000011" || x.CodigoCliente == "000012") && x.Linha.Trim() == prod.Produto.Trim()).Sum(x => x.TotalBaixado);
+                                        time.FaturadoProduto += BaixaLicitacoesDenuo.Where(x => Convert.ToInt32(x.DataPedido) > 20240231 && (x.CodigoCliente == "000011" && x.CodigoCliente == "000012") && x.Linha == prod.Produto.Trim()).Sum(x => x.TotalBaixado);
+                                        time.FaturadoProduto += BaixaLicitacoesInter.Where(x => Convert.ToInt32(x.DataPedido) > 20240231 && (x.CodigoCliente == "000011" && x.CodigoCliente == "000012") && x.Linha.Trim() == prod.Produto.Trim()).Sum(x => x.TotalBaixado);
                                     }
                                 }
                                 else
                                 {
                                     time.FaturadoProduto += resultadoInter.Where(x => x.Linha == prod.Produto && x.DOR != "082" && x.Gestor != "RONAN.JOVINO" && x.Gestor != "TIAGO.FONSECA" && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total) - DevolucaoInter.Where(x => x.Linha.Trim() == prod.Produto && x.DOR != "082" && x.Gestor != "RONAN.JOVINO" && x.Gestor != "TIAGO.FONSECA" && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total);
                                     time.FaturadoProduto += resultadoDenuo.Where(x => x.Linha.Trim() == prod.Produto.Trim() && x.Gestor != "RONAN.JOVINO" && x.Gestor != "TIAGO.FONSECA" && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total) - DevolucaoDenuo.Where(x => x.Linha.Trim() == prod.Produto.Trim() && x.Gestor != "RONAN.JOVINO" && x.Gestor != "TIAGO.FONSECA" && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total);
-                                    time.BaixaProduto += BaixaLicitacoesDenuo.Where(x => Convert.ToInt32(x.DataPedido) > 20231231 && (x.CodigoCliente == "000011" || x.CodigoCliente == "000012") && x.Gestor != "RONAN.JOVINO" && x.Gestor != "TIAGO.FONSECA" && x.Linha == prod.Produto.Trim()).Sum(x => x.TotalBaixado);
-                                    time.BaixaProduto += BaixaLicitacoesInter.Where(x => Convert.ToInt32(x.DataPedido) > 20231231 && (x.CodigoCliente == "000011" || x.CodigoCliente == "000012") && x.Gestor != "RONAN.JOVINO" && x.Gestor != "TIAGO.FONSECA" && x.Linha.Trim() == prod.Produto.Trim()).Sum(x => x.TotalBaixado);
+                                    time.FaturadoProduto += BaixaLicitacoesDenuo.Where(x => Convert.ToInt32(x.DataPedido) > 20240231 && (x.CodigoCliente == "000011" && x.CodigoCliente == "000012") && x.Gestor != "RONAN.JOVINO" && x.Gestor != "TIAGO.FONSECA" && x.Linha == prod.Produto.Trim()).Sum(x => x.TotalBaixado);
+                                    time.FaturadoProduto += BaixaLicitacoesInter.Where(x => Convert.ToInt32(x.DataPedido) > 20240231 && (x.CodigoCliente == "000011" && x.CodigoCliente == "000012") && x.Gestor != "RONAN.JOVINO" && x.Gestor != "TIAGO.FONSECA" && x.Linha.Trim() == prod.Produto.Trim()).Sum(x => x.TotalBaixado);
                                 }
                             });
 
-                        }*/
+                        }
 
-                        
+
 
                         time.Comissao = (time.Faturado + time.Baixa) * (time.User.Porcentagem / 100);
                         time.ComissaoEquipe = (time.FaturadoEquipe + time.BaixaEquipe) * (time.User.PorcentagemSeg / 100);
@@ -1788,7 +1780,7 @@ namespace SGID.Pages.Relatorios.Diretoria
 
                         if (x.TipoFaturamento != "S" && x.TipoFaturamento != "L")
                         {
-                            time.Linha = resultadoInter.FirstOrDefault(x => x.Login == usuario)?.Linha;
+                            time.Linha = ProtheusDenuo.Sa3010s.FirstOrDefault(x => x.A3Xlogin == usuario)?.A3Xdescun;
                             if (time.User.Integrante.ToUpper() == "EDUARDO.ARONI")
                             {
                                 time.Linha = "ORTOPEDIA";
@@ -1798,10 +1790,11 @@ namespace SGID.Pages.Relatorios.Diretoria
                                 time.Linha = "BUCOMAXILO";
                             }
 
-                            //if (dataini <=  20231231)
-                            //{
-
+                            if (dataini <= 20240231)
+                            {
+                                #region RegrasAntigas
                                 time.Faturado += resultadoInter.Where(x => x.Login == usuario).Sum(x => x.Total) - DevolucaoInter.Where(x => x.Login == usuario).Sum(x => x.Total);
+
                                 if (usuario == "MICHEL.SAMPAIO")
                                 {
                                     time.FaturadoEquipe += resultadoInter.Where(x => x.Gestor == "ANDRE.SALES" && x.DOR != "082").Sum(x => x.Total) - DevolucaoInter.Where(x => x.Gestor == "ANDRE.SALES" && x.DOR != "082").Sum(x => x.Total);
@@ -1810,6 +1803,7 @@ namespace SGID.Pages.Relatorios.Diretoria
                                 {
                                     time.FaturadoEquipe += resultadoInter.Where(x => x.Gestor == usuario && x.DOR != "082").Sum(x => x.Total) - DevolucaoInter.Where(x => x.Gestor == usuario && x.DOR != "082").Sum(x => x.Total);
                                 }
+
                                 int i = 0;
                                 Produtos.ForEach(prod =>
                                 {
@@ -1818,12 +1812,12 @@ namespace SGID.Pages.Relatorios.Diretoria
                                         if (i == 0)
                                         {
                                             time.FaturadoEquipe = 0;
-                                            time.FaturadoProduto += resultadoInter.Where(x => x.Linha == prod.Produto.Trim() && x.DOR != "082" && x.Gestor != "RONAN.JOVINO").Sum(x => x.Total) - DevolucaoInter.Where(x => x.Linha.Trim() == prod.Produto.Trim() && x.DOR != "082" && x.Gestor != "RONAN.JOVINO").Sum(x => x.Total);
+                                            time.FaturadoProduto += resultadoInter.Where(x => x.Linha == prod.Produto.Trim() && x.DOR != "082").Sum(x => x.Total) - DevolucaoInter.Where(x => x.Linha.Trim() == prod.Produto.Trim() && x.DOR != "082").Sum(x => x.Total);
                                             i++;
                                         }
                                         else
                                         {
-                                            time.FaturadoProduto += resultadoInter.Where(x => x.Linha == prod.Produto.Trim() && x.DOR != "082" && x.Gestor != "RONAN.JOVINO").Sum(x => x.Total) - DevolucaoInter.Where(x => x.Linha.Trim() == prod.Produto.Trim() && x.DOR != "082" && x.Gestor != "RONAN.JOVINO").Sum(x => x.Total);
+                                            time.FaturadoProduto += resultadoInter.Where(x => x.Linha == prod.Produto.Trim() && x.DOR != "082").Sum(x => x.Total) - DevolucaoInter.Where(x => x.Linha.Trim() == prod.Produto.Trim() && x.DOR != "082").Sum(x => x.Total);
                                         }
                                     }
                                     else
@@ -1831,21 +1825,18 @@ namespace SGID.Pages.Relatorios.Diretoria
                                         time.FaturadoProduto += resultadoInter.Where(x => x.Linha == prod.Produto && x.DOR != "082" && x.Gestor != "RONAN.JOVINO" && x.Gestor != "TIAGO.FONSECA").Sum(x => x.Total) - DevolucaoInter.Where(x => x.Linha.Trim() == prod.Produto && x.DOR != "082" && x.Gestor != "RONAN.JOVINO" && x.Gestor != "TIAGO.FONSECA").Sum(x => x.Total);
                                     }
                                 });
-                            //}
-                            /*else
+                                #endregion
+                            }
+                            else
                             {
+                                #region RegrasNovas
                                 time.Faturado += resultadoInter.Where(x => x.Login == usuario && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total) - DevolucaoInter.Where(x => x.Login == usuario && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total);
-                                time.Baixa += BaixaLicitacoesInter.Where(x => Convert.ToInt32(x.DataPedido) > 20231231 && (x.CodigoCliente == "000011" || x.CodigoCliente == "000012") && x.Login == usuario).Sum(x => x.TotalBaixado);
-                                if (usuario == "MICHEL.SAMPAIO")
-                                {
-                                    time.FaturadoEquipe += resultadoInter.Where(x => x.Gestor == "ANDRE.SALES" && x.DOR != "082" && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total) - DevolucaoInter.Where(x => x.Gestor == "ANDRE.SALES" && x.DOR != "082" && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total);
-                                    time.BaixaEquipe += BaixaLicitacoesInter.Where(x => Convert.ToInt32(x.DataPedido) > 20231231 && (x.CodigoCliente == "000011" || x.CodigoCliente == "000012") && x.Gestor == "ANDRE.SALES").Sum(x => x.TotalBaixado);
-                                }
-                                else
-                                {
-                                    time.FaturadoEquipe += resultadoInter.Where(x => x.Gestor == usuario && x.DOR != "082" && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total) - DevolucaoInter.Where(x => x.Gestor == usuario && x.DOR != "082" && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total);
-                                    time.BaixaEquipe += BaixaLicitacoesInter.Where(x => Convert.ToInt32(x.DataPedido) > 20231231 && (x.CodigoCliente == "000011" || x.CodigoCliente == "000012") && x.Gestor == usuario).Sum(x => x.TotalBaixado);
-                                }
+                                time.Faturado += BaixaLicitacoesInter.Where(x => Convert.ToInt32(x.DataPedido) > 20240231 && (x.CodigoCliente == "000011" || x.CodigoCliente == "000012") && x.Login == usuario).Sum(x => x.TotalBaixado);
+
+                                time.FaturadoEquipe += resultadoInter.Where(x => x.Gestor == usuario && x.DOR != "082" && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total) - DevolucaoInter.Where(x => x.Gestor == usuario && x.DOR != "082" && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total);
+                                time.FaturadoEquipe += BaixaLicitacoesInter.Where(x => Convert.ToInt32(x.DataPedido) > 20240231 && (x.CodigoCliente == "000011" || x.CodigoCliente == "000012") && x.Gestor == usuario).Sum(x => x.TotalBaixado);
+
+
                                 int i = 0;
                                 Produtos.ForEach(prod =>
                                 {
@@ -1854,24 +1845,25 @@ namespace SGID.Pages.Relatorios.Diretoria
                                         if (i == 0)
                                         {
                                             time.FaturadoEquipe = 0;
-                                            time.FaturadoProduto += resultadoInter.Where(x => x.Linha == prod.Produto.Trim() && x.DOR != "082" && x.Gestor != "RONAN.JOVINO" && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total) - DevolucaoInter.Where(x => x.Linha.Trim() == prod.Produto.Trim() && x.DOR != "082" && x.Gestor != "RONAN.JOVINO" && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total);
-                                            time.BaixaProduto += BaixaLicitacoesInter.Where(x => Convert.ToInt32(x.DataPedido) > 20231231 && (x.CodigoCliente == "000011" || x.CodigoCliente == "000012") && x.Linha.Trim() == prod.Produto.Trim()).Sum(x => x.TotalBaixado);
+                                            time.FaturadoProduto += resultadoInter.Where(x => x.Linha == prod.Produto.Trim() && x.DOR != "082" && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total) - DevolucaoInter.Where(x => x.Linha.Trim() == prod.Produto.Trim() && x.DOR != "082" && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total);
+                                            time.FaturadoProduto += BaixaLicitacoesInter.Where(x => Convert.ToInt32(x.DataPedido) > 20240231 && (x.CodigoCliente == "000011" || x.CodigoCliente == "000012") && x.Linha == prod.Produto.Trim()).Sum(x => x.TotalBaixado);
                                             i++;
                                         }
                                         else
                                         {
-                                            time.FaturadoProduto += resultadoInter.Where(x => x.Linha == prod.Produto.Trim() && x.DOR != "082" && x.Gestor != "RONAN.JOVINO" && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total) - DevolucaoInter.Where(x => x.Linha.Trim() == prod.Produto.Trim() && x.DOR != "082" && x.Gestor != "RONAN.JOVINO" && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total);
-                                            time.BaixaProduto += BaixaLicitacoesInter.Where(x => Convert.ToInt32(x.DataPedido) > 20231231 && (x.CodigoCliente == "000011" || x.CodigoCliente == "000012") && x.Linha.Trim() == prod.Produto.Trim()).Sum(x => x.TotalBaixado);
+                                            time.FaturadoProduto += resultadoInter.Where(x => x.Linha == prod.Produto.Trim() && x.DOR != "082" && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total) - DevolucaoInter.Where(x => x.Linha.Trim() == prod.Produto.Trim() && x.DOR != "082" && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total);
+                                            time.FaturadoProduto += BaixaLicitacoesInter.Where(x => Convert.ToInt32(x.DataPedido) > 20240231 && (x.CodigoCliente == "000011" || x.CodigoCliente == "000012") && x.Linha == prod.Produto.Trim()).Sum(x => x.TotalBaixado);
                                         }
                                     }
                                     else
                                     {
                                         time.FaturadoProduto += resultadoInter.Where(x => x.Linha == prod.Produto && x.DOR != "082" && x.Gestor != "RONAN.JOVINO" && x.Gestor != "TIAGO.FONSECA" && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total) - DevolucaoInter.Where(x => x.Linha.Trim() == prod.Produto && x.DOR != "082" && x.Gestor != "RONAN.JOVINO" && x.Gestor != "TIAGO.FONSECA" && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total);
-                                        time.BaixaProduto += BaixaLicitacoesInter.Where(x => Convert.ToInt32(x.DataPedido) > 20231231 && (x.CodigoCliente == "000011" || x.CodigoCliente == "000012") && x.Gestor != "RONAN.JOVINO" && x.Gestor != "TIAGO.FONSECA" && x.Linha.Trim() == prod.Produto.Trim()).Sum(x => x.TotalBaixado);
+                                        time.FaturadoProduto += BaixaLicitacoesInter.Where(x => Convert.ToInt32(x.DataPedido) > 20240231 && (x.CodigoCliente == "000011" || x.CodigoCliente == "000012") && x.Linha == prod.Produto.Trim() && x.Gestor != "RONAN.JOVINO" && x.Gestor != "TIAGO.FONSECA").Sum(x => x.TotalBaixado);
                                     }
                                 });
+                                #endregion
+                            }
 
-                            }*/
                             time.Comissao = (time.Faturado + time.Baixa) * (time.User.Porcentagem / 100);
                             time.ComissaoEquipe = (time.FaturadoEquipe + time.BaixaEquipe) * (time.User.PorcentagemSeg / 100);
                             time.ComissaoProduto = (time.FaturadoProduto + time.BaixaProduto) * (time.User.PorcentagemGenProd / 100);
@@ -2699,7 +2691,7 @@ namespace SGID.Pages.Relatorios.Diretoria
 
                         if (x.TipoFaturamento != "S" && x.TipoFaturamento != "L")
                         {
-                            time.Linha = resultadoDenuo.FirstOrDefault(x => x.Login == usuario)?.Linha;
+                            time.Linha = ProtheusDenuo.Sa3010s.FirstOrDefault(x => x.A3Xlogin == usuario)?.A3Xdescun;
                             if (time.User.Integrante.ToUpper() == "EDUARDO.ARONI")
                             {
                                 time.Linha = "ORTOPEDIA";
@@ -2709,10 +2701,10 @@ namespace SGID.Pages.Relatorios.Diretoria
                                 time.Linha = "BUCOMAXILO";
                             }
 
-                            //if (dataini <=  20231231)
-                            //{
-
+                            if (dataini <= 20231231)
+                            {
                                 time.Faturado += resultadoDenuo.Where(x => x.Login == usuario).Sum(x => x.Total) - DevolucaoDenuo.Where(x => x.Login == usuario).Sum(x => x.Total);
+
                                 if (usuario == "MICHEL.SAMPAIO")
                                 {
                                     time.FaturadoEquipe += resultadoDenuo.Where(x => x.Gestor == "ANDRE.SALES").Sum(x => x.Total) - DevolucaoDenuo.Where(x => x.Gestor == "ANDRE.SALES").Sum(x => x.Total);
@@ -2721,6 +2713,7 @@ namespace SGID.Pages.Relatorios.Diretoria
                                 {
                                     time.FaturadoEquipe += resultadoDenuo.Where(x => x.Gestor == usuario).Sum(x => x.Total) - DevolucaoDenuo.Where(x => x.Gestor == usuario).Sum(x => x.Total);
                                 }
+
                                 int i = 0;
                                 Produtos.ForEach(prod =>
                                 {
@@ -2729,34 +2722,29 @@ namespace SGID.Pages.Relatorios.Diretoria
                                         if (i == 0)
                                         {
                                             time.FaturadoEquipe = 0;
-                                            time.FaturadoProduto += resultadoDenuo.Where(x => x.Linha.Trim() == prod.Produto.Trim()).Sum(x => x.Total) - DevolucaoDenuo.Where(x => x.Linha.Trim() == prod.Produto.Trim()).Sum(x => x.Total);
+                                            time.FaturadoProduto += resultadoDenuo.Where(x => x.Linha == prod.Produto.Trim()).Sum(x => x.Total) - DevolucaoDenuo.Where(x => x.Linha.Trim() == prod.Produto.Trim()).Sum(x => x.Total);
                                             i++;
                                         }
                                         else
                                         {
-                                            time.FaturadoProduto += resultadoDenuo.Where(x => x.Linha.Trim() == prod.Produto.Trim()).Sum(x => x.Total) - DevolucaoDenuo.Where(x => x.Linha.Trim() == prod.Produto.Trim()).Sum(x => x.Total);
+                                            time.FaturadoProduto += resultadoDenuo.Where(x => x.Linha == prod.Produto.Trim()).Sum(x => x.Total) - DevolucaoDenuo.Where(x => x.Linha.Trim() == prod.Produto.Trim()).Sum(x => x.Total);
                                         }
                                     }
                                     else
                                     {
-                                        time.FaturadoProduto += resultadoDenuo.Where(x => x.Linha.Trim() == prod.Produto.Trim() && x.Gestor != "RONAN.JOVINO" && x.Gestor != "TIAGO.FONSECA").Sum(x => x.Total) - DevolucaoDenuo.Where(x => x.Linha.Trim() == prod.Produto.Trim() && x.Gestor != "RONAN.JOVINO" && x.Gestor != "TIAGO.FONSECA").Sum(x => x.Total);
+                                        time.FaturadoProduto += resultadoDenuo.Where(x => x.Linha == prod.Produto && x.Gestor != "RONAN.JOVINO" && x.Gestor != "TIAGO.FONSECA").Sum(x => x.Total) - DevolucaoDenuo.Where(x => x.Linha.Trim() == prod.Produto && x.Gestor != "RONAN.JOVINO" && x.Gestor != "TIAGO.FONSECA").Sum(x => x.Total);
                                     }
                                 });
-                            //}
-                            /*else
+                            }
+                            else
                             {
                                 time.Faturado += resultadoDenuo.Where(x => x.Login == usuario && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total) - DevolucaoDenuo.Where(x => x.Login == usuario && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total);
-                                time.Baixa += BaixaLicitacoesDenuo.Where(x => Convert.ToInt32(x.DataPedido) > 20231231 && (x.CodigoCliente == "000011" || x.CodigoCliente == "000012") && x.Login == usuario).Sum(x => x.TotalBaixado);
-                                if (usuario == "MICHEL.SAMPAIO")
-                                {
-                                    time.FaturadoEquipe += resultadoDenuo.Where(x => x.Gestor == "ANDRE.SALES" && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total) - DevolucaoDenuo.Where(x => x.Gestor == "ANDRE.SALES" && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total);
-                                    time.BaixaEquipe += BaixaLicitacoesDenuo.Where(x => Convert.ToInt32(x.DataPedido) > 20231231 && (x.CodigoCliente == "000011" || x.CodigoCliente == "000012") && x.Gestor == "ANDRE.SALES").Sum(x => x.TotalBaixado);
-                                }
-                                else
-                                {
-                                    time.FaturadoEquipe += resultadoDenuo.Where(x => x.Gestor == usuario && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total) - DevolucaoDenuo.Where(x => x.Gestor == usuario && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total);
-                                    time.BaixaEquipe += BaixaLicitacoesDenuo.Where(x => Convert.ToInt32(x.DataPedido) > 20231231 && (x.CodigoCliente == "000011" || x.CodigoCliente == "000012") && x.Gestor == usuario).Sum(x => x.TotalBaixado);
-                                }
+                                time.Faturado += BaixaLicitacoesDenuo.Where(x => Convert.ToInt32(x.DataPedido) > 20240231 && (x.CodigoCliente == "000011" || x.CodigoCliente == "000012") && x.Login == usuario).Sum(x => x.TotalBaixado);
+
+                                time.FaturadoEquipe += resultadoDenuo.Where(x => x.Gestor == usuario && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total) - DevolucaoDenuo.Where(x => x.Gestor == usuario && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total);
+                                time.FaturadoEquipe += BaixaLicitacoesDenuo.Where(x => Convert.ToInt32(x.DataPedido) > 20240231 && (x.CodigoCliente == "000011" || x.CodigoCliente == "000012") && x.Gestor == usuario).Sum(x => x.TotalBaixado);
+
+
                                 int i = 0;
                                 Produtos.ForEach(prod =>
                                 {
@@ -2765,24 +2753,24 @@ namespace SGID.Pages.Relatorios.Diretoria
                                         if (i == 0)
                                         {
                                             time.FaturadoEquipe = 0;
-                                            time.FaturadoProduto += resultadoDenuo.Where(x => x.Linha.Trim() == prod.Produto.Trim() && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total) - DevolucaoDenuo.Where(x => x.Linha.Trim() == prod.Produto.Trim() && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total);
-                                            time.BaixaProduto += BaixaLicitacoesDenuo.Where(x => Convert.ToInt32(x.DataPedido) > 20231231 && (x.CodigoCliente == "000011" || x.CodigoCliente == "000012") && x.Gestor != "RONAN.JOVINO" && x.Linha == prod.Produto.Trim()).Sum(x => x.TotalBaixado);
+                                            time.FaturadoProduto += resultadoDenuo.Where(x => x.Linha == prod.Produto.Trim() && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total) - DevolucaoDenuo.Where(x => x.Linha.Trim() == prod.Produto.Trim() && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total);
+                                            time.FaturadoProduto += BaixaLicitacoesDenuo.Where(x => Convert.ToInt32(x.DataPedido) > 20240231 && (x.CodigoCliente == "000011" || x.CodigoCliente == "000012") && x.Linha == prod.Produto.Trim()).Sum(x => x.TotalBaixado);
                                             i++;
                                         }
                                         else
                                         {
-                                            time.FaturadoProduto += resultadoDenuo.Where(x => x.Linha.Trim() == prod.Produto.Trim() && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total) - DevolucaoDenuo.Where(x => x.Linha.Trim() == prod.Produto.Trim() && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total);
-                                            time.BaixaProduto += BaixaLicitacoesDenuo.Where(x => Convert.ToInt32(x.DataPedido) > 20231231 && (x.CodigoCliente == "000011" || x.CodigoCliente == "000012") && x.Gestor != "RONAN.JOVINO" && x.Linha == prod.Produto.Trim()).Sum(x => x.TotalBaixado);
+                                            time.FaturadoProduto += resultadoDenuo.Where(x => x.Linha == prod.Produto.Trim() && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total) - DevolucaoDenuo.Where(x => x.Linha.Trim() == prod.Produto.Trim() && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total);
+                                            time.FaturadoProduto += BaixaLicitacoesDenuo.Where(x => Convert.ToInt32(x.DataPedido) > 20240231 && (x.CodigoCliente == "000011" || x.CodigoCliente == "000012") && x.Linha == prod.Produto.Trim()).Sum(x => x.TotalBaixado);
                                         }
                                     }
                                     else
                                     {
-                                        time.FaturadoProduto += resultadoDenuo.Where(x => x.Linha.Trim() == prod.Produto.Trim() && x.Gestor != "RONAN.JOVINO" && x.Gestor != "TIAGO.FONSECA" && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total) - DevolucaoDenuo.Where(x => x.Linha.Trim() == prod.Produto.Trim() && x.Gestor != "RONAN.JOVINO" && x.Gestor != "TIAGO.FONSECA" && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total);
-                                        time.BaixaProduto += BaixaLicitacoesDenuo.Where(x => Convert.ToInt32(x.DataPedido) > 20231231 && (x.CodigoCliente == "000011" || x.CodigoCliente == "000012") && x.Gestor != "RONAN.JOVINO" && x.Gestor != "TIAGO.FONSECA" && x.Linha == prod.Produto.Trim()).Sum(x => x.TotalBaixado);
+                                        time.FaturadoProduto += resultadoDenuo.Where(x => x.Linha == prod.Produto && x.Gestor != "RONAN.JOVINO" && x.Gestor != "TIAGO.FONSECA" && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total) - DevolucaoDenuo.Where(x => x.Linha.Trim() == prod.Produto && x.Gestor != "RONAN.JOVINO" && x.Gestor != "TIAGO.FONSECA").Sum(x => x.Total);
+                                        time.FaturadoProduto += BaixaLicitacoesDenuo.Where(x => Convert.ToInt32(x.DataPedido) > 20240231 && (x.CodigoCliente == "000011" || x.CodigoCliente == "000012") && x.Linha == prod.Produto.Trim() && x.Gestor != "RONAN.JOVINO" && x.Gestor != "TIAGO.FONSECA").Sum(x => x.TotalBaixado);
                                     }
                                 });
+                            }
 
-                            }*/
                             time.Comissao = (time.Faturado + time.Baixa) * (time.User.Porcentagem / 100);
                             time.ComissaoEquipe = (time.FaturadoEquipe + time.BaixaEquipe) * (time.User.PorcentagemSeg / 100);
                             time.ComissaoProduto = (time.FaturadoProduto + time.BaixaProduto) * (time.User.PorcentagemGenProd / 100);
@@ -3938,7 +3926,7 @@ namespace SGID.Pages.Relatorios.Diretoria
                     if (x.TipoFaturamento != "S" && x.TipoFaturamento != "L")
                     {
 
-                        time.Linha = resultadoDenuo.FirstOrDefault(x => x.Login == usuario)?.Linha;
+                        time.Linha = ProtheusDenuo.Sa3010s.FirstOrDefault(x => x.A3Xlogin == usuario)?.A3Xdescun;
                         if (time.User.Integrante.ToUpper() == "EDUARDO.ARONI")
                         {
                             time.Linha = "ORTOPEDIA";
@@ -3949,11 +3937,11 @@ namespace SGID.Pages.Relatorios.Diretoria
                         }
                         else if (time.Linha == null)
                         {
-                            time.Linha = resultadoInter.FirstOrDefault(x => x.Login == usuario)?.Linha;
+                            time.Linha = ProtheusDenuo.Sa3010s.FirstOrDefault(x => x.A3Xlogin == usuario)?.A3Xdescun;
                         }
 
-                        //if (dataini <=  20231231)
-                        //{
+                        if (dataini <= 20230231)
+                        {
 
                             time.Faturado += resultadoInter.Where(x => x.Login == usuario).Sum(x => x.Total) - DevolucaoInter.Where(x => x.Login == usuario).Sum(x => x.Total);
                             time.Faturado += resultadoDenuo.Where(x => x.Login == usuario).Sum(x => x.Total) - DevolucaoDenuo.Where(x => x.Login == usuario).Sum(x => x.Total);
@@ -3991,27 +3979,19 @@ namespace SGID.Pages.Relatorios.Diretoria
                                     time.FaturadoProduto += resultadoDenuo.Where(x => x.Linha.Trim() == prod.Produto.Trim() && x.Gestor != "RONAN.JOVINO" && x.Gestor != "TIAGO.FONSECA").Sum(x => x.Total) - DevolucaoDenuo.Where(x => x.Linha.Trim() == prod.Produto.Trim() && x.Gestor != "RONAN.JOVINO" && x.Gestor != "TIAGO.FONSECA").Sum(x => x.Total);
                                 }
                             });
-                        //}
-                        /*else
+                        }
+                        else
                         {
                             time.Faturado += resultadoInter.Where(x => x.Login == usuario && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total) - DevolucaoInter.Where(x => x.Login == usuario && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total);
                             time.Faturado += resultadoDenuo.Where(x => x.Login == usuario && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total) - DevolucaoDenuo.Where(x => x.Login == usuario && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total);
-                            time.Baixa += BaixaLicitacoesDenuo.Where(x => Convert.ToInt32(x.DataPedido) > 20231231 && (x.CodigoCliente == "000011" || x.CodigoCliente == "000012") && x.Login == usuario).Sum(x => x.TotalBaixado);
-                            time.Baixa += BaixaLicitacoesInter.Where(x => Convert.ToInt32(x.DataPedido) > 20231231 && (x.CodigoCliente == "000011" || x.CodigoCliente == "000012") && x.Login == usuario).Sum(x => x.TotalBaixado);
-                            if (usuario == "MICHEL.SAMPAIO")
-                            {
-                                time.FaturadoEquipe += resultadoInter.Where(x => x.Gestor == "ANDRE.SALES" && x.DOR != "082" && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total) - DevolucaoInter.Where(x => x.Gestor == "ANDRE.SALES" && x.DOR != "082" && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total);
-                                time.FaturadoEquipe += resultadoDenuo.Where(x => x.Gestor == "ANDRE.SALES" && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total) - DevolucaoDenuo.Where(x => x.Gestor == "ANDRE.SALES" && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total);
-                                time.BaixaEquipe += BaixaLicitacoesDenuo.Where(x => Convert.ToInt32(x.DataPedido) > 20231231 && (x.CodigoCliente == "000011" || x.CodigoCliente == "000012") && x.Gestor == "ANDRE.SALES").Sum(x => x.TotalBaixado);
-                                time.BaixaEquipe += BaixaLicitacoesInter.Where(x => Convert.ToInt32(x.DataPedido) > 20231231 && (x.CodigoCliente == "000011" || x.CodigoCliente == "000012") && x.Gestor == "ANDRE.SALES").Sum(x => x.TotalBaixado);
-                            }
-                            else
-                            {
-                                time.FaturadoEquipe += resultadoInter.Where(x => x.Gestor == usuario && x.DOR != "082" && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total) - DevolucaoInter.Where(x => x.Gestor == usuario && x.DOR != "082" && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total);
-                                time.FaturadoEquipe += resultadoDenuo.Where(x => x.Gestor == usuario && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total) - DevolucaoDenuo.Where(x => x.Gestor == usuario && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total);
-                                time.BaixaEquipe += BaixaLicitacoesDenuo.Where(x => Convert.ToInt32(x.DataPedido) > 20231231 && (x.CodigoCliente == "000011" || x.CodigoCliente == "000012") && x.Gestor == usuario).Sum(x => x.TotalBaixado);
-                                time.BaixaEquipe += BaixaLicitacoesInter.Where(x => Convert.ToInt32(x.DataPedido) > 20231231 && (x.CodigoCliente == "000011" || x.CodigoCliente == "000012") && x.Gestor == usuario).Sum(x => x.TotalBaixado);
-                            }
+                            time.Faturado += BaixaLicitacoesDenuo.Where(x => Convert.ToInt32(x.DataPedido) > 20240231 && (x.CodigoCliente == "000011" || x.CodigoCliente == "000012") && x.Login == usuario).Sum(x => x.TotalBaixado);
+                            time.Faturado += BaixaLicitacoesInter.Where(x => Convert.ToInt32(x.DataPedido) > 20240231 && (x.CodigoCliente == "000011" || x.CodigoCliente == "000012") && x.Login == usuario).Sum(x => x.TotalBaixado);
+
+                            time.FaturadoEquipe += resultadoInter.Where(x => x.Gestor == usuario && x.DOR != "082" && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total) - DevolucaoInter.Where(x => x.Gestor == usuario && x.DOR != "082" && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total);
+                            time.FaturadoEquipe += resultadoDenuo.Where(x => x.Gestor == usuario && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total) - DevolucaoDenuo.Where(x => x.Gestor == usuario && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total);
+                            time.FaturadoEquipe += BaixaLicitacoesDenuo.Where(x => Convert.ToInt32(x.DataPedido) > 20240231 && (x.CodigoCliente == "000011" && x.CodigoCliente == "000012") && x.Gestor == usuario).Sum(x => x.TotalBaixado);
+                            time.FaturadoEquipe += BaixaLicitacoesInter.Where(x => Convert.ToInt32(x.DataPedido) > 20240231 && (x.CodigoCliente == "000011" && x.CodigoCliente == "000012") && x.Gestor == usuario).Sum(x => x.TotalBaixado);
+
                             int i = 0;
                             Produtos.ForEach(prod =>
                             {
@@ -4020,30 +4000,30 @@ namespace SGID.Pages.Relatorios.Diretoria
                                     if (i == 0)
                                     {
                                         time.FaturadoEquipe = 0;
-                                        time.FaturadoProduto += resultadoInter.Where(x => x.Linha == prod.Produto.Trim() && x.DOR != "082" && x.Gestor != "RONAN.JOVINO" && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total) - DevolucaoInter.Where(x => x.Linha.Trim() == prod.Produto.Trim() && x.DOR != "082" && x.Gestor != "RONAN.JOVINO" && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total);
+                                        time.FaturadoProduto += resultadoInter.Where(x => x.Linha == prod.Produto.Trim() && x.DOR != "082" && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total) - DevolucaoInter.Where(x => x.Linha.Trim() == prod.Produto.Trim() && x.DOR != "082" && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total);
                                         time.FaturadoProduto += resultadoDenuo.Where(x => x.Linha.Trim() == prod.Produto.Trim() && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total) - DevolucaoDenuo.Where(x => x.Linha.Trim() == prod.Produto.Trim() && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total);
-                                        time.BaixaProduto += BaixaLicitacoesDenuo.Where(x => Convert.ToInt32(x.DataPedido) > 20231231 && (x.CodigoCliente == "000011" || x.CodigoCliente == "000012") && x.Gestor != "RONAN.JOVINO" && x.Linha == prod.Produto.Trim()).Sum(x => x.TotalBaixado);
-                                        time.BaixaProduto += BaixaLicitacoesInter.Where(x => Convert.ToInt32(x.DataPedido) > 20231231 && (x.CodigoCliente == "000011" || x.CodigoCliente == "000012") && x.Linha.Trim() == prod.Produto.Trim()).Sum(x => x.TotalBaixado);
+                                        time.FaturadoProduto += BaixaLicitacoesDenuo.Where(x => Convert.ToInt32(x.DataPedido) > 20240231 && (x.CodigoCliente == "000011" && x.CodigoCliente == "000012") && x.Linha == prod.Produto.Trim()).Sum(x => x.TotalBaixado);
+                                        time.FaturadoProduto += BaixaLicitacoesInter.Where(x => Convert.ToInt32(x.DataPedido) > 20240231 && (x.CodigoCliente == "000011" && x.CodigoCliente == "000012") && x.Linha.Trim() == prod.Produto.Trim()).Sum(x => x.TotalBaixado);
                                         i++;
                                     }
                                     else
                                     {
-                                        time.FaturadoProduto += resultadoInter.Where(x => x.Linha == prod.Produto.Trim() && x.DOR != "082" && x.Gestor != "RONAN.JOVINO" && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total) - DevolucaoInter.Where(x => x.Linha.Trim() == prod.Produto.Trim() && x.DOR != "082" && x.Gestor != "RONAN.JOVINO" && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total);
+                                        time.FaturadoProduto += resultadoInter.Where(x => x.Linha == prod.Produto.Trim() && x.DOR != "082" && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total) - DevolucaoInter.Where(x => x.Linha.Trim() == prod.Produto.Trim() && x.DOR != "082" && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total);
                                         time.FaturadoProduto += resultadoDenuo.Where(x => x.Linha.Trim() == prod.Produto.Trim() && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total) - DevolucaoDenuo.Where(x => x.Linha.Trim() == prod.Produto.Trim() && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total);
-                                        time.BaixaProduto += BaixaLicitacoesDenuo.Where(x => Convert.ToInt32(x.DataPedido) > 20231231 && (x.CodigoCliente == "000011" || x.CodigoCliente == "000012") && x.Gestor != "RONAN.JOVINO" && x.Linha == prod.Produto.Trim()).Sum(x => x.TotalBaixado);
-                                        time.BaixaProduto += BaixaLicitacoesInter.Where(x => Convert.ToInt32(x.DataPedido) > 20231231 && (x.CodigoCliente == "000011" || x.CodigoCliente == "000012") && x.Linha.Trim() == prod.Produto.Trim()).Sum(x => x.TotalBaixado);
+                                        time.FaturadoProduto += BaixaLicitacoesDenuo.Where(x => Convert.ToInt32(x.DataPedido) > 20240231 && (x.CodigoCliente == "000011" && x.CodigoCliente == "000012") && x.Linha == prod.Produto.Trim()).Sum(x => x.TotalBaixado);
+                                        time.FaturadoProduto += BaixaLicitacoesInter.Where(x => Convert.ToInt32(x.DataPedido) > 20240231 && (x.CodigoCliente == "000011" && x.CodigoCliente == "000012") && x.Linha.Trim() == prod.Produto.Trim()).Sum(x => x.TotalBaixado);
                                     }
                                 }
                                 else
                                 {
                                     time.FaturadoProduto += resultadoInter.Where(x => x.Linha == prod.Produto && x.DOR != "082" && x.Gestor != "RONAN.JOVINO" && x.Gestor != "TIAGO.FONSECA" && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total) - DevolucaoInter.Where(x => x.Linha.Trim() == prod.Produto && x.DOR != "082" && x.Gestor != "RONAN.JOVINO" && x.Gestor != "TIAGO.FONSECA" && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total);
                                     time.FaturadoProduto += resultadoDenuo.Where(x => x.Linha.Trim() == prod.Produto.Trim() && x.Gestor != "RONAN.JOVINO" && x.Gestor != "TIAGO.FONSECA" && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total) - DevolucaoDenuo.Where(x => x.Linha.Trim() == prod.Produto.Trim() && x.Gestor != "RONAN.JOVINO" && x.Gestor != "TIAGO.FONSECA" && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total);
-                                    time.BaixaProduto += BaixaLicitacoesDenuo.Where(x => Convert.ToInt32(x.DataPedido) > 20231231 && (x.CodigoCliente == "000011" || x.CodigoCliente == "000012") && x.Gestor != "RONAN.JOVINO" && x.Gestor != "TIAGO.FONSECA" && x.Linha == prod.Produto.Trim()).Sum(x => x.TotalBaixado);
-                                    time.BaixaProduto += BaixaLicitacoesInter.Where(x => Convert.ToInt32(x.DataPedido) > 20231231 && (x.CodigoCliente == "000011" || x.CodigoCliente == "000012") && x.Gestor != "RONAN.JOVINO" && x.Gestor != "TIAGO.FONSECA" && x.Linha.Trim() == prod.Produto.Trim()).Sum(x => x.TotalBaixado);
+                                    time.FaturadoProduto += BaixaLicitacoesDenuo.Where(x => Convert.ToInt32(x.DataPedido) > 20240231 && (x.CodigoCliente == "000011" && x.CodigoCliente == "000012") && x.Gestor != "RONAN.JOVINO" && x.Gestor != "TIAGO.FONSECA" && x.Linha == prod.Produto.Trim()).Sum(x => x.TotalBaixado);
+                                    time.FaturadoProduto += BaixaLicitacoesInter.Where(x => Convert.ToInt32(x.DataPedido) > 20240231 && (x.CodigoCliente == "000011" && x.CodigoCliente == "000012") && x.Gestor != "RONAN.JOVINO" && x.Gestor != "TIAGO.FONSECA" && x.Linha.Trim() == prod.Produto.Trim()).Sum(x => x.TotalBaixado);
                                 }
                             });
 
-                        }*/
+                        }
 
 
 
@@ -4789,7 +4769,7 @@ namespace SGID.Pages.Relatorios.Diretoria
 
                         if (x.TipoFaturamento != "S" && x.TipoFaturamento != "L")
                         {
-                            time.Linha = resultadoInter.FirstOrDefault(x => x.Login == usuario)?.Linha;
+                            time.Linha = ProtheusDenuo.Sa3010s.FirstOrDefault(x => x.A3Xlogin == usuario)?.A3Xdescun;
                             if (time.User.Integrante.ToUpper() == "EDUARDO.ARONI")
                             {
                                 time.Linha = "ORTOPEDIA";
@@ -4799,10 +4779,11 @@ namespace SGID.Pages.Relatorios.Diretoria
                                 time.Linha = "BUCOMAXILO";
                             }
 
-                            //if (dataini <=  20231231)
-                            //{
-
+                            if (dataini <= 20240231)
+                            {
+                                #region RegrasAntigas
                                 time.Faturado += resultadoInter.Where(x => x.Login == usuario).Sum(x => x.Total) - DevolucaoInter.Where(x => x.Login == usuario).Sum(x => x.Total);
+
                                 if (usuario == "MICHEL.SAMPAIO")
                                 {
                                     time.FaturadoEquipe += resultadoInter.Where(x => x.Gestor == "ANDRE.SALES" && x.DOR != "082").Sum(x => x.Total) - DevolucaoInter.Where(x => x.Gestor == "ANDRE.SALES" && x.DOR != "082").Sum(x => x.Total);
@@ -4811,6 +4792,7 @@ namespace SGID.Pages.Relatorios.Diretoria
                                 {
                                     time.FaturadoEquipe += resultadoInter.Where(x => x.Gestor == usuario && x.DOR != "082").Sum(x => x.Total) - DevolucaoInter.Where(x => x.Gestor == usuario && x.DOR != "082").Sum(x => x.Total);
                                 }
+
                                 int i = 0;
                                 Produtos.ForEach(prod =>
                                 {
@@ -4819,12 +4801,12 @@ namespace SGID.Pages.Relatorios.Diretoria
                                         if (i == 0)
                                         {
                                             time.FaturadoEquipe = 0;
-                                            time.FaturadoProduto += resultadoInter.Where(x => x.Linha == prod.Produto.Trim() && x.DOR != "082" && x.Gestor != "RONAN.JOVINO").Sum(x => x.Total) - DevolucaoInter.Where(x => x.Linha.Trim() == prod.Produto.Trim() && x.DOR != "082" && x.Gestor != "RONAN.JOVINO").Sum(x => x.Total);
+                                            time.FaturadoProduto += resultadoInter.Where(x => x.Linha == prod.Produto.Trim() && x.DOR != "082").Sum(x => x.Total) - DevolucaoInter.Where(x => x.Linha.Trim() == prod.Produto.Trim() && x.DOR != "082").Sum(x => x.Total);
                                             i++;
                                         }
                                         else
                                         {
-                                            time.FaturadoProduto += resultadoInter.Where(x => x.Linha == prod.Produto.Trim() && x.DOR != "082" && x.Gestor != "RONAN.JOVINO").Sum(x => x.Total) - DevolucaoInter.Where(x => x.Linha.Trim() == prod.Produto.Trim() && x.DOR != "082" && x.Gestor != "RONAN.JOVINO").Sum(x => x.Total);
+                                            time.FaturadoProduto += resultadoInter.Where(x => x.Linha == prod.Produto.Trim() && x.DOR != "082").Sum(x => x.Total) - DevolucaoInter.Where(x => x.Linha.Trim() == prod.Produto.Trim() && x.DOR != "082").Sum(x => x.Total);
                                         }
                                     }
                                     else
@@ -4832,21 +4814,18 @@ namespace SGID.Pages.Relatorios.Diretoria
                                         time.FaturadoProduto += resultadoInter.Where(x => x.Linha == prod.Produto && x.DOR != "082" && x.Gestor != "RONAN.JOVINO" && x.Gestor != "TIAGO.FONSECA").Sum(x => x.Total) - DevolucaoInter.Where(x => x.Linha.Trim() == prod.Produto && x.DOR != "082" && x.Gestor != "RONAN.JOVINO" && x.Gestor != "TIAGO.FONSECA").Sum(x => x.Total);
                                     }
                                 });
-                            /*}
+                                #endregion
+                            }
                             else
                             {
+                                #region RegrasNovas
                                 time.Faturado += resultadoInter.Where(x => x.Login == usuario && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total) - DevolucaoInter.Where(x => x.Login == usuario && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total);
-                                time.Baixa += BaixaLicitacoesInter.Where(x => Convert.ToInt32(x.DataPedido) > 20231231 && (x.CodigoCliente == "000011" || x.CodigoCliente == "000012") && x.Login == usuario).Sum(x => x.TotalBaixado);
-                                if (usuario == "MICHEL.SAMPAIO")
-                                {
-                                    time.FaturadoEquipe += resultadoInter.Where(x => x.Gestor == "ANDRE.SALES" && x.DOR != "082" && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total) - DevolucaoInter.Where(x => x.Gestor == "ANDRE.SALES" && x.DOR != "082" && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total);
-                                    time.BaixaEquipe += BaixaLicitacoesInter.Where(x => Convert.ToInt32(x.DataPedido) > 20231231 && (x.CodigoCliente == "000011" || x.CodigoCliente == "000012") && x.Gestor == "ANDRE.SALES").Sum(x => x.TotalBaixado);
-                                }
-                                else
-                                {
-                                    time.FaturadoEquipe += resultadoInter.Where(x => x.Gestor == usuario && x.DOR != "082" && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total) - DevolucaoInter.Where(x => x.Gestor == usuario && x.DOR != "082" && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total);
-                                    time.BaixaEquipe += BaixaLicitacoesInter.Where(x => Convert.ToInt32(x.DataPedido) > 20231231 && (x.CodigoCliente == "000011" || x.CodigoCliente == "000012") && x.Gestor == usuario).Sum(x => x.TotalBaixado);
-                                }
+                                time.Faturado += BaixaLicitacoesInter.Where(x => Convert.ToInt32(x.DataPedido) > 20240231 && (x.CodigoCliente == "000011" || x.CodigoCliente == "000012") && x.Login == usuario).Sum(x => x.TotalBaixado);
+
+                                time.FaturadoEquipe += resultadoInter.Where(x => x.Gestor == usuario && x.DOR != "082" && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total) - DevolucaoInter.Where(x => x.Gestor == usuario && x.DOR != "082" && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total);
+                                time.FaturadoEquipe += BaixaLicitacoesInter.Where(x => Convert.ToInt32(x.DataPedido) > 20240231 && (x.CodigoCliente == "000011" || x.CodigoCliente == "000012") && x.Gestor == usuario).Sum(x => x.TotalBaixado);
+
+
                                 int i = 0;
                                 Produtos.ForEach(prod =>
                                 {
@@ -4855,26 +4834,27 @@ namespace SGID.Pages.Relatorios.Diretoria
                                         if (i == 0)
                                         {
                                             time.FaturadoEquipe = 0;
-                                            time.FaturadoProduto += resultadoInter.Where(x => x.Linha == prod.Produto.Trim() && x.DOR != "082" && x.Gestor != "RONAN.JOVINO" && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total) - DevolucaoInter.Where(x => x.Linha.Trim() == prod.Produto.Trim() && x.DOR != "082" && x.Gestor != "RONAN.JOVINO" && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total);
-                                            time.BaixaProduto += BaixaLicitacoesInter.Where(x => Convert.ToInt32(x.DataPedido) > 20231231 && (x.CodigoCliente == "000011" || x.CodigoCliente == "000012") && x.Linha.Trim() == prod.Produto.Trim()).Sum(x => x.TotalBaixado);
+                                            time.FaturadoProduto += resultadoInter.Where(x => x.Linha == prod.Produto.Trim() && x.DOR != "082" && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total) - DevolucaoInter.Where(x => x.Linha.Trim() == prod.Produto.Trim() && x.DOR != "082" && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total);
+                                            time.FaturadoProduto += BaixaLicitacoesInter.Where(x => Convert.ToInt32(x.DataPedido) > 20240231 && (x.CodigoCliente == "000011" || x.CodigoCliente == "000012") && x.Linha == prod.Produto.Trim()).Sum(x => x.TotalBaixado);
                                             i++;
                                         }
                                         else
                                         {
-                                            time.FaturadoProduto += resultadoInter.Where(x => x.Linha == prod.Produto.Trim() && x.DOR != "082" && x.Gestor != "RONAN.JOVINO" && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total) - DevolucaoInter.Where(x => x.Linha.Trim() == prod.Produto.Trim() && x.DOR != "082" && x.Gestor != "RONAN.JOVINO" && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total);
-                                            time.BaixaProduto += BaixaLicitacoesInter.Where(x => Convert.ToInt32(x.DataPedido) > 20231231 && (x.CodigoCliente == "000011" || x.CodigoCliente == "000012") && x.Linha.Trim() == prod.Produto.Trim()).Sum(x => x.TotalBaixado);
+                                            time.FaturadoProduto += resultadoInter.Where(x => x.Linha == prod.Produto.Trim() && x.DOR != "082" && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total) - DevolucaoInter.Where(x => x.Linha.Trim() == prod.Produto.Trim() && x.DOR != "082" && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total);
+                                            time.FaturadoProduto += BaixaLicitacoesInter.Where(x => Convert.ToInt32(x.DataPedido) > 20240231 && (x.CodigoCliente == "000011" || x.CodigoCliente == "000012") && x.Linha == prod.Produto.Trim()).Sum(x => x.TotalBaixado);
                                         }
                                     }
                                     else
                                     {
                                         time.FaturadoProduto += resultadoInter.Where(x => x.Linha == prod.Produto && x.DOR != "082" && x.Gestor != "RONAN.JOVINO" && x.Gestor != "TIAGO.FONSECA" && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total) - DevolucaoInter.Where(x => x.Linha.Trim() == prod.Produto && x.DOR != "082" && x.Gestor != "RONAN.JOVINO" && x.Gestor != "TIAGO.FONSECA" && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total);
-                                        time.BaixaProduto += BaixaLicitacoesInter.Where(x => Convert.ToInt32(x.DataPedido) > 20231231 && (x.CodigoCliente == "000011" || x.CodigoCliente == "000012") && x.Gestor != "RONAN.JOVINO" && x.Gestor != "TIAGO.FONSECA" && x.Linha.Trim() == prod.Produto.Trim()).Sum(x => x.TotalBaixado);
+                                        time.FaturadoProduto += BaixaLicitacoesInter.Where(x => Convert.ToInt32(x.DataPedido) > 20240231 && (x.CodigoCliente == "000011" || x.CodigoCliente == "000012") && x.Linha == prod.Produto.Trim() && x.Gestor != "RONAN.JOVINO" && x.Gestor != "TIAGO.FONSECA").Sum(x => x.TotalBaixado);
                                     }
                                 });
+                                #endregion
+                            }
 
-                            }*/
                             time.Comissao = (time.Faturado + time.Baixa) * (time.User.Porcentagem / 100);
-                            time.ComissaoEquipe = (time.FaturadoEquipe + time.BaixaEquipe)* (time.User.PorcentagemSeg / 100);
+                            time.ComissaoEquipe = (time.FaturadoEquipe + time.BaixaEquipe) * (time.User.PorcentagemSeg / 100);
                             time.ComissaoProduto = (time.FaturadoProduto + time.BaixaProduto) * (time.User.PorcentagemGenProd / 100);
 
                             time.Salario = time.User.Salario;
@@ -5700,7 +5680,7 @@ namespace SGID.Pages.Relatorios.Diretoria
 
                         if (x.TipoFaturamento != "S" && x.TipoFaturamento != "L")
                         {
-                            time.Linha = resultadoDenuo.FirstOrDefault(x => x.Login == usuario)?.Linha;
+                            time.Linha = ProtheusDenuo.Sa3010s.FirstOrDefault(x => x.A3Xlogin == usuario)?.A3Xdescun;
                             if (time.User.Integrante.ToUpper() == "EDUARDO.ARONI")
                             {
                                 time.Linha = "ORTOPEDIA";
@@ -5710,10 +5690,10 @@ namespace SGID.Pages.Relatorios.Diretoria
                                 time.Linha = "BUCOMAXILO";
                             }
 
-                            //if (dataini <=  20231231)
-                            //{
-
+                            if (dataini <= 20231231)
+                            {
                                 time.Faturado += resultadoDenuo.Where(x => x.Login == usuario).Sum(x => x.Total) - DevolucaoDenuo.Where(x => x.Login == usuario).Sum(x => x.Total);
+
                                 if (usuario == "MICHEL.SAMPAIO")
                                 {
                                     time.FaturadoEquipe += resultadoDenuo.Where(x => x.Gestor == "ANDRE.SALES").Sum(x => x.Total) - DevolucaoDenuo.Where(x => x.Gestor == "ANDRE.SALES").Sum(x => x.Total);
@@ -5722,6 +5702,7 @@ namespace SGID.Pages.Relatorios.Diretoria
                                 {
                                     time.FaturadoEquipe += resultadoDenuo.Where(x => x.Gestor == usuario).Sum(x => x.Total) - DevolucaoDenuo.Where(x => x.Gestor == usuario).Sum(x => x.Total);
                                 }
+
                                 int i = 0;
                                 Produtos.ForEach(prod =>
                                 {
@@ -5730,34 +5711,29 @@ namespace SGID.Pages.Relatorios.Diretoria
                                         if (i == 0)
                                         {
                                             time.FaturadoEquipe = 0;
-                                            time.FaturadoProduto += resultadoDenuo.Where(x => x.Linha.Trim() == prod.Produto.Trim()).Sum(x => x.Total) - DevolucaoDenuo.Where(x => x.Linha.Trim() == prod.Produto.Trim()).Sum(x => x.Total);
+                                            time.FaturadoProduto += resultadoDenuo.Where(x => x.Linha == prod.Produto.Trim()).Sum(x => x.Total) - DevolucaoDenuo.Where(x => x.Linha.Trim() == prod.Produto.Trim()).Sum(x => x.Total);
                                             i++;
                                         }
                                         else
                                         {
-                                            time.FaturadoProduto += resultadoDenuo.Where(x => x.Linha.Trim() == prod.Produto.Trim()).Sum(x => x.Total) - DevolucaoDenuo.Where(x => x.Linha.Trim() == prod.Produto.Trim()).Sum(x => x.Total);
+                                            time.FaturadoProduto += resultadoDenuo.Where(x => x.Linha == prod.Produto.Trim()).Sum(x => x.Total) - DevolucaoDenuo.Where(x => x.Linha.Trim() == prod.Produto.Trim()).Sum(x => x.Total);
                                         }
                                     }
                                     else
                                     {
-                                        time.FaturadoProduto += resultadoDenuo.Where(x => x.Linha.Trim() == prod.Produto.Trim() && x.Gestor != "RONAN.JOVINO" && x.Gestor != "TIAGO.FONSECA").Sum(x => x.Total) - DevolucaoDenuo.Where(x => x.Linha.Trim() == prod.Produto.Trim() && x.Gestor != "RONAN.JOVINO" && x.Gestor != "TIAGO.FONSECA").Sum(x => x.Total);
+                                        time.FaturadoProduto += resultadoDenuo.Where(x => x.Linha == prod.Produto && x.Gestor != "RONAN.JOVINO" && x.Gestor != "TIAGO.FONSECA").Sum(x => x.Total) - DevolucaoDenuo.Where(x => x.Linha.Trim() == prod.Produto && x.Gestor != "RONAN.JOVINO" && x.Gestor != "TIAGO.FONSECA").Sum(x => x.Total);
                                     }
                                 });
-                            //}
-                            /*else
+                            }
+                            else
                             {
                                 time.Faturado += resultadoDenuo.Where(x => x.Login == usuario && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total) - DevolucaoDenuo.Where(x => x.Login == usuario && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total);
-                                time.Baixa += BaixaLicitacoesDenuo.Where(x => Convert.ToInt32(x.DataPedido) > 20231231 && (x.CodigoCliente == "000011" || x.CodigoCliente == "000012") && x.Login == usuario).Sum(x => x.TotalBaixado);
-                                if (usuario == "MICHEL.SAMPAIO")
-                                {
-                                    time.FaturadoEquipe += resultadoDenuo.Where(x => x.Gestor == "ANDRE.SALES" && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total) - DevolucaoDenuo.Where(x => x.Gestor == "ANDRE.SALES" && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total);
-                                    time.BaixaEquipe += BaixaLicitacoesDenuo.Where(x => Convert.ToInt32(x.DataPedido) > 20231231 && (x.CodigoCliente == "000011" || x.CodigoCliente == "000012") && x.Gestor == "ANDRE.SALES").Sum(x => x.TotalBaixado);
-                                }
-                                else
-                                {
-                                    time.FaturadoEquipe += resultadoDenuo.Where(x => x.Gestor == usuario && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total) - DevolucaoDenuo.Where(x => x.Gestor == usuario && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total);
-                                    time.BaixaEquipe += BaixaLicitacoesDenuo.Where(x => Convert.ToInt32(x.DataPedido) > 20231231 && (x.CodigoCliente == "000011" || x.CodigoCliente == "000012") && x.Gestor == usuario).Sum(x => x.TotalBaixado);
-                                }
+                                time.Faturado += BaixaLicitacoesDenuo.Where(x => Convert.ToInt32(x.DataPedido) > 20240231 && (x.CodigoCliente == "000011" || x.CodigoCliente == "000012") && x.Login == usuario).Sum(x => x.TotalBaixado);
+
+                                time.FaturadoEquipe += resultadoDenuo.Where(x => x.Gestor == usuario && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total) - DevolucaoDenuo.Where(x => x.Gestor == usuario && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total);
+                                time.FaturadoEquipe += BaixaLicitacoesDenuo.Where(x => Convert.ToInt32(x.DataPedido) > 20240231 && (x.CodigoCliente == "000011" || x.CodigoCliente == "000012") && x.Gestor == usuario).Sum(x => x.TotalBaixado);
+
+
                                 int i = 0;
                                 Produtos.ForEach(prod =>
                                 {
@@ -5766,24 +5742,24 @@ namespace SGID.Pages.Relatorios.Diretoria
                                         if (i == 0)
                                         {
                                             time.FaturadoEquipe = 0;
-                                            time.FaturadoProduto += resultadoDenuo.Where(x => x.Linha.Trim() == prod.Produto.Trim() && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total) - DevolucaoDenuo.Where(x => x.Linha.Trim() == prod.Produto.Trim() && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total);
-                                            time.BaixaProduto += BaixaLicitacoesDenuo.Where(x => Convert.ToInt32(x.DataPedido) > 20231231 && (x.CodigoCliente == "000011" || x.CodigoCliente == "000012") && x.Gestor != "RONAN.JOVINO" && x.Linha == prod.Produto.Trim()).Sum(x => x.TotalBaixado);
+                                            time.FaturadoProduto += resultadoDenuo.Where(x => x.Linha == prod.Produto.Trim() && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total) - DevolucaoDenuo.Where(x => x.Linha.Trim() == prod.Produto.Trim() && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total);
+                                            time.FaturadoProduto += BaixaLicitacoesDenuo.Where(x => Convert.ToInt32(x.DataPedido) > 20240231 && (x.CodigoCliente == "000011" || x.CodigoCliente == "000012") && x.Linha == prod.Produto.Trim()).Sum(x => x.TotalBaixado);
                                             i++;
                                         }
                                         else
                                         {
-                                            time.FaturadoProduto += resultadoDenuo.Where(x => x.Linha.Trim() == prod.Produto.Trim() && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total) - DevolucaoDenuo.Where(x => x.Linha.Trim() == prod.Produto.Trim() && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total);
-                                            time.BaixaProduto += BaixaLicitacoesDenuo.Where(x => Convert.ToInt32(x.DataPedido) > 20231231 && (x.CodigoCliente == "000011" || x.CodigoCliente == "000012") && x.Gestor != "RONAN.JOVINO" && x.Linha == prod.Produto.Trim()).Sum(x => x.TotalBaixado);
+                                            time.FaturadoProduto += resultadoDenuo.Where(x => x.Linha == prod.Produto.Trim() && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total) - DevolucaoDenuo.Where(x => x.Linha.Trim() == prod.Produto.Trim() && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total);
+                                            time.FaturadoProduto += BaixaLicitacoesDenuo.Where(x => Convert.ToInt32(x.DataPedido) > 20240231 && (x.CodigoCliente == "000011" || x.CodigoCliente == "000012") && x.Linha == prod.Produto.Trim()).Sum(x => x.TotalBaixado);
                                         }
                                     }
                                     else
                                     {
-                                        time.FaturadoProduto += resultadoDenuo.Where(x => x.Linha.Trim() == prod.Produto.Trim() && x.Gestor != "RONAN.JOVINO" && x.Gestor != "TIAGO.FONSECA" && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total) - DevolucaoDenuo.Where(x => x.Linha.Trim() == prod.Produto.Trim() && x.Gestor != "RONAN.JOVINO" && x.Gestor != "TIAGO.FONSECA" && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total);
-                                        time.BaixaProduto += BaixaLicitacoesDenuo.Where(x => Convert.ToInt32(x.DataPedido) > 20231231 && (x.CodigoCliente == "000011" || x.CodigoCliente == "000012") && x.Gestor != "RONAN.JOVINO" && x.Gestor != "TIAGO.FONSECA" && x.Linha == prod.Produto.Trim()).Sum(x => x.TotalBaixado);
+                                        time.FaturadoProduto += resultadoDenuo.Where(x => x.Linha == prod.Produto && x.Gestor != "RONAN.JOVINO" && x.Gestor != "TIAGO.FONSECA" && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total) - DevolucaoDenuo.Where(x => x.Linha.Trim() == prod.Produto && x.Gestor != "RONAN.JOVINO" && x.Gestor != "TIAGO.FONSECA").Sum(x => x.Total);
+                                        time.FaturadoProduto += BaixaLicitacoesDenuo.Where(x => Convert.ToInt32(x.DataPedido) > 20240231 && (x.CodigoCliente == "000011" || x.CodigoCliente == "000012") && x.Linha == prod.Produto.Trim() && x.Gestor != "RONAN.JOVINO" && x.Gestor != "TIAGO.FONSECA").Sum(x => x.TotalBaixado);
                                     }
                                 });
+                            }
 
-                            }*/
                             time.Comissao = (time.Faturado + time.Baixa) * (time.User.Porcentagem / 100);
                             time.ComissaoEquipe = (time.FaturadoEquipe + time.BaixaEquipe) * (time.User.PorcentagemSeg / 100);
                             time.ComissaoProduto = (time.FaturadoProduto + time.BaixaProduto) * (time.User.PorcentagemGenProd / 100);
@@ -7040,7 +7016,7 @@ namespace SGID.Pages.Relatorios.Diretoria
                         if (x.TipoFaturamento != "S" && x.TipoFaturamento != "L")
                         {
 
-                            time.Linha = resultadoDenuo.FirstOrDefault(x => x.Login == usuario)?.Linha;
+                            time.Linha = ProtheusDenuo.Sa3010s.FirstOrDefault(x => x.A3Xlogin == usuario)?.A3Xdescun;
                             if (time.User.Integrante.ToUpper() == "EDUARDO.ARONI")
                             {
                                 time.Linha = "ORTOPEDIA";
@@ -7051,11 +7027,11 @@ namespace SGID.Pages.Relatorios.Diretoria
                             }
                             else if (time.Linha == null)
                             {
-                                time.Linha = resultadoInter.FirstOrDefault(x => x.Login == usuario)?.Linha;
+                                time.Linha = ProtheusDenuo.Sa3010s.FirstOrDefault(x => x.A3Xlogin == usuario)?.A3Xdescun;
                             }
 
-                            //if (dataini <=  20231231)
-                            //{
+                            if (dataini <= 20230231)
+                            {
 
                                 time.Faturado += resultadoInter.Where(x => x.Login == usuario).Sum(x => x.Total) - DevolucaoInter.Where(x => x.Login == usuario).Sum(x => x.Total);
                                 time.Faturado += resultadoDenuo.Where(x => x.Login == usuario).Sum(x => x.Total) - DevolucaoDenuo.Where(x => x.Login == usuario).Sum(x => x.Total);
@@ -7093,27 +7069,19 @@ namespace SGID.Pages.Relatorios.Diretoria
                                         time.FaturadoProduto += resultadoDenuo.Where(x => x.Linha.Trim() == prod.Produto.Trim() && x.Gestor != "RONAN.JOVINO" && x.Gestor != "TIAGO.FONSECA").Sum(x => x.Total) - DevolucaoDenuo.Where(x => x.Linha.Trim() == prod.Produto.Trim() && x.Gestor != "RONAN.JOVINO" && x.Gestor != "TIAGO.FONSECA").Sum(x => x.Total);
                                     }
                                 });
-                            //}
-                            /*else
+                            }
+                            else
                             {
                                 time.Faturado += resultadoInter.Where(x => x.Login == usuario && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total) - DevolucaoInter.Where(x => x.Login == usuario && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total);
                                 time.Faturado += resultadoDenuo.Where(x => x.Login == usuario && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total) - DevolucaoDenuo.Where(x => x.Login == usuario && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total);
-                                time.Baixa += BaixaLicitacoesDenuo.Where(x => Convert.ToInt32(x.DataPedido) > 20231231 && (x.CodigoCliente == "000011" || x.CodigoCliente == "000012") && x.Login == usuario).Sum(x => x.TotalBaixado);
-                                time.Baixa += BaixaLicitacoesInter.Where(x => Convert.ToInt32(x.DataPedido) > 20231231 && (x.CodigoCliente == "000011" || x.CodigoCliente == "000012") && x.Login == usuario).Sum(x => x.TotalBaixado);
-                                if (usuario == "MICHEL.SAMPAIO")
-                                {
-                                    time.FaturadoEquipe += resultadoInter.Where(x => x.Gestor == "ANDRE.SALES" && x.DOR != "082" && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total) - DevolucaoInter.Where(x => x.Gestor == "ANDRE.SALES" && x.DOR != "082" && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total);
-                                    time.FaturadoEquipe += resultadoDenuo.Where(x => x.Gestor == "ANDRE.SALES" && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total) - DevolucaoDenuo.Where(x => x.Gestor == "ANDRE.SALES" && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total);
-                                    time.BaixaEquipe += BaixaLicitacoesDenuo.Where(x => Convert.ToInt32(x.DataPedido) > 20231231 && (x.CodigoCliente == "000011" || x.CodigoCliente == "000012") && x.Gestor == "ANDRE.SALES").Sum(x => x.TotalBaixado);
-                                    time.BaixaEquipe += BaixaLicitacoesInter.Where(x => Convert.ToInt32(x.DataPedido) > 20231231 && (x.CodigoCliente == "000011" || x.CodigoCliente == "000012") && x.Gestor == "ANDRE.SALES").Sum(x => x.TotalBaixado);
-                                }
-                                else
-                                {
-                                    time.FaturadoEquipe += resultadoInter.Where(x => x.Gestor == usuario && x.DOR != "082" && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total) - DevolucaoInter.Where(x => x.Gestor == usuario && x.DOR != "082" && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total);
-                                    time.FaturadoEquipe += resultadoDenuo.Where(x => x.Gestor == usuario && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total) - DevolucaoDenuo.Where(x => x.Gestor == usuario && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total);
-                                    time.BaixaEquipe += BaixaLicitacoesDenuo.Where(x => Convert.ToInt32(x.DataPedido) > 20231231 && (x.CodigoCliente == "000011" || x.CodigoCliente == "000012") && x.Gestor == usuario).Sum(x => x.TotalBaixado);
-                                    time.BaixaEquipe += BaixaLicitacoesInter.Where(x => Convert.ToInt32(x.DataPedido) > 20231231 && (x.CodigoCliente == "000011" || x.CodigoCliente == "000012") && x.Gestor == usuario).Sum(x => x.TotalBaixado);
-                                }
+                                time.Faturado += BaixaLicitacoesDenuo.Where(x => Convert.ToInt32(x.DataPedido) > 20240231 && (x.CodigoCliente == "000011" || x.CodigoCliente == "000012") && x.Login == usuario).Sum(x => x.TotalBaixado);
+                                time.Faturado += BaixaLicitacoesInter.Where(x => Convert.ToInt32(x.DataPedido) > 20240231 && (x.CodigoCliente == "000011" || x.CodigoCliente == "000012") && x.Login == usuario).Sum(x => x.TotalBaixado);
+
+                                time.FaturadoEquipe += resultadoInter.Where(x => x.Gestor == usuario && x.DOR != "082" && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total) - DevolucaoInter.Where(x => x.Gestor == usuario && x.DOR != "082" && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total);
+                                time.FaturadoEquipe += resultadoDenuo.Where(x => x.Gestor == usuario && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total) - DevolucaoDenuo.Where(x => x.Gestor == usuario && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total);
+                                time.FaturadoEquipe += BaixaLicitacoesDenuo.Where(x => Convert.ToInt32(x.DataPedido) > 20240231 && (x.CodigoCliente == "000011" && x.CodigoCliente == "000012") && x.Gestor == usuario).Sum(x => x.TotalBaixado);
+                                time.FaturadoEquipe += BaixaLicitacoesInter.Where(x => Convert.ToInt32(x.DataPedido) > 20240231 && (x.CodigoCliente == "000011" && x.CodigoCliente == "000012") && x.Gestor == usuario).Sum(x => x.TotalBaixado);
+
                                 int i = 0;
                                 Produtos.ForEach(prod =>
                                 {
@@ -7122,30 +7090,30 @@ namespace SGID.Pages.Relatorios.Diretoria
                                         if (i == 0)
                                         {
                                             time.FaturadoEquipe = 0;
-                                            time.FaturadoProduto += resultadoInter.Where(x => x.Linha == prod.Produto.Trim() && x.DOR != "082" && x.Gestor != "RONAN.JOVINO" && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total) - DevolucaoInter.Where(x => x.Linha.Trim() == prod.Produto.Trim() && x.DOR != "082" && x.Gestor != "RONAN.JOVINO" && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total);
+                                            time.FaturadoProduto += resultadoInter.Where(x => x.Linha == prod.Produto.Trim() && x.DOR != "082" && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total) - DevolucaoInter.Where(x => x.Linha.Trim() == prod.Produto.Trim() && x.DOR != "082" && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total);
                                             time.FaturadoProduto += resultadoDenuo.Where(x => x.Linha.Trim() == prod.Produto.Trim() && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total) - DevolucaoDenuo.Where(x => x.Linha.Trim() == prod.Produto.Trim() && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total);
-                                            time.BaixaProduto += BaixaLicitacoesDenuo.Where(x => Convert.ToInt32(x.DataPedido) > 20231231 && (x.CodigoCliente == "000011" || x.CodigoCliente == "000012") && x.Gestor != "RONAN.JOVINO" && x.Linha == prod.Produto.Trim()).Sum(x => x.TotalBaixado);
-                                            time.BaixaProduto += BaixaLicitacoesInter.Where(x => Convert.ToInt32(x.DataPedido) > 20231231 && (x.CodigoCliente == "000011" || x.CodigoCliente == "000012") && x.Linha.Trim() == prod.Produto.Trim()).Sum(x => x.TotalBaixado);
+                                            time.FaturadoProduto += BaixaLicitacoesDenuo.Where(x => Convert.ToInt32(x.DataPedido) > 20240231 && (x.CodigoCliente == "000011" && x.CodigoCliente == "000012") && x.Linha == prod.Produto.Trim()).Sum(x => x.TotalBaixado);
+                                            time.FaturadoProduto += BaixaLicitacoesInter.Where(x => Convert.ToInt32(x.DataPedido) > 20240231 && (x.CodigoCliente == "000011" && x.CodigoCliente == "000012") && x.Linha.Trim() == prod.Produto.Trim()).Sum(x => x.TotalBaixado);
                                             i++;
                                         }
                                         else
                                         {
-                                            time.FaturadoProduto += resultadoInter.Where(x => x.Linha == prod.Produto.Trim() && x.DOR != "082" && x.Gestor != "RONAN.JOVINO" && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total) - DevolucaoInter.Where(x => x.Linha.Trim() == prod.Produto.Trim() && x.DOR != "082" && x.Gestor != "RONAN.JOVINO" && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total);
+                                            time.FaturadoProduto += resultadoInter.Where(x => x.Linha == prod.Produto.Trim() && x.DOR != "082" && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total) - DevolucaoInter.Where(x => x.Linha.Trim() == prod.Produto.Trim() && x.DOR != "082" && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total);
                                             time.FaturadoProduto += resultadoDenuo.Where(x => x.Linha.Trim() == prod.Produto.Trim() && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total) - DevolucaoDenuo.Where(x => x.Linha.Trim() == prod.Produto.Trim() && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total);
-                                            time.BaixaProduto += BaixaLicitacoesDenuo.Where(x => Convert.ToInt32(x.DataPedido) > 20231231 && (x.CodigoCliente == "000011" || x.CodigoCliente == "000012") && x.Gestor != "RONAN.JOVINO" && x.Linha == prod.Produto.Trim()).Sum(x => x.TotalBaixado);
-                                            time.BaixaProduto += BaixaLicitacoesInter.Where(x => Convert.ToInt32(x.DataPedido) > 20231231 && (x.CodigoCliente == "000011" || x.CodigoCliente == "000012") && x.Linha.Trim() == prod.Produto.Trim()).Sum(x => x.TotalBaixado);
+                                            time.FaturadoProduto += BaixaLicitacoesDenuo.Where(x => Convert.ToInt32(x.DataPedido) > 20240231 && (x.CodigoCliente == "000011" && x.CodigoCliente == "000012") && x.Linha == prod.Produto.Trim()).Sum(x => x.TotalBaixado);
+                                            time.FaturadoProduto += BaixaLicitacoesInter.Where(x => Convert.ToInt32(x.DataPedido) > 20240231 && (x.CodigoCliente == "000011" && x.CodigoCliente == "000012") && x.Linha.Trim() == prod.Produto.Trim()).Sum(x => x.TotalBaixado);
                                         }
                                     }
                                     else
                                     {
                                         time.FaturadoProduto += resultadoInter.Where(x => x.Linha == prod.Produto && x.DOR != "082" && x.Gestor != "RONAN.JOVINO" && x.Gestor != "TIAGO.FONSECA" && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total) - DevolucaoInter.Where(x => x.Linha.Trim() == prod.Produto && x.DOR != "082" && x.Gestor != "RONAN.JOVINO" && x.Gestor != "TIAGO.FONSECA" && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total);
                                         time.FaturadoProduto += resultadoDenuo.Where(x => x.Linha.Trim() == prod.Produto.Trim() && x.Gestor != "RONAN.JOVINO" && x.Gestor != "TIAGO.FONSECA" && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total) - DevolucaoDenuo.Where(x => x.Linha.Trim() == prod.Produto.Trim() && x.Gestor != "RONAN.JOVINO" && x.Gestor != "TIAGO.FONSECA" && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total);
-                                        time.BaixaProduto += BaixaLicitacoesDenuo.Where(x => Convert.ToInt32(x.DataPedido) > 20231231 && (x.CodigoCliente == "000011" || x.CodigoCliente == "000012") && x.Gestor != "RONAN.JOVINO" && x.Gestor != "TIAGO.FONSECA" && x.Linha == prod.Produto.Trim()).Sum(x => x.TotalBaixado);
-                                        time.BaixaProduto += BaixaLicitacoesInter.Where(x => Convert.ToInt32(x.DataPedido) > 20231231 && (x.CodigoCliente == "000011" || x.CodigoCliente == "000012") && x.Gestor != "RONAN.JOVINO" && x.Gestor != "TIAGO.FONSECA" && x.Linha.Trim() == prod.Produto.Trim()).Sum(x => x.TotalBaixado);
+                                        time.FaturadoProduto += BaixaLicitacoesDenuo.Where(x => Convert.ToInt32(x.DataPedido) > 20240231 && (x.CodigoCliente == "000011" && x.CodigoCliente == "000012") && x.Gestor != "RONAN.JOVINO" && x.Gestor != "TIAGO.FONSECA" && x.Linha == prod.Produto.Trim()).Sum(x => x.TotalBaixado);
+                                        time.FaturadoProduto += BaixaLicitacoesInter.Where(x => Convert.ToInt32(x.DataPedido) > 20240231 && (x.CodigoCliente == "000011" && x.CodigoCliente == "000012") && x.Gestor != "RONAN.JOVINO" && x.Gestor != "TIAGO.FONSECA" && x.Linha.Trim() == prod.Produto.Trim()).Sum(x => x.TotalBaixado);
                                     }
                                 });
 
-                            }*/
+                            }
 
 
 
@@ -7254,32 +7222,31 @@ namespace SGID.Pages.Relatorios.Diretoria
 
                     #region ADM
 
-
                     #region INTERMEDIC
 
                     #region Faturado
                     var query5 = (from SD20 in ProtheusInter.Sd2010s
-                                 join SA10 in ProtheusInter.Sa1010s on new { Cod = SD20.D2Cliente, Loja = SD20.D2Loja } equals new { Cod = SA10.A1Cod, Loja = SA10.A1Loja }
-                                 join SB10 in ProtheusInter.Sb1010s on SD20.D2Cod equals SB10.B1Cod
-                                 join SF20 in ProtheusInter.Sf2010s on new { Filial = SD20.D2Filial, Doc = SD20.D2Doc, Serie = SD20.D2Serie, Cliente = SD20.D2Cliente, Loja = SD20.D2Loja } equals new { Filial = SF20.F2Filial, Doc = SF20.F2Doc, Serie = SF20.F2Serie, Cliente = SF20.F2Cliente, Loja = SF20.F2Loja }
-                                 join SC50 in ProtheusInter.Sc5010s on new { Filial = SD20.D2Filial, Num = SD20.D2Pedido } equals new { Filial = SC50.C5Filial, Num = SC50.C5Num }
-                                 join SA30 in ProtheusInter.Sa3010s on SC50.C5Vend1 equals SA30.A3Cod
-                                 join SC60 in ProtheusInter.Sc6010s on new { Filial = SD20.D2Filial, Pedido = SD20.D2Pedido, Cliente = SD20.D2Cliente, Loja = SD20.D2Loja, Item = SD20.D2Itempv, Cod = SD20.D2Cod } equals new { Filial = SC60.C6Filial, Pedido = SC60.C6Num, Cliente = SC60.C6Cli, Loja = SC60.C6Loja, Item = SC60.C6Item, Cod = SC60.C6Produto }
-                                 where SD20.DELET != "*" && SA10.DELET != "*" && SB10.DELET != "*" && SF20.DELET != "*" && SC50.DELET != "*" && SC60.DELET != "*"
-                                 && (((int)(object)SD20.D2Cf >= 5102 && (int)(object)SD20.D2Cf <= 5114) || ((int)(object)SD20.D2Cf >= 6102 && (int)(object)SD20.D2Cf <= 6114) ||
-                                 ((int)(object)SD20.D2Cf >= 7102 && (int)(object)SD20.D2Cf <= 7114) || CF.Contains((int)(object)SD20.D2Cf)) && ((int)(object)SD20.D2Emissao >= (int)(object)DataInicio && (int)(object)SD20.D2Emissao <= (int)(object)DataFim)
-                                 && SD20.D2Quant != 0 && (SC50.C5Utpoper == "F" || SC50.C5Utpoper == "K") && SA10.A1Clinter != "S" && SA10.A1Cgc != "04715053000140" && SA10.A1Cgc != "04715053000220" && SA10.A1Cgc != "01390500000140" && (int)(object)SD20.D2Emissao >= 20200701
-                                 select new
-                                 {
-                                     NF = SD20.D2Doc,
-                                     Total = SD20.D2Total,
-                                     Data = SD20.D2Emissao,
-                                     Login = SA30.A3Xlogin,
-                                     Gestor = SA30.A3Xlogsup,
-                                     Linha = SA30.A3Xdescun,
-                                     DOR = SB10.B1Ugrpint,
-                                     Codigo = SA10.A1Xgrinte
-                                 });
+                                  join SA10 in ProtheusInter.Sa1010s on new { Cod = SD20.D2Cliente, Loja = SD20.D2Loja } equals new { Cod = SA10.A1Cod, Loja = SA10.A1Loja }
+                                  join SB10 in ProtheusInter.Sb1010s on SD20.D2Cod equals SB10.B1Cod
+                                  join SF20 in ProtheusInter.Sf2010s on new { Filial = SD20.D2Filial, Doc = SD20.D2Doc, Serie = SD20.D2Serie, Cliente = SD20.D2Cliente, Loja = SD20.D2Loja } equals new { Filial = SF20.F2Filial, Doc = SF20.F2Doc, Serie = SF20.F2Serie, Cliente = SF20.F2Cliente, Loja = SF20.F2Loja }
+                                  join SC50 in ProtheusInter.Sc5010s on new { Filial = SD20.D2Filial, Num = SD20.D2Pedido } equals new { Filial = SC50.C5Filial, Num = SC50.C5Num }
+                                  join SA30 in ProtheusInter.Sa3010s on SC50.C5Vend1 equals SA30.A3Cod
+                                  join SC60 in ProtheusInter.Sc6010s on new { Filial = SD20.D2Filial, Pedido = SD20.D2Pedido, Cliente = SD20.D2Cliente, Loja = SD20.D2Loja, Item = SD20.D2Itempv, Cod = SD20.D2Cod } equals new { Filial = SC60.C6Filial, Pedido = SC60.C6Num, Cliente = SC60.C6Cli, Loja = SC60.C6Loja, Item = SC60.C6Item, Cod = SC60.C6Produto }
+                                  where SD20.DELET != "*" && SA10.DELET != "*" && SB10.DELET != "*" && SF20.DELET != "*" && SC50.DELET != "*" && SC60.DELET != "*"
+                                  && (((int)(object)SD20.D2Cf >= 5102 && (int)(object)SD20.D2Cf <= 5114) || ((int)(object)SD20.D2Cf >= 6102 && (int)(object)SD20.D2Cf <= 6114) ||
+                                  ((int)(object)SD20.D2Cf >= 7102 && (int)(object)SD20.D2Cf <= 7114) || CF.Contains((int)(object)SD20.D2Cf)) && ((int)(object)SD20.D2Emissao >= (int)(object)DataInicio && (int)(object)SD20.D2Emissao <= (int)(object)DataFim)
+                                  && SD20.D2Quant != 0 && (SC50.C5Utpoper == "F" || SC50.C5Utpoper == "K") && SA10.A1Clinter != "S" && SA10.A1Cgc != "04715053000140" && SA10.A1Cgc != "04715053000220" && SA10.A1Cgc != "01390500000140" && (int)(object)SD20.D2Emissao >= 20200701
+                                  select new
+                                  {
+                                      NF = SD20.D2Doc,
+                                      Total = SD20.D2Total,
+                                      Data = SD20.D2Emissao,
+                                      Login = SA30.A3Xlogin,
+                                      Gestor = SA30.A3Xlogsup,
+                                      Linha = SA30.A3Xdescun,
+                                      DOR = SB10.B1Ugrpint,
+                                      Codigo = SA10.A1Xgrinte
+                                  });
 
                     var resultadoInter2 = query5.GroupBy(x => new
                     {
@@ -7308,42 +7275,42 @@ namespace SGID.Pages.Relatorios.Diretoria
                     var DevolucaoInter2 = new List<RelatorioDevolucaoFat>();
 
                     var teste4 = (from SD10 in ProtheusInter.Sd1010s
-                                 join SF20 in ProtheusInter.Sf2010s on new { Filial = SD10.D1Filial, Doc = SD10.D1Nfori, Serie = SD10.D1Seriori, Forn = SD10.D1Fornece, Loja = SD10.D1Loja } equals new { Filial = SF20.F2Filial, Doc = SF20.F2Doc, Serie = SF20.F2Serie, Forn = SF20.F2Cliente, Loja = SF20.F2Loja }
-                                 join SA30 in ProtheusInter.Sa3010s on SF20.F2Vend1 equals SA30.A3Cod
-                                 join SC50 in ProtheusInter.Sc5010s on new { Filial = SD10.D1Filial, Nota = SD10.D1Nfori } equals new { Filial = SC50.C5Filial, Nota = SC50.C5Nota }
-                                 join SA10 in ProtheusInter.Sa1010s on new { Forn = SD10.D1Fornece, Loja = SD10.D1Loja } equals new { Forn = SA10.A1Cod, Loja = SA10.A1Loja }
-                                 join SB10 in ProtheusInter.Sb1010s on SD10.D1Cod equals SB10.B1Cod
-                                 where SD10.DELET != "*" && SF20.DELET != "*" && SA10.DELET != "*" && SB10.DELET != "*" && SA30.DELET != "*"
-                                  && SA30.A3Xunnego != "000008" && (SD10.D1Cf == "1202" || SD10.D1Cf == "2202" || SD10.D1Cf == "3202" || SD10.D1Cf == "1553" || SD10.D1Cf == "2553")
-                                  && (int)(object)SD10.D1Dtdigit >= (int)(object)DataInicio && (int)(object)SD10.D1Dtdigit <= (int)(object)DataFim
-                                  && (int)(object)SD10.D1Dtdigit >= 20200701
-                                  && (SC50.C5Utpoper == "F" || SC50.C5Utpoper == "K")
+                                  join SF20 in ProtheusInter.Sf2010s on new { Filial = SD10.D1Filial, Doc = SD10.D1Nfori, Serie = SD10.D1Seriori, Forn = SD10.D1Fornece, Loja = SD10.D1Loja } equals new { Filial = SF20.F2Filial, Doc = SF20.F2Doc, Serie = SF20.F2Serie, Forn = SF20.F2Cliente, Loja = SF20.F2Loja }
+                                  join SA30 in ProtheusInter.Sa3010s on SF20.F2Vend1 equals SA30.A3Cod
+                                  join SC50 in ProtheusInter.Sc5010s on new { Filial = SD10.D1Filial, Nota = SD10.D1Nfori } equals new { Filial = SC50.C5Filial, Nota = SC50.C5Nota }
+                                  join SA10 in ProtheusInter.Sa1010s on new { Forn = SD10.D1Fornece, Loja = SD10.D1Loja } equals new { Forn = SA10.A1Cod, Loja = SA10.A1Loja }
+                                  join SB10 in ProtheusInter.Sb1010s on SD10.D1Cod equals SB10.B1Cod
+                                  where SD10.DELET != "*" && SF20.DELET != "*" && SA10.DELET != "*" && SB10.DELET != "*" && SA30.DELET != "*"
+                                   && SA30.A3Xunnego != "000008" && (SD10.D1Cf == "1202" || SD10.D1Cf == "2202" || SD10.D1Cf == "3202" || SD10.D1Cf == "1553" || SD10.D1Cf == "2553")
+                                   && (int)(object)SD10.D1Dtdigit >= (int)(object)DataInicio && (int)(object)SD10.D1Dtdigit <= (int)(object)DataFim
+                                   && (int)(object)SD10.D1Dtdigit >= 20200701
+                                   && (SC50.C5Utpoper == "F" || SC50.C5Utpoper == "K")
                                   orderby SA30.A3Nome
-                                 select new
-                                 {
-                                     SD10.D1Filial,
-                                     SD10.D1Fornece,
-                                     SD10.D1Loja,
-                                     SA10.A1Nome,
-                                     SA10.A1Clinter,
-                                     SD10.D1Doc,
-                                     SD10.D1Serie,
-                                     SD10.D1Dtdigit,
-                                     SD10.D1Total,
-                                     SD10.D1Valdesc,
-                                     SD10.D1Valipi,
-                                     SD10.D1Valicm,
-                                     SA30.A3Nome,
-                                     SD10.D1Nfori,
-                                     SD10.D1Seriori,
-                                     SD10.D1Datori,
-                                     SD10.D1Emissao,
-                                     SA30.A3Xlogin,
-                                     SA30.A3Xlogsup,
-                                     SA30.A3Xdescun,
-                                     DOR = SB10.B1Ugrpint,
-                                     SA10.A1Xgrinte,
-                                 }
+                                  select new
+                                  {
+                                      SD10.D1Filial,
+                                      SD10.D1Fornece,
+                                      SD10.D1Loja,
+                                      SA10.A1Nome,
+                                      SA10.A1Clinter,
+                                      SD10.D1Doc,
+                                      SD10.D1Serie,
+                                      SD10.D1Dtdigit,
+                                      SD10.D1Total,
+                                      SD10.D1Valdesc,
+                                      SD10.D1Valipi,
+                                      SD10.D1Valicm,
+                                      SA30.A3Nome,
+                                      SD10.D1Nfori,
+                                      SD10.D1Seriori,
+                                      SD10.D1Datori,
+                                      SD10.D1Emissao,
+                                      SA30.A3Xlogin,
+                                      SA30.A3Xlogsup,
+                                      SA30.A3Xdescun,
+                                      DOR = SB10.B1Ugrpint,
+                                      SA10.A1Xgrinte,
+                                  }
                                  ).GroupBy(x => new
                                  {
                                      x.A1Nome,
@@ -7527,8 +7494,6 @@ namespace SGID.Pages.Relatorios.Diretoria
                     #endregion
 
                     #endregion
-
-
 
                     Users = SGID.TimeADMs.OrderBy(x => x.Integrante).ToList();
 
@@ -7894,7 +7859,7 @@ namespace SGID.Pages.Relatorios.Diretoria
 
                             if (x.TipoFaturamento != "S" && x.TipoFaturamento != "L")
                             {
-                                time.Linha = resultadoInter.FirstOrDefault(x => x.Login == usuario)?.Linha;
+                                time.Linha = ProtheusDenuo.Sa3010s.FirstOrDefault(x => x.A3Xlogin == usuario)?.A3Xdescun;
                                 if (time.User.Integrante.ToUpper() == "EDUARDO.ARONI")
                                 {
                                     time.Linha = "ORTOPEDIA";
@@ -7904,10 +7869,11 @@ namespace SGID.Pages.Relatorios.Diretoria
                                     time.Linha = "BUCOMAXILO";
                                 }
 
-                                //if (dataini <=  20231231)
-                                //{
-
+                                if (dataini <= 20240231)
+                                {
+                                    #region RegrasAntigas
                                     time.Faturado += resultadoInter.Where(x => x.Login == usuario).Sum(x => x.Total) - DevolucaoInter.Where(x => x.Login == usuario).Sum(x => x.Total);
+
                                     if (usuario == "MICHEL.SAMPAIO")
                                     {
                                         time.FaturadoEquipe += resultadoInter.Where(x => x.Gestor == "ANDRE.SALES" && x.DOR != "082").Sum(x => x.Total) - DevolucaoInter.Where(x => x.Gestor == "ANDRE.SALES" && x.DOR != "082").Sum(x => x.Total);
@@ -7916,6 +7882,7 @@ namespace SGID.Pages.Relatorios.Diretoria
                                     {
                                         time.FaturadoEquipe += resultadoInter.Where(x => x.Gestor == usuario && x.DOR != "082").Sum(x => x.Total) - DevolucaoInter.Where(x => x.Gestor == usuario && x.DOR != "082").Sum(x => x.Total);
                                     }
+
                                     int i = 0;
                                     Produtos.ForEach(prod =>
                                     {
@@ -7924,12 +7891,12 @@ namespace SGID.Pages.Relatorios.Diretoria
                                             if (i == 0)
                                             {
                                                 time.FaturadoEquipe = 0;
-                                                time.FaturadoProduto += resultadoInter.Where(x => x.Linha == prod.Produto.Trim() && x.DOR != "082" && x.Gestor != "RONAN.JOVINO").Sum(x => x.Total) - DevolucaoInter.Where(x => x.Linha.Trim() == prod.Produto.Trim() && x.DOR != "082" && x.Gestor != "RONAN.JOVINO").Sum(x => x.Total);
+                                                time.FaturadoProduto += resultadoInter.Where(x => x.Linha == prod.Produto.Trim() && x.DOR != "082").Sum(x => x.Total) - DevolucaoInter.Where(x => x.Linha.Trim() == prod.Produto.Trim() && x.DOR != "082").Sum(x => x.Total);
                                                 i++;
                                             }
                                             else
                                             {
-                                                time.FaturadoProduto += resultadoInter.Where(x => x.Linha == prod.Produto.Trim() && x.DOR != "082" && x.Gestor != "RONAN.JOVINO").Sum(x => x.Total) - DevolucaoInter.Where(x => x.Linha.Trim() == prod.Produto.Trim() && x.DOR != "082" && x.Gestor != "RONAN.JOVINO").Sum(x => x.Total);
+                                                time.FaturadoProduto += resultadoInter.Where(x => x.Linha == prod.Produto.Trim() && x.DOR != "082").Sum(x => x.Total) - DevolucaoInter.Where(x => x.Linha.Trim() == prod.Produto.Trim() && x.DOR != "082").Sum(x => x.Total);
                                             }
                                         }
                                         else
@@ -7937,21 +7904,18 @@ namespace SGID.Pages.Relatorios.Diretoria
                                             time.FaturadoProduto += resultadoInter.Where(x => x.Linha == prod.Produto && x.DOR != "082" && x.Gestor != "RONAN.JOVINO" && x.Gestor != "TIAGO.FONSECA").Sum(x => x.Total) - DevolucaoInter.Where(x => x.Linha.Trim() == prod.Produto && x.DOR != "082" && x.Gestor != "RONAN.JOVINO" && x.Gestor != "TIAGO.FONSECA").Sum(x => x.Total);
                                         }
                                     });
-                                /*}
+                                    #endregion
+                                }
                                 else
                                 {
+                                    #region RegrasNovas
                                     time.Faturado += resultadoInter.Where(x => x.Login == usuario && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total) - DevolucaoInter.Where(x => x.Login == usuario && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total);
-                                    time.Baixa += BaixaLicitacoesInter.Where(x => Convert.ToInt32(x.DataPedido) > 20231231 && (x.CodigoCliente == "000011" || x.CodigoCliente == "000012") && x.Login == usuario).Sum(x => x.TotalBaixado);
-                                    if (usuario == "MICHEL.SAMPAIO")
-                                    {
-                                        time.FaturadoEquipe += resultadoInter.Where(x => x.Gestor == "ANDRE.SALES" && x.DOR != "082" && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total) - DevolucaoInter.Where(x => x.Gestor == "ANDRE.SALES" && x.DOR != "082" && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total);
-                                        time.BaixaEquipe += BaixaLicitacoesInter.Where(x => Convert.ToInt32(x.DataPedido) > 20231231 && (x.CodigoCliente == "000011" || x.CodigoCliente == "000012") && x.Gestor == "ANDRE.SALES").Sum(x => x.TotalBaixado);
-                                    }
-                                    else
-                                    {
-                                        time.FaturadoEquipe += resultadoInter.Where(x => x.Gestor == usuario && x.DOR != "082" && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total) - DevolucaoInter.Where(x => x.Gestor == usuario && x.DOR != "082" && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total);
-                                        time.BaixaEquipe += BaixaLicitacoesInter.Where(x => Convert.ToInt32(x.DataPedido) > 20231231 && (x.CodigoCliente == "000011" || x.CodigoCliente == "000012") && x.Gestor == usuario).Sum(x => x.TotalBaixado);
-                                    }
+                                    time.Faturado += BaixaLicitacoesInter.Where(x => Convert.ToInt32(x.DataPedido) > 20240231 && (x.CodigoCliente == "000011" || x.CodigoCliente == "000012") && x.Login == usuario).Sum(x => x.TotalBaixado);
+
+                                    time.FaturadoEquipe += resultadoInter.Where(x => x.Gestor == usuario && x.DOR != "082" && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total) - DevolucaoInter.Where(x => x.Gestor == usuario && x.DOR != "082" && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total);
+                                    time.FaturadoEquipe += BaixaLicitacoesInter.Where(x => Convert.ToInt32(x.DataPedido) > 20240231 && (x.CodigoCliente == "000011" || x.CodigoCliente == "000012") && x.Gestor == usuario).Sum(x => x.TotalBaixado);
+
+
                                     int i = 0;
                                     Produtos.ForEach(prod =>
                                     {
@@ -7960,24 +7924,25 @@ namespace SGID.Pages.Relatorios.Diretoria
                                             if (i == 0)
                                             {
                                                 time.FaturadoEquipe = 0;
-                                                time.FaturadoProduto += resultadoInter.Where(x => x.Linha == prod.Produto.Trim() && x.DOR != "082" && x.Gestor != "RONAN.JOVINO" && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total) - DevolucaoInter.Where(x => x.Linha.Trim() == prod.Produto.Trim() && x.DOR != "082" && x.Gestor != "RONAN.JOVINO" && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total);
-                                                time.BaixaProduto += BaixaLicitacoesInter.Where(x => Convert.ToInt32(x.DataPedido) > 20231231 && (x.CodigoCliente == "000011" || x.CodigoCliente == "000012") && x.Linha.Trim() == prod.Produto.Trim()).Sum(x => x.TotalBaixado);
+                                                time.FaturadoProduto += resultadoInter.Where(x => x.Linha == prod.Produto.Trim() && x.DOR != "082" && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total) - DevolucaoInter.Where(x => x.Linha.Trim() == prod.Produto.Trim() && x.DOR != "082" && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total);
+                                                time.FaturadoProduto += BaixaLicitacoesInter.Where(x => Convert.ToInt32(x.DataPedido) > 20240231 && (x.CodigoCliente == "000011" || x.CodigoCliente == "000012") && x.Linha == prod.Produto.Trim()).Sum(x => x.TotalBaixado);
                                                 i++;
                                             }
                                             else
                                             {
-                                                time.FaturadoProduto += resultadoInter.Where(x => x.Linha == prod.Produto.Trim() && x.DOR != "082" && x.Gestor != "RONAN.JOVINO" && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total) - DevolucaoInter.Where(x => x.Linha.Trim() == prod.Produto.Trim() && x.DOR != "082" && x.Gestor != "RONAN.JOVINO" && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total);
-                                                time.BaixaProduto += BaixaLicitacoesInter.Where(x => Convert.ToInt32(x.DataPedido) > 20231231 && (x.CodigoCliente == "000011" || x.CodigoCliente == "000012") && x.Linha.Trim() == prod.Produto.Trim()).Sum(x => x.TotalBaixado);
+                                                time.FaturadoProduto += resultadoInter.Where(x => x.Linha == prod.Produto.Trim() && x.DOR != "082" && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total) - DevolucaoInter.Where(x => x.Linha.Trim() == prod.Produto.Trim() && x.DOR != "082" && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total);
+                                                time.FaturadoProduto += BaixaLicitacoesInter.Where(x => Convert.ToInt32(x.DataPedido) > 20240231 && (x.CodigoCliente == "000011" || x.CodigoCliente == "000012") && x.Linha == prod.Produto.Trim()).Sum(x => x.TotalBaixado);
                                             }
                                         }
                                         else
                                         {
                                             time.FaturadoProduto += resultadoInter.Where(x => x.Linha == prod.Produto && x.DOR != "082" && x.Gestor != "RONAN.JOVINO" && x.Gestor != "TIAGO.FONSECA" && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total) - DevolucaoInter.Where(x => x.Linha.Trim() == prod.Produto && x.DOR != "082" && x.Gestor != "RONAN.JOVINO" && x.Gestor != "TIAGO.FONSECA" && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total);
-                                            time.BaixaProduto += BaixaLicitacoesInter.Where(x => Convert.ToInt32(x.DataPedido) > 20231231 && (x.CodigoCliente == "000011" || x.CodigoCliente == "000012") && x.Gestor != "RONAN.JOVINO" && x.Gestor != "TIAGO.FONSECA" && x.Linha.Trim() == prod.Produto.Trim()).Sum(x => x.TotalBaixado);
+                                            time.FaturadoProduto += BaixaLicitacoesInter.Where(x => Convert.ToInt32(x.DataPedido) > 20240231 && (x.CodigoCliente == "000011" || x.CodigoCliente == "000012") && x.Linha == prod.Produto.Trim() && x.Gestor != "RONAN.JOVINO" && x.Gestor != "TIAGO.FONSECA").Sum(x => x.TotalBaixado);
                                         }
                                     });
+                                    #endregion
+                                }
 
-                                }*/
                                 time.Comissao = (time.Faturado + time.Baixa) * (time.User.Porcentagem / 100);
                                 time.ComissaoEquipe = (time.FaturadoEquipe + time.BaixaEquipe) * (time.User.PorcentagemSeg / 100);
                                 time.ComissaoProduto = (time.FaturadoProduto + time.BaixaProduto) * (time.User.PorcentagemGenProd / 100);
@@ -8629,8 +8594,8 @@ namespace SGID.Pages.Relatorios.Diretoria
                         #region BaixaSub
 
                         var BaixaSubDenuo = (from SE50 in ProtheusDenuo.Se5010s
-                                             join SE10 in ProtheusDenuo.Se1010s on new { PRE = SE50.E5Prefixo, Num = SE50.E5Numero, Par = SE50.E5Parcela, Tipo = SE50.E5Tipo, Cliente = SE50.E5Cliente, Loja = SE50.E5Loja }
-                                             equals new { PRE = SE10.E1Prefixo, Num = SE10.E1Num, Par = SE10.E1Parcela, Tipo = SE10.E1Tipo, Cliente = SE10.E1Cliente, Loja = SE10.E1Loja }
+                                             join SE10 in ProtheusDenuo.Se1010s on new { Filial = SE50.E5Filial, PRE = SE50.E5Prefixo, Num = SE50.E5Numero, Par = SE50.E5Parcela, Tipo = SE50.E5Tipo, Cliente = SE50.E5Cliente, Loja = SE50.E5Loja }
+                                             equals new { Filial = SE10.E1Filial, PRE = SE10.E1Prefixo, Num = SE10.E1Num, Par = SE10.E1Parcela, Tipo = SE10.E1Tipo, Cliente = SE10.E1Cliente, Loja = SE10.E1Loja }
                                              join SA10 in ProtheusDenuo.Sa1010s on SE50.E5Cliente equals SA10.A1Cod
                                              join SC50 in ProtheusDenuo.Sc5010s on new { Filial = SE10.E1Filial, Pedido = SE10.E1Pedido } equals new { Filial = SC50.C5Filial, Pedido = SC50.C5Num } into sr
                                              from c in sr.DefaultIfEmpty()
@@ -8676,8 +8641,8 @@ namespace SGID.Pages.Relatorios.Diretoria
                         #region BaixaLicitacoes
 
                         var BaixaLicitacoesDenuo = (from SE50 in ProtheusDenuo.Se5010s
-                                                    join SE10 in ProtheusDenuo.Se1010s on new { PRE = SE50.E5Prefixo, Num = SE50.E5Numero, Par = SE50.E5Parcela, Tipo = SE50.E5Tipo, Cliente = SE50.E5Cliente, Loja = SE50.E5Loja }
-                                                    equals new { PRE = SE10.E1Prefixo, Num = SE10.E1Num, Par = SE10.E1Parcela, Tipo = SE10.E1Tipo, Cliente = SE10.E1Cliente, Loja = SE10.E1Loja }
+                                                    join SE10 in ProtheusDenuo.Se1010s on new { Filial = SE50.E5Filial, PRE = SE50.E5Prefixo, Num = SE50.E5Numero, Par = SE50.E5Parcela, Tipo = SE50.E5Tipo, Cliente = SE50.E5Cliente, Loja = SE50.E5Loja }
+                                                    equals new { Filial = SE10.E1Filial, PRE = SE10.E1Prefixo, Num = SE10.E1Num, Par = SE10.E1Parcela, Tipo = SE10.E1Tipo, Cliente = SE10.E1Cliente, Loja = SE10.E1Loja }
                                                     join SA10 in ProtheusDenuo.Sa1010s on SE50.E5Cliente equals SA10.A1Cod
                                                     join SC50 in ProtheusDenuo.Sc5010s on new { Filial = SE10.E1Filial, Pedido = SE10.E1Pedido } equals new { Filial = SC50.C5Filial, Pedido = SC50.C5Num }
                                                     join SA30 in ProtheusDenuo.Sa3010s on SC50.C5Vend1 equals SA30.A3Cod
@@ -8805,7 +8770,7 @@ namespace SGID.Pages.Relatorios.Diretoria
 
                             if (x.TipoFaturamento != "S" && x.TipoFaturamento != "L")
                             {
-                                time.Linha = resultadoDenuo.FirstOrDefault(x => x.Login == usuario)?.Linha;
+                                time.Linha = ProtheusDenuo.Sa3010s.FirstOrDefault(x => x.A3Xlogin == usuario)?.A3Xdescun;
                                 if (time.User.Integrante.ToUpper() == "EDUARDO.ARONI")
                                 {
                                     time.Linha = "ORTOPEDIA";
@@ -8815,10 +8780,10 @@ namespace SGID.Pages.Relatorios.Diretoria
                                     time.Linha = "BUCOMAXILO";
                                 }
 
-                                //if (dataini <=  20231231)
-                                //{
-
+                                if (dataini <= 20231231)
+                                {
                                     time.Faturado += resultadoDenuo.Where(x => x.Login == usuario).Sum(x => x.Total) - DevolucaoDenuo.Where(x => x.Login == usuario).Sum(x => x.Total);
+
                                     if (usuario == "MICHEL.SAMPAIO")
                                     {
                                         time.FaturadoEquipe += resultadoDenuo.Where(x => x.Gestor == "ANDRE.SALES").Sum(x => x.Total) - DevolucaoDenuo.Where(x => x.Gestor == "ANDRE.SALES").Sum(x => x.Total);
@@ -8827,6 +8792,7 @@ namespace SGID.Pages.Relatorios.Diretoria
                                     {
                                         time.FaturadoEquipe += resultadoDenuo.Where(x => x.Gestor == usuario).Sum(x => x.Total) - DevolucaoDenuo.Where(x => x.Gestor == usuario).Sum(x => x.Total);
                                     }
+
                                     int i = 0;
                                     Produtos.ForEach(prod =>
                                     {
@@ -8835,34 +8801,29 @@ namespace SGID.Pages.Relatorios.Diretoria
                                             if (i == 0)
                                             {
                                                 time.FaturadoEquipe = 0;
-                                                time.FaturadoProduto += resultadoDenuo.Where(x => x.Linha.Trim() == prod.Produto.Trim()).Sum(x => x.Total) - DevolucaoDenuo.Where(x => x.Linha.Trim() == prod.Produto.Trim()).Sum(x => x.Total);
+                                                time.FaturadoProduto += resultadoDenuo.Where(x => x.Linha == prod.Produto.Trim()).Sum(x => x.Total) - DevolucaoDenuo.Where(x => x.Linha.Trim() == prod.Produto.Trim()).Sum(x => x.Total);
                                                 i++;
                                             }
                                             else
                                             {
-                                                time.FaturadoProduto += resultadoDenuo.Where(x => x.Linha.Trim() == prod.Produto.Trim()).Sum(x => x.Total) - DevolucaoDenuo.Where(x => x.Linha.Trim() == prod.Produto.Trim()).Sum(x => x.Total);
+                                                time.FaturadoProduto += resultadoDenuo.Where(x => x.Linha == prod.Produto.Trim()).Sum(x => x.Total) - DevolucaoDenuo.Where(x => x.Linha.Trim() == prod.Produto.Trim()).Sum(x => x.Total);
                                             }
                                         }
                                         else
                                         {
-                                            time.FaturadoProduto += resultadoDenuo.Where(x => x.Linha.Trim() == prod.Produto.Trim() && x.Gestor != "RONAN.JOVINO" && x.Gestor != "TIAGO.FONSECA").Sum(x => x.Total) - DevolucaoDenuo.Where(x => x.Linha.Trim() == prod.Produto.Trim() && x.Gestor != "RONAN.JOVINO" && x.Gestor != "TIAGO.FONSECA").Sum(x => x.Total);
+                                            time.FaturadoProduto += resultadoDenuo.Where(x => x.Linha == prod.Produto && x.Gestor != "RONAN.JOVINO" && x.Gestor != "TIAGO.FONSECA").Sum(x => x.Total) - DevolucaoDenuo.Where(x => x.Linha.Trim() == prod.Produto && x.Gestor != "RONAN.JOVINO" && x.Gestor != "TIAGO.FONSECA").Sum(x => x.Total);
                                         }
                                     });
-                                /*}
+                                }
                                 else
                                 {
                                     time.Faturado += resultadoDenuo.Where(x => x.Login == usuario && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total) - DevolucaoDenuo.Where(x => x.Login == usuario && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total);
-                                    time.Baixa += BaixaLicitacoesDenuo.Where(x => Convert.ToInt32(x.DataPedido) > 20231231 && (x.CodigoCliente == "000011" || x.CodigoCliente == "000012") && x.Login == usuario).Sum(x => x.TotalBaixado);
-                                    if (usuario == "MICHEL.SAMPAIO")
-                                    {
-                                        time.FaturadoEquipe += resultadoDenuo.Where(x => x.Gestor == "ANDRE.SALES" && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total) - DevolucaoDenuo.Where(x => x.Gestor == "ANDRE.SALES" && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total);
-                                        time.BaixaEquipe += BaixaLicitacoesDenuo.Where(x => Convert.ToInt32(x.DataPedido) > 20231231 && (x.CodigoCliente == "000011" || x.CodigoCliente == "000012") && x.Gestor == "ANDRE.SALES").Sum(x => x.TotalBaixado);
-                                    }
-                                    else
-                                    {
-                                        time.FaturadoEquipe += resultadoDenuo.Where(x => x.Gestor == usuario && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total) - DevolucaoDenuo.Where(x => x.Gestor == usuario && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total);
-                                        time.BaixaEquipe += BaixaLicitacoesDenuo.Where(x => Convert.ToInt32(x.DataPedido) > 20231231 && (x.CodigoCliente == "000011" || x.CodigoCliente == "000012") && x.Gestor == usuario).Sum(x => x.TotalBaixado);
-                                    }
+                                    time.Faturado += BaixaLicitacoesDenuo.Where(x => Convert.ToInt32(x.DataPedido) > 20240231 && (x.CodigoCliente == "000011" || x.CodigoCliente == "000012") && x.Login == usuario).Sum(x => x.TotalBaixado);
+
+                                    time.FaturadoEquipe += resultadoDenuo.Where(x => x.Gestor == usuario && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total) - DevolucaoDenuo.Where(x => x.Gestor == usuario && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total);
+                                    time.FaturadoEquipe += BaixaLicitacoesDenuo.Where(x => Convert.ToInt32(x.DataPedido) > 20240231 && (x.CodigoCliente == "000011" || x.CodigoCliente == "000012") && x.Gestor == usuario).Sum(x => x.TotalBaixado);
+
+
                                     int i = 0;
                                     Produtos.ForEach(prod =>
                                     {
@@ -8871,24 +8832,24 @@ namespace SGID.Pages.Relatorios.Diretoria
                                             if (i == 0)
                                             {
                                                 time.FaturadoEquipe = 0;
-                                                time.FaturadoProduto += resultadoDenuo.Where(x => x.Linha.Trim() == prod.Produto.Trim() && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total) - DevolucaoDenuo.Where(x => x.Linha.Trim() == prod.Produto.Trim() && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total);
-                                                time.BaixaProduto += BaixaLicitacoesDenuo.Where(x => Convert.ToInt32(x.DataPedido) > 20231231 && (x.CodigoCliente == "000011" || x.CodigoCliente == "000012") && x.Gestor != "RONAN.JOVINO" && x.Linha == prod.Produto.Trim()).Sum(x => x.TotalBaixado);
+                                                time.FaturadoProduto += resultadoDenuo.Where(x => x.Linha == prod.Produto.Trim() && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total) - DevolucaoDenuo.Where(x => x.Linha.Trim() == prod.Produto.Trim() && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total);
+                                                time.FaturadoProduto += BaixaLicitacoesDenuo.Where(x => Convert.ToInt32(x.DataPedido) > 20240231 && (x.CodigoCliente == "000011" || x.CodigoCliente == "000012") && x.Linha == prod.Produto.Trim()).Sum(x => x.TotalBaixado);
                                                 i++;
                                             }
                                             else
                                             {
-                                                time.FaturadoProduto += resultadoDenuo.Where(x => x.Linha.Trim() == prod.Produto.Trim() && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total) - DevolucaoDenuo.Where(x => x.Linha.Trim() == prod.Produto.Trim() && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total);
-                                                time.BaixaProduto += BaixaLicitacoesDenuo.Where(x => Convert.ToInt32(x.DataPedido) > 20231231 && (x.CodigoCliente == "000011" || x.CodigoCliente == "000012") && x.Gestor != "RONAN.JOVINO" && x.Linha == prod.Produto.Trim()).Sum(x => x.TotalBaixado);
+                                                time.FaturadoProduto += resultadoDenuo.Where(x => x.Linha == prod.Produto.Trim() && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total) - DevolucaoDenuo.Where(x => x.Linha.Trim() == prod.Produto.Trim() && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total);
+                                                time.FaturadoProduto += BaixaLicitacoesDenuo.Where(x => Convert.ToInt32(x.DataPedido) > 20240231 && (x.CodigoCliente == "000011" || x.CodigoCliente == "000012") && x.Linha == prod.Produto.Trim()).Sum(x => x.TotalBaixado);
                                             }
                                         }
                                         else
                                         {
-                                            time.FaturadoProduto += resultadoDenuo.Where(x => x.Linha.Trim() == prod.Produto.Trim() && x.Gestor != "RONAN.JOVINO" && x.Gestor != "TIAGO.FONSECA" && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total) - DevolucaoDenuo.Where(x => x.Linha.Trim() == prod.Produto.Trim() && x.Gestor != "RONAN.JOVINO" && x.Gestor != "TIAGO.FONSECA" && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total);
-                                            time.BaixaProduto += BaixaLicitacoesDenuo.Where(x => Convert.ToInt32(x.DataPedido) > 20231231 && (x.CodigoCliente == "000011" || x.CodigoCliente == "000012") && x.Gestor != "RONAN.JOVINO" && x.Gestor != "TIAGO.FONSECA" && x.Linha == prod.Produto.Trim()).Sum(x => x.TotalBaixado);
+                                            time.FaturadoProduto += resultadoDenuo.Where(x => x.Linha == prod.Produto && x.Gestor != "RONAN.JOVINO" && x.Gestor != "TIAGO.FONSECA" && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total) - DevolucaoDenuo.Where(x => x.Linha.Trim() == prod.Produto && x.Gestor != "RONAN.JOVINO" && x.Gestor != "TIAGO.FONSECA").Sum(x => x.Total);
+                                            time.FaturadoProduto += BaixaLicitacoesDenuo.Where(x => Convert.ToInt32(x.DataPedido) > 20240231 && (x.CodigoCliente == "000011" || x.CodigoCliente == "000012") && x.Linha == prod.Produto.Trim() && x.Gestor != "RONAN.JOVINO" && x.Gestor != "TIAGO.FONSECA").Sum(x => x.TotalBaixado);
                                         }
                                     });
+                                }
 
-                                }*/
                                 time.Comissao = (time.Faturado + time.Baixa) * (time.User.Porcentagem / 100);
                                 time.ComissaoEquipe = (time.FaturadoEquipe + time.BaixaEquipe) * (time.User.PorcentagemSeg / 100);
                                 time.ComissaoProduto = (time.FaturadoProduto + time.BaixaProduto) * (time.User.PorcentagemGenProd / 100);
@@ -9129,7 +9090,7 @@ namespace SGID.Pages.Relatorios.Diretoria
                                 User = x,
                             };
 
-                            time.Faturado += resultadoDenuo.Sum(x => x.Total) - DevolucaoDenuo.Sum(x => x.Total);
+                            time.Faturado += resultadoDenuo2.Sum(x => x.Total) - DevolucaoDenuo2.Sum(x => x.Total);
 
                             time.Comissao = time.Faturado * (time.User.Porcentagem / 100);
                             time.Salario = time.User.Salario;
@@ -9258,9 +9219,9 @@ namespace SGID.Pages.Relatorios.Diretoria
                 #endregion
 
                 using ExcelPackage package = new ExcelPackage();
-                package.Workbook.Worksheets.Add("SubDistribuidor Faturado");
+                package.Workbook.Worksheets.Add("Faturado");
 
-                var sheet = package.Workbook.Worksheets.SingleOrDefault(x => x.Name == "SubDistribuidor Faturado");
+                var sheet = package.Workbook.Worksheets.SingleOrDefault(x => x.Name == "Faturado");
 
                 sheet.Cells[1, 1].Value = "Nome";
                 sheet.Cells[1, 2].Value = "Mês/Ano";
