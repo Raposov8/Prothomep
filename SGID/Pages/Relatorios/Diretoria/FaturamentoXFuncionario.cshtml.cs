@@ -32,8 +32,8 @@ namespace SGID.Pages.Relatorios.Diretoria
 
         public List<TimeRH> UsuariosLicitacoes { get; set; } = new List<TimeRH>();
         public List<TimeRH> UsuariosSub { get; set; } = new List<TimeRH>();
-        public List<TimeADM> Users { get; set; }
-        public List<TimeADMRH> Usuarios { get; set; } = new List<TimeADMRH>();
+        public List<TimeADM> UsersAdm { get; set; }
+        public List<TimeADMRH> UsuariosAdm { get; set; } = new List<TimeADMRH>();
 
         public List<TimeDental> UsersDental { get; set; }
         public List<TimeDentalRH> UsuariosDental { get; set; } = new List<TimeDentalRH>();
@@ -80,7 +80,10 @@ namespace SGID.Pages.Relatorios.Diretoria
             {
                 #region Dental
 
-                UsersDental = SGID.TimeDentals.OrderBy(x => x.Integrante).ToList();
+                UsersDental = SGID.TimeDentals.Where(x=> x.Status).ToList();
+                UsersDental.AddRange(SGID.TimeDentals.Where(x => x.Desativar > date));
+
+                UsersDental = UsersDental.OrderBy(x => x.Integrante).ToList();
 
                 #region Faturado
                 var query3 = (from SD20 in ProtheusDenuo.Sd2010s
@@ -921,7 +924,10 @@ namespace SGID.Pages.Relatorios.Diretoria
 
                 #endregion
 
-                UsersComercial = SGID.Times.Where(x => x.Status).OrderBy(x => x.Integrante).ToList();
+                UsersComercial = SGID.Times.Where(x => x.Status).ToList();
+                UsersComercial.AddRange(SGID.Times.Where(x => x.Desativar > date).ToList());
+
+                UsersComercial = UsersComercial.OrderBy(x=> x.Integrante).ToList();
 
                 UsersComercial.ForEach(x =>
                 {
@@ -1416,9 +1422,12 @@ namespace SGID.Pages.Relatorios.Diretoria
 
                 #endregion
 
-                Users = SGID.TimeADMs.OrderBy(x => x.Integrante).ToList();
+                UsersAdm = SGID.TimeADMs.Where(x => x.Status).ToList();
+                UsersAdm.AddRange(SGID.TimeADMs.Where(x => x.Desativar > date));
 
-                Users.ForEach(x =>
+                UsersAdm = UsersAdm.OrderBy(x => x.Integrante).ToList();
+
+                UsersAdm.ForEach(x =>
                 {
                     var usuario = x.Integrante.ToUpper();
 
@@ -1450,7 +1459,7 @@ namespace SGID.Pages.Relatorios.Diretoria
                         time.Paga = time.Total;
                     }
 
-                    Usuarios.Add(time);
+                    UsuariosAdm.Add(time);
                 });
 
                 #endregion
@@ -1765,7 +1774,10 @@ namespace SGID.Pages.Relatorios.Diretoria
 
                     #endregion
 
-                    UsersComercial = SGID.Times.Where(x => x.Status).OrderBy(x => x.Integrante).ToList();
+                    UsersComercial = SGID.Times.Where(x => x.Status).ToList();
+                    UsersComercial.AddRange(SGID.Times.Where(x => x.Desativar > date).ToList());
+
+                    UsersComercial = UsersComercial.OrderBy(x => x.Integrante).ToList();
 
                     UsersComercial.ForEach(x =>
                     {
@@ -2107,9 +2119,12 @@ namespace SGID.Pages.Relatorios.Diretoria
 
                     #endregion
 
-                    Users = SGID.TimeADMs.OrderBy(x => x.Integrante).ToList();
+                    UsersAdm = SGID.TimeADMs.Where(x => x.Status).ToList();
+                    UsersAdm.AddRange(SGID.TimeADMs.Where(x => x.Desativar > date));
 
-                    Users.ForEach(x =>
+                    UsersAdm = UsersAdm.OrderBy(x => x.Integrante).ToList();
+
+                    UsersAdm.ForEach(x =>
                     {
                         var usuario = x.Integrante.ToUpper();
 
@@ -2139,7 +2154,7 @@ namespace SGID.Pages.Relatorios.Diretoria
                         {
                             time.Paga = time.Total;
                         }
-                        Usuarios.Add(time);
+                        UsuariosAdm.Add(time);
                     });
 
                     #endregion
@@ -2148,7 +2163,10 @@ namespace SGID.Pages.Relatorios.Diretoria
                 {
                     #region Dental
 
-                    UsersDental = SGID.TimeDentals.OrderBy(x => x.Integrante).ToList();
+                    UsersDental = SGID.TimeDentals.Where(x => x.Status).ToList();
+                    UsersDental.AddRange(SGID.TimeDentals.Where(x => x.Desativar > date));
+
+                    UsersDental = UsersDental.OrderBy(x => x.Integrante).ToList();
 
                     #region Faturado
                     var query3 = (from SD20 in ProtheusDenuo.Sd2010s
@@ -2676,7 +2694,10 @@ namespace SGID.Pages.Relatorios.Diretoria
 
                     #endregion
 
-                    UsersComercial = SGID.Times.Where(x => x.Status).OrderBy(x => x.Integrante).ToList();
+                    UsersComercial = SGID.Times.Where(x => x.Status).ToList();
+                    UsersComercial.AddRange(SGID.Times.Where(x => x.Desativar > date).ToList());
+
+                    UsersComercial = UsersComercial.OrderBy(x => x.Integrante).ToList();
 
                     UsersComercial.ForEach(x =>
                     {
@@ -2999,9 +3020,12 @@ namespace SGID.Pages.Relatorios.Diretoria
 
                     #endregion
 
-                    Users = SGID.TimeADMs.OrderBy(x => x.Integrante).ToList();
+                    UsersAdm = SGID.TimeADMs.Where(x => x.Status).ToList();
+                    UsersAdm.AddRange(SGID.TimeADMs.Where(x => x.Desativar > date));
 
-                    Users.ForEach(x =>
+                    UsersAdm = UsersAdm.OrderBy(x => x.Integrante).ToList();
+
+                    UsersAdm.ForEach(x =>
                     {
                         var usuario = x.Integrante.ToUpper();
 
@@ -3030,7 +3054,7 @@ namespace SGID.Pages.Relatorios.Diretoria
                             time.Paga = time.Total;
                         }
 
-                        Usuarios.Add(time);
+                        UsuariosAdm.Add(time);
                     });
 
                     #endregion
@@ -3069,7 +3093,10 @@ namespace SGID.Pages.Relatorios.Diretoria
             {
                 #region Dental
 
-                UsersDental = SGID.TimeDentals.OrderBy(x => x.Integrante).ToList();
+                UsersDental = SGID.TimeDentals.Where(x => x.Status).ToList();
+                UsersDental.AddRange(SGID.TimeDentals.Where(x => x.Desativar > date));
+
+                UsersDental = UsersDental.OrderBy(x => x.Integrante).ToList();
 
                 #region Faturado
                 var query3 = (from SD20 in ProtheusDenuo.Sd2010s
@@ -3910,7 +3937,10 @@ namespace SGID.Pages.Relatorios.Diretoria
 
                 #endregion
 
-                UsersComercial = SGID.Times.Where(x => x.Status).OrderBy(x => x.Integrante).ToList();
+                UsersComercial = SGID.Times.Where(x => x.Status).ToList();
+                UsersComercial.AddRange(SGID.Times.Where(x => x.Desativar > date).ToList());
+
+                UsersComercial = UsersComercial.OrderBy(x => x.Integrante).ToList();
 
                 UsersComercial.ForEach(x =>
                 {
@@ -4405,9 +4435,12 @@ namespace SGID.Pages.Relatorios.Diretoria
 
                 #endregion
 
-                Users = SGID.TimeADMs.OrderBy(x => x.Integrante).ToList();
+                UsersAdm = SGID.TimeADMs.Where(x => x.Status).ToList();
+                UsersAdm.AddRange(SGID.TimeADMs.Where(x => x.Desativar > date));
 
-                Users.ForEach(x =>
+                UsersAdm = UsersAdm.OrderBy(x => x.Integrante).ToList();
+
+                UsersAdm.ForEach(x =>
                 {
                     var usuario = x.Integrante.ToUpper();
 
@@ -4439,7 +4472,7 @@ namespace SGID.Pages.Relatorios.Diretoria
                         time.Paga = time.Total;
                     }
 
-                    Usuarios.Add(time);
+                    UsuariosAdm.Add(time);
                 });
 
                 #endregion
@@ -4754,7 +4787,10 @@ namespace SGID.Pages.Relatorios.Diretoria
 
                     #endregion
 
-                    UsersComercial = SGID.Times.Where(x => x.Status).OrderBy(x => x.Integrante).ToList();
+                    UsersComercial = SGID.Times.Where(x => x.Status).ToList();
+                    UsersComercial.AddRange(SGID.Times.Where(x => x.Desativar > date).ToList());
+
+                    UsersComercial = UsersComercial.OrderBy(x => x.Integrante).ToList();
 
                     UsersComercial.ForEach(x =>
                     {
@@ -5096,9 +5132,12 @@ namespace SGID.Pages.Relatorios.Diretoria
 
                     #endregion
 
-                    Users = SGID.TimeADMs.OrderBy(x => x.Integrante).ToList();
+                    UsersAdm = SGID.TimeADMs.Where(x => x.Status).ToList();
+                    UsersAdm.AddRange(SGID.TimeADMs.Where(x => x.Desativar > date));
 
-                    Users.ForEach(x =>
+                    UsersAdm = UsersAdm.OrderBy(x => x.Integrante).ToList();
+
+                    UsersAdm.ForEach(x =>
                     {
                         var usuario = x.Integrante.ToUpper();
 
@@ -5128,7 +5167,7 @@ namespace SGID.Pages.Relatorios.Diretoria
                         {
                             time.Paga = time.Total;
                         }
-                        Usuarios.Add(time);
+                        UsuariosAdm.Add(time);
                     });
 
                     #endregion
@@ -5137,7 +5176,10 @@ namespace SGID.Pages.Relatorios.Diretoria
                 {
                     #region Dental
 
-                    UsersDental = SGID.TimeDentals.OrderBy(x => x.Integrante).ToList();
+                    UsersDental = SGID.TimeDentals.Where(x => x.Status).ToList();
+                    UsersDental.AddRange(SGID.TimeDentals.Where(x => x.Desativar > date));
+
+                    UsersDental = UsersDental.OrderBy(x => x.Integrante).ToList();
 
                     #region Faturado
                     var query3 = (from SD20 in ProtheusDenuo.Sd2010s
@@ -5665,7 +5707,10 @@ namespace SGID.Pages.Relatorios.Diretoria
 
                     #endregion
 
-                    UsersComercial = SGID.Times.Where(x => x.Status).OrderBy(x => x.Integrante).ToList();
+                    UsersComercial = SGID.Times.Where(x => x.Status).ToList();
+                    UsersComercial.AddRange(SGID.Times.Where(x => x.Desativar > date).ToList());
+
+                    UsersComercial = UsersComercial.OrderBy(x => x.Integrante).ToList();
 
                     UsersComercial.ForEach(x =>
                     {
@@ -5988,9 +6033,12 @@ namespace SGID.Pages.Relatorios.Diretoria
 
                     #endregion
 
-                    Users = SGID.TimeADMs.OrderBy(x => x.Integrante).ToList();
+                    UsersAdm = SGID.TimeADMs.Where(x => x.Status).ToList();
+                    UsersAdm.AddRange(SGID.TimeADMs.Where(x => x.Desativar > date));
 
-                    Users.ForEach(x =>
+                    UsersAdm = UsersAdm.OrderBy(x => x.Integrante).ToList();
+
+                    UsersAdm.ForEach(x =>
                     {
                         var usuario = x.Integrante.ToUpper();
 
@@ -6019,7 +6067,7 @@ namespace SGID.Pages.Relatorios.Diretoria
                             time.Paga = time.Total;
                         }
 
-                        Usuarios.Add(time);
+                        UsuariosAdm.Add(time);
                     });
 
                     #endregion
@@ -6036,7 +6084,7 @@ namespace SGID.Pages.Relatorios.Diretoria
                         ComercialInterior = new List<TimeRH>();
                         UsuariosLicitacoes = new List<TimeRH>();
                         UsuariosSub = new List<TimeRH>();
-                        Usuarios = new List<TimeADMRH>();
+                        UsuariosAdm = new List<TimeADMRH>();
                         UsuariosDental = new List<TimeDentalRH>();
                         break;
                     }
@@ -6048,7 +6096,7 @@ namespace SGID.Pages.Relatorios.Diretoria
                         ComercialTorax = new List<TimeRH>();
                         UsuariosLicitacoes = new List<TimeRH>();
                         UsuariosSub = new List<TimeRH>();
-                        Usuarios = new List<TimeADMRH>();
+                        UsuariosAdm = new List<TimeADMRH>();
                         UsuariosDental = new List<TimeDentalRH>();
                         break;
                     }
@@ -6060,7 +6108,7 @@ namespace SGID.Pages.Relatorios.Diretoria
                         ComercialTorax = new List<TimeRH>();
                         ComercialInterior = new List<TimeRH>();
                         UsuariosSub = new List<TimeRH>();
-                        Usuarios = new List<TimeADMRH>();
+                        UsuariosAdm = new List<TimeADMRH>();
                         UsuariosDental = new List<TimeDentalRH>();
                         break;
                     }
@@ -6072,7 +6120,7 @@ namespace SGID.Pages.Relatorios.Diretoria
                         ComercialTorax = new List<TimeRH>();
                         ComercialInterior = new List<TimeRH>();
                         UsuariosLicitacoes = new List<TimeRH>();
-                        Usuarios = new List<TimeADMRH>();
+                        UsuariosAdm = new List<TimeADMRH>();
                         UsuariosDental = new List<TimeDentalRH>();
                         break;
                     }
@@ -6084,7 +6132,7 @@ namespace SGID.Pages.Relatorios.Diretoria
                         ComercialInterior = new List<TimeRH>();
                         UsuariosLicitacoes = new List<TimeRH>();
                         UsuariosSub = new List<TimeRH>();
-                        Usuarios = new List<TimeADMRH>();
+                        UsuariosAdm = new List<TimeADMRH>();
                         UsuariosDental = new List<TimeDentalRH>();
                         break;
                     }
@@ -6096,7 +6144,7 @@ namespace SGID.Pages.Relatorios.Diretoria
                         ComercialInterior = new List<TimeRH>();
                         UsuariosLicitacoes = new List<TimeRH>();
                         UsuariosSub = new List<TimeRH>();
-                        Usuarios = new List<TimeADMRH>();
+                        UsuariosAdm = new List<TimeADMRH>();
                         UsuariosDental = new List<TimeDentalRH>();
                         break;
                     }
@@ -6109,7 +6157,7 @@ namespace SGID.Pages.Relatorios.Diretoria
                         ComercialInterior = new List<TimeRH>();
                         UsuariosLicitacoes = new List<TimeRH>();
                         UsuariosSub = new List<TimeRH>();
-                        Usuarios = new List<TimeADMRH>();
+                        UsuariosAdm = new List<TimeADMRH>();
                         break;
                     }
                 case "ADMINISTRATIVO":
@@ -6159,7 +6207,10 @@ namespace SGID.Pages.Relatorios.Diretoria
                 {
                     #region Dental
 
-                    UsersDental = SGID.TimeDentals.OrderBy(x => x.Integrante).ToList();
+                    UsersDental = SGID.TimeDentals.Where(x => x.Status).ToList();
+                    UsersDental.AddRange(SGID.TimeDentals.Where(x => x.Desativar > date));
+
+                    UsersDental = UsersDental.OrderBy(x => x.Integrante).ToList();
 
                     #region Faturado
                     var query3 = (from SD20 in ProtheusDenuo.Sd2010s
@@ -7000,7 +7051,10 @@ namespace SGID.Pages.Relatorios.Diretoria
 
                     #endregion
 
-                    UsersComercial = SGID.Times.Where(x => x.Status).OrderBy(x => x.Integrante).ToList();
+                    UsersComercial = SGID.Times.Where(x => x.Status).ToList();
+                    UsersComercial.AddRange(SGID.Times.Where(x => x.Desativar > date).ToList());
+
+                    UsersComercial = UsersComercial.OrderBy(x => x.Integrante).ToList();
 
                     UsersComercial.ForEach(x =>
                     {
@@ -7495,9 +7549,12 @@ namespace SGID.Pages.Relatorios.Diretoria
 
                     #endregion
 
-                    Users = SGID.TimeADMs.OrderBy(x => x.Integrante).ToList();
+                    UsersAdm = SGID.TimeADMs.Where(x => x.Status).ToList();
+                    UsersAdm.AddRange(SGID.TimeADMs.Where(x => x.Desativar > date));
 
-                    Users.ForEach(x =>
+                    UsersAdm = UsersAdm.OrderBy(x => x.Integrante).ToList();
+
+                    UsersAdm.ForEach(x =>
                     {
                         var usuario = x.Integrante.ToUpper();
 
@@ -7529,7 +7586,7 @@ namespace SGID.Pages.Relatorios.Diretoria
                             time.Paga = time.Total;
                         }
 
-                        Usuarios.Add(time);
+                        UsuariosAdm.Add(time);
                     });
 
                     #endregion
@@ -7844,7 +7901,10 @@ namespace SGID.Pages.Relatorios.Diretoria
 
                         #endregion
 
-                        UsersComercial = SGID.Times.Where(x => x.Status).OrderBy(x => x.Integrante).ToList();
+                        UsersComercial = SGID.Times.Where(x => x.Status).ToList();
+                        UsersComercial.AddRange(SGID.Times.Where(x => x.Desativar > date).ToList());
+
+                        UsersComercial = UsersComercial.OrderBy(x => x.Integrante).ToList();
 
                         UsersComercial.ForEach(x =>
                         {
@@ -8186,9 +8246,12 @@ namespace SGID.Pages.Relatorios.Diretoria
 
                         #endregion
 
-                        Users = SGID.TimeADMs.OrderBy(x => x.Integrante).ToList();
+                        UsersAdm = SGID.TimeADMs.Where(x => x.Status).ToList();
+                        UsersAdm.AddRange(SGID.TimeADMs.Where(x => x.Desativar > date));
 
-                        Users.ForEach(x =>
+                        UsersAdm = UsersAdm.OrderBy(x => x.Integrante).ToList();
+
+                        UsersAdm.ForEach(x =>
                         {
                             var usuario = x.Integrante.ToUpper();
 
@@ -8218,7 +8281,7 @@ namespace SGID.Pages.Relatorios.Diretoria
                             {
                                 time.Paga = time.Total;
                             }
-                            Usuarios.Add(time);
+                            UsuariosAdm.Add(time);
                         });
 
                         #endregion
@@ -8227,7 +8290,10 @@ namespace SGID.Pages.Relatorios.Diretoria
                     {
                         #region Dental
 
-                        UsersDental = SGID.TimeDentals.OrderBy(x => x.Integrante).ToList();
+                        UsersDental = SGID.TimeDentals.Where(x => x.Status).ToList();
+                        UsersDental.AddRange(SGID.TimeDentals.Where(x => x.Desativar > date));
+
+                        UsersDental = UsersDental.OrderBy(x => x.Integrante).ToList();
 
                         #region Faturado
                         var query3 = (from SD20 in ProtheusDenuo.Sd2010s
@@ -8755,7 +8821,10 @@ namespace SGID.Pages.Relatorios.Diretoria
 
                         #endregion
 
-                        UsersComercial = SGID.Times.Where(x => x.Status).OrderBy(x => x.Integrante).ToList();
+                        UsersComercial = SGID.Times.Where(x => x.Status).ToList();
+                        UsersComercial.AddRange(SGID.Times.Where(x => x.Desativar > date).ToList());
+
+                        UsersComercial = UsersComercial.OrderBy(x => x.Integrante).ToList();
 
                         UsersComercial.ForEach(x =>
                         {
@@ -9078,9 +9147,12 @@ namespace SGID.Pages.Relatorios.Diretoria
 
                         #endregion
 
-                        Users = SGID.TimeADMs.OrderBy(x => x.Integrante).ToList();
+                        UsersAdm = SGID.TimeADMs.Where(x => x.Status).ToList();
+                        UsersAdm.AddRange(SGID.TimeADMs.Where(x => x.Desativar > date));
 
-                        Users.ForEach(x =>
+                        UsersAdm = UsersAdm.OrderBy(x => x.Integrante).ToList();
+
+                        UsersAdm.ForEach(x =>
                         {
                             var usuario = x.Integrante.ToUpper();
 
@@ -9109,7 +9181,7 @@ namespace SGID.Pages.Relatorios.Diretoria
                                 time.Paga = time.Total;
                             }
 
-                            Usuarios.Add(time);
+                            UsuariosAdm.Add(time);
                         });
 
                         #endregion
@@ -9126,7 +9198,7 @@ namespace SGID.Pages.Relatorios.Diretoria
                             ComercialInterior = new List<TimeRH>();
                             UsuariosLicitacoes = new List<TimeRH>();
                             UsuariosSub = new List<TimeRH>();
-                            Usuarios = new List<TimeADMRH>();
+                            UsuariosAdm = new List<TimeADMRH>();
                             UsuariosDental = new List<TimeDentalRH>();
                             break;
                         }
@@ -9138,7 +9210,7 @@ namespace SGID.Pages.Relatorios.Diretoria
                             ComercialTorax = new List<TimeRH>();
                             UsuariosLicitacoes = new List<TimeRH>();
                             UsuariosSub = new List<TimeRH>();
-                            Usuarios = new List<TimeADMRH>();
+                            UsuariosAdm = new List<TimeADMRH>();
                             UsuariosDental = new List<TimeDentalRH>();
                             break;
                         }
@@ -9150,7 +9222,7 @@ namespace SGID.Pages.Relatorios.Diretoria
                             ComercialTorax = new List<TimeRH>();
                             ComercialInterior = new List<TimeRH>();
                             UsuariosSub = new List<TimeRH>();
-                            Usuarios = new List<TimeADMRH>();
+                            UsuariosAdm = new List<TimeADMRH>();
                             UsuariosDental = new List<TimeDentalRH>();
                             break;
                         }
@@ -9162,7 +9234,7 @@ namespace SGID.Pages.Relatorios.Diretoria
                             ComercialTorax = new List<TimeRH>();
                             ComercialInterior = new List<TimeRH>();
                             UsuariosLicitacoes = new List<TimeRH>();
-                            Usuarios = new List<TimeADMRH>();
+                            UsuariosAdm = new List<TimeADMRH>();
                             UsuariosDental = new List<TimeDentalRH>();
                             break;
                         }
@@ -9174,7 +9246,7 @@ namespace SGID.Pages.Relatorios.Diretoria
                             ComercialInterior = new List<TimeRH>();
                             UsuariosLicitacoes = new List<TimeRH>();
                             UsuariosSub = new List<TimeRH>();
-                            Usuarios = new List<TimeADMRH>();
+                            UsuariosAdm = new List<TimeADMRH>();
                             UsuariosDental = new List<TimeDentalRH>();
                             break;
                         }
@@ -9186,7 +9258,7 @@ namespace SGID.Pages.Relatorios.Diretoria
                             ComercialInterior = new List<TimeRH>();
                             UsuariosLicitacoes = new List<TimeRH>();
                             UsuariosSub = new List<TimeRH>();
-                            Usuarios = new List<TimeADMRH>();
+                            UsuariosAdm = new List<TimeADMRH>();
                             UsuariosDental = new List<TimeDentalRH>();
                             break;
                         }
@@ -9199,7 +9271,7 @@ namespace SGID.Pages.Relatorios.Diretoria
                             ComercialInterior = new List<TimeRH>();
                             UsuariosLicitacoes = new List<TimeRH>();
                             UsuariosSub = new List<TimeRH>();
-                            Usuarios = new List<TimeADMRH>();
+                            UsuariosAdm = new List<TimeADMRH>();
                             break;
                         }
                     case "ADMINISTRATIVO":
@@ -9595,7 +9667,7 @@ namespace SGID.Pages.Relatorios.Diretoria
                     i++;
                 }
 
-                foreach(var item in Usuarios)
+                foreach(var item in UsuariosAdm)
                 {
                     sheet.Cells[i, 1].Value = item.User.Integrante.ToUpper().Split("@")[0].Replace(".", " ");
                     sheet.Cells[i, 2].Value = $"{Mes}/{Ano}";
@@ -9613,21 +9685,21 @@ namespace SGID.Pages.Relatorios.Diretoria
                     i++;
                 }
 
-                if(Usuarios.Count > 0)
+                if(UsuariosAdm.Count > 0)
                 {
                     sheet.Cells[i, 1].Value = "ADMINISTRATIVO";
                     sheet.Cells[i, 2].Value = $"{Mes}/{Ano}";
-                    sheet.Cells[i, 3].Value = string.Format("{0:N2}", Usuarios.First().Faturado);
+                    sheet.Cells[i, 3].Value = string.Format("{0:N2}", UsuariosAdm.First().Faturado);
                     sheet.Cells[i, 4].Value = 0;
-                    sheet.Cells[i, 5].Value = string.Format("{0:N2}", Usuarios.First().Meta);
-                    sheet.Cells[i, 6].Value = string.Format("{0:N2}", Usuarios.First().MetaAtingimento);
-                    sheet.Cells[i, 7].Value = string.Format("{0:N2}", Usuarios.Sum(x => x.Salario));
+                    sheet.Cells[i, 5].Value = string.Format("{0:N2}", UsuariosAdm.First().Meta);
+                    sheet.Cells[i, 6].Value = string.Format("{0:N2}", UsuariosAdm.First().MetaAtingimento);
+                    sheet.Cells[i, 7].Value = string.Format("{0:N2}", UsuariosAdm.Sum(x => x.Salario));
                     sheet.Cells[i, 8].Value = 0;
-                    sheet.Cells[i, 9].Value = string.Format("{0:N2}", Usuarios.Sum(x => x.Comissao));
+                    sheet.Cells[i, 9].Value = string.Format("{0:N2}", UsuariosAdm.Sum(x => x.Comissao));
                     sheet.Cells[i, 10].Value = 0;
-                    sheet.Cells[i, 11].Value = string.Format("{0:N2}", Usuarios.Sum(x => x.Total));
-                    sheet.Cells[i, 12].Value = string.Format("{0:N2}", Usuarios.Sum(x => x.Teto));
-                    sheet.Cells[i, 13].Value = string.Format("{0:N2}", Usuarios.Sum(x => x.Paga));
+                    sheet.Cells[i, 11].Value = string.Format("{0:N2}", UsuariosAdm.Sum(x => x.Total));
+                    sheet.Cells[i, 12].Value = string.Format("{0:N2}", UsuariosAdm.Sum(x => x.Teto));
+                    sheet.Cells[i, 13].Value = string.Format("{0:N2}", UsuariosAdm.Sum(x => x.Paga));
                     i++;
                 }
 
@@ -9638,13 +9710,13 @@ namespace SGID.Pages.Relatorios.Diretoria
                 sheet.Cells[i, 4].Value = string.Format("{0:N2}", UsuariosSub.FirstOrDefault()?.Faturado + UsuariosLicitacoes.Sum(x => x.Faturado));
                 sheet.Cells[i, 5].Value = "";
                 sheet.Cells[i, 6].Value = "";
-                sheet.Cells[i, 7].Value = string.Format("{0:N2}", UsuariosSub.Sum(x => x.Salario) + UsuariosLicitacoes.Sum(x => x.Salario) + ComercialOrtopedia.Sum(x => x.Salario) + ComercialBuco.Sum(x => x.Salario) + ComercialTorax.Sum(x => x.Salario) + ComercialInterior.Sum(x => x.Salario) + UsuariosDental.Sum(x => x.Salario) + Usuarios.Sum(x => x.Salario));
+                sheet.Cells[i, 7].Value = string.Format("{0:N2}", UsuariosSub.Sum(x => x.Salario) + UsuariosLicitacoes.Sum(x => x.Salario) + ComercialOrtopedia.Sum(x => x.Salario) + ComercialBuco.Sum(x => x.Salario) + ComercialTorax.Sum(x => x.Salario) + ComercialInterior.Sum(x => x.Salario) + UsuariosDental.Sum(x => x.Salario) + UsuariosAdm.Sum(x => x.Salario));
                 sheet.Cells[i, 8].Value = string.Format("{0:N2}", UsuariosSub.Sum(x => x.Garantia) + UsuariosLicitacoes.Sum(x => x.Garantia) + ComercialOrtopedia.Sum(x => x.Garantia) + ComercialBuco.Sum(x => x.Garantia) + ComercialTorax.Sum(x => x.Garantia) + ComercialInterior.Sum(x => x.Garantia) + UsuariosDental.Sum(x => x.Garantia));
-                sheet.Cells[i, 9].Value = string.Format("{0:N2}", UsuariosSub.Sum(x => x.Comissao) + UsuariosLicitacoes.Sum(x => x.Comissao) + ComercialOrtopedia.Sum(x => x.Comissao) + ComercialBuco.Sum(x => x.Comissao) + ComercialTorax.Sum(x => x.Comissao) + ComercialInterior.Sum(x => x.Comissao) + UsuariosDental.Sum(x => x.Comissao) + Usuarios.Sum(x => x.Comissao));
+                sheet.Cells[i, 9].Value = string.Format("{0:N2}", UsuariosSub.Sum(x => x.Comissao) + UsuariosLicitacoes.Sum(x => x.Comissao) + ComercialOrtopedia.Sum(x => x.Comissao) + ComercialBuco.Sum(x => x.Comissao) + ComercialTorax.Sum(x => x.Comissao) + ComercialInterior.Sum(x => x.Comissao) + UsuariosDental.Sum(x => x.Comissao) + UsuariosAdm.Sum(x => x.Comissao));
                 sheet.Cells[i, 10].Value = string.Format("{0:N2}", UsuariosSub.Sum(x => x.ComissaoEquipe) + UsuariosLicitacoes.Sum(x => x.ComissaoEquipe) + ComercialOrtopedia.Sum(x => x.ComissaoEquipe) + ComercialBuco.Sum(x => x.ComissaoEquipe) + ComercialTorax.Sum(x => x.ComissaoEquipe) + ComercialInterior.Sum(x => x.ComissaoEquipe) + UsuariosDental.Sum(x => x.ComissaoEquipe) + UsuariosSub.Sum(x => x.ComissaoProduto) + UsuariosLicitacoes.Sum(x => x.ComissaoProduto) + ComercialOrtopedia.Sum(x => x.ComissaoProduto) + ComercialBuco.Sum(x => x.ComissaoProduto) + ComercialTorax.Sum(x => x.ComissaoProduto) + ComercialInterior.Sum(x => x.ComissaoProduto));
-                sheet.Cells[i, 11].Value = string.Format("{0:N2}", UsuariosSub.Sum(x => x.Total) + UsuariosLicitacoes.Sum(x => x.Total) + ComercialOrtopedia.Sum(x => x.Total) + ComercialBuco.Sum(x => x.Total) + ComercialTorax.Sum(x => x.Total) + ComercialInterior.Sum(x => x.Total) + UsuariosDental.Sum(x => x.Total) + Usuarios.Sum(x => x.Total));
+                sheet.Cells[i, 11].Value = string.Format("{0:N2}", UsuariosSub.Sum(x => x.Total) + UsuariosLicitacoes.Sum(x => x.Total) + ComercialOrtopedia.Sum(x => x.Total) + ComercialBuco.Sum(x => x.Total) + ComercialTorax.Sum(x => x.Total) + ComercialInterior.Sum(x => x.Total) + UsuariosDental.Sum(x => x.Total) + UsuariosAdm.Sum(x => x.Total));
                 sheet.Cells[i, 12].Value = "";
-                sheet.Cells[i, 13].Value = string.Format("{0:N2}", UsuariosSub.Sum(x => x.Paga) + UsuariosLicitacoes.Sum(x => x.Paga) + ComercialOrtopedia.Sum(x => x.Paga) + ComercialBuco.Sum(x => x.Paga) + ComercialTorax.Sum(x => x.Paga) + ComercialInterior.Sum(x => x.Paga) + UsuariosDental.Sum(x => x.Paga) + Usuarios.Sum(x => x.Paga));
+                sheet.Cells[i, 13].Value = string.Format("{0:N2}", UsuariosSub.Sum(x => x.Paga) + UsuariosLicitacoes.Sum(x => x.Paga) + ComercialOrtopedia.Sum(x => x.Paga) + ComercialBuco.Sum(x => x.Paga) + ComercialTorax.Sum(x => x.Paga) + ComercialInterior.Sum(x => x.Paga) + UsuariosDental.Sum(x => x.Paga) + UsuariosAdm.Sum(x => x.Paga));
 
                 var format = sheet.Cells[i, 3, i, 13];
                 format.Style.Numberformat.Format = "";

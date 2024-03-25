@@ -684,8 +684,8 @@ namespace SGID.Pages.Account.RH
 
                 var dataini = Convert.ToInt32(DataInicio);
 
-                
-                Users = SGID.Times.Where(x => x.Status).OrderBy(x => x.Integrante).ToList();
+                Users = SGID.Times.Where(x => x.Status).ToList();
+                Users.AddRange(SGID.Times.Where(x=> x.Desativar > date).ToList());
                 Users.ForEach(x =>
                 {
 
@@ -1090,6 +1090,8 @@ namespace SGID.Pages.Account.RH
                     }
                     
                 });
+
+                Users = Users.OrderBy(x => x.Integrante).ToList();
                 return Page();
             }
             catch(Exception e)
@@ -1760,7 +1762,8 @@ namespace SGID.Pages.Account.RH
 
                 var dataini = Convert.ToInt32(DataInicio);
 
-                Users = SGID.Times.Where(x => x.Status).OrderBy(x => x.Integrante).ToList();
+                Users = SGID.Times.Where(x => x.Status).ToList();
+                Users.AddRange(SGID.Times.Where(x => x.Desativar > date).ToList());
                 Users.ForEach(x =>
                 {
 
@@ -2157,6 +2160,8 @@ namespace SGID.Pages.Account.RH
                     }
 
                 });
+
+                Usuarios = Usuarios.OrderBy(x => x.User.Integrante).ToList();
 
                 LinhasValor.ForEach(x =>
                 {

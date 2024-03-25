@@ -63,7 +63,7 @@ namespace SGID.Pages.Account.RH
                     var user = await _userManager.FindByIdAsync(Integrante.IdUsuario);
 
                     Integrante.Status = false;
-                    Integrante.Desativar = DateTime.Now;
+                    Integrante.Desativar = Input.DataDesativacao;
 
                     _db.Times.Update(Integrante);
                     _db.SaveChanges();
@@ -83,6 +83,8 @@ namespace SGID.Pages.Account.RH
         {
             public int Id { get; set; }
             public string UserName { get; set; }
+
+            public DateTime DataDesativacao { get; set; }
             public string IdUsuario { get; set; }
         }
     }

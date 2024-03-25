@@ -8,6 +8,7 @@ namespace SGID.Data.ViewModel
         [Key]
         public int Id { get; set; }
         public DateTime DataCriacao { get; set; }
+        public DateTime? Desativar { get; set; }
         public bool Status { get; set; }
         public string Integrante { get; set; }
         public string Lider { get; set; }

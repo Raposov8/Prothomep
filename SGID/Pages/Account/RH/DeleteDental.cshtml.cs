@@ -54,14 +54,14 @@ namespace SGID.Pages.Account.RH
             {
                 if (ModelState.IsValid)
                 {
-                    var Integrante = _db.Times.FirstOrDefault(x => x.Id == id);
+                    var Integrante = _db.TimeDentals.FirstOrDefault(x => x.Id == id);
 
                     //var user = await _userManager.FindByIdAsync(Integrante.IdUsuario);
 
                     Integrante.Status = false;
-                    Integrante.Desativar = DateTime.Now;
+                    Integrante.Desativar = Input.DataDesativacao;
 
-                    _db.Times.Update(Integrante);
+                    _db.TimeDentals.Update(Integrante);
                     _db.SaveChanges();
 
                     return Redirect("/account/rh/listardental");
@@ -79,6 +79,7 @@ namespace SGID.Pages.Account.RH
         {
             public int Id { get; set; }
             public string UserName { get; set; }
+            public DateTime DataDesativacao { get; set; }
             public string IdUsuario { get; set; }
         }
     }

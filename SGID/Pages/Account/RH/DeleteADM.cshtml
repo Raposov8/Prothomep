@@ -17,6 +17,8 @@
 
 <h3>Você tem certeza que deseja Desativar @Model.Input.UserName</h3>
 <div>
+    @using (Html.BeginForm(FormMethod.Post))
+    {
     <hr />
     <dl class="dl-horizontal">
         <dt>
@@ -27,9 +29,14 @@
             @Html.DisplayFor(model => model.Input.UserName)
         </dd>
     </dl>
+    <div class="form-group col-md-4">
+        @Html.LabelFor(model => model.Input.DataDesativacao, new { @class = "col-md-12 control-label" })
+        <div class="col-md-12">
+            @Html.TextBoxFor(model => model.Input.DataDesativacao, new { @type = "date", @class = "form-control", @required = "required", @placehold = "Data" })
+        </div>
+    </div>
 
-    @using (Html.BeginForm(FormMethod.Post))
-    {
+   
         @Html.AntiForgeryToken()
 
         <div class="form-actions no-color">

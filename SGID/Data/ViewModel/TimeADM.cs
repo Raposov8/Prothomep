@@ -7,7 +7,7 @@ namespace SGID.Data.ViewModel
         [Key]
         public int Id { get; set; }
         public DateTime DataCriacao { get; set; }
-        public bool Status { get; set; }
+        public bool Status { get; set; } = true;
         public string Integrante { get; set; }
         public double Porcentagem { get; set; }
         public string IdUsuario { get; set; }

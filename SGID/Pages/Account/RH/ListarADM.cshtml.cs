@@ -44,8 +44,6 @@ namespace SGID.Pages.Account.RH
         {
             try
             {
-                Users = SGID.TimeADMs.OrderBy(x => x.Integrante).ToList();
-
                 var date = DateTime.Now;
 
                 MesAno = date.ToString("MM").ToUpper();
@@ -323,6 +321,9 @@ namespace SGID.Pages.Account.RH
 
                 #endregion
 
+                Users = SGID.TimeADMs.Where(x=> x.Status).ToList();
+                Users.AddRange(SGID.TimeADMs.Where(x=> x.Desativar > date).ToList());
+
                 Users.ForEach(x =>
                 {
                     var usuario = x.Integrante.ToUpper();
@@ -339,6 +340,8 @@ namespace SGID.Pages.Account.RH
                     time.Comissao = time.Faturado * (time.User.Porcentagem / 100);
                     Usuarios.Add(time);
                 });
+
+                Users = Users.OrderBy(x => x.Integrante).ToList();
             }
             catch (Exception e)
             {
@@ -351,8 +354,6 @@ namespace SGID.Pages.Account.RH
         {
             try
             {
-                Users = SGID.TimeADMs.OrderBy(x => x.Integrante).ToList();
-
                 string Tempo = $"{Mes}/01/{Ano}";
 
                 MesAno = Mes;
@@ -633,6 +634,9 @@ namespace SGID.Pages.Account.RH
 
                 #endregion
 
+                Users = SGID.TimeADMs.Where(x => x.Status).ToList();
+                Users.AddRange(SGID.TimeADMs.Where(x => x.Desativar > date).ToList());
+
                 Users.ForEach(x =>
                 {
                     var usuario = x.Integrante.ToUpper();
@@ -650,6 +654,8 @@ namespace SGID.Pages.Account.RH
                     Usuarios.Add(time);
                 });
 
+                Users = Users.OrderBy(x => x.Integrante).ToList();
+
                 return Page();
             }
             catch (Exception e)
@@ -665,8 +671,6 @@ namespace SGID.Pages.Account.RH
         {
             try
             {
-                Users = SGID.TimeADMs.OrderBy(x => x.Integrante).ToList();
-
                 string Tempo = $"{Mes}/01/{Ano}";
 
                 MesAno = Mes;
@@ -971,6 +975,9 @@ namespace SGID.Pages.Account.RH
 
                 int id = 2;
 
+                Users = SGID.TimeADMs.Where(x => x.Status).ToList();
+                Users.AddRange(SGID.TimeADMs.Where(x => x.Desativar > date).ToList());
+
                 Users.ForEach(x =>
                 {
                     var usuario = x.Integrante.ToUpper();
@@ -986,6 +993,8 @@ namespace SGID.Pages.Account.RH
                     time.Comissao = time.Faturado * (time.User.Porcentagem / 100);
                     Usuarios.Add(time);
                 });
+
+                Usuarios = Usuarios.OrderBy(x => x.User.Integrante).ToList();
 
                 Usuarios.ForEach(x =>
                 {

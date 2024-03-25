@@ -488,7 +488,7 @@
                     </tr>
                 }
 
-                @foreach (var item in Model.Usuarios)
+                @foreach (var item in Model.UsuariosAdm)
                 {
                     <tr>
                         <td>@item.User.Integrante.ToUpper().Split("@")[0].Replace(".", " ")</td>
@@ -507,22 +507,22 @@
                     </tr>
                 }
 
-                @if (Model.Usuarios.Count > 0)
+                @if (Model.UsuariosAdm.Count > 0)
                 {
                     <tr style="background-color:#808080;color:white">
                         <td>ADMINISTRATIVO</td>
                         <td>@Model.Mes/@Model.Ano</td>
-                        <td>@string.Format("{0:N2}", Model.Usuarios.First().Faturado)</td>
+                        <td>@string.Format("{0:N2}", Model.UsuariosAdm.First().Faturado)</td>
                         <td>0</td>
-                        <td>@string.Format("{0:N2}", Model.Usuarios.First().Meta)</td>
-                        <td>@string.Format("{0:N2}", Model.Usuarios.First().MetaAtingimento)</td>
-                        <td>@string.Format("{0:N2}", Model.Usuarios.Sum(x => x.Salario))</td>
+                        <td>@string.Format("{0:N2}", Model.UsuariosAdm.First().Meta)</td>
+                        <td>@string.Format("{0:N2}", Model.UsuariosAdm.First().MetaAtingimento)</td>
+                        <td>@string.Format("{0:N2}", Model.UsuariosAdm.Sum(x => x.Salario))</td>
                         <td>0</td>
-                        <td>@string.Format("{0:N2}", Model.Usuarios.Sum(x => x.Comissao))</td>
+                        <td>@string.Format("{0:N2}", Model.UsuariosAdm.Sum(x => x.Comissao))</td>
                         <td>0</td>
-                        <td>@string.Format("{0:N2}", Model.Usuarios.Sum(x => x.Total))</td>
-                        <td>@string.Format("{0:N2}", Model.Usuarios.Sum(x => x.Teto))</td>
-                        <td>@string.Format("{0:N2}", Model.Usuarios.Sum(x => x.Paga))</td>
+                        <td>@string.Format("{0:N2}", Model.UsuariosAdm.Sum(x => x.Total))</td>
+                        <td>@string.Format("{0:N2}", Model.UsuariosAdm.Sum(x => x.Teto))</td>
+                        <td>@string.Format("{0:N2}", Model.UsuariosAdm.Sum(x => x.Paga))</td>
                     </tr>
                 }
 
@@ -534,21 +534,21 @@
                     <td></td>
                     <td></td>
                     <td>
-                        @string.Format("{0:N2}", Model.UsuariosSub.Sum(x => x.Salario) + Model.UsuariosLicitacoes.Sum(x => x.Salario) + Model.ComercialOrtopedia.Sum(x => x.Salario) + Model.ComercialBuco.Sum(x => x.Salario) + Model.ComercialTorax.Sum(x => x.Salario) + Model.ComercialInterior.Sum(x => x.Salario) + Model.UsuariosDental.Sum(x => x.Salario) + Model.Usuarios.Sum(x => x.Salario))
+                        @string.Format("{0:N2}", Model.UsuariosSub.Sum(x => x.Salario) + Model.UsuariosLicitacoes.Sum(x => x.Salario) + Model.ComercialOrtopedia.Sum(x => x.Salario) + Model.ComercialBuco.Sum(x => x.Salario) + Model.ComercialTorax.Sum(x => x.Salario) + Model.ComercialInterior.Sum(x => x.Salario) + Model.UsuariosDental.Sum(x => x.Salario) + Model.UsuariosAdm.Sum(x => x.Salario))
                     </td>
                     <td>
                         @string.Format("{0:N2}", Model.UsuariosSub.Sum(x => x.Garantia) + Model.UsuariosLicitacoes.Sum(x => x.Garantia) + Model.ComercialOrtopedia.Sum(x => x.Garantia) + Model.ComercialBuco.Sum(x => x.Garantia) + Model.ComercialTorax.Sum(x => x.Garantia) + Model.ComercialInterior.Sum(x => x.Garantia) + Model.UsuariosDental.Sum(x => x.Garantia))
                     </td>
-                    <td>@string.Format("{0:N2}", Model.UsuariosSub.Sum(x=> x.Comissao) + Model.UsuariosLicitacoes.Sum(x => x.Comissao) + Model.ComercialOrtopedia.Sum(x => x.Comissao) + Model.ComercialBuco.Sum(x => x.Comissao) + Model.ComercialTorax.Sum(x => x.Comissao) + Model.ComercialInterior.Sum(x => x.Comissao) + Model.UsuariosDental.Sum(x => x.Comissao) + Model.Usuarios.Sum(x => x.Comissao))</td>
+                    <td>@string.Format("{0:N2}", Model.UsuariosSub.Sum(x=> x.Comissao) + Model.UsuariosLicitacoes.Sum(x => x.Comissao) + Model.ComercialOrtopedia.Sum(x => x.Comissao) + Model.ComercialBuco.Sum(x => x.Comissao) + Model.ComercialTorax.Sum(x => x.Comissao) + Model.ComercialInterior.Sum(x => x.Comissao) + Model.UsuariosDental.Sum(x => x.Comissao) + Model.UsuariosAdm.Sum(x => x.Comissao))</td>
                     <td>
                         @string.Format("{0:N2}", Model.UsuariosSub.Sum(x => x.ComissaoEquipe) + Model.UsuariosLicitacoes.Sum(x => x.ComissaoEquipe) + Model.ComercialOrtopedia.Sum(x => x.ComissaoEquipe) + Model.ComercialBuco.Sum(x => x.ComissaoEquipe) + Model.ComercialTorax.Sum(x => x.ComissaoEquipe) + Model.ComercialInterior.Sum(x => x.ComissaoEquipe) + Model.UsuariosDental.Sum(x => x.ComissaoEquipe) + Model.UsuariosSub.Sum(x => x.ComissaoProduto) + Model.UsuariosLicitacoes.Sum(x => x.ComissaoProduto) + Model.ComercialOrtopedia.Sum(x => x.ComissaoProduto) + Model.ComercialBuco.Sum(x => x.ComissaoProduto) + Model.ComercialTorax.Sum(x => x.ComissaoProduto) + Model.ComercialInterior.Sum(x => x.ComissaoProduto))
                     </td>
                     <td>
-                        @string.Format("{0:N2}", Model.UsuariosSub.Sum(x => x.Total) + Model.UsuariosLicitacoes.Sum(x => x.Total) + Model.ComercialOrtopedia.Sum(x => x.Total) + Model.ComercialBuco.Sum(x => x.Total) + Model.ComercialTorax.Sum(x => x.Total) + Model.ComercialInterior.Sum(x => x.Total) + Model.UsuariosDental.Sum(x => x.Total) + Model.Usuarios.Sum(x => x.Total))
+                        @string.Format("{0:N2}", Model.UsuariosSub.Sum(x => x.Total) + Model.UsuariosLicitacoes.Sum(x => x.Total) + Model.ComercialOrtopedia.Sum(x => x.Total) + Model.ComercialBuco.Sum(x => x.Total) + Model.ComercialTorax.Sum(x => x.Total) + Model.ComercialInterior.Sum(x => x.Total) + Model.UsuariosDental.Sum(x => x.Total) + Model.UsuariosAdm.Sum(x => x.Total))
                     </td>
                     <td></td>
                     <td>
-                        @string.Format("{0:N2}", Model.UsuariosSub.Sum(x => x.Paga) + Model.UsuariosLicitacoes.Sum(x => x.Paga) + Model.ComercialOrtopedia.Sum(x => x.Paga) + Model.ComercialBuco.Sum(x => x.Paga) + Model.ComercialTorax.Sum(x => x.Paga) + Model.ComercialInterior.Sum(x => x.Paga) + Model.UsuariosDental.Sum(x => x.Paga) + Model.Usuarios.Sum(x => x.Paga))
+                        @string.Format("{0:N2}", Model.UsuariosSub.Sum(x => x.Paga) + Model.UsuariosLicitacoes.Sum(x => x.Paga) + Model.ComercialOrtopedia.Sum(x => x.Paga) + Model.ComercialBuco.Sum(x => x.Paga) + Model.ComercialTorax.Sum(x => x.Paga) + Model.ComercialInterior.Sum(x => x.Paga) + Model.UsuariosDental.Sum(x => x.Paga) + Model.UsuariosAdm.Sum(x => x.Paga))
                     </td>
                 </tr>
             </tbody>
