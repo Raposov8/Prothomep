@@ -73,7 +73,7 @@
                 <div class="form-group col-md-4">
                     @Html.LabelFor(model => model.Editar.GerenProd, new { @class = "col-md-12 control-label" })
                     <div class="col-md-12">
-                        @Html.DropDownList("Editar.GerenProd",new SelectList(Model.Gerente,Model.Editar.GerenProd),"",new { @class = "form-control", @placehold= "Porcentagem" })
+                        @Html.DropDownList("Editar.GerenProd",new SelectList(Model.Gerente,Model.Editar.GerenProd),new { @class = "form-control", @placehold= "Porcentagem" })
                     </div>
                 </div>
                 <div class="form-group col-md-4" id="PorcGerente">
@@ -132,20 +132,22 @@
     <script>
         $(document).ready(function () {
 
-            @if (Model.Editar.GerenProd != "SIM") 
+            if ("@Model.Editar.GerenProd" != "SIM") 
             {
-                    @:$('#LinhasProduto').hide();
-                    @:$('#PorcGerente').hide(); 
+                $('#LinhasProduto').hide();
+                $('#PorcGerente').hide(); 
+            }
+            else
+            {
+                $('#LinhasProduto').show();
+                $('#PorcGerente').show();
             }
 
-            //$("#").val("").change();
-
-            $("#GerenProd").on('change', function () 
+            $("#Editar_GerenProd").on('change', function () 
             {
+                var teste = $("#Editar_GerenProd").val();
 
-                var teste = $("#GerenProd").val();
-
-                if (teste == "SIM") 
+                if (teste == "SIM")
                 {
                     $('#LinhasProduto').show();
                     $('#PorcGerente').show();

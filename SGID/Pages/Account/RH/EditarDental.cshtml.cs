@@ -52,7 +52,7 @@ namespace SGID.Pages.Account.RH
                 PorcentagemMeta1 = usuario.PorcentagemEtapaUm,
                 PorcentagemMeta2 = usuario.PorcentagemEtapaDois,
                 TipoComissao = usuario.TipoComissao,
-        };
+            };
 
             return Page();
         }
@@ -79,7 +79,7 @@ namespace SGID.Pages.Account.RH
                 usuario.TipoComissao = Editar.TipoComissao;
 
 
-        _db.TimeDentals.Update(usuario);
+                _db.TimeDentals.Update(usuario);
                 _db.SaveChanges();
 
 

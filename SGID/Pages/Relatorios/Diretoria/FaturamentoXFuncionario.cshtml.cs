@@ -29,7 +29,6 @@ namespace SGID.Pages.Relatorios.Diretoria
         public List<TimeRH> ComercialTorax { get; set; } = new List<TimeRH>();
         public List<TimeRH> ComercialInterior { get; set; } = new List<TimeRH>();
 
-
         public List<TimeRH> UsuariosLicitacoes { get; set; } = new List<TimeRH>();
         public List<TimeRH> UsuariosSub { get; set; } = new List<TimeRH>();
         public List<TimeADM> UsersAdm { get; set; }
@@ -943,7 +942,7 @@ namespace SGID.Pages.Relatorios.Diretoria
                     if (x.TipoFaturamento != "S" && x.TipoFaturamento != "L")
                     {
                         
-                        time.Linha = ProtheusDenuo.Sa3010s.FirstOrDefault(x => x.A3Xlogin == usuario)?.A3Xdescun;
+                        time.Linha = ProtheusInter.Sa3010s.FirstOrDefault(x => x.A3Xlogin == usuario)?.A3Xdescun.Trim();
                         if (time.User.Integrante.ToUpper() == "EDUARDO.ARONI")
                         {
                             time.Linha = "ORTOPEDIA";
@@ -954,7 +953,7 @@ namespace SGID.Pages.Relatorios.Diretoria
                         }
                         else if (time.Linha == null)
                         {
-                            time.Linha = ProtheusDenuo.Sa3010s.FirstOrDefault(x => x.A3Xlogin == usuario)?.A3Xdescun;
+                            time.Linha = ProtheusDenuo.Sa3010s.FirstOrDefault(x => x.A3Xlogin == usuario)?.A3Xdescun.Trim();
                         }
 
                         if (dataini <= 20230231)
@@ -1792,7 +1791,7 @@ namespace SGID.Pages.Relatorios.Diretoria
 
                         if (x.TipoFaturamento != "S" && x.TipoFaturamento != "L")
                         {
-                            time.Linha = ProtheusDenuo.Sa3010s.FirstOrDefault(x => x.A3Xlogin == usuario)?.A3Xdescun;
+                            time.Linha = ProtheusDenuo.Sa3010s.FirstOrDefault(x => x.A3Xlogin == usuario)?.A3Xdescun.Trim();
                             if (time.User.Integrante.ToUpper() == "EDUARDO.ARONI")
                             {
                                 time.Linha = "ORTOPEDIA";
@@ -2712,7 +2711,7 @@ namespace SGID.Pages.Relatorios.Diretoria
 
                         if (x.TipoFaturamento != "S" && x.TipoFaturamento != "L")
                         {
-                            time.Linha = ProtheusDenuo.Sa3010s.FirstOrDefault(x => x.A3Xlogin == usuario)?.A3Xdescun;
+                            time.Linha = ProtheusDenuo.Sa3010s.FirstOrDefault(x => x.A3Xlogin == usuario)?.A3Xdescun.Trim();
                             if (time.User.Integrante.ToUpper() == "EDUARDO.ARONI")
                             {
                                 time.Linha = "ORTOPEDIA";
@@ -3060,8 +3059,6 @@ namespace SGID.Pages.Relatorios.Diretoria
                     #endregion
                 }
             }
-
-
 
             return Page();
         }
@@ -3956,7 +3953,7 @@ namespace SGID.Pages.Relatorios.Diretoria
                     if (x.TipoFaturamento != "S" && x.TipoFaturamento != "L")
                     {
 
-                        time.Linha = ProtheusDenuo.Sa3010s.FirstOrDefault(x => x.A3Xlogin == usuario)?.A3Xdescun;
+                        time.Linha = ProtheusDenuo.Sa3010s.FirstOrDefault(x => x.A3Xlogin == usuario)?.A3Xdescun.Trim();
                         if (time.User.Integrante.ToUpper() == "EDUARDO.ARONI")
                         {
                             time.Linha = "ORTOPEDIA";
@@ -3967,7 +3964,7 @@ namespace SGID.Pages.Relatorios.Diretoria
                         }
                         else if (time.Linha == null)
                         {
-                            time.Linha = ProtheusDenuo.Sa3010s.FirstOrDefault(x => x.A3Xlogin == usuario)?.A3Xdescun;
+                            time.Linha = ProtheusDenuo.Sa3010s.FirstOrDefault(x => x.A3Xlogin == usuario)?.A3Xdescun.Trim();
                         }
 
                         if (dataini <= 20230231)
@@ -4805,7 +4802,7 @@ namespace SGID.Pages.Relatorios.Diretoria
 
                         if (x.TipoFaturamento != "S" && x.TipoFaturamento != "L")
                         {
-                            time.Linha = ProtheusDenuo.Sa3010s.FirstOrDefault(x => x.A3Xlogin == usuario)?.A3Xdescun;
+                            time.Linha = ProtheusDenuo.Sa3010s.FirstOrDefault(x => x.A3Xlogin == usuario)?.A3Xdescun.Trim();
                             if (time.User.Integrante.ToUpper() == "EDUARDO.ARONI")
                             {
                                 time.Linha = "ORTOPEDIA";
@@ -5725,7 +5722,7 @@ namespace SGID.Pages.Relatorios.Diretoria
 
                         if (x.TipoFaturamento != "S" && x.TipoFaturamento != "L")
                         {
-                            time.Linha = ProtheusDenuo.Sa3010s.FirstOrDefault(x => x.A3Xlogin == usuario)?.A3Xdescun;
+                            time.Linha = ProtheusDenuo.Sa3010s.FirstOrDefault(x => x.A3Xlogin == usuario)?.A3Xdescun.Trim();
                             if (time.User.Integrante.ToUpper() == "EDUARDO.ARONI")
                             {
                                 time.Linha = "ORTOPEDIA";
@@ -7070,7 +7067,7 @@ namespace SGID.Pages.Relatorios.Diretoria
                         if (x.TipoFaturamento != "S" && x.TipoFaturamento != "L")
                         {
 
-                            time.Linha = ProtheusDenuo.Sa3010s.FirstOrDefault(x => x.A3Xlogin == usuario)?.A3Xdescun;
+                            time.Linha = ProtheusDenuo.Sa3010s.FirstOrDefault(x => x.A3Xlogin == usuario)?.A3Xdescun.Trim();
                             if (time.User.Integrante.ToUpper() == "EDUARDO.ARONI")
                             {
                                 time.Linha = "ORTOPEDIA";
@@ -7081,7 +7078,7 @@ namespace SGID.Pages.Relatorios.Diretoria
                             }
                             else if (time.Linha == null)
                             {
-                                time.Linha = ProtheusDenuo.Sa3010s.FirstOrDefault(x => x.A3Xlogin == usuario)?.A3Xdescun;
+                                time.Linha = ProtheusDenuo.Sa3010s.FirstOrDefault(x => x.A3Xlogin == usuario)?.A3Xdescun.Trim();
                             }
 
                             if (dataini <= 20230231)
@@ -7919,7 +7916,7 @@ namespace SGID.Pages.Relatorios.Diretoria
 
                             if (x.TipoFaturamento != "S" && x.TipoFaturamento != "L")
                             {
-                                time.Linha = ProtheusDenuo.Sa3010s.FirstOrDefault(x => x.A3Xlogin == usuario)?.A3Xdescun;
+                                time.Linha = ProtheusDenuo.Sa3010s.FirstOrDefault(x => x.A3Xlogin == usuario)?.A3Xdescun.Trim();
                                 if (time.User.Integrante.ToUpper() == "EDUARDO.ARONI")
                                 {
                                     time.Linha = "ORTOPEDIA";
@@ -8839,7 +8836,7 @@ namespace SGID.Pages.Relatorios.Diretoria
 
                             if (x.TipoFaturamento != "S" && x.TipoFaturamento != "L")
                             {
-                                time.Linha = ProtheusDenuo.Sa3010s.FirstOrDefault(x => x.A3Xlogin == usuario)?.A3Xdescun;
+                                time.Linha = ProtheusDenuo.Sa3010s.FirstOrDefault(x => x.A3Xlogin == usuario)?.A3Xdescun.Trim();
                                 if (time.User.Integrante.ToUpper() == "EDUARDO.ARONI")
                                 {
                                     time.Linha = "ORTOPEDIA";

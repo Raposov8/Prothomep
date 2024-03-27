@@ -67,7 +67,7 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (var item in Model.Usuarios)
+                @foreach (var item in Model.Usuarios.OrderBy(x=> x.User.Integrante))
                 {
                     <tr>
                         <td class="text-center">
