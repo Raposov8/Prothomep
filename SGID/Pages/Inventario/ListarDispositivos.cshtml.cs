@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using SGID.Data;
 using SGID.Data.ViewModel;
+using SGID.Models;
 
 namespace SGID.Pages.Inventario
 {
@@ -9,7 +10,7 @@ namespace SGID.Pages.Inventario
     {
         public ApplicationDbContext SGID { get; set; }
 
-        public List<Dispositivo> Dispositivos { get; set; } = new List<Dispositivo>();
+        public List<DispositivosAtivos> Dispositivos { get; set; } = new List<DispositivosAtivos>();
 
         public ListarDispositivosModel(ApplicationDbContext sgid)
         {
@@ -17,18 +18,54 @@ namespace SGID.Pages.Inventario
         }
         public void OnGet()
         {
-            Dispositivos = SGID.Dispositivos.OrderBy(x=> x.TipoDispositivo).ToList();
+            Dispositivos = (from Disp in SGID.Dispositivos
+                            join User in SGID.UsuarioDispositivos on Disp.Id equals User.IdDispositivo into st
+                            from a in st.DefaultIfEmpty()
+                            where a.Ativo != false
+                            select new DispositivosAtivos
+                            {
+                                Id = Disp.Id,
+                                TipoDispositivo = Disp.TipoDispositivo,
+                                Imei = Disp.Imei,
+                                Modelo = Disp.Modelo,
+                                Nome = Disp.Nome,
+                                NomeUsuario = a.NomeUsuario
+                            }).ToList();
         }
 
         public IActionResult OnPost(string Tipo)
         {
             if (Tipo != "") 
             {
-                Dispositivos = SGID.Dispositivos.Where(x => x.TipoDispositivo == Tipo).OrderBy(x => x.TipoDispositivo).ToList();
+                Dispositivos = (from Disp in SGID.Dispositivos
+                                join User in SGID.UsuarioDispositivos on Disp.Id equals User.IdDispositivo into st
+                                from a in st.DefaultIfEmpty()
+                                where a.Ativo != false && Disp.TipoDispositivo == Tipo
+                                select new DispositivosAtivos
+                                {
+                                    Id = Disp.Id,
+                                    TipoDispositivo = Disp.TipoDispositivo,
+                                    Imei = Disp.Imei,
+                                    Modelo = Disp.Modelo,
+                                    Nome = Disp.Nome,
+                                    NomeUsuario = a.NomeUsuario
+                                }).ToList();
             }
             else
             {
-                Dispositivos = SGID.Dispositivos.OrderBy(x => x.TipoDispositivo).ToList();
+                Dispositivos = (from Disp in SGID.Dispositivos
+                                join User in SGID.UsuarioDispositivos on Disp.Id equals User.IdDispositivo into st
+                                from a in st.DefaultIfEmpty()
+                                where a.Ativo != false
+                                select new DispositivosAtivos
+                                {
+                                    Id = Disp.Id,
+                                    TipoDispositivo = Disp.TipoDispositivo,
+                                    Imei = Disp.Imei,
+                                    Modelo = Disp.Modelo,
+                                    Nome = Disp.Nome,
+                                    NomeUsuario = a.NomeUsuario
+                                }).ToList();
             }
             return Page();
         }

@@ -38,7 +38,7 @@ namespace SGID.Pages.Inventario
             SGID.Dispositivos.Update(Editar);
             SGID.SaveChanges();
 
-            return Page();
+            return LocalRedirect("/inventario/listardispositivos");
         }
     }
 }
