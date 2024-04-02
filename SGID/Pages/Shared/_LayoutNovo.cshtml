@@ -40,6 +40,12 @@
                             <i class="fa-solid fa-table-cells-large"></i> APPS
                         </a>
                         <ul class="dropdown-menu novo1" aria-labelledby="dropdowm04">
+                            @if (User.IsInRole("Admin"))
+                            {
+                                <li>
+                                    <a class="nav-link" href="/Inventario/ListarDispositivos"><i class="fa-solid fa-server"></i> DISPOSITIVOS</a>
+                                </li>
+                            }
                             @if (User.IsInRole("Admin") || User.IsInRole("GestorVenda"))
                             {
                                 <li>

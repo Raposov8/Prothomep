@@ -562,6 +562,50 @@ namespace SGID.Data.Migrations
                     b.ToTable("DadosCirurgias");
                 });
 
+            modelBuilder.Entity("SGID.Data.ViewModel.Dispositivo", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime?>("DataAlteracao")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("DataCadastro")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Imei")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Modelo")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Nome")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TipoDispositivo")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UsuarioAlteracao")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UsuarioCriacao")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<double>("Valor")
+                        .HasColumnType("float");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Dispositivos");
+                });
+
             modelBuilder.Entity("SGID.Data.ViewModel.FormularioAvulso", b =>
                 {
                     b.Property<int>("Id")
@@ -1367,6 +1411,34 @@ namespace SGID.Data.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
+            modelBuilder.Entity("SGID.Data.ViewModel.UsuarioDispositivo", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<bool>("Ativo")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("DispositivoId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("IdDispositivo")
+                        .HasColumnType("int");
+
+                    b.Property<string>("NomeUsuario")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DispositivoId");
+
+                    b.ToTable("UsuarioDispositivos");
+                });
+
             modelBuilder.Entity("SGID.Data.ViewModel.VisitaCliente", b =>
                 {
                     b.Property<int>("Id")
@@ -1663,6 +1735,17 @@ namespace SGID.Data.Migrations
                         .IsRequired();
 
                     b.Navigation("Time");
+                });
+
+            modelBuilder.Entity("SGID.Data.ViewModel.UsuarioDispositivo", b =>
+                {
+                    b.HasOne("SGID.Data.ViewModel.Dispositivo", "Dispositivo")
+                        .WithMany()
+                        .HasForeignKey("DispositivoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Dispositivo");
                 });
 
             modelBuilder.Entity("SGID.Data.ViewModel.Agendamentos", b =>

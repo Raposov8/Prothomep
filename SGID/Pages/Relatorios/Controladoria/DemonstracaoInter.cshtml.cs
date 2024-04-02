@@ -32,7 +32,7 @@ namespace SGID.Pages.Relatorios.Controladoria
                              join SA10 in Protheus.Sa1010s on new { Cliente = SD20.D2Cliente, Loja = SD20.D2Loja } equals new { Cliente = SA10.A1Cod, Loja = SA10.A1Loja }
                              join SD10 in Protheus.Sd1010s on new { Filial = SD20.D2Filial, Doc = SD20.D2Doc, Serie = SD20.D2Serie, Cliente = SD20.D2Cliente, Loja = SD20.D2Loja } equals new { Filial = SD10.D1Filial, Doc = SD10.D1Nfori, Serie = SD10.D1Seriori, Cliente = SD10.D1Fornece, Loja = SD10.D1Loja } into Sr
                              from m in Sr.DefaultIfEmpty()
-                             where SD20.DELET != "*" && SA10.DELET != "*" && (SD20.D2Cf == "5912" || SD20.D2Cf == "6912") && SD20.D2Tipo == "N"
+                             where SD20.DELET != "*" && SA10.DELET != "*" && SA10.A1Msblql != "1" && (SD20.D2Cf == "5912" || SD20.D2Cf == "6912") && SD20.D2Tipo == "N"
                              && SD20.D2Serie == "2" && m.D1Cf == null
                              select new RelatorioConserto
                              {

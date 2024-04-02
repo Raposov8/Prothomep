@@ -48,7 +48,7 @@ namespace SGID.Pages.Relatorios
                              join SA10 in Protheus.Sa1010s on new { Codigo = SC50.C5Cliente, Loja = SC50.C5Lojacli } equals new { Codigo = SA10.A1Cod, Loja = SA10.A1Loja }
                              join SA30 in Protheus.Sa3010s on SC50.C5Vend1 equals SA30.A3Cod
                              where SD20.DELET != "*" && SC60.DELET != "*" && SC50.DELET != "*"
-                             && SF40.DELET != "*" && SA10.DELET != "*" && SB10.DELET != "*"
+                             && SF40.DELET != "*" && SA10.DELET != "*" && SA10.A1Msblql != "1" && SB10.DELET != "*"
                              && SF40.F4Duplic == "S" && SA10.A1Clinter == "S"
                              && (int)(object)SD20.D2Emissao >= (int)(object)Datainicio.ToString("yyyy/MM/dd").Replace("/", "") 
                              && (int)(object)SD20.D2Emissao <= (int)(object)DataFim.ToString("yyyy/MM/dd").Replace("/", "")
@@ -103,7 +103,7 @@ namespace SGID.Pages.Relatorios
                              join SA10 in Protheus.Sa1010s on new { Codigo = SC50.C5Cliente, Loja = SC50.C5Lojacli } equals new { Codigo = SA10.A1Cod, Loja = SA10.A1Loja }
                              join SA30 in Protheus.Sa3010s on SC50.C5Vend1 equals SA30.A3Cod
                              where SD20.DELET != "*" && SC60.DELET != "*" && SC50.DELET != "*"
-                             && SF40.DELET != "*" && SA10.DELET != "*" && SB10.DELET != "*"
+                             && SF40.DELET != "*" && SA10.DELET != "*" && SA10.A1Msblql != "1" && SB10.DELET != "*"
                              && SF40.F4Duplic == "S" && SA10.A1Clinter == "S"
                              && Convert.ToInt32(SD20.D2Emissao) >= Convert.ToInt32(Datainicio.ToString("yyyy/MM/dd").Replace("/", "")) 
                              && Convert.ToInt32(SD20.D2Emissao) <= Convert.ToInt32(DataFim.ToString("yyyy/MM/dd").Replace("/", ""))

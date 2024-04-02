@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using OfficeOpenXml;
 using SGID.Data;
 using SGID.Data.Models;
+using SGID.Models.Controladoria;
 using SGID.Models.Denuo;
 using SGID.Models.Financeiro;
 
@@ -43,7 +44,7 @@ namespace SGID.Pages.Relatorios.RH
                              join SC50 in Protheus.Sc5010s on new { Filial = SE10.E1Filial, Pedido = SE10.E1Pedido } equals new { Filial = SC50.C5Filial, Pedido = SC50.C5Num }
                              join SA30 in Protheus.Sa3010s on SC50.C5Vend1 equals SA30.A3Cod
                              join SD20 in Protheus.Sd2010s on new { Filial = SC50.C5Filial, Num = SC50.C5Num } equals new { Filial = SD20.D2Filial, Num = SD20.D2Pedido }
-                             where SE50.DELET != "*" && SE10.DELET != "*" && SE50.E5Recpag == "R"
+                             where SE50.DELET != "*" && SE10.DELET != "*" && SE50.E5Recpag == "R" && SA10.DELET != "*" && SA10.A1Msblql != "1"
                              && (SE50.E5Tipodoc == "VL" || SE50.E5Tipodoc == "RA")
                              && (SE50.E5Naturez == "111001" || SE50.E5Naturez == "111004" || SE50.E5Naturez == "111006")
                              && (SE50.E5Banco == "001" || SE50.E5Banco == "237" || SE50.E5Banco == "341")
@@ -80,6 +81,66 @@ namespace SGID.Pages.Relatorios.RH
                                  Login = SA30.A3Xlogin,
                                  Gestor = SA30.A3Xlogsup,
                                  DataPedido = SD20.D2Emissao
+                             }).GroupBy(x => new
+                             {
+                                 x.Prefixo,
+                                 x.Numero,
+                                 x.Parcela,
+                                 x.TP,
+                                 x.CliFor,
+                                 x.NomeFor,
+                                 x.Naturez,
+                                 x.Vencimento,
+                                 x.Historico,
+                                 x.DataBaixa,
+                                 x.ValorOrig,
+                                 x.JurMulta,
+                                 x.Correcao,
+                                 x.Descon,
+                                 x.Abatimento,
+                                 x.Imposto,
+                                 x.ValorAcess,
+                                 x.TotalBaixado,
+                                 x.Banco,
+                                 x.DtDigi,
+                                 x.Mot,
+                                 x.Orig,
+                                 x.Vendedor,
+                                 x.TipoCliente,
+                                 x.CodigoCliente,
+                                 x.Login,
+                                 x.Gestor,
+                                 x.DataPedido
+                             }).Select(x => new RelatorioAreceberBaixa
+                             {
+                                 Prefixo = x.Key.Prefixo,
+                                 Numero = x.Key.Numero,
+                                 Parcela = x.Key.Parcela,
+                                 TP = x.Key.TP,
+                                 CliFor = x.Key.CliFor,
+                                 NomeFor = x.Key.NomeFor,
+                                 Naturez = x.Key.Naturez,
+                                 Vencimento = x.Key.Vencimento,
+                                 Historico = x.Key.Historico,
+                                 DataBaixa = x.Key.DataBaixa,
+                                 ValorOrig = x.Key.ValorOrig,
+                                 JurMulta = x.Key.JurMulta,
+                                 Correcao = x.Key.Correcao,
+                                 Descon = x.Key.Descon,
+                                 Abatimento = x.Key.Abatimento,
+                                 Imposto = x.Key.Imposto,
+                                 ValorAcess = x.Key.ValorAcess,
+                                 TotalBaixado = x.Key.TotalBaixado,
+                                 Banco = x.Key.Banco,
+                                 DtDigi = x.Key.DtDigi,
+                                 Mot = x.Key.Mot,
+                                 Orig = x.Key.Orig,
+                                 Vendedor = x.Key.Vendedor,
+                                 TipoCliente = x.Key.TipoCliente,
+                                 CodigoCliente = x.Key.CodigoCliente,
+                                 Login = x.Key.Login,
+                                 Gestor = x.Key.Gestor,
+                                 DataPedido = x.Key.DataPedido
                              }).ToList();
 
             }
@@ -107,7 +168,7 @@ namespace SGID.Pages.Relatorios.RH
                              join SC50 in Protheus.Sc5010s on new { Filial = SE10.E1Filial, Pedido = SE10.E1Pedido } equals new { Filial = SC50.C5Filial, Pedido = SC50.C5Num }
                              join SA30 in Protheus.Sa3010s on SC50.C5Vend1 equals SA30.A3Cod
                              join SD20 in Protheus.Sd2010s on new { Filial = SC50.C5Filial, Num = SC50.C5Num } equals new { Filial = SD20.D2Filial, Num = SD20.D2Pedido }
-                             where SE50.DELET != "*" && SE10.DELET != "*" && SE50.E5Recpag == "R"
+                             where SE50.DELET != "*" && SE10.DELET != "*" && SE50.E5Recpag == "R" && SA10.DELET != "*" && SA10.A1Msblql != "1"
                              && (SE50.E5Tipodoc == "VL" || SE50.E5Tipodoc == "RA")
                              && (SE50.E5Naturez == "111001" || SE50.E5Naturez == "111004" || SE50.E5Naturez == "111006")
                              && (SE50.E5Banco == "001" || SE50.E5Banco == "237" || SE50.E5Banco == "341")
@@ -144,6 +205,66 @@ namespace SGID.Pages.Relatorios.RH
                                  Login = SA30.A3Xlogin,
                                  Gestor = SA30.A3Xlogsup,
                                  DataPedido = SD20.D2Emissao
+                             }).GroupBy(x => new
+                             {
+                                 x.Prefixo,
+                                 x.Numero,
+                                 x.Parcela,
+                                 x.TP,
+                                 x.CliFor,
+                                 x.NomeFor,
+                                 x.Naturez,
+                                 x.Vencimento,
+                                 x.Historico,
+                                 x.DataBaixa,
+                                 x.ValorOrig,
+                                 x.JurMulta,
+                                 x.Correcao,
+                                 x.Descon,
+                                 x.Abatimento,
+                                 x.Imposto,
+                                 x.ValorAcess,
+                                 x.TotalBaixado,
+                                 x.Banco,
+                                 x.DtDigi,
+                                 x.Mot,
+                                 x.Orig,
+                                 x.Vendedor,
+                                 x.TipoCliente,
+                                 x.CodigoCliente,
+                                 x.Login,
+                                 x.Gestor,
+                                 x.DataPedido
+                             }).Select(x => new RelatorioAreceberBaixa
+                             {
+                                 Prefixo = x.Key.Prefixo,
+                                 Numero = x.Key.Numero,
+                                 Parcela = x.Key.Parcela,
+                                 TP = x.Key.TP,
+                                 CliFor = x.Key.CliFor,
+                                 NomeFor = x.Key.NomeFor,
+                                 Naturez = x.Key.Naturez,
+                                 Vencimento = x.Key.Vencimento,
+                                 Historico = x.Key.Historico,
+                                 DataBaixa = x.Key.DataBaixa,
+                                 ValorOrig = x.Key.ValorOrig,
+                                 JurMulta = x.Key.JurMulta,
+                                 Correcao = x.Key.Correcao,
+                                 Descon = x.Key.Descon,
+                                 Abatimento = x.Key.Abatimento,
+                                 Imposto = x.Key.Imposto,
+                                 ValorAcess = x.Key.ValorAcess,
+                                 TotalBaixado = x.Key.TotalBaixado,
+                                 Banco = x.Key.Banco,
+                                 DtDigi = x.Key.DtDigi,
+                                 Mot = x.Key.Mot,
+                                 Orig = x.Key.Orig,
+                                 Vendedor = x.Key.Vendedor,
+                                 TipoCliente = x.Key.TipoCliente,
+                                 CodigoCliente = x.Key.CodigoCliente,
+                                 Login = x.Key.Login,
+                                 Gestor = x.Key.Gestor,
+                                 DataPedido = x.Key.DataPedido
                              }).ToList();
 
 

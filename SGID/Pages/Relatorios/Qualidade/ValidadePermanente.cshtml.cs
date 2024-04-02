@@ -59,8 +59,8 @@ namespace SGID.Pages.Relatorios.Qualidade
                                  ItSaida = SD20.D2Item,
                                  QtdSaida = SD20.D2Quant,
                                  Saldo = 0.00
-                             }
-                              ).ToList();
+                             }).ToList();
+
                 var query2 = (
                            from SD20 in Protheus.Sd2010s
                            join SB60 in Protheus.Sb6010s on new { Filial = SD20.D2Filial, Cli = SD20.D2Cliente, Loja = SD20.D2Loja, Cod = SD20.D2Cod, Ident = SD20.D2Identb6 } equals new { Filial = SB60.B6Filial, Cli = SB60.B6Clifor, Loja = SB60.B6Loja, Cod = SB60.B6Produto, Ident = SB60.B6Ident }

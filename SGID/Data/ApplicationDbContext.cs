@@ -53,6 +53,11 @@ namespace SGID.Data
         public DbSet<TimeADM> TimeADMs { get; set; }
         public DbSet<TimeDental> TimeDentals { get; set; }
 
+        //Inventario
+        public DbSet<Dispositivo> Dispositivos { get; set; }
+
+        public DbSet<UsuarioDispositivo> UsuarioDispositivos { get; set; } 
+
         //Sistema
         public DbSet<Meta> Metas { get; set; }
         public DbSet<Log> Logs { get; set; }

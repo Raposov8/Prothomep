@@ -1,0 +1,63 @@
+﻿@page
+@model SGID.Pages.Inventario.CriarDispositivoModel
+@{
+    ViewData["Title"] = "Novo Dispositivo";
+    if (User.IsInRole("Diretoria") && !User.IsInRole("Admin"))
+    {
+        Layout = "_LayoutDiretoria";
+    }
+    else
+    {
+        Layout = "_LayoutNovo";
+    }
+}
+
+<div class="row">
+    <h2 style="padding-left:20px;">Novo Dispositivo</h2>
+</div>
+
+<div class="row">
+    <!--<h3 id="Error" class="invisivel" style="padding-left:20px;color:red">Data Evento deve ter 3 dias uteis ou mais</h3>
+    <h3 id="Error2" class="invisivel" style="padding-left:20px;color:red">Deve ser informado o Nome  & Cargo do Antigo Colaborador</h3>-->
+</div>
+
+<div class="card" style="padding:10px;">
+    @using (@Html.BeginForm(FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        <div class="row">
+            <div class="col-md-12">
+                <div class="row">
+                    <div class="form-group col-md-4">
+                        <label>Nome Dispositivo</label>
+                        <input type="text" class="form-control" id="Nome" name="Nome" />
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label>Modelo</label>
+                        <input type="text" class="form-control" id="Modelo" name="Modelo" />
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label>IMEI</label>
+                        <input type="text" class="form-control" id="Imei" name="Imei" />
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label>Tipo Dispositivo</label>
+                        <select type="text" class="form-control" id="TipoDispositivo" name="TipoDispositivo">
+                            <option value="MAQUINA">MAQUINA</option>
+                            <option value="CELULAR">CELULAR</option>
+                            <option value="TABLET">TABLET</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label>Valor</label>
+                        <input type="number" min="0" class="form-control" id="Valor" name="Valor" />
+                    </div>
+                </div>
+            </div>
+            <div class="row" style="margin-top:10px;">
+                <div class="col-md-12">
+                    <button class="btn btn-button btn-success float-end" id="Envio" type="submit">Salvar</button>
+                </div>
+            </div>
+        </div>
+    }
+</div>

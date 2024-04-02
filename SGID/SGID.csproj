@@ -61,6 +61,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Pages\RH\Vagas\" />
     <Folder Include="wwwroot\AnexosAgendamento\" />
     <Folder Include="wwwroot\Anexos\" />
     <Folder Include="wwwroot\lib\jquery.redirect\dist\" />

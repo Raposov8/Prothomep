@@ -55,7 +55,7 @@ namespace SGID.Pages.DashBoards
                              join SA10 in ProtheusInter.Sa1010s on new { Codigo = SC50.C5Cliente, Loja = SC50.C5Lojacli } equals new { Codigo = SA10.A1Cod, Loja = SA10.A1Loja }
                              join SA30 in ProtheusInter.Sa3010s on SC50.C5Vend1 equals SA30.A3Cod
                              where SD10.DELET != "*" && SC60.DELET != "*" && SC50.DELET != "*"
-                             && SF10.DELET != "*" && SA10.DELET != "*" && SB10.DELET != "*"
+                             && SF10.DELET != "*" && SA10.DELET != "*" && SA10.A1Msblql != "1" && SB10.DELET != "*"
                              && SF10.F4Duplic == "S" && SA10.A1Clinter == "S"
                              && (int)(object)SD10.D2Emissao >= (int)(object)DataInicio
                              && (int)(object)SD10.D2Emissao <= (int)(object)DataFim
@@ -82,7 +82,7 @@ namespace SGID.Pages.DashBoards
                              join SC60 in ProtheusInter.Sc6010s on new { Filial = SC50.C5Filial, Num = SC50.C5Num } equals new { Filial = SC60.C6Filial, Num = SC60.C6Num }
                              join SB10 in ProtheusInter.Sb1010s on SC60.C6Produto equals SB10.B1Cod
                              join SA30 in ProtheusInter.Sa3010s on SC50.C5Vend1 equals SA30.A3Cod
-                             where SC50.DELET != "*" && SA10.DELET != "*" && SC60.DELET != "*" &&
+                             where SC50.DELET != "*" && SA10.DELET != "*" && SA10.A1Msblql != "1" && SC60.DELET != "*" &&
                              SA30.DELET != "*" && SA10.A1Clinter == "S" && SC50.C5Nota == "" &&
                              SC60.C6Qtdven - SC60.C6Qtdent != 0
                              && SA10.A1Cgc.Substring(0, 8) != "04715053"
@@ -115,7 +115,7 @@ namespace SGID.Pages.DashBoards
                              join SA10 in ProtheusDenuo.Sa1010s on new { Codigo = SC50.C5Cliente, Loja = SC50.C5Lojacli } equals new { Codigo = SA10.A1Cod, Loja = SA10.A1Loja }
                              join SA30 in ProtheusDenuo.Sa3010s on SC50.C5Vend1 equals SA30.A3Cod
                              where SD10.DELET != "*" && SC60.DELET != "*" && SC50.DELET != "*"
-                             && SF10.DELET != "*" && SA10.DELET != "*" && SB10.DELET != "*"
+                             && SF10.DELET != "*" && SA10.DELET != "*" && SA10.A1Msblql != "1" && SB10.DELET != "*"
                              && SF10.F4Duplic == "S" && SA10.A1Clinter == "S"
                              && (int)(object)SD10.D2Emissao >= (int)(object)DataInicio 
                              && (int)(object)SD10.D2Emissao <= (int)(object)DataFim
@@ -142,7 +142,7 @@ namespace SGID.Pages.DashBoards
                              join SC60 in ProtheusDenuo.Sc6010s on new { Filial = SC50.C5Filial, Num = SC50.C5Num } equals new { Filial = SC60.C6Filial, Num = SC60.C6Num }
                              join SB10 in ProtheusDenuo.Sb1010s on SC60.C6Produto equals SB10.B1Cod
                              join SA30 in ProtheusDenuo.Sa3010s on SC50.C5Vend1 equals SA30.A3Cod
-                             where SC50.DELET != "*" && SA10.DELET != "*" && SC60.DELET != "*" &&
+                             where SC50.DELET != "*" && SA10.DELET != "*" && SA10.A1Msblql != "1" && SC60.DELET != "*" &&
                              SA30.DELET != "*" && SA10.A1Clinter == "S" && SC50.C5Nota == "" &&
                              SC60.C6Qtdven - SC60.C6Qtdent != 0
                              orderby SA10.A1Nome, SC50.C5Emissao

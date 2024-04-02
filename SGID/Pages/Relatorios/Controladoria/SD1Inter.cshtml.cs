@@ -44,7 +44,7 @@ namespace SGID.Pages.Relatorios.Controladoria
                     join SF10 in Protheus.Sf1010s on new { Filial = SD10.D1Filial, Doc = SD10.D1Doc, Serie = SD10.D1Serie, Fornece = SD10.D1Fornece, Loja = SD10.D1Loja } equals new { Filial = SF10.F1Filial, Doc = SF10.F1Doc, Serie = SF10.F1Serie, Fornece = SF10.F1Fornece, Loja = SF10.F1Loja }
                     join SB10 in Protheus.Sb1010s on SD10.D1Cod equals SB10.B1Cod
                     join SA10 in Protheus.Sa1010s on new { Fornece = SD10.D1Fornece, Loja = SD10.D1Loja } equals new { Fornece = SA10.A1Cod, Loja = SA10.A1Loja }
-                    where SD10.DELET != "*" && SF10.DELET != "*" && SB10.DELET != "*" && SA10.DELET != "*"
+                    where SD10.DELET != "*" && SF10.DELET != "*" && SB10.DELET != "*" && SA10.DELET != "*" && SA10.A1Msblql != "1"
                     && Tipo.Contains(SF10.F1Tipo) && (int)(object)SD10.D1Dtdigit >= (int)(object)DataI && (int)(object)SD10.D1Dtdigit <= (int)(object)DataF
                     select new SD1
                     {
@@ -120,7 +120,7 @@ namespace SGID.Pages.Relatorios.Controladoria
                     join SF10 in Protheus.Sf1010s on new { Filial = SD10.D1Filial, Doc = SD10.D1Doc, Serie = SD10.D1Serie, Fornece = SD10.D1Fornece, Loja = SD10.D1Loja } equals new { Filial = SF10.F1Filial, Doc = SF10.F1Doc, Serie = SF10.F1Serie, Fornece = SF10.F1Fornece, Loja = SF10.F1Loja }
                     join SB10 in Protheus.Sb1010s on SD10.D1Cod equals SB10.B1Cod
                     join SA10 in Protheus.Sa1010s on new { Fornece = SD10.D1Fornece, Loja = SD10.D1Loja } equals new { Fornece = SA10.A1Cod, Loja = SA10.A1Loja }
-                    where SD10.DELET != "*" && SF10.DELET != "*" && SB10.DELET != "*" && SA10.DELET != "*"
+                    where SD10.DELET != "*" && SF10.DELET != "*" && SB10.DELET != "*" && SA10.DELET != "*" && SA10.A1Msblql != "1"
                     && Tipo.Contains(SF10.F1Tipo) && (int)(object)SD10.D1Dtdigit >= (int)(object)DataI && (int)(object)SD10.D1Dtdigit <= (int)(object)DataF
                     select new SD1
                     {

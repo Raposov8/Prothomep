@@ -48,7 +48,7 @@ namespace SGID.Pages.Relatorios.AdmVendas
                              join SA30 in Protheus.Sa3010s on SC50.C5Vend1 equals SA30.A3Cod
                              join PA10 in Protheus.Pa1010s on new { Filial = SC60.C6Filial, Patrim = SC60.C6Upatrim } equals new { Filial = PA10.Pa1Filial, Patrim = PA10.Pa1Codigo }
                              join SUA10 in Protheus.Sua010s on new { Filial = SC50.C5Filial, Proces = SC50.C5Uproces } equals new { Filial = SUA10.UaFilial, Proces = SUA10.UaNum }
-                             where SC50.DELET != "*" && SC60.DELET != "*" && SA10.DELET != "*" && SB10.DELET != "*" && SA30.DELET != "*" && PA10.DELET != "*"
+                             where SC50.DELET != "*" && SC60.DELET != "*" && SA10.DELET != "*" && SA10.A1Msblql != "1" && SB10.DELET != "*" && SA30.DELET != "*" && PA10.DELET != "*"
                              && SUA10.DELET != "*" && SC50.C5Liberok != "E" && (int)(object)SC50.C5XDtcir >= (int)(object)DataInicio.ToString("yyyy/MM/dd").Replace("/", "") && (int)(object)SC50.C5XDtcir <= (int)(object)DataFim.ToString("yyyy/MM/dd").Replace("/", "")
                              && SC50.C5Utpoper == "F" && SA10.A1Cgc != "04715053000140" && SA10.A1Cgc != "04715053000220" && SA10.A1Cgc != "01390500000140"
                              orderby SC50.C5XDtcir descending
@@ -111,7 +111,7 @@ namespace SGID.Pages.Relatorios.AdmVendas
                              join SA30 in Protheus.Sa3010s on SC50.C5Vend1 equals SA30.A3Cod
                              join PA10 in Protheus.Pa1010s on new { Filial = SC60.C6Filial, Patrim = SC60.C6Upatrim } equals new { Filial = PA10.Pa1Filial, Patrim = PA10.Pa1Codigo }
                              join SUA10 in Protheus.Sua010s on new { Filial = SC50.C5Filial, Proces = SC50.C5Uproces } equals new { Filial = SUA10.UaFilial, Proces = SUA10.UaNum }
-                             where SC50.DELET != "*" && SC60.DELET != "*" && SA10.DELET != "*" && SB10.DELET != "*" && SA30.DELET != "*" && PA10.DELET != "*"
+                             where SC50.DELET != "*" && SC60.DELET != "*" && SA10.DELET != "*" && SA10.A1Msblql != "1" && SB10.DELET != "*" && SA30.DELET != "*" && PA10.DELET != "*"
                              && SUA10.DELET != "*" && SC50.C5Liberok != "E" && (int)(object)SC50.C5XDtcir >= (int)(object)Inicio.ToString("yyyy/MM/dd").Replace("/", "") && (int)(object)SC50.C5XDtcir <= (int)(object)Fim.ToString("yyyy/MM/dd").Replace("/", "")
                              && SC50.C5Utpoper == "F" && SA10.A1Cgc != "04715053000140" && SA10.A1Cgc != "04715053000220" && SA10.A1Cgc != "01390500000140"
                              orderby SC50.C5XDtcir descending

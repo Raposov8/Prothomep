@@ -35,7 +35,7 @@ namespace SGID.Pages.Relatorios.Gerencial
                                      join SA10 in Protheus.Sa1010s on new { Cliente = SC50.C5Cliente, Loja = SC50.C5Lojacli } equals new { Cliente = SA10.A1Cod, Loja = SA10.A1Loja }
                                      join SC60 in Protheus.Sc6010s on new { Filial = SC50.C5Filial, Num = SC50.C5Num } equals new { Filial = SC60.C6Filial, Num = SC60.C6Num }
                                      join PA10 in Protheus.Pa1010s on SC60.C6Upatrim equals PA10.Pa1Codigo
-                                     where SC50.DELET != "*" && SA10.DELET != "*" && SC60.DELET != "*" && PA10.DELET != "*" && SC50.C5XDtcir != ""
+                                     where SC50.DELET != "*" && SA10.DELET != "*" && SA10.A1Msblql != "1" && SC60.DELET != "*" && PA10.DELET != "*" && SC50.C5XDtcir != ""
                                      && !utoper.Contains(SC50.C5Utpoper) && (SC50.C5Nota == "" && !Protheus.Sd2010s.Any(x => x.DELET != "*" && x.D2Filial == SC60.C6Filial && x.D2Pedido == SC60.C6Num))
                                      select new Operacao
                                      {
@@ -71,7 +71,7 @@ namespace SGID.Pages.Relatorios.Gerencial
                              join SA10 in Protheus.Sa1010s on new { Cliente = SC50.C5Cliente, Loja = SC50.C5Lojacli } equals new { Cliente = SA10.A1Cod, Loja = SA10.A1Loja }
                              join SA10b in Protheus.Sa1010s on new { Cliente = SC50.C5Cliente, Loja = SC50.C5Lojaent } equals new { Cliente = SA10b.A1Cod, Loja = SA10b.A1Loja }
                              join SC60 in Protheus.Sc6010s on new { Filial = SC50.C5Filial, Num = SC50.C5Num } equals new { Filial = SC60.C6Filial, Num = SC60.C6Num }
-                             where SC50.DELET != "*" && SA10.DELET != "*" && SC60.DELET != "*" && SA10b.DELET != "*" && SC50.C5XDtcir != ""
+                             where SC50.DELET != "*" && SA10.DELET != "*" && SA10.A1Msblql != "1" && SC60.DELET != "*" && SA10b.DELET != "*" && SC50.C5XDtcir != ""
                              && !utoper.Contains(SC50.C5Utpoper) && (SC50.C5Nota == "" && !Protheus.Sd2010s.Any(x => x.DELET != "*" && x.D2Filial == SC60.C6Filial && x.D2Pedido == SC60.C6Num))
                              select new CirurgiasN
                              {
@@ -129,7 +129,7 @@ namespace SGID.Pages.Relatorios.Gerencial
                                   join SA10 in Protheus.Sa1010s on new { Cliente = SC50.C5Cliente, Loja = SC50.C5Lojacli } equals new { Cliente = SA10.A1Cod, Loja = SA10.A1Loja }
                                   join SC60 in Protheus.Sc6010s on new { Filial = SC50.C5Filial, Num = SC50.C5Num } equals new { Filial = SC60.C6Filial, Num = SC60.C6Num }
                                   join PA10 in Protheus.Pa1010s on SC60.C6Upatrim equals PA10.Pa1Codigo
-                                  where SC50.DELET != "*" && SA10.DELET != "*" && SC60.DELET != "*" && PA10.DELET != "*" && SC50.C5XDtcir != ""
+                                  where SC50.DELET != "*" && SA10.DELET != "*" && SA10.A1Msblql != "1" && SC60.DELET != "*" && PA10.DELET != "*" && SC50.C5XDtcir != ""
                                   && !utoper.Contains(SC50.C5Utpoper) && (SC50.C5Nota == "" && !Protheus.Sd2010s.Any(x => x.DELET != "*" && x.D2Filial == SC60.C6Filial && x.D2Pedido == SC60.C6Num))
                                   select new Operacao
                                   {
@@ -200,7 +200,7 @@ namespace SGID.Pages.Relatorios.Gerencial
                                      join SA10 in Protheus.Sa1010s on new { Cliente = SC50.C5Cliente, Loja = SC50.C5Lojacli } equals new { Cliente = SA10.A1Cod, Loja = SA10.A1Loja }
                                      join SC60 in Protheus.Sc6010s on new { Filial = SC50.C5Filial, Num = SC50.C5Num } equals new { Filial = SC60.C6Filial, Num = SC60.C6Num }
                                      join PA10 in Protheus.Pa1010s on SC60.C6Upatrim equals PA10.Pa1Codigo
-                                     where SC50.DELET != "*" && SA10.DELET != "*" && SC60.DELET != "*" && PA10.DELET != "*" && SC50.C5XDtcir != ""
+                                     where SC50.DELET != "*" && SA10.DELET != "*" && SA10.A1Msblql != "1" && SC60.DELET != "*" && PA10.DELET != "*" && SC50.C5XDtcir != ""
                                      && !utoper.Contains(SC50.C5Utpoper) && (SC50.C5Nota == "" && !Protheus.Sd2010s.Any(x => x.DELET != "*" && x.D2Filial == SC60.C6Filial && x.D2Pedido == SC60.C6Num))
                                      select new Operacao
                                      {
@@ -236,7 +236,7 @@ namespace SGID.Pages.Relatorios.Gerencial
                              join SA10 in Protheus.Sa1010s on new { Cliente = SC50.C5Cliente, Loja = SC50.C5Lojacli } equals new { Cliente = SA10.A1Cod, Loja = SA10.A1Loja }
                              join SA10b in Protheus.Sa1010s on new { Cliente = SC50.C5Cliente, Loja = SC50.C5Lojaent } equals new { Cliente = SA10b.A1Cod, Loja = SA10b.A1Loja }
                              join SC60 in Protheus.Sc6010s on new { Filial = SC50.C5Filial, Num = SC50.C5Num } equals new { Filial = SC60.C6Filial, Num = SC60.C6Num }
-                             where SC50.DELET != "*" && SA10.DELET != "*" && SC60.DELET != "*" && SA10b.DELET != "*" && SC50.C5XDtcir != ""
+                             where SC50.DELET != "*" && SA10.DELET != "*" && SA10.A1Msblql != "1" && SC60.DELET != "*" && SA10b.DELET != "*" && SC50.C5XDtcir != ""
                              && !utoper.Contains(SC50.C5Utpoper) && (SC50.C5Nota == "" && !Protheus.Sd2010s.Any(x => x.DELET != "*" && x.D2Filial == SC60.C6Filial && x.D2Pedido == SC60.C6Num))
                              select new CirurgiasN
                              {
@@ -294,7 +294,7 @@ namespace SGID.Pages.Relatorios.Gerencial
                                   join SA10 in Protheus.Sa1010s on new { Cliente = SC50.C5Cliente, Loja = SC50.C5Lojacli } equals new { Cliente = SA10.A1Cod, Loja = SA10.A1Loja }
                                   join SC60 in Protheus.Sc6010s on new { Filial = SC50.C5Filial, Num = SC50.C5Num } equals new { Filial = SC60.C6Filial, Num = SC60.C6Num }
                                   join PA10 in Protheus.Pa1010s on SC60.C6Upatrim equals PA10.Pa1Codigo
-                                  where SC50.DELET != "*" && SA10.DELET != "*" && SC60.DELET != "*" && PA10.DELET != "*" && SC50.C5XDtcir != ""
+                                  where SC50.DELET != "*" && SA10.DELET != "*" && SA10.A1Msblql != "1" && SC60.DELET != "*" && PA10.DELET != "*" && SC50.C5XDtcir != ""
                                   && !utoper.Contains(SC50.C5Utpoper) && (SC50.C5Nota == "" && !Protheus.Sd2010s.Any(x => x.DELET != "*" && x.D2Filial == SC60.C6Filial && x.D2Pedido == SC60.C6Num))
                                   select new Operacao
                                   {
