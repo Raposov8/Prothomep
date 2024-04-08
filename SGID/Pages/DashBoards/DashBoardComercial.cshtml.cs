@@ -970,8 +970,8 @@ namespace SGID.Pages.DashBoards
                 string user = User.Identity.Name.Split("@")[0].ToUpper();
                 string data = DateTime.Now.ToString("yyyy/MM").Replace("/", "");
                 string DataInicio = $"{Ano}0101";
-
                 string DataFim = $"{Ano}1231";
+
                 if (Mes == "13")
                 {
                     #region Parametros
@@ -1030,7 +1030,7 @@ namespace SGID.Pages.DashBoards
                     CirurgiasValorizadasValor = resultadoValorizado.Sum(x => x.Valor);
 
 
-                    if (Convert.ToInt32(DataInicio) < 20240228)
+                    if (Convert.ToInt32(DataInicio) < 20240229)
                     {
                         #region Faturamento
                         var query = (from SD20 in ProtheusInter.Sd2010s
@@ -1383,7 +1383,6 @@ namespace SGID.Pages.DashBoards
                                                }).ToList();
 
                         #endregion
-
 
                         CirurgiasLicitacoesMes = resultado.Where(x => x.Linha == "000011" || x.Linha == "000012").DistinctBy(x => x.Nf).Count();
                         CirurgiasLicitacoesValor = resultado.Where(x => x.Linha == "000011" || x.Linha == "000012").Sum(x => x.Total) - RelatorioDev.Where(x => x.Linha == "000011" || x.Linha == "000012").Sum(x => x.Total);

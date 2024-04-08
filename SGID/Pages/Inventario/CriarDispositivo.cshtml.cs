@@ -30,7 +30,7 @@ namespace SGID.Pages.Inventario
                 Modelo = Modelo,
                 TipoDispositivo = TipoDispositivo,
                 Valor = Valor,
-                UsuarioCriacao = User.Identity.Name.Split('@')[0]
+                UsuarioCriacao = User.Identity.Name.Split('@')[0].ToUpper()
             };
 
             SGID.Dispositivos.Add(Dispositivo);

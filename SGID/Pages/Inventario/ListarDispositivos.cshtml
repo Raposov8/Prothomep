@@ -1,7 +1,7 @@
 ﻿@page
 @model SGID.Pages.Inventario.ListarDispositivosModel
 @{
-    ViewData["Title"] = "Novo Dispositivo";
+    ViewData["Title"] = "Dispositivos";
     if (User.IsInRole("Diretoria") && !User.IsInRole("Admin"))
     {
         Layout = "_LayoutDiretoria";
@@ -58,6 +58,9 @@
                             TIPO DISPOSITIVO
                         </th>
                         <th class="text-center">
+                            USUARIO
+                        </th>
+                        <th class="text-center">
                             AÇÃO
                         </th>
                     </tr>
@@ -70,8 +73,17 @@
                             <td>@Html.DisplayFor(model => data.Modelo)</td>
                             <td>@Html.DisplayFor(model => data.Imei)</td>
                             <td>@Html.DisplayFor(model => data.TipoDispositivo)</td>
-                            <td>
+                            @if(data.NomeUsuario==null)
+                            {
+                                <td>DISPONIVEL</td>
+                            }
+                            else
+                            {
+                                <td>@data.NomeUsuario</td>
+                            }
+                            <td class="text-center">
                                 <a href="/Inventario/editardispositivo/@data.Id"><i class="fa-solid fa-pencil"></i></a>
+                                <a href="/Inventario/atrelardispositivo/@data.Id"><i class="fa-solid fa-user-plus"></i></a>
                             </td>
                         </tr>
                     }

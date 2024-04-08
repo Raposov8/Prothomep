@@ -46,7 +46,7 @@
                                     <a class="nav-link" href="/Inventario/ListarDispositivos"><i class="fa-solid fa-server"></i> DISPOSITIVOS</a>
                                 </li>
                             }
-                            @if (User.IsInRole("Admin") || User.IsInRole("GestorVenda"))
+                            @if (User.IsInRole("Admin") || User.IsInRole("GestorVenda") || User.IsInRole("Venda") )
                             {
                                 <li>
                                     <a class="nav-link" href="/integracao/listarcotacoesinpart/01"><i class="fa-solid fa-clipboard-user"></i> INPART INTERMEDIC</a>
@@ -122,7 +122,10 @@
                                             <li><a class="nav-link" href="/agendamento/visitas"> Painel Visitas</a></li>
                                             @if (User.IsInRole("Admin") || User.IsInRole("Diretoria") || User.Identity.Name.ToUpper() == "ANDRE.SALES@INTERMEDIC.COM.BR")
                                             {
-                                                <li><a class="nav-link" href="/relatorios/visitas/relatoriovisitas">Relatorio Visitas</a></li>
+                                                <li><a class="nav-link" href="/relatorios/visitas/relatoriovisitas/ORTOPEDIA">Relatorio Visitas ORTOPEDIA</a></li>
+                                                <li><a class="nav-link" href="/relatorios/visitas/relatoriovisitas/BUCOMAXILO">Relatorio Visitas BUCOMAXILO</a></li>
+                                                <li><a class="nav-link" href="/relatorios/visitas/relatoriovisitas/TORAX">Relatorio Visitas TORAX</a></li>
+                                                <li><a class="nav-link" href="/relatorios/visitas/relatoriovisitas/NEURO">Relatorio Visitas NEURO</a></li>
                                             }
                                         </ul>
                                     </div>
@@ -149,15 +152,6 @@
                                        data-bs-target="#visitas2-collapse" aria-expanded="false">
                                         <i class="fa-solid fa-calendar-days"></i> Visitas
                                     </a>
-                                    <div class="collapse" id="visitas2-collapse">
-                                        <ul class="list-unstyled fw-normal pb-1 small">
-                                            <li><a class="nav-link" href="/agendamento/visitas"> Painel Visitas</a></li>
-                                            @if (User.IsInRole("Admin"))
-                                            {
-                                                <li><a class="nav-link" href="/relatorios/visitas/relatoriovisitas">Relatorio Visitas</a></li>
-                                            }
-                                        </ul>
-                                    </div>
                                 </li>
                             }
                             @if (User.IsInRole("Admin"))

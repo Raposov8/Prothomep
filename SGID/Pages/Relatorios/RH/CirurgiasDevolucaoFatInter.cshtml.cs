@@ -166,7 +166,8 @@ namespace SGID.Pages.Relatorios.RH
                                  SD10.D1Seriori,
                                  SD10.D1Datori,
                                  SD10.D1Emissao,
-                                 SA30.A3Xdescun
+                                 SA30.A3Xdescun,
+                                 SA10.A1Xgrinte
                              }
                               ).GroupBy(x => new
                               {
@@ -183,7 +184,8 @@ namespace SGID.Pages.Relatorios.RH
                                   x.D1Nfori,
                                   x.D1Seriori,
                                   x.D1Datori,
-                                  x.A3Xdescun
+                                  x.A3Xdescun,
+                                  x.A1Xgrinte
                               });
 
                 Relatorio = teste.Select(x => new RelatorioDevolucaoFat
@@ -205,7 +207,8 @@ namespace SGID.Pages.Relatorios.RH
                     D1Nfori = x.Key.D1Nfori,
                     D1Seriori = x.Key.D1Seriori,
                     D1Datori = x.Key.D1Datori,
-                    Linha = x.Key.A3Xdescun
+                    Linha = x.Key.A3Xdescun,
+                    Codigo = x.Key.A1Xgrinte
                 }).ToList();
 
                 using ExcelPackage package = new ExcelPackage();
@@ -230,6 +233,7 @@ namespace SGID.Pages.Relatorios.RH
                 sheet.Cells[1, 15].Value = "D1_NFORI";
                 sheet.Cells[1, 16].Value = "D1_SERIORI";
                 sheet.Cells[1, 17].Value = "D1_DATORI";
+                sheet.Cells[1, 18].Value = "CODIGO";
 
                 int i = 2;
 
@@ -252,6 +256,7 @@ namespace SGID.Pages.Relatorios.RH
                     sheet.Cells[i, 15].Value = Pedido.D1Nfori;
                     sheet.Cells[i, 16].Value = Pedido.D1Seriori;
                     sheet.Cells[i, 17].Value = Pedido.D1Datori;
+                    sheet.Cells[i, 18].Value = Pedido.Codigo;
 
                     i++;
                 });

@@ -32,7 +32,7 @@ namespace SGID.Pages.Inventario
             Editar.TipoDispositivo = TipoDispositivo;
             Editar.Valor = Valor;
             Editar.DataAlteracao = DateTime.Now;
-            Editar.UsuarioAlteracao = User.Identity.Name.Split("@")[0];
+            Editar.UsuarioAlteracao = User.Identity.Name.Split("@")[0].ToUpper();
            
 
             SGID.Dispositivos.Update(Editar);

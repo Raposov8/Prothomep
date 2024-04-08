@@ -21,11 +21,11 @@ namespace SGID.Pages.Inventario
             var UsuarioDisp = new UsuarioDispositivo
             {
                 Ativo = true,
-                IdDispositivo = Id,
+                DispositivoId = Id,
                 NomeUsuario = Nome
             };
 
-            var OldUsers = SGID.UsuarioDispositivos.Where(x => x.IdDispositivo == Id).ToList();
+            var OldUsers = SGID.UsuarioDispositivos.Where(x => x.DispositivoId == Id).ToList();
 
             OldUsers.ForEach(x =>
             {

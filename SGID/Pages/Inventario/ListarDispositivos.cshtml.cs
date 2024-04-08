@@ -19,7 +19,7 @@ namespace SGID.Pages.Inventario
         public void OnGet()
         {
             Dispositivos = (from Disp in SGID.Dispositivos
-                            join User in SGID.UsuarioDispositivos on Disp.Id equals User.IdDispositivo into st
+                            join User in SGID.UsuarioDispositivos on Disp.Id equals User.DispositivoId into st
                             from a in st.DefaultIfEmpty()
                             where a.Ativo != false
                             select new DispositivosAtivos
@@ -38,7 +38,7 @@ namespace SGID.Pages.Inventario
             if (Tipo != "") 
             {
                 Dispositivos = (from Disp in SGID.Dispositivos
-                                join User in SGID.UsuarioDispositivos on Disp.Id equals User.IdDispositivo into st
+                                join User in SGID.UsuarioDispositivos on Disp.Id equals User.DispositivoId into st
                                 from a in st.DefaultIfEmpty()
                                 where a.Ativo != false && Disp.TipoDispositivo == Tipo
                                 select new DispositivosAtivos
@@ -54,7 +54,7 @@ namespace SGID.Pages.Inventario
             else
             {
                 Dispositivos = (from Disp in SGID.Dispositivos
-                                join User in SGID.UsuarioDispositivos on Disp.Id equals User.IdDispositivo into st
+                                join User in SGID.UsuarioDispositivos on Disp.Id equals User.DispositivoId into st
                                 from a in st.DefaultIfEmpty()
                                 where a.Ativo != false
                                 select new DispositivosAtivos
