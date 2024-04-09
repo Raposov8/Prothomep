@@ -95,7 +95,7 @@ namespace SGID.Pages.DashBoards
                     if (Convert.ToInt32(DataInicio) < 20240228)
                     {
                         #region Faturamento
-                    var query = (from SD20 in ProtheusInter.Sd2010s
+                        var query = (from SD20 in ProtheusInter.Sd2010s
                                      join SA10 in ProtheusInter.Sa1010s on new { Cod = SD20.D2Cliente, Loja = SD20.D2Loja } equals new { Cod = SA10.A1Cod, Loja = SA10.A1Loja }
                                      join SB10 in ProtheusInter.Sb1010s on SD20.D2Cod equals SB10.B1Cod
                                      join SF20 in ProtheusInter.Sf2010s on new { Filial = SD20.D2Filial, Doc = SD20.D2Doc, Serie = SD20.D2Serie, Cliente = SD20.D2Cliente, Loja = SD20.D2Loja } equals new { Filial = SF20.F2Filial, Doc = SF20.F2Doc, Serie = SF20.F2Serie, Cliente = SF20.F2Cliente, Loja = SF20.F2Loja }

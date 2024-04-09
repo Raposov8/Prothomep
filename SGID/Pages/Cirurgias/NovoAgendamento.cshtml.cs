@@ -63,7 +63,7 @@ namespace SGID.Pages.Cirurgias
                     Vendedores = ProtheusInter.Sa3010s.Where(x => x.DELET != "*" && x.A3Msblql != "1").Select(x => x.A3Nreduz).ToList(),
                 };
 
-                SearchProduto = ProtheusInter.Sb1010s.Where(x => x.DELET != "*" && x.B1Msblql != "1" && x.B1Tipo != "KT").Select(x => x.B1Desc).Distinct().ToList();
+                SearchProduto = ProtheusInter.Sb1010s.Where(x => x.DELET != "*" && x.B1Msblql != "1" && x.B1Tipo != "KT").Select(x => x.B1Cod + " " + x.B1Desc).Distinct().ToList();
             }
             else
             {
@@ -91,7 +91,7 @@ namespace SGID.Pages.Cirurgias
                     Vendedores = ProtheusDenuo.Sa3010s.Where(x => x.DELET != "*" && x.A3Msblql != "1").Select(x => x.A3Nreduz).ToList(),
                 };
 
-                SearchProduto = ProtheusDenuo.Sb1010s.Where(x => x.DELET != "*" && x.B1Msblql != "1" && x.B1Tipo!="KT").Select(x => x.B1Desc).Distinct().ToList();
+                SearchProduto = ProtheusDenuo.Sb1010s.Where(x => x.DELET != "*" && x.B1Msblql != "1" && x.B1Tipo!="KT").Select(x => x.B1Cod + " " + x.B1Desc).Distinct().ToList();
             }
         }
 
@@ -646,10 +646,11 @@ namespace SGID.Pages.Cirurgias
             {
                 if (Empresa == "01") 
                 {
+                    var codigo = Codigo.Split(" ")[0];
 
                         //Intermedic
                         var produto = (from SB10 in ProtheusInter.Sb1010s
-                                       where SB10.B1Cod == Codigo.ToUpper() && SB10.B1Msblql != "1"
+                                       where SB10.B1Cod == codigo.ToUpper() && SB10.B1Msblql != "1"
                                        && SB10.DELET != "*"
                                        select new
                                        {
@@ -711,9 +712,11 @@ namespace SGID.Pages.Cirurgias
                 }
                 else
                 {
+                    var codigo = Codigo.Split(" ")[0];
+
                     //Denuo
                     var produto = (from SB10 in ProtheusDenuo.Sb1010s
-                                   where SB10.B1Cod == Codigo.ToUpper() && SB10.B1Msblql != "1"
+                                   where SB10.B1Cod == codigo.ToUpper() && SB10.B1Msblql != "1"
                                    && SB10.DELET != "*"
                                    select new
                                    {

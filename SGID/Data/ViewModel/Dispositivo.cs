@@ -14,6 +14,7 @@ namespace SGID.Data.ViewModel
         public string? Imei { get; set; }
         public string TipoDispositivo { get; set; }
         public double Valor { get; set; }
+        public bool Ativo { get; set; } = true;
 
         public string UsuarioCriacao { get; set; }
         public string? UsuarioAlteracao { get; set; }

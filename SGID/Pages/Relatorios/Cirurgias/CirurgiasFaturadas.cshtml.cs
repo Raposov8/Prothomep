@@ -39,7 +39,7 @@ namespace SGID.Pages.Relatorios.Cirurgias
                 Fim = DataFim;
 
                 int[] CF = new int[] { 5551, 6551, 6107, 6109 };
-                var user = User.Identity.Name.Split("@")[0].ToUpper();
+                var user = "ADRIANA.SOUZA";//User.Identity.Name.Split("@")[0].ToUpper();
 
                 var query = (from SD20 in Protheus.Sd2010s
                              join SA10 in Protheus.Sa1010s on new { Cod = SD20.D2Cliente, Loja = SD20.D2Loja } equals new { Cod = SA10.A1Cod, Loja = SA10.A1Loja }
@@ -240,8 +240,8 @@ namespace SGID.Pages.Relatorios.Cirurgias
                     XNMPla = x.Key.NomPla,
                     Utpoper = x.Key.C5Utpoper,
                     D2Cod = x.Key.D2Cod,
-                    B1Desc = x.Key.B1Desc
-
+                    B1Desc = x.Key.B1Desc,
+                    
                 }).ToList();
 
                 using ExcelPackage package = new ExcelPackage();

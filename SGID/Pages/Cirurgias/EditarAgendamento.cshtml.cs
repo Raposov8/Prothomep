@@ -100,7 +100,7 @@ namespace SGID.Pages.Cirurgias
                     Vendedores = ProtheusInter.Sa3010s.Where(x => x.DELET != "*" && x.A3Msblql != "1").Select(x => x.A3Nreduz).ToList(),
                 };
 
-                SearchProduto = ProtheusInter.Sb1010s.Where(x => x.DELET != "*" && x.B1Msblql != "1" && x.B1Tipo != "KT").Select(x => x.B1Desc).Distinct().ToList();
+                SearchProduto = ProtheusInter.Sb1010s.Where(x => x.DELET != "*" && x.B1Msblql != "1" && x.B1Tipo != "KT").Select(x => x.B1Cod + " " + x.B1Desc).Distinct().ToList();
 
                 codigos.ForEach(x =>
                 {
@@ -187,7 +187,7 @@ namespace SGID.Pages.Cirurgias
                     Vendedores = ProtheusDenuo.Sa3010s.Where(x => x.DELET != "*" && x.A3Msblql != "1").Select(x => x.A3Nreduz).ToList(),
                 };
 
-                SearchProduto = ProtheusDenuo.Sb1010s.Where(x => x.DELET != "*" && x.B1Msblql != "1" && x.B1Tipo != "KT").Select(x => x.B1Desc).Distinct().ToList();
+                SearchProduto = ProtheusDenuo.Sb1010s.Where(x => x.DELET != "*" && x.B1Msblql != "1" && x.B1Tipo != "KT").Select(x => x.B1Cod + " " + x.B1Desc).Distinct().ToList();
 
                 codigos.ForEach(x =>
                 {

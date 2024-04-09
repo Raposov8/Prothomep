@@ -619,6 +619,7 @@
                 },
                 dayClick: function (date, jsEvent, view) {
 
+                    $("#Data").val(`${date.format()}T10:00`); 
                     $("#novavisita-modal").modal('show');
                 }
             });

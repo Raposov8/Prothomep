@@ -19,7 +19,7 @@ namespace SGID.Pages.Inventario
         public void OnGet()
         {
             Dispositivos = (from Disp in SGID.Dispositivos
-                            join User in SGID.UsuarioDispositivos on Disp.Id equals User.DispositivoId into st
+                            join User in SGID.UsuarioDispositivos on new { Id=Disp.Id,Ativo=Disp.Ativo } equals new { Id=User.DispositivoId,Ativo=User.Ativo } into st
                             from a in st.DefaultIfEmpty()
                             where a.Ativo != false
                             select new DispositivosAtivos

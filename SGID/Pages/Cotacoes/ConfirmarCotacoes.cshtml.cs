@@ -185,7 +185,7 @@ namespace SGID.Pages.Cotacoes
 
                 SearchPatri = ProtheusInter.Pa1010s.Where(x => x.DELET != "*" && x.Pa1Msblql != "1").Select(x => x.Pa1Despat).Distinct().ToList();
 
-                SearchProduto = ProtheusInter.Sb1010s.Where(x => x.DELET != "*" && x.B1Msblql != "1" && x.B1Tipo != "KT").Select(x => x.B1Desc).Distinct().ToList();
+                SearchProduto = ProtheusInter.Sb1010s.Where(x => x.DELET != "*" && x.B1Msblql != "1" && x.B1Tipo != "KT").Select(x => x.B1Cod + " " + x.B1Desc).Distinct().ToList();
             }
             else
             {
@@ -301,7 +301,7 @@ namespace SGID.Pages.Cotacoes
                                select PA10.Pa1Despat
                                    ).Distinct().ToList();
 
-                SearchProduto = ProtheusDenuo.Sb1010s.Where(x => x.DELET != "*" && x.B1Msblql != "1" && x.B1Tipo != "KT").Select(x => x.B1Desc).Distinct().ToList();
+                SearchProduto = ProtheusDenuo.Sb1010s.Where(x => x.DELET != "*" && x.B1Msblql != "1" && x.B1Tipo != "KT").Select(x => x.B1Cod + " " + x.B1Desc).Distinct().ToList();
             }
         }
 
