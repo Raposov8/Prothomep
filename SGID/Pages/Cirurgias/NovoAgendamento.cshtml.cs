@@ -952,6 +952,7 @@ namespace SGID.Pages.Cirurgias
         {
             try
             {
+                
                 if (Empresa == "01")
                 {
                     //Intermedic

@@ -1111,7 +1111,7 @@
                 var data = new Date($.now());
                 //yyyy-MM-dd'T'HH:mm
                 data.setMinutes(data.getMinutes() - data.getTimezoneOffset());
-                $("#DataAgendamento").val(data.toISOString().slice(0, 16))
+                $("#Agendamento_DataAgendamento").val(data.toISOString().slice(0, 16))
             }
         })
 
@@ -1342,19 +1342,19 @@
         $('#Agendamento_Medico').keydown(function (e) {
             var key = e.which;
             if (key == 13) {
-                        var codigo = $("#Agendamento_Medico").val();
+                var codigo = $("#Agendamento_Medico").val();
 
                 console.log(codigo)
 
                 var teste = Medicos.find(function(lon){
-                    return lon == codigo
+                    return lon.replace("&#xC7;","Ç") == codigo
                 });
 
                 console.log(teste)
 
                 if (teste != undefined) {
 
-                    var empresa = $("#Empresa").val();
+                    var empresa = $("#Agendamento_Empresa").val();
                     var chamadaUrl = `/cirurgias/novoagendamento/01?handler=Vendedor&&Codigo=${codigo}&&Empresa=${empresa}`;
                     $.ajax({
                         url: chamadaUrl,
@@ -1365,16 +1365,14 @@
                             "RequestVerificationToken": $('input:hidden[name="__RequestVerificationToken"]').val()
                         },
                         success: function (data) {
-
-                           $("#Agendamento_Vendedor").val(data);
+                            $("#Agendamento_Vendedor").val(data);
                         }
                     })
                 }
                 else 
                 {
-                            $("#Agendamento_Medico").val("");
-                    alert("Médico está sem CRM Favor contatar Adm Vendas")
-                    
+                    $("#Agendamento_Medico").val("");
+                    alert("Medico não encontrado");
                 }
             }
         });
