@@ -24,6 +24,9 @@ namespace SGID.Pages.DashBoards
         public double CirurgiasLicitacoesValor { get; set; }
         public int BaixasLicitacoesMes { get; set; }
         public double BaixasLicitacoesValor { get; set; }
+        public int BaixasKamikaze { get; set; }
+        public double BaixasKamikazeValor { get; set; }
+
         public double Meta { get; set; }
         public double Comissao { get; set; }
 
@@ -446,12 +449,129 @@ namespace SGID.Pages.DashBoards
 
                         #endregion
 
+                        #region BaixaKamikaze
+
+                        var RelatorioKamikazeInter = (from SE50 in ProtheusInter.Se5010s
+                                                      join SE10 in ProtheusInter.Se1010s on new { PRE = SE50.E5Prefixo, Num = SE50.E5Numero, Par = SE50.E5Parcela, Tipo = SE50.E5Tipo, Cliente = SE50.E5Cliente, Loja = SE50.E5Loja }
+                                                      equals new { PRE = SE10.E1Prefixo, Num = SE10.E1Num, Par = SE10.E1Parcela, Tipo = SE10.E1Tipo, Cliente = SE10.E1Cliente, Loja = SE10.E1Loja }
+                                                      join SA10 in ProtheusInter.Sa1010s on SE50.E5Cliente equals SA10.A1Cod
+                                                      join SC50 in ProtheusInter.Sc5010s on new { Filial = SE10.E1Filial, Pedido = SE10.E1Pedido } equals new { Filial = SC50.C5Filial, Pedido = SC50.C5Num }
+                                                      join SA30 in ProtheusInter.Sa3010s on SC50.C5Vend1 equals SA30.A3Cod
+                                                      join SD20 in ProtheusInter.Sd2010s on new { Filial = SC50.C5Filial, Num = SC50.C5Num } equals new { Filial = SD20.D2Filial, Num = SD20.D2Pedido }
+                                                      where SE50.DELET != "*" && SE10.DELET != "*" && SE50.E5Recpag == "R" && SA10.DELET != "*" && SA10.A1Msblql != "1"
+                                                      && (SE50.E5Tipodoc == "VL" || SE50.E5Tipodoc == "RA")
+                                                      && (SE50.E5Naturez == "111001" || SE50.E5Naturez == "111004" || SE50.E5Naturez == "111006")
+                                                      && (SE50.E5Banco == "001" || SE50.E5Banco == "237" || SE50.E5Banco == "341")
+                                                      && (int)(object)SE50.E5Data >= (int)(object)DataInicio
+                                                      && (int)(object)SE50.E5Data <= (int)(object)DataFim
+                                                      && SC50.C5Utpoper == "K"
+                                                      && SA30.A3Xlogin == user
+                                                      select new RelatorioAreceberBaixa
+                                                      {
+                                                          Prefixo = SE50.E5Prefixo,
+                                                          Numero = SE50.E5Numero,
+                                                          Parcela = SE50.E5Parcela,
+                                                          TP = SE50.E5Tipo,
+                                                          CliFor = SE50.E5Clifor,
+                                                          NomeFor = SA10.A1Nome,
+                                                          Naturez = SE50.E5Naturez,
+                                                          Vencimento = SE10.E1Vencto,
+                                                          Historico = SE50.E5Histor,
+                                                          DataBaixa = SE50.E5Data,
+                                                          ValorOrig = SE10.E1Valor,
+                                                          JurMulta = SE50.E5Vljuros + SE50.E5Vlmulta,
+                                                          Correcao = SE50.E5Vlcorre,
+                                                          Descon = SE50.E5Vldesco,
+                                                          Abatimento = 0,
+                                                          Imposto = 0,
+                                                          ValorAcess = 0,
+                                                          TotalBaixado = SE50.E5Valor,
+                                                          Banco = SE50.E5Banco,
+                                                          DtDigi = SE50.E5Dtdigit,
+                                                          Mot = SE50.E5Motbx,
+                                                          Orig = SE50.E5Filorig,
+                                                          Vendedor = SC50.C5Nomvend,
+                                                          TipoCliente = SA10.A1Clinter,
+                                                          CodigoCliente = SA10.A1Xgrinte,
+                                                          Login = SA30.A3Xlogin,
+                                                          Gestor = SA30.A3Xlogsup,
+                                                          DataPedido = SD20.D2Emissao
+                                                      }).GroupBy(x => new
+                                                      {
+                                                          x.Prefixo,
+                                                          x.Numero,
+                                                          x.Parcela,
+                                                          x.TP,
+                                                          x.CliFor,
+                                                          x.NomeFor,
+                                                          x.Naturez,
+                                                          x.Vencimento,
+                                                          x.Historico,
+                                                          x.DataBaixa,
+                                                          x.ValorOrig,
+                                                          x.JurMulta,
+                                                          x.Correcao,
+                                                          x.Descon,
+                                                          x.Abatimento,
+                                                          x.Imposto,
+                                                          x.ValorAcess,
+                                                          x.TotalBaixado,
+                                                          x.Banco,
+                                                          x.DtDigi,
+                                                          x.Mot,
+                                                          x.Orig,
+                                                          x.Vendedor,
+                                                          x.TipoCliente,
+                                                          x.CodigoCliente,
+                                                          x.Login,
+                                                          x.Gestor,
+                                                          x.DataPedido
+                                                      }).Select(x => new RelatorioAreceberBaixa
+                                                      {
+                                                          Prefixo = x.Key.Prefixo,
+                                                          Numero = x.Key.Numero,
+                                                          Parcela = x.Key.Parcela,
+                                                          TP = x.Key.TP,
+                                                          CliFor = x.Key.CliFor,
+                                                          NomeFor = x.Key.NomeFor,
+                                                          Naturez = x.Key.Naturez,
+                                                          Vencimento = x.Key.Vencimento,
+                                                          Historico = x.Key.Historico,
+                                                          DataBaixa = x.Key.DataBaixa,
+                                                          ValorOrig = x.Key.ValorOrig,
+                                                          JurMulta = x.Key.JurMulta,
+                                                          Correcao = x.Key.Correcao,
+                                                          Descon = x.Key.Descon,
+                                                          Abatimento = x.Key.Abatimento,
+                                                          Imposto = x.Key.Imposto,
+                                                          ValorAcess = x.Key.ValorAcess,
+                                                          TotalBaixado = x.Key.TotalBaixado,
+                                                          Banco = x.Key.Banco,
+                                                          DtDigi = x.Key.DtDigi,
+                                                          Mot = x.Key.Mot,
+                                                          Orig = x.Key.Orig,
+                                                          Vendedor = x.Key.Vendedor,
+                                                          TipoCliente = x.Key.TipoCliente,
+                                                          CodigoCliente = x.Key.CodigoCliente,
+                                                          Login = x.Key.Login,
+                                                          Gestor = x.Key.Gestor,
+                                                          DataPedido = x.Key.DataPedido
+                                                      }).ToList();
+
+                        #endregion
+
 
                         CirurgiasLicitacoesMes = resultado.Where(x => x.Linha == "000011" || x.Linha == "000012").DistinctBy(x => x.Nf).Count();
                         CirurgiasLicitacoesValor = resultado.Where(x => x.Linha == "000011" || x.Linha == "000012").Sum(x => x.Total) - RelatorioDev.Where(x => x.Linha == "000011" || x.Linha == "000012").Sum(x => x.Total);
 
                         BaixasLicitacoesMes = BaixaLicitacoes.DistinctBy(x => x.Numero).Count();
                         BaixasLicitacoesValor = BaixaLicitacoes.Sum(x => x.TotalBaixado);
+
+                        BaixasKamikaze = RelatorioKamikazeInter.DistinctBy(x => x.Numero).Count();
+                        BaixasKamikazeValor = RelatorioKamikazeInter.Sum(x => x.TotalBaixado);
+
+
+
                     }
 
                     #region EmAberto
@@ -484,7 +604,7 @@ namespace SGID.Pages.DashBoards
                                          }).ToList();
                     #endregion
 
-                    CirurgiasEmAberto = resultadoEmAberto.DistinctBy(x=>x.Num).Count();
+                    CirurgiasEmAberto = resultadoEmAberto.DistinctBy(x => x.Num).Count();
                     CirurgiasEmAbertoValor = resultadoEmAberto.Sum(x => x.Valor);
 
                     user = user.ToLower();
@@ -926,12 +1046,125 @@ namespace SGID.Pages.DashBoards
 
                         #endregion
 
+                        #region BaixaKamikaze
+
+                        var RelatorioKamikazeDenuo = (from SE50 in ProtheusDenuo.Se5010s
+                                                      join SE10 in ProtheusDenuo.Se1010s on new { PRE = SE50.E5Prefixo, Num = SE50.E5Numero, Par = SE50.E5Parcela, Tipo = SE50.E5Tipo, Cliente = SE50.E5Cliente, Loja = SE50.E5Loja }
+                                                      equals new { PRE = SE10.E1Prefixo, Num = SE10.E1Num, Par = SE10.E1Parcela, Tipo = SE10.E1Tipo, Cliente = SE10.E1Cliente, Loja = SE10.E1Loja }
+                                                      join SA10 in ProtheusDenuo.Sa1010s on SE50.E5Cliente equals SA10.A1Cod
+                                                      join SC50 in ProtheusDenuo.Sc5010s on new { Filial = SE10.E1Filial, Pedido = SE10.E1Pedido } equals new { Filial = SC50.C5Filial, Pedido = SC50.C5Num }
+                                                      join SA30 in ProtheusDenuo.Sa3010s on SC50.C5Vend1 equals SA30.A3Cod
+                                                      join SD20 in ProtheusDenuo.Sd2010s on new { Filial = SC50.C5Filial, Num = SC50.C5Num } equals new { Filial = SD20.D2Filial, Num = SD20.D2Pedido }
+                                                      where SE50.DELET != "*" && SE10.DELET != "*" && SE50.E5Recpag == "R" && SA10.DELET != "*" && SA10.A1Msblql != "1"
+                                                      && (SE50.E5Tipodoc == "VL" || SE50.E5Tipodoc == "RA")
+                                                      && (SE50.E5Naturez == "111001" || SE50.E5Naturez == "111004" || SE50.E5Naturez == "111006")
+                                                      && (SE50.E5Banco == "001" || SE50.E5Banco == "237" || SE50.E5Banco == "341")
+                                                      && (int)(object)SE50.E5Data >= (int)(object)DataInicio
+                                                      && (int)(object)SE50.E5Data <= (int)(object)DataFim
+                                                      && SC50.C5Utpoper == "K"
+                                                      && SA30.A3Xlogin == user
+                                                      select new RelatorioAreceberBaixa
+                                                      {
+                                                          Prefixo = SE50.E5Prefixo,
+                                                          Numero = SE50.E5Numero,
+                                                          Parcela = SE50.E5Parcela,
+                                                          TP = SE50.E5Tipo,
+                                                          CliFor = SE50.E5Clifor,
+                                                          NomeFor = SA10.A1Nome,
+                                                          Naturez = SE50.E5Naturez,
+                                                          Vencimento = SE10.E1Vencto,
+                                                          Historico = SE50.E5Histor,
+                                                          DataBaixa = SE50.E5Data,
+                                                          ValorOrig = SE10.E1Valor,
+                                                          JurMulta = SE50.E5Vljuros + SE50.E5Vlmulta,
+                                                          Correcao = SE50.E5Vlcorre,
+                                                          Descon = SE50.E5Vldesco,
+                                                          Abatimento = 0,
+                                                          Imposto = 0,
+                                                          ValorAcess = 0,
+                                                          TotalBaixado = SE50.E5Valor,
+                                                          Banco = SE50.E5Banco,
+                                                          DtDigi = SE50.E5Dtdigit,
+                                                          Mot = SE50.E5Motbx,
+                                                          Orig = SE50.E5Filorig,
+                                                          Vendedor = SC50.C5Nomvend,
+                                                          TipoCliente = SA10.A1Clinter,
+                                                          CodigoCliente = SA10.A1Xgrinte,
+                                                          Login = SA30.A3Xlogin,
+                                                          Gestor = SA30.A3Xlogsup,
+                                                          DataPedido = SD20.D2Emissao
+                                                      }).GroupBy(x => new
+                                                      {
+                                                          x.Prefixo,
+                                                          x.Numero,
+                                                          x.Parcela,
+                                                          x.TP,
+                                                          x.CliFor,
+                                                          x.NomeFor,
+                                                          x.Naturez,
+                                                          x.Vencimento,
+                                                          x.Historico,
+                                                          x.DataBaixa,
+                                                          x.ValorOrig,
+                                                          x.JurMulta,
+                                                          x.Correcao,
+                                                          x.Descon,
+                                                          x.Abatimento,
+                                                          x.Imposto,
+                                                          x.ValorAcess,
+                                                          x.TotalBaixado,
+                                                          x.Banco,
+                                                          x.DtDigi,
+                                                          x.Mot,
+                                                          x.Orig,
+                                                          x.Vendedor,
+                                                          x.TipoCliente,
+                                                          x.CodigoCliente,
+                                                          x.Login,
+                                                          x.Gestor,
+                                                          x.DataPedido
+                                                      }).Select(x => new RelatorioAreceberBaixa
+                                                      {
+                                                          Prefixo = x.Key.Prefixo,
+                                                          Numero = x.Key.Numero,
+                                                          Parcela = x.Key.Parcela,
+                                                          TP = x.Key.TP,
+                                                          CliFor = x.Key.CliFor,
+                                                          NomeFor = x.Key.NomeFor,
+                                                          Naturez = x.Key.Naturez,
+                                                          Vencimento = x.Key.Vencimento,
+                                                          Historico = x.Key.Historico,
+                                                          DataBaixa = x.Key.DataBaixa,
+                                                          ValorOrig = x.Key.ValorOrig,
+                                                          JurMulta = x.Key.JurMulta,
+                                                          Correcao = x.Key.Correcao,
+                                                          Descon = x.Key.Descon,
+                                                          Abatimento = x.Key.Abatimento,
+                                                          Imposto = x.Key.Imposto,
+                                                          ValorAcess = x.Key.ValorAcess,
+                                                          TotalBaixado = x.Key.TotalBaixado,
+                                                          Banco = x.Key.Banco,
+                                                          DtDigi = x.Key.DtDigi,
+                                                          Mot = x.Key.Mot,
+                                                          Orig = x.Key.Orig,
+                                                          Vendedor = x.Key.Vendedor,
+                                                          TipoCliente = x.Key.TipoCliente,
+                                                          CodigoCliente = x.Key.CodigoCliente,
+                                                          Login = x.Key.Login,
+                                                          Gestor = x.Key.Gestor,
+                                                          DataPedido = x.Key.DataPedido
+                                                      }).ToList();
+
+                        #endregion
 
                         CirurgiasLicitacoesMes = resultado.Where(x => x.Linha == "000011" || x.Linha == "000012").DistinctBy(x => x.Nf).Count();
                         CirurgiasLicitacoesValor =  resultado.Where(x => x.Linha == "000011" || x.Linha == "000012").Sum(x => x.Total) - RelatorioDev.Where(x => x.Linha == "000011" || x.Linha == "000012").Sum(x => x.Total);
 
                         BaixasLicitacoesMes = BaixaLicitacoes.DistinctBy(x => x.Numero).Count();
                         BaixasLicitacoesValor = BaixaLicitacoes.Sum(x => x.TotalBaixado);
+
+                        BaixasKamikaze = RelatorioKamikazeDenuo.DistinctBy(x => x.Numero).Count();
+                        BaixasKamikazeValor = RelatorioKamikazeDenuo.Sum(x => x.TotalBaixado);
                     }
 
                     user = user.ToLower();
@@ -940,10 +1173,11 @@ namespace SGID.Pages.DashBoards
 
                     if (time != null)
                     {
-
                         Comissao = FaturadoMesValor * (time.Porcentagem / 100);
 
                         Comissao += CirurgiasLicitacoesValor * (time.Porcentagem / 100);
+
+                        Comissao += BaixasKamikazeValor * (time.Porcentagem / 100);
 
                         Meta = time.Meta - FaturadoMesValor;
 
@@ -1384,11 +1618,125 @@ namespace SGID.Pages.DashBoards
 
                         #endregion
 
+                        #region BaixaKamikaze
+
+                        var RelatorioKamikazeInter = (from SE50 in ProtheusInter.Se5010s
+                                                      join SE10 in ProtheusInter.Se1010s on new { PRE = SE50.E5Prefixo, Num = SE50.E5Numero, Par = SE50.E5Parcela, Tipo = SE50.E5Tipo, Cliente = SE50.E5Cliente, Loja = SE50.E5Loja }
+                                                      equals new { PRE = SE10.E1Prefixo, Num = SE10.E1Num, Par = SE10.E1Parcela, Tipo = SE10.E1Tipo, Cliente = SE10.E1Cliente, Loja = SE10.E1Loja }
+                                                      join SA10 in ProtheusInter.Sa1010s on SE50.E5Cliente equals SA10.A1Cod
+                                                      join SC50 in ProtheusInter.Sc5010s on new { Filial = SE10.E1Filial, Pedido = SE10.E1Pedido } equals new { Filial = SC50.C5Filial, Pedido = SC50.C5Num }
+                                                      join SA30 in ProtheusInter.Sa3010s on SC50.C5Vend1 equals SA30.A3Cod
+                                                      join SD20 in ProtheusInter.Sd2010s on new { Filial = SC50.C5Filial, Num = SC50.C5Num } equals new { Filial = SD20.D2Filial, Num = SD20.D2Pedido }
+                                                      where SE50.DELET != "*" && SE10.DELET != "*" && SE50.E5Recpag == "R" && SA10.DELET != "*" && SA10.A1Msblql != "1"
+                                                      && (SE50.E5Tipodoc == "VL" || SE50.E5Tipodoc == "RA")
+                                                      && (SE50.E5Naturez == "111001" || SE50.E5Naturez == "111004" || SE50.E5Naturez == "111006")
+                                                      && (SE50.E5Banco == "001" || SE50.E5Banco == "237" || SE50.E5Banco == "341")
+                                                      && (int)(object)SE50.E5Data >= (int)(object)DataInicio
+                                                      && (int)(object)SE50.E5Data <= (int)(object)DataFim
+                                                      && SC50.C5Utpoper == "K"
+                                                      && SA30.A3Xlogin == user
+                                                      select new RelatorioAreceberBaixa
+                                                      {
+                                                          Prefixo = SE50.E5Prefixo,
+                                                          Numero = SE50.E5Numero,
+                                                          Parcela = SE50.E5Parcela,
+                                                          TP = SE50.E5Tipo,
+                                                          CliFor = SE50.E5Clifor,
+                                                          NomeFor = SA10.A1Nome,
+                                                          Naturez = SE50.E5Naturez,
+                                                          Vencimento = SE10.E1Vencto,
+                                                          Historico = SE50.E5Histor,
+                                                          DataBaixa = SE50.E5Data,
+                                                          ValorOrig = SE10.E1Valor,
+                                                          JurMulta = SE50.E5Vljuros + SE50.E5Vlmulta,
+                                                          Correcao = SE50.E5Vlcorre,
+                                                          Descon = SE50.E5Vldesco,
+                                                          Abatimento = 0,
+                                                          Imposto = 0,
+                                                          ValorAcess = 0,
+                                                          TotalBaixado = SE50.E5Valor,
+                                                          Banco = SE50.E5Banco,
+                                                          DtDigi = SE50.E5Dtdigit,
+                                                          Mot = SE50.E5Motbx,
+                                                          Orig = SE50.E5Filorig,
+                                                          Vendedor = SC50.C5Nomvend,
+                                                          TipoCliente = SA10.A1Clinter,
+                                                          CodigoCliente = SA10.A1Xgrinte,
+                                                          Login = SA30.A3Xlogin,
+                                                          Gestor = SA30.A3Xlogsup,
+                                                          DataPedido = SD20.D2Emissao
+                                                      }).GroupBy(x => new
+                                                      {
+                                                          x.Prefixo,
+                                                          x.Numero,
+                                                          x.Parcela,
+                                                          x.TP,
+                                                          x.CliFor,
+                                                          x.NomeFor,
+                                                          x.Naturez,
+                                                          x.Vencimento,
+                                                          x.Historico,
+                                                          x.DataBaixa,
+                                                          x.ValorOrig,
+                                                          x.JurMulta,
+                                                          x.Correcao,
+                                                          x.Descon,
+                                                          x.Abatimento,
+                                                          x.Imposto,
+                                                          x.ValorAcess,
+                                                          x.TotalBaixado,
+                                                          x.Banco,
+                                                          x.DtDigi,
+                                                          x.Mot,
+                                                          x.Orig,
+                                                          x.Vendedor,
+                                                          x.TipoCliente,
+                                                          x.CodigoCliente,
+                                                          x.Login,
+                                                          x.Gestor,
+                                                          x.DataPedido
+                                                      }).Select(x => new RelatorioAreceberBaixa
+                                                      {
+                                                          Prefixo = x.Key.Prefixo,
+                                                          Numero = x.Key.Numero,
+                                                          Parcela = x.Key.Parcela,
+                                                          TP = x.Key.TP,
+                                                          CliFor = x.Key.CliFor,
+                                                          NomeFor = x.Key.NomeFor,
+                                                          Naturez = x.Key.Naturez,
+                                                          Vencimento = x.Key.Vencimento,
+                                                          Historico = x.Key.Historico,
+                                                          DataBaixa = x.Key.DataBaixa,
+                                                          ValorOrig = x.Key.ValorOrig,
+                                                          JurMulta = x.Key.JurMulta,
+                                                          Correcao = x.Key.Correcao,
+                                                          Descon = x.Key.Descon,
+                                                          Abatimento = x.Key.Abatimento,
+                                                          Imposto = x.Key.Imposto,
+                                                          ValorAcess = x.Key.ValorAcess,
+                                                          TotalBaixado = x.Key.TotalBaixado,
+                                                          Banco = x.Key.Banco,
+                                                          DtDigi = x.Key.DtDigi,
+                                                          Mot = x.Key.Mot,
+                                                          Orig = x.Key.Orig,
+                                                          Vendedor = x.Key.Vendedor,
+                                                          TipoCliente = x.Key.TipoCliente,
+                                                          CodigoCliente = x.Key.CodigoCliente,
+                                                          Login = x.Key.Login,
+                                                          Gestor = x.Key.Gestor,
+                                                          DataPedido = x.Key.DataPedido
+                                                      }).ToList();
+
+                        #endregion
+
                         CirurgiasLicitacoesMes = resultado.Where(x => x.Linha == "000011" || x.Linha == "000012").DistinctBy(x => x.Nf).Count();
                         CirurgiasLicitacoesValor = resultado.Where(x => x.Linha == "000011" || x.Linha == "000012").Sum(x => x.Total) - RelatorioDev.Where(x => x.Linha == "000011" || x.Linha == "000012").Sum(x => x.Total);
 
                         BaixasLicitacoesMes = BaixaLicitacoes.DistinctBy(x => x.Numero).Count();
                         BaixasLicitacoesValor = BaixaLicitacoes.Sum(x => x.TotalBaixado);
+
+                        BaixasKamikaze = RelatorioKamikazeInter.DistinctBy(x => x.Numero).Count();
+                        BaixasKamikazeValor = RelatorioKamikazeInter.Sum(x => x.TotalBaixado);
                     }
 
                     #region EmAberto
@@ -1861,12 +2209,125 @@ namespace SGID.Pages.DashBoards
 
                         #endregion
 
+                        #region BaixaKamikaze
+
+                        var RelatorioKamikazeDenuo = (from SE50 in ProtheusDenuo.Se5010s
+                                                      join SE10 in ProtheusDenuo.Se1010s on new { PRE = SE50.E5Prefixo, Num = SE50.E5Numero, Par = SE50.E5Parcela, Tipo = SE50.E5Tipo, Cliente = SE50.E5Cliente, Loja = SE50.E5Loja }
+                                                      equals new { PRE = SE10.E1Prefixo, Num = SE10.E1Num, Par = SE10.E1Parcela, Tipo = SE10.E1Tipo, Cliente = SE10.E1Cliente, Loja = SE10.E1Loja }
+                                                      join SA10 in ProtheusDenuo.Sa1010s on SE50.E5Cliente equals SA10.A1Cod
+                                                      join SC50 in ProtheusDenuo.Sc5010s on new { Filial = SE10.E1Filial, Pedido = SE10.E1Pedido } equals new { Filial = SC50.C5Filial, Pedido = SC50.C5Num }
+                                                      join SA30 in ProtheusDenuo.Sa3010s on SC50.C5Vend1 equals SA30.A3Cod
+                                                      join SD20 in ProtheusDenuo.Sd2010s on new { Filial = SC50.C5Filial, Num = SC50.C5Num } equals new { Filial = SD20.D2Filial, Num = SD20.D2Pedido }
+                                                      where SE50.DELET != "*" && SE10.DELET != "*" && SE50.E5Recpag == "R" && SA10.DELET != "*" && SA10.A1Msblql != "1"
+                                                      && (SE50.E5Tipodoc == "VL" || SE50.E5Tipodoc == "RA")
+                                                      && (SE50.E5Naturez == "111001" || SE50.E5Naturez == "111004" || SE50.E5Naturez == "111006")
+                                                      && (SE50.E5Banco == "001" || SE50.E5Banco == "237" || SE50.E5Banco == "341")
+                                                      && (int)(object)SE50.E5Data >= (int)(object)DataInicio
+                                                      && (int)(object)SE50.E5Data <= (int)(object)DataFim
+                                                      && SC50.C5Utpoper == "K"
+                                                      && SA30.A3Xlogin == user
+                                                      select new RelatorioAreceberBaixa
+                                                      {
+                                                          Prefixo = SE50.E5Prefixo,
+                                                          Numero = SE50.E5Numero,
+                                                          Parcela = SE50.E5Parcela,
+                                                          TP = SE50.E5Tipo,
+                                                          CliFor = SE50.E5Clifor,
+                                                          NomeFor = SA10.A1Nome,
+                                                          Naturez = SE50.E5Naturez,
+                                                          Vencimento = SE10.E1Vencto,
+                                                          Historico = SE50.E5Histor,
+                                                          DataBaixa = SE50.E5Data,
+                                                          ValorOrig = SE10.E1Valor,
+                                                          JurMulta = SE50.E5Vljuros + SE50.E5Vlmulta,
+                                                          Correcao = SE50.E5Vlcorre,
+                                                          Descon = SE50.E5Vldesco,
+                                                          Abatimento = 0,
+                                                          Imposto = 0,
+                                                          ValorAcess = 0,
+                                                          TotalBaixado = SE50.E5Valor,
+                                                          Banco = SE50.E5Banco,
+                                                          DtDigi = SE50.E5Dtdigit,
+                                                          Mot = SE50.E5Motbx,
+                                                          Orig = SE50.E5Filorig,
+                                                          Vendedor = SC50.C5Nomvend,
+                                                          TipoCliente = SA10.A1Clinter,
+                                                          CodigoCliente = SA10.A1Xgrinte,
+                                                          Login = SA30.A3Xlogin,
+                                                          Gestor = SA30.A3Xlogsup,
+                                                          DataPedido = SD20.D2Emissao
+                                                      }).GroupBy(x => new
+                                                      {
+                                                          x.Prefixo,
+                                                          x.Numero,
+                                                          x.Parcela,
+                                                          x.TP,
+                                                          x.CliFor,
+                                                          x.NomeFor,
+                                                          x.Naturez,
+                                                          x.Vencimento,
+                                                          x.Historico,
+                                                          x.DataBaixa,
+                                                          x.ValorOrig,
+                                                          x.JurMulta,
+                                                          x.Correcao,
+                                                          x.Descon,
+                                                          x.Abatimento,
+                                                          x.Imposto,
+                                                          x.ValorAcess,
+                                                          x.TotalBaixado,
+                                                          x.Banco,
+                                                          x.DtDigi,
+                                                          x.Mot,
+                                                          x.Orig,
+                                                          x.Vendedor,
+                                                          x.TipoCliente,
+                                                          x.CodigoCliente,
+                                                          x.Login,
+                                                          x.Gestor,
+                                                          x.DataPedido
+                                                      }).Select(x => new RelatorioAreceberBaixa
+                                                      {
+                                                          Prefixo = x.Key.Prefixo,
+                                                          Numero = x.Key.Numero,
+                                                          Parcela = x.Key.Parcela,
+                                                          TP = x.Key.TP,
+                                                          CliFor = x.Key.CliFor,
+                                                          NomeFor = x.Key.NomeFor,
+                                                          Naturez = x.Key.Naturez,
+                                                          Vencimento = x.Key.Vencimento,
+                                                          Historico = x.Key.Historico,
+                                                          DataBaixa = x.Key.DataBaixa,
+                                                          ValorOrig = x.Key.ValorOrig,
+                                                          JurMulta = x.Key.JurMulta,
+                                                          Correcao = x.Key.Correcao,
+                                                          Descon = x.Key.Descon,
+                                                          Abatimento = x.Key.Abatimento,
+                                                          Imposto = x.Key.Imposto,
+                                                          ValorAcess = x.Key.ValorAcess,
+                                                          TotalBaixado = x.Key.TotalBaixado,
+                                                          Banco = x.Key.Banco,
+                                                          DtDigi = x.Key.DtDigi,
+                                                          Mot = x.Key.Mot,
+                                                          Orig = x.Key.Orig,
+                                                          Vendedor = x.Key.Vendedor,
+                                                          TipoCliente = x.Key.TipoCliente,
+                                                          CodigoCliente = x.Key.CodigoCliente,
+                                                          Login = x.Key.Login,
+                                                          Gestor = x.Key.Gestor,
+                                                          DataPedido = x.Key.DataPedido
+                                                      }).ToList();
+
+                        #endregion
 
                         CirurgiasLicitacoesMes = resultado.Where(x => x.Linha == "000011" || x.Linha == "000012").DistinctBy(x => x.Nf).Count();
                         CirurgiasLicitacoesValor = resultado.Where(x => x.Linha == "000011" || x.Linha == "000012").Sum(x => x.Total) - RelatorioDev.Where(x => x.Linha == "000011" || x.Linha == "000012").Sum(x => x.Total);
 
                         BaixasLicitacoesMes = BaixaLicitacoes.DistinctBy(x => x.Numero).Count();
                         BaixasLicitacoesValor = BaixaLicitacoes.Sum(x => x.TotalBaixado);
+
+                        BaixasKamikaze = RelatorioKamikazeDenuo.DistinctBy(x => x.Numero).Count();
+                        BaixasKamikazeValor = RelatorioKamikazeDenuo.Sum(x => x.TotalBaixado);
                     }
 
                     user = user.ToLower();
@@ -1879,6 +2340,8 @@ namespace SGID.Pages.DashBoards
                         Comissao = FaturadoMesValor * (time.Porcentagem / 100);
 
                         Comissao += CirurgiasLicitacoesValor * (time.Porcentagem / 100);
+
+                        Comissao += BaixasKamikazeValor * (time.Porcentagem / 100);
 
                         Meta = time.Meta - FaturadoMesValor;
 
@@ -1901,6 +2364,8 @@ namespace SGID.Pages.DashBoards
                     CirurgiasLicitacoesValor,
                     BaixasLicitacoesMes,
                     BaixasLicitacoesValor,
+                    BaixasKamikaze,
+                    BaixasKamikazeValor,
                     Meta,
                     Comissao,
                     Id,

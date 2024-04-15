@@ -12,7 +12,6 @@ using SGID.Models.Email;
 using System.Net.Mail;
 using Intergracoes.Inpart;
 using Intergracoes.Inpart.Models;
-using System.ComponentModel.DataAnnotations;
 
 namespace SGID.Pages.Cirurgias
 {

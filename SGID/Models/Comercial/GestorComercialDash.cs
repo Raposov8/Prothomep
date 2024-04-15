@@ -12,6 +12,8 @@
         public double CirurgiasEmAbertoValor { get; set; }
         public int CirurgiasLicitacoes { get; set; }
         public double CirurgiasLicitacoesValor { get; set; }
+        public int CirurgiasKamikaze { get; set; }
+        public double CirurgiasKamikazeValor { get; set; }
         public double Meta { get; set; }
     }
 }

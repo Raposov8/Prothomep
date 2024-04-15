@@ -11,7 +11,7 @@ using System.Net.Mail;
 
 namespace SGID.Pages.Account
 {
-    //[Authorize(Roles = "Admin,GestorVenda")]
+    [Authorize(Roles = "Admin")]
     public class RegisterModel : PageModel
     {
         private readonly ILogger<RegisterModel> _logger;

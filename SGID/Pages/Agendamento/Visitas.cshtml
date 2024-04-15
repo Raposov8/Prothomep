@@ -42,274 +42,405 @@
 </div>
 
 <div class="modal fade" id="novavisita-modal" role="dialog" tabindex="-1" aria-labelledby="demo-default-modal" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <!--Modal header-->
-                <div class="modal-header">
-                    <div class="col-md-11">
-                        <h4>Nova Visita</h4>
-                    </div>
-                    <div class="col-md-1">
-                        <a class="close" data-dismiss="modal"><i class="fa-regular fa-circle-xmark" style="color:red"></i></a>
-                    </div>
-                </div>
-    
-                <!--Modal body-->
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="card" style="padding:10px;" id="MyForm">
-                            <div class="col-md-12">
-                                <div class="row">
-                                    <div class="form-group col-sm-6 col-md-6">
-                                        <label class="Label">Nome do Médico </label>
-                                        <div class="autocomplete col-md-12">
-                                            <input class="form-control" id="Medico" name="Medico" oninput="this.value = this.value.toUpperCase()" required>
-                                            <input id="Id2" type="hidden">
-                                            <span class="text-danger field-validation-valid" id="MedicoError"></span>
-                                        </div>
-                                    </div>
-                                    <div class="form-group col-sm-4 col-md-4">
-                                        <label class="Label">Ultima Visita</label>
-                                        <input type="date" class="form-control" id="DataUltima" name="DataUltima" required />
-                                        <span class="text-danger field-validation-valid" id="DataUltimaError"></span>
-                                    </div>
-                                    <div class="form-group col-sm-4 col-md-4">
-                                        <label class="Label">Data & Hora</label>
-                                        <input type="datetime-local" class="form-control" id="Data" name="Data" required />
-                                        <span class="text-danger field-validation-valid" id="DataError"></span>
-                                    </div>
-                                    <div class="form-group col-sm-6 col-md-6">
-                                        <label class="Label">Tipo</label>
-                                        <select class="form-control" id="Local" name="Local" oninput="this.value = this.value.toUpperCase()" required>
-                                            @foreach (var data in Model.Locais)
-                                            {
-                                                <option value="@data">@data</option>
-                                            }
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="form-group col-sm-8 col-md-8">
-                                        <label class="Label">Endereço</label>
-                                        <input type="text" class="form-control" id="Endereco" name="Endereco" oninput="this.value = this.value.toUpperCase()" required />
-                                        <span class="text-danger field-validation-valid" id="EnderecoError"></span>
-                                    </div>
-                                    <div class="form-group col-sm-4 col-md-4">
-                                        <label class="Label">Bairro</label>
-                                        <input type="text" class="form-control" id="Bairro" name="Bairro" oninput="this.value = this.value.toUpperCase()" required />
-                                        <div class="autocomplete">
-                                            <div style="color:#c00000" id="Quant" name="Quant">
+   <div class="modal-dialog">
+       <div class="modal-content">
+           <!--Modal header-->
+           <div class="modal-header">
+               <div class="col-md-11">
+                   <h4>Nova Visita</h4>
+               </div>
+               <div class="col-md-1">
+                   <a class="close" data-dismiss="modal"><i class="fa-regular fa-circle-xmark" style="color:red"></i></a>
+               </div>
+           </div>
+   
+           <!--Modal body-->
+           <div class="modal-body">
+               <div class="row">
+                   <div class="card" style="padding:10px;" id="MyForm">
+                       <div class="col-md-12">
+                           <div class="row">
+                               <div class="form-group col-sm-6 col-md-6">
+                                   <label class="Label">Nome do Médico </label>
+                                   <div class="autocomplete col-md-12">
+                                       <input class="form-control" id="Medico" name="Medico" oninput="this.value = this.value.toUpperCase()" required>
+                                       <input id="Id2" type="hidden">
+                                       <span class="text-danger field-validation-valid" id="MedicoError"></span>
+                                   </div>
+                               </div>
+                               <div class="form-group col-sm-4 col-md-4">
+                                   <label class="Label">Ultima Visita</label>
+                                   <input type="date" class="form-control" id="DataUltima" name="DataUltima" required />
+                                   <span class="text-danger field-validation-valid" id="DataUltimaError"></span>
+                               </div>
+                               <div class="form-group col-sm-4 col-md-4">
+                                   <label class="Label">Data & Hora</label>
+                                   <input type="datetime-local" class="form-control" id="Data" name="Data" required />
+                                   <span class="text-danger field-validation-valid" id="DataError"></span>
+                               </div>
+                               <div class="form-group col-sm-6 col-md-6">
+                                   <label class="Label">Tipo</label>
+                                   <select class="form-control" id="Local" name="Local" oninput="this.value = this.value.toUpperCase()" required>
+                                       @foreach (var data in Model.Locais)
+                                       {
+                                           <option value="@data">@data</option>
+                                       }
+                                   </select>
+                               </div>
+                           </div>
+                           <div class="row">
+                               <div class="form-group col-sm-8 col-md-8">
+                                   <label class="Label">Endereço</label>
+                                   <input type="text" class="form-control" id="Endereco" name="Endereco" oninput="this.value = this.value.toUpperCase()" required />
+                                   <span class="text-danger field-validation-valid" id="EnderecoError"></span>
+                               </div>
+                               <div class="form-group col-sm-4 col-md-4">
+                                   <label class="Label">Bairro</label>
+                                   <input type="text" class="form-control" id="Bairro" name="Bairro" oninput="this.value = this.value.toUpperCase()" required />
+                                   <div class="autocomplete">
+                                       <div style="color:#c00000" id="Quant" name="Quant">
 
-                                            </div>
-                                        </div>
-                                        <span class="text-danger field-validation-valid" id="BairroError"></span>
+                                       </div>
+                                   </div>
+                                   <span class="text-danger field-validation-valid" id="BairroError"></span>
+                               </div>
+                           </div>
+                           <div class="row">
+                               <div class="form-group col-sm-6 col-md-6">
+                                   <label class="Label">Email</label>
+                                   <input type="text" class="form-control" id="Email" name="Email"/>
+                               </div>
+                               <div class="form-group col-sm-6 col-md-6">
+                                   <label class="Label">Telefone</label>
+                                   <input type="text" class="form-control" id="Telefone" name="Telefone"/>
+                               </div>
+                           </div>
+                           <div class="row">
+                               <div class="form-group col-sm-12 col-md-12">
+                                   <label class="Label">Assunto</label>
+                                   <input class="form-control" id="Assunto" name="Assunto" oninput="this.value = this.value.toUpperCase()" required />
+                               </div>
+                               <div class="form-group col-sm-12 col-md-12">
+                                   <label class="Label">Motivo da visita</label>
+                                   <div class="row">
+                                       <div class="col-sm-2 col-md-2">
+                                           <input hidden type="radio" class="btn-check" name="MotVis" id="MotVis1" value="VENDA" autocomplete="off" required>
+                                           <label class="btn btn-outline-primary" for="MotVis1">VENDA</label>
+                                       </div>
+                                       <div class="col-sm-2 col-md-2">
+                                           <input hidden type="radio" class="btn-check" name="MotVis" id="MotVis2" value="INDICAÇÃO" autocomplete="off" >
+                                           <label class="btn btn-outline-primary" for="MotVis2">INDICAÇÃO</label>
+                                       </div>
+                                       <div class="col-sm-3 col-md-3">
+                                           <input hidden type="radio" class="btn-check" name="MotVis" id="MotVis3" value="ACOMPANHAMENTO" autocomplete="off" >
+                                           <label class="btn btn-outline-primary" for="MotVis3">ACOMPANHAMENTO</label>
+                                       </div>
+                                       <div class="col-sm-3 col-md-3">
+                                       <input hidden type="radio" class="btn-check" name="MotVis" id="MotVis6" value="CAIXA INSTRUMENTAL" autocomplete="off" >
+                                           <label class="btn btn-outline-primary" for="MotVis6">CAIXA INSTRUMENTAL</label>
+                                       </div>
+                                   </div>
+                                   <div class="row">
+                                       <div class="col-sm-2 col-md-2">
+                                           <input hidden type="radio" class="btn-check" name="MotVis" id="MotVis4" value="RECLAMAÇÃO" autocomplete="off" >
+                                           <label class="btn btn-outline-primary" for="MotVis4">RECLAMAÇÃO</label>
+                                       </div>
+                                       <div class="col-sm-2 col-md-2">
+                                           <input hidden type="radio" class="btn-check" name="MotVis" id="MotVis5" value="EVENTO" autocomplete="off" >
+                                           <label class="btn btn-outline-primary" for="MotVis5">EVENTO</label>
+                                       </div>
+                                       <span class="text-danger field-validation-valid" id="MotVisError"></span>
+                                   </div>
+                               </div>
+                               
+                               <div class="form-group col-sm-12 col-md-12">
+                                   <label class="Label">Observação</label>
+                                   <textarea type="text" class="form-control" id="Obs" name="Obs" oninput="this.value = this.value.toUpperCase()"></textarea>
+                               </div>
+                               <div class="form-group col-sm-12 col-md-12">
+                                   <label class="Label">Resumo da visita</label>
+                                   <textarea type="text" class="form-control" id="ResuVisi" name="ResuVisi" oninput="this.value = this.value.toUpperCase()"></textarea>
+                               </div>
+                           </div>
+                       </div>
+                   </div>
+               </div>
+           </div>
+           <!--Modal footer-->
+           <div class="modal-footer">
+               <div class="col-md-12">
+                   <div class="row justify-content-center">
+                       <div id="Salvar2" style="color:#00b050" class="col-md-2"><button class="btn btn-button btn-success float-end" style="font-size:12px;" type="submit"><i class="fa-solid fa-thumbs-up"></i> Salvar</button></div> |
+                       <div style="color:#c00000" class="col-md-2">
+                       <div class="close"><a class="btn btn-button btn-danger" style="font-size:12px;"><i class="fa-solid fa-xmark"></i> Cancelar</a></div></div>
+                   </div>
+               </div>
+           </div>
+       </div>
+   </div>
+</div>
+
+<div class="modal fade" id="editarvisita-modal" role="dialog" tabindex="-1" aria-labelledby="demo-default-modal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <!--Modal header-->
+            <div class="modal-header">
+                <div class="col-md-11">
+                    <h4>Editar Visita</h4>
+                </div>
+                <div class="col-md-1">
+                    <a class="close" data-dismiss="modal"><i class="fa-regular fa-circle-xmark" style="color:red"></i></a>
+                </div>
+            </div>
+
+            <!--Modal body-->
+            <div class="modal-body">
+                <div class="row">
+                    <div class="card" style="padding:10px;" id="MyForm">
+                        <div class="col-md-12">
+                            <div class="row">
+                                <div class="form-group col-sm-6 col-md-6">
+                                    <label class="Label">Nome do Médico </label>
+                                    <div class="autocomplete col-md-12">
+                                        <input class="form-control" id="MedicoProxima" name="MedicoProxima" oninput="this.value = this.value.toUpperCase()" required>
+                                        <input type="hidden" id="id" name="id" />
+                                        <span class="text-danger field-validation-valid" id="MedicoProximaError"></span>
                                     </div>
                                 </div>
-                                <div class="row">
-                                    <div class="form-group col-sm-6 col-md-6">
-                                        <label class="Label">Email</label>
-                                        <input type="text" class="form-control" id="Email" name="Email"/>
+                                <div class="form-group col-sm-4 col-md-4">
+                                    <label class="Label">Ultima Visita</label>
+                                    <input type="date" class="form-control" id="DataUltimaProxima" name="DataUltimaProxima" required />
+                                    <span class="text-danger field-validation-valid" id="DataUltimaError"></span>
+                                </div>
+                                <div class="form-group col-sm-4 col-md-4">
+                                    <label class="Label">Data & Hora</label>
+                                    <input type="datetime-local" class="form-control" id="DataHoraProxima" name="DataHoraProxima" required />
+                                    <span class="text-danger field-validation-valid" id="DataProximaError"></span>
+                                </div>
+                                <div class="form-group col-sm-6 col-md-6">
+                                    <label class="Label">Tipo</label>
+                                    <select class="form-control" id="LocalProxima" name="LocalProxima" oninput="this.value = this.value.toUpperCase()" required>
+                                        @foreach (var data in Model.Locais)
+                                        {
+                                            <option value="@data">@data</option>
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group col-sm-8 col-md-8">
+                                    <label class="Label">Endereço</label>
+                                    <input type="text" class="form-control" id="EnderecoProxima" name="EnderecoProxima" oninput="this.value = this.value.toUpperCase()" required />
+                                    <span class="text-danger field-validation-valid" id="EnderecoProximaError"></span>
+                                </div>
+                                <div class="form-group col-sm-4 col-md-4">
+                                    <label class="Label">Bairro</label>
+                                    <input type="text" class="form-control" id="BairroProxima" name="BairroProxima" oninput="this.value = this.value.toUpperCase()" required />
+                                    <div class="autocomplete">
+                                        <div style="color:#c00000" id="Quant" name="Quant">
+                                        </div>
                                     </div>
-                                    <div class="form-group col-sm-6 col-md-6">
-                                        <label class="Label">Telefone</label>
-                                        <input type="text" class="form-control" id="Telefone" name="Telefone"/>
+                                    <span class="text-danger field-validation-valid" id="BairroError"></span>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group col-sm-6 col-md-6">
+                                    <label class="Label">Email</label>
+                                    <input type="text" class="form-control" id="EmailProxima" name="EmailProxima" />
+                                </div>
+                                <div class="form-group col-sm-6 col-md-6">
+                                    <label class="Label">Telefone</label>
+                                    <input type="text" class="form-control" id="TelefoneProxima" name="TelefoneProxima" />
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group col-sm-12 col-md-12">
+                                    <label class="Label">Assunto</label>
+                                    <input class="form-control" id="AssuntoProxima" name="AssuntoProxima" oninput="this.value = this.value.toUpperCase()" required />
+                                </div>
+                                <div class="form-group col-sm-12 col-md-12">
+                                    <label class="Label">Motivo da visita</label>
+                                    <div class="row">
+                                        <div class="col-sm-2 col-md-2">
+                                            <input hidden type="radio" class="btn-check" name="MotVis" id="MotVis13" value="VENDA" autocomplete="off" required>
+                                            <label class="btn btn-outline-primary" for="MotVis1">VENDA</label>
+                                        </div>
+                                        <div class="col-sm-2 col-md-2">
+                                            <input hidden type="radio" class="btn-check" name="MotVis" id="MotVis14" value="INDICAÇÃO" autocomplete="off">
+                                            <label class="btn btn-outline-primary" for="MotVis2">INDICAÇÃO</label>
+                                        </div>
+                                        <div class="col-sm-3 col-md-3">
+                                            <input hidden type="radio" class="btn-check" name="MotVis" id="MotVis15" value="ACOMPANHAMENTO" autocomplete="off">
+                                            <label class="btn btn-outline-primary" for="MotVis3">ACOMPANHAMENTO</label>
+                                        </div>
+                                        <div class="col-sm-3 col-md-3">
+                                            <input hidden type="radio" class="btn-check" name="MotVis" id="MotVis16" value="CAIXA INSTRUMENTAL" autocomplete="off">
+                                            <label class="btn btn-outline-primary" for="MotVis6">CAIXA INSTRUMENTAL</label>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-2 col-md-2">
+                                            <input hidden type="radio" class="btn-check" name="MotVis" id="MotVis17" value="RECLAMAÇÃO" autocomplete="off">
+                                            <label class="btn btn-outline-primary" for="MotVis4">RECLAMAÇÃO</label>
+                                        </div>
+                                        <div class="col-sm-2 col-md-2">
+                                            <input hidden type="radio" class="btn-check" name="MotVis" id="MotVis18" value="EVENTO" autocomplete="off">
+                                            <label class="btn btn-outline-primary" for="MotVis5">EVENTO</label>
+                                        </div>
+                                        <span class="text-danger field-validation-valid" id="MotVisError"></span>
                                     </div>
                                 </div>
-                                <div class="row">
-                                    <div class="form-group col-sm-12 col-md-12">
-                                        <label class="Label">Assunto</label>
-                                        <input class="form-control" id="Assunto" name="Assunto" oninput="this.value = this.value.toUpperCase()" required />
-                                    </div>
-                                    <div class="form-group col-sm-12 col-md-12">
-                                        <label class="Label">Motivo da visita</label>
-                                        <div class="row">
-                                            <div class="col-sm-2 col-md-2">
-                                                <input hidden type="radio" class="btn-check" name="MotVis" id="MotVis1" value="VENDA" autocomplete="off" required>
-                                                <label class="btn btn-outline-primary" for="MotVis1">VENDA</label>
-                                            </div>
-                                            <div class="col-sm-2 col-md-2">
-                                                <input hidden type="radio" class="btn-check" name="MotVis" id="MotVis2" value="INDICAÇÃO" autocomplete="off" >
-                                                <label class="btn btn-outline-primary" for="MotVis2">INDICAÇÃO</label>
-                                            </div>
-                                            <div class="col-sm-3 col-md-3">
-                                                <input hidden type="radio" class="btn-check" name="MotVis" id="MotVis3" value="ACOMPANHAMENTO" autocomplete="off" >
-                                                <label class="btn btn-outline-primary" for="MotVis3">ACOMPANHAMENTO</label>
-                                            </div>
-                                            <div class="col-sm-3 col-md-3">
-                                            <input hidden type="radio" class="btn-check" name="MotVis" id="MotVis6" value="CAIXA INSTRUMENTAL" autocomplete="off" >
-                                                <label class="btn btn-outline-primary" for="MotVis6">CAIXA INSTRUMENTAL</label>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-sm-2 col-md-2">
-                                                <input hidden type="radio" class="btn-check" name="MotVis" id="MotVis4" value="RECLAMAÇÃO" autocomplete="off" >
-                                                <label class="btn btn-outline-primary" for="MotVis4">RECLAMAÇÃO</label>
-                                            </div>
-                                            <div class="col-sm-2 col-md-2">
-                                                <input hidden type="radio" class="btn-check" name="MotVis" id="MotVis5" value="EVENTO" autocomplete="off" >
-                                                <label class="btn btn-outline-primary" for="MotVis5">EVENTO</label>
-                                            </div>
-                                            <span class="text-danger field-validation-valid" id="MotVisError"></span>
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="form-group col-sm-12 col-md-12">
-                                        <label class="Label">Observação</label>
-                                        <textarea type="text" class="form-control" id="Obs" name="Obs" oninput="this.value = this.value.toUpperCase()"></textarea>
-                                    </div>
-                                    <div class="form-group col-sm-12 col-md-12">
-                                        <label class="Label">Resumo da visita</label>
-                                        <textarea type="text" class="form-control" id="ResuVisi" name="ResuVisi" oninput="this.value = this.value.toUpperCase()"></textarea>
-                                    </div>
+
+                                <div class="form-group col-sm-12 col-md-12">
+                                    <label class="Label">Observação</label>
+                                    <textarea type="text" class="form-control" id="Observacao" name="Observacao" oninput="this.value = this.value.toUpperCase()"></textarea>
+                                </div>
+                                <div class="form-group col-sm-12 col-md-12">
+                                    <label class="Label">Resumo da visita</label>
+                                    <textarea type="text" class="form-control" id="ResuVisi" name="ResuVisi" oninput="this.value = this.value.toUpperCase()"></textarea>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <!--Modal footer-->
-                <div class="modal-footer">
-                    <div class="col-md-12">
-                        <div class="row justify-content-center">
-                            <div id="Salvar2" style="color:#00b050" class="col-md-2"><button class="btn btn-button btn-success float-end" style="font-size:12px;" type="submit"><i class="fa-solid fa-thumbs-up"></i> Salvar</button></div> |
-                            <div style="color:#c00000" class="col-md-2">
-                                <div class="close"><a class="btn btn-button btn-danger" style="font-size:12px;"><i class="fa-solid fa-xmark"></i> Cancelar</a></div></div>
+            </div>
+            <!--Modal footer-->
+            <div class="modal-footer">
+                <div class="col-md-12">
+                    <div class="row justify-content-center">
+                        <div id="Salvar2" style="color:#00b050" class="col-md-2"><button class="btn btn-button btn-success float-end" style="font-size:12px;" type="submit"><i class="fa-solid fa-thumbs-up"></i> Salvar</button></div> |
+                        <div style="color:#c00000" class="col-md-2">
+                            <div class="close"><a class="btn btn-button btn-danger" style="font-size:12px;"><i class="fa-solid fa-xmark"></i> Cancelar</a></div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    
+    </div>
 </div>
 
 <div class="modal fade" id="details-modal" role="dialog" tabindex="-1" aria-labelledby="demo-default-modal" aria-hidden="true">
-        <div class="modal-dialog modal-xl">
-            <div class="modal-content">
-                <!--Modal header-->
-                <div class="modal-header">
-                    <div class="col-md-10">
-                        <h4 id="Vendedor"></h4>
-                    </div>
-                    <div class="col-md-1">
-                        <a class="close" data-dismiss="modal"><i class="fa-regular fa-circle-xmark" style="color:red"></i></a>
-                    </div>
-                </div>
-                <!--Modal body-->
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="card" style="padding:10px;">
-                            <div class="row">
-                                <input type="hidden" id="id" name="id"/>
-                                <div class="col-md-6">
-                                    <label>Médico</label>
-                                    <div id="MedicoView"></div>
-                                    <input id="MedicoProxima"  type="hidden"/>
-                                </div>
-                                <div class="col-md-6">
-                                    <label>Local</label>
-                                    <div id="LocalView"></div>
-                                    <input id="LocalProxima" type="hidden" />
-                                </div>
-                                <br />
-                                <div class="col-md-6">
-                                    <label>Data & Hora</label>
-                                    <div id="DataHoraView"></div>
-                                    <input id="DataHoraProxima"  type="hidden"/>
-                                </div>
-                                <div class="col-md-6">
-                                    <label>Ultima Visita</label>
-                                </div>
-                                <br />
-                                <div class="col-md-6">
-                                    <label>Endereço</label>
-                                    <div id="EnderecoView"></div>
-                                    <input id="EnderecoProxima" type="hidden" />
-                                </div>
-                                <div class="col-md-6">
-                                    <label>Bairro</label>
-                                    <div id="BairroView"></div>
-                                    <input id="BairroProxima"  type="hidden"/>
-                                </div>
-                                <br />
-                                <div class="col-md-6">
-                                    <label>Email</label>
-                                    <div id="EmailView"></div>
-                                    <input id="EmailProxima" type="hidden" />
-                                </div>
-                                <div class="col-md-6">
-                                    <label>Telefone</label>
-                                    <div id="TelefoneView"></div>
-                                    <input id="TelefoneProxima" type="hidden" />
-                                </div>
-                                <br />
-                                <div class="col-md-6">
-                                    <label>Assunto</label>
-                                    <div id="AssuntoView"></div>
-                                    <input id="AssuntoProxima" type="hidden" />
-                                </div>
-                                <div class="col-md-6">
-                                    <label>Motivo da Visita</label>
-                                    <div id="MotVisView"></div>
-                                </div>
-                                <br />
-                                <div class="col-md-12">
-                                    <label>Observação</label>
-                                    <textarea class="col-md-12" id="Observacao" oninput="this.value = this.value.toUpperCase()">
+   <div class="modal-dialog modal-xl">
+       <div class="modal-content">
+           <!--Modal header-->
+           <div class="modal-header">
+               <div class="col-md-10">
+                   <h4 id="Vendedor"></h4>
+               </div>
+               <div class="col-md-1">
+                   <a class="close" data-dismiss="modal"><i class="fa-regular fa-circle-xmark" style="color:red"></i></a>
+               </div>
+           </div>
+           <!--Modal body-->
+           <div class="modal-body">
+               <div class="row">
+                   <div class="card" style="padding:10px;">
+                       <div class="row">
+                           
+                           <div class="col-md-6">
+                               <label>Médico</label>
+                               <div id="MedicoView"></div>
+                           </div>
+                           <div class="col-md-6">
+                               <label>Local</label>
+                               <div id="LocalView"></div>
+                           </div>
+                           <br />
+                           <div class="col-md-6">
+                               <label>Data & Hora</label>
+                               <div id="DataHoraView"></div>
+                           </div>
+                           <div class="col-md-6">
+                               <label>Ultima Visita</label>
+                               <div id="DataUltimaView"></div>
+                           </div>
+                           <br />
+                           <div class="col-md-6">
+                               <label>Endereço</label>
+                               <div id="EnderecoView"></div>
+                           </div>
+                           <div class="col-md-6">
+                               <label>Bairro</label>
+                               <div id="BairroView"></div>
+                           </div>
+                           <br />
+                           <div class="col-md-6">
+                               <label>Email</label>
+                               <div id="EmailView"></div>
+                           </div>
+                           <div class="col-md-6">
+                               <label>Telefone</label>
+                               <div id="TelefoneView"></div>
+                           </div>
+                           <br />
+                           <div class="col-md-6">
+                               <label>Assunto</label>
+                               <div id="AssuntoView"></div>
+                           </div>
+                           <div class="col-md-6">
+                               <label>Motivo da Visita</label>
+                               <div id="MotVisView"></div>
+                           </div>
+                           <br />
+                           <div class="col-md-12">
+                               <label>Observação</label>
+                               <textarea class="col-md-12" id="" oninput="this.value = this.value.toUpperCase()">
 
-                                    </textarea>
-                                    
-                                </div>
-                                <div class="col-md-12">
-                                    <label>Resumo Visita</label>
-                                    <textarea class="col-md-12" id="Resumo" oninput="this.value = this.value.toUpperCase()" >
-                                    </textarea>
-                                </div>
-                                <div class="col-md-12">
-                                    <label>Resumo Visita <span id="ResumoVisi2"></span></label>
-                                    <div id="Resumo2"></div>
-                                </div>
-                                <div class="col-md-12">
-                                    <label>Resumo Visita <span id="ResumoVisi3"></span></label>
-                                    <div id="Resumo3"></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!--Modal footer-->
-                    <div  class="modal-footer" style="padding-left:20px;">
-                        <div class="row col-md-12">
-                            <div class="col-md-3">
-                                <div style="color:#ffff00" id="Cancelada">
-                                <button class="btn btn-button float-end" style="font-size:12px;background-color:#ffff00;color:#ffffff;text-shadow: 1px 1px 2px black;" type="submit">
-                                    <i class="fa-solid fa-calendar-xmark"></i> Remarcar/Cancelar
-                                    </button>
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <div style="color:#3566fd" id="Proxima">
-                                <button class="btn btn-button float-end" style="font-size:12px;background-color:#3566fd;color:#ffffff" type="submit">
-                                        <i class="fa-solid fa-calendar-plus"></i> Proxima visita
-                                    </button>
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <div style="color:#00b050" id="Salvar">
-                                    <button class="btn btn-button btn-success float-end" style="font-size:12px;" type="submit">
-                                        <i class="fa-solid fa-thumbs-up"></i> Editar Visita
-                                    </button>
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <div style="color:#00b050" id="Finalizar">
-                                    <button class="btn btn-button btn-success float-end" style="font-size:12px;" type="submit">
-                                        <i class="fa-solid fa-thumbs-up"></i> Finalizar Visita
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+                               </textarea>
+                               
+                           </div>
+                           <div class="col-md-12">
+                               <label>Resumo Visita</label>
+                               <textarea class="col-md-12" id="Resumo" oninput="this.value = this.value.toUpperCase()" >
+                               </textarea>
+                           </div>
+                           <div class="col-md-12">
+                               <label>Resumo Visita <span id="ResumoVisi2"></span></label>
+                               <div id="Resumo2"></div>
+                           </div>
+                           <div class="col-md-12">
+                               <label>Resumo Visita <span id="ResumoVisi3"></span></label>
+                               <div id="Resumo3"></div>
+                           </div>
+                       </div>
+                   </div>
+               </div>
+               <!--Modal footer-->
+               <div  class="modal-footer" style="padding-left:20px;">
+                   <div class="row col-md-12">
+                       <div class="col-md-3">
+                           <div style="color:#ffff00" id="Cancelada">
+                           <button class="btn btn-button float-end" style="font-size:12px;background-color:#ffff00;color:#ffffff;text-shadow: 1px 1px 2px black;" type="submit">
+                               <i class="fa-solid fa-calendar-xmark"></i> Remarcar/Cancelar
+                               </button>
+                           </div>
+                       </div>
+                       <div class="col-md-3">
+                           <div style="color:#3566fd" id="Proxima">
+                           <button class="btn btn-button float-end" style="font-size:12px;background-color:#3566fd;color:#ffffff" type="submit">
+                                   <i class="fa-solid fa-calendar-plus"></i> Proxima visita
+                               </button>
+                           </div>
+                       </div>
+                       <div class="col-md-3">
+                           <div style="color:#00b050" id="Salvar">
+                               <button class="btn btn-button btn-success float-end" style="font-size:12px;" type="submit">
+                                   <i class="fa-solid fa-thumbs-up"></i> Editar Visita
+                               </button>
+                           </div>
+                       </div>
+                       <div class="col-md-3">
+                           <div style="color:#00b050" id="Finalizar">
+                               <button class="btn btn-button btn-success float-end" style="font-size:12px;" type="submit">
+                                   <i class="fa-solid fa-thumbs-up"></i> Finalizar Visita
+                               </button>
+                           </div>
+                       </div>
+                   </div>
+               </div>
+           </div>
+       </div>
+   </div>
 </div>
 
 <div class="modal fade" id="PopupCancelada-modal" role="dialog" tabindex="-1" aria-labelledby="demo-default-modal" aria-hidden="true">
@@ -395,133 +526,133 @@
 </div>
 
 <div class="modal fade" id="Remarcar-modal" role="dialog" tabindex="1" aria-labelledby="demo-default-modal" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <!--Modal header-->
-                <div class="modal-header">
-                    <div class="col-md-11">
-                        <h4>Remarcar Visita</h4>
-                    </div>
-                    <div class="col-md-1">
-                        <a class="close" data-dismiss="modal"><i class="fa-regular fa-circle-xmark" style="color:red"></i></a>
-                    </div>
-                </div>
+   <div class="modal-dialog">
+       <div class="modal-content">
+           <!--Modal header-->
+           <div class="modal-header">
+               <div class="col-md-11">
+                   <h4>Remarcar Visita</h4>
+               </div>
+               <div class="col-md-1">
+                   <a class="close" data-dismiss="modal"><i class="fa-regular fa-circle-xmark" style="color:red"></i></a>
+               </div>
+           </div>
 
-                <!--Modal body-->
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="card" style="padding:10px;">
-                            <div class="col-md-12">
-                                <div class="row">
-                                    <div class="form-group col-sm-6 col-md-6">
-                                        <label class="Label">Nome do Médico </label>
-                                        <div class="autocomplete col-md-12">
-                                            <input class="form-control" id="Medico2" name="Medico2" oninput="this.value = this.value.toUpperCase()" required>
-                                        </div>
-                                    </div>
-                                    <div class="form-group col-sm-4 col-md-4">
-                                        <label class="Label">Ultima Visita</label>
-                                        <input type="date" class="form-control" id="DataUltima2" name="DataUltima2" required />
-                                    </div>
-                                    <div class="form-group col-sm-4 col-md-4">
-                                        <label class="Label">Data & Hora</label>
-                                        <input type="datetime-local" class="form-control" id="Data2" name="Data2" required />
-                                    </div>
-                                    <div class="form-group col-sm-6 col-md-6">
-                                        <label class="Label">Tipo</label>
-                                        <select class="form-control" id="Local2" name="Local2" oninput="this.value = this.value.toUpperCase()" required>
-                                            @foreach (var data in Model.Locais)
-                                            {
-                                                <option value="@data">@data</option>
-                                            }
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="form-group col-sm-8 col-md-8">
-                                        <label class="Label">Endereço</label>
-                                        <input type="text" class="form-control" id="Endereco2" name="Endereco2" oninput="this.value = this.value.toUpperCase()" required />
-                                    </div>
-                                    <div class="form-group col-sm-4 col-md-4">
-                                        <label class="Label">Bairro</label>
-                                        <input type="text" class="form-control" id="Bairro2" name="Bairro2" oninput="this.value = this.value.toUpperCase()" required />
-                                    </div>
-                                </div>
-                            <div class="row">
-                                <div class="form-group col-sm-6 col-md-6">
-                                    <label class="Label">Email</label>
-                                    <input type="text" class="form-control" id="Email2" name="Email2"  required />
-                                </div>
-                                <div class="form-group col-sm-6 col-md-6">
-                                    <label class="Label">Telefone</label>
-                                    <input type="text" class="form-control" id="Telefone2" name="Telefone2" required />
-                                </div>
-                            </div>
-                                <div class="row">
-                                
-                                    <div class="form-group col-sm-12 col-md-12">
-                                        <label class="Label">Assunto</label>
-                                        <input class="form-control" id="Assunto" name="Assunto" oninput="this.value = this.value.toUpperCase()" required />
-                                    </div>
-                                    <div class="form-group col-sm-12 col-md-12">
-                                        <label class="Label">Motivo da visita</label>
-                                        <div class="row">
-                                            <div class="col-sm-2 col-md-2">
-                                            <input hidden type="radio" class="btn-check" name="MotVis2" id="MotVis11" value="VENDA" autocomplete="off" required>
-                                                <label class="btn btn-outline-primary" for="MotVis1">VENDA</label>
-                                            </div>
-                                            <div class="col-sm-2 col-md-2">
-                                            <input hidden type="radio" class="btn-check" name="MotVis2" id="MotVis10" value="INDICAÇÃO" autocomplete="off">
-                                                <label class="btn btn-outline-primary" for="MotVis10">INDICAÇÃO</label>
-                                            </div>
-                                            <div class="col-sm-3 col-md-3">
-                                            <input hidden type="radio" class="btn-check" name="MotVis2" id="MotVis9" value="ACOMPANHAMENTO" autocomplete="off">
-                                                <label class="btn btn-outline-primary" for="MotVis9">ACOMPANHAMENTO</label>
-                                            </div>
-                                            <div class="col-sm-3 col-md-3">
-                                            <input hidden type="radio" class="btn-check" name="MotVis2" id="MotVis8" value="CAIXA INSTRUMENTAL" autocomplete="off">
-                                                <label class="btn btn-outline-primary" for="MotVis8">CAIXA INSTRUMENTAL</label>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-sm-2 col-md-2">
-                                            <input hidden type="radio" class="btn-check" name="MotVis2" id="MotVis7" value="RECLAMAÇÃO" autocomplete="off">
-                                                <label class="btn btn-outline-primary" for="MotVis7">RECLAMAÇÃO</label>
-                                            </div>
-                                            <div class="col-sm-2 col-md-2">
-                                            <input hidden type="radio" class="btn-check" name="MotVis2" id="MotVis6" value="EVENTO" autocomplete="off">
-                                                <label class="btn btn-outline-primary" for="MotVis6">EVENTO</label>
-                                            </div>
-                                            <span class="text-danger field-validation-valid" id="MotVisError"></span>
-                                        </div>
-                                    </div>
-                                    <div class="form-group col-sm-12 col-md-12">
-                                        <label class="Label">Observação</label>
-                                        <textarea type="text" class="form-control" id="Obs2" name="Obs2" oninput="this.value = this.value.toUpperCase()"></textarea>
-                                    </div>
-                                    <div class="form-group col-sm-12 col-md-12">
-                                        <label class="Label">Resumo da visita</label>
-                                        <textarea type="text" class="form-control" id="ResuVisi2" name="ResuVisi2" oninput="this.value = this.value.toUpperCase()"></textarea>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!--Modal footer-->
-                <div class="modal-footer">
-                    <div class="col-md-12">
-                        <div class="row justify-content-center">
-                        <div id="RemarcarEnviar" style="color:#00b050" class="col-md-2">
-                                <button class="btn btn-button btn-success float-end" style="font-size:12px;" type="submit">
-                                    <i class="fa-solid fa-thumbs-up"></i> Salvar
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+           <!--Modal body-->
+           <div class="modal-body">
+               <div class="row">
+                   <div class="card" style="padding:10px;">
+                       <div class="col-md-12">
+                           <div class="row">
+                               <div class="form-group col-sm-6 col-md-6">
+                                   <label class="Label">Nome do Médico </label>
+                                   <div class="autocomplete col-md-12">
+                                       <input class="form-control" id="Medico2" name="Medico2" oninput="this.value = this.value.toUpperCase()" required>
+                                   </div>
+                               </div>
+                               <div class="form-group col-sm-4 col-md-4">
+                                   <label class="Label">Ultima Visita</label>
+                                   <input type="date" class="form-control" id="DataUltima2" name="DataUltima2" required />
+                               </div>
+                               <div class="form-group col-sm-4 col-md-4">
+                                   <label class="Label">Data & Hora</label>
+                                   <input type="datetime-local" class="form-control" id="Data2" name="Data2" required />
+                               </div>
+                               <div class="form-group col-sm-6 col-md-6">
+                                   <label class="Label">Tipo</label>
+                                   <select class="form-control" id="Local2" name="Local2" oninput="this.value = this.value.toUpperCase()" required>
+                                       @foreach (var data in Model.Locais)
+                                       {
+                                           <option value="@data">@data</option>
+                                       }
+                                   </select>
+                               </div>
+                           </div>
+                           <div class="row">
+                               <div class="form-group col-sm-8 col-md-8">
+                                   <label class="Label">Endereço</label>
+                                   <input type="text" class="form-control" id="Endereco2" name="Endereco2" oninput="this.value = this.value.toUpperCase()" required />
+                               </div>
+                               <div class="form-group col-sm-4 col-md-4">
+                                   <label class="Label">Bairro</label>
+                                   <input type="text" class="form-control" id="Bairro2" name="Bairro2" oninput="this.value = this.value.toUpperCase()" required />
+                               </div>
+                           </div>
+                       <div class="row">
+                           <div class="form-group col-sm-6 col-md-6">
+                               <label class="Label">Email</label>
+                               <input type="text" class="form-control" id="Email2" name="Email2"  required />
+                           </div>
+                           <div class="form-group col-sm-6 col-md-6">
+                               <label class="Label">Telefone</label>
+                               <input type="text" class="form-control" id="Telefone2" name="Telefone2" required />
+                           </div>
+                       </div>
+                           <div class="row">
+                           
+                               <div class="form-group col-sm-12 col-md-12">
+                                   <label class="Label">Assunto</label>
+                                   <input class="form-control" id="Assunto2" name="Assunto2" oninput="this.value = this.value.toUpperCase()" required />
+                               </div>
+                               <div class="form-group col-sm-12 col-md-12">
+                                   <label class="Label">Motivo da visita</label>
+                                   <div class="row">
+                                       <div class="col-sm-2 col-md-2">
+                                       <input hidden type="radio" class="btn-check" name="MotVis2" id="MotVis12" value="VENDA" autocomplete="off" required>
+                                           <label class="btn btn-outline-primary" for="MotVis12">VENDA</label>
+                                       </div>
+                                       <div class="col-sm-2 col-md-2">
+                                       <input hidden type="radio" class="btn-check" name="MotVis2" id="MotVis11" value="INDICAÇÃO" autocomplete="off">
+                                           <label class="btn btn-outline-primary" for="MotVis11">INDICAÇÃO</label>
+                                       </div>
+                                       <div class="col-sm-3 col-md-3">
+                                       <input hidden type="radio" class="btn-check" name="MotVis2" id="MotVis10" value="ACOMPANHAMENTO" autocomplete="off">
+                                           <label class="btn btn-outline-primary" for="MotVis10">ACOMPANHAMENTO</label>
+                                       </div>
+                                       <div class="col-sm-3 col-md-3">
+                                       <input hidden type="radio" class="btn-check" name="MotVis2" id="MotVis9" value="CAIXA INSTRUMENTAL" autocomplete="off">
+                                           <label class="btn btn-outline-primary" for="MotVis9">CAIXA INSTRUMENTAL</label>
+                                       </div>
+                                   </div>
+                                   <div class="row">
+                                       <div class="col-sm-2 col-md-2">
+                                       <input hidden type="radio" class="btn-check" name="MotVis2" id="MotVis8" value="RECLAMAÇÃO" autocomplete="off">
+                                           <label class="btn btn-outline-primary" for="MotVis8">RECLAMAÇÃO</label>
+                                       </div>
+                                       <div class="col-sm-2 col-md-2">
+                                       <input hidden type="radio" class="btn-check" name="MotVis2" id="MotVis7" value="EVENTO" autocomplete="off">
+                                           <label class="btn btn-outline-primary" for="MotVis7">EVENTO</label>
+                                       </div>
+                                       <span class="text-danger field-validation-valid" id="MotVisError"></span>
+                                   </div>
+                               </div>
+                               <div class="form-group col-sm-12 col-md-12">
+                                   <label class="Label">Observação</label>
+                                   <textarea type="text" class="form-control" id="Obs2" name="Obs2" oninput="this.value = this.value.toUpperCase()"></textarea>
+                               </div>
+                               <div class="form-group col-sm-12 col-md-12">
+                                   <label class="Label">Resumo da visita</label>
+                                   <textarea type="text" class="form-control" id="ResuVisi2" name="ResuVisi2" oninput="this.value = this.value.toUpperCase()"></textarea>
+                               </div>
+                           </div>
+                       </div>
+                   </div>
+               </div>
+           </div>
+           <!--Modal footer-->
+           <div class="modal-footer">
+               <div class="col-md-12">
+                   <div class="row justify-content-center">
+                   <div id="RemarcarEnviar" style="color:#00b050" class="col-md-2">
+                           <button class="btn btn-button btn-success float-end" style="font-size:12px;" type="submit">
+                               <i class="fa-solid fa-thumbs-up"></i> Salvar
+                           </button>
+                       </div>
+                   </div>
+               </div>
+           </div>
+       </div>
+   </div>
 </div>
 
 @section Scripts
@@ -804,19 +935,19 @@
             {
 
 
-                var Id = $("#Id2").val()
-                var Medico = $("#Medico2").val()        
-                var DataUltima = $("#DataUltima2").val()                       
-                var Data = $("#Data2").val()     
-                var Local = $("#Local2").val()
-                var Endereco = $("#Endereco2").val()   
-                var Bairro = $("#Bairro2").val()      
-                var Email = $("#Email2").val()
-                var Telefone = $("#Telefone2").val()
-                var Assunto = $("#Assunto2").val()
+                var Id = $("#Id2").val();
+                var Medico = $("#Medico2").val();
+                var DataUltima = $("#DataUltima2").val();
+                var Data = $("#Data2").val();
+                var Local = $("#Local2").val();
+                var Endereco = $("#Endereco2").val();
+                var Bairro = $("#Bairro2").val();
+                var Email = $("#Email2").val();
+                var Telefone = $("#Telefone2").val();
+                var Assunto = $("#Assunto2").val();
                 var MotVis = $('input[name=MotVis2]:checked').val();
-                var Obs = $("#Obs2").val()                                                                            
-                var Resu = $("#ResuVisi2").val()
+                var Obs = $("#Obs2").val();
+                var Resu = $("#ResuVisi2").val();
 
 
                 var chamadaUrl = `/agendamento/visitas?handler=Remarcar&&id=${Id}&&Medico=${Medico}&&Local=${Local}&&Data=${Data}&&DataUltima=${DataUltima}&&Assunto=${Assunto}&&Endereco=${Endereco}&&Bairro=${Bairro}&&MotVis=${MotVis}&&Obs=${Obs}&&ResuVisi=${Resu}&&Telefone=${Telefone}&&Email=${Email}`

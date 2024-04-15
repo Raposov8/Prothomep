@@ -184,7 +184,6 @@ namespace SGID.Pages.Cotacoes
                     NRespondidas = SGID.Agendamentos.Where(x => x.StatusCotacao == 0 && x.StatusPedido == 2 && x.Empresa == "03").Count();
                     Canceladas = SGID.Agendamentos.Where(x => x.StatusPedido == 4 && x.Empresa == "03").Count();
                 }
-
             }
             else
             {
