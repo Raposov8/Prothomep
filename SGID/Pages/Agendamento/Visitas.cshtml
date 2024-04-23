@@ -180,7 +180,7 @@
    </div>
 </div>
 
-<div class="modal fade" id="editarvisita-modal" role="dialog" tabindex="-1" aria-labelledby="demo-default-modal" aria-hidden="true">
+<div class="modal fade" id="editarvisita-modal" role="dialog" tabindex="-2" aria-labelledby="demo-default-modal" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <!--Modal header-->
@@ -189,7 +189,7 @@
                     <h4>Editar Visita</h4>
                 </div>
                 <div class="col-md-1">
-                    <a class="close" data-dismiss="modal"><i class="fa-regular fa-circle-xmark" style="color:red"></i></a>
+                    <a class="closeEditar" data-dismiss="modal"><i class="fa-regular fa-circle-xmark" style="color:red"></i></a>
                 </div>
             </div>
 
@@ -262,30 +262,30 @@
                                     <label class="Label">Motivo da visita</label>
                                     <div class="row">
                                         <div class="col-sm-2 col-md-2">
-                                            <input hidden type="radio" class="btn-check" name="MotVis" id="MotVis13" value="VENDA" autocomplete="off" required>
-                                            <label class="btn btn-outline-primary" for="MotVis1">VENDA</label>
+                                            <input hidden type="radio" class="btn-check" name="MotVis3" id="MotVis13" value="VENDA" autocomplete="off" required>
+                                            <label class="btn btn-outline-primary" for="MotVis13">VENDA</label>
                                         </div>
                                         <div class="col-sm-2 col-md-2">
-                                            <input hidden type="radio" class="btn-check" name="MotVis" id="MotVis14" value="INDICAÇÃO" autocomplete="off">
-                                            <label class="btn btn-outline-primary" for="MotVis2">INDICAÇÃO</label>
+                                            <input hidden type="radio" class="btn-check" name="MotVis3" id="MotVis14" value="INDICAÇÃO" autocomplete="off">
+                                            <label class="btn btn-outline-primary" for="MotVis14">INDICAÇÃO</label>
                                         </div>
                                         <div class="col-sm-3 col-md-3">
-                                            <input hidden type="radio" class="btn-check" name="MotVis" id="MotVis15" value="ACOMPANHAMENTO" autocomplete="off">
-                                            <label class="btn btn-outline-primary" for="MotVis3">ACOMPANHAMENTO</label>
+                                            <input hidden type="radio" class="btn-check" name="MotVis3" id="MotVis15" value="ACOMPANHAMENTO" autocomplete="off">
+                                            <label class="btn btn-outline-primary" for="MotVis15">ACOMPANHAMENTO</label>
                                         </div>
                                         <div class="col-sm-3 col-md-3">
-                                            <input hidden type="radio" class="btn-check" name="MotVis" id="MotVis16" value="CAIXA INSTRUMENTAL" autocomplete="off">
-                                            <label class="btn btn-outline-primary" for="MotVis6">CAIXA INSTRUMENTAL</label>
+                                            <input hidden type="radio" class="btn-check" name="MotVis3" id="MotVis16" value="CAIXA INSTRUMENTAL" autocomplete="off">
+                                            <label class="btn btn-outline-primary" for="MotVis16">CAIXA INSTRUMENTAL</label>
                                         </div>
                                     </div>
                                     <div class="row">
                                         <div class="col-sm-2 col-md-2">
-                                            <input hidden type="radio" class="btn-check" name="MotVis" id="MotVis17" value="RECLAMAÇÃO" autocomplete="off">
-                                            <label class="btn btn-outline-primary" for="MotVis4">RECLAMAÇÃO</label>
+                                            <input hidden type="radio" class="btn-check" name="MotVis3" id="MotVis17" value="RECLAMAÇÃO" autocomplete="off">
+                                            <label class="btn btn-outline-primary" for="MotVis17">RECLAMAÇÃO</label>
                                         </div>
                                         <div class="col-sm-2 col-md-2">
-                                            <input hidden type="radio" class="btn-check" name="MotVis" id="MotVis18" value="EVENTO" autocomplete="off">
-                                            <label class="btn btn-outline-primary" for="MotVis5">EVENTO</label>
+                                            <input hidden type="radio" class="btn-check" name="MotVis3" id="MotVis18" value="EVENTO" autocomplete="off">
+                                            <label class="btn btn-outline-primary" for="MotVis18">EVENTO</label>
                                         </div>
                                         <span class="text-danger field-validation-valid" id="MotVisError"></span>
                                     </div>
@@ -293,11 +293,11 @@
 
                                 <div class="form-group col-sm-12 col-md-12">
                                     <label class="Label">Observação</label>
-                                    <textarea type="text" class="form-control" id="Observacao" name="Observacao" oninput="this.value = this.value.toUpperCase()"></textarea>
+                                    <textarea type="text" class="form-control" id="ObservacaoProxima" name="ObservacaoProxima" oninput="this.value = this.value.toUpperCase()"></textarea>
                                 </div>
                                 <div class="form-group col-sm-12 col-md-12">
                                     <label class="Label">Resumo da visita</label>
-                                    <textarea type="text" class="form-control" id="ResuVisi" name="ResuVisi" oninput="this.value = this.value.toUpperCase()"></textarea>
+                                    <textarea type="text" class="form-control" id="ResuVisiProxima" name="ResuVisiProxima" oninput="this.value = this.value.toUpperCase()"></textarea>
                                 </div>
                             </div>
                         </div>
@@ -308,9 +308,9 @@
             <div class="modal-footer">
                 <div class="col-md-12">
                     <div class="row justify-content-center">
-                        <div id="Salvar2" style="color:#00b050" class="col-md-2"><button class="btn btn-button btn-success float-end" style="font-size:12px;" type="submit"><i class="fa-solid fa-thumbs-up"></i> Salvar</button></div> |
+                        <div style="color:#00b050" class="col-md-2"><button class="btn btn-button btn-success float-end" style="font-size:12px;" type="submit"><i class="fa-solid fa-thumbs-up"></i> Salvar</button></div> |
                         <div style="color:#c00000" class="col-md-2">
-                            <div class="close"><a class="btn btn-button btn-danger" style="font-size:12px;"><i class="fa-solid fa-xmark"></i> Cancelar</a></div>
+                            <a class="closeEditar"><a class="btn btn-button btn-danger" style="font-size:12px;"><i class="fa-solid fa-xmark"></i> Cancelar</a></a>
                         </div>
                     </div>
                 </div>
@@ -384,15 +384,15 @@
                            <br />
                            <div class="col-md-12">
                                <label>Observação</label>
-                               <textarea class="col-md-12" id="" oninput="this.value = this.value.toUpperCase()">
-
-                               </textarea>
-                               
+                                <div class="col-md-12" >
+                                    <textarea type="text" class="form-control" id="Observacao" name="Observacao" oninput="this.value = this.value.toUpperCase()"></textarea>
+                                </div>
                            </div>
                            <div class="col-md-12">
                                <label>Resumo Visita</label>
-                               <textarea class="col-md-12" id="Resumo" oninput="this.value = this.value.toUpperCase()" >
-                               </textarea>
+                               <div class="col-md-12" >
+                                    <textarea type="text" class="form-control" id="Resumo" name="Resumo" oninput="this.value = this.value.toUpperCase()"></textarea>
+                               </div>
                            </div>
                            <div class="col-md-12">
                                <label>Resumo Visita <span id="ResumoVisi2"></span></label>
@@ -717,6 +717,15 @@
                             $("#BairroProxima").val(data.bairro)
                             $("#TelefoneProxima").val(data.telefone)
                             $("#EmailProxima").val(data.email)
+                            $("#ObservacaoProxima").text(data.observacao);
+                            $("#ResuVisiProxima").text(data.resuVi);
+
+                            if (data.motvisita != "") 
+                            {
+                                $(`radio[name='MotVis3'][value='${data.motvisita}']`).prop('checked', true);
+                            }
+
+                            
 
                             if(data.status != 0)
                             {
@@ -760,11 +769,25 @@
                 $("#novavisita-modal").modal('show');
             })
 
+            $('#Editar').on('click', function () {
+                $('#details-modal').modal('hide');
+                $("#editarvisita-modal").modal('show');
+            })
+
             $('a.close').on('click', function () 
             {
                 $("#novavisita-modal").modal('hide');
                 $('#details-modal').modal('hide');
                 $('#loading-modal').modal('hide');
+                $("#editarvisita-modal").modal('hide');
+                $("#PopupCancelada-modal").modal('hide')
+            })
+
+            $('a.closeEditar').on('click', function () {
+                $("#novavisita-modal").modal('hide');
+                $('#details-modal').modal('show');
+                $('#loading-modal').modal('hide');
+                $("#editarvisita-modal").modal('hide');
                 $("#PopupCancelada-modal").modal('hide')
             })
 

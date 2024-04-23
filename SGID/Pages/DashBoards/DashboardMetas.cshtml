@@ -58,6 +58,25 @@
     <div class="col-sm-2 col-md-2">
          <input type="text" class="form-control" id="Ano" name="Ano" placeholder="Ano" value="@Model.Ano" />
     </div>
+    <div class="col-sm-10 col-md-10">
+        <input hidden type="radio" class="btn-check" name="Tipo" id="Tipo14" value="14" autocomplete="off">
+        <label class="btn btn-outline-primary" for="Tipo14">1º TRI</label>
+
+        <input hidden type="radio" class="btn-check" name="Tipo" id="Tipo15" value="15" autocomplete="off">
+        <label class="btn btn-outline-primary" for="Tipo15">2º TRI</label>
+
+        <input hidden type="radio" class="btn-check" name="Tipo" id="Tipo16" value="16" autocomplete="off">
+        <label class="btn btn-outline-primary" for="Tipo16">3º TRI</label>
+
+        <input hidden type="radio" class="btn-check" name="Tipo" id="Tipo17" value="17" autocomplete="off">
+        <label class="btn btn-outline-primary" for="Tipo17">4º TRI</label>
+
+        <input hidden type="radio" class="btn-check" name="Tipo" id="Tipo18" value="18" autocomplete="off">
+        <label class="btn btn-outline-primary" for="Tipo18">1º SEM</label>
+
+        <input hidden type="radio" class="btn-check" name="Tipo" id="Tipo19" value="19" autocomplete="off">
+        <label class="btn btn-outline-primary" for="Tipo19">2º SEM</label>
+    </div>
 </div>
 <br />
 <div class="row">
@@ -162,7 +181,7 @@
                         </tr>
                     </tbody>
                 </table>
-                <a href="/relatorios/diretoria/TitulosVencidos" target="_blank"><label class="btn btn-outline-primary">Saiba Mais...</label></a>
+                <a id="TitulosDenuo" href="/relatorios/diretoria/TitulosVencidos" target="_blank"><label class="btn btn-outline-primary">Saiba Mais...</label></a>
             </div>
         </div>
     </div>
@@ -184,7 +203,7 @@
                         </tr>
                     </tbody>
                 </table>
-                <a href="/relatorios/diretoria/TitulosVencidosInter" target="_blank"><label class="btn btn-outline-primary">Saiba Mais...</label></a>
+                <a id="TitulosInter" href="/relatorios/diretoria/TitulosVencidosInter" target="_blank"><label class="btn btn-outline-primary">Saiba Mais...</label></a>
             </div>
         </div>
     </div>
@@ -342,7 +361,6 @@
 
                 move(0)
                 $("#loading-modal").modal('show');
-
 
                 var Ano = $("#Ano").val();
                 var Mes = $('input[name=Tipo]:checked').val();
@@ -517,66 +535,66 @@
                     }
                 })
 
+                var chamadaUrl4 = `/dashboards/dashboardmetas?handler=Vencidos&&Mes=${Mes}&&Ano=${Ano}`
+                $.ajax({
+                    url: chamadaUrl4,
+                    type: "POST",
+                    contentType: "application/json;",
+                    dataType: 'json',
+                    headers: {
+                        "RequestVerificationToken": $('input:hidden[name="__RequestVerificationToken"]').val()
+                    },
+                    success: function (data) {
+
+                        $("#Vencidos>tbody>tr").remove();
+
+                        var linha = `<tr>
+                                                    <td>
+                                                     <b>TOTAL</b>
+                                                    </td>
+                                                    <td>
+                                                     <b>${data.valorTotal.toLocaleString('pt-BR', formato)}</b>
+                                                    </td>
+                                                </tr>`;
+
+                        $("#Vencidos>tbody").append(linha);
+
+                        $("#TitulosDenuo").setAttribute('href', `/relatorios/diretoria/TitulosVencidos?handler=data&&Mes=${Mes}&&Ano=${Ano}`)
+
+                    }
+                })
+
+                var chamadaUrl5 = `/dashboards/dashboardmetas?handler=VencidosInter&&Mes=${Mes}&&Ano=${Ano}`
+                $.ajax({
+                    url: chamadaUrl5,
+                    type: "POST",
+                    contentType: "application/json;",
+                    dataType: 'json',
+                    headers: {
+                        "RequestVerificationToken": $('input:hidden[name="__RequestVerificationToken"]').val()
+                    },
+                    success: function (data) {
+
+                        $("#VencidosInter>tbody>tr").remove();
+
+
+                        var linha = `<tr>
+                                             <td>
+                                              <b>TOTAL</b>
+                                             </td>
+                                             <td>
+                                              <b>${data.valorTotal.toLocaleString('pt-BR', formato)}</b>
+                                             </td>
+                                         </tr>`;
+
+                        $("#VencidosInter>tbody").append(linha);
+
+                        $("#TitulosInter").setAttribute('href', `/relatorios/diretoria/TitulosVencidosInter?handler=data&&Mes=${Mes}&&Ano=${Ano}`)
+
+                    }
+                })
+
             })
-
-            var chamadaUrl = `/dashboards/dashboardmetas?handler=Vencidos`
-            $.ajax({
-                url: chamadaUrl,
-                type: "POST",
-                contentType: "application/json;",
-                dataType: 'json',
-                headers: {
-                    "RequestVerificationToken": $('input:hidden[name="__RequestVerificationToken"]').val()
-                },
-                success: function (data) {
-
-                    $("#Vencidos>tbody>tr").remove();
-
-                    var linha = `<tr>
-                                            <td>
-                                             <b>TOTAL</b>
-                                            </td>
-                                            <td>
-                                             <b>${data.valorTotal.toLocaleString('pt-BR', formato)}</b>
-                                            </td>
-                                        </tr>`;
-
-                    $("#Vencidos>tbody").append(linha);
-
-                }
-            })
-
-            var chamadaUrl2 = `/dashboards/dashboardmetas?handler=VencidosInter`
-            $.ajax({
-                url: chamadaUrl2,
-                type: "POST",
-                contentType: "application/json;",
-                dataType: 'json',
-                headers: {
-                    "RequestVerificationToken": $('input:hidden[name="__RequestVerificationToken"]').val()
-                },
-                success: function (data) {
-
-                    $("#VencidosInter>tbody>tr").remove();
-
-
-                    var linha = `<tr>
-                                     <td>
-                                      <b>TOTAL</b>
-                                     </td>
-                                     <td>
-                                      <b>${data.valorTotal.toLocaleString('pt-BR', formato)}</b>
-                                     </td>
-                                 </tr>`;
-
-                    $("#VencidosInter>tbody").append(linha);
-
-
-                }
-            })
-
-            
-
         })
 
         $("#FolhaRed").on('click',function(){

@@ -73,23 +73,89 @@ namespace SGID.Pages.DashBoards
                 string DataInicio = $"{Ano}0101";
 
                 string DataFim = $"{Ano}1231";
-                if (Mes == "13")
+                switch (Mes)
                 {
-                    #region Parametros
-                    
-                    DataInicio = $"{Ano}0101";
+                    case "13":
+                        {
+                            #region Parametros
 
-                    DataFim = $"{Ano}1231";
-                    #endregion
-                }
-                else 
-                {
-                    #region Parametros
-                    DataInicio = $"{Ano}{Mes}01";
+                            DataInicio = $"{Ano}0101";
 
-                    DataFim = $"{Ano}{Mes}31";
+                            DataFim = $"{Ano}1231";
+                            #endregion
+                            break;
+                        }
+                    case "14":
+                        {
+                            #region Parametros
 
-                    #endregion
+                            DataInicio = $"{Ano}0101";
+
+                            DataFim = $"{Ano}0331";
+                            #endregion
+                            break;
+                        }
+                    case "15":
+                        {
+                            #region Parametros
+
+                            DataInicio = $"{Ano}0401";
+
+                            DataFim = $"{Ano}0631";
+                            #endregion
+                            break;
+                        }
+                    case "16":
+                        {
+                            #region Parametros
+
+                            DataInicio = $"{Ano}0701";
+
+                            DataFim = $"{Ano}0931";
+                            #endregion
+                            break;
+                        }
+                    case "17":
+                        {
+                            #region Parametros
+
+                            DataInicio = $"{Ano}1001";
+
+                            DataFim = $"{Ano}1231";
+                            #endregion
+                            break;
+                        }
+                    case "18":
+                        {
+                            #region Parametros
+
+                            DataInicio = $"{Ano}0101";
+
+                            DataFim = $"{Ano}0631";
+                            #endregion
+                            break;
+                        }
+                    case "19":
+                        {
+                            #region Parametros
+
+                            DataInicio = $"{Ano}0701";
+
+                            DataFim = $"{Ano}1231";
+                            #endregion
+                            break;
+                        }
+                    default:
+                        {
+                            #region Parametros
+                            DataInicio = $"{Ano}{Mes}01";
+
+                            DataFim = $"{Ano}{Mes}31";
+
+                            #endregion
+
+                            break;
+                        }
                 }
 
                 #region Faturados
@@ -787,18 +853,65 @@ namespace SGID.Pages.DashBoards
         
         }
 
-        public JsonResult OnPostVencidos()
+        public JsonResult OnPostVencidos(string Mes, string Ano)
         {
-            string user = User.Identity.Name.Split("@")[0].ToUpper();
-            DateTime data = DateTime.Now.AddMonths(9);
-            string mesInicio = data.Month.ToString("D2");
-            string anoInicio = (data.Year - 1).ToString();
-            string DataInicio = $"{data.Year - 1}{data.Month:D2}{data.Day:D2}";
+            string DataInicio = $"{Ano}{Mes}31";
+
+            switch (Mes)
+            {
+                case "13":
+                    {
+                        DataInicio = $"{Ano}1231";
+                        break;
+                    }
+                case "14":
+                    {
+                        DataInicio = $"{Ano}0331";
+                        break;
+                    }
+                case "15":
+                    {
+                        DataInicio = $"{Ano}0631";
+                        break;
+                    }
+                case "16":
+                    {
+                        DataInicio = $"{Ano}0931";
+                        break;
+                    }
+                case "17":
+                    {
+                        DataInicio = $"{Ano}1231";
+                        break;
+                    }
+                case "18":
+                    {
+                        DataInicio = $"{Ano}0631";
+                        break;
+                    }
+                case "19":
+                    {
+                        DataInicio = $"{Ano}1231";
+                        break;
+                    }
+                default:
+                    {
+                        DataInicio = $"{Ano}{Mes}31";
+                        break;
+                    }
+            }
+
+            var datagora = DateTime.Now.ToString("yyyy/MM/dd").Replace("/", "");
+
+            if (Convert.ToInt32(DataInicio) > Convert.ToInt32(datagora))
+            {
+                DataInicio = datagora;
+            }
 
             var NaoBaixados = (from SE10 in ProtheusDenuo.Se1010s
                                join SA10 in ProtheusDenuo.Sa1010s on SE10.E1Cliente equals SA10.A1Cod
                                where SE10.DELET != "*"
-                               && (int)(object)SE10.E1Vencrea <= (int)(object)DataInicio
+                               && (int)(object)SE10.E1Vencrea < (int)(object)DataInicio
                                && SA10.A1Clinter != "G" && SA10.A1Msblql != "1" && SE10.E1Baixa == ""
                                select new TitulosVencidos
                                {
@@ -828,18 +941,65 @@ namespace SGID.Pages.DashBoards
             return new JsonResult(valores);
         }
 
-        public JsonResult OnPostVencidosInter()
+        public JsonResult OnPostVencidosInter(string Mes, string Ano)
         {
-            string user = User.Identity.Name.Split("@")[0].ToUpper();
-            DateTime data = DateTime.Now.AddMonths(9);
-            string mesInicio = data.Month.ToString("D2");
-            string anoInicio = (data.Year - 1).ToString();
-            string DataInicio = $"{data.Year - 1}{data.Month:D2}{data.Day:D2}";
+            string DataInicio = $"{Ano}{Mes}31";
+
+            switch (Mes)
+            {
+                case "13":
+                    {
+                        DataInicio = $"{Ano}1231";
+                        break;
+                    }
+                case "14":
+                    {
+                        DataInicio = $"{Ano}0331";
+                        break;
+                    }
+                case "15":
+                    {
+                        DataInicio = $"{Ano}0631";
+                        break;
+                    }
+                case "16":
+                    {
+                        DataInicio = $"{Ano}0931";
+                        break;
+                    }
+                case "17":
+                    {
+                        DataInicio = $"{Ano}1231";
+                        break;
+                    }
+                case "18":
+                    {
+                        DataInicio = $"{Ano}0631";
+                        break;
+                    }
+                case "19":
+                    {
+                        DataInicio = $"{Ano}1231";
+                        break;
+                    }
+                default:
+                    {
+                        DataInicio = $"{Ano}{Mes}31";
+                        break;
+                    }
+            }
+
+            var datagora = DateTime.Now.ToString("yyyy/MM/dd").Replace("/", "");
+
+            if (Convert.ToInt32(DataInicio) > Convert.ToInt32(datagora))
+            {
+                DataInicio = datagora;
+            }
 
             var NaoBaixados = (from SE10 in ProtheusInter.Se1010s
                                join SA10 in ProtheusInter.Sa1010s on SE10.E1Cliente equals SA10.A1Cod
                                where SE10.DELET != "*"
-                               && (int)(object)SE10.E1Vencrea <= (int)(object)DataInicio
+                               && (int)(object)SE10.E1Vencrea < (int)(object)DataInicio
                                && SA10.A1Clinter != "G" && SA10.A1Msblql != "1" && SE10.E1Baixa == ""
                                select new TitulosVencidos
                                {
@@ -873,25 +1033,100 @@ namespace SGID.Pages.DashBoards
         {
             #region Dados
 
+            int Multi = 1;
+
             string DataInicio = "";
             string DataFim = "";
-            if (Mes != "13")
+            switch (Mes)
             {
-                string Tempo = $"{Mes}/01/{Ano}";
+                case "13":
+                    {
+                        #region Parametros
 
-                var date = DateTime.Parse(Tempo);
+                        DataInicio = $"{Ano}0101";
 
-                //MesAno = date.ToString("MM").ToUpper();
-                //this.Ano = date.ToString("yyyy").ToUpper();
+                        DataFim = $"{Ano}1231";
+                        Multi = 12;
+                        #endregion
+                        break;
+                    }
+                case "14":
+                    {
+                        #region Parametros
 
-                string data = date.ToString("yyyy/MM").Replace("/", "");
-                DataInicio = data + "01";
-                DataFim = data + "31";
-            }
-            else
-            {
-                DataInicio = $"{Ano}0101";
-                DataFim = $"{Ano}1231"; ;
+                        DataInicio = $"{Ano}0101";
+
+                        DataFim = $"{Ano}0331";
+                        Multi = 3;
+                        #endregion
+                        break;
+                    }
+                case "15":
+                    {
+                        #region Parametros
+
+                        DataInicio = $"{Ano}0401";
+
+                        DataFim = $"{Ano}0631";
+                        Multi = 3;
+                        #endregion
+                        break;
+                    }
+                case "16":
+                    {
+                        #region Parametros
+
+                        DataInicio = $"{Ano}0701";
+
+                        DataFim = $"{Ano}0931";
+                        Multi = 3;
+                        #endregion
+                        break;
+                    }
+                case "17":
+                    {
+                        #region Parametros
+
+                        DataInicio = $"{Ano}1001";
+
+                        DataFim = $"{Ano}1231";
+                        Multi = 3;
+                        #endregion
+                        break;
+                    }
+                case "18":
+                    {
+                        #region Parametros
+
+                        DataInicio = $"{Ano}0101";
+
+                        DataFim = $"{Ano}0631";
+                        Multi = 6;
+                        #endregion
+                        break;
+                    }
+                case "19":
+                    {
+                        #region Parametros
+
+                        DataInicio = $"{Ano}0701";
+
+                        DataFim = $"{Ano}1231";
+                        Multi = 6;
+                        #endregion
+                        break;
+                    }
+                default:
+                    {
+                        #region Parametros
+                        DataInicio = $"{Ano}{Mes}01";
+
+                        DataFim = $"{Ano}{Mes}31";
+                        Multi = 1;
+                        #endregion
+
+                        break;
+                    }
             }
 
             int[] CF = new int[] { 5551, 6551, 6107, 6109, 5117, 6117 };
@@ -1657,22 +1892,13 @@ namespace SGID.Pages.DashBoards
                 + ComercialOrtopedia.Sum(x => x.ComissaoEquipe) + ComercialBuco.Sum(x => x.ComissaoEquipe) + ComercialTorax.Sum(x => x.ComissaoEquipe) + ComercialInterior.Sum(x => x.ComissaoEquipe)
                 + UsuariosDental.Sum(x => x.ComissaoEquipe) + ComercialOrtopedia.Sum(x => x.ComissaoProduto) + ComercialBuco.Sum(x => x.ComissaoProduto) + ComercialTorax.Sum(x => x.ComissaoProduto) + ComercialInterior.Sum(x => x.ComissaoProduto);
 
-            if (Mes != "13")
+            
+            return new JsonResult(new
             {
-                return new JsonResult(new
-                {
-                    Salario = Salario,
-                    Comissoes = Comissoes
-                });
-            }
-            else
-            {
-                return new JsonResult(new
-                {
-                    Salario = Salario * 12,
-                    Comissoes = Comissoes
-                });
-            }
+                Salario = Salario * Multi,
+                Comissoes = Comissoes
+            });
+            
         }
     }
 }

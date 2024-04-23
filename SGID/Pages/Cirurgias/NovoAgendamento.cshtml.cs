@@ -1152,17 +1152,17 @@ namespace SGID.Pages.Cirurgias
 
         public class AgendamentoModel
         {
-            public string Empresa { get; set; }
-            public string Cliente { get; set; }
-            public string CondPag { get; set; }
-            public string Tabela { get; set; }
-            public string Vendedor { get; set; }
-            public string Medico { get; set; }
+            public string? Empresa { get; set; }
+            public string? Cliente { get; set; }
+            public string? CondPag { get; set; }
+            public string? Tabela { get; set; }
+            public string? Vendedor { get; set; }
+            public string? Medico { get; set; }
             public string? Matricula { get; set; }
-            public string Paciente { get; set; }
+            public string? Paciente { get; set; }
             public string? Convenio { get; set; }
-            public string Instrumentador { get; set; }
-            public string Hospital { get; set; }
+            public string? Instrumentador { get; set; }
+            public string? Hospital { get; set; }
             public DateTime? DataAgendamento { get; set; }
             public DateTime? DataAutorizacao { get; set; }
             public string? NumAutorizacao { get; set; }
@@ -1170,12 +1170,12 @@ namespace SGID.Pages.Cirurgias
             public int Tipo { get; set; }
             public int Autorizado { get; set; }
             public string? Obs { get; set; }
-            public string CodHospital { get; set; }
+            public string? CodHospital { get; set; }
             public string? CodConvenio { get; set; }
-            public string CodTabela { get; set; }
-            public string CodCondPag { get; set; }
-            public string Procedimento { get; set; }
-            public string Indicacao { get; set; }
+            public string? CodTabela { get; set; }
+            public string? CodCondPag { get; set; }
+            public string? Procedimento { get; set; }
+            public string? Indicacao { get; set; }
         }
     }
 }
