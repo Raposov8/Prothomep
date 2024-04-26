@@ -109,16 +109,16 @@
                                 <td>R$ @string.Format("{0:N2}",Model.CirurgiasEmAbertoValor)</td>
                             </tr>
                             <tr>
-                                <td><div style="color:#010074"><b>FATURADOS MÊS</b></div></td>
-                                <td>@DateTime.Now.ToString("dd/MM/yyyy")</td>
-                                <td>@Model.FaturadoMes</td>
-                                <td>R$ @string.Format("{0:N2}",Model.FaturadoMesValor)</td>
-                            </tr>
-                            <tr>
-                                <td><div style="color:#8a07a2"><b>VALORES LICITAÇÕES / VALORES EM ABERTO</b></div></td>
+                                <td><div style="color:#010074"><b>VALORES LICITAÇÕES / VALORES EM ABERTO</b></div></td>
                                 <td>@DateTime.Now.ToString("dd/MM/yyyy")</td>
                                 <td>@Model.CirurgiasLicitacoesMes</td>
                                 <td>R$ @string.Format("{0:N2}", Model.CirurgiasLicitacoesValor)</td>
+                            </tr>
+                            <tr>
+                                <td><div style="color:#8a07a2"><b>FATURADOS MÊS</b></div></td>
+                                <td>@DateTime.Now.ToString("dd/MM/yyyy")</td>
+                                <td>@Model.FaturadoMes</td>
+                                <td>R$ @string.Format("{0:N2}", Model.FaturadoMesValor)</td>
                             </tr>
                             <tr>
                                 <td><div style="color:#8a07a2"><b>TITULOS RECEBIDOS LICITAÇÕES</b></div></td>
@@ -203,8 +203,7 @@
                     {
                         $("#Dash>div").remove();
 
-
-                        linha = `<div class="row justify-content-center"><div class="col-xs-12 col-sm-4 col-md-4" style="margin-top:15px;"><div class="panel panel-colorful" style="background-color:lightgray"><div class="panel-heading"><h2 style="margin:0%;color:#010074;font-size:25px" class="panel-title text-center">COMISSÃO</h2></div><div class="panel-body" style="padding-top:0px;"><a class="produto"><h3 class="text-center" style="margin-top:0%; color:#010074;font-size:50px">0</h3></a><div class="text-center"><h4 style="color:#b40000 !important;">META: ${data.meta.toLocaleString('pt-BR', formato)}</h4></div></div></div></div><div class="col-xs-12 col-sm-8 col-md-8"><div class="panel"><div class="panel-body"><table id="demo-dt-addrow" class="table table-striped table-bordered" cellspacing="0" width="100%"><thead><tr><th class="text-center">ITEM</th><th class="text-center">DATA</th><th class="text-center">QTDA.</th><th class="text-center">VALOR</th></tr></thead><tbody><tr><td><div style="color:#010074"><b>CIRURGIAS VALORIZADAS</b></div></td><td>${data.hoje}</td><td>${data.cirurgiasValorizadas}</td><td>${data.cirurgiasValorizadasValor.toLocaleString('pt-BR', formato)}</td></tr><tr><td><div style="color:#010074"><b>CIRURGIAS EM ABERTO</b></div></td><td>${data.hoje}</td><td>${data.cirurgiasEmAberto}</td><td>${data.cirurgiasEmAbertoValor.toLocaleString('pt-BR', formato)}</td></tr><tr><td><div style="color:#010074"><b>FATURADOS MÊS</b></div></td><td>${data.hoje}</td><td>${data.faturadoMes}</td><td>${data.faturadoMesValor.toLocaleString('pt-BR', formato)}</td></tr><tr><td><div style="color:#8a07a2"><b>VALORES LICITAÇÕES / VALORES EM ABERTO</b></div></td><td>${data.hoje}</td><td>${data.cirurgiasLicitacoesMes}</td><td>${data.cirurgiasLicitacoesValor.toLocaleString('pt-BR', formato)}</td></tr><tr><td><div style="color:#8a07a2"><b>TITULOS RECEBIDOS LICITAÇÕES</b></div></td><td>${data.hoje}</td><td>${data.baixasLicitacoesMes}</td><td>${data.baixasLicitacoesValor.toLocaleString('pt-BR', formato)}</td></tr><tr><td><div style="color:#8a07a2"><b>TITULOS RECEBIDOS A REVELIA</b></div></td><td>${data.hoje}</td><td>${data.baixasKamikaze}</td><td>${data.baixasKamikazeValor.toLocaleString('pt-BR', formato)}</td></tr></tbody></table></div></div></div></div>`
+                        linha = `<div class="row justify-content-center"><div class="col-xs-12 col-sm-4 col-md-4" style="margin-top:15px;"><div class="panel panel-colorful" style="background-color:lightgray"><div class="panel-heading"><h2 style="margin:0%;color:#010074;font-size:25px" class="panel-title text-center">COMISSÃO</h2></div><div class="panel-body" style="padding-top:0px;"><a class="produto"><h3 class="text-center" style="margin-top:0%; color:#010074;font-size:50px">0</h3></a><div class="text-center"><h4 style="color:#b40000 !important;">META: ${data.meta.toLocaleString('pt-BR', formato)}</h4></div></div></div></div><div class="col-xs-12 col-sm-8 col-md-8"><div class="panel"><div class="panel-body"><table id="demo-dt-addrow" class="table table-striped table-bordered" cellspacing="0" width="100%"><thead><tr><th class="text-center">ITEM</th><th class="text-center">DATA</th><th class="text-center">QTDA.</th><th class="text-center">VALOR</th></tr></thead><tbody><tr><td><div style="color:#010074"><b>CIRURGIAS VALORIZADAS</b></div></td><td>${data.hoje}</td><td>${data.cirurgiasValorizadas}</td><td>${data.cirurgiasValorizadasValor.toLocaleString('pt-BR', formato)}</td></tr><tr><td><div style="color:#010074"><b>CIRURGIAS EM ABERTO</b></div></td><td>${data.hoje}</td><td>${data.cirurgiasEmAberto}</td><td>${data.cirurgiasEmAbertoValor.toLocaleString('pt-BR', formato)}</td></tr><tr><td><div style="color:#010074"><b>VALORES LICITAÇÕES / VALORES EM ABERTO</b></div></td><td>${data.hoje}</td><td>${data.cirurgiasLicitacoesMes}</td><td>${data.cirurgiasLicitacoesValor.toLocaleString('pt-BR', formato)}</td></tr><tr><td><div style="color:#8a07a2"><b>FATURADOS MÊS</b></div></td><td>${data.hoje}</td><td>${data.faturadoMes}</td><td>${data.faturadoMesValor.toLocaleString('pt-BR', formato)}</td></tr><tr><td><div style="color:#8a07a2"><b>TITULOS RECEBIDOS LICITAÇÕES</b></div></td><td>${data.hoje}</td><td>${data.baixasLicitacoesMes}</td><td>${data.baixasLicitacoesValor.toLocaleString('pt-BR', formato)}</td></tr><tr><td><div style="color:#8a07a2"><b>TITULOS RECEBIDOS A REVELIA</b></div></td><td>${data.hoje}</td><td>${data.baixasKamikaze}</td><td>${data.baixasKamikazeValor.toLocaleString('pt-BR', formato)}</td></tr></tbody></table></div></div></div></div>`
 
                         move(99);
 

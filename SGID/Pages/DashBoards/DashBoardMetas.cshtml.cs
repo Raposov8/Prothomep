@@ -913,6 +913,7 @@ namespace SGID.Pages.DashBoards
                                where SE10.DELET != "*"
                                && (int)(object)SE10.E1Vencrea < (int)(object)DataInicio
                                && SA10.A1Clinter != "G" && SA10.A1Msblql != "1" && SE10.E1Baixa == ""
+                               && SE10.E1Tipo != "RA"
                                select new TitulosVencidos
                                {
                                    CodCliente = SE10.E1Cliente,
@@ -1001,6 +1002,7 @@ namespace SGID.Pages.DashBoards
                                where SE10.DELET != "*"
                                && (int)(object)SE10.E1Vencrea < (int)(object)DataInicio
                                && SA10.A1Clinter != "G" && SA10.A1Msblql != "1" && SE10.E1Baixa == ""
+                               && SE10.E1Tipo != "RA"
                                select new TitulosVencidos
                                {
                                    CodCliente = SE10.E1Cliente,

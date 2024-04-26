@@ -241,6 +241,8 @@ namespace SGID.Pages.DashBoards
                         }).ToList();
                         #endregion
 
+                        var EquipeRemove = new List<GestorComercialDash>();
+
                         Equipe.ForEach(x =>
                         {
                             x.FaturadoMes = resultado.Where(c => c.A3Nome == x.User).DistinctBy(x => x.Nf).Count();
@@ -263,6 +265,16 @@ namespace SGID.Pages.DashBoards
                             {
                                 x.Meta = 0.0;
                             }
+
+                            if (x.FaturadoMes == 0 && x.CirurgiasEmAberto == 0 && x.CirurgiasKamikaze == 0 && x.CirurgiasLicitacoes == 0 && x.CirurgiasValorizadas == 0)
+                            {
+                                EquipeRemove.Add(x);
+                            }
+                        });
+
+                        EquipeRemove.ForEach(x =>
+                        {
+                            Equipe.Remove(x);
                         });
 
 
@@ -689,6 +701,8 @@ namespace SGID.Pages.DashBoards
                         }).ToList();
                         #endregion
 
+                        var EquipeRemove = new List<GestorComercialDash>();
+
                         Equipe.ForEach(x =>
                         {
                             x.FaturadoMes = resultado.Where(c => c.A3Nome == x.User && c.Linha != "000011" && c.Linha != "000012").DistinctBy(x => x.Nf).Count();
@@ -714,6 +728,16 @@ namespace SGID.Pages.DashBoards
                             {
                                 x.Meta = 0.0;
                             }
+
+                            if (x.FaturadoMes == 0 && x.CirurgiasEmAberto == 0 && x.CirurgiasKamikaze == 0 && x.CirurgiasLicitacoes == 0 && x.CirurgiasValorizadas == 0)
+                            {
+                                EquipeRemove.Add(x);
+                            }
+                        });
+
+                        EquipeRemove.ForEach(x =>
+                        {
+                            Equipe.Remove(x);
                         });
 
                     }
@@ -730,7 +754,7 @@ namespace SGID.Pages.DashBoards
 
                             if (user == "ARTEMIO.COSTA") user = "LEONARDO.BRITO";
 
-                            var vendedores = ProtheusDenuo.Sa3010s.Where(x => (x.A3Xlogsup == user || x.A3Xlogin == user) && x.DELET != "*" && x.A3Msblql != "1").Select(x => new
+                            var vendedores = ProtheusDenuo.Sa3010s.Where(x => (x.A3Xlogsup == user || x.A3Xlogin == user) && x.DELET != "*").Select(x => new
                             {
                                 x.A3Nome,
                                 x.A3Xlogin,
@@ -938,6 +962,8 @@ namespace SGID.Pages.DashBoards
                             }
                             #endregion
 
+                            var EquipeRemove = new List<GestorComercialDash>();
+
                             Equipe.ForEach(x =>
                             {
                                 x.FaturadoMes = resultado.Where(c => c.A3Nome == x.User).DistinctBy(x => x.Nf).Count();
@@ -960,6 +986,16 @@ namespace SGID.Pages.DashBoards
                                 {
                                     x.Meta = 0.0;
                                 }
+
+                                if (x.FaturadoMes == 0 && x.CirurgiasEmAberto == 0 && x.CirurgiasKamikaze == 0 && x.CirurgiasLicitacoes == 0 && x.CirurgiasValorizadas == 0)
+                                {
+                                    EquipeRemove.Add(x);
+                                }
+                            });
+
+                            EquipeRemove.ForEach(x =>
+                            {
+                                Equipe.Remove(x);
                             });
 
                             #endregion
@@ -970,7 +1006,7 @@ namespace SGID.Pages.DashBoards
 
                             if (user == "ARTEMIO.COSTA") user = "LEONARDO.BRITO";
 
-                            var vendedores = ProtheusDenuo.Sa3010s.Where(x => (x.A3Xlogsup == user || x.A3Xlogin == user) && x.DELET != "*" && x.A3Msblql != "1").Select(x => new
+                            var vendedores = ProtheusDenuo.Sa3010s.Where(x => (x.A3Xlogsup == user || x.A3Xlogin == user) && x.DELET != "*").Select(x => new
                             {
                                 x.A3Nome,
                                 x.A3Xlogin,
@@ -1405,6 +1441,8 @@ namespace SGID.Pages.DashBoards
 
                             #endregion
 
+                            var EquipeRemove = new List<GestorComercialDash>();
+
                             Equipe.ForEach(x =>
                             {
                                 x.FaturadoMes = resultado.Where(c => c.A3Nome == x.User && c.Linha != "000011" && c.Linha != "000012").DistinctBy(x => x.Nf).Count();
@@ -1430,6 +1468,16 @@ namespace SGID.Pages.DashBoards
                                 {
                                     x.Meta = 0.0;
                                 }
+
+                                if(x.FaturadoMes == 0 && x.CirurgiasEmAberto == 0 && x.CirurgiasKamikaze == 0 && x.CirurgiasLicitacoes == 0 && x.CirurgiasValorizadas == 0)
+                                {
+                                    EquipeRemove.Add(x);
+                                }
+                            });
+
+                            EquipeRemove.ForEach(x =>
+                            {
+                                Equipe.Remove(x);
                             });
 
                             #endregion
@@ -1442,7 +1490,7 @@ namespace SGID.Pages.DashBoards
                         {
                             #region Tiago
 
-                            var vendedores = ProtheusDenuo.Sa3010s.Where(x => x.A3Xlogsup != "ANDRE.SALES" && x.A3Xlogsup != "" && x.DELET != "*" && x.A3Msblql != "1").Select(x => new
+                            var vendedores = ProtheusDenuo.Sa3010s.Where(x => x.A3Xlogsup != "ANDRE.SALES" && x.A3Xlogsup != "" && x.DELET != "*").Select(x => new
                             {
                                 x.A3Nome,
                                 x.A3Xlogin,
@@ -1649,6 +1697,8 @@ namespace SGID.Pages.DashBoards
                             }
                             #endregion
 
+                            var EquipeRemove = new List<GestorComercialDash>();
+
                             Equipe.ForEach(x =>
                             {
                                 x.FaturadoMes = resultado.Where(c => c.A3Nome == x.User).DistinctBy(x => x.Nf).Count();
@@ -1671,6 +1721,11 @@ namespace SGID.Pages.DashBoards
                                 {
                                     x.Meta = 0.0;
                                 }
+
+                                if (x.FaturadoMes == 0 && x.CirurgiasEmAberto == 0 && x.CirurgiasKamikaze == 0 && x.CirurgiasLicitacoes == 0 && x.CirurgiasValorizadas == 0)
+                                {
+                                    Equipe.Remove(x);
+                                }
                             });
 
                             #endregion
@@ -1679,7 +1734,7 @@ namespace SGID.Pages.DashBoards
                         {
                             #region Tiago
 
-                            var vendedores = ProtheusDenuo.Sa3010s.Where(x => x.A3Xlogsup != "ANDRE.SALES" && x.A3Xlogsup != "" && x.DELET != "*" && x.A3Msblql != "1").Select(x => new
+                            var vendedores = ProtheusDenuo.Sa3010s.Where(x => x.A3Xlogsup != "ANDRE.SALES" && x.A3Xlogsup != "" && x.DELET != "*").Select(x => new
                             {
                                 x.A3Nome,
                                 x.A3Xlogin,
@@ -2110,6 +2165,8 @@ namespace SGID.Pages.DashBoards
 
                             #endregion
 
+                            var EquipeRemove = new List<GestorComercialDash>();
+
                             Equipe.ForEach(x =>
                             {
                                 x.FaturadoMes = resultado.Where(c => c.A3Nome == x.User && c.Linha != "000011" && c.Linha != "000012").DistinctBy(x => x.Nf).Count();
@@ -2135,11 +2192,15 @@ namespace SGID.Pages.DashBoards
                                 {
                                     x.Meta = 0.0;
                                 }
+
+                                if (x.FaturadoMes == 0 && x.CirurgiasEmAberto == 0 && x.CirurgiasKamikaze == 0 && x.CirurgiasLicitacoes == 0 && x.CirurgiasValorizadas == 0)
+                                {
+                                    Equipe.Remove(x);
+                                }
                             });
 
                             #endregion
                         }
-
 
                     }
 
@@ -2167,7 +2228,7 @@ namespace SGID.Pages.DashBoards
                 {
                     if (Convert.ToInt32(DataInicio) < 20240228)
                     {
-                        var vendedores = ProtheusInter.Sa3010s.Where(x => (x.A3Xlogsup == user || x.A3Xlogin == user) && x.DELET != "*" && x.A3Msblql != "1").Select(x => new
+                        var vendedores = ProtheusInter.Sa3010s.Where(x => (x.A3Xlogsup == user || x.A3Xlogin == user) && x.DELET != "*").Select(x => new
                         {
                             x.A3Nome,
                             x.A3Xlogin,
@@ -2362,6 +2423,8 @@ namespace SGID.Pages.DashBoards
                         }).ToList();
                         #endregion
 
+                        var EquipeRemove = new List<GestorComercialDash>();
+
                         Equipe.ForEach(x =>
                         {
                             x.FaturadoMes = resultado.Where(c => c.A3Nome == x.User).DistinctBy(x => x.Nf).Count();
@@ -2384,13 +2447,23 @@ namespace SGID.Pages.DashBoards
                             {
                                 x.Meta = 0.0;
                             }
+
+                            if (x.FaturadoMes == 0 && x.CirurgiasEmAberto == 0 && x.CirurgiasKamikaze == 0 && x.CirurgiasLicitacoes == 0 && x.CirurgiasValorizadas == 0)
+                            {
+                                EquipeRemove.Add(x);
+                            }
+                        });
+
+                        EquipeRemove.ForEach(x =>
+                        {
+                            Equipe.Remove(x);
                         });
 
 
                     }
                     else
                     {
-                        var vendedores = ProtheusInter.Sa3010s.Where(x => (x.A3Xlogsup == user || x.A3Xlogin == user) && x.DELET != "*" && x.A3Msblql != "1").Select(x => new
+                        var vendedores = ProtheusInter.Sa3010s.Where(x => (x.A3Xlogsup == user || x.A3Xlogin == user) && x.DELET != "*" ).Select(x => new
                         {
                             x.A3Nome,
                             x.A3Xlogin,
@@ -2700,6 +2773,8 @@ namespace SGID.Pages.DashBoards
                         }).ToList();
                         #endregion
 
+                        var EquipeRemove = new List<GestorComercialDash>();
+
                         Equipe.ForEach(x =>
                         {
                             x.FaturadoMes = resultado.Where(c => c.A3Nome == x.User && c.Linha != "000011" && c.Linha != "000012").DistinctBy(x => x.Nf).Count();
@@ -2725,6 +2800,16 @@ namespace SGID.Pages.DashBoards
                             {
                                 x.Meta = 0.0;
                             }
+
+                            if (x.FaturadoMes == 0 && x.CirurgiasEmAberto == 0 && x.CirurgiasKamikaze == 0 && x.CirurgiasLicitacoes == 0 && x.CirurgiasValorizadas == 0)
+                            {
+                                EquipeRemove.Add(x);
+                            }
+                        });
+
+                        EquipeRemove.ForEach(x =>
+                        {
+                            Equipe.Remove(x);
                         });
 
                     }
@@ -2732,7 +2817,6 @@ namespace SGID.Pages.DashBoards
                 }
                 else
                 {
-
                     if (user != "TIAGO.FONSECA")
                     {
                         if (Convert.ToInt32(DataInicio) < 20240228)
@@ -2741,7 +2825,7 @@ namespace SGID.Pages.DashBoards
 
                             if (user == "ARTEMIO.COSTA") user = "LEONARDO.BRITO";
 
-                            var vendedores = ProtheusDenuo.Sa3010s.Where(x => (x.A3Xlogsup == user || x.A3Xlogin == user) && x.DELET != "*" && x.A3Msblql != "1").Select(x => new
+                            var vendedores = ProtheusDenuo.Sa3010s.Where(x => (x.A3Xlogsup == user || x.A3Xlogin == user) && x.DELET != "*").Select(x => new
                             {
                                 x.A3Nome,
                                 x.A3Xlogin,
@@ -2949,6 +3033,8 @@ namespace SGID.Pages.DashBoards
                             }
                             #endregion
 
+                            var EquipeRemove = new List<GestorComercialDash>();
+
                             Equipe.ForEach(x =>
                             {
                                 x.FaturadoMes = resultado.Where(c => c.A3Nome == x.User).DistinctBy(x => x.Nf).Count();
@@ -2971,6 +3057,16 @@ namespace SGID.Pages.DashBoards
                                 {
                                     x.Meta = 0.0;
                                 }
+
+                                if (x.FaturadoMes == 0 && x.CirurgiasEmAberto == 0 && x.CirurgiasKamikaze == 0 && x.CirurgiasLicitacoes == 0 && x.CirurgiasValorizadas == 0)
+                                {
+                                    EquipeRemove.Add(x);
+                                }
+                            });
+
+                            EquipeRemove.ForEach(x =>
+                            {
+                                Equipe.Remove(x);
                             });
 
                             #endregion
@@ -2981,7 +3077,7 @@ namespace SGID.Pages.DashBoards
 
                             if (user == "ARTEMIO.COSTA") user = "LEONARDO.BRITO";
 
-                            var vendedores = ProtheusDenuo.Sa3010s.Where(x => (x.A3Xlogsup == user || x.A3Xlogin == user) && x.DELET != "*" && x.A3Msblql != "1").Select(x => new
+                            var vendedores = ProtheusDenuo.Sa3010s.Where(x => (x.A3Xlogsup == user || x.A3Xlogin == user) && x.DELET != "*" ).Select(x => new
                             {
                                 x.A3Nome,
                                 x.A3Xlogin,
@@ -3306,6 +3402,7 @@ namespace SGID.Pages.DashBoards
 
                             #endregion
 
+                            var EquipeRemove = new List<GestorComercialDash>();
 
                             Equipe.ForEach(x =>
                             {
@@ -3332,6 +3429,16 @@ namespace SGID.Pages.DashBoards
                                 {
                                     x.Meta = 0.0;
                                 }
+
+                                if (x.FaturadoMes == 0 && x.CirurgiasEmAberto == 0 && x.CirurgiasKamikaze == 0 && x.CirurgiasLicitacoes == 0 && x.CirurgiasValorizadas == 0)
+                                {
+                                    EquipeRemove.Add(x);
+                                }
+                            });
+
+                            EquipeRemove.ForEach(x =>
+                            {
+                                Equipe.Remove(x);
                             });
 
                             #endregion
@@ -3339,12 +3446,11 @@ namespace SGID.Pages.DashBoards
                     }
                     else
                     {
-
                         if (Convert.ToInt32(DataInicio) < 20240228)
                         {
                             #region Tiago
 
-                            var vendedores = ProtheusDenuo.Sa3010s.Where(x => x.A3Xlogsup != "ANDRE.SALES" && x.A3Xlogsup != "" && x.DELET != "*" && x.A3Msblql != "1").Select(x => new
+                            var vendedores = ProtheusDenuo.Sa3010s.Where(x => x.A3Xlogsup != "ANDRE.SALES" && x.A3Xlogsup != "" && x.DELET != "*").Select(x => new
                             {
                                 x.A3Nome,
                                 x.A3Xlogin,
@@ -3551,6 +3657,8 @@ namespace SGID.Pages.DashBoards
                             }
                             #endregion
 
+                            var EquipeRemove = new List<GestorComercialDash>();
+
                             Equipe.ForEach(x =>
                             {
                                 x.FaturadoMes = resultado.Where(c => c.A3Nome == x.User).DistinctBy(x => x.Nf).Count();
@@ -3573,6 +3681,16 @@ namespace SGID.Pages.DashBoards
                                 {
                                     x.Meta = 0.0;
                                 }
+
+                                if (x.FaturadoMes == 0 && x.CirurgiasEmAberto == 0 && x.CirurgiasKamikaze == 0 && x.CirurgiasLicitacoes == 0 && x.CirurgiasValorizadas == 0)
+                                {
+                                    EquipeRemove.Add(x);
+                                }
+                            });
+
+                            EquipeRemove.ForEach(x =>
+                            {
+                                Equipe.Remove(x);
                             });
 
                             #endregion
@@ -3581,7 +3699,7 @@ namespace SGID.Pages.DashBoards
                         {
                             #region Tiago
 
-                            var vendedores = ProtheusDenuo.Sa3010s.Where(x => x.A3Xlogsup != "ANDRE.SALES" && x.A3Xlogsup != "" && x.DELET != "*" && x.A3Msblql != "1").Select(x => new
+                            var vendedores = ProtheusDenuo.Sa3010s.Where(x => x.A3Xlogsup != "ANDRE.SALES" && x.A3Xlogsup != "" && x.DELET != "*").Select(x => new
                             {
                                 x.A3Nome,
                                 x.A3Xlogin,
@@ -3902,6 +4020,8 @@ namespace SGID.Pages.DashBoards
 
                             #endregion
 
+                            var EquipeRemove = new List<GestorComercialDash>();
+
                             Equipe.ForEach(x =>
                             {
                                 x.FaturadoMes = resultado.Where(c => c.A3Nome == x.User && c.Linha != "000011" && c.Linha != "000012").DistinctBy(x => x.Nf).Count();
@@ -3927,14 +4047,21 @@ namespace SGID.Pages.DashBoards
                                 {
                                     x.Meta = 0.0;
                                 }
+
+                                if (x.FaturadoMes == 0 && x.CirurgiasEmAberto == 0 && x.CirurgiasKamikaze == 0 && x.CirurgiasLicitacoes == 0 && x.CirurgiasValorizadas == 0)
+                                {
+                                    EquipeRemove.Add(x);
+                                }
+                            });
+
+                            EquipeRemove.ForEach(x =>
+                            {
+                                Equipe.Remove(x);
                             });
 
                             #endregion
                         }
-
-
                     }
-
                 }
                 Equipe = Equipe.OrderBy(x => x.Nome).ToList();
             }
