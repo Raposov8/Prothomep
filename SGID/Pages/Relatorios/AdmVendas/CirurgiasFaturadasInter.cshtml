@@ -99,6 +99,9 @@
                     <th class="text-center">
                         Tipo Faturamento
                     </th>
+                    <th class="text-center">
+                        Tipo Cliente
+                    </th>
                 </tr>
             </thead>
             <tbody>
@@ -126,14 +129,16 @@
 
                         <td>@if (data.TipoCirur == "K")
                             {
-                                <span>KAMIKAZE</span>
+                                <span>REVELIA</span>
                             }
                             else
                             {
                                 <span>NORMAL</span>
                             }
                         </td>
-                        
+                        <td>
+                            @Html.DisplayFor(model => data.Tipo)
+                        </td>
                     </tr>
                 }
                 <tr>

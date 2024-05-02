@@ -71,7 +71,8 @@ namespace SGID.Pages.Relatorios.RH
                                  Login = SA3.A3Xlogin,
                                  Faturado = SC5.C5Nota != "" || SC5.C5Liberok == "E" && SC5.C5Blq == "" ? "S" : "N",
                                  Emissao = $"{SC5.C5Emissao.Substring(6, 2)}/{SC5.C5Emissao.Substring(4, 2)}/{SC5.C5Emissao.Substring(0, 4)}",
-                                 XDtAut = SC5.C5XDtaut
+                                 XDtAut = SC5.C5XDtaut,
+                                 Fabricante = SC6.C6Fabrica
                              }
                             ).ToList();
 
@@ -129,7 +130,8 @@ namespace SGID.Pages.Relatorios.RH
                                  Login = SA3.A3Xlogin,
                                  Faturado = SC5.C5Nota != "" || SC5.C5Liberok == "E" && SC5.C5Blq == "" ? "S" : "N",
                                  Emissao = $"{SC5.C5Emissao.Substring(6, 2)}/{SC5.C5Emissao.Substring(4, 2)}/{SC5.C5Emissao.Substring(0, 4)}",
-                                 XDtAut = SC5.C5XDtaut
+                                 XDtAut = SC5.C5XDtaut,
+                                 Fabricante = SC6.C6Fabrica
                              }
                             ).ToList();
 
@@ -159,6 +161,7 @@ namespace SGID.Pages.Relatorios.RH
                 sheet.Cells[1, 14].Value = "Vl.Unitario";
                 sheet.Cells[1, 15].Value = "Total Pedido";
                 sheet.Cells[1, 16].Value = "DT.Autorização";
+                sheet.Cells[1, 17].Value = "Fabricante";
 
                 int i = 2;
 
@@ -180,6 +183,7 @@ namespace SGID.Pages.Relatorios.RH
                     sheet.Cells[i, 14].Value = Pedido.PrcVen;
                     sheet.Cells[i, 15].Value = Pedido.Valor;
                     sheet.Cells[i, 16].Value = Pedido.XDtAut;
+                    sheet.Cells[i, 17].Value = Pedido.Fabricante;
                     i++;
                 });
 

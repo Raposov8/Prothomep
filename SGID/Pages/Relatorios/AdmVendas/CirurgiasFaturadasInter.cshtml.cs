@@ -438,6 +438,7 @@ namespace SGID.Pages.Relatorios.AdmVendas
                 sheet.Cells[1, 18].Value = "Cliente Entrega";
                 sheet.Cells[1, 19].Value = "Fornecedor";
                 sheet.Cells[1, 20].Value = "Tipo Faturamento";
+                sheet.Cells[1, 21].Value = "Tipo Cliente";
 
                 int i = 2;
 
@@ -462,7 +463,8 @@ namespace SGID.Pages.Relatorios.AdmVendas
                     sheet.Cells[i, 17].Value = Pedido.Linha;
                     sheet.Cells[i, 18].Value = Pedido.Entrega;
                     sheet.Cells[i, 19].Value = Pedido.Fornecedor;
-                    sheet.Cells[i, 20].Value = Pedido.TipoCirur == "K" ? "KAMIKAZE" : "NORMAL";
+                    sheet.Cells[i, 20].Value = Pedido.TipoCirur == "K" ? "REVELIA" : "NORMAL";
+                    sheet.Cells[1, 21].Value = Pedido.Tipo;
 
                     i++;
                 });

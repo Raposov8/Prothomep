@@ -25,6 +25,7 @@
         public double Data { get; set; }
         public string Emissao { get; set; }
         public string XDtAut { get; set; }
+        public string Fabricante { get; set; }
 
     }
 }
