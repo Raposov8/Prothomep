@@ -41,76 +41,63 @@
                         Filial
                     </th>
                     <th class="text-center">
-                        Codigo
+                        Pedido
                     </th>
                     <th class="text-center">
-                        Lote
+                        NF
                     </th>
                     <th class="text-center">
-                        Processo
+                        Emissão NF
+                    </th>
+                    <th class="text-center">
+                        Operações
                     </th>
                     <th class="text-center">
                         Agendamento
                     </th>
                     <th class="text-center">
-                        Patrimonio
+                        Produto
                     </th>
                     <th class="text-center">
-                        Valid Lote
+                        Lote
                     </th>
                     <th class="text-center">
-                        Operacao
+                        QTD
                     </th>
                     <th class="text-center">
-                        NF Saida
+                        Validade
                     </th>
                     <th class="text-center">
-                        Serie Saida
-                    </th>
-                    <th class="text-center">
-                        Emissao NF
-                    </th>
-                    <th class="text-center">
-                        IT Saida
-                    </th>
-                    <th class="text-center">
-                        QTD Saida
-                    </th>
-                    <th class="text-center">
-                        Saldo
+                        Cliente
                     </th>
                 </tr>
             </thead>
             <tbody>
-                @foreach(var data in Model.Relatorios)
+                @foreach (var data in Model.Relatorios)
                 {
-                <tr>
-                    <td>@Html.DisplayFor(model=> data.Filial)</td>
-                    <td>@Html.DisplayFor(model=> data.Codigo)</td>
-                    <td>@Html.DisplayFor(model=> data.Lote)</td>
-                    <td>@Html.DisplayFor(model=> data.Processo)</td>
-                    <td>@Html.DisplayFor(model=> data.Agendamento)</td>
-                    <td>@Html.DisplayFor(model=> data.Patrimonio)</td>
-                        @if (data.ValidLote != null)
+                    <tr>
+                        <td>@Html.DisplayFor(model => data.Filial)</td>
+                        <td>@Html.DisplayFor(model => data.Pedido)</td>
+                        <td>@Html.DisplayFor(model => data.NF)</td>
+                        <td>@Html.DisplayFor(model => data.EmissaoNF)</td>
+                        <td>@Html.DisplayFor(model => data.Operacoes)</td>
+                        <td>@Html.DisplayFor(model => data.Agendamento)</td>
+                        <td>@Html.DisplayFor(model => data.Produto)</td>
+                        <td>@Html.DisplayFor(model => data.Lote)</td>
+                        <td>@Html.DisplayFor(model => data.QTD)</td>
+                        @if (data.Validade != null)
                         {
-                            <td>@data.ValidLote</td>
+                            <td>@data.Validade</td>
                         }
                         else
                         {
                             <td></td>
                         }
-                    <td>@Html.DisplayFor(model=> data.Operacao)</td>
-                    <td>@Html.DisplayFor(model=> data.NFSaida)</td>
-                    <td>@Html.DisplayFor(model=> data.SerieSaida)</td>
-                    <td>@Html.DisplayFor(model=> data.EmissaoNf)</td>
-                    <td>@Html.DisplayFor(model=> data.ItSaida)</td>
-                    <td>@Html.DisplayFor(model=> data.QtdSaida)</td>
-                    <td>@Html.DisplayFor(model=> data.Saldo)</td>
-                </tr>
+                        <td>@Html.DisplayFor(model => data.Cliente)</td>
+                    </tr>
                 }
             </tbody>
         </table>
     </div>
 </div>
-
 

@@ -708,7 +708,6 @@
                             $("#Resumo3").html(data.ultimaResp2);
                             $("#ResumoVisi3").html(data.dataResp2);
 
-
                             $("#MedicoProxima").val(data.medico);
                             $("#LocalProxima").val(data.local)
                             $("#DataHoraProxima").val(data.dataProxima)
@@ -724,8 +723,6 @@
                             {
                                 $(`radio[name='MotVis3'][value='${data.motvisita}']`).prop('checked', true);
                             }
-
-                            
 
                             if(data.status != 0)
                             {
