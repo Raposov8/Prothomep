@@ -14,5 +14,6 @@
         public string Validade { get; set; }
         public string Cliente { get; set; }
         public string NfOri { get; set; }
+        public string Patrimonio { get; set; }
     }
 }

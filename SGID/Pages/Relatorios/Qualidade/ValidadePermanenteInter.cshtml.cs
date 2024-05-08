@@ -64,6 +64,7 @@ namespace SGID.Pages.Relatorios.Qualidade
                                  QTD = SD20.D2Quant,
                                  Pedido = b.C5Num,
                                  Cliente = b.C5Nomcli,
+                                 Patrimonio = c.C6Upatrim
                              }).ToList();
 
 
@@ -116,6 +117,7 @@ namespace SGID.Pages.Relatorios.Qualidade
                                  QTD = SD20.D2Quant,
                                  Pedido = b.C5Num,
                                  Cliente = b.C5Nomcli,
+                                 Patrimonio = c.C6Upatrim
                              }).ToList();
 
                 Relatorios = query.OrderBy(x => x.EmissaoNF).ToList();
@@ -131,11 +133,12 @@ namespace SGID.Pages.Relatorios.Qualidade
                 sheet.Cells[1, 4].Value = "Emissão NF";
                 sheet.Cells[1, 5].Value = "Operações";
                 sheet.Cells[1, 6].Value = "Agendamento";
-                sheet.Cells[1, 7].Value = "Produto";
-                sheet.Cells[1, 8].Value = "Lote";
-                sheet.Cells[1, 9].Value = "QTD";
-                sheet.Cells[1, 10].Value = "Validade";
-                sheet.Cells[1, 11].Value = "Cliente";
+                sheet.Cells[1, 7].Value = "Patrimonio";
+                sheet.Cells[1, 8].Value = "Produto";
+                sheet.Cells[1, 9].Value = "Lote";
+                sheet.Cells[1, 10].Value = "QTD";
+                sheet.Cells[1, 11].Value = "Validade";
+                sheet.Cells[1, 12].Value = "Cliente";
 
                 int i = 2;
 
@@ -147,12 +150,12 @@ namespace SGID.Pages.Relatorios.Qualidade
                     sheet.Cells[i, 4].Value = Pedido.EmissaoNF;
                     sheet.Cells[i, 5].Value = Pedido.Operacoes;
                     sheet.Cells[i, 6].Value = Pedido.Agendamento;
-                    sheet.Cells[i, 7].Value = Pedido.Produto;
-                    sheet.Cells[i, 8].Value = Pedido.Lote;
-                    sheet.Cells[i, 9].Value = Pedido.QTD;
-                    sheet.Cells[i, 10].Value = Pedido.Validade;
-                    sheet.Cells[i, 11].Value = Pedido.Cliente;
-
+                    sheet.Cells[i, 7].Value = Pedido.Patrimonio;
+                    sheet.Cells[i, 8].Value = Pedido.Produto;
+                    sheet.Cells[i, 9].Value = Pedido.Lote;
+                    sheet.Cells[i, 10].Value = Pedido.QTD;
+                    sheet.Cells[i, 11].Value = Pedido.Validade;
+                    sheet.Cells[i, 12].Value = Pedido.Cliente;
 
                     i++;
                 });

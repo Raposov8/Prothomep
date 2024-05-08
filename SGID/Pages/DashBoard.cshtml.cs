@@ -9,6 +9,7 @@ using SGID.Data.Models;
 using SGID.Models.Email;
 using System.Net.Mail;
 using SGID.Models.Inter;
+using System.ServiceModel.Channels;
 
 namespace SGID.Pages
 {
@@ -43,7 +44,7 @@ namespace SGID.Pages
         }
         public IActionResult OnGet(int id)
         {
-           
+
             if (User.IsInRole("Instrumentador"))
             {
                 return LocalRedirect("/instrumentador/dashboardinstrumentador");

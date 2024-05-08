@@ -78,11 +78,11 @@
                 <div class="row" id="Sub">
                     <div class="form-group col-md-4">
                         <label>Nome Colaborador Subtituido</label>
-                        <input type="text" class="form-control" id="NomeSub" name="NomeSub" />
+                        <input type="text" class="form-control" id="NomeSub" name="NomeSub" onkeyup="" />
                     </div>
                     <div class="form-group col-md-4">
                         <label>Cargo Substituido</label>
-                        <input type="text" class="form-control" id="CargoSub" name="CargoSub" />
+                        <input type="text" class="form-control" id="CargoSub" name="CargoSub" onkeyup="" />
                     </div>
                 </div>
                 <div class="row">
@@ -178,6 +178,8 @@
 
                 var Nome = $("#NomeSub").val();
 
+                $("#NomeSub").val(Nome.normalize('NFD').replace(/[^a-zA-Z0-9-\u0300-\u036f\s]/g, '').replace('-', ''));
+
                 if (Nome != undefined) {
 
                     if (Nome.trim().length === 0) 
@@ -221,6 +223,8 @@
             $("#CargoSub").on('change', function (e) {
 
                 var CargoSub = $("#CargoSub").val();
+
+                $("#CargoSub").val(Nome.normalize('NFD').replace(/[^a-zA-Z0-9-\u0300-\u036f\s]/g, '').replace('-', ''));
 
                 if (CargoSub != undefined) 
                 {
