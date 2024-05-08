@@ -24,5 +24,6 @@ namespace SGID.Models.AdmVendas
         public string DataRecRA { get; set; }
         public string DataValorizacao { get; set; }
         public string DataEmissao { get; set; }
+        public string Empresa { get; set; }
     }
 }

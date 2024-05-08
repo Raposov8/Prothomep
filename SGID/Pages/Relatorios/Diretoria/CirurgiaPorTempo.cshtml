@@ -15,6 +15,18 @@
 
 @using (@Html.BeginForm(FormMethod.Post))
 {
+    <div class="form-group mx-sm-3 mb-2 col-lg-3">
+        <select type="text" class="form-control" id="NReduz" name="NReduz" placeholder="Cliente">
+            <option value="">TODOS....</option>
+            @foreach (var data in Model.Clientes)
+            {
+                <option value="@data">@data</option>
+            }
+        </select>
+    </div>
+    <div class="form-group mx-sm-3 mb-2 col-lg-1">
+        <button type="submit" class="btn btn-primary mb-2">Pesquisar</button>
+    </div>
     <div class="form-group mx-sm-3 mb-2 col-lg-1">
         <button type="submit" class="btn btn-secondary mb-2" asp-page-handler="Export"><i class="fa-solid fa-file-excel"></i> Exportar Excel</button>
     </div>
@@ -85,6 +97,9 @@
                     <th class="text-center">
                         DATA VALORIZADA
                     </th>
+                    <th class="text-center">
+                        EMPRESA
+                    </th>
                 </tr>
             </thead>
             <tbody>
@@ -116,7 +131,7 @@
                         <td>@Html.DisplayFor(model => data.DataEnvRA)</td>
                         <td>@Html.DisplayFor(model => data.DataRecRA)</td>
                         <td>@Html.DisplayFor(model => data.DataValorizacao)</td>
-                        
+                        <td>@Html.DisplayFor(model => data.Empresa)</td>
                     </tr>
                 }
                 <tr>
@@ -128,3 +143,13 @@
         </table>
     </div>
 </div>
+
+@section scripts
+{
+    <script>
+        $(document).ready(function () {
+            var NReduz = '@Model.Cliente'.replace('&#xC7;', 'Ç').replace('&#xC3;', 'Ã').replace('&#xD5;', 'Õ')
+            $('#NReduz').val(NReduz);
+        })
+    </script>
+}
