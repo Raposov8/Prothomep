@@ -15,20 +15,35 @@
 
 @using (@Html.BeginForm(FormMethod.Post))
 {
-    <div class="form-group mx-sm-3 mb-2 col-lg-3">
-        <select type="text" class="form-control" id="NReduz" name="NReduz" placeholder="Cliente">
-            <option value="">TODOS....</option>
-            @foreach (var data in Model.Clientes)
-            {
-                <option value="@data">@data</option>
-            }
-        </select>
-    </div>
-    <div class="form-group mx-sm-3 mb-2 col-lg-1">
-        <button type="submit" class="btn btn-primary mb-2">Pesquisar</button>
-    </div>
-    <div class="form-group mx-sm-3 mb-2 col-lg-1">
-        <button type="submit" class="btn btn-secondary mb-2" asp-page-handler="Export"><i class="fa-solid fa-file-excel"></i> Exportar Excel</button>
+    <div class="row">
+        <div class="form-group mx-sm-3 mb-2 col-lg-3">
+            <select type="text" class="form-control" id="NReduz" name="NReduz" placeholder="Cliente">
+                <option value="">TODOS....</option>
+                @foreach (var data in Model.Clientes)
+                {
+                    <option value="@data">@data</option>
+                }
+            </select>
+        </div>
+        <div class="form-group mx-sm-3 mb-2 col-lg-3">
+            <select type="text" class="form-control" id="Empresa" name="Empresa" placeholder="Empresa">
+                <option value="">TODOS....</option>
+                <option value="INTERMEDIC">INTERMEDIC</option>
+                <option value="DENUO">DENUO</option>
+            </select>
+        </div>
+        <div class="form-group mx-sm-3 mb-2 col-lg-3">
+            <select type="text" class="form-control" id="Valor" name="Valor" placeholder="Valor">
+                <option value="1">Maior ao Menor</option>
+                <option value="2">Menor ao Maior</option>
+            </select>
+        </div>
+        <div class="form-group mx-sm-3 mb-2 col-lg-1">
+            <button type="submit" class="btn btn-primary mb-2">Pesquisar</button>
+        </div>
+        <div class="form-group mx-sm-3 mb-2 col-lg-1">
+            <button type="submit" class="btn btn-secondary mb-2" asp-page-handler="Export"><i class="fa-solid fa-file-excel"></i> Exportar Excel</button>
+        </div>
     </div>
 }
 
@@ -103,7 +118,7 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (var data in Model.Relatorio.OrderBy(x=> x.Cliente))
+                @foreach (var data in Model.Relatorio)
                 {
                     <tr>
                         <td>@Html.DisplayFor(model => data.Vendedor)</td>
@@ -150,6 +165,12 @@
         $(document).ready(function () {
             var NReduz = '@Model.Cliente'.replace('&#xC7;', 'Ç').replace('&#xC3;', 'Ã').replace('&#xD5;', 'Õ')
             $('#NReduz').val(NReduz);
+
+            var Empresa = '@Model.Empresa'.replace('&#xC7;', 'Ç').replace('&#xC3;', 'Ã').replace('&#xD5;', 'Õ')
+            $('#Empresa').val(Empresa);
+
+            var Valor = '@Model.Valor'.replace('&#xC7;', 'Ç').replace('&#xC3;', 'Ã').replace('&#xD5;', 'Õ')
+            $('#Valor').val(Valor);
         })
     </script>
 }

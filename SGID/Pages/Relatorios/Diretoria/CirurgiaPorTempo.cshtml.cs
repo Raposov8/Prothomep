@@ -5,7 +5,6 @@ using SGID.Data;
 using SGID.Data.Models;
 using SGID.Models.AdmVendas;
 using SGID.Models.Denuo;
-using SGID.Models.Estoque.RelatorioFaturamentoNFFab;
 using SGID.Models.Inter;
 
 namespace SGID.Pages.Relatorios.Diretoria
@@ -22,6 +21,8 @@ namespace SGID.Pages.Relatorios.Diretoria
         public double Total { get; set; }
         public string Anging { get; set; }
         public string Cliente { get; set; }
+        public string Empresa { get; set; }
+        public string Valor { get; set; }
 
         public CirurgiaPorTempoModel(TOTVSDENUOContext context, ApplicationDbContext sgid,TOTVSINTERContext inter)
         {
@@ -36,187 +37,199 @@ namespace SGID.Pages.Relatorios.Diretoria
             {
                 string user = User.Identity.Name.Split("@")[0].ToUpper();
 
+                #region Relatorio
+                Relatorio = (from SC5 in Protheus.Sc5010s
+                             join SC6 in Protheus.Sc6010s on new { Filial = SC5.C5Filial, Num = SC5.C5Num } equals new { Filial = SC6.C6Filial, Num = SC6.C6Num }
+                             join SA1 in Protheus.Sa1010s on SC5.C5Cliente equals SA1.A1Cod
+                             join SA3 in Protheus.Sa3010s on SC5.C5Vend1 equals SA3.A3Cod
+                             join SF4 in Protheus.Sf4010s on SC6.C6Tes equals SF4.F4Codigo
+                             join SB1 in Protheus.Sb1010s on SC6.C6Produto equals SB1.B1Cod
+                             join SUA in Protheus.Sua010s on SC5.C5Uproces equals SUA.UaNum into Sr
+                             from c in Sr.DefaultIfEmpty()
+                             where SC5.DELET != "*" && SC6.C6Filial == SC5.C5Filial && SC6.C6Num == SC5.C5Num
+                             && SC6.C6Nota == ""
+                             && SC6.C6Blq != "R"
+                             && SC6.DELET != "*"
+                             && SF4.F4Codigo == SC6.C6Tes
+                             && SF4.F4Duplic == "S"
+                             && SF4.DELET != "*" && SA1.A1Cod == SC5.C5Cliente
+                             && SA1.A1Loja == SC5.C5Lojacli && SA1.DELET != "*" && SA3.A3Cod == SC5.C5Vend1 && SA3.DELET != "*"
+                             && (SC5.C5Utpoper == "F" || SC5.C5Utpoper == "T")
+                             && SB1.DELET != "*" && SC6.C6Produto == SB1.B1Cod
+                             && SA1.A1Cgc != "04715053000140" && SA1.A1Cgc != "04715053000220" && SA1.A1Cgc != "01390500000140"
+                             orderby SC5.C5Num, SC5.C5Emissao descending
+                             select new RelatorioCirurgiaAFaturar
+                             {
+                                 Vendedor = SC5.C5Nomvend,
+                                 Cliente = SC5.C5Nomcli,
+                                 GrupoCliente = "",
+                                 ClienteEntrega = SC5.C5Nomclie,
+                                 Medico = SC5.C5XNmmed,
+                                 Convenio = SC5.C5XNmpla,
+                                 Cirurgia = SC5.C5XDtcir,
+                                 Hoje = "",
+                                 Dias = 0,
+                                 Anging = "",
+                                 Paciente = SC5.C5XNmpac,
+                                 Matric = "",
+                                 INPART = "",
+                                 Valor = SC6.C6Valor,
+                                 PVFaturamento = SC5.C5Num,
+                                 Status = c.UaXstatus,
+                                 DataEnvRA = " / / ",
+                                 DataRecRA = " / / ",
+                                 DataValorizacao = SC5.C5Xdtval,
+                                 Emissao = Convert.ToInt32(SC5.C5Emissao)
+                             }
+                        ).GroupBy(x => new
+                        {
+                            x.Vendedor,
+                            x.Cliente,
+                            x.GrupoCliente,
+                            x.ClienteEntrega,
+                            x.Medico,
+                            x.Convenio,
+                            x.Cirurgia,
+                            x.Hoje,
+                            x.Dias,
+                            x.Anging,
+                            x.Paciente,
+                            x.Matric,
+                            x.INPART,
+                            x.PVFaturamento,
+                            x.Status,
+                            x.DataEnvRA,
+                            x.DataRecRA,
+                            x.DataValorizacao,
+                            x.Emissao
+                        })
+                        .Select(x => new RelatorioCirurgiaAFaturar
+                        {
+                            Vendedor = x.Key.Vendedor,
+                            Cliente = x.Key.Cliente,
+                            GrupoCliente = x.Key.GrupoCliente,
+                            ClienteEntrega = x.Key.ClienteEntrega,
+                            Medico = x.Key.Medico,
+                            Convenio = x.Key.Convenio,
+                            Cirurgia = x.Key.Cirurgia,
+                            Hoje = x.Key.Hoje,
+                            Dias = x.Key.Dias,
+                            Anging = x.Key.Anging,
+                            Paciente = x.Key.Paciente,
+                            Matric = x.Key.Matric,
+                            INPART = x.Key.INPART,
+                            Valor = x.Sum(c => c.Valor),
+                            PVFaturamento = x.Key.PVFaturamento,
+                            Status = x.Key.Status,
+                            DataEnvRA = x.Key.DataEnvRA,
+                            DataRecRA = x.Key.DataRecRA,
+                            DataValorizacao = x.Key.DataValorizacao,
+                            Empresa = "INTERMEDIC",
+                            Emissao = x.Key.Emissao
+                        }).ToList();
+
+                RelatorioInter = (from SC5 in ProtheusInter.Sc5010s
+                                  join SC6 in ProtheusInter.Sc6010s on new { Filial = SC5.C5Filial, Num = SC5.C5Num } equals new { Filial = SC6.C6Filial, Num = SC6.C6Num }
+                                  join SA1 in ProtheusInter.Sa1010s on SC5.C5Cliente equals SA1.A1Cod
+                                  join SA3 in ProtheusInter.Sa3010s on SC5.C5Vend1 equals SA3.A3Cod
+                                  join SF4 in ProtheusInter.Sf4010s on SC6.C6Tes equals SF4.F4Codigo
+                                  join SB1 in ProtheusInter.Sb1010s on SC6.C6Produto equals SB1.B1Cod
+                                  join SUA in ProtheusInter.Sua010s on SC5.C5Uproces equals SUA.UaNum into Sr
+                                  from c in Sr.DefaultIfEmpty()
+                                  where SC5.DELET != "*" && SC6.C6Filial == SC5.C5Filial && SC6.C6Num == SC5.C5Num
+                                  && SC6.C6Nota == ""
+                                  && SC6.C6Blq != "R"
+                                  && SC6.DELET != "*"
+                                  && SF4.F4Codigo == SC6.C6Tes
+                                  && SF4.F4Duplic == "S"
+                                  && SF4.DELET != "*" && SA1.A1Cod == SC5.C5Cliente
+                                  && SA1.A1Loja == SC5.C5Lojacli && SA1.DELET != "*" && SA3.A3Cod == SC5.C5Vend1 && SA3.DELET != "*"
+                                  && (SC5.C5Utpoper == "F" || SC5.C5Utpoper == "T")
+                                  && SB1.DELET != "*" && SC6.C6Produto == SB1.B1Cod
+                                  && SA1.A1Cgc != "04715053000140" && SA1.A1Cgc != "04715053000220" && SA1.A1Cgc != "01390500000140"
+                                  orderby SC5.C5Num, SC5.C5Emissao descending
+                                  select new RelatorioCirurgiaAFaturar
+                                  {
+                                      Vendedor = SC5.C5Nomvend,
+                                      Cliente = SC5.C5Nomcli,
+                                      GrupoCliente = "",
+                                      ClienteEntrega = SC5.C5Nomclie,
+                                      Medico = SC5.C5XNmmed,
+                                      Convenio = SC5.C5XNmpla,
+                                      Cirurgia = SC5.C5XDtcir,
+                                      Hoje = "",
+                                      Dias = 0,
+                                      Anging = "",
+                                      Paciente = SC5.C5XNmpac,
+                                      Matric = "",
+                                      INPART = "",
+                                      Valor = SC6.C6Valor,
+                                      PVFaturamento = SC5.C5Num,
+                                      Status = c.UaXstatus,
+                                      DataEnvRA = " / / ",
+                                      DataRecRA = " / / ",
+                                      DataValorizacao = SC5.C5Xdtval,
+                                      Emissao = Convert.ToInt32(SC5.C5Emissao)
+                                  }
+                        ).GroupBy(x => new
+                        {
+                            x.Vendedor,
+                            x.Cliente,
+                            x.GrupoCliente,
+                            x.ClienteEntrega,
+                            x.Medico,
+                            x.Convenio,
+                            x.Cirurgia,
+                            x.Hoje,
+                            x.Dias,
+                            x.Anging,
+                            x.Paciente,
+                            x.Matric,
+                            x.INPART,
+                            x.PVFaturamento,
+                            x.Status,
+                            x.DataEnvRA,
+                            x.DataRecRA,
+                            x.DataValorizacao,
+                            x.Emissao
+                        })
+                        .Select(x => new RelatorioCirurgiaAFaturar
+                        {
+                            Vendedor = x.Key.Vendedor,
+                            Cliente = x.Key.Cliente,
+                            GrupoCliente = x.Key.GrupoCliente,
+                            ClienteEntrega = x.Key.ClienteEntrega,
+                            Medico = x.Key.Medico,
+                            Convenio = x.Key.Convenio,
+                            Cirurgia = x.Key.Cirurgia,
+                            Hoje = x.Key.Hoje,
+                            Dias = x.Key.Dias,
+                            Anging = x.Key.Anging,
+                            Paciente = x.Key.Paciente,
+                            Matric = x.Key.Matric,
+                            INPART = x.Key.INPART,
+                            Valor = x.Sum(c => c.Valor),
+                            PVFaturamento = x.Key.PVFaturamento,
+                            Status = x.Key.Status,
+                            DataEnvRA = x.Key.DataEnvRA,
+                            DataRecRA = x.Key.DataRecRA,
+                            DataValorizacao = x.Key.DataValorizacao,
+                            Empresa = "INTERMEDIC",
+                            Emissao = x.Key.Emissao
+                        }).ToList();
+                #endregion
+
+                Relatorio = Relatorio.Concat(RelatorioInter).ToList();
+
+                Relatorio = Relatorio.Where(x => x.Status != "C").ToList();
+
                 if (id == "1")
                 {
                     DateTime ago = DateTime.Now.AddMonths(-3);
 
                     var Data = Convert.ToInt32(ago.ToString("yyyy/MM/dd").Replace("/", ""));
 
-                    Relatorio = (from SC5 in Protheus.Sc5010s
-                                 join SC6 in Protheus.Sc6010s on new { Filial = SC5.C5Filial, Num = SC5.C5Num } equals new { Filial = SC6.C6Filial, Num = SC6.C6Num }
-                                 join SA1 in Protheus.Sa1010s on SC5.C5Cliente equals SA1.A1Cod
-                                 join SA3 in Protheus.Sa3010s on SC5.C5Vend1 equals SA3.A3Cod
-                                 join SF4 in Protheus.Sf4010s on SC6.C6Tes equals SF4.F4Codigo
-                                 join SB1 in Protheus.Sb1010s on SC6.C6Produto equals SB1.B1Cod
-                                 join SUA in Protheus.Sua010s on SC5.C5Uproces equals SUA.UaNum into Sr
-                                 from c in Sr.DefaultIfEmpty()
-                                 where SC5.DELET != "*" && SC6.C6Filial == SC5.C5Filial && SC6.C6Num == SC5.C5Num
-                                 && SC6.C6Nota == ""
-                                 && SC6.C6Blq != "R"
-                                 && SC6.DELET != "*"
-                                 && SF4.F4Codigo == SC6.C6Tes
-                                 && SF4.F4Duplic == "S"
-                                 && SF4.DELET != "*" && SA1.A1Cod == SC5.C5Cliente
-                                 && SA1.A1Loja == SC5.C5Lojacli && SA1.DELET != "*" && SA3.A3Cod == SC5.C5Vend1 && SA3.DELET != "*"
-                                 && (SC5.C5Utpoper == "F" || SC5.C5Utpoper == "T")
-                                 && SB1.DELET != "*" && SC6.C6Produto == SB1.B1Cod
-                                 && SA1.A1Cgc != "04715053000140" && SA1.A1Cgc != "04715053000220" && SA1.A1Cgc != "01390500000140"
-                                 && (int)(object)SC5.C5Emissao >= Data
-                                 orderby SC5.C5Num, SC5.C5Emissao descending
-                                 select new RelatorioCirurgiaAFaturar
-                                 {
-                                     Vendedor = SC5.C5Nomvend,
-                                     Cliente = SC5.C5Nomcli,
-                                     GrupoCliente = "",
-                                     ClienteEntrega = SC5.C5Nomclie,
-                                     Medico = SC5.C5XNmmed,
-                                     Convenio = SC5.C5XNmpla,
-                                     Cirurgia = SC5.C5XDtcir,
-                                     Hoje = "",
-                                     Dias = 0,
-                                     Anging = "",
-                                     Paciente = SC5.C5XNmpac,
-                                     Matric = "",
-                                     INPART = "",
-                                     Valor = SC6.C6Valor,
-                                     PVFaturamento = SC5.C5Num,
-                                     Status = c.UaXstatus,
-                                     DataEnvRA = " / / ",
-                                     DataRecRA = " / / ",
-                                     DataValorizacao = SC5.C5Xdtval,
-                                 }
-                            ).GroupBy(x => new
-                            {
-                                x.Vendedor,
-                                x.Cliente,
-                                x.GrupoCliente,
-                                x.ClienteEntrega,
-                                x.Medico,
-                                x.Convenio,
-                                x.Cirurgia,
-                                x.Hoje,
-                                x.Dias,
-                                x.Anging,
-                                x.Paciente,
-                                x.Matric,
-                                x.INPART,
-                                x.PVFaturamento,
-                                x.Status,
-                                x.DataEnvRA,
-                                x.DataRecRA,
-                                x.DataValorizacao
-                            })
-                            .Select(x => new RelatorioCirurgiaAFaturar
-                            {
-                                Vendedor = x.Key.Vendedor,
-                                Cliente = x.Key.Cliente,
-                                GrupoCliente = x.Key.GrupoCliente,
-                                ClienteEntrega = x.Key.ClienteEntrega,
-                                Medico = x.Key.Medico,
-                                Convenio = x.Key.Convenio,
-                                Cirurgia = x.Key.Cirurgia,
-                                Hoje = x.Key.Hoje,
-                                Dias = x.Key.Dias,
-                                Anging = x.Key.Anging,
-                                Paciente = x.Key.Paciente,
-                                Matric = x.Key.Matric,
-                                INPART = x.Key.INPART,
-                                Valor = x.Sum(c => c.Valor),
-                                PVFaturamento = x.Key.PVFaturamento,
-                                Status = x.Key.Status,
-                                DataEnvRA = x.Key.DataEnvRA,
-                                DataRecRA = x.Key.DataRecRA,
-                                DataValorizacao = x.Key.DataValorizacao,
-                                Empresa = "DENUO"
-                            }).ToList();
-
-                    RelatorioInter = (from SC5 in ProtheusInter.Sc5010s
-                                      join SC6 in ProtheusInter.Sc6010s on new { Filial = SC5.C5Filial, Num = SC5.C5Num } equals new { Filial = SC6.C6Filial, Num = SC6.C6Num }
-                                      join SA1 in ProtheusInter.Sa1010s on SC5.C5Cliente equals SA1.A1Cod
-                                      join SA3 in ProtheusInter.Sa3010s on SC5.C5Vend1 equals SA3.A3Cod
-                                      join SF4 in ProtheusInter.Sf4010s on SC6.C6Tes equals SF4.F4Codigo
-                                      join SB1 in ProtheusInter.Sb1010s on SC6.C6Produto equals SB1.B1Cod
-                                      join SUA in ProtheusInter.Sua010s on SC5.C5Uproces equals SUA.UaNum into Sr
-                                      from c in Sr.DefaultIfEmpty()
-                                      where SC5.DELET != "*" && SC6.C6Filial == SC5.C5Filial && SC6.C6Num == SC5.C5Num
-                                      && SC6.C6Nota == ""
-                                      && SC6.C6Blq != "R"
-                                      && SC6.DELET != "*"
-                                      && SF4.F4Codigo == SC6.C6Tes
-                                      && SF4.F4Duplic == "S"
-                                      && SF4.DELET != "*" && SA1.A1Cod == SC5.C5Cliente
-                                      && SA1.A1Loja == SC5.C5Lojacli && SA1.DELET != "*" && SA3.A3Cod == SC5.C5Vend1 && SA3.DELET != "*"
-                                      && (SC5.C5Utpoper == "F" || SC5.C5Utpoper == "T")
-                                      && SB1.DELET != "*" && SC6.C6Produto == SB1.B1Cod
-                                      && SA1.A1Cgc != "04715053000140" && SA1.A1Cgc != "04715053000220" && SA1.A1Cgc != "01390500000140"
-                                      && (int)(object)SC5.C5Emissao >= Data
-                                      orderby SC5.C5Num, SC5.C5Emissao descending
-                                      select new RelatorioCirurgiaAFaturar
-                                      {
-                                          Vendedor = SC5.C5Nomvend,
-                                          Cliente = SC5.C5Nomcli,
-                                          GrupoCliente = "",
-                                          ClienteEntrega = SC5.C5Nomclie,
-                                          Medico = SC5.C5XNmmed,
-                                          Convenio = SC5.C5XNmpla,
-                                          Cirurgia = SC5.C5XDtcir,
-                                          Hoje = "",
-                                          Dias = 0,
-                                          Anging = "",
-                                          Paciente = SC5.C5XNmpac,
-                                          Matric = "",
-                                          INPART = "",
-                                          Valor = SC6.C6Valor,
-                                          PVFaturamento = SC5.C5Num,
-                                          Status = c.UaXstatus,
-                                          DataEnvRA = " / / ",
-                                          DataRecRA = " / / ",
-                                          DataValorizacao = SC5.C5Xdtval,
-                                      }
-                            ).GroupBy(x => new
-                            {
-                                x.Vendedor,
-                                x.Cliente,
-                                x.GrupoCliente,
-                                x.ClienteEntrega,
-                                x.Medico,
-                                x.Convenio,
-                                x.Cirurgia,
-                                x.Hoje,
-                                x.Dias,
-                                x.Anging,
-                                x.Paciente,
-                                x.Matric,
-                                x.INPART,
-                                x.PVFaturamento,
-                                x.Status,
-                                x.DataEnvRA,
-                                x.DataRecRA,
-                                x.DataValorizacao
-                            })
-                            .Select(x => new RelatorioCirurgiaAFaturar
-                            {
-                                Vendedor = x.Key.Vendedor,
-                                Cliente = x.Key.Cliente,
-                                GrupoCliente = x.Key.GrupoCliente,
-                                ClienteEntrega = x.Key.ClienteEntrega,
-                                Medico = x.Key.Medico,
-                                Convenio = x.Key.Convenio,
-                                Cirurgia = x.Key.Cirurgia,
-                                Hoje = x.Key.Hoje,
-                                Dias = x.Key.Dias,
-                                Anging = x.Key.Anging,
-                                Paciente = x.Key.Paciente,
-                                Matric = x.Key.Matric,
-                                INPART = x.Key.INPART,
-                                Valor = x.Sum(c => c.Valor),
-                                PVFaturamento = x.Key.PVFaturamento,
-                                Status = x.Key.Status,
-                                DataEnvRA = x.Key.DataEnvRA,
-                                DataRecRA = x.Key.DataRecRA,
-                                DataValorizacao = x.Key.DataValorizacao,
-                                Empresa = "INTERMEDIC"
-                            }).ToList();
+                    Relatorio = Relatorio.Where(x => x.Emissao >= Data).ToList();
                 }
                 else if (id == "2")
                 {
@@ -226,185 +239,7 @@ namespace SGID.Pages.Relatorios.Diretoria
                     var Data = Convert.ToInt32(ago.ToString("yyyy/MM/dd").Replace("/", ""));
                     var Data2 = Convert.ToInt32(After.ToString("yyyy/MM/dd").Replace("/", ""));
 
-                    Relatorio = (from SC5 in Protheus.Sc5010s
-                                 join SC6 in Protheus.Sc6010s on new { Filial = SC5.C5Filial, Num = SC5.C5Num } equals new { Filial = SC6.C6Filial, Num = SC6.C6Num }
-                                 join SA1 in Protheus.Sa1010s on SC5.C5Cliente equals SA1.A1Cod
-                                 join SA3 in Protheus.Sa3010s on SC5.C5Vend1 equals SA3.A3Cod
-                                 join SF4 in Protheus.Sf4010s on SC6.C6Tes equals SF4.F4Codigo
-                                 join SB1 in Protheus.Sb1010s on SC6.C6Produto equals SB1.B1Cod
-                                 join SUA in Protheus.Sua010s on SC5.C5Uproces equals SUA.UaNum into Sr
-                                 from c in Sr.DefaultIfEmpty()
-                                 where SC5.DELET != "*" && SC6.C6Filial == SC5.C5Filial && SC6.C6Num == SC5.C5Num
-                                 && SC6.C6Nota == ""
-                                 && SC6.C6Blq != "R"
-                                 && SC6.DELET != "*"
-                                 && SF4.F4Codigo == SC6.C6Tes
-                                 && SF4.F4Duplic == "S"
-                                 && SF4.DELET != "*" && SA1.A1Cod == SC5.C5Cliente
-                                 && SA1.A1Loja == SC5.C5Lojacli && SA1.DELET != "*" && SA3.A3Cod == SC5.C5Vend1 && SA3.DELET != "*"
-                                 && (SC5.C5Utpoper == "F" || SC5.C5Utpoper == "T")
-                                 && SB1.DELET != "*" && SC6.C6Produto == SB1.B1Cod
-                                 && SA1.A1Cgc != "04715053000140" && SA1.A1Cgc != "04715053000220" && SA1.A1Cgc != "01390500000140"
-                                 && (int)(object)SC5.C5Emissao >= Data
-                                 && (int)(object)SC5.C5Emissao < Data2
-                                 orderby SC5.C5Num, SC5.C5Emissao descending
-                                 select new RelatorioCirurgiaAFaturar
-                                 {
-                                     Vendedor = SC5.C5Nomvend,
-                                     Cliente = SC5.C5Nomcli,
-                                     GrupoCliente = "",
-                                     ClienteEntrega = SC5.C5Nomclie,
-                                     Medico = SC5.C5XNmmed,
-                                     Convenio = SC5.C5XNmpla,
-                                     Cirurgia = SC5.C5XDtcir,
-                                     Hoje = "",
-                                     Dias = 0,
-                                     Anging = "",
-                                     Paciente = SC5.C5XNmpac,
-                                     Matric = "",
-                                     INPART = "",
-                                     Valor = SC6.C6Valor,
-                                     PVFaturamento = SC5.C5Num,
-                                     Status = c.UaXstatus,
-                                     DataEnvRA = " / / ",
-                                     DataRecRA = " / / ",
-                                     DataValorizacao = SC5.C5Xdtval,
-                                 }
-                            ).GroupBy(x => new
-                            {
-                                x.Vendedor,
-                                x.Cliente,
-                                x.GrupoCliente,
-                                x.ClienteEntrega,
-                                x.Medico,
-                                x.Convenio,
-                                x.Cirurgia,
-                                x.Hoje,
-                                x.Dias,
-                                x.Anging,
-                                x.Paciente,
-                                x.Matric,
-                                x.INPART,
-                                x.PVFaturamento,
-                                x.Status,
-                                x.DataEnvRA,
-                                x.DataRecRA,
-                                x.DataValorizacao
-                            })
-                            .Select(x => new RelatorioCirurgiaAFaturar
-                            {
-                                Vendedor = x.Key.Vendedor,
-                                Cliente = x.Key.Cliente,
-                                GrupoCliente = x.Key.GrupoCliente,
-                                ClienteEntrega = x.Key.ClienteEntrega,
-                                Medico = x.Key.Medico,
-                                Convenio = x.Key.Convenio,
-                                Cirurgia = x.Key.Cirurgia,
-                                Hoje = x.Key.Hoje,
-                                Dias = x.Key.Dias,
-                                Anging = x.Key.Anging,
-                                Paciente = x.Key.Paciente,
-                                Matric = x.Key.Matric,
-                                INPART = x.Key.INPART,
-                                Valor = x.Sum(c => c.Valor),
-                                PVFaturamento = x.Key.PVFaturamento,
-                                Status = x.Key.Status,
-                                DataEnvRA = x.Key.DataEnvRA,
-                                DataRecRA = x.Key.DataRecRA,
-                                DataValorizacao = x.Key.DataValorizacao,
-                                Empresa = "DENUO"
-
-                            }).ToList();
-
-                    RelatorioInter = (from SC5 in ProtheusInter.Sc5010s
-                                      join SC6 in ProtheusInter.Sc6010s on new { Filial = SC5.C5Filial, Num = SC5.C5Num } equals new { Filial = SC6.C6Filial, Num = SC6.C6Num }
-                                      join SA1 in ProtheusInter.Sa1010s on SC5.C5Cliente equals SA1.A1Cod
-                                      join SA3 in ProtheusInter.Sa3010s on SC5.C5Vend1 equals SA3.A3Cod
-                                      join SF4 in ProtheusInter.Sf4010s on SC6.C6Tes equals SF4.F4Codigo
-                                      join SB1 in ProtheusInter.Sb1010s on SC6.C6Produto equals SB1.B1Cod
-                                      join SUA in ProtheusInter.Sua010s on SC5.C5Uproces equals SUA.UaNum into Sr
-                                      from c in Sr.DefaultIfEmpty()
-                                      where SC5.DELET != "*" && SC6.C6Filial == SC5.C5Filial && SC6.C6Num == SC5.C5Num
-                                      && SC6.C6Nota == ""
-                                      && SC6.C6Blq != "R"
-                                      && SC6.DELET != "*"
-                                      && SF4.F4Codigo == SC6.C6Tes
-                                      && SF4.F4Duplic == "S"
-                                      && SF4.DELET != "*" && SA1.A1Cod == SC5.C5Cliente
-                                      && SA1.A1Loja == SC5.C5Lojacli && SA1.DELET != "*" && SA3.A3Cod == SC5.C5Vend1 && SA3.DELET != "*"
-                                      && (SC5.C5Utpoper == "F" || SC5.C5Utpoper == "T")
-                                      && SB1.DELET != "*" && SC6.C6Produto == SB1.B1Cod
-                                      && SA1.A1Cgc != "04715053000140" && SA1.A1Cgc != "04715053000220" && SA1.A1Cgc != "01390500000140"
-                                      && (int)(object)SC5.C5Emissao >= Data
-                                      && (int)(object)SC5.C5Emissao < Data2
-                                      orderby SC5.C5Num, SC5.C5Emissao descending
-                                      select new RelatorioCirurgiaAFaturar
-                                      {
-                                          Vendedor = SC5.C5Nomvend,
-                                          Cliente = SC5.C5Nomcli,
-                                          GrupoCliente = "",
-                                          ClienteEntrega = SC5.C5Nomclie,
-                                          Medico = SC5.C5XNmmed,
-                                          Convenio = SC5.C5XNmpla,
-                                          Cirurgia = SC5.C5XDtcir,
-                                          Hoje = "",
-                                          Dias = 0,
-                                          Anging = "",
-                                          Paciente = SC5.C5XNmpac,
-                                          Matric = "",
-                                          INPART = "",
-                                          Valor = SC6.C6Valor,
-                                          PVFaturamento = SC5.C5Num,
-                                          Status = c.UaXstatus,
-                                          DataEnvRA = " / / ",
-                                          DataRecRA = " / / ",
-                                          DataValorizacao = SC5.C5Xdtval,
-                                      }
-                            ).GroupBy(x => new
-                            {
-                                x.Vendedor,
-                                x.Cliente,
-                                x.GrupoCliente,
-                                x.ClienteEntrega,
-                                x.Medico,
-                                x.Convenio,
-                                x.Cirurgia,
-                                x.Hoje,
-                                x.Dias,
-                                x.Anging,
-                                x.Paciente,
-                                x.Matric,
-                                x.INPART,
-                                x.PVFaturamento,
-                                x.Status,
-                                x.DataEnvRA,
-                                x.DataRecRA,
-                                x.DataValorizacao
-                            })
-                            .Select(x => new RelatorioCirurgiaAFaturar
-                            {
-                                Vendedor = x.Key.Vendedor,
-                                Cliente = x.Key.Cliente,
-                                GrupoCliente = x.Key.GrupoCliente,
-                                ClienteEntrega = x.Key.ClienteEntrega,
-                                Medico = x.Key.Medico,
-                                Convenio = x.Key.Convenio,
-                                Cirurgia = x.Key.Cirurgia,
-                                Hoje = x.Key.Hoje,
-                                Dias = x.Key.Dias,
-                                Anging = x.Key.Anging,
-                                Paciente = x.Key.Paciente,
-                                Matric = x.Key.Matric,
-                                INPART = x.Key.INPART,
-                                Valor = x.Sum(c => c.Valor),
-                                PVFaturamento = x.Key.PVFaturamento,
-                                Status = x.Key.Status,
-                                DataEnvRA = x.Key.DataEnvRA,
-                                DataRecRA = x.Key.DataRecRA,
-                                DataValorizacao = x.Key.DataValorizacao,
-                                Empresa = "INTERMEDIC"
-
-                            }).ToList();
+                    Relatorio = Relatorio.Where(x => x.Emissao >= Data && x.Emissao < Data2).ToList();
                 }
                 else
                 {
@@ -412,187 +247,12 @@ namespace SGID.Pages.Relatorios.Diretoria
 
                     var Data = Convert.ToInt32(ago.ToString("yyyy/MM/dd").Replace("/", ""));
 
-                    Relatorio = (from SC5 in Protheus.Sc5010s
-                                 join SC6 in Protheus.Sc6010s on new { Filial = SC5.C5Filial, Num = SC5.C5Num } equals new { Filial = SC6.C6Filial, Num = SC6.C6Num }
-                                 join SA1 in Protheus.Sa1010s on SC5.C5Cliente equals SA1.A1Cod
-                                 join SA3 in Protheus.Sa3010s on SC5.C5Vend1 equals SA3.A3Cod
-                                 join SF4 in Protheus.Sf4010s on SC6.C6Tes equals SF4.F4Codigo
-                                 join SB1 in Protheus.Sb1010s on SC6.C6Produto equals SB1.B1Cod
-                                 join SUA in Protheus.Sua010s on SC5.C5Uproces equals SUA.UaNum into Sr
-                                 from c in Sr.DefaultIfEmpty()
-                                 where SC5.DELET != "*" && SC6.C6Filial == SC5.C5Filial && SC6.C6Num == SC5.C5Num
-                                 && SC6.C6Nota == ""
-                                 && SC6.C6Blq != "R"
-                                 && SC6.DELET != "*"
-                                 && SF4.F4Codigo == SC6.C6Tes
-                                 && SF4.F4Duplic == "S"
-                                 && SF4.DELET != "*" && SA1.A1Cod == SC5.C5Cliente
-                                 && SA1.A1Loja == SC5.C5Lojacli && SA1.DELET != "*" && SA3.A3Cod == SC5.C5Vend1 && SA3.DELET != "*"
-                                 && (SC5.C5Utpoper == "F" || SC5.C5Utpoper == "T")
-                                 && SB1.DELET != "*" && SC6.C6Produto == SB1.B1Cod
-                                 && SA1.A1Cgc != "04715053000140" && SA1.A1Cgc != "04715053000220" && SA1.A1Cgc != "01390500000140"
-                                 && (int)(object)SC5.C5Emissao < Data
-                                 orderby SC5.C5Num, SC5.C5Emissao descending
-                                 select new RelatorioCirurgiaAFaturar
-                                 {
-                                     Vendedor = SC5.C5Nomvend,
-                                     Cliente = SC5.C5Nomcli,
-                                     GrupoCliente = "",
-                                     ClienteEntrega = SC5.C5Nomclie,
-                                     Medico = SC5.C5XNmmed,
-                                     Convenio = SC5.C5XNmpla,
-                                     Cirurgia = SC5.C5XDtcir,
-                                     Hoje = "",
-                                     Dias = 0,
-                                     Anging = "",
-                                     Paciente = SC5.C5XNmpac,
-                                     Matric = "",
-                                     INPART = "",
-                                     Valor = SC6.C6Valor,
-                                     PVFaturamento = SC5.C5Num,
-                                     Status = c.UaXstatus,
-                                     DataEnvRA = " / / ",
-                                     DataRecRA = " / / ",
-                                     DataValorizacao = SC5.C5Xdtval,
-                                 }
-                            ).GroupBy(x => new
-                            {
-                                x.Vendedor,
-                                x.Cliente,
-                                x.GrupoCliente,
-                                x.ClienteEntrega,
-                                x.Medico,
-                                x.Convenio,
-                                x.Cirurgia,
-                                x.Hoje,
-                                x.Dias,
-                                x.Anging,
-                                x.Paciente,
-                                x.Matric,
-                                x.INPART,
-                                x.PVFaturamento,
-                                x.Status,
-                                x.DataEnvRA,
-                                x.DataRecRA,
-                                x.DataValorizacao
-                            })
-                            .Select(x => new RelatorioCirurgiaAFaturar
-                            {
-                                Vendedor = x.Key.Vendedor,
-                                Cliente = x.Key.Cliente,
-                                GrupoCliente = x.Key.GrupoCliente,
-                                ClienteEntrega = x.Key.ClienteEntrega,
-                                Medico = x.Key.Medico,
-                                Convenio = x.Key.Convenio,
-                                Cirurgia = x.Key.Cirurgia,
-                                Hoje = x.Key.Hoje,
-                                Dias = x.Key.Dias,
-                                Anging = x.Key.Anging,
-                                Paciente = x.Key.Paciente,
-                                Matric = x.Key.Matric,
-                                INPART = x.Key.INPART,
-                                Valor = x.Sum(c => c.Valor),
-                                PVFaturamento = x.Key.PVFaturamento,
-                                Status = x.Key.Status,
-                                DataEnvRA = x.Key.DataEnvRA,
-                                DataRecRA = x.Key.DataRecRA,
-                                DataValorizacao = x.Key.DataValorizacao,
-                                Empresa = "DENUO"
-                            }).ToList();
-
-
-                    RelatorioInter = (from SC5 in Protheus.Sc5010s
-                                      join SC6 in Protheus.Sc6010s on new { Filial = SC5.C5Filial, Num = SC5.C5Num } equals new { Filial = SC6.C6Filial, Num = SC6.C6Num }
-                                      join SA1 in Protheus.Sa1010s on SC5.C5Cliente equals SA1.A1Cod
-                                      join SA3 in Protheus.Sa3010s on SC5.C5Vend1 equals SA3.A3Cod
-                                      join SF4 in Protheus.Sf4010s on SC6.C6Tes equals SF4.F4Codigo
-                                      join SB1 in Protheus.Sb1010s on SC6.C6Produto equals SB1.B1Cod
-                                      join SUA in Protheus.Sua010s on SC5.C5Uproces equals SUA.UaNum into Sr
-                                      from c in Sr.DefaultIfEmpty()
-                                      where SC5.DELET != "*" && SC6.C6Filial == SC5.C5Filial && SC6.C6Num == SC5.C5Num
-                                      && SC6.C6Nota == ""
-                                      && SC6.C6Blq != "R"
-                                      && SC6.DELET != "*"
-                                      && SF4.F4Codigo == SC6.C6Tes
-                                      && SF4.F4Duplic == "S"
-                                      && SF4.DELET != "*" && SA1.A1Cod == SC5.C5Cliente
-                                      && SA1.A1Loja == SC5.C5Lojacli && SA1.DELET != "*" && SA3.A3Cod == SC5.C5Vend1 && SA3.DELET != "*"
-                                      && (SC5.C5Utpoper == "F" || SC5.C5Utpoper == "T")
-                                      && SB1.DELET != "*" && SC6.C6Produto == SB1.B1Cod
-                                      && SA1.A1Cgc != "04715053000140" && SA1.A1Cgc != "04715053000220" && SA1.A1Cgc != "01390500000140"
-                                      && (int)(object)SC5.C5Emissao < Data
-                                      orderby SC5.C5Num, SC5.C5Emissao descending
-                                      select new RelatorioCirurgiaAFaturar
-                                      {
-                                          Vendedor = SC5.C5Nomvend,
-                                          Cliente = SC5.C5Nomcli,
-                                          GrupoCliente = "",
-                                          ClienteEntrega = SC5.C5Nomclie,
-                                          Medico = SC5.C5XNmmed,
-                                          Convenio = SC5.C5XNmpla,
-                                          Cirurgia = SC5.C5XDtcir,
-                                          Hoje = "",
-                                          Dias = 0,
-                                          Anging = "",
-                                          Paciente = SC5.C5XNmpac,
-                                          Matric = "",
-                                          INPART = "",
-                                          Valor = SC6.C6Valor,
-                                          PVFaturamento = SC5.C5Num,
-                                          Status = c.UaXstatus,
-                                          DataEnvRA = " / / ",
-                                          DataRecRA = " / / ",
-                                          DataValorizacao = SC5.C5Xdtval,
-                                      }
-                            ).GroupBy(x => new
-                            {
-                                x.Vendedor,
-                                x.Cliente,
-                                x.GrupoCliente,
-                                x.ClienteEntrega,
-                                x.Medico,
-                                x.Convenio,
-                                x.Cirurgia,
-                                x.Hoje,
-                                x.Dias,
-                                x.Anging,
-                                x.Paciente,
-                                x.Matric,
-                                x.INPART,
-                                x.PVFaturamento,
-                                x.Status,
-                                x.DataEnvRA,
-                                x.DataRecRA,
-                                x.DataValorizacao
-                            })
-                            .Select(x => new RelatorioCirurgiaAFaturar
-                            {
-                                Vendedor = x.Key.Vendedor,
-                                Cliente = x.Key.Cliente,
-                                GrupoCliente = x.Key.GrupoCliente,
-                                ClienteEntrega = x.Key.ClienteEntrega,
-                                Medico = x.Key.Medico,
-                                Convenio = x.Key.Convenio,
-                                Cirurgia = x.Key.Cirurgia,
-                                Hoje = x.Key.Hoje,
-                                Dias = x.Key.Dias,
-                                Anging = x.Key.Anging,
-                                Paciente = x.Key.Paciente,
-                                Matric = x.Key.Matric,
-                                INPART = x.Key.INPART,
-                                Valor = x.Sum(c => c.Valor),
-                                PVFaturamento = x.Key.PVFaturamento,
-                                Status = x.Key.Status,
-                                DataEnvRA = x.Key.DataEnvRA,
-                                DataRecRA = x.Key.DataRecRA,
-                                DataValorizacao = x.Key.DataValorizacao,
-                                Empresa = "INTERMEDIC"
-                            }).ToList();
+                    Relatorio = Relatorio.Where(x => x.Emissao < Data).ToList();
                 }
 
-                Relatorio = Relatorio.Concat(RelatorioInter).ToList();
-
                 Clientes = Relatorio.Select(x => x.Cliente).Distinct().ToList();
+
+                this.Valor = "1";
 
                 var data = DateTime.Now;
 
@@ -640,7 +300,8 @@ namespace SGID.Pages.Relatorios.Diretoria
                     Total += x.Valor;
                 });
 
-                Relatorio = Relatorio.OrderBy(x => x.DataEmissao).ToList();
+                Relatorio = Relatorio.OrderBy(x => x.Cliente).ThenByDescending(x => x.Valor).ToList();
+            
             }
             catch (Exception e)
             {
@@ -649,11 +310,197 @@ namespace SGID.Pages.Relatorios.Diretoria
             }
         }
 
-        public IActionResult OnPost(string id, string NReduz)
+        public IActionResult OnPost(string id, string NReduz,string Empresa,string Valor)
         {
             try
             {
                 string user = User.Identity.Name.Split("@")[0].ToUpper();
+
+                #region Relatorio
+                Relatorio = (from SC5 in Protheus.Sc5010s
+                             join SC6 in Protheus.Sc6010s on new { Filial = SC5.C5Filial, Num = SC5.C5Num } equals new { Filial = SC6.C6Filial, Num = SC6.C6Num }
+                             join SA1 in Protheus.Sa1010s on SC5.C5Cliente equals SA1.A1Cod
+                             join SA3 in Protheus.Sa3010s on SC5.C5Vend1 equals SA3.A3Cod
+                             join SF4 in Protheus.Sf4010s on SC6.C6Tes equals SF4.F4Codigo
+                             join SB1 in Protheus.Sb1010s on SC6.C6Produto equals SB1.B1Cod
+                             join SUA in Protheus.Sua010s on SC5.C5Uproces equals SUA.UaNum into Sr
+                             from c in Sr.DefaultIfEmpty()
+                             where SC5.DELET != "*" && SC6.C6Filial == SC5.C5Filial && SC6.C6Num == SC5.C5Num
+                             && SC6.C6Nota == ""
+                             && SC6.C6Blq != "R"
+                             && SC6.DELET != "*"
+                             && SF4.F4Codigo == SC6.C6Tes
+                             && SF4.F4Duplic == "S"
+                             && SF4.DELET != "*" && SA1.A1Cod == SC5.C5Cliente
+                             && SA1.A1Loja == SC5.C5Lojacli && SA1.DELET != "*" && SA3.A3Cod == SC5.C5Vend1 && SA3.DELET != "*"
+                             && (SC5.C5Utpoper == "F" || SC5.C5Utpoper == "T")
+                             && SB1.DELET != "*" && SC6.C6Produto == SB1.B1Cod
+                             && SA1.A1Cgc != "04715053000140" && SA1.A1Cgc != "04715053000220" && SA1.A1Cgc != "01390500000140"
+                             orderby SC5.C5Num, SC5.C5Emissao descending
+                             select new RelatorioCirurgiaAFaturar
+                             {
+                                 Vendedor = SC5.C5Nomvend,
+                                 Cliente = SC5.C5Nomcli,
+                                 GrupoCliente = "",
+                                 ClienteEntrega = SC5.C5Nomclie,
+                                 Medico = SC5.C5XNmmed,
+                                 Convenio = SC5.C5XNmpla,
+                                 Cirurgia = SC5.C5XDtcir,
+                                 Hoje = "",
+                                 Dias = 0,
+                                 Anging = "",
+                                 Paciente = SC5.C5XNmpac,
+                                 Matric = "",
+                                 INPART = "",
+                                 Valor = SC6.C6Valor,
+                                 PVFaturamento = SC5.C5Num,
+                                 Status = c.UaXstatus,
+                                 DataEnvRA = " / / ",
+                                 DataRecRA = " / / ",
+                                 DataValorizacao = SC5.C5Xdtval,
+                                 Emissao = Convert.ToInt32(SC5.C5Emissao)
+                             }
+                        ).GroupBy(x => new
+                        {
+                            x.Vendedor,
+                            x.Cliente,
+                            x.GrupoCliente,
+                            x.ClienteEntrega,
+                            x.Medico,
+                            x.Convenio,
+                            x.Cirurgia,
+                            x.Hoje,
+                            x.Dias,
+                            x.Anging,
+                            x.Paciente,
+                            x.Matric,
+                            x.INPART,
+                            x.PVFaturamento,
+                            x.Status,
+                            x.DataEnvRA,
+                            x.DataRecRA,
+                            x.DataValorizacao,
+                            x.Emissao
+                        })
+                        .Select(x => new RelatorioCirurgiaAFaturar
+                        {
+                            Vendedor = x.Key.Vendedor,
+                            Cliente = x.Key.Cliente,
+                            GrupoCliente = x.Key.GrupoCliente,
+                            ClienteEntrega = x.Key.ClienteEntrega,
+                            Medico = x.Key.Medico,
+                            Convenio = x.Key.Convenio,
+                            Cirurgia = x.Key.Cirurgia,
+                            Hoje = x.Key.Hoje,
+                            Dias = x.Key.Dias,
+                            Anging = x.Key.Anging,
+                            Paciente = x.Key.Paciente,
+                            Matric = x.Key.Matric,
+                            INPART = x.Key.INPART,
+                            Valor = x.Sum(c => c.Valor),
+                            PVFaturamento = x.Key.PVFaturamento,
+                            Status = x.Key.Status,
+                            DataEnvRA = x.Key.DataEnvRA,
+                            DataRecRA = x.Key.DataRecRA,
+                            DataValorizacao = x.Key.DataValorizacao,
+                            Empresa = "INTERMEDIC",
+                            Emissao = x.Key.Emissao
+                        }).ToList();
+
+                RelatorioInter = (from SC5 in ProtheusInter.Sc5010s
+                                  join SC6 in ProtheusInter.Sc6010s on new { Filial = SC5.C5Filial, Num = SC5.C5Num } equals new { Filial = SC6.C6Filial, Num = SC6.C6Num }
+                                  join SA1 in ProtheusInter.Sa1010s on SC5.C5Cliente equals SA1.A1Cod
+                                  join SA3 in ProtheusInter.Sa3010s on SC5.C5Vend1 equals SA3.A3Cod
+                                  join SF4 in ProtheusInter.Sf4010s on SC6.C6Tes equals SF4.F4Codigo
+                                  join SB1 in ProtheusInter.Sb1010s on SC6.C6Produto equals SB1.B1Cod
+                                  join SUA in ProtheusInter.Sua010s on SC5.C5Uproces equals SUA.UaNum into Sr
+                                  from c in Sr.DefaultIfEmpty()
+                                  where SC5.DELET != "*" && SC6.C6Filial == SC5.C5Filial && SC6.C6Num == SC5.C5Num
+                                  && SC6.C6Nota == ""
+                                  && SC6.C6Blq != "R"
+                                  && SC6.DELET != "*"
+                                  && SF4.F4Codigo == SC6.C6Tes
+                                  && SF4.F4Duplic == "S"
+                                  && SF4.DELET != "*" && SA1.A1Cod == SC5.C5Cliente
+                                  && SA1.A1Loja == SC5.C5Lojacli && SA1.DELET != "*" && SA3.A3Cod == SC5.C5Vend1 && SA3.DELET != "*"
+                                  && (SC5.C5Utpoper == "F" || SC5.C5Utpoper == "T")
+                                  && SB1.DELET != "*" && SC6.C6Produto == SB1.B1Cod
+                                  && SA1.A1Cgc != "04715053000140" && SA1.A1Cgc != "04715053000220" && SA1.A1Cgc != "01390500000140"
+                                  orderby SC5.C5Num, SC5.C5Emissao descending
+                                  select new RelatorioCirurgiaAFaturar
+                                  {
+                                      Vendedor = SC5.C5Nomvend,
+                                      Cliente = SC5.C5Nomcli,
+                                      GrupoCliente = "",
+                                      ClienteEntrega = SC5.C5Nomclie,
+                                      Medico = SC5.C5XNmmed,
+                                      Convenio = SC5.C5XNmpla,
+                                      Cirurgia = SC5.C5XDtcir,
+                                      Hoje = "",
+                                      Dias = 0,
+                                      Anging = "",
+                                      Paciente = SC5.C5XNmpac,
+                                      Matric = "",
+                                      INPART = "",
+                                      Valor = SC6.C6Valor,
+                                      PVFaturamento = SC5.C5Num,
+                                      Status = c.UaXstatus,
+                                      DataEnvRA = " / / ",
+                                      DataRecRA = " / / ",
+                                      DataValorizacao = SC5.C5Xdtval,
+                                      Emissao = Convert.ToInt32(SC5.C5Emissao)
+                                  }
+                        ).GroupBy(x => new
+                        {
+                            x.Vendedor,
+                            x.Cliente,
+                            x.GrupoCliente,
+                            x.ClienteEntrega,
+                            x.Medico,
+                            x.Convenio,
+                            x.Cirurgia,
+                            x.Hoje,
+                            x.Dias,
+                            x.Anging,
+                            x.Paciente,
+                            x.Matric,
+                            x.INPART,
+                            x.PVFaturamento,
+                            x.Status,
+                            x.DataEnvRA,
+                            x.DataRecRA,
+                            x.DataValorizacao,
+                            x.Emissao
+                        })
+                        .Select(x => new RelatorioCirurgiaAFaturar
+                        {
+                            Vendedor = x.Key.Vendedor,
+                            Cliente = x.Key.Cliente,
+                            GrupoCliente = x.Key.GrupoCliente,
+                            ClienteEntrega = x.Key.ClienteEntrega,
+                            Medico = x.Key.Medico,
+                            Convenio = x.Key.Convenio,
+                            Cirurgia = x.Key.Cirurgia,
+                            Hoje = x.Key.Hoje,
+                            Dias = x.Key.Dias,
+                            Anging = x.Key.Anging,
+                            Paciente = x.Key.Paciente,
+                            Matric = x.Key.Matric,
+                            INPART = x.Key.INPART,
+                            Valor = x.Sum(c => c.Valor),
+                            PVFaturamento = x.Key.PVFaturamento,
+                            Status = x.Key.Status,
+                            DataEnvRA = x.Key.DataEnvRA,
+                            DataRecRA = x.Key.DataRecRA,
+                            DataValorizacao = x.Key.DataValorizacao,
+                            Empresa = "INTERMEDIC",
+                            Emissao = x.Key.Emissao
+                        }).ToList();
+                #endregion
+
+                Relatorio = Relatorio.Concat(RelatorioInter).ToList();
+
+                Relatorio = Relatorio.Where(x => x.Status != "C").ToList();
 
                 if (id == "1")
                 {
@@ -661,181 +508,7 @@ namespace SGID.Pages.Relatorios.Diretoria
 
                     var Data = Convert.ToInt32(ago.ToString("yyyy/MM/dd").Replace("/", ""));
 
-                    Relatorio = (from SC5 in Protheus.Sc5010s
-                                 join SC6 in Protheus.Sc6010s on new { Filial = SC5.C5Filial, Num = SC5.C5Num } equals new { Filial = SC6.C6Filial, Num = SC6.C6Num }
-                                 join SA1 in Protheus.Sa1010s on SC5.C5Cliente equals SA1.A1Cod
-                                 join SA3 in Protheus.Sa3010s on SC5.C5Vend1 equals SA3.A3Cod
-                                 join SF4 in Protheus.Sf4010s on SC6.C6Tes equals SF4.F4Codigo
-                                 join SB1 in Protheus.Sb1010s on SC6.C6Produto equals SB1.B1Cod
-                                 join SUA in Protheus.Sua010s on SC5.C5Uproces equals SUA.UaNum into Sr
-                                 from c in Sr.DefaultIfEmpty()
-                                 where SC5.DELET != "*" && SC6.C6Filial == SC5.C5Filial && SC6.C6Num == SC5.C5Num
-                                 && SC6.C6Nota == ""
-                                 && SC6.C6Blq != "R"
-                                 && SC6.DELET != "*"
-                                 && SF4.F4Codigo == SC6.C6Tes
-                                 && SF4.F4Duplic == "S"
-                                 && SF4.DELET != "*" && SA1.A1Cod == SC5.C5Cliente
-                                 && SA1.A1Loja == SC5.C5Lojacli && SA1.DELET != "*" && SA3.A3Cod == SC5.C5Vend1 && SA3.DELET != "*"
-                                 && (SC5.C5Utpoper == "F" || SC5.C5Utpoper == "T")
-                                 && SB1.DELET != "*" && SC6.C6Produto == SB1.B1Cod
-                                 && SA1.A1Cgc != "04715053000140" && SA1.A1Cgc != "04715053000220" && SA1.A1Cgc != "01390500000140"
-                                 && (int)(object)SC5.C5Emissao >= Data
-                                 orderby SC5.C5Num, SC5.C5Emissao descending
-                                 select new RelatorioCirurgiaAFaturar
-                                 {
-                                     Vendedor = SC5.C5Nomvend,
-                                     Cliente = SC5.C5Nomcli,
-                                     GrupoCliente = "",
-                                     ClienteEntrega = SC5.C5Nomclie,
-                                     Medico = SC5.C5XNmmed,
-                                     Convenio = SC5.C5XNmpla,
-                                     Cirurgia = SC5.C5XDtcir,
-                                     Hoje = "",
-                                     Dias = 0,
-                                     Anging = "",
-                                     Paciente = SC5.C5XNmpac,
-                                     Matric = "",
-                                     INPART = "",
-                                     Valor = SC6.C6Valor,
-                                     PVFaturamento = SC5.C5Num,
-                                     Status = c.UaXstatus,
-                                     DataEnvRA = " / / ",
-                                     DataRecRA = " / / ",
-                                     DataValorizacao = SC5.C5Xdtval,
-                                 }
-                            ).GroupBy(x => new
-                            {
-                                x.Vendedor,
-                                x.Cliente,
-                                x.GrupoCliente,
-                                x.ClienteEntrega,
-                                x.Medico,
-                                x.Convenio,
-                                x.Cirurgia,
-                                x.Hoje,
-                                x.Dias,
-                                x.Anging,
-                                x.Paciente,
-                                x.Matric,
-                                x.INPART,
-                                x.PVFaturamento,
-                                x.Status,
-                                x.DataEnvRA,
-                                x.DataRecRA,
-                                x.DataValorizacao
-                            })
-                            .Select(x => new RelatorioCirurgiaAFaturar
-                            {
-                                Vendedor = x.Key.Vendedor,
-                                Cliente = x.Key.Cliente,
-                                GrupoCliente = x.Key.GrupoCliente,
-                                ClienteEntrega = x.Key.ClienteEntrega,
-                                Medico = x.Key.Medico,
-                                Convenio = x.Key.Convenio,
-                                Cirurgia = x.Key.Cirurgia,
-                                Hoje = x.Key.Hoje,
-                                Dias = x.Key.Dias,
-                                Anging = x.Key.Anging,
-                                Paciente = x.Key.Paciente,
-                                Matric = x.Key.Matric,
-                                INPART = x.Key.INPART,
-                                Valor = x.Sum(c => c.Valor),
-                                PVFaturamento = x.Key.PVFaturamento,
-                                Status = x.Key.Status,
-                                DataEnvRA = x.Key.DataEnvRA,
-                                DataRecRA = x.Key.DataRecRA,
-                                DataValorizacao = x.Key.DataValorizacao,
-                                Empresa = "DENUO"
-                            }).ToList();
-
-                    RelatorioInter = (from SC5 in ProtheusInter.Sc5010s
-                                      join SC6 in ProtheusInter.Sc6010s on new { Filial = SC5.C5Filial, Num = SC5.C5Num } equals new { Filial = SC6.C6Filial, Num = SC6.C6Num }
-                                      join SA1 in ProtheusInter.Sa1010s on SC5.C5Cliente equals SA1.A1Cod
-                                      join SA3 in ProtheusInter.Sa3010s on SC5.C5Vend1 equals SA3.A3Cod
-                                      join SF4 in ProtheusInter.Sf4010s on SC6.C6Tes equals SF4.F4Codigo
-                                      join SB1 in ProtheusInter.Sb1010s on SC6.C6Produto equals SB1.B1Cod
-                                      join SUA in ProtheusInter.Sua010s on SC5.C5Uproces equals SUA.UaNum into Sr
-                                      from c in Sr.DefaultIfEmpty()
-                                      where SC5.DELET != "*" && SC6.C6Filial == SC5.C5Filial && SC6.C6Num == SC5.C5Num
-                                      && SC6.C6Nota == ""
-                                      && SC6.C6Blq != "R"
-                                      && SC6.DELET != "*"
-                                      && SF4.F4Codigo == SC6.C6Tes
-                                      && SF4.F4Duplic == "S"
-                                      && SF4.DELET != "*" && SA1.A1Cod == SC5.C5Cliente
-                                      && SA1.A1Loja == SC5.C5Lojacli && SA1.DELET != "*" && SA3.A3Cod == SC5.C5Vend1 && SA3.DELET != "*"
-                                      && (SC5.C5Utpoper == "F" || SC5.C5Utpoper == "T")
-                                      && SB1.DELET != "*" && SC6.C6Produto == SB1.B1Cod
-                                      && SA1.A1Cgc != "04715053000140" && SA1.A1Cgc != "04715053000220" && SA1.A1Cgc != "01390500000140"
-                                      && (int)(object)SC5.C5Emissao >= Data
-                                      orderby SC5.C5Num, SC5.C5Emissao descending
-                                      select new RelatorioCirurgiaAFaturar
-                                      {
-                                          Vendedor = SC5.C5Nomvend,
-                                          Cliente = SC5.C5Nomcli,
-                                          GrupoCliente = "",
-                                          ClienteEntrega = SC5.C5Nomclie,
-                                          Medico = SC5.C5XNmmed,
-                                          Convenio = SC5.C5XNmpla,
-                                          Cirurgia = SC5.C5XDtcir,
-                                          Hoje = "",
-                                          Dias = 0,
-                                          Anging = "",
-                                          Paciente = SC5.C5XNmpac,
-                                          Matric = "",
-                                          INPART = "",
-                                          Valor = SC6.C6Valor,
-                                          PVFaturamento = SC5.C5Num,
-                                          Status = c.UaXstatus,
-                                          DataEnvRA = " / / ",
-                                          DataRecRA = " / / ",
-                                          DataValorizacao = SC5.C5Xdtval,
-                                      }
-                            ).GroupBy(x => new
-                            {
-                                x.Vendedor,
-                                x.Cliente,
-                                x.GrupoCliente,
-                                x.ClienteEntrega,
-                                x.Medico,
-                                x.Convenio,
-                                x.Cirurgia,
-                                x.Hoje,
-                                x.Dias,
-                                x.Anging,
-                                x.Paciente,
-                                x.Matric,
-                                x.INPART,
-                                x.PVFaturamento,
-                                x.Status,
-                                x.DataEnvRA,
-                                x.DataRecRA,
-                                x.DataValorizacao
-                            })
-                            .Select(x => new RelatorioCirurgiaAFaturar
-                            {
-                                Vendedor = x.Key.Vendedor,
-                                Cliente = x.Key.Cliente,
-                                GrupoCliente = x.Key.GrupoCliente,
-                                ClienteEntrega = x.Key.ClienteEntrega,
-                                Medico = x.Key.Medico,
-                                Convenio = x.Key.Convenio,
-                                Cirurgia = x.Key.Cirurgia,
-                                Hoje = x.Key.Hoje,
-                                Dias = x.Key.Dias,
-                                Anging = x.Key.Anging,
-                                Paciente = x.Key.Paciente,
-                                Matric = x.Key.Matric,
-                                INPART = x.Key.INPART,
-                                Valor = x.Sum(c => c.Valor),
-                                PVFaturamento = x.Key.PVFaturamento,
-                                Status = x.Key.Status,
-                                DataEnvRA = x.Key.DataEnvRA,
-                                DataRecRA = x.Key.DataRecRA,
-                                DataValorizacao = x.Key.DataValorizacao,
-                                Empresa = "INTERMEDIC"
-                            }).ToList();
+                    Relatorio = Relatorio.Where(x => x.Emissao >= Data).ToList();
                 }
                 else if (id == "2")
                 {
@@ -845,185 +518,7 @@ namespace SGID.Pages.Relatorios.Diretoria
                     var Data = Convert.ToInt32(ago.ToString("yyyy/MM/dd").Replace("/", ""));
                     var Data2 = Convert.ToInt32(After.ToString("yyyy/MM/dd").Replace("/", ""));
 
-                    Relatorio = (from SC5 in Protheus.Sc5010s
-                                 join SC6 in Protheus.Sc6010s on new { Filial = SC5.C5Filial, Num = SC5.C5Num } equals new { Filial = SC6.C6Filial, Num = SC6.C6Num }
-                                 join SA1 in Protheus.Sa1010s on SC5.C5Cliente equals SA1.A1Cod
-                                 join SA3 in Protheus.Sa3010s on SC5.C5Vend1 equals SA3.A3Cod
-                                 join SF4 in Protheus.Sf4010s on SC6.C6Tes equals SF4.F4Codigo
-                                 join SB1 in Protheus.Sb1010s on SC6.C6Produto equals SB1.B1Cod
-                                 join SUA in Protheus.Sua010s on SC5.C5Uproces equals SUA.UaNum into Sr
-                                 from c in Sr.DefaultIfEmpty()
-                                 where SC5.DELET != "*" && SC6.C6Filial == SC5.C5Filial && SC6.C6Num == SC5.C5Num
-                                 && SC6.C6Nota == ""
-                                 && SC6.C6Blq != "R"
-                                 && SC6.DELET != "*"
-                                 && SF4.F4Codigo == SC6.C6Tes
-                                 && SF4.F4Duplic == "S"
-                                 && SF4.DELET != "*" && SA1.A1Cod == SC5.C5Cliente
-                                 && SA1.A1Loja == SC5.C5Lojacli && SA1.DELET != "*" && SA3.A3Cod == SC5.C5Vend1 && SA3.DELET != "*"
-                                 && (SC5.C5Utpoper == "F" || SC5.C5Utpoper == "T")
-                                 && SB1.DELET != "*" && SC6.C6Produto == SB1.B1Cod
-                                 && SA1.A1Cgc != "04715053000140" && SA1.A1Cgc != "04715053000220" && SA1.A1Cgc != "01390500000140"
-                                 && (int)(object)SC5.C5Emissao >= Data
-                                 && (int)(object)SC5.C5Emissao < Data2
-                                 orderby SC5.C5Num, SC5.C5Emissao descending
-                                 select new RelatorioCirurgiaAFaturar
-                                 {
-                                     Vendedor = SC5.C5Nomvend,
-                                     Cliente = SC5.C5Nomcli,
-                                     GrupoCliente = "",
-                                     ClienteEntrega = SC5.C5Nomclie,
-                                     Medico = SC5.C5XNmmed,
-                                     Convenio = SC5.C5XNmpla,
-                                     Cirurgia = SC5.C5XDtcir,
-                                     Hoje = "",
-                                     Dias = 0,
-                                     Anging = "",
-                                     Paciente = SC5.C5XNmpac,
-                                     Matric = "",
-                                     INPART = "",
-                                     Valor = SC6.C6Valor,
-                                     PVFaturamento = SC5.C5Num,
-                                     Status = c.UaXstatus,
-                                     DataEnvRA = " / / ",
-                                     DataRecRA = " / / ",
-                                     DataValorizacao = SC5.C5Xdtval,
-                                 }
-                            ).GroupBy(x => new
-                            {
-                                x.Vendedor,
-                                x.Cliente,
-                                x.GrupoCliente,
-                                x.ClienteEntrega,
-                                x.Medico,
-                                x.Convenio,
-                                x.Cirurgia,
-                                x.Hoje,
-                                x.Dias,
-                                x.Anging,
-                                x.Paciente,
-                                x.Matric,
-                                x.INPART,
-                                x.PVFaturamento,
-                                x.Status,
-                                x.DataEnvRA,
-                                x.DataRecRA,
-                                x.DataValorizacao
-                            })
-                            .Select(x => new RelatorioCirurgiaAFaturar
-                            {
-                                Vendedor = x.Key.Vendedor,
-                                Cliente = x.Key.Cliente,
-                                GrupoCliente = x.Key.GrupoCliente,
-                                ClienteEntrega = x.Key.ClienteEntrega,
-                                Medico = x.Key.Medico,
-                                Convenio = x.Key.Convenio,
-                                Cirurgia = x.Key.Cirurgia,
-                                Hoje = x.Key.Hoje,
-                                Dias = x.Key.Dias,
-                                Anging = x.Key.Anging,
-                                Paciente = x.Key.Paciente,
-                                Matric = x.Key.Matric,
-                                INPART = x.Key.INPART,
-                                Valor = x.Sum(c => c.Valor),
-                                PVFaturamento = x.Key.PVFaturamento,
-                                Status = x.Key.Status,
-                                DataEnvRA = x.Key.DataEnvRA,
-                                DataRecRA = x.Key.DataRecRA,
-                                DataValorizacao = x.Key.DataValorizacao,
-                                Empresa = "DENUO"
-
-                            }).ToList();
-
-                    RelatorioInter = (from SC5 in ProtheusInter.Sc5010s
-                                      join SC6 in ProtheusInter.Sc6010s on new { Filial = SC5.C5Filial, Num = SC5.C5Num } equals new { Filial = SC6.C6Filial, Num = SC6.C6Num }
-                                      join SA1 in ProtheusInter.Sa1010s on SC5.C5Cliente equals SA1.A1Cod
-                                      join SA3 in ProtheusInter.Sa3010s on SC5.C5Vend1 equals SA3.A3Cod
-                                      join SF4 in ProtheusInter.Sf4010s on SC6.C6Tes equals SF4.F4Codigo
-                                      join SB1 in ProtheusInter.Sb1010s on SC6.C6Produto equals SB1.B1Cod
-                                      join SUA in ProtheusInter.Sua010s on SC5.C5Uproces equals SUA.UaNum into Sr
-                                      from c in Sr.DefaultIfEmpty()
-                                      where SC5.DELET != "*" && SC6.C6Filial == SC5.C5Filial && SC6.C6Num == SC5.C5Num
-                                      && SC6.C6Nota == ""
-                                      && SC6.C6Blq != "R"
-                                      && SC6.DELET != "*"
-                                      && SF4.F4Codigo == SC6.C6Tes
-                                      && SF4.F4Duplic == "S"
-                                      && SF4.DELET != "*" && SA1.A1Cod == SC5.C5Cliente
-                                      && SA1.A1Loja == SC5.C5Lojacli && SA1.DELET != "*" && SA3.A3Cod == SC5.C5Vend1 && SA3.DELET != "*"
-                                      && (SC5.C5Utpoper == "F" || SC5.C5Utpoper == "T")
-                                      && SB1.DELET != "*" && SC6.C6Produto == SB1.B1Cod
-                                      && SA1.A1Cgc != "04715053000140" && SA1.A1Cgc != "04715053000220" && SA1.A1Cgc != "01390500000140"
-                                      && (int)(object)SC5.C5Emissao >= Data
-                                      && (int)(object)SC5.C5Emissao < Data2
-                                      orderby SC5.C5Num, SC5.C5Emissao descending
-                                      select new RelatorioCirurgiaAFaturar
-                                      {
-                                          Vendedor = SC5.C5Nomvend,
-                                          Cliente = SC5.C5Nomcli,
-                                          GrupoCliente = "",
-                                          ClienteEntrega = SC5.C5Nomclie,
-                                          Medico = SC5.C5XNmmed,
-                                          Convenio = SC5.C5XNmpla,
-                                          Cirurgia = SC5.C5XDtcir,
-                                          Hoje = "",
-                                          Dias = 0,
-                                          Anging = "",
-                                          Paciente = SC5.C5XNmpac,
-                                          Matric = "",
-                                          INPART = "",
-                                          Valor = SC6.C6Valor,
-                                          PVFaturamento = SC5.C5Num,
-                                          Status = c.UaXstatus,
-                                          DataEnvRA = " / / ",
-                                          DataRecRA = " / / ",
-                                          DataValorizacao = SC5.C5Xdtval,
-                                      }
-                            ).GroupBy(x => new
-                            {
-                                x.Vendedor,
-                                x.Cliente,
-                                x.GrupoCliente,
-                                x.ClienteEntrega,
-                                x.Medico,
-                                x.Convenio,
-                                x.Cirurgia,
-                                x.Hoje,
-                                x.Dias,
-                                x.Anging,
-                                x.Paciente,
-                                x.Matric,
-                                x.INPART,
-                                x.PVFaturamento,
-                                x.Status,
-                                x.DataEnvRA,
-                                x.DataRecRA,
-                                x.DataValorizacao
-                            })
-                            .Select(x => new RelatorioCirurgiaAFaturar
-                            {
-                                Vendedor = x.Key.Vendedor,
-                                Cliente = x.Key.Cliente,
-                                GrupoCliente = x.Key.GrupoCliente,
-                                ClienteEntrega = x.Key.ClienteEntrega,
-                                Medico = x.Key.Medico,
-                                Convenio = x.Key.Convenio,
-                                Cirurgia = x.Key.Cirurgia,
-                                Hoje = x.Key.Hoje,
-                                Dias = x.Key.Dias,
-                                Anging = x.Key.Anging,
-                                Paciente = x.Key.Paciente,
-                                Matric = x.Key.Matric,
-                                INPART = x.Key.INPART,
-                                Valor = x.Sum(c => c.Valor),
-                                PVFaturamento = x.Key.PVFaturamento,
-                                Status = x.Key.Status,
-                                DataEnvRA = x.Key.DataEnvRA,
-                                DataRecRA = x.Key.DataRecRA,
-                                DataValorizacao = x.Key.DataValorizacao,
-                                Empresa = "INTERMEDIC"
-
-                            }).ToList();
+                    Relatorio = Relatorio.Where(x => x.Emissao >= Data && x.Emissao < Data2).ToList();
                 }
                 else
                 {
@@ -1031,190 +526,10 @@ namespace SGID.Pages.Relatorios.Diretoria
 
                     var Data = Convert.ToInt32(ago.ToString("yyyy/MM/dd").Replace("/", ""));
 
-                    Relatorio = (from SC5 in Protheus.Sc5010s
-                                 join SC6 in Protheus.Sc6010s on new { Filial = SC5.C5Filial, Num = SC5.C5Num } equals new { Filial = SC6.C6Filial, Num = SC6.C6Num }
-                                 join SA1 in Protheus.Sa1010s on SC5.C5Cliente equals SA1.A1Cod
-                                 join SA3 in Protheus.Sa3010s on SC5.C5Vend1 equals SA3.A3Cod
-                                 join SF4 in Protheus.Sf4010s on SC6.C6Tes equals SF4.F4Codigo
-                                 join SB1 in Protheus.Sb1010s on SC6.C6Produto equals SB1.B1Cod
-                                 join SUA in Protheus.Sua010s on SC5.C5Uproces equals SUA.UaNum into Sr
-                                 from c in Sr.DefaultIfEmpty()
-                                 where SC5.DELET != "*" && SC6.C6Filial == SC5.C5Filial && SC6.C6Num == SC5.C5Num
-                                 && SC6.C6Nota == ""
-                                 && SC6.C6Blq != "R"
-                                 && SC6.DELET != "*"
-                                 && SF4.F4Codigo == SC6.C6Tes
-                                 && SF4.F4Duplic == "S"
-                                 && SF4.DELET != "*" && SA1.A1Cod == SC5.C5Cliente
-                                 && SA1.A1Loja == SC5.C5Lojacli && SA1.DELET != "*" && SA3.A3Cod == SC5.C5Vend1 && SA3.DELET != "*"
-                                 && (SC5.C5Utpoper == "F" || SC5.C5Utpoper == "T")
-                                 && SB1.DELET != "*" && SC6.C6Produto == SB1.B1Cod
-                                 && SA1.A1Cgc != "04715053000140" && SA1.A1Cgc != "04715053000220" && SA1.A1Cgc != "01390500000140"
-                                 && (int)(object)SC5.C5Emissao < Data
-                                 orderby SC5.C5Num, SC5.C5Emissao descending
-                                 select new RelatorioCirurgiaAFaturar
-                                 {
-                                     Vendedor = SC5.C5Nomvend,
-                                     Cliente = SC5.C5Nomcli,
-                                     GrupoCliente = "",
-                                     ClienteEntrega = SC5.C5Nomclie,
-                                     Medico = SC5.C5XNmmed,
-                                     Convenio = SC5.C5XNmpla,
-                                     Cirurgia = SC5.C5XDtcir,
-                                     Hoje = "",
-                                     Dias = 0,
-                                     Anging = "",
-                                     Paciente = SC5.C5XNmpac,
-                                     Matric = "",
-                                     INPART = "",
-                                     Valor = SC6.C6Valor,
-                                     PVFaturamento = SC5.C5Num,
-                                     Status = c.UaXstatus,
-                                     DataEnvRA = " / / ",
-                                     DataRecRA = " / / ",
-                                     DataValorizacao = SC5.C5Xdtval,
-                                 }
-                            ).GroupBy(x => new
-                            {
-                                x.Vendedor,
-                                x.Cliente,
-                                x.GrupoCliente,
-                                x.ClienteEntrega,
-                                x.Medico,
-                                x.Convenio,
-                                x.Cirurgia,
-                                x.Hoje,
-                                x.Dias,
-                                x.Anging,
-                                x.Paciente,
-                                x.Matric,
-                                x.INPART,
-                                x.PVFaturamento,
-                                x.Status,
-                                x.DataEnvRA,
-                                x.DataRecRA,
-                                x.DataValorizacao,
-                                x.DataEmissao
-                            })
-                            .Select(x => new RelatorioCirurgiaAFaturar
-                            {
-                                Vendedor = x.Key.Vendedor,
-                                Cliente = x.Key.Cliente,
-                                GrupoCliente = x.Key.GrupoCliente,
-                                ClienteEntrega = x.Key.ClienteEntrega,
-                                Medico = x.Key.Medico,
-                                Convenio = x.Key.Convenio,
-                                Cirurgia = x.Key.Cirurgia,
-                                Hoje = x.Key.Hoje,
-                                Dias = x.Key.Dias,
-                                Anging = x.Key.Anging,
-                                Paciente = x.Key.Paciente,
-                                Matric = x.Key.Matric,
-                                INPART = x.Key.INPART,
-                                Valor = x.Sum(c => c.Valor),
-                                PVFaturamento = x.Key.PVFaturamento,
-                                Status = x.Key.Status,
-                                DataEnvRA = x.Key.DataEnvRA,
-                                DataRecRA = x.Key.DataRecRA,
-                                DataValorizacao = x.Key.DataValorizacao,
-                                DataEmissao = x.Key.DataEmissao,
-                                Empresa = "DENUO"
-                            }).ToList();
-
-
-                    RelatorioInter = (from SC5 in ProtheusInter.Sc5010s
-                                      join SC6 in ProtheusInter.Sc6010s on new { Filial = SC5.C5Filial, Num = SC5.C5Num } equals new { Filial = SC6.C6Filial, Num = SC6.C6Num }
-                                      join SA1 in ProtheusInter.Sa1010s on SC5.C5Cliente equals SA1.A1Cod
-                                      join SA3 in ProtheusInter.Sa3010s on SC5.C5Vend1 equals SA3.A3Cod
-                                      join SF4 in ProtheusInter.Sf4010s on SC6.C6Tes equals SF4.F4Codigo
-                                      join SB1 in ProtheusInter.Sb1010s on SC6.C6Produto equals SB1.B1Cod
-                                      join SUA in ProtheusInter.Sua010s on SC5.C5Uproces equals SUA.UaNum into Sr
-                                      from c in Sr.DefaultIfEmpty()
-                                      where SC5.DELET != "*" && SC6.C6Filial == SC5.C5Filial && SC6.C6Num == SC5.C5Num
-                                      && SC6.C6Nota == ""
-                                      && SC6.C6Blq != "R"
-                                      && SC6.DELET != "*"
-                                      && SF4.F4Codigo == SC6.C6Tes
-                                      && SF4.F4Duplic == "S"
-                                      && SF4.DELET != "*" && SA1.A1Cod == SC5.C5Cliente
-                                      && SA1.A1Loja == SC5.C5Lojacli && SA1.DELET != "*" && SA3.A3Cod == SC5.C5Vend1 && SA3.DELET != "*"
-                                      && (SC5.C5Utpoper == "F" || SC5.C5Utpoper == "T")
-                                      && SB1.DELET != "*" && SC6.C6Produto == SB1.B1Cod
-                                      && SA1.A1Cgc != "04715053000140" && SA1.A1Cgc != "04715053000220" && SA1.A1Cgc != "01390500000140"
-                                      && (int)(object)SC5.C5Emissao < Data
-                                      orderby SC5.C5Num, SC5.C5Emissao descending
-                                      select new RelatorioCirurgiaAFaturar
-                                      {
-                                          Vendedor = SC5.C5Nomvend,
-                                          Cliente = SC5.C5Nomcli,
-                                          GrupoCliente = "",
-                                          ClienteEntrega = SC5.C5Nomclie,
-                                          Medico = SC5.C5XNmmed,
-                                          Convenio = SC5.C5XNmpla,
-                                          Cirurgia = SC5.C5XDtcir,
-                                          Hoje = "",
-                                          Dias = 0,
-                                          Anging = "",
-                                          Paciente = SC5.C5XNmpac,
-                                          Matric = "",
-                                          INPART = "",
-                                          Valor = SC6.C6Valor,
-                                          PVFaturamento = SC5.C5Num,
-                                          Status = c.UaXstatus,
-                                          DataEnvRA = " / / ",
-                                          DataRecRA = " / / ",
-                                          DataValorizacao = SC5.C5Xdtval,
-                                      }
-                            ).GroupBy(x => new
-                            {
-                                x.Vendedor,
-                                x.Cliente,
-                                x.GrupoCliente,
-                                x.ClienteEntrega,
-                                x.Medico,
-                                x.Convenio,
-                                x.Cirurgia,
-                                x.Hoje,
-                                x.Dias,
-                                x.Anging,
-                                x.Paciente,
-                                x.Matric,
-                                x.INPART,
-                                x.PVFaturamento,
-                                x.Status,
-                                x.DataEnvRA,
-                                x.DataRecRA,
-                                x.DataValorizacao,
-                                x.DataEmissao
-                            })
-                            .Select(x => new RelatorioCirurgiaAFaturar
-                            {
-                                Vendedor = x.Key.Vendedor,
-                                Cliente = x.Key.Cliente,
-                                GrupoCliente = x.Key.GrupoCliente,
-                                ClienteEntrega = x.Key.ClienteEntrega,
-                                Medico = x.Key.Medico,
-                                Convenio = x.Key.Convenio,
-                                Cirurgia = x.Key.Cirurgia,
-                                Hoje = x.Key.Hoje,
-                                Dias = x.Key.Dias,
-                                Anging = x.Key.Anging,
-                                Paciente = x.Key.Paciente,
-                                Matric = x.Key.Matric,
-                                INPART = x.Key.INPART,
-                                Valor = x.Sum(c => c.Valor),
-                                PVFaturamento = x.Key.PVFaturamento,
-                                Status = x.Key.Status,
-                                DataEnvRA = x.Key.DataEnvRA,
-                                DataRecRA = x.Key.DataRecRA,
-                                DataValorizacao = x.Key.DataValorizacao,
-                                DataEmissao = x.Key.DataEmissao,
-                                Empresa = "INTERMEDIC"
-
-                            }).ToList();
+                    Relatorio = Relatorio.Where(x => x.Emissao < Data).ToList();
                 }
 
-                Relatorio = Relatorio.Concat(RelatorioInter).ToList();
+                
 
                 Clientes = Relatorio.Select(x => x.Cliente).Distinct().ToList();
 
@@ -1225,6 +540,11 @@ namespace SGID.Pages.Relatorios.Diretoria
                 }
 
                 var data = DateTime.Now;
+                this.Empresa = Empresa;
+                if (Empresa != null)
+                {
+                    Relatorio = Relatorio.Where(x => x.Empresa == Empresa).ToList();
+                }
 
                 Relatorio.ForEach(x =>
                 {
@@ -1271,6 +591,16 @@ namespace SGID.Pages.Relatorios.Diretoria
                 });
 
                 Relatorio = Relatorio.OrderBy(x => x.DataEmissao).ToList();
+
+                this.Valor = Valor;
+                if(Valor == "2")
+                {
+                    Relatorio = Relatorio.OrderBy(x => x.Cliente).ThenBy(x => x.Valor).ToList();
+                }
+                else
+                {
+                    Relatorio = Relatorio.OrderBy(x => x.Cliente).ThenByDescending(x => x.Valor).ToList();
+                }
             }
             catch (Exception e)
             {
@@ -1281,11 +611,197 @@ namespace SGID.Pages.Relatorios.Diretoria
             return Page();
         }
 
-        public IActionResult OnPostExport(string id, string NReduz)
+        public IActionResult OnPostExport(string id, string NReduz, string Empresa, string Valor)
         {
             try
             {
                 string user = User.Identity.Name.Split("@")[0].ToUpper();
+
+                #region Relatorio
+                Relatorio = (from SC5 in Protheus.Sc5010s
+                             join SC6 in Protheus.Sc6010s on new { Filial = SC5.C5Filial, Num = SC5.C5Num } equals new { Filial = SC6.C6Filial, Num = SC6.C6Num }
+                             join SA1 in Protheus.Sa1010s on SC5.C5Cliente equals SA1.A1Cod
+                             join SA3 in Protheus.Sa3010s on SC5.C5Vend1 equals SA3.A3Cod
+                             join SF4 in Protheus.Sf4010s on SC6.C6Tes equals SF4.F4Codigo
+                             join SB1 in Protheus.Sb1010s on SC6.C6Produto equals SB1.B1Cod
+                             join SUA in Protheus.Sua010s on SC5.C5Uproces equals SUA.UaNum into Sr
+                             from c in Sr.DefaultIfEmpty()
+                             where SC5.DELET != "*" && SC6.C6Filial == SC5.C5Filial && SC6.C6Num == SC5.C5Num
+                             && SC6.C6Nota == ""
+                             && SC6.C6Blq != "R"
+                             && SC6.DELET != "*"
+                             && SF4.F4Codigo == SC6.C6Tes
+                             && SF4.F4Duplic == "S"
+                             && SF4.DELET != "*" && SA1.A1Cod == SC5.C5Cliente
+                             && SA1.A1Loja == SC5.C5Lojacli && SA1.DELET != "*" && SA3.A3Cod == SC5.C5Vend1 && SA3.DELET != "*"
+                             && (SC5.C5Utpoper == "F" || SC5.C5Utpoper == "T")
+                             && SB1.DELET != "*" && SC6.C6Produto == SB1.B1Cod
+                             && SA1.A1Cgc != "04715053000140" && SA1.A1Cgc != "04715053000220" && SA1.A1Cgc != "01390500000140"
+                             orderby SC5.C5Num, SC5.C5Emissao descending
+                             select new RelatorioCirurgiaAFaturar
+                             {
+                                 Vendedor = SC5.C5Nomvend,
+                                 Cliente = SC5.C5Nomcli,
+                                 GrupoCliente = "",
+                                 ClienteEntrega = SC5.C5Nomclie,
+                                 Medico = SC5.C5XNmmed,
+                                 Convenio = SC5.C5XNmpla,
+                                 Cirurgia = SC5.C5XDtcir,
+                                 Hoje = "",
+                                 Dias = 0,
+                                 Anging = "",
+                                 Paciente = SC5.C5XNmpac,
+                                 Matric = "",
+                                 INPART = "",
+                                 Valor = SC6.C6Valor,
+                                 PVFaturamento = SC5.C5Num,
+                                 Status = c.UaXstatus,
+                                 DataEnvRA = " / / ",
+                                 DataRecRA = " / / ",
+                                 DataValorizacao = SC5.C5Xdtval,
+                                 Emissao = Convert.ToInt32(SC5.C5Emissao)
+                             }
+                        ).GroupBy(x => new
+                        {
+                            x.Vendedor,
+                            x.Cliente,
+                            x.GrupoCliente,
+                            x.ClienteEntrega,
+                            x.Medico,
+                            x.Convenio,
+                            x.Cirurgia,
+                            x.Hoje,
+                            x.Dias,
+                            x.Anging,
+                            x.Paciente,
+                            x.Matric,
+                            x.INPART,
+                            x.PVFaturamento,
+                            x.Status,
+                            x.DataEnvRA,
+                            x.DataRecRA,
+                            x.DataValorizacao,
+                            x.Emissao
+                        })
+                        .Select(x => new RelatorioCirurgiaAFaturar
+                        {
+                            Vendedor = x.Key.Vendedor,
+                            Cliente = x.Key.Cliente,
+                            GrupoCliente = x.Key.GrupoCliente,
+                            ClienteEntrega = x.Key.ClienteEntrega,
+                            Medico = x.Key.Medico,
+                            Convenio = x.Key.Convenio,
+                            Cirurgia = x.Key.Cirurgia,
+                            Hoje = x.Key.Hoje,
+                            Dias = x.Key.Dias,
+                            Anging = x.Key.Anging,
+                            Paciente = x.Key.Paciente,
+                            Matric = x.Key.Matric,
+                            INPART = x.Key.INPART,
+                            Valor = x.Sum(c => c.Valor),
+                            PVFaturamento = x.Key.PVFaturamento,
+                            Status = x.Key.Status,
+                            DataEnvRA = x.Key.DataEnvRA,
+                            DataRecRA = x.Key.DataRecRA,
+                            DataValorizacao = x.Key.DataValorizacao,
+                            Empresa = "INTERMEDIC",
+                            Emissao = x.Key.Emissao
+                        }).ToList();
+
+                RelatorioInter = (from SC5 in ProtheusInter.Sc5010s
+                                  join SC6 in ProtheusInter.Sc6010s on new { Filial = SC5.C5Filial, Num = SC5.C5Num } equals new { Filial = SC6.C6Filial, Num = SC6.C6Num }
+                                  join SA1 in ProtheusInter.Sa1010s on SC5.C5Cliente equals SA1.A1Cod
+                                  join SA3 in ProtheusInter.Sa3010s on SC5.C5Vend1 equals SA3.A3Cod
+                                  join SF4 in ProtheusInter.Sf4010s on SC6.C6Tes equals SF4.F4Codigo
+                                  join SB1 in ProtheusInter.Sb1010s on SC6.C6Produto equals SB1.B1Cod
+                                  join SUA in ProtheusInter.Sua010s on SC5.C5Uproces equals SUA.UaNum into Sr
+                                  from c in Sr.DefaultIfEmpty()
+                                  where SC5.DELET != "*" && SC6.C6Filial == SC5.C5Filial && SC6.C6Num == SC5.C5Num
+                                  && SC6.C6Nota == ""
+                                  && SC6.C6Blq != "R"
+                                  && SC6.DELET != "*"
+                                  && SF4.F4Codigo == SC6.C6Tes
+                                  && SF4.F4Duplic == "S"
+                                  && SF4.DELET != "*" && SA1.A1Cod == SC5.C5Cliente
+                                  && SA1.A1Loja == SC5.C5Lojacli && SA1.DELET != "*" && SA3.A3Cod == SC5.C5Vend1 && SA3.DELET != "*"
+                                  && (SC5.C5Utpoper == "F" || SC5.C5Utpoper == "T")
+                                  && SB1.DELET != "*" && SC6.C6Produto == SB1.B1Cod
+                                  && SA1.A1Cgc != "04715053000140" && SA1.A1Cgc != "04715053000220" && SA1.A1Cgc != "01390500000140"
+                                  orderby SC5.C5Num, SC5.C5Emissao descending
+                                  select new RelatorioCirurgiaAFaturar
+                                  {
+                                      Vendedor = SC5.C5Nomvend,
+                                      Cliente = SC5.C5Nomcli,
+                                      GrupoCliente = "",
+                                      ClienteEntrega = SC5.C5Nomclie,
+                                      Medico = SC5.C5XNmmed,
+                                      Convenio = SC5.C5XNmpla,
+                                      Cirurgia = SC5.C5XDtcir,
+                                      Hoje = "",
+                                      Dias = 0,
+                                      Anging = "",
+                                      Paciente = SC5.C5XNmpac,
+                                      Matric = "",
+                                      INPART = "",
+                                      Valor = SC6.C6Valor,
+                                      PVFaturamento = SC5.C5Num,
+                                      Status = c.UaXstatus,
+                                      DataEnvRA = " / / ",
+                                      DataRecRA = " / / ",
+                                      DataValorizacao = SC5.C5Xdtval,
+                                      Emissao = Convert.ToInt32(SC5.C5Emissao)
+                                  }
+                        ).GroupBy(x => new
+                        {
+                            x.Vendedor,
+                            x.Cliente,
+                            x.GrupoCliente,
+                            x.ClienteEntrega,
+                            x.Medico,
+                            x.Convenio,
+                            x.Cirurgia,
+                            x.Hoje,
+                            x.Dias,
+                            x.Anging,
+                            x.Paciente,
+                            x.Matric,
+                            x.INPART,
+                            x.PVFaturamento,
+                            x.Status,
+                            x.DataEnvRA,
+                            x.DataRecRA,
+                            x.DataValorizacao,
+                            x.Emissao
+                        })
+                        .Select(x => new RelatorioCirurgiaAFaturar
+                        {
+                            Vendedor = x.Key.Vendedor,
+                            Cliente = x.Key.Cliente,
+                            GrupoCliente = x.Key.GrupoCliente,
+                            ClienteEntrega = x.Key.ClienteEntrega,
+                            Medico = x.Key.Medico,
+                            Convenio = x.Key.Convenio,
+                            Cirurgia = x.Key.Cirurgia,
+                            Hoje = x.Key.Hoje,
+                            Dias = x.Key.Dias,
+                            Anging = x.Key.Anging,
+                            Paciente = x.Key.Paciente,
+                            Matric = x.Key.Matric,
+                            INPART = x.Key.INPART,
+                            Valor = x.Sum(c => c.Valor),
+                            PVFaturamento = x.Key.PVFaturamento,
+                            Status = x.Key.Status,
+                            DataEnvRA = x.Key.DataEnvRA,
+                            DataRecRA = x.Key.DataRecRA,
+                            DataValorizacao = x.Key.DataValorizacao,
+                            Empresa = "INTERMEDIC",
+                            Emissao = x.Key.Emissao
+                        }).ToList();
+                #endregion
+
+                Relatorio = Relatorio.Concat(RelatorioInter).ToList();
+
+                Relatorio = Relatorio.Where(x => x.Status != "C").ToList();
 
                 if (id == "1")
                 {
@@ -1293,181 +809,7 @@ namespace SGID.Pages.Relatorios.Diretoria
 
                     var Data = Convert.ToInt32(ago.ToString("yyyy/MM/dd").Replace("/", ""));
 
-                    Relatorio = (from SC5 in Protheus.Sc5010s
-                                 join SC6 in Protheus.Sc6010s on new { Filial = SC5.C5Filial, Num = SC5.C5Num } equals new { Filial = SC6.C6Filial, Num = SC6.C6Num }
-                                 join SA1 in Protheus.Sa1010s on SC5.C5Cliente equals SA1.A1Cod
-                                 join SA3 in Protheus.Sa3010s on SC5.C5Vend1 equals SA3.A3Cod
-                                 join SF4 in Protheus.Sf4010s on SC6.C6Tes equals SF4.F4Codigo
-                                 join SB1 in Protheus.Sb1010s on SC6.C6Produto equals SB1.B1Cod
-                                 join SUA in Protheus.Sua010s on SC5.C5Uproces equals SUA.UaNum into Sr
-                                 from c in Sr.DefaultIfEmpty()
-                                 where SC5.DELET != "*" && SC6.C6Filial == SC5.C5Filial && SC6.C6Num == SC5.C5Num
-                                 && SC6.C6Nota == ""
-                                 && SC6.C6Blq != "R"
-                                 && SC6.DELET != "*"
-                                 && SF4.F4Codigo == SC6.C6Tes
-                                 && SF4.F4Duplic == "S"
-                                 && SF4.DELET != "*" && SA1.A1Cod == SC5.C5Cliente
-                                 && SA1.A1Loja == SC5.C5Lojacli && SA1.DELET != "*" && SA3.A3Cod == SC5.C5Vend1 && SA3.DELET != "*"
-                                 && (SC5.C5Utpoper == "F" || SC5.C5Utpoper == "T")
-                                 && SB1.DELET != "*" && SC6.C6Produto == SB1.B1Cod
-                                 && SA1.A1Cgc != "04715053000140" && SA1.A1Cgc != "04715053000220" && SA1.A1Cgc != "01390500000140"
-                                 && (int)(object)SC5.C5Emissao >= Data
-                                 orderby SC5.C5Num, SC5.C5Emissao descending
-                                 select new RelatorioCirurgiaAFaturar
-                                 {
-                                     Vendedor = SC5.C5Nomvend,
-                                     Cliente = SC5.C5Nomcli,
-                                     GrupoCliente = "",
-                                     ClienteEntrega = SC5.C5Nomclie,
-                                     Medico = SC5.C5XNmmed,
-                                     Convenio = SC5.C5XNmpla,
-                                     Cirurgia = SC5.C5XDtcir,
-                                     Hoje = "",
-                                     Dias = 0,
-                                     Anging = "",
-                                     Paciente = SC5.C5XNmpac,
-                                     Matric = "",
-                                     INPART = "",
-                                     Valor = SC6.C6Valor,
-                                     PVFaturamento = SC5.C5Num,
-                                     Status = c.UaXstatus,
-                                     DataEnvRA = " / / ",
-                                     DataRecRA = " / / ",
-                                     DataValorizacao = SC5.C5Xdtval,
-                                 }
-                            ).GroupBy(x => new
-                            {
-                                x.Vendedor,
-                                x.Cliente,
-                                x.GrupoCliente,
-                                x.ClienteEntrega,
-                                x.Medico,
-                                x.Convenio,
-                                x.Cirurgia,
-                                x.Hoje,
-                                x.Dias,
-                                x.Anging,
-                                x.Paciente,
-                                x.Matric,
-                                x.INPART,
-                                x.PVFaturamento,
-                                x.Status,
-                                x.DataEnvRA,
-                                x.DataRecRA,
-                                x.DataValorizacao
-                            })
-                            .Select(x => new RelatorioCirurgiaAFaturar
-                            {
-                                Vendedor = x.Key.Vendedor,
-                                Cliente = x.Key.Cliente,
-                                GrupoCliente = x.Key.GrupoCliente,
-                                ClienteEntrega = x.Key.ClienteEntrega,
-                                Medico = x.Key.Medico,
-                                Convenio = x.Key.Convenio,
-                                Cirurgia = x.Key.Cirurgia,
-                                Hoje = x.Key.Hoje,
-                                Dias = x.Key.Dias,
-                                Anging = x.Key.Anging,
-                                Paciente = x.Key.Paciente,
-                                Matric = x.Key.Matric,
-                                INPART = x.Key.INPART,
-                                Valor = x.Sum(c => c.Valor),
-                                PVFaturamento = x.Key.PVFaturamento,
-                                Status = x.Key.Status,
-                                DataEnvRA = x.Key.DataEnvRA,
-                                DataRecRA = x.Key.DataRecRA,
-                                DataValorizacao = x.Key.DataValorizacao,
-                                Empresa = "DENUO"
-                            }).ToList();
-
-                    RelatorioInter = (from SC5 in ProtheusInter.Sc5010s
-                                      join SC6 in ProtheusInter.Sc6010s on new { Filial = SC5.C5Filial, Num = SC5.C5Num } equals new { Filial = SC6.C6Filial, Num = SC6.C6Num }
-                                      join SA1 in ProtheusInter.Sa1010s on SC5.C5Cliente equals SA1.A1Cod
-                                      join SA3 in ProtheusInter.Sa3010s on SC5.C5Vend1 equals SA3.A3Cod
-                                      join SF4 in ProtheusInter.Sf4010s on SC6.C6Tes equals SF4.F4Codigo
-                                      join SB1 in ProtheusInter.Sb1010s on SC6.C6Produto equals SB1.B1Cod
-                                      join SUA in ProtheusInter.Sua010s on SC5.C5Uproces equals SUA.UaNum into Sr
-                                      from c in Sr.DefaultIfEmpty()
-                                      where SC5.DELET != "*" && SC6.C6Filial == SC5.C5Filial && SC6.C6Num == SC5.C5Num
-                                      && SC6.C6Nota == ""
-                                      && SC6.C6Blq != "R"
-                                      && SC6.DELET != "*"
-                                      && SF4.F4Codigo == SC6.C6Tes
-                                      && SF4.F4Duplic == "S"
-                                      && SF4.DELET != "*" && SA1.A1Cod == SC5.C5Cliente
-                                      && SA1.A1Loja == SC5.C5Lojacli && SA1.DELET != "*" && SA3.A3Cod == SC5.C5Vend1 && SA3.DELET != "*"
-                                      && (SC5.C5Utpoper == "F" || SC5.C5Utpoper == "T")
-                                      && SB1.DELET != "*" && SC6.C6Produto == SB1.B1Cod
-                                      && SA1.A1Cgc != "04715053000140" && SA1.A1Cgc != "04715053000220" && SA1.A1Cgc != "01390500000140"
-                                      && (int)(object)SC5.C5Emissao >= Data
-                                      orderby SC5.C5Num, SC5.C5Emissao descending
-                                      select new RelatorioCirurgiaAFaturar
-                                      {
-                                          Vendedor = SC5.C5Nomvend,
-                                          Cliente = SC5.C5Nomcli,
-                                          GrupoCliente = "",
-                                          ClienteEntrega = SC5.C5Nomclie,
-                                          Medico = SC5.C5XNmmed,
-                                          Convenio = SC5.C5XNmpla,
-                                          Cirurgia = SC5.C5XDtcir,
-                                          Hoje = "",
-                                          Dias = 0,
-                                          Anging = "",
-                                          Paciente = SC5.C5XNmpac,
-                                          Matric = "",
-                                          INPART = "",
-                                          Valor = SC6.C6Valor,
-                                          PVFaturamento = SC5.C5Num,
-                                          Status = c.UaXstatus,
-                                          DataEnvRA = " / / ",
-                                          DataRecRA = " / / ",
-                                          DataValorizacao = SC5.C5Xdtval,
-                                      }
-                            ).GroupBy(x => new
-                            {
-                                x.Vendedor,
-                                x.Cliente,
-                                x.GrupoCliente,
-                                x.ClienteEntrega,
-                                x.Medico,
-                                x.Convenio,
-                                x.Cirurgia,
-                                x.Hoje,
-                                x.Dias,
-                                x.Anging,
-                                x.Paciente,
-                                x.Matric,
-                                x.INPART,
-                                x.PVFaturamento,
-                                x.Status,
-                                x.DataEnvRA,
-                                x.DataRecRA,
-                                x.DataValorizacao
-                            })
-                            .Select(x => new RelatorioCirurgiaAFaturar
-                            {
-                                Vendedor = x.Key.Vendedor,
-                                Cliente = x.Key.Cliente,
-                                GrupoCliente = x.Key.GrupoCliente,
-                                ClienteEntrega = x.Key.ClienteEntrega,
-                                Medico = x.Key.Medico,
-                                Convenio = x.Key.Convenio,
-                                Cirurgia = x.Key.Cirurgia,
-                                Hoje = x.Key.Hoje,
-                                Dias = x.Key.Dias,
-                                Anging = x.Key.Anging,
-                                Paciente = x.Key.Paciente,
-                                Matric = x.Key.Matric,
-                                INPART = x.Key.INPART,
-                                Valor = x.Sum(c => c.Valor),
-                                PVFaturamento = x.Key.PVFaturamento,
-                                Status = x.Key.Status,
-                                DataEnvRA = x.Key.DataEnvRA,
-                                DataRecRA = x.Key.DataRecRA,
-                                DataValorizacao = x.Key.DataValorizacao,
-                                Empresa = "INTERMEDIC"
-                            }).ToList();
+                    Relatorio = Relatorio.Where(x => x.Emissao >= Data).ToList();
                 }
                 else if (id == "2")
                 {
@@ -1477,185 +819,7 @@ namespace SGID.Pages.Relatorios.Diretoria
                     var Data = Convert.ToInt32(ago.ToString("yyyy/MM/dd").Replace("/", ""));
                     var Data2 = Convert.ToInt32(After.ToString("yyyy/MM/dd").Replace("/", ""));
 
-                    Relatorio = (from SC5 in Protheus.Sc5010s
-                                 join SC6 in Protheus.Sc6010s on new { Filial = SC5.C5Filial, Num = SC5.C5Num } equals new { Filial = SC6.C6Filial, Num = SC6.C6Num }
-                                 join SA1 in Protheus.Sa1010s on SC5.C5Cliente equals SA1.A1Cod
-                                 join SA3 in Protheus.Sa3010s on SC5.C5Vend1 equals SA3.A3Cod
-                                 join SF4 in Protheus.Sf4010s on SC6.C6Tes equals SF4.F4Codigo
-                                 join SB1 in Protheus.Sb1010s on SC6.C6Produto equals SB1.B1Cod
-                                 join SUA in Protheus.Sua010s on SC5.C5Uproces equals SUA.UaNum into Sr
-                                 from c in Sr.DefaultIfEmpty()
-                                 where SC5.DELET != "*" && SC6.C6Filial == SC5.C5Filial && SC6.C6Num == SC5.C5Num
-                                 && SC6.C6Nota == ""
-                                 && SC6.C6Blq != "R"
-                                 && SC6.DELET != "*"
-                                 && SF4.F4Codigo == SC6.C6Tes
-                                 && SF4.F4Duplic == "S"
-                                 && SF4.DELET != "*" && SA1.A1Cod == SC5.C5Cliente
-                                 && SA1.A1Loja == SC5.C5Lojacli && SA1.DELET != "*" && SA3.A3Cod == SC5.C5Vend1 && SA3.DELET != "*"
-                                 && (SC5.C5Utpoper == "F" || SC5.C5Utpoper == "T")
-                                 && SB1.DELET != "*" && SC6.C6Produto == SB1.B1Cod
-                                 && SA1.A1Cgc != "04715053000140" && SA1.A1Cgc != "04715053000220" && SA1.A1Cgc != "01390500000140"
-                                 && (int)(object)SC5.C5Emissao >= Data
-                                 && (int)(object)SC5.C5Emissao < Data2
-                                 orderby SC5.C5Num, SC5.C5Emissao descending
-                                 select new RelatorioCirurgiaAFaturar
-                                 {
-                                     Vendedor = SC5.C5Nomvend,
-                                     Cliente = SC5.C5Nomcli,
-                                     GrupoCliente = "",
-                                     ClienteEntrega = SC5.C5Nomclie,
-                                     Medico = SC5.C5XNmmed,
-                                     Convenio = SC5.C5XNmpla,
-                                     Cirurgia = SC5.C5XDtcir,
-                                     Hoje = "",
-                                     Dias = 0,
-                                     Anging = "",
-                                     Paciente = SC5.C5XNmpac,
-                                     Matric = "",
-                                     INPART = "",
-                                     Valor = SC6.C6Valor,
-                                     PVFaturamento = SC5.C5Num,
-                                     Status = c.UaXstatus,
-                                     DataEnvRA = " / / ",
-                                     DataRecRA = " / / ",
-                                     DataValorizacao = SC5.C5Xdtval,
-                                 }
-                            ).GroupBy(x => new
-                            {
-                                x.Vendedor,
-                                x.Cliente,
-                                x.GrupoCliente,
-                                x.ClienteEntrega,
-                                x.Medico,
-                                x.Convenio,
-                                x.Cirurgia,
-                                x.Hoje,
-                                x.Dias,
-                                x.Anging,
-                                x.Paciente,
-                                x.Matric,
-                                x.INPART,
-                                x.PVFaturamento,
-                                x.Status,
-                                x.DataEnvRA,
-                                x.DataRecRA,
-                                x.DataValorizacao
-                            })
-                            .Select(x => new RelatorioCirurgiaAFaturar
-                            {
-                                Vendedor = x.Key.Vendedor,
-                                Cliente = x.Key.Cliente,
-                                GrupoCliente = x.Key.GrupoCliente,
-                                ClienteEntrega = x.Key.ClienteEntrega,
-                                Medico = x.Key.Medico,
-                                Convenio = x.Key.Convenio,
-                                Cirurgia = x.Key.Cirurgia,
-                                Hoje = x.Key.Hoje,
-                                Dias = x.Key.Dias,
-                                Anging = x.Key.Anging,
-                                Paciente = x.Key.Paciente,
-                                Matric = x.Key.Matric,
-                                INPART = x.Key.INPART,
-                                Valor = x.Sum(c => c.Valor),
-                                PVFaturamento = x.Key.PVFaturamento,
-                                Status = x.Key.Status,
-                                DataEnvRA = x.Key.DataEnvRA,
-                                DataRecRA = x.Key.DataRecRA,
-                                DataValorizacao = x.Key.DataValorizacao,
-                                Empresa = "DENUO"
-
-                            }).ToList();
-
-                    RelatorioInter = (from SC5 in ProtheusInter.Sc5010s
-                                      join SC6 in ProtheusInter.Sc6010s on new { Filial = SC5.C5Filial, Num = SC5.C5Num } equals new { Filial = SC6.C6Filial, Num = SC6.C6Num }
-                                      join SA1 in ProtheusInter.Sa1010s on SC5.C5Cliente equals SA1.A1Cod
-                                      join SA3 in ProtheusInter.Sa3010s on SC5.C5Vend1 equals SA3.A3Cod
-                                      join SF4 in ProtheusInter.Sf4010s on SC6.C6Tes equals SF4.F4Codigo
-                                      join SB1 in ProtheusInter.Sb1010s on SC6.C6Produto equals SB1.B1Cod
-                                      join SUA in ProtheusInter.Sua010s on SC5.C5Uproces equals SUA.UaNum into Sr
-                                      from c in Sr.DefaultIfEmpty()
-                                      where SC5.DELET != "*" && SC6.C6Filial == SC5.C5Filial && SC6.C6Num == SC5.C5Num
-                                      && SC6.C6Nota == ""
-                                      && SC6.C6Blq != "R"
-                                      && SC6.DELET != "*"
-                                      && SF4.F4Codigo == SC6.C6Tes
-                                      && SF4.F4Duplic == "S"
-                                      && SF4.DELET != "*" && SA1.A1Cod == SC5.C5Cliente
-                                      && SA1.A1Loja == SC5.C5Lojacli && SA1.DELET != "*" && SA3.A3Cod == SC5.C5Vend1 && SA3.DELET != "*"
-                                      && (SC5.C5Utpoper == "F" || SC5.C5Utpoper == "T")
-                                      && SB1.DELET != "*" && SC6.C6Produto == SB1.B1Cod
-                                      && SA1.A1Cgc != "04715053000140" && SA1.A1Cgc != "04715053000220" && SA1.A1Cgc != "01390500000140"
-                                      && (int)(object)SC5.C5Emissao >= Data
-                                      && (int)(object)SC5.C5Emissao < Data2
-                                      orderby SC5.C5Num, SC5.C5Emissao descending
-                                      select new RelatorioCirurgiaAFaturar
-                                      {
-                                          Vendedor = SC5.C5Nomvend,
-                                          Cliente = SC5.C5Nomcli,
-                                          GrupoCliente = "",
-                                          ClienteEntrega = SC5.C5Nomclie,
-                                          Medico = SC5.C5XNmmed,
-                                          Convenio = SC5.C5XNmpla,
-                                          Cirurgia = SC5.C5XDtcir,
-                                          Hoje = "",
-                                          Dias = 0,
-                                          Anging = "",
-                                          Paciente = SC5.C5XNmpac,
-                                          Matric = "",
-                                          INPART = "",
-                                          Valor = SC6.C6Valor,
-                                          PVFaturamento = SC5.C5Num,
-                                          Status = c.UaXstatus,
-                                          DataEnvRA = " / / ",
-                                          DataRecRA = " / / ",
-                                          DataValorizacao = SC5.C5Xdtval,
-                                      }
-                            ).GroupBy(x => new
-                            {
-                                x.Vendedor,
-                                x.Cliente,
-                                x.GrupoCliente,
-                                x.ClienteEntrega,
-                                x.Medico,
-                                x.Convenio,
-                                x.Cirurgia,
-                                x.Hoje,
-                                x.Dias,
-                                x.Anging,
-                                x.Paciente,
-                                x.Matric,
-                                x.INPART,
-                                x.PVFaturamento,
-                                x.Status,
-                                x.DataEnvRA,
-                                x.DataRecRA,
-                                x.DataValorizacao
-                            })
-                            .Select(x => new RelatorioCirurgiaAFaturar
-                            {
-                                Vendedor = x.Key.Vendedor,
-                                Cliente = x.Key.Cliente,
-                                GrupoCliente = x.Key.GrupoCliente,
-                                ClienteEntrega = x.Key.ClienteEntrega,
-                                Medico = x.Key.Medico,
-                                Convenio = x.Key.Convenio,
-                                Cirurgia = x.Key.Cirurgia,
-                                Hoje = x.Key.Hoje,
-                                Dias = x.Key.Dias,
-                                Anging = x.Key.Anging,
-                                Paciente = x.Key.Paciente,
-                                Matric = x.Key.Matric,
-                                INPART = x.Key.INPART,
-                                Valor = x.Sum(c => c.Valor),
-                                PVFaturamento = x.Key.PVFaturamento,
-                                Status = x.Key.Status,
-                                DataEnvRA = x.Key.DataEnvRA,
-                                DataRecRA = x.Key.DataRecRA,
-                                DataValorizacao = x.Key.DataValorizacao,
-                                Empresa = "INTERMEDIC"
-
-                            }).ToList();
+                    Relatorio = Relatorio.Where(x => x.Emissao >= Data && x.Emissao < Data2).ToList();
                 }
                 else
                 {
@@ -1663,191 +827,8 @@ namespace SGID.Pages.Relatorios.Diretoria
 
                     var Data = Convert.ToInt32(ago.ToString("yyyy/MM/dd").Replace("/", ""));
 
-                    Relatorio = (from SC5 in Protheus.Sc5010s
-                                 join SC6 in Protheus.Sc6010s on new { Filial = SC5.C5Filial, Num = SC5.C5Num } equals new { Filial = SC6.C6Filial, Num = SC6.C6Num }
-                                 join SA1 in Protheus.Sa1010s on SC5.C5Cliente equals SA1.A1Cod
-                                 join SA3 in Protheus.Sa3010s on SC5.C5Vend1 equals SA3.A3Cod
-                                 join SF4 in Protheus.Sf4010s on SC6.C6Tes equals SF4.F4Codigo
-                                 join SB1 in Protheus.Sb1010s on SC6.C6Produto equals SB1.B1Cod
-                                 join SUA in Protheus.Sua010s on SC5.C5Uproces equals SUA.UaNum into Sr
-                                 from c in Sr.DefaultIfEmpty()
-                                 where SC5.DELET != "*" && SC6.C6Filial == SC5.C5Filial && SC6.C6Num == SC5.C5Num
-                                 && SC6.C6Nota == ""
-                                 && SC6.C6Blq != "R"
-                                 && SC6.DELET != "*"
-                                 && SF4.F4Codigo == SC6.C6Tes
-                                 && SF4.F4Duplic == "S"
-                                 && SF4.DELET != "*" && SA1.A1Cod == SC5.C5Cliente
-                                 && SA1.A1Loja == SC5.C5Lojacli && SA1.DELET != "*" && SA3.A3Cod == SC5.C5Vend1 && SA3.DELET != "*"
-                                 && (SC5.C5Utpoper == "F" || SC5.C5Utpoper == "T")
-                                 && SB1.DELET != "*" && SC6.C6Produto == SB1.B1Cod
-                                 && SA1.A1Cgc != "04715053000140" && SA1.A1Cgc != "04715053000220" && SA1.A1Cgc != "01390500000140"
-                                 && (int)(object)SC5.C5Emissao < Data
-                                 orderby SC5.C5Num, SC5.C5Emissao descending
-                                 select new RelatorioCirurgiaAFaturar
-                                 {
-                                     Vendedor = SC5.C5Nomvend,
-                                     Cliente = SC5.C5Nomcli,
-                                     GrupoCliente = "",
-                                     ClienteEntrega = SC5.C5Nomclie,
-                                     Medico = SC5.C5XNmmed,
-                                     Convenio = SC5.C5XNmpla,
-                                     Cirurgia = SC5.C5XDtcir,
-                                     Hoje = "",
-                                     Dias = 0,
-                                     Anging = "",
-                                     Paciente = SC5.C5XNmpac,
-                                     Matric = "",
-                                     INPART = "",
-                                     Valor = SC6.C6Valor,
-                                     PVFaturamento = SC5.C5Num,
-                                     Status = c.UaXstatus,
-                                     DataEnvRA = " / / ",
-                                     DataRecRA = " / / ",
-                                     DataValorizacao = SC5.C5Xdtval,
-                                 }
-                            ).GroupBy(x => new
-                            {
-                                x.Vendedor,
-                                x.Cliente,
-                                x.GrupoCliente,
-                                x.ClienteEntrega,
-                                x.Medico,
-                                x.Convenio,
-                                x.Cirurgia,
-                                x.Hoje,
-                                x.Dias,
-                                x.Anging,
-                                x.Paciente,
-                                x.Matric,
-                                x.INPART,
-                                x.PVFaturamento,
-                                x.Status,
-                                x.DataEnvRA,
-                                x.DataRecRA,
-                                x.DataValorizacao,
-                                x.DataEmissao
-                            })
-                            .Select(x => new RelatorioCirurgiaAFaturar
-                            {
-                                Vendedor = x.Key.Vendedor,
-                                Cliente = x.Key.Cliente,
-                                GrupoCliente = x.Key.GrupoCliente,
-                                ClienteEntrega = x.Key.ClienteEntrega,
-                                Medico = x.Key.Medico,
-                                Convenio = x.Key.Convenio,
-                                Cirurgia = x.Key.Cirurgia,
-                                Hoje = x.Key.Hoje,
-                                Dias = x.Key.Dias,
-                                Anging = x.Key.Anging,
-                                Paciente = x.Key.Paciente,
-                                Matric = x.Key.Matric,
-                                INPART = x.Key.INPART,
-                                Valor = x.Sum(c => c.Valor),
-                                PVFaturamento = x.Key.PVFaturamento,
-                                Status = x.Key.Status,
-                                DataEnvRA = x.Key.DataEnvRA,
-                                DataRecRA = x.Key.DataRecRA,
-                                DataValorizacao = x.Key.DataValorizacao,
-                                DataEmissao = x.Key.DataEmissao,
-                                Empresa = "DENUO"
-                            }).ToList();
-
-
-                    RelatorioInter = (from SC5 in ProtheusInter.Sc5010s
-                                      join SC6 in ProtheusInter.Sc6010s on new { Filial = SC5.C5Filial, Num = SC5.C5Num } equals new { Filial = SC6.C6Filial, Num = SC6.C6Num }
-                                      join SA1 in ProtheusInter.Sa1010s on SC5.C5Cliente equals SA1.A1Cod
-                                      join SA3 in ProtheusInter.Sa3010s on SC5.C5Vend1 equals SA3.A3Cod
-                                      join SF4 in ProtheusInter.Sf4010s on SC6.C6Tes equals SF4.F4Codigo
-                                      join SB1 in ProtheusInter.Sb1010s on SC6.C6Produto equals SB1.B1Cod
-                                      join SUA in ProtheusInter.Sua010s on SC5.C5Uproces equals SUA.UaNum into Sr
-                                      from c in Sr.DefaultIfEmpty()
-                                      where SC5.DELET != "*" && SC6.C6Filial == SC5.C5Filial && SC6.C6Num == SC5.C5Num
-                                      && SC6.C6Nota == ""
-                                      && SC6.C6Blq != "R"
-                                      && SC6.DELET != "*"
-                                      && SF4.F4Codigo == SC6.C6Tes
-                                      && SF4.F4Duplic == "S"
-                                      && SF4.DELET != "*" && SA1.A1Cod == SC5.C5Cliente
-                                      && SA1.A1Loja == SC5.C5Lojacli && SA1.DELET != "*" && SA3.A3Cod == SC5.C5Vend1 && SA3.DELET != "*"
-                                      && (SC5.C5Utpoper == "F" || SC5.C5Utpoper == "T")
-                                      && SB1.DELET != "*" && SC6.C6Produto == SB1.B1Cod
-                                      && SA1.A1Cgc != "04715053000140" && SA1.A1Cgc != "04715053000220" && SA1.A1Cgc != "01390500000140"
-                                      && (int)(object)SC5.C5Emissao < Data
-                                      orderby SC5.C5Num, SC5.C5Emissao descending
-                                      select new RelatorioCirurgiaAFaturar
-                                      {
-                                          Vendedor = SC5.C5Nomvend,
-                                          Cliente = SC5.C5Nomcli,
-                                          GrupoCliente = "",
-                                          ClienteEntrega = SC5.C5Nomclie,
-                                          Medico = SC5.C5XNmmed,
-                                          Convenio = SC5.C5XNmpla,
-                                          Cirurgia = SC5.C5XDtcir,
-                                          Hoje = "",
-                                          Dias = 0,
-                                          Anging = "",
-                                          Paciente = SC5.C5XNmpac,
-                                          Matric = "",
-                                          INPART = "",
-                                          Valor = SC6.C6Valor,
-                                          PVFaturamento = SC5.C5Num,
-                                          Status = c.UaXstatus,
-                                          DataEnvRA = " / / ",
-                                          DataRecRA = " / / ",
-                                          DataValorizacao = SC5.C5Xdtval,
-                                      }
-                            ).GroupBy(x => new
-                            {
-                                x.Vendedor,
-                                x.Cliente,
-                                x.GrupoCliente,
-                                x.ClienteEntrega,
-                                x.Medico,
-                                x.Convenio,
-                                x.Cirurgia,
-                                x.Hoje,
-                                x.Dias,
-                                x.Anging,
-                                x.Paciente,
-                                x.Matric,
-                                x.INPART,
-                                x.PVFaturamento,
-                                x.Status,
-                                x.DataEnvRA,
-                                x.DataRecRA,
-                                x.DataValorizacao,
-                                x.DataEmissao
-                            })
-                            .Select(x => new RelatorioCirurgiaAFaturar
-                            {
-                                Vendedor = x.Key.Vendedor,
-                                Cliente = x.Key.Cliente,
-                                GrupoCliente = x.Key.GrupoCliente,
-                                ClienteEntrega = x.Key.ClienteEntrega,
-                                Medico = x.Key.Medico,
-                                Convenio = x.Key.Convenio,
-                                Cirurgia = x.Key.Cirurgia,
-                                Hoje = x.Key.Hoje,
-                                Dias = x.Key.Dias,
-                                Anging = x.Key.Anging,
-                                Paciente = x.Key.Paciente,
-                                Matric = x.Key.Matric,
-                                INPART = x.Key.INPART,
-                                Valor = x.Sum(c => c.Valor),
-                                PVFaturamento = x.Key.PVFaturamento,
-                                Status = x.Key.Status,
-                                DataEnvRA = x.Key.DataEnvRA,
-                                DataRecRA = x.Key.DataRecRA,
-                                DataValorizacao = x.Key.DataValorizacao,
-                                DataEmissao = x.Key.DataEmissao,
-                                Empresa = "INTERMEDIC"
-
-                            }).ToList();
+                    Relatorio = Relatorio.Where(x => x.Emissao < Data).ToList();
                 }
-
-
-                Relatorio = Relatorio.Concat(RelatorioInter).ToList();
 
                 Clientes = Relatorio.Select(x => x.Cliente).Distinct().ToList();
 
@@ -1855,6 +836,11 @@ namespace SGID.Pages.Relatorios.Diretoria
                 if (NReduz != null)
                 {
                     Relatorio = Relatorio.Where(x => x.Cliente == NReduz).ToList();
+                }
+                this.Empresa = Empresa;
+                if (Empresa != null)
+                {
+                    Relatorio = Relatorio.Where(x => x.Empresa == Empresa).ToList();
                 }
 
                 var data = DateTime.Now;
@@ -1904,7 +890,15 @@ namespace SGID.Pages.Relatorios.Diretoria
                     Total += x.Valor;
                 });
 
-                Relatorio = Relatorio.OrderBy(x => x.DataEmissao).ToList();
+                this.Valor = Valor;
+                if (Valor == "2")
+                {
+                    Relatorio = Relatorio.OrderBy(x => x.Cliente).ThenBy(x => x.Valor).ToList();
+                }
+                else
+                {
+                    Relatorio = Relatorio.OrderBy(x => x.Cliente).ThenByDescending(x => x.Valor).ToList();
+                }
 
                 using ExcelPackage package = new ExcelPackage();
                 package.Workbook.Worksheets.Add("Cirurgias A Faturar");

@@ -36,6 +36,8 @@ namespace SGID.Pages.Relatorios.Diretoria
                 DateTime data = DateTime.Now;
                 string DataInicio = $"{data.Year}{data.Month.ToString("D2")}{data.Day.ToString("D2")}";
 
+                this.Tempo = "1";
+
                 var query = (from SE10 in Protheus.Se1010s
                              join SA10 in Protheus.Sa1010s on SE10.E1Cliente equals SA10.A1Cod
                              join SC50 in Protheus.Sc5010s on SE10.E1Num equals SC50.C5Nota
