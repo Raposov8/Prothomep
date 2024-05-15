@@ -43,11 +43,13 @@ namespace SGID.Pages.Relatorios.Diretoria
                     var Data = Convert.ToInt32(ago.ToString("yyyy/MM/dd").Replace("/", ""));
 
                     Relatorio = (from SC5 in Protheus.Sc5010s
-                                 from SC6 in Protheus.Sc6010s
-                                 from SA1 in Protheus.Sa1010s
-                                 from SA3 in Protheus.Sa3010s
-                                 from SF4 in Protheus.Sf4010s
-                                 from SB1 in Protheus.Sb1010s
+                                 join SC6 in Protheus.Sc6010s on new { Filial = SC5.C5Filial, Num = SC5.C5Num } equals new { Filial = SC6.C6Filial, Num = SC6.C6Num }
+                                 join SA1 in Protheus.Sa1010s on SC5.C5Cliente equals SA1.A1Cod
+                                 join SA3 in Protheus.Sa3010s on SC5.C5Vend1 equals SA3.A3Cod
+                                 join SF4 in Protheus.Sf4010s on SC6.C6Tes equals SF4.F4Codigo
+                                 join SB1 in Protheus.Sb1010s on SC6.C6Produto equals SB1.B1Cod
+                                 join SUA in Protheus.Sua010s on SC5.C5Uproces equals SUA.UaNum into Sr
+                                 from c in Sr.DefaultIfEmpty()
                                  where SC5.DELET != "*" && SC6.C6Filial == SC5.C5Filial && SC6.C6Num == SC5.C5Num
                                  && SC6.C6Nota == ""
                                  && SC6.C6Blq != "R"
@@ -58,7 +60,6 @@ namespace SGID.Pages.Relatorios.Diretoria
                                  && SA1.A1Loja == SC5.C5Lojacli && SA1.DELET != "*" && SA3.A3Cod == SC5.C5Vend1 && SA3.DELET != "*"
                                  && (SC5.C5Utpoper == "F" || SC5.C5Utpoper == "T")
                                  && SB1.DELET != "*" && SC6.C6Produto == SB1.B1Cod
-                                 && SC5.C5Xtipopv != "D"
                                  && SA1.A1Cgc != "04715053000140" && SA1.A1Cgc != "04715053000220" && SA1.A1Cgc != "01390500000140"
                                  && (int)(object)SC5.C5Emissao >= Data
                                  orderby SC5.C5Num, SC5.C5Emissao descending
@@ -79,10 +80,10 @@ namespace SGID.Pages.Relatorios.Diretoria
                                      INPART = "",
                                      Valor = SC6.C6Valor,
                                      PVFaturamento = SC5.C5Num,
-                                     Status = "",
+                                     Status = c.UaXstatus,
                                      DataEnvRA = " / / ",
                                      DataRecRA = " / / ",
-                                     DataValorizacao = SC5.C5Xdtval
+                                     DataValorizacao = SC5.C5Xdtval,
                                  }
                             ).GroupBy(x => new
                             {
@@ -130,46 +131,48 @@ namespace SGID.Pages.Relatorios.Diretoria
                             }).ToList();
 
                     RelatorioInter = (from SC5 in ProtheusInter.Sc5010s
-                                 from SC6 in ProtheusInter.Sc6010s
-                                 from SA1 in ProtheusInter.Sa1010s
-                                 from SA3 in ProtheusInter.Sa3010s
-                                 from SF4 in ProtheusInter.Sf4010s
-                                 from SB1 in ProtheusInter.Sb1010s
-                                 where SC5.DELET != "*" && SC6.C6Filial == SC5.C5Filial && SC6.C6Num == SC5.C5Num
-                                 && SC6.C6Nota == ""
-                                 && SC6.C6Blq != "R"
-                                 && SC6.DELET != "*"
-                                 && SF4.F4Codigo == SC6.C6Tes
-                                 && SF4.F4Duplic == "S"
-                                 && SF4.DELET != "*" && SA1.A1Cod == SC5.C5Cliente
-                                 && SA1.A1Loja == SC5.C5Lojacli && SA1.DELET != "*" && SA3.A3Cod == SC5.C5Vend1 && SA3.DELET != "*"
-                                 && (SC5.C5Utpoper == "F" || SC5.C5Utpoper == "T")
-                                 && SB1.DELET != "*" && SC6.C6Produto == SB1.B1Cod
-                                 && SA1.A1Cgc != "04715053000140" && SA1.A1Cgc != "04715053000220" && SA1.A1Cgc != "01390500000140"
-                                 && (int)(object)SC5.C5Emissao >= Data
-                                 orderby SC5.C5Num, SC5.C5Emissao descending
-                                 select new RelatorioCirurgiaAFaturar
-                                 {
-                                     Vendedor = SC5.C5Nomvend,
-                                     Cliente = SC5.C5Nomcli,
-                                     GrupoCliente = "",
-                                     ClienteEntrega = SC5.C5Nomclie,
-                                     Medico = SC5.C5XNmmed,
-                                     Convenio = SC5.C5XNmpla,
-                                     Cirurgia = SC5.C5XDtcir,
-                                     Hoje = "",
-                                     Dias = 0,
-                                     Anging = "",
-                                     Paciente = SC5.C5XNmpac,
-                                     Matric = "",
-                                     INPART = "",
-                                     Valor = SC6.C6Valor,
-                                     PVFaturamento = SC5.C5Num,
-                                     Status = "",
-                                     DataEnvRA = " / / ",
-                                     DataRecRA = " / / ",
-                                     DataValorizacao = SC5.C5Xdtval
-                                 }
+                                      join SC6 in ProtheusInter.Sc6010s on new { Filial = SC5.C5Filial, Num = SC5.C5Num } equals new { Filial = SC6.C6Filial, Num = SC6.C6Num }
+                                      join SA1 in ProtheusInter.Sa1010s on SC5.C5Cliente equals SA1.A1Cod
+                                      join SA3 in ProtheusInter.Sa3010s on SC5.C5Vend1 equals SA3.A3Cod
+                                      join SF4 in ProtheusInter.Sf4010s on SC6.C6Tes equals SF4.F4Codigo
+                                      join SB1 in ProtheusInter.Sb1010s on SC6.C6Produto equals SB1.B1Cod
+                                      join SUA in ProtheusInter.Sua010s on SC5.C5Uproces equals SUA.UaNum into Sr
+                                      from c in Sr.DefaultIfEmpty()
+                                      where SC5.DELET != "*" && SC6.C6Filial == SC5.C5Filial && SC6.C6Num == SC5.C5Num
+                                      && SC6.C6Nota == ""
+                                      && SC6.C6Blq != "R"
+                                      && SC6.DELET != "*"
+                                      && SF4.F4Codigo == SC6.C6Tes
+                                      && SF4.F4Duplic == "S"
+                                      && SF4.DELET != "*" && SA1.A1Cod == SC5.C5Cliente
+                                      && SA1.A1Loja == SC5.C5Lojacli && SA1.DELET != "*" && SA3.A3Cod == SC5.C5Vend1 && SA3.DELET != "*"
+                                      && (SC5.C5Utpoper == "F" || SC5.C5Utpoper == "T")
+                                      && SB1.DELET != "*" && SC6.C6Produto == SB1.B1Cod
+                                      && SA1.A1Cgc != "04715053000140" && SA1.A1Cgc != "04715053000220" && SA1.A1Cgc != "01390500000140"
+                                      && (int)(object)SC5.C5Emissao >= Data
+                                      orderby SC5.C5Num, SC5.C5Emissao descending
+                                      select new RelatorioCirurgiaAFaturar
+                                      {
+                                          Vendedor = SC5.C5Nomvend,
+                                          Cliente = SC5.C5Nomcli,
+                                          GrupoCliente = "",
+                                          ClienteEntrega = SC5.C5Nomclie,
+                                          Medico = SC5.C5XNmmed,
+                                          Convenio = SC5.C5XNmpla,
+                                          Cirurgia = SC5.C5XDtcir,
+                                          Hoje = "",
+                                          Dias = 0,
+                                          Anging = "",
+                                          Paciente = SC5.C5XNmpac,
+                                          Matric = "",
+                                          INPART = "",
+                                          Valor = SC6.C6Valor,
+                                          PVFaturamento = SC5.C5Num,
+                                          Status = c.UaXstatus,
+                                          DataEnvRA = " / / ",
+                                          DataRecRA = " / / ",
+                                          DataValorizacao = SC5.C5Xdtval,
+                                      }
                             ).GroupBy(x => new
                             {
                                 x.Vendedor,
@@ -215,7 +218,7 @@ namespace SGID.Pages.Relatorios.Diretoria
                                 Empresa = "INTERMEDIC"
                             }).ToList();
                 }
-                else if(id == "2")
+                else if (id == "2")
                 {
                     DateTime ago = DateTime.Now.AddMonths(-9);
                     DateTime After = ago.AddMonths(6);
@@ -224,11 +227,13 @@ namespace SGID.Pages.Relatorios.Diretoria
                     var Data2 = Convert.ToInt32(After.ToString("yyyy/MM/dd").Replace("/", ""));
 
                     Relatorio = (from SC5 in Protheus.Sc5010s
-                                 from SC6 in Protheus.Sc6010s
-                                 from SA1 in Protheus.Sa1010s
-                                 from SA3 in Protheus.Sa3010s
-                                 from SF4 in Protheus.Sf4010s
-                                 from SB1 in Protheus.Sb1010s
+                                 join SC6 in Protheus.Sc6010s on new { Filial = SC5.C5Filial, Num = SC5.C5Num } equals new { Filial = SC6.C6Filial, Num = SC6.C6Num }
+                                 join SA1 in Protheus.Sa1010s on SC5.C5Cliente equals SA1.A1Cod
+                                 join SA3 in Protheus.Sa3010s on SC5.C5Vend1 equals SA3.A3Cod
+                                 join SF4 in Protheus.Sf4010s on SC6.C6Tes equals SF4.F4Codigo
+                                 join SB1 in Protheus.Sb1010s on SC6.C6Produto equals SB1.B1Cod
+                                 join SUA in Protheus.Sua010s on SC5.C5Uproces equals SUA.UaNum into Sr
+                                 from c in Sr.DefaultIfEmpty()
                                  where SC5.DELET != "*" && SC6.C6Filial == SC5.C5Filial && SC6.C6Num == SC5.C5Num
                                  && SC6.C6Nota == ""
                                  && SC6.C6Blq != "R"
@@ -239,7 +244,6 @@ namespace SGID.Pages.Relatorios.Diretoria
                                  && SA1.A1Loja == SC5.C5Lojacli && SA1.DELET != "*" && SA3.A3Cod == SC5.C5Vend1 && SA3.DELET != "*"
                                  && (SC5.C5Utpoper == "F" || SC5.C5Utpoper == "T")
                                  && SB1.DELET != "*" && SC6.C6Produto == SB1.B1Cod
-                                 && SC5.C5Xtipopv != "D"
                                  && SA1.A1Cgc != "04715053000140" && SA1.A1Cgc != "04715053000220" && SA1.A1Cgc != "01390500000140"
                                  && (int)(object)SC5.C5Emissao >= Data
                                  && (int)(object)SC5.C5Emissao < Data2
@@ -261,10 +265,10 @@ namespace SGID.Pages.Relatorios.Diretoria
                                      INPART = "",
                                      Valor = SC6.C6Valor,
                                      PVFaturamento = SC5.C5Num,
-                                     Status = "",
+                                     Status = c.UaXstatus,
                                      DataEnvRA = " / / ",
                                      DataRecRA = " / / ",
-                                     DataValorizacao = SC5.C5Xdtval
+                                     DataValorizacao = SC5.C5Xdtval,
                                  }
                             ).GroupBy(x => new
                             {
@@ -313,47 +317,49 @@ namespace SGID.Pages.Relatorios.Diretoria
                             }).ToList();
 
                     RelatorioInter = (from SC5 in ProtheusInter.Sc5010s
-                                 from SC6 in ProtheusInter.Sc6010s
-                                 from SA1 in ProtheusInter.Sa1010s
-                                 from SA3 in ProtheusInter.Sa3010s
-                                 from SF4 in ProtheusInter.Sf4010s
-                                 from SB1 in ProtheusInter.Sb1010s
-                                 where SC5.DELET != "*" && SC6.C6Filial == SC5.C5Filial && SC6.C6Num == SC5.C5Num
-                                 && SC6.C6Nota == ""
-                                 && SC6.C6Blq != "R"
-                                 && SC6.DELET != "*"
-                                 && SF4.F4Codigo == SC6.C6Tes
-                                 && SF4.F4Duplic == "S"
-                                 && SF4.DELET != "*" && SA1.A1Cod == SC5.C5Cliente
-                                 && SA1.A1Loja == SC5.C5Lojacli && SA1.DELET != "*" && SA3.A3Cod == SC5.C5Vend1 && SA3.DELET != "*"
-                                 && (SC5.C5Utpoper == "F" || SC5.C5Utpoper == "T")
-                                 && SB1.DELET != "*" && SC6.C6Produto == SB1.B1Cod
-                                 && SA1.A1Cgc != "04715053000140" && SA1.A1Cgc != "04715053000220" && SA1.A1Cgc != "01390500000140"
-                                 && (int)(object)SC5.C5Emissao >= Data
-                                 && (int)(object)SC5.C5Emissao < Data2
-                                 orderby SC5.C5Num, SC5.C5Emissao descending
-                                 select new RelatorioCirurgiaAFaturar
-                                 {
-                                     Vendedor = SC5.C5Nomvend,
-                                     Cliente = SC5.C5Nomcli,
-                                     GrupoCliente = "",
-                                     ClienteEntrega = SC5.C5Nomclie,
-                                     Medico = SC5.C5XNmmed,
-                                     Convenio = SC5.C5XNmpla,
-                                     Cirurgia = SC5.C5XDtcir,
-                                     Hoje = "",
-                                     Dias = 0,
-                                     Anging = "",
-                                     Paciente = SC5.C5XNmpac,
-                                     Matric = "",
-                                     INPART = "",
-                                     Valor = SC6.C6Valor,
-                                     PVFaturamento = SC5.C5Num,
-                                     Status = "",
-                                     DataEnvRA = " / / ",
-                                     DataRecRA = " / / ",
-                                     DataValorizacao = SC5.C5Xdtval
-                                 }
+                                      join SC6 in ProtheusInter.Sc6010s on new { Filial = SC5.C5Filial, Num = SC5.C5Num } equals new { Filial = SC6.C6Filial, Num = SC6.C6Num }
+                                      join SA1 in ProtheusInter.Sa1010s on SC5.C5Cliente equals SA1.A1Cod
+                                      join SA3 in ProtheusInter.Sa3010s on SC5.C5Vend1 equals SA3.A3Cod
+                                      join SF4 in ProtheusInter.Sf4010s on SC6.C6Tes equals SF4.F4Codigo
+                                      join SB1 in ProtheusInter.Sb1010s on SC6.C6Produto equals SB1.B1Cod
+                                      join SUA in ProtheusInter.Sua010s on SC5.C5Uproces equals SUA.UaNum into Sr
+                                      from c in Sr.DefaultIfEmpty()
+                                      where SC5.DELET != "*" && SC6.C6Filial == SC5.C5Filial && SC6.C6Num == SC5.C5Num
+                                      && SC6.C6Nota == ""
+                                      && SC6.C6Blq != "R"
+                                      && SC6.DELET != "*"
+                                      && SF4.F4Codigo == SC6.C6Tes
+                                      && SF4.F4Duplic == "S"
+                                      && SF4.DELET != "*" && SA1.A1Cod == SC5.C5Cliente
+                                      && SA1.A1Loja == SC5.C5Lojacli && SA1.DELET != "*" && SA3.A3Cod == SC5.C5Vend1 && SA3.DELET != "*"
+                                      && (SC5.C5Utpoper == "F" || SC5.C5Utpoper == "T")
+                                      && SB1.DELET != "*" && SC6.C6Produto == SB1.B1Cod
+                                      && SA1.A1Cgc != "04715053000140" && SA1.A1Cgc != "04715053000220" && SA1.A1Cgc != "01390500000140"
+                                      && (int)(object)SC5.C5Emissao >= Data
+                                      && (int)(object)SC5.C5Emissao < Data2
+                                      orderby SC5.C5Num, SC5.C5Emissao descending
+                                      select new RelatorioCirurgiaAFaturar
+                                      {
+                                          Vendedor = SC5.C5Nomvend,
+                                          Cliente = SC5.C5Nomcli,
+                                          GrupoCliente = "",
+                                          ClienteEntrega = SC5.C5Nomclie,
+                                          Medico = SC5.C5XNmmed,
+                                          Convenio = SC5.C5XNmpla,
+                                          Cirurgia = SC5.C5XDtcir,
+                                          Hoje = "",
+                                          Dias = 0,
+                                          Anging = "",
+                                          Paciente = SC5.C5XNmpac,
+                                          Matric = "",
+                                          INPART = "",
+                                          Valor = SC6.C6Valor,
+                                          PVFaturamento = SC5.C5Num,
+                                          Status = c.UaXstatus,
+                                          DataEnvRA = " / / ",
+                                          DataRecRA = " / / ",
+                                          DataValorizacao = SC5.C5Xdtval,
+                                      }
                             ).GroupBy(x => new
                             {
                                 x.Vendedor,
@@ -407,11 +413,13 @@ namespace SGID.Pages.Relatorios.Diretoria
                     var Data = Convert.ToInt32(ago.ToString("yyyy/MM/dd").Replace("/", ""));
 
                     Relatorio = (from SC5 in Protheus.Sc5010s
-                                 from SC6 in Protheus.Sc6010s
-                                 from SA1 in Protheus.Sa1010s
-                                 from SA3 in Protheus.Sa3010s
-                                 from SF4 in Protheus.Sf4010s
-                                 from SB1 in Protheus.Sb1010s
+                                 join SC6 in Protheus.Sc6010s on new { Filial = SC5.C5Filial, Num = SC5.C5Num } equals new { Filial = SC6.C6Filial, Num = SC6.C6Num }
+                                 join SA1 in Protheus.Sa1010s on SC5.C5Cliente equals SA1.A1Cod
+                                 join SA3 in Protheus.Sa3010s on SC5.C5Vend1 equals SA3.A3Cod
+                                 join SF4 in Protheus.Sf4010s on SC6.C6Tes equals SF4.F4Codigo
+                                 join SB1 in Protheus.Sb1010s on SC6.C6Produto equals SB1.B1Cod
+                                 join SUA in Protheus.Sua010s on SC5.C5Uproces equals SUA.UaNum into Sr
+                                 from c in Sr.DefaultIfEmpty()
                                  where SC5.DELET != "*" && SC6.C6Filial == SC5.C5Filial && SC6.C6Num == SC5.C5Num
                                  && SC6.C6Nota == ""
                                  && SC6.C6Blq != "R"
@@ -422,7 +430,6 @@ namespace SGID.Pages.Relatorios.Diretoria
                                  && SA1.A1Loja == SC5.C5Lojacli && SA1.DELET != "*" && SA3.A3Cod == SC5.C5Vend1 && SA3.DELET != "*"
                                  && (SC5.C5Utpoper == "F" || SC5.C5Utpoper == "T")
                                  && SB1.DELET != "*" && SC6.C6Produto == SB1.B1Cod
-                                 && SC5.C5Xtipopv != "D"
                                  && SA1.A1Cgc != "04715053000140" && SA1.A1Cgc != "04715053000220" && SA1.A1Cgc != "01390500000140"
                                  && (int)(object)SC5.C5Emissao < Data
                                  orderby SC5.C5Num, SC5.C5Emissao descending
@@ -443,11 +450,10 @@ namespace SGID.Pages.Relatorios.Diretoria
                                      INPART = "",
                                      Valor = SC6.C6Valor,
                                      PVFaturamento = SC5.C5Num,
-                                     Status = "",
+                                     Status = c.UaXstatus,
                                      DataEnvRA = " / / ",
                                      DataRecRA = " / / ",
                                      DataValorizacao = SC5.C5Xdtval,
-                                     DataEmissao = SC5.C5Emissao
                                  }
                             ).GroupBy(x => new
                             {
@@ -468,8 +474,7 @@ namespace SGID.Pages.Relatorios.Diretoria
                                 x.Status,
                                 x.DataEnvRA,
                                 x.DataRecRA,
-                                x.DataValorizacao,
-                                x.DataEmissao
+                                x.DataValorizacao
                             })
                             .Select(x => new RelatorioCirurgiaAFaturar
                             {
@@ -492,53 +497,53 @@ namespace SGID.Pages.Relatorios.Diretoria
                                 DataEnvRA = x.Key.DataEnvRA,
                                 DataRecRA = x.Key.DataRecRA,
                                 DataValorizacao = x.Key.DataValorizacao,
-                                DataEmissao = x.Key.DataEmissao,
                                 Empresa = "DENUO"
                             }).ToList();
 
 
-                    RelatorioInter = (from SC5 in ProtheusInter.Sc5010s
-                                 from SC6 in ProtheusInter.Sc6010s
-                                 from SA1 in ProtheusInter.Sa1010s
-                                 from SA3 in ProtheusInter.Sa3010s
-                                 from SF4 in ProtheusInter.Sf4010s
-                                 from SB1 in ProtheusInter.Sb1010s
-                                 where SC5.DELET != "*" && SC6.C6Filial == SC5.C5Filial && SC6.C6Num == SC5.C5Num
-                                 && SC6.C6Nota == ""
-                                 && SC6.C6Blq != "R"
-                                 && SC6.DELET != "*"
-                                 && SF4.F4Codigo == SC6.C6Tes
-                                 && SF4.F4Duplic == "S"
-                                 && SF4.DELET != "*" && SA1.A1Cod == SC5.C5Cliente
-                                 && SA1.A1Loja == SC5.C5Lojacli && SA1.DELET != "*" && SA3.A3Cod == SC5.C5Vend1 && SA3.DELET != "*"
-                                 && (SC5.C5Utpoper == "F" || SC5.C5Utpoper == "T")
-                                 && SB1.DELET != "*" && SC6.C6Produto == SB1.B1Cod
-                                 && SA1.A1Cgc != "04715053000140" && SA1.A1Cgc != "04715053000220" && SA1.A1Cgc != "01390500000140"
-                                 && (int)(object)SC5.C5Emissao < Data
-                                 orderby SC5.C5Num, SC5.C5Emissao descending
-                                 select new RelatorioCirurgiaAFaturar
-                                 {
-                                     Vendedor = SC5.C5Nomvend,
-                                     Cliente = SC5.C5Nomcli,
-                                     GrupoCliente = "",
-                                     ClienteEntrega = SC5.C5Nomclie,
-                                     Medico = SC5.C5XNmmed,
-                                     Convenio = SC5.C5XNmpla,
-                                     Cirurgia = SC5.C5XDtcir,
-                                     Hoje = "",
-                                     Dias = 0,
-                                     Anging = "",
-                                     Paciente = SC5.C5XNmpac,
-                                     Matric = "",
-                                     INPART = "",
-                                     Valor = SC6.C6Valor,
-                                     PVFaturamento = SC5.C5Num,
-                                     Status = "",
-                                     DataEnvRA = " / / ",
-                                     DataRecRA = " / / ",
-                                     DataValorizacao = SC5.C5Xdtval,
-                                     DataEmissao = SC5.C5Emissao
-                                 }
+                    RelatorioInter = (from SC5 in Protheus.Sc5010s
+                                      join SC6 in Protheus.Sc6010s on new { Filial = SC5.C5Filial, Num = SC5.C5Num } equals new { Filial = SC6.C6Filial, Num = SC6.C6Num }
+                                      join SA1 in Protheus.Sa1010s on SC5.C5Cliente equals SA1.A1Cod
+                                      join SA3 in Protheus.Sa3010s on SC5.C5Vend1 equals SA3.A3Cod
+                                      join SF4 in Protheus.Sf4010s on SC6.C6Tes equals SF4.F4Codigo
+                                      join SB1 in Protheus.Sb1010s on SC6.C6Produto equals SB1.B1Cod
+                                      join SUA in Protheus.Sua010s on SC5.C5Uproces equals SUA.UaNum into Sr
+                                      from c in Sr.DefaultIfEmpty()
+                                      where SC5.DELET != "*" && SC6.C6Filial == SC5.C5Filial && SC6.C6Num == SC5.C5Num
+                                      && SC6.C6Nota == ""
+                                      && SC6.C6Blq != "R"
+                                      && SC6.DELET != "*"
+                                      && SF4.F4Codigo == SC6.C6Tes
+                                      && SF4.F4Duplic == "S"
+                                      && SF4.DELET != "*" && SA1.A1Cod == SC5.C5Cliente
+                                      && SA1.A1Loja == SC5.C5Lojacli && SA1.DELET != "*" && SA3.A3Cod == SC5.C5Vend1 && SA3.DELET != "*"
+                                      && (SC5.C5Utpoper == "F" || SC5.C5Utpoper == "T")
+                                      && SB1.DELET != "*" && SC6.C6Produto == SB1.B1Cod
+                                      && SA1.A1Cgc != "04715053000140" && SA1.A1Cgc != "04715053000220" && SA1.A1Cgc != "01390500000140"
+                                      && (int)(object)SC5.C5Emissao < Data
+                                      orderby SC5.C5Num, SC5.C5Emissao descending
+                                      select new RelatorioCirurgiaAFaturar
+                                      {
+                                          Vendedor = SC5.C5Nomvend,
+                                          Cliente = SC5.C5Nomcli,
+                                          GrupoCliente = "",
+                                          ClienteEntrega = SC5.C5Nomclie,
+                                          Medico = SC5.C5XNmmed,
+                                          Convenio = SC5.C5XNmpla,
+                                          Cirurgia = SC5.C5XDtcir,
+                                          Hoje = "",
+                                          Dias = 0,
+                                          Anging = "",
+                                          Paciente = SC5.C5XNmpac,
+                                          Matric = "",
+                                          INPART = "",
+                                          Valor = SC6.C6Valor,
+                                          PVFaturamento = SC5.C5Num,
+                                          Status = c.UaXstatus,
+                                          DataEnvRA = " / / ",
+                                          DataRecRA = " / / ",
+                                          DataValorizacao = SC5.C5Xdtval,
+                                      }
                             ).GroupBy(x => new
                             {
                                 x.Vendedor,
@@ -558,8 +563,7 @@ namespace SGID.Pages.Relatorios.Diretoria
                                 x.Status,
                                 x.DataEnvRA,
                                 x.DataRecRA,
-                                x.DataValorizacao,
-                                x.DataEmissao
+                                x.DataValorizacao
                             })
                             .Select(x => new RelatorioCirurgiaAFaturar
                             {
@@ -582,12 +586,9 @@ namespace SGID.Pages.Relatorios.Diretoria
                                 DataEnvRA = x.Key.DataEnvRA,
                                 DataRecRA = x.Key.DataRecRA,
                                 DataValorizacao = x.Key.DataValorizacao,
-                                DataEmissao = x.Key.DataEmissao,
                                 Empresa = "INTERMEDIC"
-
                             }).ToList();
                 }
-
 
                 Relatorio = Relatorio.Concat(RelatorioInter).ToList();
 
@@ -661,11 +662,13 @@ namespace SGID.Pages.Relatorios.Diretoria
                     var Data = Convert.ToInt32(ago.ToString("yyyy/MM/dd").Replace("/", ""));
 
                     Relatorio = (from SC5 in Protheus.Sc5010s
-                                 from SC6 in Protheus.Sc6010s
-                                 from SA1 in Protheus.Sa1010s
-                                 from SA3 in Protheus.Sa3010s
-                                 from SF4 in Protheus.Sf4010s
-                                 from SB1 in Protheus.Sb1010s
+                                 join SC6 in Protheus.Sc6010s on new { Filial = SC5.C5Filial, Num = SC5.C5Num } equals new { Filial = SC6.C6Filial, Num = SC6.C6Num }
+                                 join SA1 in Protheus.Sa1010s on SC5.C5Cliente equals SA1.A1Cod
+                                 join SA3 in Protheus.Sa3010s on SC5.C5Vend1 equals SA3.A3Cod
+                                 join SF4 in Protheus.Sf4010s on SC6.C6Tes equals SF4.F4Codigo
+                                 join SB1 in Protheus.Sb1010s on SC6.C6Produto equals SB1.B1Cod
+                                 join SUA in Protheus.Sua010s on SC5.C5Uproces equals SUA.UaNum into Sr
+                                 from c in Sr.DefaultIfEmpty()
                                  where SC5.DELET != "*" && SC6.C6Filial == SC5.C5Filial && SC6.C6Num == SC5.C5Num
                                  && SC6.C6Nota == ""
                                  && SC6.C6Blq != "R"
@@ -676,7 +679,6 @@ namespace SGID.Pages.Relatorios.Diretoria
                                  && SA1.A1Loja == SC5.C5Lojacli && SA1.DELET != "*" && SA3.A3Cod == SC5.C5Vend1 && SA3.DELET != "*"
                                  && (SC5.C5Utpoper == "F" || SC5.C5Utpoper == "T")
                                  && SB1.DELET != "*" && SC6.C6Produto == SB1.B1Cod
-                                 && SC5.C5Xtipopv != "D"
                                  && SA1.A1Cgc != "04715053000140" && SA1.A1Cgc != "04715053000220" && SA1.A1Cgc != "01390500000140"
                                  && (int)(object)SC5.C5Emissao >= Data
                                  orderby SC5.C5Num, SC5.C5Emissao descending
@@ -697,10 +699,10 @@ namespace SGID.Pages.Relatorios.Diretoria
                                      INPART = "",
                                      Valor = SC6.C6Valor,
                                      PVFaturamento = SC5.C5Num,
-                                     Status = "",
+                                     Status = c.UaXstatus,
                                      DataEnvRA = " / / ",
                                      DataRecRA = " / / ",
-                                     DataValorizacao = SC5.C5Xdtval
+                                     DataValorizacao = SC5.C5Xdtval,
                                  }
                             ).GroupBy(x => new
                             {
@@ -748,11 +750,13 @@ namespace SGID.Pages.Relatorios.Diretoria
                             }).ToList();
 
                     RelatorioInter = (from SC5 in ProtheusInter.Sc5010s
-                                      from SC6 in ProtheusInter.Sc6010s
-                                      from SA1 in ProtheusInter.Sa1010s
-                                      from SA3 in ProtheusInter.Sa3010s
-                                      from SF4 in ProtheusInter.Sf4010s
-                                      from SB1 in ProtheusInter.Sb1010s
+                                      join SC6 in ProtheusInter.Sc6010s on new { Filial = SC5.C5Filial, Num = SC5.C5Num } equals new { Filial = SC6.C6Filial, Num = SC6.C6Num }
+                                      join SA1 in ProtheusInter.Sa1010s on SC5.C5Cliente equals SA1.A1Cod
+                                      join SA3 in ProtheusInter.Sa3010s on SC5.C5Vend1 equals SA3.A3Cod
+                                      join SF4 in ProtheusInter.Sf4010s on SC6.C6Tes equals SF4.F4Codigo
+                                      join SB1 in ProtheusInter.Sb1010s on SC6.C6Produto equals SB1.B1Cod
+                                      join SUA in ProtheusInter.Sua010s on SC5.C5Uproces equals SUA.UaNum into Sr
+                                      from c in Sr.DefaultIfEmpty()
                                       where SC5.DELET != "*" && SC6.C6Filial == SC5.C5Filial && SC6.C6Num == SC5.C5Num
                                       && SC6.C6Nota == ""
                                       && SC6.C6Blq != "R"
@@ -783,10 +787,10 @@ namespace SGID.Pages.Relatorios.Diretoria
                                           INPART = "",
                                           Valor = SC6.C6Valor,
                                           PVFaturamento = SC5.C5Num,
-                                          Status = "",
+                                          Status = c.UaXstatus,
                                           DataEnvRA = " / / ",
                                           DataRecRA = " / / ",
-                                          DataValorizacao = SC5.C5Xdtval
+                                          DataValorizacao = SC5.C5Xdtval,
                                       }
                             ).GroupBy(x => new
                             {
@@ -842,11 +846,13 @@ namespace SGID.Pages.Relatorios.Diretoria
                     var Data2 = Convert.ToInt32(After.ToString("yyyy/MM/dd").Replace("/", ""));
 
                     Relatorio = (from SC5 in Protheus.Sc5010s
-                                 from SC6 in Protheus.Sc6010s
-                                 from SA1 in Protheus.Sa1010s
-                                 from SA3 in Protheus.Sa3010s
-                                 from SF4 in Protheus.Sf4010s
-                                 from SB1 in Protheus.Sb1010s
+                                 join SC6 in Protheus.Sc6010s on new { Filial = SC5.C5Filial, Num = SC5.C5Num } equals new { Filial = SC6.C6Filial, Num = SC6.C6Num }
+                                 join SA1 in Protheus.Sa1010s on SC5.C5Cliente equals SA1.A1Cod
+                                 join SA3 in Protheus.Sa3010s on SC5.C5Vend1 equals SA3.A3Cod
+                                 join SF4 in Protheus.Sf4010s on SC6.C6Tes equals SF4.F4Codigo
+                                 join SB1 in Protheus.Sb1010s on SC6.C6Produto equals SB1.B1Cod
+                                 join SUA in Protheus.Sua010s on SC5.C5Uproces equals SUA.UaNum into Sr
+                                 from c in Sr.DefaultIfEmpty()
                                  where SC5.DELET != "*" && SC6.C6Filial == SC5.C5Filial && SC6.C6Num == SC5.C5Num
                                  && SC6.C6Nota == ""
                                  && SC6.C6Blq != "R"
@@ -857,7 +863,6 @@ namespace SGID.Pages.Relatorios.Diretoria
                                  && SA1.A1Loja == SC5.C5Lojacli && SA1.DELET != "*" && SA3.A3Cod == SC5.C5Vend1 && SA3.DELET != "*"
                                  && (SC5.C5Utpoper == "F" || SC5.C5Utpoper == "T")
                                  && SB1.DELET != "*" && SC6.C6Produto == SB1.B1Cod
-                                 && SC5.C5Xtipopv != "D"
                                  && SA1.A1Cgc != "04715053000140" && SA1.A1Cgc != "04715053000220" && SA1.A1Cgc != "01390500000140"
                                  && (int)(object)SC5.C5Emissao >= Data
                                  && (int)(object)SC5.C5Emissao < Data2
@@ -879,10 +884,10 @@ namespace SGID.Pages.Relatorios.Diretoria
                                      INPART = "",
                                      Valor = SC6.C6Valor,
                                      PVFaturamento = SC5.C5Num,
-                                     Status = "",
+                                     Status = c.UaXstatus,
                                      DataEnvRA = " / / ",
                                      DataRecRA = " / / ",
-                                     DataValorizacao = SC5.C5Xdtval
+                                     DataValorizacao = SC5.C5Xdtval,
                                  }
                             ).GroupBy(x => new
                             {
@@ -931,11 +936,13 @@ namespace SGID.Pages.Relatorios.Diretoria
                             }).ToList();
 
                     RelatorioInter = (from SC5 in ProtheusInter.Sc5010s
-                                      from SC6 in ProtheusInter.Sc6010s
-                                      from SA1 in ProtheusInter.Sa1010s
-                                      from SA3 in ProtheusInter.Sa3010s
-                                      from SF4 in ProtheusInter.Sf4010s
-                                      from SB1 in ProtheusInter.Sb1010s
+                                      join SC6 in ProtheusInter.Sc6010s on new { Filial = SC5.C5Filial, Num = SC5.C5Num } equals new { Filial = SC6.C6Filial, Num = SC6.C6Num }
+                                      join SA1 in ProtheusInter.Sa1010s on SC5.C5Cliente equals SA1.A1Cod
+                                      join SA3 in ProtheusInter.Sa3010s on SC5.C5Vend1 equals SA3.A3Cod
+                                      join SF4 in ProtheusInter.Sf4010s on SC6.C6Tes equals SF4.F4Codigo
+                                      join SB1 in ProtheusInter.Sb1010s on SC6.C6Produto equals SB1.B1Cod
+                                      join SUA in ProtheusInter.Sua010s on SC5.C5Uproces equals SUA.UaNum into Sr
+                                      from c in Sr.DefaultIfEmpty()
                                       where SC5.DELET != "*" && SC6.C6Filial == SC5.C5Filial && SC6.C6Num == SC5.C5Num
                                       && SC6.C6Nota == ""
                                       && SC6.C6Blq != "R"
@@ -967,10 +974,10 @@ namespace SGID.Pages.Relatorios.Diretoria
                                           INPART = "",
                                           Valor = SC6.C6Valor,
                                           PVFaturamento = SC5.C5Num,
-                                          Status = "",
+                                          Status = c.UaXstatus,
                                           DataEnvRA = " / / ",
                                           DataRecRA = " / / ",
-                                          DataValorizacao = SC5.C5Xdtval
+                                          DataValorizacao = SC5.C5Xdtval,
                                       }
                             ).GroupBy(x => new
                             {
@@ -1025,11 +1032,13 @@ namespace SGID.Pages.Relatorios.Diretoria
                     var Data = Convert.ToInt32(ago.ToString("yyyy/MM/dd").Replace("/", ""));
 
                     Relatorio = (from SC5 in Protheus.Sc5010s
-                                 from SC6 in Protheus.Sc6010s
-                                 from SA1 in Protheus.Sa1010s
-                                 from SA3 in Protheus.Sa3010s
-                                 from SF4 in Protheus.Sf4010s
-                                 from SB1 in Protheus.Sb1010s
+                                 join SC6 in Protheus.Sc6010s on new { Filial = SC5.C5Filial, Num = SC5.C5Num } equals new { Filial = SC6.C6Filial, Num = SC6.C6Num }
+                                 join SA1 in Protheus.Sa1010s on SC5.C5Cliente equals SA1.A1Cod
+                                 join SA3 in Protheus.Sa3010s on SC5.C5Vend1 equals SA3.A3Cod
+                                 join SF4 in Protheus.Sf4010s on SC6.C6Tes equals SF4.F4Codigo
+                                 join SB1 in Protheus.Sb1010s on SC6.C6Produto equals SB1.B1Cod
+                                 join SUA in Protheus.Sua010s on SC5.C5Uproces equals SUA.UaNum into Sr
+                                 from c in Sr.DefaultIfEmpty()
                                  where SC5.DELET != "*" && SC6.C6Filial == SC5.C5Filial && SC6.C6Num == SC5.C5Num
                                  && SC6.C6Nota == ""
                                  && SC6.C6Blq != "R"
@@ -1040,7 +1049,6 @@ namespace SGID.Pages.Relatorios.Diretoria
                                  && SA1.A1Loja == SC5.C5Lojacli && SA1.DELET != "*" && SA3.A3Cod == SC5.C5Vend1 && SA3.DELET != "*"
                                  && (SC5.C5Utpoper == "F" || SC5.C5Utpoper == "T")
                                  && SB1.DELET != "*" && SC6.C6Produto == SB1.B1Cod
-                                 && SC5.C5Xtipopv != "D"
                                  && SA1.A1Cgc != "04715053000140" && SA1.A1Cgc != "04715053000220" && SA1.A1Cgc != "01390500000140"
                                  && (int)(object)SC5.C5Emissao < Data
                                  orderby SC5.C5Num, SC5.C5Emissao descending
@@ -1061,11 +1069,10 @@ namespace SGID.Pages.Relatorios.Diretoria
                                      INPART = "",
                                      Valor = SC6.C6Valor,
                                      PVFaturamento = SC5.C5Num,
-                                     Status = "",
+                                     Status = c.UaXstatus,
                                      DataEnvRA = " / / ",
                                      DataRecRA = " / / ",
                                      DataValorizacao = SC5.C5Xdtval,
-                                     DataEmissao = SC5.C5Emissao
                                  }
                             ).GroupBy(x => new
                             {
@@ -1116,11 +1123,13 @@ namespace SGID.Pages.Relatorios.Diretoria
 
 
                     RelatorioInter = (from SC5 in ProtheusInter.Sc5010s
-                                      from SC6 in ProtheusInter.Sc6010s
-                                      from SA1 in ProtheusInter.Sa1010s
-                                      from SA3 in ProtheusInter.Sa3010s
-                                      from SF4 in ProtheusInter.Sf4010s
-                                      from SB1 in ProtheusInter.Sb1010s
+                                      join SC6 in ProtheusInter.Sc6010s on new { Filial = SC5.C5Filial, Num = SC5.C5Num } equals new { Filial = SC6.C6Filial, Num = SC6.C6Num }
+                                      join SA1 in ProtheusInter.Sa1010s on SC5.C5Cliente equals SA1.A1Cod
+                                      join SA3 in ProtheusInter.Sa3010s on SC5.C5Vend1 equals SA3.A3Cod
+                                      join SF4 in ProtheusInter.Sf4010s on SC6.C6Tes equals SF4.F4Codigo
+                                      join SB1 in ProtheusInter.Sb1010s on SC6.C6Produto equals SB1.B1Cod
+                                      join SUA in ProtheusInter.Sua010s on SC5.C5Uproces equals SUA.UaNum into Sr
+                                      from c in Sr.DefaultIfEmpty()
                                       where SC5.DELET != "*" && SC6.C6Filial == SC5.C5Filial && SC6.C6Num == SC5.C5Num
                                       && SC6.C6Nota == ""
                                       && SC6.C6Blq != "R"
@@ -1151,11 +1160,10 @@ namespace SGID.Pages.Relatorios.Diretoria
                                           INPART = "",
                                           Valor = SC6.C6Valor,
                                           PVFaturamento = SC5.C5Num,
-                                          Status = "",
+                                          Status = c.UaXstatus,
                                           DataEnvRA = " / / ",
                                           DataRecRA = " / / ",
                                           DataValorizacao = SC5.C5Xdtval,
-                                          DataEmissao = SC5.C5Emissao
                                       }
                             ).GroupBy(x => new
                             {
@@ -1286,11 +1294,13 @@ namespace SGID.Pages.Relatorios.Diretoria
                     var Data = Convert.ToInt32(ago.ToString("yyyy/MM/dd").Replace("/", ""));
 
                     Relatorio = (from SC5 in Protheus.Sc5010s
-                                 from SC6 in Protheus.Sc6010s
-                                 from SA1 in Protheus.Sa1010s
-                                 from SA3 in Protheus.Sa3010s
-                                 from SF4 in Protheus.Sf4010s
-                                 from SB1 in Protheus.Sb1010s
+                                 join SC6 in Protheus.Sc6010s on new { Filial = SC5.C5Filial, Num = SC5.C5Num } equals new { Filial = SC6.C6Filial, Num = SC6.C6Num }
+                                 join SA1 in Protheus.Sa1010s on SC5.C5Cliente equals SA1.A1Cod
+                                 join SA3 in Protheus.Sa3010s on SC5.C5Vend1 equals SA3.A3Cod
+                                 join SF4 in Protheus.Sf4010s on SC6.C6Tes equals SF4.F4Codigo
+                                 join SB1 in Protheus.Sb1010s on SC6.C6Produto equals SB1.B1Cod
+                                 join SUA in Protheus.Sua010s on SC5.C5Uproces equals SUA.UaNum into Sr
+                                 from c in Sr.DefaultIfEmpty()
                                  where SC5.DELET != "*" && SC6.C6Filial == SC5.C5Filial && SC6.C6Num == SC5.C5Num
                                  && SC6.C6Nota == ""
                                  && SC6.C6Blq != "R"
@@ -1301,7 +1311,6 @@ namespace SGID.Pages.Relatorios.Diretoria
                                  && SA1.A1Loja == SC5.C5Lojacli && SA1.DELET != "*" && SA3.A3Cod == SC5.C5Vend1 && SA3.DELET != "*"
                                  && (SC5.C5Utpoper == "F" || SC5.C5Utpoper == "T")
                                  && SB1.DELET != "*" && SC6.C6Produto == SB1.B1Cod
-                                 && SC5.C5Xtipopv != "D"
                                  && SA1.A1Cgc != "04715053000140" && SA1.A1Cgc != "04715053000220" && SA1.A1Cgc != "01390500000140"
                                  && (int)(object)SC5.C5Emissao >= Data
                                  orderby SC5.C5Num, SC5.C5Emissao descending
@@ -1322,10 +1331,10 @@ namespace SGID.Pages.Relatorios.Diretoria
                                      INPART = "",
                                      Valor = SC6.C6Valor,
                                      PVFaturamento = SC5.C5Num,
-                                     Status = "",
+                                     Status = c.UaXstatus,
                                      DataEnvRA = " / / ",
                                      DataRecRA = " / / ",
-                                     DataValorizacao = SC5.C5Xdtval
+                                     DataValorizacao = SC5.C5Xdtval,
                                  }
                             ).GroupBy(x => new
                             {
@@ -1373,11 +1382,13 @@ namespace SGID.Pages.Relatorios.Diretoria
                             }).ToList();
 
                     RelatorioInter = (from SC5 in ProtheusInter.Sc5010s
-                                      from SC6 in ProtheusInter.Sc6010s
-                                      from SA1 in ProtheusInter.Sa1010s
-                                      from SA3 in ProtheusInter.Sa3010s
-                                      from SF4 in ProtheusInter.Sf4010s
-                                      from SB1 in ProtheusInter.Sb1010s
+                                      join SC6 in ProtheusInter.Sc6010s on new { Filial = SC5.C5Filial, Num = SC5.C5Num } equals new { Filial = SC6.C6Filial, Num = SC6.C6Num }
+                                      join SA1 in ProtheusInter.Sa1010s on SC5.C5Cliente equals SA1.A1Cod
+                                      join SA3 in ProtheusInter.Sa3010s on SC5.C5Vend1 equals SA3.A3Cod
+                                      join SF4 in ProtheusInter.Sf4010s on SC6.C6Tes equals SF4.F4Codigo
+                                      join SB1 in ProtheusInter.Sb1010s on SC6.C6Produto equals SB1.B1Cod
+                                      join SUA in ProtheusInter.Sua010s on SC5.C5Uproces equals SUA.UaNum into Sr
+                                      from c in Sr.DefaultIfEmpty()
                                       where SC5.DELET != "*" && SC6.C6Filial == SC5.C5Filial && SC6.C6Num == SC5.C5Num
                                       && SC6.C6Nota == ""
                                       && SC6.C6Blq != "R"
@@ -1408,10 +1419,10 @@ namespace SGID.Pages.Relatorios.Diretoria
                                           INPART = "",
                                           Valor = SC6.C6Valor,
                                           PVFaturamento = SC5.C5Num,
-                                          Status = "",
+                                          Status = c.UaXstatus,
                                           DataEnvRA = " / / ",
                                           DataRecRA = " / / ",
-                                          DataValorizacao = SC5.C5Xdtval
+                                          DataValorizacao = SC5.C5Xdtval,
                                       }
                             ).GroupBy(x => new
                             {
@@ -1467,11 +1478,13 @@ namespace SGID.Pages.Relatorios.Diretoria
                     var Data2 = Convert.ToInt32(After.ToString("yyyy/MM/dd").Replace("/", ""));
 
                     Relatorio = (from SC5 in Protheus.Sc5010s
-                                 from SC6 in Protheus.Sc6010s
-                                 from SA1 in Protheus.Sa1010s
-                                 from SA3 in Protheus.Sa3010s
-                                 from SF4 in Protheus.Sf4010s
-                                 from SB1 in Protheus.Sb1010s
+                                 join SC6 in Protheus.Sc6010s on new { Filial = SC5.C5Filial, Num = SC5.C5Num } equals new { Filial = SC6.C6Filial, Num = SC6.C6Num }
+                                 join SA1 in Protheus.Sa1010s on SC5.C5Cliente equals SA1.A1Cod
+                                 join SA3 in Protheus.Sa3010s on SC5.C5Vend1 equals SA3.A3Cod
+                                 join SF4 in Protheus.Sf4010s on SC6.C6Tes equals SF4.F4Codigo
+                                 join SB1 in Protheus.Sb1010s on SC6.C6Produto equals SB1.B1Cod
+                                 join SUA in Protheus.Sua010s on SC5.C5Uproces equals SUA.UaNum into Sr
+                                 from c in Sr.DefaultIfEmpty()
                                  where SC5.DELET != "*" && SC6.C6Filial == SC5.C5Filial && SC6.C6Num == SC5.C5Num
                                  && SC6.C6Nota == ""
                                  && SC6.C6Blq != "R"
@@ -1482,7 +1495,6 @@ namespace SGID.Pages.Relatorios.Diretoria
                                  && SA1.A1Loja == SC5.C5Lojacli && SA1.DELET != "*" && SA3.A3Cod == SC5.C5Vend1 && SA3.DELET != "*"
                                  && (SC5.C5Utpoper == "F" || SC5.C5Utpoper == "T")
                                  && SB1.DELET != "*" && SC6.C6Produto == SB1.B1Cod
-                                 && SC5.C5Xtipopv != "D"
                                  && SA1.A1Cgc != "04715053000140" && SA1.A1Cgc != "04715053000220" && SA1.A1Cgc != "01390500000140"
                                  && (int)(object)SC5.C5Emissao >= Data
                                  && (int)(object)SC5.C5Emissao < Data2
@@ -1504,10 +1516,10 @@ namespace SGID.Pages.Relatorios.Diretoria
                                      INPART = "",
                                      Valor = SC6.C6Valor,
                                      PVFaturamento = SC5.C5Num,
-                                     Status = "",
+                                     Status = c.UaXstatus,
                                      DataEnvRA = " / / ",
                                      DataRecRA = " / / ",
-                                     DataValorizacao = SC5.C5Xdtval
+                                     DataValorizacao = SC5.C5Xdtval,
                                  }
                             ).GroupBy(x => new
                             {
@@ -1556,11 +1568,13 @@ namespace SGID.Pages.Relatorios.Diretoria
                             }).ToList();
 
                     RelatorioInter = (from SC5 in ProtheusInter.Sc5010s
-                                      from SC6 in ProtheusInter.Sc6010s
-                                      from SA1 in ProtheusInter.Sa1010s
-                                      from SA3 in ProtheusInter.Sa3010s
-                                      from SF4 in ProtheusInter.Sf4010s
-                                      from SB1 in ProtheusInter.Sb1010s
+                                      join SC6 in ProtheusInter.Sc6010s on new { Filial = SC5.C5Filial, Num = SC5.C5Num } equals new { Filial = SC6.C6Filial, Num = SC6.C6Num }
+                                      join SA1 in ProtheusInter.Sa1010s on SC5.C5Cliente equals SA1.A1Cod
+                                      join SA3 in ProtheusInter.Sa3010s on SC5.C5Vend1 equals SA3.A3Cod
+                                      join SF4 in ProtheusInter.Sf4010s on SC6.C6Tes equals SF4.F4Codigo
+                                      join SB1 in ProtheusInter.Sb1010s on SC6.C6Produto equals SB1.B1Cod
+                                      join SUA in ProtheusInter.Sua010s on SC5.C5Uproces equals SUA.UaNum into Sr
+                                      from c in Sr.DefaultIfEmpty()
                                       where SC5.DELET != "*" && SC6.C6Filial == SC5.C5Filial && SC6.C6Num == SC5.C5Num
                                       && SC6.C6Nota == ""
                                       && SC6.C6Blq != "R"
@@ -1592,10 +1606,10 @@ namespace SGID.Pages.Relatorios.Diretoria
                                           INPART = "",
                                           Valor = SC6.C6Valor,
                                           PVFaturamento = SC5.C5Num,
-                                          Status = "",
+                                          Status = c.UaXstatus,
                                           DataEnvRA = " / / ",
                                           DataRecRA = " / / ",
-                                          DataValorizacao = SC5.C5Xdtval
+                                          DataValorizacao = SC5.C5Xdtval,
                                       }
                             ).GroupBy(x => new
                             {
@@ -1650,11 +1664,13 @@ namespace SGID.Pages.Relatorios.Diretoria
                     var Data = Convert.ToInt32(ago.ToString("yyyy/MM/dd").Replace("/", ""));
 
                     Relatorio = (from SC5 in Protheus.Sc5010s
-                                 from SC6 in Protheus.Sc6010s
-                                 from SA1 in Protheus.Sa1010s
-                                 from SA3 in Protheus.Sa3010s
-                                 from SF4 in Protheus.Sf4010s
-                                 from SB1 in Protheus.Sb1010s
+                                 join SC6 in Protheus.Sc6010s on new { Filial = SC5.C5Filial, Num = SC5.C5Num } equals new { Filial = SC6.C6Filial, Num = SC6.C6Num }
+                                 join SA1 in Protheus.Sa1010s on SC5.C5Cliente equals SA1.A1Cod
+                                 join SA3 in Protheus.Sa3010s on SC5.C5Vend1 equals SA3.A3Cod
+                                 join SF4 in Protheus.Sf4010s on SC6.C6Tes equals SF4.F4Codigo
+                                 join SB1 in Protheus.Sb1010s on SC6.C6Produto equals SB1.B1Cod
+                                 join SUA in Protheus.Sua010s on SC5.C5Uproces equals SUA.UaNum into Sr
+                                 from c in Sr.DefaultIfEmpty()
                                  where SC5.DELET != "*" && SC6.C6Filial == SC5.C5Filial && SC6.C6Num == SC5.C5Num
                                  && SC6.C6Nota == ""
                                  && SC6.C6Blq != "R"
@@ -1665,7 +1681,6 @@ namespace SGID.Pages.Relatorios.Diretoria
                                  && SA1.A1Loja == SC5.C5Lojacli && SA1.DELET != "*" && SA3.A3Cod == SC5.C5Vend1 && SA3.DELET != "*"
                                  && (SC5.C5Utpoper == "F" || SC5.C5Utpoper == "T")
                                  && SB1.DELET != "*" && SC6.C6Produto == SB1.B1Cod
-                                 && SC5.C5Xtipopv != "D"
                                  && SA1.A1Cgc != "04715053000140" && SA1.A1Cgc != "04715053000220" && SA1.A1Cgc != "01390500000140"
                                  && (int)(object)SC5.C5Emissao < Data
                                  orderby SC5.C5Num, SC5.C5Emissao descending
@@ -1686,11 +1701,10 @@ namespace SGID.Pages.Relatorios.Diretoria
                                      INPART = "",
                                      Valor = SC6.C6Valor,
                                      PVFaturamento = SC5.C5Num,
-                                     Status = "",
+                                     Status = c.UaXstatus,
                                      DataEnvRA = " / / ",
                                      DataRecRA = " / / ",
                                      DataValorizacao = SC5.C5Xdtval,
-                                     DataEmissao = SC5.C5Emissao
                                  }
                             ).GroupBy(x => new
                             {
@@ -1741,11 +1755,13 @@ namespace SGID.Pages.Relatorios.Diretoria
 
 
                     RelatorioInter = (from SC5 in ProtheusInter.Sc5010s
-                                      from SC6 in ProtheusInter.Sc6010s
-                                      from SA1 in ProtheusInter.Sa1010s
-                                      from SA3 in ProtheusInter.Sa3010s
-                                      from SF4 in ProtheusInter.Sf4010s
-                                      from SB1 in ProtheusInter.Sb1010s
+                                      join SC6 in ProtheusInter.Sc6010s on new { Filial = SC5.C5Filial, Num = SC5.C5Num } equals new { Filial = SC6.C6Filial, Num = SC6.C6Num }
+                                      join SA1 in ProtheusInter.Sa1010s on SC5.C5Cliente equals SA1.A1Cod
+                                      join SA3 in ProtheusInter.Sa3010s on SC5.C5Vend1 equals SA3.A3Cod
+                                      join SF4 in ProtheusInter.Sf4010s on SC6.C6Tes equals SF4.F4Codigo
+                                      join SB1 in ProtheusInter.Sb1010s on SC6.C6Produto equals SB1.B1Cod
+                                      join SUA in ProtheusInter.Sua010s on SC5.C5Uproces equals SUA.UaNum into Sr
+                                      from c in Sr.DefaultIfEmpty()
                                       where SC5.DELET != "*" && SC6.C6Filial == SC5.C5Filial && SC6.C6Num == SC5.C5Num
                                       && SC6.C6Nota == ""
                                       && SC6.C6Blq != "R"
@@ -1776,11 +1792,10 @@ namespace SGID.Pages.Relatorios.Diretoria
                                           INPART = "",
                                           Valor = SC6.C6Valor,
                                           PVFaturamento = SC5.C5Num,
-                                          Status = "",
+                                          Status = c.UaXstatus,
                                           DataEnvRA = " / / ",
                                           DataRecRA = " / / ",
                                           DataValorizacao = SC5.C5Xdtval,
-                                          DataEmissao = SC5.C5Emissao
                                       }
                             ).GroupBy(x => new
                             {

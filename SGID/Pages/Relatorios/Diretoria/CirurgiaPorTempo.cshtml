@@ -103,7 +103,7 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (var data in Model.Relatorio)
+                @foreach (var data in Model.Relatorio.OrderBy(x=> x.Cliente))
                 {
                     <tr>
                         <td>@Html.DisplayFor(model => data.Vendedor)</td>

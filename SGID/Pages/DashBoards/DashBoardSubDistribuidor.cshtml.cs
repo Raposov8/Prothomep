@@ -78,29 +78,29 @@ namespace SGID.Pages.DashBoards
                             ).ToList();
 
                 var EmAbertoInter = (from SC50 in ProtheusInter.Sc5010s
-                             join SA10 in ProtheusInter.Sa1010s on new { Cliente = SC50.C5Cliente, Loja = SC50.C5Lojacli } equals new { Cliente = SA10.A1Cod, Loja = SA10.A1Loja }
-                             join SC60 in ProtheusInter.Sc6010s on new { Filial = SC50.C5Filial, Num = SC50.C5Num } equals new { Filial = SC60.C6Filial, Num = SC60.C6Num }
-                             join SB10 in ProtheusInter.Sb1010s on SC60.C6Produto equals SB10.B1Cod
-                             join SA30 in ProtheusInter.Sa3010s on SC50.C5Vend1 equals SA30.A3Cod
-                             where SC50.DELET != "*" && SA10.DELET != "*" && SA10.A1Msblql != "1" && SC60.DELET != "*" &&
-                             SA30.DELET != "*" && SA10.A1Clinter == "S" && SC50.C5Nota == "" &&
-                             SC60.C6Qtdven - SC60.C6Qtdent != 0
-                             && SA10.A1Cgc.Substring(0, 8) != "04715053"
-                             orderby SA10.A1Nome, SC50.C5Emissao
-                             select new RelatorioSubDistribuidor
-                             {
-                                 Num = SC50.C5Num,
-                                 Emissao = $"{SC50.C5Emissao.Substring(6, 2)}/{SC50.C5Emissao.Substring(4, 2)}/{SC50.C5Emissao.Substring(0, 4)}",
-                                 Nome = SA30.A3Nome,
-                                 Desc = SB10.B1Desc,
-                                 Quant = SC60.C6Qtdven - SC60.C6Qtdent,
-                                 Doc = SC60.C6Produto,
-                                 Total = (SC60.C6Qtdven - SC60.C6Qtdent) * SC60.C6Prcven,
-                                 Descon = SC60.C6Valdesc,
-                                 Nreduz = SA10.A1Nome,
-                                 Utpoper = SC50.C5Liberok,
-                                 Fabricante = SB10.B1Fabric
-                             }
+                                     join SA10 in ProtheusInter.Sa1010s on new { Cliente = SC50.C5Cliente, Loja = SC50.C5Lojacli } equals new { Cliente = SA10.A1Cod, Loja = SA10.A1Loja }
+                                     join SC60 in ProtheusInter.Sc6010s on new { Filial = SC50.C5Filial, Num = SC50.C5Num } equals new { Filial = SC60.C6Filial, Num = SC60.C6Num }
+                                     join SB10 in ProtheusInter.Sb1010s on SC60.C6Produto equals SB10.B1Cod
+                                     join SA30 in ProtheusInter.Sa3010s on SC50.C5Vend1 equals SA30.A3Cod
+                                     where SC50.DELET != "*" && SA10.DELET != "*" && SA10.A1Msblql != "1" && SC60.DELET != "*" &&
+                                     SA30.DELET != "*" && SB10.DELET != "*" && SA10.A1Clinter == "S" && SC50.C5Nota == "" &&
+                                     SC60.C6Qtdven - SC60.C6Qtdent != 0
+                                     && SA10.A1Cgc.Substring(0, 8) != "04715053"
+                                     orderby SA10.A1Nome, SC50.C5Emissao
+                                     select new RelatorioSubDistribuidor
+                                     {
+                                         Num = SC50.C5Num,
+                                         Emissao = $"{SC50.C5Emissao.Substring(6, 2)}/{SC50.C5Emissao.Substring(4, 2)}/{SC50.C5Emissao.Substring(0, 4)}",
+                                         Nome = SA30.A3Nome,
+                                         Desc = SB10.B1Desc,
+                                         Quant = SC60.C6Qtdven - SC60.C6Qtdent,
+                                         Doc = SC60.C6Produto,
+                                         Total = (SC60.C6Qtdven - SC60.C6Qtdent) * SC60.C6Prcven,
+                                         Descon = SC60.C6Valdesc,
+                                         Nreduz = SA10.A1Nome,
+                                         Utpoper = SC50.C5Liberok,
+                                         Fabricante = SB10.B1Fabric
+                                     }
                             ).ToList();
 
                 #endregion
@@ -138,28 +138,28 @@ namespace SGID.Pages.DashBoards
                             ).ToList();
 
                 var EmAbertoDenuo = (from SC50 in ProtheusDenuo.Sc5010s
-                             join SA10 in ProtheusDenuo.Sa1010s on new { Cliente = SC50.C5Cliente, Loja = SC50.C5Lojacli } equals new { Cliente = SA10.A1Cod, Loja = SA10.A1Loja }
-                             join SC60 in ProtheusDenuo.Sc6010s on new { Filial = SC50.C5Filial, Num = SC50.C5Num } equals new { Filial = SC60.C6Filial, Num = SC60.C6Num }
-                             join SB10 in ProtheusDenuo.Sb1010s on SC60.C6Produto equals SB10.B1Cod
-                             join SA30 in ProtheusDenuo.Sa3010s on SC50.C5Vend1 equals SA30.A3Cod
-                             where SC50.DELET != "*" && SA10.DELET != "*" && SA10.A1Msblql != "1" && SC60.DELET != "*" &&
-                             SA30.DELET != "*" && SA10.A1Clinter == "S" && SC50.C5Nota == "" &&
-                             SC60.C6Qtdven - SC60.C6Qtdent != 0
-                             orderby SA10.A1Nome, SC50.C5Emissao
-                             select new RelatorioSubDistribuidor
-                             {
-                                 Num = SC50.C5Num,
-                                 Emissao = $"{SC50.C5Emissao.Substring(6, 2)}/{SC50.C5Emissao.Substring(4, 2)}/{SC50.C5Emissao.Substring(0, 4)}",
-                                 Nome = SA30.A3Nome,
-                                 Desc = SB10.B1Desc,
-                                 Quant = SC60.C6Qtdven - SC60.C6Qtdent,
-                                 Doc = SC60.C6Produto,
-                                 Total = (SC60.C6Qtdven - SC60.C6Qtdent) * SC60.C6Prcven,
-                                 Descon = SC60.C6Valdesc,
-                                 Nreduz = SA10.A1Nome,
-                                 Utpoper = SC50.C5Liberok,
-                                 Fabricante = SB10.B1Fabric
-                             }
+                                     join SA10 in ProtheusDenuo.Sa1010s on new { Cliente = SC50.C5Cliente, Loja = SC50.C5Lojacli } equals new { Cliente = SA10.A1Cod, Loja = SA10.A1Loja }
+                                     join SC60 in ProtheusDenuo.Sc6010s on new { Filial = SC50.C5Filial, Num = SC50.C5Num } equals new { Filial = SC60.C6Filial, Num = SC60.C6Num }
+                                     join SB10 in ProtheusDenuo.Sb1010s on SC60.C6Produto equals SB10.B1Cod
+                                     join SA30 in ProtheusDenuo.Sa3010s on SC50.C5Vend1 equals SA30.A3Cod
+                                     where SC50.DELET != "*" && SA10.DELET != "*" && SA10.A1Msblql != "1" && SC60.DELET != "*" &&
+                                     SA30.DELET != "*" && SB10.DELET != "*" && SA10.A1Clinter == "S" && SC50.C5Nota == "" &&
+                                     SC60.C6Qtdven - SC60.C6Qtdent != 0
+                                     orderby SA10.A1Nome, SC50.C5Emissao
+                                     select new RelatorioSubDistribuidor
+                                     {
+                                         Num = SC50.C5Num,
+                                         Emissao = $"{SC50.C5Emissao.Substring(6, 2)}/{SC50.C5Emissao.Substring(4, 2)}/{SC50.C5Emissao.Substring(0, 4)}",
+                                         Nome = SA30.A3Nome,
+                                         Desc = SB10.B1Desc,
+                                         Quant = SC60.C6Qtdven - SC60.C6Qtdent,
+                                         Doc = SC60.C6Produto,
+                                         Total = (SC60.C6Qtdven - SC60.C6Qtdent) * SC60.C6Prcven,
+                                         Descon = SC60.C6Valdesc,
+                                         Nreduz = SA10.A1Nome,
+                                         Utpoper = SC50.C5Liberok,
+                                         Fabricante = SB10.B1Fabric
+                                     }
                             ).ToList();
 
                 #endregion

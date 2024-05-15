@@ -662,54 +662,67 @@ namespace SGID.Pages.DashBoards
 
                 #region Intermedic
                 var resultadoEmAbertoInter = (from SC5 in ProtheusInter.Sc5010s
-                                              from SC6 in ProtheusInter.Sc6010s
-                                              from SA1 in ProtheusInter.Sa1010s
-                                              from SA3 in ProtheusInter.Sa3010s
-                                              from SF4 in ProtheusInter.Sf4010s
-                                              from SB1 in ProtheusInter.Sb1010s
+                                              join SC6 in ProtheusInter.Sc6010s on new { Filial = SC5.C5Filial, Num = SC5.C5Num } equals new { Filial = SC6.C6Filial, Num = SC6.C6Num }
+                                              join SA1 in ProtheusInter.Sa1010s on SC5.C5Cliente equals SA1.A1Cod
+                                              join SA3 in ProtheusInter.Sa3010s on SC5.C5Vend1 equals SA3.A3Cod
+                                              join SF4 in ProtheusInter.Sf4010s on SC6.C6Tes equals SF4.F4Codigo
+                                              join SB1 in ProtheusInter.Sb1010s on SC6.C6Produto equals SB1.B1Cod
+                                              join SUA in ProtheusInter.Sua010s on SC5.C5Uproces equals SUA.UaNum into Sr
+                                              from c in Sr.DefaultIfEmpty()
                                               where SC5.DELET != "*" && SC6.C6Filial == SC5.C5Filial && SC6.C6Num == SC5.C5Num
-                                              && SC6.C6Nota == "" && SC6.C6Blq != "R" && SC6.DELET != "*"
-                                              && SF4.F4Codigo == SC6.C6Tes && SF4.F4Duplic == "S" && SF4.DELET != "*" && SA1.A1Cod == SC5.C5Cliente
+                                              && SC6.C6Nota == ""
+                                              && SC6.C6Blq != "R"
+                                              && SC6.DELET != "*"
+                                              && SF4.F4Codigo == SC6.C6Tes
+                                              && SF4.F4Duplic == "S"
+                                              && SF4.DELET != "*" && SA1.A1Cod == SC5.C5Cliente
                                               && SA1.A1Loja == SC5.C5Lojacli && SA1.DELET != "*" && SA3.A3Cod == SC5.C5Vend1 && SA3.DELET != "*"
-                                              && (SC5.C5Utpoper == "F" || SC5.C5Utpoper == "T") && SB1.DELET != "*" && SC6.C6Produto == SB1.B1Cod
+                                              && (SC5.C5Utpoper == "F" || SC5.C5Utpoper == "T")
+                                              && SB1.DELET != "*" && SC6.C6Produto == SB1.B1Cod
                                               && SA1.A1Cgc != "04715053000140" && SA1.A1Cgc != "04715053000220" && SA1.A1Cgc != "01390500000140"
-                                              orderby SC5.C5Num, SC5.C5Emissao descending
                                               select new
                                               {
                                                   SA3.A3Xdescun,
                                                   SC6.C6Valor,
-                                                  C5Emissao = Convert.ToInt32(SC5.C5Emissao)
+                                                  C5Emissao = Convert.ToInt32(SC5.C5Emissao),
+                                                  c.UaXstatus
                                               }
                                          ).ToList();
 
-                ValoresEmAberto.Add(new ValoresEmAberto { Nome = "INTERMEDIC", Valor = resultadoEmAbertoInter.Sum(x=> x.C6Valor) });
+                ValoresEmAberto.Add(new ValoresEmAberto { Nome = "INTERMEDIC", Valor = resultadoEmAbertoInter.Where(x=> x.UaXstatus != "C").Sum(x=> x.C6Valor) });
                 #endregion
 
                 #region Denuo
                 var resultadoEmAbertoDenuo = (from SC5 in ProtheusDenuo.Sc5010s
-                                              from SC6 in ProtheusDenuo.Sc6010s
-                                              from SA1 in ProtheusDenuo.Sa1010s
-                                              from SA3 in ProtheusDenuo.Sa3010s
-                                              from SF4 in ProtheusDenuo.Sf4010s
-                                              from SB1 in ProtheusDenuo.Sb1010s
+                                              join SC6 in ProtheusDenuo.Sc6010s on new { Filial = SC5.C5Filial, Num = SC5.C5Num } equals new { Filial = SC6.C6Filial, Num = SC6.C6Num }
+                                              join SA1 in ProtheusDenuo.Sa1010s on SC5.C5Cliente equals SA1.A1Cod
+                                              join SA3 in ProtheusDenuo.Sa3010s on SC5.C5Vend1 equals SA3.A3Cod
+                                              join SF4 in ProtheusDenuo.Sf4010s on SC6.C6Tes equals SF4.F4Codigo
+                                              join SB1 in ProtheusDenuo.Sb1010s on SC6.C6Produto equals SB1.B1Cod
+                                              join SUA in ProtheusDenuo.Sua010s on SC5.C5Uproces equals SUA.UaNum into Sr
+                                              from c in Sr.DefaultIfEmpty()
                                               where SC5.DELET != "*" && SC6.C6Filial == SC5.C5Filial && SC6.C6Num == SC5.C5Num
-                                              && SC6.C6Nota == "" && SC6.C6Blq != "R" && SC6.DELET != "*"
-                                              && SF4.F4Codigo == SC6.C6Tes && SF4.F4Duplic == "S" && SF4.DELET != "*" && SA1.A1Cod == SC5.C5Cliente
+                                              && SC6.C6Nota == ""
+                                              && SC6.C6Blq != "R"
+                                              && SC6.DELET != "*"
+                                              && SF4.F4Codigo == SC6.C6Tes
+                                              && SF4.F4Duplic == "S"
+                                              && SF4.DELET != "*" && SA1.A1Cod == SC5.C5Cliente
                                               && SA1.A1Loja == SC5.C5Lojacli && SA1.DELET != "*" && SA3.A3Cod == SC5.C5Vend1 && SA3.DELET != "*"
-                                              && (SC5.C5Utpoper == "F" || SC5.C5Utpoper == "T") && SB1.DELET != "*" && SC6.C6Produto == SB1.B1Cod
+                                              && (SC5.C5Utpoper == "F" || SC5.C5Utpoper == "T")
+                                              && SB1.DELET != "*" && SC6.C6Produto == SB1.B1Cod
                                               && SA1.A1Cgc != "04715053000140" && SA1.A1Cgc != "04715053000220" && SA1.A1Cgc != "01390500000140"
-                                              && SC5.C5Xtipopv != "D"
-                                              orderby SC5.C5Num, SC5.C5Emissao descending
                                               select new
                                               {
                                                   SA3.A3Xdescun,
                                                   SC6.C6Valor,
-                                                  C5Emissao = Convert.ToInt32(SC5.C5Emissao)
+                                                  C5Emissao = Convert.ToInt32(SC5.C5Emissao),
+                                                  c.UaXstatus
                                               }
                                               )
                                               .ToList();
 
-                ValoresEmAberto.Add(new ValoresEmAberto { Nome = "DENUO", Valor = resultadoEmAbertoDenuo.Sum(x=>x.C6Valor) });
+                ValoresEmAberto.Add(new ValoresEmAberto { Nome = "DENUO", Valor = resultadoEmAbertoDenuo.Where(x => x.UaXstatus != "C").Sum(x=>x.C6Valor) });
                 #endregion
 
                 #region Dental
@@ -779,9 +792,9 @@ namespace SGID.Pages.DashBoards
                 LinhasValor.Add(new RelatorioFaturamentoLinhas { Nome = "ATÉ 3 MESES" });
                 LinhasValor.Add(new RelatorioFaturamentoLinhas { Nome = "3 A 9 MESES" });
                 LinhasValor.Add(new RelatorioFaturamentoLinhas { Nome = "MAIS DE 9 MESES" });
-                
 
-
+                resultadoEmAbertoInter = resultadoEmAbertoInter.Where(x => x.UaXstatus != "C").ToList();
+                resultadoEmAbertoDenuo = resultadoEmAbertoDenuo.Where(x => x.UaXstatus != "C").ToList();
 
                 var resultado = resultadoEmAbertoInter.Concat(resultadoEmAbertoDenuo).ToList();
 
@@ -910,15 +923,16 @@ namespace SGID.Pages.DashBoards
 
             var NaoBaixados = (from SE10 in ProtheusDenuo.Se1010s
                                join SA10 in ProtheusDenuo.Sa1010s on SE10.E1Cliente equals SA10.A1Cod
-                               where SE10.DELET != "*"
+                               join SC50 in ProtheusDenuo.Sc5010s on new { Filial = SE10.E1Filial, Num = SE10.E1Num } equals new { Filial = SC50.C5Filial, Num = SC50.C5Nota }
+                               where SE10.DELET != "*" && SA10.DELET != "*" && SC50.DELET != "*"
                                && (int)(object)SE10.E1Vencrea < (int)(object)DataInicio
-                               && SA10.A1Clinter != "G" && SA10.A1Msblql != "1" && SE10.E1Baixa == ""
+                               && SA10.A1Clinter != "G" && (SE10.E1Baixa == "" || SE10.E1Saldo > 0)
                                && SE10.E1Tipo != "RA"
                                select new TitulosVencidos
                                {
                                    CodCliente = SE10.E1Cliente,
                                    Cliente = SE10.E1Nomcli,
-                                   Valor = SE10.E1Valor
+                                   Valor = SE10.E1Saldo,
                                }
                             )
                             .GroupBy(x => new
@@ -999,15 +1013,16 @@ namespace SGID.Pages.DashBoards
 
             var NaoBaixados = (from SE10 in ProtheusInter.Se1010s
                                join SA10 in ProtheusInter.Sa1010s on SE10.E1Cliente equals SA10.A1Cod
-                               where SE10.DELET != "*"
+                               join SC50 in ProtheusInter.Sc5010s on SE10.E1Num equals SC50.C5Nota
+                               where SE10.DELET != "*" && SA10.DELET!= "*" && SC50.DELET!="*"
                                && (int)(object)SE10.E1Vencrea < (int)(object)DataInicio
-                               && SA10.A1Clinter != "G" && SA10.A1Msblql != "1" && SE10.E1Baixa == ""
+                               && SA10.A1Clinter != "G" && (SE10.E1Baixa == "" || SE10.E1Saldo > 0)
                                && SE10.E1Tipo != "RA"
                                select new TitulosVencidos
                                {
                                    CodCliente = SE10.E1Cliente,
                                    Cliente = SE10.E1Nomcli,
-                                   Valor = SE10.E1Valor
+                                   Valor = SE10.E1Saldo,
                                }
                             )
                             .GroupBy(x => new

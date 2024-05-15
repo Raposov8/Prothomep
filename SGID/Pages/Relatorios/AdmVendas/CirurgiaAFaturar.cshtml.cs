@@ -36,11 +36,13 @@ namespace SGID.Pages.Relatorios.AdmVendas
                 string user = User.Identity.Name.Split("@")[0].ToUpper();
 
                 Relatorio = (from SC5 in Protheus.Sc5010s
-                             from SC6 in Protheus.Sc6010s
-                             from SA1 in Protheus.Sa1010s
-                             from SA3 in Protheus.Sa3010s
-                             from SF4 in Protheus.Sf4010s
-                             from SB1 in Protheus.Sb1010s
+                             join SC6 in Protheus.Sc6010s on new {Filial=SC5.C5Filial,Num=SC5.C5Num } equals new {Filial=SC6.C6Filial,Num=SC6.C6Num}
+                             join SA1 in Protheus.Sa1010s on SC5.C5Cliente equals SA1.A1Cod
+                             join SA3 in Protheus.Sa3010s on SC5.C5Vend1 equals SA3.A3Cod
+                             join SF4 in Protheus.Sf4010s on SC6.C6Tes equals SF4.F4Codigo
+                             join SB1 in Protheus.Sb1010s on SC6.C6Produto equals SB1.B1Cod
+                             join SUA in Protheus.Sua010s on SC5.C5Uproces equals SUA.UaNum into Sr
+                             from c in Sr.DefaultIfEmpty()
                              where SC5.DELET != "*" && SC6.C6Filial == SC5.C5Filial && SC6.C6Num == SC5.C5Num
                              && SC6.C6Nota == ""
                              && SC6.C6Blq != "R"
@@ -70,10 +72,10 @@ namespace SGID.Pages.Relatorios.AdmVendas
                                  INPART = "",
                                  Valor = SC6.C6Valor,
                                  PVFaturamento = SC5.C5Num,
-                                 Status = "",
+                                 Status = c.UaXstatus,
                                  DataEnvRA = " / / ",
                                  DataRecRA = " / / ",
-                                 DataValorizacao = SC5.C5Xdtval
+                                 DataValorizacao = SC5.C5Xdtval,
                              }
                             ).GroupBy(x => new
                             {
@@ -171,7 +173,7 @@ namespace SGID.Pages.Relatorios.AdmVendas
 
                 Draw1 = Relatorio.GroupBy(x => x.Cliente).Select(x => new RelatorioCirurgiaAFaturar { Cliente = x.Key, Valor = x.Sum(c => c.Valor) }).ToList();
 
-                Relatorio = Relatorio.OrderBy(x => x.Dias).ToList();
+                Relatorio = Relatorio.Where(x=> x.Status != "C").OrderBy(x => x.Dias).ToList();
             }
             catch (Exception e)
             {
@@ -187,11 +189,13 @@ namespace SGID.Pages.Relatorios.AdmVendas
                 string user = User.Identity.Name.Split("@")[0].ToUpper();
 
                 Relatorio = (from SC5 in Protheus.Sc5010s
-                             from SC6 in Protheus.Sc6010s
-                             from SA1 in Protheus.Sa1010s
-                             from SA3 in Protheus.Sa3010s
-                             from SF4 in Protheus.Sf4010s
-                             from SB1 in Protheus.Sb1010s
+                             join SC6 in Protheus.Sc6010s on new { Filial = SC5.C5Filial, Num = SC5.C5Num } equals new { Filial = SC6.C6Filial, Num = SC6.C6Num }
+                             join SA1 in Protheus.Sa1010s on SC5.C5Cliente equals SA1.A1Cod
+                             join SA3 in Protheus.Sa3010s on SC5.C5Vend1 equals SA3.A3Cod
+                             join SF4 in Protheus.Sf4010s on SC6.C6Tes equals SF4.F4Codigo
+                             join SB1 in Protheus.Sb1010s on SC6.C6Produto equals SB1.B1Cod
+                             join SUA in Protheus.Sua010s on SC5.C5Uproces equals SUA.UaNum into Sr
+                             from c in Sr.DefaultIfEmpty()
                              where SC5.DELET != "*" && SC6.C6Filial == SC5.C5Filial && SC6.C6Num == SC5.C5Num
                              && SC6.C6Nota == ""
                              && SC6.C6Blq != "R"
@@ -221,10 +225,10 @@ namespace SGID.Pages.Relatorios.AdmVendas
                                  INPART = "",
                                  Valor = SC6.C6Valor,
                                  PVFaturamento = SC5.C5Num,
-                                 Status = "",
+                                 Status = c.UaXstatus,
                                  DataEnvRA = " / / ",
                                  DataRecRA = " / / ",
-                                 DataValorizacao = SC5.C5Xdtval
+                                 DataValorizacao = SC5.C5Xdtval,
                              }
                             ).GroupBy(x => new
                             {
@@ -271,13 +275,12 @@ namespace SGID.Pages.Relatorios.AdmVendas
 
                             }).ToList();
 
-                Clientes = Relatorio.Select(x => x.Cliente).Distinct().ToList();
-
                 if (Cliente != null && Cliente != "")
                 {
                     Relatorio = Relatorio.Where(x => x.Cliente == Cliente).ToList();
-                    this.Cliente = Cliente;
                 }
+
+                Clientes = Relatorio.Select(x => x.Cliente).Distinct().ToList();
 
                 var data = DateTime.Now;
 
@@ -335,7 +338,7 @@ namespace SGID.Pages.Relatorios.AdmVendas
 
                 Draw1 = Relatorio.GroupBy(x => x.Cliente).Select(x => new RelatorioCirurgiaAFaturar { Cliente = x.Key, Valor = x.Sum(c => c.Valor) }).ToList();
 
-                Relatorio = Relatorio.OrderBy(x => x.Dias).ToList();
+                Relatorio = Relatorio.Where(x => x.Status != "C").OrderBy(x => x.Dias).ToList();
                 return Page();
             }
             catch (Exception e)
@@ -353,11 +356,13 @@ namespace SGID.Pages.Relatorios.AdmVendas
                 string user = User.Identity.Name.Split("@")[0].ToUpper();
 
                 Relatorio = (from SC5 in Protheus.Sc5010s
-                             from SC6 in Protheus.Sc6010s
-                             from SA1 in Protheus.Sa1010s
-                             from SA3 in Protheus.Sa3010s
-                             from SF4 in Protheus.Sf4010s
-                             from SB1 in Protheus.Sb1010s
+                             join SC6 in Protheus.Sc6010s on new { Filial = SC5.C5Filial, Num = SC5.C5Num } equals new { Filial = SC6.C6Filial, Num = SC6.C6Num }
+                             join SA1 in Protheus.Sa1010s on SC5.C5Cliente equals SA1.A1Cod
+                             join SA3 in Protheus.Sa3010s on SC5.C5Vend1 equals SA3.A3Cod
+                             join SF4 in Protheus.Sf4010s on SC6.C6Tes equals SF4.F4Codigo
+                             join SB1 in Protheus.Sb1010s on SC6.C6Produto equals SB1.B1Cod
+                             join SUA in Protheus.Sua010s on SC5.C5Uproces equals SUA.UaNum into Sr
+                             from c in Sr.DefaultIfEmpty()
                              where SC5.DELET != "*" && SC6.C6Filial == SC5.C5Filial && SC6.C6Num == SC5.C5Num
                              && SC6.C6Nota == ""
                              && SC6.C6Blq != "R"
@@ -387,10 +392,10 @@ namespace SGID.Pages.Relatorios.AdmVendas
                                  INPART = "",
                                  Valor = SC6.C6Valor,
                                  PVFaturamento = SC5.C5Num,
-                                 Status = "",
+                                 Status = c.UaXstatus,
                                  DataEnvRA = " / / ",
                                  DataRecRA = " / / ",
-                                 DataValorizacao = SC5.C5Xdtval
+                                 DataValorizacao = SC5.C5Xdtval,
                              }
                             ).GroupBy(x => new
                             {
@@ -437,12 +442,12 @@ namespace SGID.Pages.Relatorios.AdmVendas
 
                             }).ToList();
 
-                Clientes = Relatorio.Select(x => x.Cliente).Distinct().ToList();
-
                 if (Cliente != null && Cliente != "")
                 {
                     Relatorio = Relatorio.Where(x => x.Cliente == Cliente).ToList();
                 }
+
+                Clientes = Relatorio.Select(x => x.Cliente).Distinct().ToList();
 
                 var data = DateTime.Now;
 
@@ -491,12 +496,15 @@ namespace SGID.Pages.Relatorios.AdmVendas
                     Total += x.Valor;
                 });
 
-                if(Tempo != null && Tempo != "")
+                if (Tempo != null && Tempo != "")
                 {
                     Relatorio = Relatorio.Where(x => x.Anging == Tempo).ToList();
+                    Anging = Tempo;
                 }
 
-                Relatorio = Relatorio.OrderBy(x => x.Dias).ToList();
+                Draw1 = Relatorio.GroupBy(x => x.Cliente).Select(x => new RelatorioCirurgiaAFaturar { Cliente = x.Key, Valor = x.Sum(c => c.Valor) }).ToList();
+
+                Relatorio = Relatorio.Where(x => x.Status != "C").OrderBy(x => x.Dias).ToList();
 
                 using ExcelPackage package = new ExcelPackage();
                 package.Workbook.Worksheets.Add("Cirurgias A Faturar");

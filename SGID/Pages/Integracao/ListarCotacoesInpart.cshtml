@@ -16,7 +16,12 @@
 {
     <div class="row">
         <div class="form-group mx-sm-3 mb-2 col-lg-2">
-            <input type="text" class="form-control" id="skip" name="skip" value="@Model.Pagina" placeholder="Pagina">
+            <label>Data Cotação Inicial</label>
+            <input type="date" class="form-control" id="DtCotacaoInicio" name="DtCotacaoInicio" value="@Model.DtCotacaoInicio.ToString("yyyy-MM-dd")" placeholder="Data Inicio">
+        </div>
+        <div class="form-group mx-sm-3 mb-2 col-lg-2">
+            <label>Data Cotação Final</label>
+            <input type="date" class="form-control" id="DtCotacaoFim" name="DtCotacaoFim" value="@Model.DtCotacaoFim.ToString("yyyy-MM-dd")" placeholder="Data Fim">
         </div>
 
         <div class="form-group mx-sm-3 mb-2 col-lg-1">

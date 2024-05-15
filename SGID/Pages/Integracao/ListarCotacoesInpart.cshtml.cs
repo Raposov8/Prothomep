@@ -14,10 +14,13 @@ namespace SGID.Pages.Integracao
         private TOTVSINTERContext ProtheusInter { get; set; }
         private TOTVSDENUOContext ProtheusDenuo { get; set; }
 
-        public List<Cotacao> Cotacoes { get; set; }
+        public List<Cotacao> Cotacoes { get; set; } = new List<Cotacao>();
 
         public int Pagina { get; set; }
         public string Empresa { get; set; }
+
+        public DateTime DtCotacaoInicio { get; set; }
+        public DateTime DtCotacaoFim { get; set; }
 
         public ListarCotacoesInpartModel(TOTVSDENUOContext denuo,TOTVSINTERContext inter)
         {
@@ -27,29 +30,32 @@ namespace SGID.Pages.Integracao
 
         public void OnGet(string empresa)
         {
-            Pagina = 1;
+            //Pagina = 1;
             Empresa = empresa;
 
-            Cotacoes = new IntegracaoInPart().ListarCotacoes(empresa,0).Result;
+            //Cotacoes = new IntegracaoInPart().ListarCotacoes(empresa,0).Result;
         }
 
 
-        public JsonResult OnGetCotacao(int id,string empresa,int skip)
+        public JsonResult OnGetCotacao(int id,string empresa, DateTime DtCotacaoInicio, DateTime DtCotacaoFim)
         {
 
-            Cotacoes = new IntegracaoInPart().ListarCotacoes(empresa,skip-1).Result;
+            Cotacoes = new IntegracaoInPart().ListarCotacoes(empresa, DtCotacaoInicio, DtCotacaoFim).Result;
 
             var cotacao = Cotacoes.FirstOrDefault(x=> x.idCotacao == id);
 
             return new JsonResult(cotacao);
         }
 
-        public IActionResult OnPost(string empresa,int skip)
+        public IActionResult OnPost(string empresa,DateTime DtCotacaoInicio,DateTime DtCotacaoFim)
         {
-            Pagina = skip;
+            //Pagina = skip;
             Empresa = empresa;
 
-            Cotacoes = new IntegracaoInPart().ListarCotacoes(empresa, skip-1).Result;
+            this.DtCotacaoInicio = DtCotacaoInicio;
+            this.DtCotacaoFim = DtCotacaoFim;
+
+            Cotacoes = new IntegracaoInPart().ListarCotacoes(empresa,DtCotacaoInicio,DtCotacaoFim).Result;
 
             return Page();
         }

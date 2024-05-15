@@ -22,12 +22,29 @@
 {
     <div class="row">
         <div class="form-group mx-sm-3 mb-2 col-lg-3">
+            <label>Cliente</label>
             <select type="text" class="form-control" id="NReduz" name="NReduz" placeholder="Cliente">
                 <option value="">TODOS....</option>
                 @foreach (var data in Model.Clientes)
                 {
                     <option value="@data">@data</option>
                 }
+            </select>
+        </div>
+        <div class="form-group mx-sm-3 mb-2 col-lg-3">
+            <label>Época</label>
+            <select type="text" class="form-control" id="Tempo" name="Tempo" placeholder="Cliente">
+                <option value="1">DEPOIS 2022</option>
+                <option value="2">ANTES 2023</option>
+                <option value="">TODOS....</option>
+            </select>
+        </div>
+        <div class="form-group mx-sm-3 mb-2 col-lg-3">
+            <label>Tipo</label>
+            <select type="text" class="form-control" id="Revelia" name="Revelia" placeholder="Cliente">
+                <option value="">TODOS....</option>
+                <option value="Revelia">Revelia</option>
+                <option value="Padrão">Padrão</option>
             </select>
         </div>
 
@@ -64,18 +81,22 @@
                     <th class="text-center">
                         Saldo Devedor
                     </th>
+                    <th class="text-center">
+                        Tipo Faturamento
+                    </th>
                 </tr>
             </thead>
             <tbody>
                 @foreach (var data in Model.Relatorio)
                 {
                     <tr>
-                        <td>@Html.DisplayFor(model=> data.Cliente)</td>
-                        <td>@Html.DisplayFor(model=> data.NF)</td>
-                        <td>@Html.DisplayFor(model=> data.DataEmissao)</td>
-                        <td>@Html.DisplayFor(model=> data.DataVencimento)</td>
+                        <td>@Html.DisplayFor(model => data.Cliente)</td>
+                        <td>@Html.DisplayFor(model => data.NF)</td>
+                        <td>@Html.DisplayFor(model => data.DataEmissao)</td>
+                        <td>@Html.DisplayFor(model => data.DataVencimento)</td>
                         <td>@string.Format("{0:N2}", data.Valor)</td>
                         <td>@string.Format("{0:N2}", data.ValorSaldo)</td>
+                        <td>@Html.DisplayFor(model => data.Revelia)</td>
                     </tr>
                 }
                 <tr>
@@ -83,7 +104,7 @@
                     <td></td>
                     <td></td>
                     <td>Total:</td>
-                    <td>@string.Format("{0:N2}", Model.Relatorio.Sum(x=> x.Valor))</td>
+                    <td>@string.Format("{0:N2}", Model.Relatorio.Sum(x => x.Valor))</td>
                     <td>@string.Format("{0:N2}", Model.Relatorio.Sum(x => x.ValorSaldo))</td>
                 </tr>
             </tbody>
@@ -98,6 +119,12 @@
         $(document).ready(function () {
             var NReduz = '@Model.Cliente'.replace('&#xC7;', 'Ç').replace('&#xC3;', 'Ã').replace('&#xD5;', 'Õ')
             $('#NReduz').val(NReduz);
+
+            var Tempo = '@Model.Tempo'.replace('&#xC7;', 'Ç').replace('&#xC3;', 'Ã').replace('&#xD5;', 'Õ')
+            $('#Tempo').val(Tempo);
+
+            var Revelia = '@Model.Revelia'.replace('&#xC7;', 'Ç').replace('&#xC3;', 'Ã').replace('&#xD5;', 'Õ')
+            $('#Revelia').val(Revelia);
         })
     </script>
     <script>

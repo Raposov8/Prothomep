@@ -68,7 +68,7 @@ namespace Intergracoes.Inpart
         }
 
 
-        public async Task<List<Cotacao>> ListarCotacoes(string Empresa, int skip)
+        public async Task<List<Cotacao>> ListarCotacoes(string Empresa,DateTime DtCotacaoInicio,DateTime DtCotacaoFim)
         {
 
             var client = new HttpClient();
@@ -77,11 +77,15 @@ namespace Intergracoes.Inpart
 
             client.DefaultRequestHeaders.Add("Authorization", $"Bearer {credenciais}");
 
-            var skipout = 19000;
+            var query = "";
 
-            skipout += (skip * 100);
+            if(DtCotacaoInicio != new DateTime(1, 1, 1) && DtCotacaoFim!= new DateTime(1, 1, 1))
+            {
+                query = $"DtCotacaoInicial={DtCotacaoInicio}&DtCotacaoFinal={DtCotacaoFim}";
+            }
 
-            var resultPost = await client.GetAsync($"{BaseUrl}/cotacao?$top=100&$skip={skipout}");
+
+            var resultPost = await client.GetAsync($"{BaseUrl}/cotacao?{query}");
             var data = JsonConvert.DeserializeObject<List<Cotacao>>(resultPost.Content.ReadAsStringAsync().Result);
 
             return data;
