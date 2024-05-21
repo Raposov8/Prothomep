@@ -916,11 +916,8 @@ namespace SGID.Pages.DashBoards
 
             var datagora = DateTime.Now.ToString("yyyy/MM/dd").Replace("/", "");
 
-            if (Convert.ToInt32(DataInicio) > Convert.ToInt32(datagora))
-            {
-                DataInicio = datagora;
-            }
-
+            DataInicio = datagora;
+            
             var NaoBaixados = (from SE10 in ProtheusDenuo.Se1010s
                                join SA10 in ProtheusDenuo.Sa1010s on SE10.E1Cliente equals SA10.A1Cod
                                join SC50 in ProtheusDenuo.Sc5010s on new { Filial = SE10.E1Filial, Num = SE10.E1Num } equals new { Filial = SC50.C5Filial, Num = SC50.C5Nota }
@@ -1006,10 +1003,7 @@ namespace SGID.Pages.DashBoards
 
             var datagora = DateTime.Now.ToString("yyyy/MM/dd").Replace("/", "");
 
-            if (Convert.ToInt32(DataInicio) > Convert.ToInt32(datagora))
-            {
-                DataInicio = datagora;
-            }
+            DataInicio = datagora;
 
             var NaoBaixados = (from SE10 in ProtheusInter.Se1010s
                                join SA10 in ProtheusInter.Sa1010s on SE10.E1Cliente equals SA10.A1Cod

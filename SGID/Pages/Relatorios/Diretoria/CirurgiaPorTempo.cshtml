@@ -19,7 +19,7 @@
         <div class="form-group mx-sm-3 mb-2 col-lg-3">
             <select type="text" class="form-control" id="NReduz" name="NReduz" placeholder="Cliente">
                 <option value="">TODOS....</option>
-                @foreach (var data in Model.Clientes)
+                @foreach (var data in Model.Clientes.OrderBy(x=> x))
                 {
                     <option value="@data">@data</option>
                 }
@@ -52,6 +52,9 @@
         <table id="demo-dt-addrow" class="table table-striped table-bordered" cellspacing="0" width="100%">
             <thead>
                 <tr>
+                    <th class="text-center">
+                        EMPRESA
+                    </th>
                     <th class="text-center">
                         VENDEDOR
                     </th>
@@ -112,15 +115,13 @@
                     <th class="text-center">
                         DATA VALORIZADA
                     </th>
-                    <th class="text-center">
-                        EMPRESA
-                    </th>
                 </tr>
             </thead>
             <tbody>
                 @foreach (var data in Model.Relatorio)
                 {
                     <tr>
+                        <td>@Html.DisplayFor(model => data.Empresa)</td>
                         <td>@Html.DisplayFor(model => data.Vendedor)</td>
                         <td>@Html.DisplayFor(model => data.Cliente)</td>
                         <td>@Html.DisplayFor(model => data.GrupoCliente)</td>
@@ -146,7 +147,6 @@
                         <td>@Html.DisplayFor(model => data.DataEnvRA)</td>
                         <td>@Html.DisplayFor(model => data.DataRecRA)</td>
                         <td>@Html.DisplayFor(model => data.DataValorizacao)</td>
-                        <td>@Html.DisplayFor(model => data.Empresa)</td>
                     </tr>
                 }
                 <tr>

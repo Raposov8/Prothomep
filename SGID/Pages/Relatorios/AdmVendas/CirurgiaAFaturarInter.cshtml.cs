@@ -43,7 +43,9 @@ namespace SGID.Pages.Relatorios.AdmVendas
                              join SB1 in Protheus.Sb1010s on SC6.C6Produto equals SB1.B1Cod
                              join SUA in Protheus.Sua010s on SC5.C5Uproces equals SUA.UaNum into Sr
                              from c in Sr.DefaultIfEmpty()
-                             where SC5.DELET != "*" && SC6.C6Filial == SC5.C5Filial && SC6.C6Num == SC5.C5Num
+                             join SX5 in Protheus.Sx5010s on new { Grupo = SA1.A1Xgrinte, Tabela = "Z3" } equals new { Grupo = SX5.X5Chave, Tabela = SX5.X5Tabela } into Se
+                             from a in Se.DefaultIfEmpty()
+                             where SC5.DELET != "*" && SC6.C6Filial == SC5.C5Filial && SC6.C6Num == SC5.C5Num && a.DELET!="*"
                              && SC6.C6Nota == ""
                              && SC6.C6Blq != "R"
                              && SC6.DELET != "*"
@@ -59,7 +61,7 @@ namespace SGID.Pages.Relatorios.AdmVendas
                              {
                                  Vendedor = SC5.C5Nomvend,
                                  Cliente = SC5.C5Nomcli,
-                                 GrupoCliente = "",
+                                 GrupoCliente = a.X5Descri,
                                  ClienteEntrega = SC5.C5Nomclie,
                                  Medico = SC5.C5XNmmed,
                                  Convenio = SC5.C5XNmpla,
@@ -197,7 +199,9 @@ namespace SGID.Pages.Relatorios.AdmVendas
                              join SB1 in Protheus.Sb1010s on SC6.C6Produto equals SB1.B1Cod
                              join SUA in Protheus.Sua010s on SC5.C5Uproces equals SUA.UaNum into Sr
                              from c in Sr.DefaultIfEmpty()
-                             where SC5.DELET != "*" && SC6.C6Filial == SC5.C5Filial && SC6.C6Num == SC5.C5Num
+                             join SX5 in Protheus.Sx5010s on new { Grupo = SA1.A1Xgrinte, Tabela = "Z3" } equals new { Grupo = SX5.X5Chave, Tabela = SX5.X5Tabela } into Se
+                             from a in Se.DefaultIfEmpty()
+                             where SC5.DELET != "*" && SC6.C6Filial == SC5.C5Filial && SC6.C6Num == SC5.C5Num && a.DELET != "*"
                              && SC6.C6Nota == ""
                              && SC6.C6Blq != "R"
                              && SC6.DELET != "*"
@@ -213,7 +217,7 @@ namespace SGID.Pages.Relatorios.AdmVendas
                              {
                                  Vendedor = SC5.C5Nomvend,
                                  Cliente = SC5.C5Nomcli,
-                                 GrupoCliente = "",
+                                 GrupoCliente = a.X5Descri,
                                  ClienteEntrega = SC5.C5Nomclie,
                                  Medico = SC5.C5XNmmed,
                                  Convenio = SC5.C5XNmpla,
@@ -364,7 +368,9 @@ namespace SGID.Pages.Relatorios.AdmVendas
                              join SB1 in Protheus.Sb1010s on SC6.C6Produto equals SB1.B1Cod
                              join SUA in Protheus.Sua010s on SC5.C5Uproces equals SUA.UaNum into Sr
                              from c in Sr.DefaultIfEmpty()
-                             where SC5.DELET != "*" && SC6.C6Filial == SC5.C5Filial && SC6.C6Num == SC5.C5Num
+                             join SX5 in Protheus.Sx5010s on new { Grupo = SA1.A1Xgrinte, Tabela = "Z3" } equals new { Grupo = SX5.X5Chave, Tabela = SX5.X5Tabela } into Se
+                             from a in Se.DefaultIfEmpty()
+                             where SC5.DELET != "*" && SC6.C6Filial == SC5.C5Filial && SC6.C6Num == SC5.C5Num && a.DELET != "*"
                              && SC6.C6Nota == ""
                              && SC6.C6Blq != "R"
                              && SC6.DELET != "*"
@@ -380,7 +386,7 @@ namespace SGID.Pages.Relatorios.AdmVendas
                              {
                                  Vendedor = SC5.C5Nomvend,
                                  Cliente = SC5.C5Nomcli,
-                                 GrupoCliente = "",
+                                 GrupoCliente = a.X5Descri,
                                  ClienteEntrega = SC5.C5Nomclie,
                                  Medico = SC5.C5XNmmed,
                                  Convenio = SC5.C5XNmpla,

@@ -17,7 +17,6 @@ namespace SGID.Pages.RH
     public class GestaoPessoalModel : PageModel
     {
         private ApplicationDbContext SGID { get; set; }
-
         private readonly IWebHostEnvironment _WEB;
         public GestaoPessoalModel(ApplicationDbContext sgid,IWebHostEnvironment web) 
         { 
@@ -27,7 +26,6 @@ namespace SGID.Pages.RH
         public void OnGet()
         {
         }
-
         public IActionResult OnPostAsync(DateTime DataEvento,string Empresa,string Nome,string Tipo,string Email,
            string Cargo, string Ramal,string NomeSub,string CargoSub,string Contratacao,string Obs,params string[] SelectedRoles)
         {

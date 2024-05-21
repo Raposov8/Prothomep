@@ -129,7 +129,8 @@
 <br />
 <div class="row justify-content-center">
     <div class="col-md-4">
-        <div id="GraficoAberto" style="height:100%"></div>
+        <div id="GraficoEmAbertoMeses" style="height:400px"></div>
+        <div id="TOTAL"></div>
     </div>
     <div class="col-md-4">
         <div id="Empresas">
@@ -168,7 +169,9 @@
 
         var formato = { minimumFractionDigits: 2, style: 'currency', currency: 'BRL' }
 
+        var grafico = [];
         var grafico2 = [];
+        var grafico3 = [];
 
         grafico2.push(['Areas', 'Valor']);
 
@@ -217,6 +220,32 @@
             var chart = new google.visualization.PieChart(document.getElementById('GraficoFatu'));
 
             chart.draw(data,options);
+        }
+
+        function drawChart3() {
+
+            var data = google.visualization.arrayToDataTable(
+                grafico3
+            );
+
+            var options = {
+                title: 'EM ABERTO CIRURGIAS',
+                legend: { position: "none" },
+                colors: ['#097609', '#ED8205', '#B80101']
+            };
+
+            var chart = new google.visualization.PieChart(document.getElementById('GraficoEmAbertoMeses'));
+
+            google.visualization.events.addListener(chart, 'select', function (e) {
+                var selection = chart.getSelection();
+                if (selection.length) {
+                    var row = selection[0].row;
+                    let link = data.getValue(row, 3);
+                    window.open(link, '_blank');
+                }
+            });
+
+            chart.draw(data, options);
         }
 
     </script>
@@ -421,6 +450,37 @@
 
                         move(50)
 
+                    }
+                })
+
+                var chamadaUrl3 = `/dashboards/dashboardmetas?handler=EmAberto&&Mes=${Mes}&&Ano=${Ano}`
+
+                $.ajax({
+                    url: chamadaUrl3,
+                    type: "POST",
+                    contentType: "application/json;",
+                    dataType: 'json',
+                    headers: {
+                        "RequestVerificationToken": $('input:hidden[name="__RequestVerificationToken"]').val()
+                    },
+                    success: function (data) {
+
+                        grafico3 = [];
+
+                        var numero = 1;
+
+                        grafico3.push(['MESES', 'Valores', { role: 'style' }, 'link']);
+
+
+                        data.linhas.forEach(x => {
+
+                            grafico3.push([x.nome, x.faturamento, `color:${x.estilo}`, `/relatorios/diretoria/cirurgiaportempo/${numero}`]);
+                            numero++;
+                        })
+
+                        $('#TOTAL').html(`<div style="color:#3366cc"><b>Total: ${data.linhasValor.toLocaleString('pt-BR', formato)}</b></div>`);
+
+                        drawChart3()
                     }
                 })
             })
