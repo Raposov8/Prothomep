@@ -224,7 +224,7 @@
 
                 var CargoSub = $("#CargoSub").val();
 
-                $("#CargoSub").val(Nome.normalize('NFD').replace(/[^a-zA-Z0-9-\u0300-\u036f\s]/g, '').replace('-', ''));
+                $("#CargoSub").val(CargoSub.normalize('NFD').replace(/[^a-zA-Z0-9-\u0300-\u036f\s]/g, '').replace('-', ''));
 
                 if (CargoSub != undefined) 
                 {

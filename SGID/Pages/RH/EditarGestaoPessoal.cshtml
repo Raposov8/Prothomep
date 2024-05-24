@@ -113,7 +113,7 @@
             </div>
             <div class="row" style="margin-top:10px;">
                 <div class="col-md-12">
-                    <button class="btn btn-button btn-success float-end" type="submit">Salvar</button>
+                    <button class="btn btn-button btn-success float-end" id="Envio" type="submit">Salvar</button>
                 </div>
             </div>
         </div>
@@ -146,6 +146,8 @@
             $("#NomeSub").on('change', function (e) {
 
                 var Nome = $("#NomeSub").val();
+
+                $("#NomeSub").val(Nome.normalize('NFD').replace(/[^a-zA-Z0-9-\u0300-\u036f\s]/g, '').replace('-', ''));
 
                 if (Nome != undefined) {
 
@@ -184,6 +186,8 @@
 
                 var CargoSub = $("#CargoSub").val();
 
+                $("#CargoSub").val(CargoSub.normalize('NFD').replace(/[^a-zA-Z0-9-\u0300-\u036f\s]/g, '').replace('-', ''));
+
                 if (CargoSub != undefined) {
 
                     if (CargoSub.trim().length === 0) {
@@ -216,6 +220,7 @@
                     $("#Envio").addClass("invisivel");
                 }
             })
+        
         })
 
         $(document).ready(function () {
@@ -246,7 +251,10 @@
                 $("#Contratacao").val('@Model.Acesso.Contratacao');
             }
             
-
+            if ('@Model.Acesso.NomeSub' == '') 
+            {
+                $("#Envio").addClass("invisivel");
+            }
 
             $('input:checkbox[value="Protheus"]').prop('checked', @Model.Acesso.Protheus.ToString().ToLower());
             $('input:checkbox[value="Ramal"]').prop('checked', @Model.Acesso.IsRamal.ToString().ToLower());
