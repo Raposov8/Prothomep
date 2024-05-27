@@ -8,7 +8,7 @@ namespace SGID.Data.ViewModel
         public int Id { get; set; }
         public string Nome { get; set; }
         public string Caminho { get; set; }
-        public int IdAcesso { get; set; }
+        public int AcessoId { get; set; }
         public SolicitacaoAcesso Acesso { get; set; }
     }
 }

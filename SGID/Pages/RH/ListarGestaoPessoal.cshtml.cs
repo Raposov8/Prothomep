@@ -24,7 +24,7 @@ namespace SGID.Pages.RH
         }  
         public void OnGet()
         {
-            Acessos = SGID.SolicitacaoAcessos.Where(x => x.DataEvento >= DateTime.Now).ToList();
+            Acessos = SGID.SolicitacaoAcessos.OrderByDescending(x=> x.DataCriacao).ToList();
         }
 
         public IActionResult OnGetCancelar(int Id)
@@ -83,7 +83,7 @@ namespace SGID.Pages.RH
             {
                 var anexoTermo = new AcessoTermo
                 {
-                    IdAcesso = Id,
+                    AcessoId = Id,
                     Caminho = $"{Id}.{anexo.FileName.Split(".").Last()}",
                     Nome = anexo.FileName
                 };
