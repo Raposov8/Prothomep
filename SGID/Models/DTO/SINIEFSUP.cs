@@ -13,5 +13,6 @@
         public string Tipo { get; set; }
         public double Valicm { get; set; }
         public double TotalDev { get; set; }
+        public string CFOP { get; set; }
     }
 }

@@ -15,5 +15,6 @@
        public string Pedido { get; set; }
        public string Agend { get; set; }
        public double ValSaida { get; set; }
+       public string CFOP { get; set; }
     }
 }

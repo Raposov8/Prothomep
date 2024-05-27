@@ -62,7 +62,8 @@ namespace SGID.Pages.Relatorios.Controladoria
                                  Operacao = "SAIDA",
                                  Pedido = SD20.D2Pedido,
                                  Agend = SC50.C5Unumage,
-                                 ValSaida = SD20.D2Total
+                                 ValSaida = SD20.D2Total,
+                                 CFOP = SD20.D2Cf
                              }
                              ).GroupBy(x => new
                             {
@@ -75,7 +76,8 @@ namespace SGID.Pages.Relatorios.Controladoria
                                 x.NomCliFor,
                                 x.Paciente,
                                 x.Pedido,
-                                x.Agend
+                                x.Agend,
+                                x.CFOP
                             }).OrderBy(x => x.Key.Emissao);
 
                 var queryselect = query.Select(x => new SINIEF
@@ -91,7 +93,8 @@ namespace SGID.Pages.Relatorios.Controladoria
                     Valicm = x.Sum(c => c.Valicm),
                     Pedido = x.Key.Pedido,
                     Agend = x.Key.Agend,
-                    ValSaida = x.Sum(c => c.ValSaida)
+                    ValSaida = x.Sum(c => c.ValSaida),
+                    CFOP = x.Key.CFOP
                 });
 
                 var Relatorios = queryselect.ToList();
@@ -114,7 +117,8 @@ namespace SGID.Pages.Relatorios.Controladoria
                                      Loja = SD10.D1Loja,
                                      Tipo = SF40.F4Texto.Contains("SIMB") ? "S" : "R",
                                      Valicm = SD10.D1Valicm,
-                                     TotalDev = SD10.D1Total
+                                     TotalDev = SD10.D1Total,
+                                     CFOP = SD10.D1Cf
                                  }).GroupBy(x => new
                                  {
                                      x.Filial,
@@ -125,7 +129,8 @@ namespace SGID.Pages.Relatorios.Controladoria
                                      x.Seriori,
                                      x.Fornece,
                                      x.Loja,
-                                     x.Tipo
+                                     x.Tipo,
+                                     x.CFOP
                                  }).Select(x => new SINIEFSUP
                                  {
                                      Filial = x.Key.Filial,
@@ -138,7 +143,8 @@ namespace SGID.Pages.Relatorios.Controladoria
                                      Loja = x.Key.Loja,
                                      Tipo = x.Key.Tipo,
                                      Valicm = x.Sum(c => c.Valicm),
-                                     TotalDev = x.Sum(c => c.TotalDev)
+                                     TotalDev = x.Sum(c => c.TotalDev),
+                                     CFOP = x.Key.CFOP
                                  }).ToList();
 
                     Relatorio.Add(new RelatorioSINIEF
@@ -154,7 +160,8 @@ namespace SGID.Pages.Relatorios.Controladoria
                         Valicm = obj.Valicm,
                         Agend = obj.Agend,
                         ValSaida = obj.ValSaida,
-                        Pedido = obj.Pedido
+                        Pedido = obj.Pedido,
+                        CFOP = obj.CFOP
                     });
 
                     query.ForEach(banco =>
@@ -178,8 +185,6 @@ namespace SGID.Pages.Relatorios.Controladoria
 
                         linha.ValicmRet = banco.Valicm;
                     });
-
-
                 });
 
                 return Page();
@@ -219,21 +224,23 @@ namespace SGID.Pages.Relatorios.Controladoria
                                  Operacao = "SAIDA",
                                  Pedido = SD20.D2Pedido,
                                  Agend = SC50.C5Unumage,
-                                 ValSaida = SD20.D2Total
+                                 ValSaida = SD20.D2Total,
+                                 CFOP = SD20.D2Cf
                              }
                              ).GroupBy(x => new
-                            {
-                                x.Filial,
-                                x.Doc,
-                                x.Serie,
-                                x.Emissao,
-                                x.Clifor,
-                                x.Loja,
-                                x.NomCliFor,
-                                x.Paciente,
-                                x.Pedido,
-                                x.Agend
-                            }).OrderBy(x => x.Key.Emissao);
+                             {
+                                 x.Filial,
+                                 x.Doc,
+                                 x.Serie,
+                                 x.Emissao,
+                                 x.Clifor,
+                                 x.Loja,
+                                 x.NomCliFor,
+                                 x.Paciente,
+                                 x.Pedido,
+                                 x.Agend,
+                                 x.CFOP
+                             }).OrderBy(x => x.Key.Emissao);
 
                 var queryselect = query.Select(x => new SINIEF
                 {
@@ -248,7 +255,8 @@ namespace SGID.Pages.Relatorios.Controladoria
                     Valicm = x.Sum(c => c.Valicm),
                     Pedido = x.Key.Pedido,
                     Agend = x.Key.Agend,
-                    ValSaida = x.Sum(c => c.ValSaida)
+                    ValSaida = x.Sum(c => c.ValSaida),
+                    CFOP = x.Key.CFOP
                 });
 
                 var Relatorios = queryselect.ToList();
@@ -271,7 +279,8 @@ namespace SGID.Pages.Relatorios.Controladoria
                                      Loja = SD10.D1Loja,
                                      Tipo = SF40.F4Texto.Contains("SIMB") ? "S" : "R",
                                      Valicm = SD10.D1Valicm,
-                                     TotalDev = SD10.D1Total
+                                     TotalDev = SD10.D1Total,
+                                     CFOP = SD10.D1Cf
                                  }).GroupBy(x => new
                                  {
                                      x.Filial,
@@ -282,7 +291,8 @@ namespace SGID.Pages.Relatorios.Controladoria
                                      x.Seriori,
                                      x.Fornece,
                                      x.Loja,
-                                     x.Tipo
+                                     x.Tipo,
+                                     x.CFOP
                                  }).Select(x => new SINIEFSUP
                                  {
                                      Filial = x.Key.Filial,
@@ -295,7 +305,8 @@ namespace SGID.Pages.Relatorios.Controladoria
                                      Loja = x.Key.Loja,
                                      Tipo = x.Key.Tipo,
                                      Valicm = x.Sum(c => c.Valicm),
-                                     TotalDev = x.Sum(c => c.TotalDev)
+                                     TotalDev = x.Sum(c => c.TotalDev),
+                                     CFOP = x.Key.CFOP
                                  }).ToList();
 
                     Relatorio.Add(new RelatorioSINIEF
@@ -303,7 +314,7 @@ namespace SGID.Pages.Relatorios.Controladoria
                         Filial = obj.Filial,
                         Doc = obj.Doc,
                         Serie = obj.Serie,
-                        Emissao = $"{obj.Emissao.Substring(6, 2)}/{obj.Emissao.Substring(4, 2)}/{obj.Emissao.Substring(0, 4)}",
+                        Emissao = obj.Emissao,
                         CliFor = obj.Clifor,
                         Loja = obj.Loja,
                         NomCliFor = obj.NomCliFor,
@@ -311,7 +322,8 @@ namespace SGID.Pages.Relatorios.Controladoria
                         Valicm = obj.Valicm,
                         Agend = obj.Agend,
                         ValSaida = obj.ValSaida,
-                        Pedido = obj.Pedido
+                        Pedido = obj.Pedido,
+                        CFOP = obj.CFOP
                     });
 
                     query.ForEach(banco =>
@@ -335,8 +347,6 @@ namespace SGID.Pages.Relatorios.Controladoria
 
                         linha.ValicmRet = banco.Valicm;
                     });
-
-
                 });
                 #endregion
 
@@ -366,6 +376,7 @@ namespace SGID.Pages.Relatorios.Controladoria
                 sheet.Cells[1, 18].Value = "VALSAIDA";
                 sheet.Cells[1, 19].Value = "VALRETSIMB";
                 sheet.Cells[1, 20].Value = "VALRETREAL";
+                sheet.Cells[1, 21].Value = "CFOP";
 
                 int i = 2;
 
@@ -403,6 +414,8 @@ namespace SGID.Pages.Relatorios.Controladoria
 
                     sheet.Cells[i, 20].Value = Pedido.ValRetReal;
                     sheet.Cells[i, 20].Style.Numberformat.Format = "0.00";
+
+                    sheet.Cells[i, 21].Value = Pedido.CFOP;
 
                     i++;
                 });

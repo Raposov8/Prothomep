@@ -22,5 +22,6 @@
         public double ValSaida { get; set; }
         public double ValRetSimb { get; set; }
         public double ValRetReal { get; set; }
+        public string CFOP { get; set; }
     }
 }

@@ -95,6 +95,9 @@
                     <th class="text-center">
                         VALRETREAL
                     </th>
+                    <th class="text-center">
+                        CFOP
+                    </th>
                 </tr>
             </thead>
             <tbody>
@@ -121,6 +124,7 @@
                     <td>@string.Format("{0:N2}", data.ValSaida)</td>
                     <td>@string.Format("{0:N2}", data.ValRetSimb)</td>
                     <td>@string.Format("{0:N2}", data.ValRetReal)</td>
+                    <td>@Html.DisplayFor(model => data.CFOP)</td>
                 </tr>
                 }
             </tbody>
