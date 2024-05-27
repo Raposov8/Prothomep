@@ -58,11 +58,15 @@
                         <td>@data.Email</td>
                         <td>@data.Tipo</td>
                         <td>
-                            <a href="/rh/editargestaopessoal/@data.Id" class="fa-solid fa-pen add-tooltip" style="text-decoration:none;" data-container="body" data-placement="top" data-original-title="Editar Solicitacao" aria-hidden="true"></a>
-                            |
-                            <a href="/rh/visualizargestaopessoal/@data.Id" class="fas fa-eye add-tooltip" style="text-decoration:none;" data-container="body" data-placement="top" data-original-title="Visualizar Solicitacao" aria-hidden="true"></a>
-                            |
-                            <a href="/rh/ListarGestaoPessoal?handler=Cancelar&&Id=@data.Id" class="fa-solid fa-trash add-tooltip" style="text-decoration:none;" data-container="body" data-placement="top" data-original-title="Cancelar Solicitacao" aria-hidden="true"></a>
+                            
+                                <a href="/rh/editargestaopessoal/@data.Id" class="fa-solid fa-pen add-tooltip" style="text-decoration:none;" data-container="body" data-placement="top" data-original-title="Editar Solicitacao" aria-hidden="true"></a>
+                                |
+                                < a href = "/rh/visualizargestaopessoal/@data.Id" class="fas fa-eye add-tooltip" style="text-decoration:none;" data-container="body" data-placement="top" data-original-title="Visualizar Solicitacao" aria-hidden="true"></a>
+                                |
+                                <a href = "/rh/ListarGestaoPessoal?handler=Cancelar&&Id=@data.Id" class="fa-solid fa-trash add-tooltip" style="text-decoration:none;" data-container="body" data-placement="top" data-original-title="Cancelar Solicitacao" aria-hidden="true"></a>
+                            
+                                <div class="fa-solid fa-file-signature" onclick="Termo(@data.Id)"></div>
+                            
                         </td>
                     </tr>
                 }
@@ -71,3 +75,65 @@
     </div>
 </div>
 
+
+<div class="modal fade" id="details-modal" role="dialog" tabindex="-1" aria-labelledby="demo-default-modal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <!--Modal header-->
+            <div class="modal-header">
+                <div class="col-md-12">
+                    <h4>Buscar Item</h4>
+                </div>
+            </div>
+            <form asp-page-handler="Termo" enctype="multipart/form-data" method="post">
+                <!--Modal body-->
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <input hidden id="Id" name="Id" />
+                            <label>ENVIAR TERMO</label>
+                            <label class="col-md-1" for="Anexos01" style="padding-top:10px;">
+                                <i id="AnexosIcon01" class="fa-solid fa-file-lines fa-3x Vermelho"></i>
+                                <span id="Anexo01Nome"></span>
+                            </label>
+                            <input hidden type="file" class="custom-file-input" id="Anexos01" name="Anexos01" />
+                        </div>
+                    </div>
+                </div>
+
+                <!--Modal footer-->
+                <div class="modal-footer">
+                    <div class="col-md-12">
+                        <button type="submit" class="btn btn-button btn-success float-end" id="Adicionar">
+                            Enviar Termo
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section scripts
+{
+    <script>
+        $(document).ready(function () {
+
+            $("#Anexos01").on('change', function () {
+                $("#AnexosIcon01").removeClass('Vermelho');
+                $("#AnexosIcon01").addClass('Verde');
+                var teste = this.value.replace('C:\\fakepath\\', '');
+                $("#Anexo01Nome").html(teste)
+            });
+
+            Termo = function (id) {
+                $("#Id").val(id);
+                $('#details-modal').modal('show')
+            }
+
+            $('a.close').on('click', function () {
+                $('#details-modal').modal('hide')
+            })
+        })
+    </script>
+}

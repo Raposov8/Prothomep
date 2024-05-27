@@ -38,6 +38,7 @@ namespace SGID.Data
 
         //RH
         public DbSet<SolicitacaoAcesso> SolicitacaoAcessos { get; set; }
+        public DbSet<AcessoTermo> AcessoTermos { get; set; }
 
 
         //Estoque

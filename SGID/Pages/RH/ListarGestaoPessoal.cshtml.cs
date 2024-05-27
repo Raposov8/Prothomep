@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
 using SGID.Data;
 using SGID.Data.ViewModel;
 using SGID.Models.Email;
@@ -66,6 +65,43 @@ namespace SGID.Pages.RH
             Acessos = SGID.SolicitacaoAcessos.Where(x => x.DataEvento >= DateTime.Now).ToList();
 
             return Page();
+        }
+
+        public IActionResult OnPostTermo(int Id,IFormCollection Anexos)
+        {
+            string Pasta = $"{_WEB.WebRootPath}/AcessoTermos";
+
+            if (!Directory.Exists(Pasta))
+            {
+                Directory.CreateDirectory(Pasta);
+            }
+
+            //Anexos
+            #region Anexos
+
+            foreach (var anexo in Anexos.Files)
+            {
+                var anexoTermo = new AcessoTermo
+                {
+                    IdAcesso = Id,
+                    Caminho = $"{Id}.{anexo.FileName.Split(".").Last()}",
+                    Nome = anexo.FileName
+                };
+
+                string Caminho = $"{Pasta}/{anexoTermo.Caminho}";
+                using (Stream fileStream = new FileStream(Caminho, FileMode.Create))
+                {
+                    anexo.CopyTo(fileStream);
+                }
+
+                SGID.AcessoTermos.Add(anexoTermo);
+                SGID.SaveChanges();
+            }
+
+            #endregion
+
+            return LocalRedirect("/RH/ListarGestaoPessoal");
+
         }
     }
 }
