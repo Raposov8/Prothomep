@@ -160,7 +160,7 @@
 
             grafico.push(['Clientes', 'Valor']);
 
-            @foreach (var data in Model.Relatorio.GroupBy(x=> x.Cliente).Select(x=> new{ x.Key,Valor = x.Sum(c=> c.Valor)}).ToList())
+            @foreach (var data in Model.Relatorio.GroupBy(x=> x.Cliente).Select(x=> new{ x.Key,Valor = x.Sum(c=> c.Valor)}).OrderBy(c=>c.Valor).ToList())
             {
 
                 @:grafico.push(['@data.Key', @data.Valor])

@@ -2,8 +2,10 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using SGID.Data;
+using SGID.Data.Migrations;
 using SGID.Data.ViewModel;
 using SGID.Models.Email;
+using SGID.Models.RH;
 using System.Net.Mail;
 
 namespace SGID.Pages.RH
@@ -14,9 +16,8 @@ namespace SGID.Pages.RH
 
         private ApplicationDbContext SGID { get; set; }
         private readonly IWebHostEnvironment _WEB;
-        public List<SolicitacaoAcesso> Acessos { get; set; }
+        public List<DTOAcesso> Acessos { get; set; }
         
-
         public ListarGestaoPessoalModel(ApplicationDbContext sgid,IWebHostEnvironment web) 
         {
             SGID = sgid;
@@ -24,7 +25,34 @@ namespace SGID.Pages.RH
         }  
         public void OnGet()
         {
-            Acessos = SGID.SolicitacaoAcessos.OrderByDescending(x=> x.DataCriacao).ToList();
+
+            Acessos = (from Soli in SGID.SolicitacaoAcessos
+                      join Termo in SGID.AcessoTermos on Soli.Id equals Termo.AcessoId into Sr
+                      from a in Sr.DefaultIfEmpty()
+                      select new DTOAcesso
+                      {
+                          Id = Soli.Id,
+                          Arquivo = a.Caminho,
+                          Usuario = Soli.Usuario,
+                          Tipo = Soli.Tipo,
+                          Ramal = Soli.Ramal,
+                          Protheus = Soli.Protheus,
+                          Obs = Soli.Obs,
+                          NomeSub = Soli.NomeSub,
+                          Nome = Soli.Nome,
+                          Maquina = Soli.Maquina,
+                          IsRamal = Soli.IsRamal,
+                          Impressora = Soli.Impressora,
+                          Empresa = Soli.Empresa,
+                          Email = Soli.Email,
+                          DataEvento = Soli.DataEvento,
+                          DataCriacao = Soli.DataCriacao,
+                          DataAlteracao = Soli.DataAlteracao,
+                          Contratacao = Soli.Contratacao,
+                          Celular = Soli.Celular,
+                          CargoSub = Soli.CargoSub,
+                          Cargo = Soli.Cargo
+                      }).OrderByDescending(x => x.DataCriacao).ToList();
         }
 
         public IActionResult OnGetCancelar(int Id)
@@ -62,7 +90,33 @@ namespace SGID.Pages.RH
             SGID.SolicitacaoAcessos.Remove(solicita);
             SGID.SaveChanges();
 
-            Acessos = SGID.SolicitacaoAcessos.Where(x => x.DataEvento >= DateTime.Now).ToList();
+            Acessos = (from Soli in SGID.SolicitacaoAcessos
+                       join Termo in SGID.AcessoTermos on Soli.Id equals Termo.AcessoId into Sr
+                       from a in Sr.DefaultIfEmpty()
+                       select new DTOAcesso
+                       {
+                           Id = Soli.Id,
+                           Arquivo = a.Caminho,
+                           Usuario = Soli.Usuario,
+                           Tipo = Soli.Tipo,
+                           Ramal = Soli.Ramal,
+                           Protheus = Soli.Protheus,
+                           Obs = Soli.Obs,
+                           NomeSub = Soli.NomeSub,
+                           Nome = Soli.Nome,
+                           Maquina = Soli.Maquina,
+                           IsRamal = Soli.IsRamal,
+                           Impressora = Soli.Impressora,
+                           Empresa = Soli.Empresa,
+                           Email = Soli.Email,
+                           DataEvento = Soli.DataEvento,
+                           DataCriacao = Soli.DataCriacao,
+                           DataAlteracao = Soli.DataAlteracao,
+                           Contratacao = Soli.Contratacao,
+                           Celular = Soli.Celular,
+                           CargoSub = Soli.CargoSub,
+                           Cargo = Soli.Cargo
+                       }).OrderByDescending(x => x.DataCriacao).ToList();
 
             return Page();
         }

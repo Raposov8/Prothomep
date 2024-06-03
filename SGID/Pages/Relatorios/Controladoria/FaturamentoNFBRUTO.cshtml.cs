@@ -40,7 +40,7 @@ namespace SGID.Pages.Relatorios.Controladoria
                 var InicioAno = Convert.ToInt32($"{Ano}0101");
                 var FimAno = Convert.ToInt32($"{Ano}1231");
 
-                var CF = new int[] { 5551, 6551, 6107, 6109, 5117, 6117 };
+                var CF = new int[] { 5551, 6551, 6107, 6109, 5117, 6117, 5922 };
                 var CfNe = new int[] { 1202, 1553, 2202, 2553 };
 
                 #region Faturado
@@ -298,7 +298,7 @@ namespace SGID.Pages.Relatorios.Controladoria
                 var FimAno = Convert.ToInt32($"{Ano}1231");
 
 
-                var CF = new int[] { 5551, 6551, 6107, 6109, 5117, 6117 };
+                var CF = new int[] { 5551, 6551, 6107, 6109, 5117, 6117, 5922 };
                 var CfNe = new int[] { 1202, 1553, 2202, 2553 };
 
                 #region Faturado

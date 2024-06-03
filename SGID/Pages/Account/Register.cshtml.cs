@@ -51,6 +51,9 @@ namespace SGID.Pages.Account
                 if (ModelState.IsValid)
                 {
                     var user = new UserInter { UserName = Input.Email, Email = Input.Email, EmailConfirmed = true };
+
+                    user.UsuarioCriacao = User.Identity.Name.Split("@")[0];
+                    user.CriacaoDate = DateTime.Now;
                     var result = await _userManager.CreateAsync(user, Input.Password);
                     if (result.Succeeded)
                     {

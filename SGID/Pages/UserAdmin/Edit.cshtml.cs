@@ -75,6 +75,9 @@ namespace SGID.Pages.UserAdmin
                 user.NormalizedEmail = Editar.Email.ToUpper();
                 user.NormalizedUserName = Editar.Email.ToUpper();
 
+                user.UsuarioAlterar = User.Identity.Name.Split("@")[0];
+                user.AlterarDate = DateTime.Now;
+
                 var userRoles = await _userManager.GetRolesAsync(user);
 
                 selectedRole ??= Array.Empty<string>();

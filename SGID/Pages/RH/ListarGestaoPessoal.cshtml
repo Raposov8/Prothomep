@@ -58,20 +58,25 @@
                         <td>@data.Email</td>
                         <td>@data.Tipo</td>
                         <td>
-                            @if(data.DataEvento>= DateTime.Now){
-                            
+                            @if(data.DataEvento >= DateTime.Now)
+                            {
                                 <a href="/rh/editargestaopessoal/@data.Id" class="fa-solid fa-pen add-tooltip" style="text-decoration:none;" data-container="body" data-placement="top" data-original-title="Editar Solicitacao" aria-hidden="true"></a>
                                 
-                                <a href = "/rh/visualizargestaopessoal/@data.Id" class="fas fa-eye add-tooltip" style="text-decoration:none;" data-container="body" data-placement="top" data-original-title="Visualizar Solicitacao" aria-hidden="true"></a>
+                                <a href="/rh/visualizargestaopessoal/@data.Id" class="fas fa-eye add-tooltip" style="text-decoration:none;" data-container="body" data-placement="top" data-original-title="Visualizar Solicitacao" aria-hidden="true"></a>
                                 
-                                <a href = "/rh/ListarGestaoPessoal?handler=Cancelar&&Id=@data.Id" class="fa-solid fa-trash add-tooltip" style="text-decoration:none;" data-container="body" data-placement="top" data-original-title="Cancelar Solicitacao" aria-hidden="true"></a>
+                                <a href="/rh/ListarGestaoPessoal?handler=Cancelar&&Id=@data.Id" class="fa-solid fa-trash add-tooltip" style="text-decoration:none;" data-container="body" data-placement="top" data-original-title="Cancelar Solicitacao" aria-hidden="true"></a>
                             }
                             else
                             {
-                                <div class="fa-solid fa-file-signature" onclick="Termo(@data.Id)"></div>
+                                if (data.Arquivo == null)
+                                {
+                                    <div class="fa-solid fa-file-signature" onclick="Termo(@data.Id)"></div>
+                                }
+                                else
+                                {
+                                    <a href="/AcessoTermos/@data.Arquivo" target="_blank" class="fa-solid fa-eye" style="text-decoration:none;"></a>
+                                }
                             }
-                                
-                            
                         </td>
                     </tr>
                 }

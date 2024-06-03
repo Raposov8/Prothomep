@@ -183,8 +183,8 @@ namespace SGID.Pages.Relatorios.RH
                                      TotalPedido = SC60.C6Valor,
                                      TotalFat = SC60.C6Qtdent * SC60.C6Prcven,
                                      Faturado = SC50.C5Nota != "" || (SC50.C5Liberok == "E" && SC50.C5Blq == "") ? "S" : "N"
-                                 }
-                            ).OrderBy(x => x.Vendedor).ToList();
+                                 
+                                 }).OrderBy(x => x.Vendedor).ToList();
 
                     Relatorio.ForEach(Pedido =>
                     {

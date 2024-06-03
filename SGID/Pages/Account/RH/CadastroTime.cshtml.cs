@@ -65,6 +65,9 @@ namespace SGID.Pages.Account.RH
                 if (ModelState.IsValid)
                 {
                     var user = new UserInter { UserName = Input.Email, Email = Input.Email, EmailConfirmed = true };
+                    user.UsuarioCriacao = User.Identity.Name.Split("@")[0];
+                    user.CriacaoDate = DateTime.Now;
+
                     var usuariop = await _userManager.FindByEmailAsync(user.Email);
                     if (usuariop == null)
                     {

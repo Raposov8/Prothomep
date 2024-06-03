@@ -17,7 +17,7 @@ var connectionProtheus = builder.Configuration.GetConnectionString("DENUO");
 var connectionProtheusInter = builder.Configuration.GetConnectionString("INTER");
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString, options => options.EnableRetryOnFailure()));
-/*builder.Services.AddDbContext<TOTVSDENUOContext>(options =>
+builder.Services.AddDbContext<TOTVSDENUOContext>(options =>
     options.UseSqlServer(connectionProtheus, ops => 
     {
         ops.EnableRetryOnFailure();
@@ -28,7 +28,7 @@ builder.Services.AddDbContext<TOTVSINTERContext>(options =>
     {
         ops.EnableRetryOnFailure();
         ops.CommandTimeout(600);
-    }));*/
+    }));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 builder.Services.AddIdentity<UserInter, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = false)

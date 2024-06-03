@@ -23,6 +23,43 @@
             <label>Data Cotação Final</label>
             <input type="date" class="form-control" id="DtCotacaoFim" name="DtCotacaoFim" value="@Model.DtCotacaoFim.ToString("yyyy-MM-dd")" placeholder="Data Fim">
         </div>
+        <div class="form-group mx-sm-3 mb-2 col-lg-2">
+            <label>Status</label>
+            <select type="text" class="form-control" id="DtCotacaoFim" name="DtCotacaoFim" value="@Model.DtCotacaoFim" placeholder="Status">
+                <option>Todos</option>
+                <option value="1">Aberta</option>
+                <option value="2">Encerrada</option>
+                <option value="3">Cancelada</option>
+                <option value="4">Aguardando Liberação</option>
+                <option value="5">Liberada</option>
+                <option value="6">Bloqueada</option>
+                <option value="7">Fornecimento Operadora</option>
+                <option value="203">A iniciar</option>
+                <option value="204">Em autorização</option>
+                <option value="205">Em triagem</option>
+                <option value="206">Ag. Abertura</option>
+                <option value="207">Ag. Análise</option>
+                <option value="208">Em Análise Benefícios</option>
+                <option value="209">Em Análise Técnica</option>
+                <option value="210">Em Análise Gestão</option>
+                <option value="211">Finalizada</option>
+                <option value="212">Ag. Análise Técnica</option>
+                <option value="213">Cancelamento Senha</option>
+                <option value="214">Sem Continuidade</option>
+                <option value="215">Ag. Contato Médico</option>
+                <option value="216">Encerrado Plano Contingência</option>
+                <option value="217">Revisão de Agendamento</option>
+                <option value="218">Pendente de Informações</option>
+                <option value="219">Aguardando Precificação</option>
+                <option value="220">Em Análise Médica</option>
+                <option value="221">Junta Médica</option>
+                <option value="222">Tentativa de Contato Médico</option>
+                <option value="223">Médico especialista</option>
+                <option value="224">Ag. Aut. Convênio</option>
+                <option value="225">Pendente solicitação de materiais</option>
+                <option value="226">Em Auditoria</option>
+            </select>
+        </div>
 
         <div class="form-group mx-sm-3 mb-2 col-lg-1">
             <button type="submit" class="btn btn-primary mb-2">Pesquisar</button>

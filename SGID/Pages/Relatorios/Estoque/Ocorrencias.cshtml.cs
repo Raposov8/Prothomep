@@ -79,13 +79,14 @@ namespace SGID.Pages.Relatorios.Estoque
                 sheet.Cells[1, 2].Value = "DATA DA INCLUSÃO";
                 sheet.Cells[1, 3].Value = "CODIGO DA OCORRENCIA";
                 sheet.Cells[1, 4].Value = "AGENDAMENTO";
-                sheet.Cells[1, 5].Value = "PACIENTE";
-                sheet.Cells[1, 6].Value = "MEDICO";
-                sheet.Cells[1, 7].Value = "CODIGO DO PRODUTO";
-                sheet.Cells[1, 8].Value = "PRODUTO";
-                sheet.Cells[1, 9].Value = "PROBLEMA";
-                sheet.Cells[1, 10].Value = "AÇÕES";
-                sheet.Cells[1, 11].Value = "VENDEDOR";
+                sheet.Cells[1, 5].Value = "HOSPITAL";
+                sheet.Cells[1, 6].Value = "PACIENTE";
+                sheet.Cells[1, 7].Value = "MEDICO";
+                sheet.Cells[1, 8].Value = "CODIGO DO PRODUTO";
+                sheet.Cells[1, 9].Value = "PRODUTO";
+                sheet.Cells[1, 10].Value = "PROBLEMA";
+                sheet.Cells[1, 11].Value = "AÇÕES";
+                sheet.Cells[1, 12].Value = "VENDEDOR";
 
                 int i = 2;
 
@@ -95,13 +96,14 @@ namespace SGID.Pages.Relatorios.Estoque
                     sheet.Cells[i, 2].Value = Pedido.DataCriacao.ToString("dd/MM/yyyy HH:mm");
                     sheet.Cells[i, 3].Value = Pedido.Id;
                     sheet.Cells[i, 4].Value = Pedido.Agendamento;
-                    sheet.Cells[i, 5].Value = Pedido.Paciente;
-                    sheet.Cells[i, 6].Value = Pedido.Medico;
-                    sheet.Cells[i, 7].Value = Pedido.Produto;
-                    sheet.Cells[i, 8].Value = Pedido.Descricao;
-                    sheet.Cells[i, 9].Value = Pedido.Problema;
-                    sheet.Cells[i, 10].Value = Pedido.Acao;
-                    sheet.Cells[i, 11].Value = Pedido.Vendedor;
+                    sheet.Cells[i, 5].Value = Pedido.Hospital;
+                    sheet.Cells[i, 6].Value = Pedido.Paciente;
+                    sheet.Cells[i, 7].Value = Pedido.Medico;
+                    sheet.Cells[i, 8].Value = Pedido.Produto;
+                    sheet.Cells[i, 9].Value = Pedido.Descricao;
+                    sheet.Cells[i, 10].Value = Pedido.Problema;
+                    sheet.Cells[i, 11].Value = Pedido.Acao;
+                    sheet.Cells[i, 12].Value = Pedido.Vendedor;
 
                     i++;
                 });

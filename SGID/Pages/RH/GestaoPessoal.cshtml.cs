@@ -100,6 +100,7 @@ namespace SGID.Pages.RH
                     EnableSsl = true,
                     Credentials = new System.Net.NetworkCredential("ti@intermedic.com.br", "interadm2018!*")
                 };
+
                 MailMessage mail = new MailMessage();
                 mail.Sender = new MailAddress("ti@intermedic.com.br", "ENVIADOR");
                 mail.From = new MailAddress("ti@intermedic.com.br", "ENVIADOR");
@@ -111,13 +112,12 @@ namespace SGID.Pages.RH
                 mail.Priority = MailPriority.Normal;
                 
                 client.Send(mail);
-            
             }
             catch (Exception erro)
             {
                 var user = User.Identity.Name.Split("@")[0];
                 Logger.Log(erro, SGID, "GestaoPessoal", user);
-             }
+            }
 
             return LocalRedirect("/rh/listargestaopessoal");
         }

@@ -59,6 +59,9 @@
                         AGENDAMENTO
                     </th>
                     <th class="text-center">
+                        HOSPITAL
+                    </th>
+                    <th class="text-center">
                         PACIENTE
                     </th>
                     <th class="text-center">
@@ -96,6 +99,7 @@
                         <td>@data.DataCriacao.ToString("dd/MM/yyyy HH:mm")</td>
                         <td>@Html.DisplayFor(model=> data.Id)</td>
                         <td>@Html.DisplayFor(model=> data.Agendamento) </td>
+                        <td>@Html.DisplayFor(model => data.Hospital) </td>
                         <td>@Html.DisplayFor(model=> data.Paciente)</td>
                         <td>@Html.DisplayFor(model=> data.Medico)</td>
                         <td>@Html.DisplayFor(model=> data.Produto)</td>
