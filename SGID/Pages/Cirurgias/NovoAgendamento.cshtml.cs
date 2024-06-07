@@ -62,7 +62,7 @@ namespace SGID.Pages.Cirurgias
                     Vendedores = ProtheusInter.Sa3010s.Where(x => x.DELET != "*" && x.A3Msblql != "1").Select(x => x.A3Nreduz).ToList(),
                 };
 
-                SearchProduto = ProtheusInter.Sb1010s.Where(x => x.DELET != "*" && x.B1Msblql != "1" && x.B1Tipo != "KT").Select(x => x.B1Cod + " " + x.B1Desc).Distinct().ToList();
+                SearchProduto = ProtheusInter.Sb1010s.Where(x => x.DELET != "*" && x.B1Msblql != "1" && x.B1Tipo != "KT").Select(x => x.B1Cod + "  " + x.B1Desc).Distinct().ToList();
             }
             else
             {
@@ -90,7 +90,7 @@ namespace SGID.Pages.Cirurgias
                     Vendedores = ProtheusDenuo.Sa3010s.Where(x => x.DELET != "*" && x.A3Msblql != "1").Select(x => x.A3Nreduz).ToList(),
                 };
 
-                SearchProduto = ProtheusDenuo.Sb1010s.Where(x => x.DELET != "*" && x.B1Msblql != "1" && x.B1Tipo!="KT").Select(x => x.B1Cod + " " + x.B1Desc).Distinct().ToList();
+                SearchProduto = ProtheusDenuo.Sb1010s.Where(x => x.DELET != "*" && x.B1Msblql != "1" && x.B1Tipo!="KT").Select(x => x.B1Cod + "  " + x.B1Desc).Distinct().ToList();
             }
         }
 
@@ -582,25 +582,29 @@ namespace SGID.Pages.Cirurgias
                             VendedorEmail = VendedorEmail.Split(";")[0];
                         }
 
-                        var mensagem = "";
-
-                        mensagem += $"";
-
                         var template = new
                         {
-                            Titulo = $"Novo Orçamento Nº {agendamento.Id} - {Agendamento.Paciente}"
+                            Titulo = $"{agendamento.Id} - {Agendamento.Paciente}",
+                            DataCirurgia = agendamento.DataCirurgia.HasValue ? agendamento.DataCirurgia.Value.ToString("dd/MM/yyyy HH:mm"):"Sem Data",
+                            Paciente = agendamento.Paciente,
+                            Hospital = agendamento.Hospital,
+                            Cliente = agendamento.Cliente,
+                            Medico = agendamento.Medico,
+                            Obs = !string.IsNullOrEmpty(Agendamento.Obs) && !string.IsNullOrWhiteSpace(Agendamento.Obs) ? Agendamento.Obs : "Sem Observação",
+                            Link = $"https://gidd.com.br/cotacoes/aceitarcotacoes/{agendamento.Id}"
                         };
 
-                        mensagem = EmailTemplate.LerArquivoHtml($"{_WEB.WebRootPath}/template/TemplateCotacao.html", template);
+                        var mensagem = EmailTemplate.LerArquivoHtml($"{_WEB.WebRootPath}/template/TemplateCotacao.html", template);
 
                         SmtpClient client = new SmtpClient();
                         client.Host = "smtp.office365.com";
                         client.EnableSsl = true;
                         client.Credentials = new System.Net.NetworkCredential("ti@intermedic.com.br", "interadm2018!*");
                         MailMessage mail = new MailMessage();
-                        mail.Sender = new MailAddress("ti@intermedic.com.br", "ENVIADOR");
-                        mail.From = new MailAddress("ti@intermedic.com.br", "ENVIADOR");
+                        mail.Sender = new MailAddress("ti@intermedic.com.br", "GID");
+                        mail.From = new MailAddress("ti@intermedic.com.br", "GID");
                         mail.To.Add(new MailAddress($"{VendedorEmail}", "RECEBEDOR"));
+                        mail.Bcc.Add(new MailAddress("andre.souza@intermedic.com.br","ANDRE SOUZA"));
                         mail.Subject = $"Novo Orçamento Nº {agendamento.Id} - {Agendamento.Paciente}";
                         mail.Body = mensagem;
                         mail.IsBodyHtml = true;
@@ -616,7 +620,7 @@ namespace SGID.Pages.Cirurgias
                         Logger.Log(e, SGID, "NovoAgendamento Email", user);
                     }
 
-                    if (User.IsInRole("Estoque"))
+                    /*if (User.IsInRole("Estoque"))
                     {
                         agendamento.Autorizado = 1;
                         agendamento.StatusPedido = 3;
@@ -624,7 +628,7 @@ namespace SGID.Pages.Cirurgias
 
                         SGID.Agendamentos.Update(agendamento);
                         SGID.SaveChanges();
-                    }
+                    }*/
 
                     return LocalRedirect("/dashboards/dashboard/0");
                 }
@@ -643,10 +647,9 @@ namespace SGID.Pages.Cirurgias
         {
             try
             {
+                var codigo = Codigo.Split("  ")[0];
                 if (Empresa == "01") 
                 {
-                    var codigo = Codigo.Split(" ")[0];
-
                         //Intermedic
                         var produto = (from SB10 in ProtheusInter.Sb1010s
                                        where SB10.B1Cod == codigo.ToUpper() && SB10.B1Msblql != "1"
@@ -711,8 +714,6 @@ namespace SGID.Pages.Cirurgias
                 }
                 else
                 {
-                    var codigo = Codigo.Split(" ")[0];
-
                     //Denuo
                     var produto = (from SB10 in ProtheusDenuo.Sb1010s
                                    where SB10.B1Cod == codigo.ToUpper() && SB10.B1Msblql != "1"

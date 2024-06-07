@@ -170,6 +170,10 @@
 	.row th{display:table-cell;}
 
 	.row{display:flex;}
+    
+    .btn { cursor: pointer; background-color: transparent; color: inherit; padding: 6px 12px; border-radius: 3px; border: 1px solid transparent; font-size: 13px; line-height: 1.475; vertical-align: middle; transition: all 0.25s; }
+
+   .btn-success,.btn-success:focus { background-color: #92c755; border-color: #8bc34a !important; color: #fff;}
 
 	</style>
 </head>
@@ -230,7 +234,7 @@
                       <td valign="top" align="center">
                         <table width="100%" align="center" border="0" cellspacing="0" cellpadding="0" style="margin: 0px auto; min-width: 100%;" role="presentation">
                           <tr>
-                            <td align="center" style="font-size: 20px; color: #333333; font-weight: bold; font-family: 'Open Sans', Arial, Helvetica, sans-serif; word-break: break-word; line-height: 1;"><span style="color: #333333; font-style: normal; text-align: center; line-height: 29px; font-size: 23px; font-weight: 700; font-family: 'Open Sans', Arial, Helvetica, sans-serif;">[Titulo]<span style="color: #ff900e; font-style: normal; text-align: center; line-height: 29px; font-size: 23px; font-weight: 700; font-family: 'Open Sans', Arial, Helvetica, sans-serif;">&nbsp;<span style="color: #00c021; font-style: normal; text-align: center; line-height: 29px; font-size: 23px; font-weight: 700; font-family: 'Open Sans', Arial, Helvetica, sans-serif;"><span style="font-style: normal; text-align: center; color: #00c021; line-height: 29px; font-size: 23px; font-weight: 700; font-family: 'Open Sans', Arial, Helvetica, sans-serif; "></span></span></span></span></td>
+                            <td align="center" style="font-size: 20px; color: #333333; font-weight: bold; font-family: 'Open Sans', Arial, Helvetica, sans-serif; word-break: break-word; line-height: 1;"><span style="color: #333333; font-style: normal; text-align: center; line-height: 29px; font-size: 23px; font-weight: 700; font-family: 'Open Sans', Arial, Helvetica, sans-serif;">Cotação <div style="color:green">Nº [Titulo]</div><span style="color: #ff900e; font-style: normal; text-align: center; line-height: 29px; font-size: 23px; font-weight: 700; font-family: 'Open Sans', Arial, Helvetica, sans-serif;">&nbsp;<span style="color: #00c021; font-style: normal; text-align: center; line-height: 29px; font-size: 23px; font-weight: 700; font-family: 'Open Sans', Arial, Helvetica, sans-serif;"><span style="font-style: normal; text-align: center; color: #00c021; line-height: 29px; font-size: 23px; font-weight: 700; font-family: 'Open Sans', Arial, Helvetica, sans-serif; "></span></span></span></span></td>
                           </tr><!-- start space -->
                           <tr>
                             <td valign="top" height="5" style="height: 5px; font-size: 0px; line-height: 0;" aria-hidden="true">&nbsp;</td>
@@ -313,10 +317,24 @@
                       <td valign="top">
                         <table width="100%" align="center" border="0" cellpadding="0" cellspacing="0" style="margin: 0px auto; min-width: 100%;" role="presentation">
                           <tr>
-                            <td align="left" style="font-size: 14px; color: #888888; font-weight: normal; font-family: 'Open Sans', Arial, Helvetica, sans-serif; word-break: break-word; line-height: 1;"><span style="color: #888888; font-style: normal; text-align: left; line-height: 24px; font-size: 14px; font-weight: 400; font-family: 'Open Sans', Arial, Helvetica, sans-serif;"><span style="font-style: normal; text-align: left; color: #888888; line-height: 24px; font-size: 14px; font-weight: 400; font-family: 'Open Sans', Arial, Helvetica, sans-serif;">
-                                
+                              <td align="left" style="font-size: 14px; color: #888888; font-weight: normal; font-family: 'Open Sans', Arial, Helvetica, sans-serif; word-break: break-word; line-height: 1;">
+                                  <span style="color: #888888; font-style: normal; text-align: left; line-height: 24px; font-size: 14px; font-weight: 400; font-family: 'Open Sans', Arial, Helvetica, sans-serif;">
+                                      <span style="font-style: normal; text-align: left; color: #888888; line-height: 24px; font-size: 14px; font-weight: 400; font-family: 'Open Sans', Arial, Helvetica, sans-serif;">
+                                          Data: [DataCirurgia]<br />
+                                          <br />
+                                          Paciente: [Paciente]<br />
+                                          Hospital: [Hospital]<br />
+                                          Cliente: [Cliente]<br />
+                                          Medico: [Medico]<br />
+                                          <br />
+                                          Observação:[Obs]
+                                          <br />
+                                          <br />
+                                          <a href="[Link]"><button class="btn btn-success">Ver Cotação</button></a>
 
-                                </td>
+                                      </span>
+                                  </span>
+                              </td>
                           </tr><!-- start space -->
                           <tr>
                             <td valign="top" height="50" style="height: 50px; font-size: 0px; line-height: 0;" aria-hidden="true">&nbsp;</td>

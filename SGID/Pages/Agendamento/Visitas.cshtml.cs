@@ -216,7 +216,7 @@ namespace SGID.Pages.Agendamento
                     }).FirstOrDefault(x=> x.Id == id);
 
 
-                var ultimas = SGID.Visitas.Where(x => x.Medico == visita.Medico && x.DataHora < visita.DataCriacao && x.Status == 1).OrderByDescending(x => x.DataHora).Take(2).ToList();
+                var ultimas = SGID.Visitas.Where(x => x.Medico == visita.Medico && x.DataHora < visita.DataCriacao).OrderByDescending(x => x.DataHora).Take(2).ToList();
 
                 foreach (var data in ultimas)
                 {

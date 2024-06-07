@@ -9,6 +9,7 @@ using SGID.Data.Models;
 using SGID.Models.Denuo;
 using SGID.Models.Patrimonio;
 using System.Drawing;
+using DocumentFormat.OpenXml.Drawing.Charts;
 
 namespace SGID.Pages.Formularios
 {
@@ -350,12 +351,18 @@ namespace SGID.Pages.Formularios
                     sheet.Cells[i, 2].Value = Pedido.Codigo;
                     sheet.Cells[i, 3].Value = Pedido.DesPat;
                     sheet.Cells[i, 4].Value = Pedido.Status;
-                    sheet.Cells[i, 5].Value = Pedido.Cliente;
-                    sheet.Cells[i, 6].Value = Pedido.NMPac;
-                    sheet.Cells[i, 7].Value = Pedido.DTCirurgia;
-                    sheet.Cells[i, 8].Value = Pedido.Agend;
-                    sheet.Cells[i, 9].Value = Pedido.Oper;
-                    sheet.Cells[i, 10].Value = Pedido.Valid;
+                    if (Pedido.Status == "EM USO")
+                    {
+                        sheet.Cells[i, 5].Value = Pedido.Cliente;
+                        sheet.Cells[i, 6].Value = Pedido.NMPac;
+                        sheet.Cells[i, 7].Value = Pedido.DTCirurgia;
+                        sheet.Cells[i, 8].Value = Pedido.Agend;
+                        sheet.Cells[i, 9].Value = Pedido.Oper;
+                    }
+                    if(Pedido.Valid != "" && Pedido.Valid != null){
+                        sheet.Cells[i, 10].Value = Pedido.Valid;
+                    }
+                    
 
                     i++;
                 });
