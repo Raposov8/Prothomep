@@ -1,18 +1,18 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using SGID.Models.Inter;
 using OfficeOpenXml;
 using SGID.Data;
 using SGID.Data.Models;
 using SGID.Models;
+using SGID.Models.Denuo;
 
-namespace SGID.Pages.Relatorios
+namespace SGID.Pages.Relatorios.SubDistribuidor
 {
     [Authorize]
-    public class SubDistribuidorFaturadoInterModel : PageModel
+    public class SubDistribuidorFaturadoModel : PageModel
     {
-        private TOTVSINTERContext Protheus { get; set; }
+        private TOTVSDENUOContext Protheus { get; set; }
         private ApplicationDbContext SGID { get; set; }
 
         public List<RelatorioSubDistribuidor> Relatorio { get; set; } = new List<RelatorioSubDistribuidor>();
@@ -21,7 +21,8 @@ namespace SGID.Pages.Relatorios
         public DateTime Inicio { get; set; }
         public DateTime Fim { get; set; }
 
-        public SubDistribuidorFaturadoInterModel(TOTVSINTERContext protheus,ApplicationDbContext sgid)
+
+        public SubDistribuidorFaturadoModel(TOTVSDENUOContext protheus, ApplicationDbContext sgid)
         {
             Protheus = protheus;
             SGID = sgid;
@@ -29,6 +30,7 @@ namespace SGID.Pages.Relatorios
 
         public void OnGet()
         {
+
         }
 
         public IActionResult OnPostAsync(DateTime Datainicio, DateTime DataFim, string NReduz)
@@ -48,7 +50,8 @@ namespace SGID.Pages.Relatorios
                              where SD20.DELET != "*" && SC60.DELET != "*" && SC50.DELET != "*"
                              && SF40.DELET != "*" && SA10.DELET != "*" && SA10.A1Msblql != "1" && SB10.DELET != "*"
                              && SF40.F4Duplic == "S" && SA10.A1Clinter == "S"
-                             && (int)(object)SD20.D2Emissao >= (int)(object) Datainicio.ToString("yyyy/MM/dd").Replace("/", "") && (int)(object)SD20.D2Emissao <= (int)(object)DataFim.ToString("yyyy/MM/dd").Replace("/", "")
+                             && (int)(object)SD20.D2Emissao >= (int)(object)Datainicio.ToString("yyyy/MM/dd").Replace("/", "")
+                             && (int)(object)SD20.D2Emissao <= (int)(object)DataFim.ToString("yyyy/MM/dd").Replace("/", "")
                              orderby SD20.D2Emissao
                              select new RelatorioSubDistribuidor
                              {
@@ -82,7 +85,7 @@ namespace SGID.Pages.Relatorios
             catch (Exception e)
             {
                 string user = User.Identity.Name.Split("@")[0].ToUpper();
-                Logger.Log(e, SGID, "SubDistribuidorFaturadoInter",user);
+                Logger.Log(e, SGID, "SubDistribuidor", user);
 
                 return LocalRedirect("/error");
             }
@@ -102,7 +105,7 @@ namespace SGID.Pages.Relatorios
                              where SD20.DELET != "*" && SC60.DELET != "*" && SC50.DELET != "*"
                              && SF40.DELET != "*" && SA10.DELET != "*" && SA10.A1Msblql != "1" && SB10.DELET != "*"
                              && SF40.F4Duplic == "S" && SA10.A1Clinter == "S"
-                             && Convert.ToInt32(SD20.D2Emissao) >= Convert.ToInt32(Datainicio.ToString("yyyy/MM/dd").Replace("/", "")) 
+                             && Convert.ToInt32(SD20.D2Emissao) >= Convert.ToInt32(Datainicio.ToString("yyyy/MM/dd").Replace("/", ""))
                              && Convert.ToInt32(SD20.D2Emissao) <= Convert.ToInt32(DataFim.ToString("yyyy/MM/dd").Replace("/", ""))
                              orderby SD20.D2Emissao
                              select new RelatorioSubDistribuidor
@@ -180,12 +183,12 @@ namespace SGID.Pages.Relatorios
                 sheet.Cells[sheet.Dimension.Address].AutoFitColumns();
                 using MemoryStream stream = new MemoryStream();
                 package.SaveAs(stream);
-                return File(stream.ToArray(), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "SubDistribuidorFaturadoInter.xlsx");
+                return File(stream.ToArray(), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "SubDistribuidorFaturadoDenuo.xlsx");
             }
             catch (Exception e)
             {
                 string user = User.Identity.Name.Split("@")[0].ToUpper();
-                Logger.Log(e, SGID, "SubDistribuidorFaturadoInter Excel",user);
+                Logger.Log(e, SGID, "SubDistribuidor Excel", user);
 
                 return LocalRedirect("/error");
             }

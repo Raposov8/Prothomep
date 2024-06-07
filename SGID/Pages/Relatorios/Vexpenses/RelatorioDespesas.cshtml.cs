@@ -6,8 +6,6 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using OfficeOpenXml;
 using SGID.Data;
 using SGID.Data.Models;
-using SGID.Models;
-using System;
 
 namespace SGID.Pages.Relatorios.Vexpenses
 {

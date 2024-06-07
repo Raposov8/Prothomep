@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using SGID.Models.Inter;
 using SGID.Data;
 using SGID.Data.Models;
-using SGID.Data.ViewModel;
 
 namespace SGID.Pages.Cirurgias
 {

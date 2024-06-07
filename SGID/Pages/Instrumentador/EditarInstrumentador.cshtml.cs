@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using SGID.Data;
 using SGID.Data.Models;
 using SGID.Data.ViewModel;
-using SGID.Models.Estoque.RelatorioFaturamentoNFFab;
 
 namespace SGID.Pages.Instrumentador
 {

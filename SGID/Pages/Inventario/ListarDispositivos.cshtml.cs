@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using SGID.Data;
-using SGID.Data.ViewModel;
 using SGID.Models;
 
 namespace SGID.Pages.Inventario

@@ -5,7 +5,6 @@ using OfficeOpenXml;
 using SGID.Data;
 using SGID.Models;
 using SGID.Data.Models;
-using System.Linq;
 using SGID.Models.Inter;
 
 namespace SGID.Pages.Relatorios.RH

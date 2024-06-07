@@ -1,16 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using OfficeOpenXml;
 using SGID.Data;
-using SGID.Models.Controladoria.FaturamentoNF;
 using SGID.Models.Denuo;
-using SGID.Models.DTO;
 using SGID.Data.Models;
-using System;
-using System.Globalization;
-using System.Text;
-using DocumentFormat.OpenXml.Spreadsheet;
-using System.Data.Common;
 
 namespace SGID.Pages.Importacao
 {

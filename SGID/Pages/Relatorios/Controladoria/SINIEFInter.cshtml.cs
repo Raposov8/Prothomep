@@ -1,8 +1,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.Data.SqlClient;
-using Microsoft.EntityFrameworkCore;
 using SGID.Models.Inter;
 using OfficeOpenXml;
 using SGID.Data;

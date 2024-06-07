@@ -1,4 +1,3 @@
-using DocumentFormat.OpenXml.Office2010.Excel;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -7,7 +6,6 @@ using SGID.Data;
 using SGID.Data.Models;
 using SGID.Models.Denuo;
 using SGID.Models.Gerencial;
-using SGID.Models.Gerencial.RelatorioCirurgiaNFaturada;
 
 namespace SGID.Pages.Relatorios.Gerencial
 {

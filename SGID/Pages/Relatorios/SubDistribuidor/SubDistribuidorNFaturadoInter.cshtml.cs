@@ -7,7 +7,7 @@ using SGID.Data;
 using SGID.Data.Models;
 using SGID.Models;
 
-namespace SGID.Pages.Relatorios
+namespace SGID.Pages.Relatorios.SubDistribuidor
 {
     [Authorize]
     public class SubDistribuidorNFaturadoInterModel : PageModel
@@ -20,7 +20,7 @@ namespace SGID.Pages.Relatorios
         public double Desc { get; set; }
         public string Nreduz { get; set; }
 
-        public SubDistribuidorNFaturadoInterModel(TOTVSINTERContext protheus,ApplicationDbContext sgid)
+        public SubDistribuidorNFaturadoInterModel(TOTVSINTERContext protheus, ApplicationDbContext sgid)
         {
             Protheus = protheus;
             SGID = sgid;
@@ -64,7 +64,7 @@ namespace SGID.Pages.Relatorios
             catch (Exception e)
             {
                 string user = User.Identity.Name.Split("@")[0].ToUpper();
-                Logger.Log(e, SGID, "SubDistribuidorNFaturadoInter",user);
+                Logger.Log(e, SGID, "SubDistribuidorNFaturadoInter", user);
             }
         }
 
@@ -115,7 +115,7 @@ namespace SGID.Pages.Relatorios
             catch (Exception e)
             {
                 string user = User.Identity.Name.Split("@")[0].ToUpper();
-                Logger.Log(e, SGID, "SubDistribuidorNFaturadoInter Post",user);
+                Logger.Log(e, SGID, "SubDistribuidorNFaturadoInter Post", user);
 
                 return LocalRedirect("/error");
             }
@@ -205,7 +205,7 @@ namespace SGID.Pages.Relatorios
             catch (Exception e)
             {
                 string user = User.Identity.Name.Split("@")[0].ToUpper();
-                Logger.Log(e, SGID, "SubDistribuidorNFaturadoInter Excel",user);
+                Logger.Log(e, SGID, "SubDistribuidorNFaturadoInter Excel", user);
 
                 return LocalRedirect("/error");
             }

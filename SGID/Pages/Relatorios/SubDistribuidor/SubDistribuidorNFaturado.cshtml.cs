@@ -7,7 +7,7 @@ using SGID.Data.Models;
 using SGID.Models;
 using SGID.Models.Denuo;
 
-namespace SGID.Pages.Relatorios
+namespace SGID.Pages.Relatorios.SubDistribuidor
 {
     [Authorize]
     public class SubDistribuidorNFaturadoModel : PageModel
@@ -21,7 +21,7 @@ namespace SGID.Pages.Relatorios
 
         public string Nreduz { get; set; }
 
-        public SubDistribuidorNFaturadoModel(TOTVSDENUOContext protheus,ApplicationDbContext sgid)
+        public SubDistribuidorNFaturadoModel(TOTVSDENUOContext protheus, ApplicationDbContext sgid)
         {
             Protheus = protheus;
             SGID = sgid;
@@ -64,7 +64,7 @@ namespace SGID.Pages.Relatorios
             catch (Exception e)
             {
                 string user = User.Identity.Name.Split("@")[0].ToUpper();
-                Logger.Log(e, SGID, "SubDistribuidorNFaturado",user);
+                Logger.Log(e, SGID, "SubDistribuidorNFaturado", user);
             }
         }
 
@@ -114,7 +114,7 @@ namespace SGID.Pages.Relatorios
             catch (Exception e)
             {
                 string user = User.Identity.Name.Split("@")[0].ToUpper();
-                Logger.Log(e, SGID, "SubDistribuidorNFaturado Post",user);
+                Logger.Log(e, SGID, "SubDistribuidorNFaturado Post", user);
 
                 return LocalRedirect("/error");
             }
@@ -203,7 +203,7 @@ namespace SGID.Pages.Relatorios
             catch (Exception e)
             {
                 string user = User.Identity.Name.Split("@")[0].ToUpper();
-                Logger.Log(e, SGID, "SubDistribuidorNFaturado Excel",user);
+                Logger.Log(e, SGID, "SubDistribuidorNFaturado Excel", user);
 
                 return LocalRedirect("/error");
             }

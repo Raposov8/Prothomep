@@ -4,7 +4,6 @@ using OfficeOpenXml;
 using SGID.Data;
 using SGID.Data.Models;
 using SGID.Models.AdmVendas;
-using SGID.Models.DTO;
 using SGID.Models.Inter;
 
 namespace SGID.Pages.Relatorios.Logistica

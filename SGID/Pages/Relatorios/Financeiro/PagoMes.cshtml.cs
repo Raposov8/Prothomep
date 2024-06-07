@@ -1,5 +1,3 @@
-using DocumentFormat.OpenXml.Drawing.Charts;
-using DocumentFormat.OpenXml.ExtendedProperties;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -8,8 +6,6 @@ using OfficeOpenXml;
 using SGID.Data;
 using SGID.Data.Models;
 using SGID.Models.Financeiro;
-using System;
-using System.Globalization;
 
 namespace SGID.Pages.Relatorios.Financeiro
 {

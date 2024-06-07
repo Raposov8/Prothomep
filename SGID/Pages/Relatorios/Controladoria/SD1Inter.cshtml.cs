@@ -6,7 +6,6 @@ using OfficeOpenXml;
 using SGID.Data;
 using SGID.Data.Models;
 using SGID.Models.Controladoria;
-using SGID.Models.Denuo;
 
 namespace SGID.Pages.Relatorios.Controladoria
 {

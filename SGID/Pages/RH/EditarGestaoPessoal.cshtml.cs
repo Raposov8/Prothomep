@@ -6,7 +6,6 @@ using SGID.Data;
 using System.Net.Mail;
 using SGID.Data.Models;
 using SGID.Models.Email;
-using SGID.Data.Migrations;
 
 namespace SGID.Pages.RH
 {

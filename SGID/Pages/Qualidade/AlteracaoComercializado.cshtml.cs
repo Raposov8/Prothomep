@@ -5,7 +5,6 @@ using SGID.Data;
 using SGID.Data.Models;
 using SGID.Models.Denuo;
 using SGID.Models.Inter;
-using System.Linq;
 
 namespace SGID.Pages.Qualidade
 {

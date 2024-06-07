@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using OfficeOpenXml;
 using SGID.Data;
 using SGID.Data.Models;
-using SGID.Models;
 using SGID.Models.Denuo;
 using SGID.Models.Estoque;
 

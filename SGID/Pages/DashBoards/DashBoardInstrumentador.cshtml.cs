@@ -1,11 +1,9 @@
-using DocumentFormat.OpenXml.Spreadsheet;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using SGID.Data;
 using SGID.Data.Models;
 using SGID.Models.Denuo;
-using SGID.Models.DTO;
 using SGID.Models.Inter;
 
 namespace SGID.Pages.DashBoards

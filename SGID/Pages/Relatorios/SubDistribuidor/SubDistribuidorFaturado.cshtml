@@ -1,8 +1,9 @@
 ﻿@page
-@model SGID.Pages.Relatorios.SubDistribuidorNFaturadoInterModel
+@model SGID.Pages.Relatorios.SubDistribuidor.SubDistribuidorFaturadoModel
 @{
-    ViewData["Title"] = "Relatorio SD Não Faturado Intermedic";
-    if (User.IsInRole("Diretoria") && !User.IsInRole("Admin")) {
+    ViewData["Title"] = "Relatorio SubDistribuidor Faturado Denuo";
+    if (User.IsInRole("Diretoria") && !User.IsInRole("Admin"))
+    {
         Layout = "_LayoutDiretoria";
     }
     else
@@ -11,31 +12,32 @@
     }
 }
 
+@using(@Html.BeginForm(FormMethod.Post)){
+    <div class="row">
+        <div class="form-group mx-sm-3 mb-2 col-lg-2">
+            <input type="date" class="form-control" id="DataInicio" name="DataInicio" value="@Model.Inicio.ToString("yyyy-MM-dd")" placeholder="Data Inicio">
+        </div>
+        <div class="form-group mx-sm-3 mb-2 col-lg-2">
+            <input type="date" class="form-control" id="DataFim" name="DataFim" value="@Model.Fim.ToString("yyyy-MM-dd")" placeholder="Data Fim">
+        </div>
+        <div class="form-group mx-sm-3 mb-2 col-lg-3">
+            <select type="text" class="form-control" id="NReduz" name="NReduz"  placeholder="Cliente">
+                <option value="">TODOS....</option>
+                @foreach (var data in Model.Relatorio.Select(x => x.Nreduz).Distinct().ToList()){
+                    <option value="@data">@data</option>
+                }
+            </select>
+        </div>
 
-
-<div class="row">
-    @using(@Html.BeginForm(FormMethod.Post)){
-            <div class="form-group mx-sm-3 mb-2 col-lg-3">
-                <select type="text" class="form-control" id="NReduz" name="NReduz"  placeholder="Cliente">
-                    <option value="">Todos...</option>
-                    @foreach (var data in Model.Relatorio.Select(x => x.Nreduz).Distinct().ToList()){
-                        <option value="@data">@data</option>
-                    }
-                </select>
-            </div>
-
-            <div class="form-group mx-sm-3 mb-2 col-lg-1">
-                <button type="submit" class="btn btn-primary mb-2">Pesquisar</button>
-            </div>
+        <div class="form-group mx-sm-3 mb-2 col-lg-1">
+            <button type="submit" class="btn btn-primary mb-2">Pesquisar</button>
+        </div>
 
         <div class="form-group mx-sm-3 mb-2 col-lg-1">
            <button type="submit" class="btn btn-secondary mb-2" asp-page-handler="Export"><i class="fa-solid fa-file-excel"></i> Exportar Excel</button>
         </div>
-    }
-</div>
-
-
-
+    </div>
+}
 
 
 <div class="panel">
@@ -51,6 +53,9 @@
                     </th>
                     <th class="text-center">
                         DOC
+                    </th>
+                    <th class="text-center">
+                        COD
                     </th>
                     <th class="text-center">
                         Produto
@@ -85,6 +90,7 @@
                     <td>@Html.DisplayFor(model=> data.Nome)</td>
                     <td>@Html.DisplayFor(model=> data.Nreduz)</td>
                     <td>@Html.DisplayFor(model=> data.Doc)</td>
+                    <td>@Html.DisplayFor(model=> data.Cod)</td>
                     <td>@Html.DisplayFor(model=> data.Desc)</td>
                     <td>@Html.DisplayFor(model=> data.Quant)</td>
                     <td>@string.Format("{0:N2}", data.Total)</td>
@@ -100,7 +106,7 @@
                 @if (Model.Relatorio.Count > 0)
                 {
                     <tr>
-                        <td colspan="5">Total Geral</td>
+                        <td colspan="6">Total Geral</td>
                         <td class="text-center">@string.Format("{0:N2}", Model.Total)</td>
                         <td class="text-center">@string.Format("{0:N2}", Model.Desc)</td>
                     </tr>
@@ -109,11 +115,3 @@
         </table>
     </div>
 </div>
-
-
-@section scripts{
-<script>
-    $("#NReduz").val("@Model.Nreduz").change();
-    //$("#NReduz option[value=val2]").attr('selected','selected');
-</script>
-}

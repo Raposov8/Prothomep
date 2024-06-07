@@ -2,7 +2,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using SGID.Data;
-using SGID.Data.ViewModel;
 using SGID.Models.Denuo;
 using SGID.Models.Diretoria;
 using SGID.Models.Inter;

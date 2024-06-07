@@ -4,7 +4,6 @@ using SGID.Models.Inter;
 using SGID.Data;
 using SGID.Data.Models;
 using SGID.Models.Diretoria;
-using SGID.Models.Estoque.RelatorioFaturamentoNFFab;
 using OfficeOpenXml;
 
 namespace SGID.Pages.Relatorios.Diretoria

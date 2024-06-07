@@ -1,14 +1,15 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using SGID.Data;
-using SGID.Data.Migrations;
 using SGID.Data.Models;
 using SGID.Data.ViewModel;
 using System.ComponentModel.DataAnnotations;
 
 namespace SGID.Pages.Account.RH
 {
+    [Authorize]
     public class EditarDentalModel : PageModel
     {
         private readonly ApplicationDbContext _db;

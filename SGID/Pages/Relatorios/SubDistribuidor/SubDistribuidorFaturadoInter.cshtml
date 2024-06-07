@@ -1,7 +1,7 @@
 ﻿@page
-@model SGID.Pages.Relatorios.SubDistribuidorModel
+@model SGID.Pages.Relatorios.SubDistribuidor.SubDistribuidorFaturadoInterModel
 @{
-    ViewData["Title"] = "Relatorio SubDistribuidor Faturado Denuo";
+    ViewData["Title"] = "Relatorio SubDistribuidor Intermedic";
     if (User.IsInRole("Diretoria") && !User.IsInRole("Admin"))
     {
         Layout = "_LayoutDiretoria";
@@ -115,3 +115,4 @@
         </table>
     </div>
 </div>
+

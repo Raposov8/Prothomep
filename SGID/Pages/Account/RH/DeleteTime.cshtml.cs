@@ -5,7 +5,6 @@ using SGID.Data.ViewModel;
 using SGID.Data;
 using SGID.Data.Models;
 using Microsoft.AspNetCore.Authorization;
-using DocumentFormat.OpenXml.Bibliography;
 
 namespace SGID.Pages.Account.RH
 {

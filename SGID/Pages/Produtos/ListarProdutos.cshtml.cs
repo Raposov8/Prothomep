@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using SGID.Models.Inter;
 using SGID.Models.Denuo;
-using SGID.Models.Estoque.RelatorioFaturamentoNFFab;
 
 namespace SGID.Pages.Produtos
 {

@@ -5,7 +5,6 @@ using SGID.Data;
 using SGID.Models.Denuo;
 using SGID.Models.AdmVendas;
 using SGID.Data.Models;
-using SGID.Models.Estoque.RelatorioFaturamentoNFFab;
 
 namespace SGID.Pages.Relatorios.AdmVendas
 {

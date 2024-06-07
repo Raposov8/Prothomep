@@ -1,4 +1,3 @@
-using DocumentFormat.OpenXml.Bibliography;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -8,7 +7,6 @@ using SGID.Data.Models;
 using SGID.Data.ViewModel;
 using SGID.Models.Denuo;
 using SGID.Models.DTO;
-using SGID.Models.Estoque;
 
 namespace SGID.Pages.Estoque
 {

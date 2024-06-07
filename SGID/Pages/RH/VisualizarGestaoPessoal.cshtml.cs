@@ -1,8 +1,6 @@
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using SGID.Data.ViewModel;
 using SGID.Data;
-using System.Net.Mail;
 using Microsoft.AspNetCore.Authorization;
 
 namespace SGID.Pages.RH

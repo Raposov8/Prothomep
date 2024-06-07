@@ -5,9 +5,11 @@ using SGID.Data.ViewModel;
 using SGID.Data;
 using System.ComponentModel.DataAnnotations;
 using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 
 namespace SGID.Pages.Account.RH
 {
+    [Authorize]
     public class DetailsDentalModel : PageModel
     {
         private UserManager<UserInter> _userManager;

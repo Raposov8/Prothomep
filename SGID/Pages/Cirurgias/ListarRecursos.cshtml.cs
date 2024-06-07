@@ -5,8 +5,6 @@ using SGID.Models.Inter;
 using OfficeOpenXml;
 using SGID.Data;
 using SGID.Data.Models;
-using SGID.Data.ViewModel;
-using SGID.Models;
 
 namespace SGID.Pages.Cirurgias
 {

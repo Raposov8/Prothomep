@@ -4,9 +4,11 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using SGID.Data.ViewModel;
 using SGID.Data;
 using SGID.Data.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace SGID.Pages.Account.RH
 {
+    [Authorize]
     public class DeleteDentalModel : PageModel
     {
         private readonly UserManager<UserInter> _userManager;

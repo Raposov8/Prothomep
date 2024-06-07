@@ -1,15 +1,11 @@
-using DocumentFormat.OpenXml.Office2010.Excel;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using OfficeOpenXml;
-using OPMEnexo;
 using SGID.Data;
 using SGID.Data.Models;
 using SGID.Models.Estoque;
-using SGID.Models.Estoque.RelatorioFaturamentoNFFab;
 using SGID.Models.Denuo;
-using SGID.Models.DTO;
 
 namespace SGID.Pages.Relatorios.Estoque
 {

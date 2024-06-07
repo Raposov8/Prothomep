@@ -1,6 +1,4 @@
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using SGID.Models.Controladoria;
 using SGID.Models.Denuo;
 using SGID.Models.Inter;
 using SGID.Models.Qualidade;

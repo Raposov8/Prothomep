@@ -1,20 +1,15 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using SGID.Data.ViewModel;
 using SGID.Data;
 using Microsoft.AspNetCore.Authorization;
 using SGID.Data.Models;
-using OfficeOpenXml.FormulaParsing.Excel.Functions.Math;
-using SGID.Data.Migrations;
 using SGID.Models.Email;
 using System.Net.Mail;
-using System.ServiceModel.Channels;
 using System.ComponentModel.DataAnnotations;
 using SGID.Models.Denuo;
 using SGID.Models.Inter;
-using OPMEnexo;
 
 namespace SGID.Pages.Account.RH
 {

@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using OfficeOpenXml;
 using SGID.Data;
 using SGID.Data.Models;
-using SGID.Models.Controladoria;
 using SGID.Models.Denuo;
 using SGID.Models.Financeiro;
 

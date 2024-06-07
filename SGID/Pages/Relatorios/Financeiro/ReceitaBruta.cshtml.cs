@@ -1,15 +1,10 @@
-using DocumentFormat.OpenXml.Drawing.Charts;
-using Microsoft.AspNetCore.Http.Metadata;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.Extensions.FileSystemGlobbing.Internal;
 using OfficeOpenXml;
 using SGID.Data;
 using SGID.Data.Models;
-using SGID.Models.Controladoria;
 using SGID.Models.Denuo;
 using SGID.Models.Financeiro;
-using System.Text.RegularExpressions;
 
 namespace SGID.Pages.Relatorios.Financeiro
 {

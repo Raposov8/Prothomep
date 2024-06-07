@@ -5,7 +5,6 @@ using SGID.Models.Inter;
 using OfficeOpenXml;
 using SGID.Data;
 using SGID.Data.Models;
-using SGID.Models;
 using SGID.Models.Qualidade;
 
 namespace SGID.Pages.Relatorios.Qualidade

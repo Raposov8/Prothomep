@@ -2,7 +2,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using SGID.Data;
-using SGID.Models.Diretoria;
 using SGID.Models.Visitas;
 
 namespace SGID.Pages.Relatorios.Visitas

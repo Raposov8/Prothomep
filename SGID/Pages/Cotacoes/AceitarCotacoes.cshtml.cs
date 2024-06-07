@@ -7,7 +7,6 @@ using SGID.Data.ViewModel;
 using SGID.Models.Cirurgias;
 using SGID.Models.DTO;
 using SGID.Models.Denuo;
-using OPMEnexo;
 using SGID.Models.Inter;
 
 namespace SGID.Pages.Cotacoes
@@ -186,7 +185,7 @@ namespace SGID.Pages.Cotacoes
 
                 SearchPatri = ProtheusInter.Pa1010s.Where(x => x.DELET != "*" && x.Pa1Msblql != "1").Select(x => x.Pa1Despat).Distinct().ToList();
 
-                SearchProduto = ProtheusInter.Sb1010s.Where(x => x.DELET != "*" && x.B1Msblql != "1" && x.B1Tipo != "KT").Select(x => x.B1Cod + "  " + x.B1Desc).Distinct().ToList();
+                SearchProduto = ProtheusInter.Sb1010s.Where(x => x.DELET != "*" && x.B1Msblql != "1" && x.B1Tipo != "KT" && x.B1Comerci=="C").Select(x => x.B1Cod + "  " + x.B1Desc).Distinct().ToList();
             }
             else
             {

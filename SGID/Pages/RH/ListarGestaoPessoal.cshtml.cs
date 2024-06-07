@@ -2,7 +2,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using SGID.Data;
-using SGID.Data.Migrations;
 using SGID.Data.ViewModel;
 using SGID.Models.Email;
 using SGID.Models.RH;

@@ -2,7 +2,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using OfficeOpenXml;
 using SGID.Data;
-using SGID.Models.Denuo;
 using SGID.Models;
 using SGID.Models.Inter;
 using SGID.Data.Models;

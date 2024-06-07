@@ -6,12 +6,10 @@ using SGID.Data;
 using SGID.Data.Models;
 using SGID.Models;
 using SGID.Models.Account.RH;
-using SGID.Models.Comercial;
 using SGID.Models.Denuo;
 using SGID.Models.Diretoria;
 using SGID.Models.Financeiro;
 using SGID.Models.RH;
-using System.Security.Policy;
 
 namespace SGID.Pages.DashBoards
 {

@@ -1,9 +1,8 @@
 ﻿@page
-@model SGID.Pages.Relatorios.SubDistribuidorNFaturadoModel
+@model SGID.Pages.Relatorios.SubDistribuidor.SubDistribuidorNFaturadoInterModel
 @{
-    ViewData["Title"] = "Relatorio SD Não Faturado Denuo";
-    if (User.IsInRole("Diretoria") && !User.IsInRole("Admin"))
-    {
+    ViewData["Title"] = "Relatorio SD Não Faturado Intermedic";
+    if (User.IsInRole("Diretoria") && !User.IsInRole("Admin")) {
         Layout = "_LayoutDiretoria";
     }
     else

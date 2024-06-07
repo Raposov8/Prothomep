@@ -1,15 +1,11 @@
-using DocumentFormat.OpenXml.Office2010.Excel;
-using DocumentFormat.OpenXml.Wordprocessing;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using OfficeOpenXml.FormulaParsing.Excel.Functions.Math;
 using SGID.Data;
 using SGID.Data.Models;
 using SGID.Data.ViewModel;
 using SGID.Models.Email;
 using System.Net.Mail;
-using System.ServiceModel.Channels;
 
 namespace SGID.Pages.RH
 {

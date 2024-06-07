@@ -1,9 +1,7 @@
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using SGID.Models.Inter;
 using SGID.Data;
-using SGID.Data.ViewModel;
 
 namespace SGID.Pages.Cirurgias
 {

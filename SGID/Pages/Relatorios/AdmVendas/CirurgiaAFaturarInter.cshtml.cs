@@ -1,12 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Newtonsoft.Json.Linq;
 using OfficeOpenXml;
 using SGID.Data;
 using SGID.Data.Models;
 using SGID.Models.AdmVendas;
-using SGID.Models.Denuo;
-using SGID.Models.Estoque.RelatorioFaturamentoNFFab;
 using SGID.Models.Inter;
 
 namespace SGID.Pages.Relatorios.AdmVendas
