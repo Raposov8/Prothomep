@@ -307,11 +307,11 @@ namespace SGID.Pages.Cotacoes
 
         public IActionResult OnPostAsync(int id,string NomePaciente,DateTime? DataCirurgia,int Urgencia
             ,string NomeMedico,string CRM,string NomeHospital,string NomeVendedor,string Obs,
-            List<Produto> Avulsos, List<Produto> Produtos,List<Patrimonio> Patris ,string CodTabela,DateTime? Entrega)
+            List<Produto> Avulsos, List<Produto> Produtos,List<Patrimonio> Patris ,string CodTabela,DateTime? Entrega,string Procedimento)
         {
             try
             {
-                var AgendamentoProduto = SGID.ProdutosAgendamentos.Where(x => x.AgendamentoId == id).ToList();
+                var AgendamentoProduto = SGID.ProdutosAgendamentos.Where(x => x.AgendamentoId == id).ToList();                
 
                 if (!string.IsNullOrEmpty(Obs) && !string.IsNullOrWhiteSpace(Obs))
                 {
@@ -423,6 +423,7 @@ namespace SGID.Pages.Cotacoes
 
                 var Agendamento = SGID.Agendamentos.FirstOrDefault(x => x.Id == id);
 
+                Agendamento.Procedimento = Procedimento;
                 Agendamento.DataCirurgia = DataCirurgia;
                 Agendamento.DataAlteracao = DateTime.Now;
                 Agendamento.DataEntrega = Entrega;

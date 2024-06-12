@@ -9,6 +9,7 @@ using System.Net.Mail;
 using SGID.Data.Models;
 using Microsoft.AspNetCore.Authorization;
 using SGID.Models.DTO;
+using Microsoft.IdentityModel.Tokens;
 
 namespace SGID.Pages.DashBoards
 {
@@ -236,6 +237,83 @@ namespace SGID.Pages.DashBoards
             agendamento.DataAlteracao = DateTime.Now;
             SGID.Agendamentos.Update(agendamento);
             SGID.SaveChanges();
+
+            try
+            {
+                #region Email
+
+                string VendedorEmail = "";
+                List<string> GestorEmail = new List<string>();
+                if (agendamento.Empresa == "01")
+                {
+                    var vendedor = ProtheusInter.Sa3010s.FirstOrDefault(x => x.A3Xlogin == agendamento.VendedorLogin);
+
+                    VendedorEmail = vendedor?.A3Email;
+                    if (!vendedor.A3Xlogsup.IsNullOrEmpty())
+                    {
+                        GestorEmail.Add(vendedor.A3Xlogsup.ToLower().Trim() + "@intermedic.com.br");
+                    }
+                }
+                else
+                {
+                    var vendedor = ProtheusDenuo.Sa3010s.FirstOrDefault(x => x.A3Xlogin == agendamento.VendedorLogin);
+                    VendedorEmail = vendedor?.A3Email;
+                    if (!vendedor.A3Xlogsup.IsNullOrEmpty())
+                    {
+                        GestorEmail.Add(vendedor.A3Xlogsup.ToLower().Trim() + "@denuo.com.br");
+                    }
+
+                    if (GestorEmail.Contains("leonardo.brito@denuo.com.br"))
+                    {
+                        GestorEmail.Add("artemio.costa@denuo.com.br");
+                    }
+                }
+
+                if (VendedorEmail.Contains(';'))
+                {
+                    VendedorEmail = VendedorEmail.Split(";")[0];
+                }
+
+                var template = new
+                {
+                    Titulo = $"{agendamento.Id} - {agendamento.Paciente}",
+                    Cotacao = agendamento.Id,
+                    DataCirurgia = agendamento.DataCirurgia.HasValue ? agendamento.DataCirurgia.Value.ToString("dd/MM/yyyy HH:mm") : "Sem Data",
+                    Paciente = agendamento.Paciente,
+                    Hospital = agendamento.Hospital,
+                    Medico = agendamento.Medico,
+                    Link = $"https://gidd.com.br/cotacoes/confirmarcotacoes/{agendamento.Id}"
+                };
+
+                var mensagem = EmailTemplate.LerArquivoHtml($"{_WEB.WebRootPath}/template/TemplateAprovacao.html", template);
+
+                SmtpClient client = new SmtpClient();
+                client.Host = "smtp.office365.com";
+                client.EnableSsl = true;
+                client.Credentials = new System.Net.NetworkCredential("ti@intermedic.com.br", "interadm2018!*");
+                MailMessage mail = new MailMessage();
+                mail.Sender = new MailAddress("ti@intermedic.com.br", "GID");
+                mail.From = new MailAddress("ti@intermedic.com.br", "GID");
+                mail.To.Add(new MailAddress($"{VendedorEmail}", "RECEBEDOR"));
+                GestorEmail.Where(x => !x.IsNullOrEmpty()).ToList().ForEach(x =>
+                {
+                    mail.CC.Add(new MailAddress($"{x}", "COPIA"));
+                });
+                mail.Bcc.Add(new MailAddress("andre.souza@intermedic.com.br", "ANDRE SOUZA"));
+                mail.Subject = $"Orçamento Nº {agendamento.Id} - {agendamento.Paciente}";
+                mail.Body = mensagem;
+                mail.IsBodyHtml = true;
+                mail.Priority = MailPriority.High;
+
+                client.Send(mail);
+
+                #endregion
+            }
+            catch (Exception e)
+            {
+                string user = User.Identity.Name.Split("@")[0].ToUpper();
+                Logger.Log(e, SGID, "Dashboard Email", user);
+            }
 
             return new JsonResult("");
         }

@@ -166,7 +166,7 @@ namespace SGID.Pages.Logistica
             var agendamento = SGID.Agendamentos.FirstOrDefault(x => x.Id == IdA);
 
             //agendamento.UsuarioLogistica = User.Identity.Name.Split("@")[0].ToUpper();
-            agendamento.StatusLogistica = 4;
+            agendamento.StatusLogistica = 3;
 
             SGID.Agendamentos.Update(agendamento);
             SGID.SaveChanges();
@@ -179,7 +179,7 @@ namespace SGID.Pages.Logistica
             var agendamento = SGID.Agendamentos.FirstOrDefault(x => x.Id == IdA);
 
             //agendamento.UsuarioLogistica = User.Identity.Name.Split("@")[0].ToUpper();
-            agendamento.StatusLogistica = 5;
+            agendamento.StatusLogistica = 4;
 
             SGID.Agendamentos.Update(agendamento);
             SGID.SaveChanges();

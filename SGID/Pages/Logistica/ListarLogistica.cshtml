@@ -41,7 +41,7 @@
     <div class="col-xs-3 col-sm-3 col-md-3 col-xl-3">
         <div class="panel panel-colorful" style="background-color:lightgray">
             <div class="panel-heading">
-                <h2 style="margin:0%;color:green" class="panel-title text-center">CONFIRMADAS</h2>
+                <h2 style="margin:0%;color:red;" class="panel-title text-center">CONFIRMADAS</h2>
             </div>
             <div class="panel-body" style="padding-top:0px;">
                 @if (Model.Empresa == "01")
@@ -316,34 +316,49 @@
                         <td>
                             @if (Model.Empresa == "01")
                             {
-
-                                <a href="/logistica/ChecarAgendamento/@Pedido.Id" class="fa-solid fa-truck-fast add-tooltip" style="text-decoration:none;" data-container="body" data-placement="top" data-original-title="Confirmar Cotação" aria-hidden="true"></a>
-                                
-                                <a href="/logistica/ListarLogistica/01/01?handler=EnviarParaRota&&IdA=@Pedido.Id"><i class="fa-solid fa-map-location-dot"></i></a>
-                                <a href="/logistica/ListarLogistica/01/01?handler=EnviarParaEntregue&&IdA=@Pedido.Id"><i class="fa-solid fa-people-carry-box"></i></a>
-                                <a href="/logistica/ListarLogistica/01/01?handler=EnviarParaInspecao&&IdA=@Pedido.Id"><i class="fa-solid fa-magnifying-glass-plus"></i></a>
+                                if (Pedido.StatusLogistica == 0||Pedido.StatusLogistica == 1)
+                                {
+                                    <a href="/logistica/ChecarAgendamento/@Pedido.Id" class="fa-solid fa-truck-fast add-tooltip" style="text-decoration:none;" data-container="body" data-placement="top" data-original-title="Confirmar Cotação" aria-hidden="true"></a>
+                                }
+                                if (Pedido.StatusLogistica == 2)
+                                {
+                                    <a href="/logistica/ListarLogistica/01/01?handler=EnviarParaRota&&IdA=@Pedido.Id"><i class="fa-solid fa-map-location-dot"></i></a>
+                                }
+                                if (Pedido.StatusLogistica == 3)
+                                {
+                                    <a href="/logistica/ListarLogistica/01/01?handler=EnviarParaEntregue&&IdA=@Pedido.Id"><i class="fa-solid fa-people-carry-box"></i></a>
+                                }
+                                if (Pedido.StatusLogistica == 4)
+                                {
+                                    <a href="/logistica/ListarLogistica/01/01?handler=EnviarParaInspecao&&IdA=@Pedido.Id"><i class="fa-solid fa-magnifying-glass-plus"></i></a>
+                                }
                             }
                             else
                             {
 
-                                <a href="/logistica/ChecarAgendamento/@Pedido.Id" class="fa-solid fa-truck-fast add-tooltip" style="text-decoration:none;" data-container="body" data-placement="top" data-original-title="Confirmar Cotação" aria-hidden="true"></a>
-                                
-                                <a href="/logistica/ListarLogistica/03/01?handler=EnviarParaRota&&IdA=@Pedido.Id"><i class="fa-solid fa-map-location-dot"></i></a>
-                                <a href="/logistica/ListarLogistica/03/01?handler=EnviarParaEntregue&&IdA=@Pedido.Id"><i class="fa-solid fa-people-carry-box"></i></a>
-                                <a href="/logistica/ListarLogistica/03/01?handler=EnviarParaInspecao&&IdA=@Pedido.Id"><i class="fa-solid fa-magnifying-glass-plus"></i></a>
+                                if (Pedido.StatusLogistica == 0 || Pedido.StatusLogistica == 1)
+                                {
+                                    <a href="/logistica/ChecarAgendamento/@Pedido.Id" class="fa-solid fa-truck-fast add-tooltip" style="text-decoration:none;" data-container="body" data-placement="top" data-original-title="Confirmar Cotação" aria-hidden="true"></a>
+                                }
+                                if (Pedido.StatusLogistica == 2)
+                                {
+                                    <a href="/logistica/ListarLogistica/03/01?handler=EnviarParaRota&&IdA=@Pedido.Id"><i class="fa-solid fa-map-location-dot"></i></a>
+                                }
+                                if (Pedido.StatusLogistica == 3)
+                                {
+                                    <a href="/logistica/ListarLogistica/03/01?handler=EnviarParaEntregue&&IdA=@Pedido.Id"><i class="fa-solid fa-people-carry-box"></i></a>
+                                }
+                                if (Pedido.StatusLogistica == 4)
+                                {
+                                    <a href="/logistica/ListarLogistica/03/01?handler=EnviarParaInspecao&&IdA=@Pedido.Id"><i class="fa-solid fa-magnifying-glass-plus"></i></a>
+                                }
                             }
                             
-                            @if(Pedido.StatusLogistica == 2)
-                            {
-                                <a ></a>
-                            }
-
                                 <!--<i class="fa-solid fa-truck-arrow-right" style="color:green"></i>-->
                                 <!--<a class="produto" href="/cirurgias/editaragendamento/@Pedido.Id"><i class="fa-solid fa-pen"></i></a>-->
                                 <!--<a class="MotivoRej" data-id="@Pedido.Id"><i class="fa-solid fa-bars" style="text-decoration:none;" data-container="body" data-placement="top" data-original-title="Motivo Rejeição" aria-hidden="true"></i></a>-->
 
                                 <!--<a class="rejeicao" data-id="@Pedido.Id"><i class="fa-regular fa-circle-xmark" style="color:red"></i></a>
-                                
                                 <a href="/logistica/checkagendamento/@Pedido.Id" class="details"><i class="fa-solid fa-list-check"></i></a>
                                 <a href="/logistica/PickListLogistica/@Pedido.Id" target="_blank" class="details"><i class="fa-solid fa-list-check"></i></a>-->
                         </td>
@@ -452,6 +467,8 @@
                                 <div class="form-group col-md-2">
                                     <label class="Label">Tipo</label>
                                     <select class="form-control" id="Tipo" name="Tipo">
+                                        <option value="5">AUTARQUIA</option>
+                                        <option value="4">PERMANENTE</option>
                                         <option value="2">ELETIVA</option>
                                         <option value="3">EMERGENCIA</option>
                                         <option value="1">URGENTE</option>

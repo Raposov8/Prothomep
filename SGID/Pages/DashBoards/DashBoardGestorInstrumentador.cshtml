@@ -167,7 +167,20 @@
                                 @data.Medico
                             </td>
                             <td>
-                                @if (data.Tipo == 3)
+                                <option value="5">AUTARQUIA</option>
+                                <option value="4">PERMANENTE</option>
+                                <option value="2">ELETIVA</option>
+                                <option value="3">EMERGENCIA</option>
+                                <option value="1">URGENTE</option>
+                                @if (data.Tipo == 5)
+                                {
+                                    <span>AUTARQUIA</span>
+                                }
+                                else if (data.Tipo == 4)
+                                {
+                                    <span>PERMANENTE</span>
+                                }
+                                else if (data.Tipo == 3)
                                 {
                                    <span>ELETIVA</span>
                                 }

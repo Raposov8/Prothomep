@@ -43,6 +43,8 @@
                             <label class="Label">Tipo</label>
                         <select class="form-control" id="Agendamento_Tipo" name="Agendamento.Tipo">
                                 <option value="3">ELETIVA</option>
+                                <option value="5">AUTARQUIA</option>
+                                <option value="4">PERMANENTE</option>
                                 <option value="2">EMERGENCIA</option>
                                 <option value="1">URGENTE</option>
                             </select>
@@ -80,7 +82,7 @@
                         </div>
                         <div class="form-group col-sm-4 col-md-4">
                             <label class="Label">Médico</label>
-                            <div class="autocomplete col-md-12"  >
+                            <div class="autocomplete col-md-12">
                             @Html.TextBoxFor(model => model.Agendamento.Medico, new { @class = "form-control", @onkeyup = "InputToUpper(this);", @required = "required" })
                             @Html.ValidationMessageFor(model => model.Agendamento.Medico, "", new { @class = "text-danger" })
                             </div>

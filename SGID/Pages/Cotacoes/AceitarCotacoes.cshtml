@@ -97,7 +97,12 @@
                             <div class="row">
                                 <div class="col-md-6">
                                     <label class="col-md-12" style="font-size:12px;">Procedimento</label>
-                                    <input class="col-md-12 form-control" id="Procedimento" name="Procedimento" value="@Model.Agendamento.Procedimento" />
+                                    <select class="col-md-12 form-control" id="Procedimento" name="Procedimento" value="@Model.Agendamento.Procedimento">
+                                    @foreach (var data in Model.Procedimentos)
+                                    {
+                                        <option value="@data.Nome">@data.Nome</option>
+                                    }
+                                    </select>
                                 </div>
                                 <div class="col-md-3">
                                     <label class="col-md-12" style="font-size:12px;">Data da Entrega</label>
@@ -440,6 +445,10 @@
         var countAvulso = @countAvulso;
         var data = "";
         $(document).ready(function(){
+
+            var teste2 = "@Model.Agendamento.Procedimento"
+
+            $('#Procedimento').val(teste2.replace('&#xAA;', 'ª').replace('&#xC7;', 'Ç').replace('&#xC3;', 'Ã'));
 
             @if(Model.Agendamento.DataCirurgia != null)
             {

@@ -99,7 +99,15 @@
                 </div>
                 <div class="form-group col-md-6">
                     Tipo:
-                    @if (Model.Agendamento.Tipo == 3)
+                    @if (Model.Agendamento.Tipo == 5)
+                    {
+                        <span> AUTARQUIA</span>
+                    }
+                    else if (Model.Agendamento.Tipo == 4)
+                    {
+                        <span> PERMANENTE </span>
+                    }
+                    else if (Model.Agendamento.Tipo == 3)
                     {
                         <span> ELETIVA</span>
                     }

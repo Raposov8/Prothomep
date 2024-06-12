@@ -17,7 +17,9 @@ namespace SGID.Pages.Cotacoes
         public int RespondidasEstoque { get; set; }
         public int Respondidas { get; set; }
         public int NRespondidas { get; set; }
+        public int Logistica { get; set; }
         public int Canceladas { get; set; }
+        public string Empresa { get; set; }
 
         public DashBoardCotacoesModel(ApplicationDbContext sgid)
         {
@@ -60,6 +62,11 @@ namespace SGID.Pages.Cotacoes
                             Agendamentos = SGID.Agendamentos.Where(x => x.StatusPedido == 7 && x.StatusLogistica == 7).OrderByDescending(x => x.Id).ToList();
                             break;
                         }
+                    case 6:
+                        {
+                            Agendamentos = SGID.Agendamentos.Where(x=> x.StatusPedido == 7 && x.StatusLogistica <= 6 && x.StatusLogistica>=2).OrderByDescending(x => x.Id).ToList();
+                            break;
+                        }
                     default:
                         {
                             Agendamentos = SGID.Agendamentos.Where(x => x.StatusPedido == 4).OrderByDescending(x => x.Id).ToList();
@@ -72,16 +79,15 @@ namespace SGID.Pages.Cotacoes
                 RespondidasEstoque = SGID.Agendamentos.Where(x => x.StatusPedido == 7 && x.StatusLogistica == 7).Count();
                 Respondidas = SGID.Agendamentos.Where(x => x.StatusCotacao == 1 && x.StatusPedido != 3 && x.StatusPedido != 7).Count();
                 NRespondidas = SGID.Agendamentos.Where(x => x.StatusCotacao == 0 && x.StatusPedido == 2).Count();
+                Logistica = SGID.Agendamentos.Where(x => x.StatusPedido == 7 && x.StatusLogistica <= 6 && x.StatusLogistica >= 2).Count();
                 Canceladas = SGID.Agendamentos.Where(x => x.StatusPedido == 4).Count();
             }
             else if (User.IsInRole("GestorComercial"))
             {
                 if (User.Identity.Name.Split("@")[1].ToUpper() == "INTERMEDIC.COM.BR")
                 {
-
                     switch (id)
                     {
-
                         case 0:
                             {
                                 Agendamentos = SGID.Agendamentos.Where(x => x.StatusCotacao == 0 && x.StatusPedido == 2 && x.Empresa == "01").OrderByDescending(x => x.Id).ToList();
@@ -114,7 +120,7 @@ namespace SGID.Pages.Cotacoes
                             }
                         case 6:
                             {
-                                Agendamentos = SGID.Agendamentos.Where(x =>  x.StatusPedido == 7 && x.StatusLogistica == 7 && x.Empresa == "01").OrderByDescending(x => x.Id).ToList();
+                                Agendamentos = SGID.Agendamentos.Where(x => x.StatusPedido == 7 && x.StatusLogistica <= 6 && x.StatusLogistica >= 2 && x.Empresa == "01").OrderByDescending(x => x.Id).ToList();
                                 break;
                             }
                         default:
@@ -123,11 +129,13 @@ namespace SGID.Pages.Cotacoes
                                 break;
                             }
                     }
+
                     Aprovadas = SGID.Agendamentos.Where(x => x.StatusPedido == 3 && x.Empresa == "01").Count();
                     AguardandoConfirmacao = SGID.Agendamentos.Where(x => x.StatusPedido == 7 && (x.StatusLogistica == 0 || x.StatusLogistica == 1) && x.Empresa == "01").Count();
                     RespondidasEstoque = SGID.Agendamentos.Where(x =>  x.StatusPedido == 7 && x.StatusLogistica == 7 && x.Empresa == "01").Count();
                     Respondidas = SGID.Agendamentos.Where(x => x.StatusCotacao == 1 && x.StatusPedido != 3 && x.StatusPedido != 7 && x.StatusPedido != 7 && x.Empresa == "01").Count();
                     NRespondidas = SGID.Agendamentos.Where(x => x.StatusCotacao == 0 && x.StatusPedido == 2 && x.Empresa == "01").Count();
+                    Logistica = SGID.Agendamentos.Where(x => x.StatusPedido == 7 && x.StatusLogistica <= 6 && x.StatusLogistica >= 2 && x.Empresa == "01").Count();
                     Canceladas = SGID.Agendamentos.Where(x =>  x.StatusPedido == 4 && x.Empresa == "01").Count();
                 }
                 else
@@ -166,7 +174,7 @@ namespace SGID.Pages.Cotacoes
                             }
                         case 6:
                             {
-                                Agendamentos = SGID.Agendamentos.Where(x =>  x.StatusPedido == 7 && x.StatusLogistica == 7 && x.Empresa == "03").OrderByDescending(x => x.Id).ToList();
+                                Agendamentos = SGID.Agendamentos.Where(x => x.StatusPedido == 7 && x.StatusLogistica <= 6 && x.StatusLogistica >= 2 && x.Empresa == "03").OrderByDescending(x => x.Id).ToList();
                                 break;
                             }
                         default:
@@ -175,11 +183,13 @@ namespace SGID.Pages.Cotacoes
                                 break;
                             }
                     }
+
                     Aprovadas = SGID.Agendamentos.Where(x =>  x.StatusPedido == 3 && x.Empresa == "03").Count();
                     AguardandoConfirmacao = SGID.Agendamentos.Where(x =>  x.StatusPedido == 7 && (x.StatusLogistica == 0 || x.StatusLogistica == 1) && x.Empresa == "03").Count();
                     RespondidasEstoque = SGID.Agendamentos.Where(x =>  x.StatusPedido == 7 && x.StatusLogistica == 7 && x.Empresa == "03").Count();
                     Respondidas = SGID.Agendamentos.Where(x => x.StatusCotacao == 1 && x.StatusPedido != 3 && x.StatusPedido != 7 && x.Empresa == "03").Count();
                     NRespondidas = SGID.Agendamentos.Where(x => x.StatusCotacao == 0 && x.StatusPedido == 2 && x.Empresa == "03").Count();
+                    Logistica = SGID.Agendamentos.Where(x => x.StatusPedido == 7 && x.StatusLogistica <= 6 && x.StatusLogistica >= 2 && x.Empresa == "03").Count();
                     Canceladas = SGID.Agendamentos.Where(x => x.StatusPedido == 4 && x.Empresa == "03").Count();
                 }
             }
@@ -201,22 +211,27 @@ namespace SGID.Pages.Cotacoes
                     }
                     case 2:
                     {
-                        Agendamentos = SGID.Agendamentos.Where(x =>  x.StatusPedido == 3 && x.VendedorLogin == user).OrderByDescending(x => x.Id).ToList();
+                        Agendamentos = SGID.Agendamentos.Where(x => x.StatusPedido == 3 && x.VendedorLogin == user).OrderByDescending(x => x.Id).ToList();
                         break;
                     }
                     case 3:
                     {
-                        Agendamentos = SGID.Agendamentos.Where(x =>  x.StatusPedido == 3 && x.StatusLogistica == 1 && x.VendedorLogin == user).OrderByDescending(x => x.Id).ToList();
+                        Agendamentos = SGID.Agendamentos.Where(x => x.StatusPedido == 3 && x.StatusLogistica == 1 && x.VendedorLogin == user).OrderByDescending(x => x.Id).ToList();
                         break;
                     }
                     case 4:
                     {
-                        Agendamentos = SGID.Agendamentos.Where(x =>  x.StatusPedido == 7 && (x.StatusLogistica == 0 || x.StatusLogistica == 1) && x.VendedorLogin == user).OrderByDescending(x => x.Id).ToList();
+                        Agendamentos = SGID.Agendamentos.Where(x => x.StatusPedido == 7 && (x.StatusLogistica == 0 || x.StatusLogistica == 1) && x.VendedorLogin == user).OrderByDescending(x => x.Id).ToList();
                         break;
                     }
                     case 5:
                     {
-                        Agendamentos = SGID.Agendamentos.Where(x =>  x.StatusPedido == 7 && x.StatusLogistica == 7 && x.VendedorLogin == user).OrderByDescending(x => x.Id).ToList();
+                        Agendamentos = SGID.Agendamentos.Where(x => x.StatusPedido == 7 && x.StatusLogistica == 7 && x.VendedorLogin == user).OrderByDescending(x => x.Id).ToList();
+                        break;
+                    }
+                    case 6:
+                    {
+                        Agendamentos = SGID.Agendamentos.Where(x => x.StatusPedido == 7 && x.StatusLogistica <= 6 && x.StatusLogistica >= 2 && x.VendedorLogin == user).OrderByDescending(x => x.Id).ToList();
                         break;
                     }
                     default:
@@ -231,6 +246,7 @@ namespace SGID.Pages.Cotacoes
                 RespondidasEstoque = SGID.Agendamentos.Where(x =>  x.StatusPedido == 7 && x.StatusLogistica == 7 && x.VendedorLogin == user).Count();
                 Respondidas = SGID.Agendamentos.Where(x => x.StatusCotacao == 1 && x.StatusPedido != 3 && x.StatusPedido != 7 && x.VendedorLogin == user).Count();
                 NRespondidas = SGID.Agendamentos.Where(x => x.StatusCotacao == 0 && x.StatusPedido == 2 && x.VendedorLogin == user).Count();
+                Logistica = SGID.Agendamentos.Where(x => x.StatusPedido == 7 && x.StatusLogistica <= 6 && x.StatusLogistica >= 2 && x.VendedorLogin == user).Count();
                 Canceladas = SGID.Agendamentos.Where(x =>  x.StatusPedido == 4 && x.VendedorLogin == user).Count();
             }
 

@@ -12,6 +12,7 @@ using SGID.Models.Email;
 using System.Net.Mail;
 using Intergracoes.Inpart;
 using Intergracoes.Inpart.Models;
+using Microsoft.IdentityModel.Tokens;
 
 namespace SGID.Pages.Cirurgias
 {
@@ -23,7 +24,6 @@ namespace SGID.Pages.Cirurgias
         private TOTVSDENUOContext ProtheusDenuo { get; set; }
 
         private readonly IWebHostEnvironment _WEB;
-
         public NovoAgendamento Novo { get; set; } = new NovoAgendamento();
         public List<Produto> Produtos { get; set; } = new List<Produto>();
 
@@ -93,7 +93,6 @@ namespace SGID.Pages.Cirurgias
                 SearchProduto = ProtheusDenuo.Sb1010s.Where(x => x.DELET != "*" && x.B1Msblql != "1" && x.B1Tipo!="KT").Select(x => x.B1Cod + "  " + x.B1Desc).Distinct().ToList();
             }
         }
-
         public void OnGetInpart(string id,int IdInpart,DateTime DtCotacaoInicio,DateTime DtCotacaoFim)
         {
             Cotacoes = new IntegracaoInPart().ListarCotacoes(id,DtCotacaoInicio,DtCotacaoFim).Result;
@@ -434,7 +433,6 @@ namespace SGID.Pages.Cirurgias
 
             #endregion
         }
-
         public IActionResult OnPostAsync(List<Produto> Produtos,List<Patrimonio> Patris, IFormCollection Anexos)
         {
             try
@@ -563,18 +561,49 @@ namespace SGID.Pages.Cirurgias
 
                     #endregion
 
+                    var link = $"https://gidd.com.br/cotacoes/aceitarcotacoes/{agendamento.Id}";
+
+                    /*if (User.IsInRole("Estoque"))
+                    {
+                        agendamento.Autorizado = 1;
+                        agendamento.StatusPedido = 3;
+                        agendamento.Tipo = 1;
+
+                        link = $"https://gidd.com.br/cotacoes/confirmarcotacao/{agendamento.Id}";
+
+                        SGID.Agendamentos.Update(agendamento);
+                        SGID.SaveChanges();
+                    }*/
+
                     try
                     {
                         #region Email
 
                         string VendedorEmail = "";
+                        List<string> GestorEmail = new List<string>();
                         if (Agendamento.Empresa == "01")
                         {
-                            VendedorEmail = ProtheusInter.Sa3010s.FirstOrDefault(x => x.A3Xlogin == agendamento.VendedorLogin)?.A3Email;
+                            var vendedor = ProtheusInter.Sa3010s.FirstOrDefault(x => x.A3Xlogin == agendamento.VendedorLogin);
+
+                            VendedorEmail = vendedor?.A3Email;
+                            if (!vendedor.A3Xlogsup.IsNullOrEmpty())
+                            {
+                                GestorEmail.Add(vendedor.A3Xlogsup.ToLower().Trim() + "@intermedic.com.br");
+                            }
                         }
                         else
                         {
-                            VendedorEmail = ProtheusDenuo.Sa3010s.FirstOrDefault(x => x.A3Xlogin == agendamento.VendedorLogin)?.A3Email;
+                            var vendedor = ProtheusDenuo.Sa3010s.FirstOrDefault(x => x.A3Xlogin == agendamento.VendedorLogin);
+                            VendedorEmail = vendedor?.A3Email;
+                            if (!vendedor.A3Xlogsup.IsNullOrEmpty())
+                            {
+                                GestorEmail.Add(vendedor.A3Xlogsup.ToLower().Trim() + "@denuo.com.br");
+                            }
+
+                            if (GestorEmail.Contains("leonardo.brito@denuo.com.br"))
+                            {
+                                GestorEmail.Add("artemio.costa@denuo.com.br");
+                            }
                         }
 
                         if (VendedorEmail.Contains(';'))
@@ -591,7 +620,7 @@ namespace SGID.Pages.Cirurgias
                             Cliente = agendamento.Cliente,
                             Medico = agendamento.Medico,
                             Obs = !string.IsNullOrEmpty(Agendamento.Obs) && !string.IsNullOrWhiteSpace(Agendamento.Obs) ? Agendamento.Obs : "Sem Observação",
-                            Link = $"https://gidd.com.br/cotacoes/aceitarcotacoes/{agendamento.Id}"
+                            Link = link
                         };
 
                         var mensagem = EmailTemplate.LerArquivoHtml($"{_WEB.WebRootPath}/template/TemplateCotacao.html", template);
@@ -604,6 +633,11 @@ namespace SGID.Pages.Cirurgias
                         mail.Sender = new MailAddress("ti@intermedic.com.br", "GID");
                         mail.From = new MailAddress("ti@intermedic.com.br", "GID");
                         mail.To.Add(new MailAddress($"{VendedorEmail}", "RECEBEDOR"));
+
+                        GestorEmail.Where(x=> !x.IsNullOrEmpty()).ToList().ForEach(x =>
+                        {
+                            mail.CC.Add(new MailAddress($"{x}", "COPIA"));
+                        });
                         mail.Bcc.Add(new MailAddress("andre.souza@intermedic.com.br","ANDRE SOUZA"));
                         mail.Subject = $"Novo Orçamento Nº {agendamento.Id} - {Agendamento.Paciente}";
                         mail.Body = mensagem;
@@ -620,15 +654,7 @@ namespace SGID.Pages.Cirurgias
                         Logger.Log(e, SGID, "NovoAgendamento Email", user);
                     }
 
-                    /*if (User.IsInRole("Estoque"))
-                    {
-                        agendamento.Autorizado = 1;
-                        agendamento.StatusPedido = 3;
-                        agendamento.Tipo = 1;
-
-                        SGID.Agendamentos.Update(agendamento);
-                        SGID.SaveChanges();
-                    }*/
+                    
 
                     return LocalRedirect("/dashboards/dashboard/0");
                 }
@@ -771,10 +797,8 @@ namespace SGID.Pages.Cirurgias
                                 TipoOp = produto.B1Tipo,
                             };
 
-                            return new JsonResult(ViewProduto);
-                            
+                            return new JsonResult(ViewProduto); 
                     }
-                    
                 }
             }
             catch (Exception e)
@@ -1150,7 +1174,6 @@ namespace SGID.Pages.Cirurgias
             }
             return new JsonResult("");
         }
-
         public class AgendamentoModel
         {
             public string? Empresa { get; set; }

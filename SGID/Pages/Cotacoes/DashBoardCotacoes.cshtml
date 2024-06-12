@@ -12,6 +12,23 @@
     }
 }
 
+<!-- Campo de Pesquisa-->
+<div class="row">
+    <div class="offset-4 offset-sm-4 offset-4 col-md-3 col-sm-3 col-3">
+        <input class="form-control" type="search" id="searchInput" name="searchInput" oninput="this.value = this.value.toUpperCase()" />
+    </div>
+    
+</div>
+<br />
+<div class="row">
+    <div class="col-md-6">
+        <h4>Cotações</h4>
+    </div>
+    <div class="col-md-6">
+        <a href="/cirurgias/novoagendamento/03" class="float-end" style="text-decoration:none;"><i class="fa-regular fa-calendar-days"></i> Novo Orçamento</a>
+    </div>
+</div>
+
 
 <div class="row justify-content-center">
     <div class="col-sm-4 col-md-4">
@@ -47,20 +64,30 @@
     <div class="col-sm-4 col-md-4">
         <div class="panel panel-colorful" style="background-color:lightgray">
             <div class="panel-heading">
-                <h2 style="margin:0%;" class="panel-title text-center">PENDENTE ESTOQUE</h2>
+                <h2 style="margin:0%;color:#00b050" class="panel-title text-center">PENDENTE ESTOQUE</h2>
             </div>
             <div class="panel-body" style="padding-top:0px;">
-                <a class="produto" href="/cotacoes/dashboardcotacoes/4"><h3 class="text-center" style="margin-top:0%;font-size:80px">@Model.AguardandoConfirmacao</h3></a>
+                <a class="produto" href="/cotacoes/dashboardcotacoes/4"><h3 class="text-center" style="margin-top:0%;font-size:80px;color:#00b050">@Model.AguardandoConfirmacao</h3></a>
             </div>
         </div>
     </div>
     <div class="col-sm-4 col-md-4">
         <div class="panel panel-colorful" style="background-color:lightgray">
             <div class="panel-heading">
-                <h2 style="margin:0%;" class="panel-title text-center">RESPONDIDO ESTOQUE</h2>
+                <h2 style="margin:0%;color:#c00000" class="panel-title text-center">RESPONDIDO ESTOQUE</h2>
             </div>
             <div class="panel-body" style="padding-top:0px;">
-                <a class="produto" href="/cotacoes/dashboardcotacoes/5"><h3 class="text-center" style="margin-top:0%;font-size:80px">@Model.RespondidasEstoque</h3></a>
+                <a class="produto" href="/cotacoes/dashboardcotacoes/5"><h3 class="text-center" style="margin-top:0%;font-size:80px;color:#c00000">@Model.RespondidasEstoque</h3></a>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-4 col-md-4">
+        <div class="panel panel-colorful" style="background-color:lightgray">
+            <div class="panel-heading">
+                <h2 style="margin:0%;color:#00b050" class="panel-title text-center">LOGISTICA</h2>
+            </div>
+            <div class="panel-body" style="padding-top:0px;">
+                <a class="produto" href="/cotacoes/dashboardcotacoes/6"><h3 class="text-center" style="margin-top:0%;font-size:80px;color:#00b050">@Model.Logistica</h3></a>
             </div>
         </div>
     </div>
@@ -89,6 +116,9 @@
                     </th>
                     <th class="text-center">
                         Cod. Reserva
+                    </th>
+                    <th class="text-center">
+                        Medico
                     </th>
                     <th class="text-center">
                         Paciente
@@ -144,6 +174,7 @@
                         }
                         <td>@data.DataAlteracao.ToString("dd/MM/yyyy HH:mm")</td>
                         <td>@Html.DisplayFor(model=> data.Empresa)</td>
+                        <td>@Html.DisplayFor(model=> data.Medico)</td>
                         <td>@Html.DisplayFor(model=> data.Paciente)</td>
                         <td>@Html.DisplayFor(model=> data.Cliente)</td>
                         <td>@Html.DisplayFor(model=> data.Hospital)</td>
@@ -196,7 +227,7 @@
 
                                 <a class="rejeicao" data-id="@data.Id"><i class="fa-regular fa-circle-xmark" style="color:red"></i></a>
                             }
-                            @if (data.StatusPedido == 3 || data.StatusPedido == 7)
+                            @if (data.StatusPedido == 3 || (data.StatusPedido == 7 && data.StatusLogistica == 7))
                             {
                                 <a href="/cotacoes/ConfirmarCotacoes/@data.Id" class="fa-solid fa-pen add-tooltip" style="text-decoration:none;" data-container="body" data-placement="top" data-original-title="Confirmar Cotação" aria-hidden="true"></a>
                             }
@@ -365,6 +396,8 @@
                                 <div class="form-group col-md-2">
                                     <label class="Label">Tipo</label>
                                     <select class="form-control" id="Tipo" name="Tipo">
+                                        <option value="5">AUTARQUIA</option>
+                                        <option value="4">PERMANENTE</option>
                                         <option value="2">ELETIVA</option>
                                         <option value="3">EMERGENCIA</option>
                                         <option value="1">URGENTE</option>
@@ -458,6 +491,16 @@
 @section scripts{
     <script>
          $(function () {
+
+            $("#searchInput").keyup(function () {
+                var rows = $("#demo-dt-addrow").find("tr").hide();
+                if (this.value.length) {
+                    var data = this.value.split(" ");
+                    $.each(data, function (i, v) {
+                        rows.filter(":contains('" + v + "')").show();
+                    });
+                } else rows.show();
+            });
 
             $('a.close').on('click', function () {
                 $('#details-modal').modal('hide')
