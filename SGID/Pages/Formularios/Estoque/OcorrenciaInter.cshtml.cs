@@ -36,7 +36,7 @@ namespace SGID.Pages.Formularios.Estoque
 
         public IActionResult OnPost(string Cliente,string Hospital, string Medico, string Paciente, string Agendamento, DateTime? Cirurgia,
             string Produto, string Descricao, string Ocorrencia, string Acao, string Procedente, string Cobrado, string Reposto,
-            string Patrimonio, string DescPatri, string Vendedor, string Obs, DateTime? DataOcorrencia, int Quantidade)
+            string Patrimonio, string DescPatri, string Vendedor, string Obs, DateTime? DataOcorrencia, int Quantidade,string Armazem)
         {
             var ocorrencia = new Ocorrencia
             {
@@ -54,6 +54,7 @@ namespace SGID.Pages.Formularios.Estoque
                 Produto = Produto,
                 Descricao = Descricao,
                 Quantidade = Quantidade,
+                Armazem = Armazem,
                 Problema = Ocorrencia,
                 Acao = Acao,
                 Procedente = Procedente,

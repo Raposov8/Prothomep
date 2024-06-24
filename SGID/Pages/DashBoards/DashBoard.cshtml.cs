@@ -71,7 +71,7 @@ namespace SGID.Pages.DashBoards
                     //NRespondidas
                     3 => SGID.Agendamentos.Where(x => x.StatusPedido == 0).OrderByDescending(x => x.DataCirurgia).ToList(),
                     //Aprovadas
-                    4 => SGID.Agendamentos.Where(x => (x.StatusPedido == 3 || x.StatusPedido == 7)).OrderByDescending(x => x.DataCirurgia).ToList(),
+                    4 => SGID.Agendamentos.Where(x => x.StatusPedido == 3 || x.StatusPedido == 7).OrderByDescending(x => x.DataCirurgia).ToList(),
                     //Perdidas
                     5 => SGID.Agendamentos.Where(x => x.StatusPedido == 4).OrderByDescending(x => x.DataCirurgia).ToList(),
                     //Emergencia

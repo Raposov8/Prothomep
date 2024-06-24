@@ -19,9 +19,11 @@
             <select type="text" class="form-control" id="Local" name="Local" placeholder="Local">
                 <option value="">TODOS...</option>
                 <option value="01">01</option>
-                <option value="70">70</option>
                 <option value="80">80</option>
                 <option value="30">30</option>
+                @if (User.IsInRole("Admin")|| User.IsInRole("Qualidade") || User.IsInRole("Diretoria")) {
+                    <option value="70">70</option>
+                }
             </select>
         </div>
 

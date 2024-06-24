@@ -28,7 +28,8 @@ namespace SGID.Pages.RH
             Acessos = (from Soli in SGID.SolicitacaoAcessos
                       join Termo in SGID.AcessoTermos on Soli.Id equals Termo.AcessoId into Sr
                       from a in Sr.DefaultIfEmpty()
-                      select new DTOAcesso
+                       where !Soli.Cancelado
+                       select new DTOAcesso
                       {
                           Id = Soli.Id,
                           Arquivo = a.Caminho,
@@ -86,12 +87,15 @@ namespace SGID.Pages.RH
 
             client.Send(mail);
 
-            SGID.SolicitacaoAcessos.Remove(solicita);
+            solicita.Cancelado = true;
+
+            SGID.SolicitacaoAcessos.Update(solicita);
             SGID.SaveChanges();
 
             Acessos = (from Soli in SGID.SolicitacaoAcessos
                        join Termo in SGID.AcessoTermos on Soli.Id equals Termo.AcessoId into Sr
                        from a in Sr.DefaultIfEmpty()
+                       where !Soli.Cancelado
                        select new DTOAcesso
                        {
                            Id = Soli.Id,

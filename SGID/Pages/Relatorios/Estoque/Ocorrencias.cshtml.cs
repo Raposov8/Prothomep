@@ -87,7 +87,9 @@ namespace SGID.Pages.Relatorios.Estoque
                 sheet.Cells[1, 10].Value = "PROBLEMA";
                 sheet.Cells[1, 11].Value = "AÇÕES";
                 sheet.Cells[1, 12].Value = "VENDEDOR";
-
+                sheet.Cells[1, 13].Value = "MES";
+                sheet.Cells[1, 14].Value = "ARMAZEM DE ORIGEM";
+ 
                 int i = 2;
 
                 Relatorio.ForEach(Pedido =>
@@ -104,6 +106,8 @@ namespace SGID.Pages.Relatorios.Estoque
                     sheet.Cells[i, 10].Value = Pedido.Problema;
                     sheet.Cells[i, 11].Value = Pedido.Acao;
                     sheet.Cells[i, 12].Value = Pedido.Vendedor;
+                    sheet.Cells[i, 13].Value = Pedido.DataOcorrencia.Value.Month;
+                    sheet.Cells[i, 14].Value = Pedido.Armazem;
 
                     i++;
                 });

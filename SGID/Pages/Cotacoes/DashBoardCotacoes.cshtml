@@ -91,6 +91,16 @@
             </div>
         </div>
     </div>
+    <div class="col-sm-4 col-md-4">
+        <div class="panel panel-colorful" style="background-color:lightgray">
+            <div class="panel-heading">
+                <h2 style="margin:0%;color:#c00000" class="panel-title text-center">PERDIDAS</h2>
+            </div>
+            <div class="panel-body" style="padding-top:0px;">
+                <a class="produto" href="/cotacoes/dashboardcotacoes/7"><h3 class="text-center" style="margin-top:0%;font-size:80px;color:#c00000">@Model.Canceladas</h3></a>
+            </div>
+        </div>
+    </div>
 </div>
 
 
@@ -213,7 +223,7 @@
                             <td>Confirmado</td>
                         }
                         <td>
-                            @if (data.StatusCotacao == 0)
+                            @if (data.StatusCotacao == 0 && data.StatusPedido != 4)
                             {
                                 <a class="details" href="/cotacoes/aceitarcotacoes/@data.Id"><i class="fa-solid fa-circle-plus" style="color:green"></i></a>
                                 
@@ -230,6 +240,10 @@
                             @if (data.StatusPedido == 3 || (data.StatusPedido == 7 && data.StatusLogistica == 7))
                             {
                                 <a href="/cotacoes/ConfirmarCotacoes/@data.Id" class="fa-solid fa-pen add-tooltip" style="text-decoration:none;" data-container="body" data-placement="top" data-original-title="Confirmar Cotação" aria-hidden="true"></a>
+                            }
+                            @if (data.StatusPedido == 4)
+                            {
+                                <a class="MotivoRej" data-id="@data.Id"><i class="fa-solid fa-bars" style="text-decoration:none;" data-container="body" data-placement="top" data-original-title="Motivo Rejeição" aria-hidden="true"></i></a>
                             }
                         </td>
                     </tr>
@@ -488,6 +502,39 @@
     </div>
 </div>
 
+<!--Visualizar-->
+<div class="modal fade" id="motivorej-modal" role="dialog" tabindex="-1" aria-labelledby="demo-default-modal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <!--Modal header-->
+            <div class="modal-header">
+                <div class="col-md-12">
+                    <h4>Motivo Rejeição</h4>
+                </div>
+            </div>
+
+            <!--Modal body-->
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <label>Motivo</label>
+                        <div id="MotivoRej"></div>
+                    </div>
+                    <br />
+                    <div class="col-md-12">
+                        <label>Observação</label>
+                        <div id="ObsPorQ"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!--Modal footer-->
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
 @section scripts{
     <script>
          $(function () {
@@ -626,5 +673,31 @@
             })
             return true;
         };
+    </script>
+    <script>
+        $(function () {
+            $("a.MotivoRej").on('click', function () {
+                var id = $(this).data('id')
+
+                var chamadaUrl = `/dashboards/dashboard/0?handler=RecusaPedido&&AgendamentoId=${id}`
+                $.ajax({
+                    url: chamadaUrl,
+                    type: "GET",
+                    contentType: "application/json;",
+                    dataType: 'json',
+                    headers: {
+                        "RequestVerificationToken": $('input:hidden[name="__RequestVerificationToken"]').val()
+                    },
+                    success: function (data) {
+
+
+                        $("#MotivoRej").html(data.motivo);
+                        $("#ObsPorQ").html(data.obs);
+                        $('#motivorej-modal').modal('show')
+
+                    }
+                })
+            })
+        })
     </script>
 }

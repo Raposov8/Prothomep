@@ -436,6 +436,7 @@ namespace SGID.Pages.Logistica
                     var template = new
                     {
                         Titulo = $"{Agendamento.Id} - {Agendamento.Paciente}",
+                        Cotacao = Agendamento.Id,
                         Obs = !string.IsNullOrEmpty(Obs) && !string.IsNullOrWhiteSpace(Obs) ? Obs :"SEM OBSERVAÇÂO",
                         Link = $"https://gidd.com.br/cotacoes/confirmarcotacoes/{Agendamento.Id}"
                     };

@@ -92,6 +92,10 @@
                         <label class="Label">Quantidade</label>
                         <input type="number" class="form-control" id="Quantidade" name="Quantidade" value="1" required />
                     </div>
+                    <div class="form-group col-sm-2 col-md-2">
+                        <label class="Label">Armazem de Origem</label>
+                        <input type="text" class="form-control" id="Armazem" name="Armazem" required />
+                    </div>
                 </div>
                 <div class="row">
                     <div class="col-md-12 Titulo">
@@ -165,14 +169,14 @@
                 <div class="row">
                     <div class="form-group col-sm-12 col-md-12">
                         <label class="Label">Descrição da Ocorrencia</label>
-                        <input type="text" class="form-control" id="Obs" name="Obs" oninput="this.value = this.value.toUpperCase()" required/>
+                        <input type="text" class="form-control" id="Obs" name="Obs" oninput="this.value = this.value.toUpperCase()" required />
                     </div>
                 </div>
             </div>
         </div>
         <br />
         <div class="row justify-content-center">
-            <div style="color:#00b050" class="col-md-2"><button class="btn btn-button btn-success float-end" style="font-size:12px;" type="submit"><i class="fa-solid fa-thumbs-up"></i> Salvar</button></div> |
+            <div style="color:#00b050" class="col-md-2" id="Salvar"><button class="btn btn-button btn-success float-end" style="font-size:12px;" type="submit"><i class="fa-solid fa-thumbs-up"></i> Salvar</button></div> |
             <div style="color:#c00000" class="col-md-2"><a class="btn btn-button btn-danger" style="font-size:12px;" href="/cirurgias/agendamentos"><i class="fa-solid fa-xmark"></i> Cancelar</a></div>
         </div>
     </div>
@@ -181,7 +185,6 @@
 @section scripts{
     <script>
         $(document).ready(function () {
-
             $('#Patrimonio').on('change', function () {
                 var codigo = $("#Patrimonio").val();
                 var chamadaUrl = `/formularios/estoque/ocorrenciainter?handler=Patrimonio&&Codigo=${codigo}`;
@@ -216,6 +219,22 @@
                         $("#Descricao").val(data);
                     }
                 })
+            })
+
+            $("#Obs").on('change', function () {
+
+                var texto = $(this).val();
+
+                if (texto.length >= 300) 
+                {
+                    $("#Salvar").removeClass("invisivel");
+                    $("#Salvar").addClass("visivel");
+                } 
+                else
+                {
+                    $("#Salvar").addClass("invisivel");
+                    $("#Salvar").removeClass("visivel");
+                }
             })
         });
     </script>

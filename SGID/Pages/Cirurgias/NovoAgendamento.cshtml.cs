@@ -40,9 +40,9 @@ namespace SGID.Pages.Cirurgias
             ProtheusDenuo = denuo;
             _WEB = wEB;
         }
+
         public void OnGet(string id)
         {
-
             Novo = new NovoAgendamento();
 
             if (id == "01")
@@ -98,7 +98,6 @@ namespace SGID.Pages.Cirurgias
             Cotacoes = new IntegracaoInPart().ListarCotacoes(id,DtCotacaoInicio,DtCotacaoFim).Result;
 
             var cotacao = Cotacoes.FirstOrDefault(x => x.idCotacao == IdInpart);
-
 
             if (id == "01")
             {
@@ -673,7 +672,8 @@ namespace SGID.Pages.Cirurgias
         {
             try
             {
-                var codigo = Codigo.Split("  ")[0];
+                var teste = Codigo.Split("  ")[0];
+                var codigo = this.Request.QueryString.ToString().Split("%20%20")[0].Split("Codigo=")[1];
                 if (Empresa == "01") 
                 {
                         //Intermedic

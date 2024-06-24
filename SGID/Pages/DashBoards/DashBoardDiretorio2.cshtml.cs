@@ -139,7 +139,7 @@ namespace SGID.Pages.DashBoards
                     x.Total
                 }).Select(x => new RelatorioCirurgiasFaturadas
                 {
-                    A3Nome = x.Key.Login,
+                    A3Nome = x.Key.Login.Trim(),
                     Nf = x.Key.NF,
                     Total = x.Sum(c => c.Total),
                 }).ToList();
@@ -234,7 +234,7 @@ namespace SGID.Pages.DashBoards
                     x.Total
                 }).Select(x => new RelatorioCirurgiasFaturadas
                 {
-                    A3Nome = x.Key.Login,
+                    A3Nome = x.Key.Login.Trim(),
                     Nf = x.Key.NF,
                     Total = x.Sum(c => c.Total),
                 }).ToList();
@@ -1224,7 +1224,7 @@ namespace SGID.Pages.DashBoards
                 x.Linha
             }).Select(x => new RelatorioCirurgiasFaturadas
             {
-                A3Nome = x.Key.Login,
+                A3Nome = x.Key.Login.Trim(),
                 Nf = x.Key.NF,
                 Total = x.Sum(c => c.Total),
                 Linha = x.Key.Linha
@@ -1257,7 +1257,7 @@ namespace SGID.Pages.DashBoards
                 x.Linha
             }).Select(x => new RelatorioCirurgiasFaturadas
             {
-                A3Nome = x.Key.Login,
+                A3Nome = x.Key.Login.Trim(),
                 Nf = x.Key.NF,
                 Total = x.Sum(c => c.Total),
                 Linha = x.Key.Linha

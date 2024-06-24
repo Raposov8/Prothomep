@@ -662,6 +662,7 @@
 
         $("#Adicionar").click(function () {
                 var codigo = $("#CodProd").val();
+                console.log(codigo)
                 var empresa = $("#Agendamento_Empresa").val();
                 var tabela = $("#Agendamento_CodTabela").val();
                 var chamadaUrl = `/cirurgias/novoagendamento/01?handler=AdicionarProd&&Codigo=${codigo}&&Empresa=${empresa}&&CodTab=${tabela}`
@@ -942,9 +943,12 @@
                 },
                 success: function(data) {
 
-                    if(data!=null){
+                    if(data!=null)
+                    {
                             $("#Agendamento_Tabela").val(data);
-                    }else{
+                    }
+                    else
+                    {
                         alert("CodTabela não existe")
                     }
                 }

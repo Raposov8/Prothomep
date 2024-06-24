@@ -615,7 +615,7 @@ namespace SGID.Pages.Relatorios.Diretoria
                                                 Vendedor = x.Key.Vendedor,
                                                 TipoCliente = x.Key.TipoCliente,
                                                 CodigoCliente = x.Key.CodigoCliente,
-                                                Login = x.Key.Login,
+                                                Login = x.Key.Login.Trim(),
                                                 Gestor = x.Key.Gestor,
                                                 DataPedido = x.Key.DataPedido,
                                                 Empresa = x.Key.Empresa
@@ -911,7 +911,7 @@ namespace SGID.Pages.Relatorios.Diretoria
                                                 Vendedor = x.Key.Vendedor,
                                                 TipoCliente = x.Key.TipoCliente,
                                                 CodigoCliente = x.Key.CodigoCliente,
-                                                Login = x.Key.Login,
+                                                Login = x.Key.Login.Trim(),
                                                 Gestor = x.Key.Gestor,
                                                 DataPedido = x.Key.DataPedido,
                                                 Empresa = x.Key.Empresa
@@ -1761,7 +1761,7 @@ namespace SGID.Pages.Relatorios.Diretoria
                                                     Vendedor = x.Key.Vendedor,
                                                     TipoCliente = x.Key.TipoCliente,
                                                     CodigoCliente = x.Key.CodigoCliente,
-                                                    Login = x.Key.Login,
+                                                    Login = x.Key.Login.Trim(),
                                                     Gestor = x.Key.Gestor,
                                                     DataPedido = x.Key.DataPedido,
                                                     Empresa = x.Key.Empresa
@@ -2681,7 +2681,7 @@ namespace SGID.Pages.Relatorios.Diretoria
                                                     Vendedor = x.Key.Vendedor,
                                                     TipoCliente = x.Key.TipoCliente,
                                                     CodigoCliente = x.Key.CodigoCliente,
-                                                    Login = x.Key.Login,
+                                                    Login = x.Key.Login.Trim(),
                                                     Gestor = x.Key.Gestor,
                                                     DataPedido = x.Key.DataPedido,
                                                     Empresa = x.Key.Empresa
@@ -3626,7 +3626,7 @@ namespace SGID.Pages.Relatorios.Diretoria
                                                 Vendedor = x.Key.Vendedor,
                                                 TipoCliente = x.Key.TipoCliente,
                                                 CodigoCliente = x.Key.CodigoCliente,
-                                                Login = x.Key.Login,
+                                                Login = x.Key.Login.Trim(),
                                                 Gestor = x.Key.Gestor,
                                                 DataPedido = x.Key.DataPedido,
                                                 Empresa = x.Key.Empresa
@@ -3922,7 +3922,7 @@ namespace SGID.Pages.Relatorios.Diretoria
                                                 Vendedor = x.Key.Vendedor,
                                                 TipoCliente = x.Key.TipoCliente,
                                                 CodigoCliente = x.Key.CodigoCliente,
-                                                Login = x.Key.Login,
+                                                Login = x.Key.Login.Trim(),
                                                 Gestor = x.Key.Gestor,
                                                 DataPedido = x.Key.DataPedido,
                                                 Empresa = x.Key.Empresa
@@ -4772,7 +4772,7 @@ namespace SGID.Pages.Relatorios.Diretoria
                                                     Vendedor = x.Key.Vendedor,
                                                     TipoCliente = x.Key.TipoCliente,
                                                     CodigoCliente = x.Key.CodigoCliente,
-                                                    Login = x.Key.Login,
+                                                    Login = x.Key.Login.Trim(),
                                                     Gestor = x.Key.Gestor,
                                                     DataPedido = x.Key.DataPedido,
                                                     Empresa = x.Key.Empresa
@@ -5692,7 +5692,7 @@ namespace SGID.Pages.Relatorios.Diretoria
                                                     Vendedor = x.Key.Vendedor,
                                                     TipoCliente = x.Key.TipoCliente,
                                                     CodigoCliente = x.Key.CodigoCliente,
-                                                    Login = x.Key.Login,
+                                                    Login = x.Key.Login.Trim(),
                                                     Gestor = x.Key.Gestor,
                                                     DataPedido = x.Key.DataPedido,
                                                     Empresa = x.Key.Empresa
@@ -6740,7 +6740,7 @@ namespace SGID.Pages.Relatorios.Diretoria
                                                     Vendedor = x.Key.Vendedor,
                                                     TipoCliente = x.Key.TipoCliente,
                                                     CodigoCliente = x.Key.CodigoCliente,
-                                                    Login = x.Key.Login,
+                                                    Login = x.Key.Login.Trim(),
                                                     Gestor = x.Key.Gestor,
                                                     DataPedido = x.Key.DataPedido,
                                                     Empresa = x.Key.Empresa
@@ -7036,7 +7036,7 @@ namespace SGID.Pages.Relatorios.Diretoria
                                                     Vendedor = x.Key.Vendedor,
                                                     TipoCliente = x.Key.TipoCliente,
                                                     CodigoCliente = x.Key.CodigoCliente,
-                                                    Login = x.Key.Login,
+                                                    Login = x.Key.Login.Trim(),
                                                     Gestor = x.Key.Gestor,
                                                     DataPedido = x.Key.DataPedido,
                                                     Empresa = x.Key.Empresa
@@ -7886,7 +7886,7 @@ namespace SGID.Pages.Relatorios.Diretoria
                                                         Vendedor = x.Key.Vendedor,
                                                         TipoCliente = x.Key.TipoCliente,
                                                         CodigoCliente = x.Key.CodigoCliente,
-                                                        Login = x.Key.Login,
+                                                        Login = x.Key.Login.Trim(),
                                                         Gestor = x.Key.Gestor,
                                                         DataPedido = x.Key.DataPedido,
                                                         Empresa = x.Key.Empresa
@@ -8806,7 +8806,7 @@ namespace SGID.Pages.Relatorios.Diretoria
                                                         Vendedor = x.Key.Vendedor,
                                                         TipoCliente = x.Key.TipoCliente,
                                                         CodigoCliente = x.Key.CodigoCliente,
-                                                        Login = x.Key.Login,
+                                                        Login = x.Key.Login.Trim(),
                                                         Gestor = x.Key.Gestor,
                                                         DataPedido = x.Key.DataPedido,
                                                         Empresa = x.Key.Empresa

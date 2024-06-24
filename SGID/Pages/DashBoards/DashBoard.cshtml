@@ -165,7 +165,7 @@
                             <td>
                                 @if (data.DataCirurgia == null)
                                 {
-                                    <span>NÃO DATA REGISTRADA</span>
+                                    <span>NÃO HÁ DATA REGISTRADA</span>
                                 }
                                 else
                                 {
@@ -207,13 +207,16 @@
                             <td>@data.Vendedor</td>
                             <td>@data.DataAlteracao.ToString("dd/MM/yyyy HH:mm")</td>
                             <td>
-                                <a class="details" data-id="@data.Id" data-toggle="modal" data-target="#details-modal"><i class="fa-solid fa-paper-plane"></i></a>
-                                <a class="produto" href="/cirurgias/editaragendamento/@data.Id"><i class="fa-solid fa-pen"></i></a>
+                                @if(data.StatusPedido != 3 && data.StatusPedido != 7)
+                                {
+                                    <a class="details" data-id="@data.Id" data-toggle="modal" data-target="#details-modal"><i class="fa-solid fa-paper-plane"></i></a>
+                                    <a class="produto" href="/cirurgias/editaragendamento/@data.Id"><i class="fa-solid fa-pen"></i></a>
+                                }
                                 @if (data.StatusPedido != 4)
                                 {
                                     <a class="rejeicao" data-id="@data.Id"><i class="fa-regular fa-circle-xmark" style="color:red"></i></a>
                                 }
-                                @if (data.DataCirurgia != null && data.StatusPedido != 3)
+                                @if (data.DataCirurgia != null && data.StatusPedido != 3 && data.StatusPedido != 7)
                                 {
                                     <a onclick="aceite(@data.Id)"><i class="fa-regular fa-circle-check" style="color:green"></i></a>
                                 }

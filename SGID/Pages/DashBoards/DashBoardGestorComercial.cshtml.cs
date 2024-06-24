@@ -122,7 +122,7 @@ namespace SGID.Pages.DashBoards
                                                  x.Num,
                                              }).Select(x => new RelatorioCirurgiasFaturar
                                              {
-                                                 Login = x.Key.Login,
+                                                 Login = x.Key.Login.Trim(),
                                                  Num = x.Key.Num,
                                                  Valor = x.Sum(c => c.Valor)
                                              }).ToList();
@@ -160,7 +160,7 @@ namespace SGID.Pages.DashBoards
                             x.NF,
                         }).Select(x => new RelatorioCirurgiasFaturadas
                         {
-                            A3Nome = x.Key.Login,
+                            A3Nome = x.Key.Login.Trim(),
                             Nf = x.Key.NF,
                             Total = x.Sum(c => c.Total),
                         }).ToList();
@@ -357,7 +357,7 @@ namespace SGID.Pages.DashBoards
                                                  x.Num,
                                              }).Select(x => new RelatorioCirurgiasFaturar
                                              {
-                                                 Login = x.Key.Login,
+                                                 Login = x.Key.Login.Trim(),
                                                  Num = x.Key.Num,
                                                  Valor = x.Sum(c => c.Valor)
                                              }).ToList();
@@ -474,7 +474,7 @@ namespace SGID.Pages.DashBoards
                                                         Vendedor = x.Key.Vendedor,
                                                         TipoCliente = x.Key.TipoCliente,
                                                         CodigoCliente = x.Key.CodigoCliente,
-                                                        Login = x.Key.Login,
+                                                        Login = x.Key.Login.Trim(),
                                                         Gestor = x.Key.Gestor,
                                                         DataPedido = x.Key.DataPedido
                                                     }).ToList();
@@ -584,7 +584,7 @@ namespace SGID.Pages.DashBoards
                                                           Vendedor = x.Key.Vendedor,
                                                           TipoCliente = x.Key.TipoCliente,
                                                           CodigoCliente = x.Key.CodigoCliente,
-                                                          Login = x.Key.Login,
+                                                          Login = x.Key.Login.Trim(),
                                                           Gestor = x.Key.Gestor,
                                                           DataPedido = x.Key.DataPedido
                                                       }).ToList();
@@ -619,7 +619,7 @@ namespace SGID.Pages.DashBoards
                             x.A1Xgrinte
                         }).Select(x => new RelatorioCirurgiasFaturadas
                         {
-                            A3Nome = x.Key.Login,
+                            A3Nome = x.Key.Login.Trim(),
                             Nf = x.Key.NF,
                             Total = x.Sum(c => c.Total),
                             Linha = x.Key.A1Xgrinte
@@ -830,7 +830,7 @@ namespace SGID.Pages.DashBoards
                                                          x.Num,
                                                      }).Select(x => new RelatorioCirurgiasFaturar
                                                      {
-                                                         Login = x.Key.Login,
+                                                         Login = x.Key.Login.Trim(),
                                                          Num = x.Key.Num,
                                                          Valor = x.Sum(c => c.Valor)
                                                      }).ToList();
@@ -869,7 +869,7 @@ namespace SGID.Pages.DashBoards
                                 x.NF,
                             }).Select(x => new RelatorioCirurgiasFaturadas
                             {
-                                A3Nome = x.Key.Login,
+                                A3Nome = x.Key.Login.Trim(),
                                 Nf = x.Key.NF,
                                 Total = x.Sum(c => c.Total),
                             }).ToList();
@@ -1083,7 +1083,7 @@ namespace SGID.Pages.DashBoards
                                                          x.Num,
                                                      }).Select(x => new RelatorioCirurgiasFaturar
                                                      {
-                                                         Login = x.Key.Login,
+                                                         Login = x.Key.Login.Trim(),
                                                          Num = x.Key.Num,
                                                          Valor = x.Sum(c => c.Valor)
                                                      }).ToList();
@@ -1124,7 +1124,7 @@ namespace SGID.Pages.DashBoards
                                 x.A1Xgrinte
                             }).Select(x => new RelatorioCirurgiasFaturadas
                             {
-                                A3Nome = x.Key.Login,
+                                A3Nome = x.Key.Login.Trim(),
                                 Nf = x.Key.NF,
                                 Total = x.Sum(c => c.Total),
                                 Linha = x.Key.A1Xgrinte
@@ -1324,7 +1324,7 @@ namespace SGID.Pages.DashBoards
                                                             Vendedor = x.Key.Vendedor,
                                                             TipoCliente = x.Key.TipoCliente,
                                                             CodigoCliente = x.Key.CodigoCliente,
-                                                            Login = x.Key.Login,
+                                                            Login = x.Key.Login.Trim(),
                                                             Gestor = x.Key.Gestor,
                                                             DataPedido = x.Key.DataPedido
                                                         }).ToList();
@@ -1434,7 +1434,7 @@ namespace SGID.Pages.DashBoards
                                                               Vendedor = x.Key.Vendedor,
                                                               TipoCliente = x.Key.TipoCliente,
                                                               CodigoCliente = x.Key.CodigoCliente,
-                                                              Login = x.Key.Login,
+                                                              Login = x.Key.Login.Trim(),
                                                               Gestor = x.Key.Gestor,
                                                               DataPedido = x.Key.DataPedido
                                                           }).ToList();
@@ -1566,7 +1566,7 @@ namespace SGID.Pages.DashBoards
                                                      x.Num,
                                                  }).Select(x => new RelatorioCirurgiasFaturar
                                                  {
-                                                     Login = x.Key.Login,
+                                                     Login = x.Key.Login.Trim(),
                                                      Num = x.Key.Num,
                                                      Valor = x.Sum(c => c.Valor)
                                                  }).ToList();
@@ -1604,7 +1604,7 @@ namespace SGID.Pages.DashBoards
                                 x.NF,
                             }).Select(x => new RelatorioCirurgiasFaturadas
                             {
-                                A3Nome = x.Key.Login,
+                                A3Nome = x.Key.Login.Trim(),
                                 Nf = x.Key.NF,
                                 Total = x.Sum(c => c.Total),
                             }).ToList();
@@ -1810,7 +1810,7 @@ namespace SGID.Pages.DashBoards
                                                      x.Num,
                                                  }).Select(x => new RelatorioCirurgiasFaturar
                                                  {
-                                                     Login = x.Key.Login,
+                                                     Login = x.Key.Login.Trim(),
                                                      Num = x.Key.Num,
                                                      Valor = x.Sum(c => c.Valor)
                                                  }).ToList();
@@ -1849,7 +1849,7 @@ namespace SGID.Pages.DashBoards
                                 x.A1Xgrinte
                             }).Select(x => new RelatorioCirurgiasFaturadas
                             {
-                                A3Nome = x.Key.Login,
+                                A3Nome = x.Key.Login.Trim(),
                                 Nf = x.Key.NF,
                                 Total = x.Sum(c => c.Total),
                                 Linha = x.Key.A1Xgrinte
@@ -2048,7 +2048,7 @@ namespace SGID.Pages.DashBoards
                                                             Vendedor = x.Key.Vendedor,
                                                             TipoCliente = x.Key.TipoCliente,
                                                             CodigoCliente = x.Key.CodigoCliente,
-                                                            Login = x.Key.Login,
+                                                            Login = x.Key.Login.Trim(),
                                                             Gestor = x.Key.Gestor,
                                                             DataPedido = x.Key.DataPedido
                                                         }).ToList();
@@ -2158,7 +2158,7 @@ namespace SGID.Pages.DashBoards
                                                               Vendedor = x.Key.Vendedor,
                                                               TipoCliente = x.Key.TipoCliente,
                                                               CodigoCliente = x.Key.CodigoCliente,
-                                                              Login = x.Key.Login,
+                                                              Login = x.Key.Login.Trim(),
                                                               Gestor = x.Key.Gestor,
                                                               DataPedido = x.Key.DataPedido
                                                           }).ToList();
@@ -2304,7 +2304,7 @@ namespace SGID.Pages.DashBoards
                                                  x.Num,
                                              }).Select(x => new RelatorioCirurgiasFaturar
                                              {
-                                                 Login = x.Key.Login,
+                                                 Login = x.Key.Login.Trim(),
                                                  Num = x.Key.Num,
                                                  Valor = x.Sum(c => c.Valor)
                                              }).ToList();
@@ -2342,7 +2342,7 @@ namespace SGID.Pages.DashBoards
                             x.NF,
                         }).Select(x => new RelatorioCirurgiasFaturadas
                         {
-                            A3Nome = x.Key.Login,
+                            A3Nome = x.Key.Login.Trim(),
                             Nf = x.Key.NF,
                             Total = x.Sum(c => c.Total),
                         }).ToList();
@@ -2539,7 +2539,7 @@ namespace SGID.Pages.DashBoards
                                                  x.Num,
                                              }).Select(x => new RelatorioCirurgiasFaturar
                                              {
-                                                 Login = x.Key.Login,
+                                                 Login = x.Key.Login.Trim(),
                                                  Num = x.Key.Num,
                                                  Valor = x.Sum(c => c.Valor)
                                              }).ToList();
@@ -2656,7 +2656,7 @@ namespace SGID.Pages.DashBoards
                                                         Vendedor = x.Key.Vendedor,
                                                         TipoCliente = x.Key.TipoCliente,
                                                         CodigoCliente = x.Key.CodigoCliente,
-                                                        Login = x.Key.Login,
+                                                        Login = x.Key.Login.Trim(),
                                                         Gestor = x.Key.Gestor,
                                                         DataPedido = x.Key.DataPedido
                                                     }).ToList();
@@ -2691,7 +2691,7 @@ namespace SGID.Pages.DashBoards
                             x.A1Xgrinte
                         }).Select(x => new RelatorioCirurgiasFaturadas
                         {
-                            A3Nome = x.Key.Login,
+                            A3Nome = x.Key.Login.Trim(),
                             Nf = x.Key.NF,
                             Total = x.Sum(c => c.Total),
                             Linha = x.Key.A1Xgrinte
@@ -2901,7 +2901,7 @@ namespace SGID.Pages.DashBoards
                                                          x.Num,
                                                      }).Select(x => new RelatorioCirurgiasFaturar
                                                      {
-                                                         Login = x.Key.Login,
+                                                         Login = x.Key.Login.Trim(),
                                                          Num = x.Key.Num,
                                                          Valor = x.Sum(c => c.Valor)
                                                      }).ToList();
@@ -2940,7 +2940,7 @@ namespace SGID.Pages.DashBoards
                                 x.NF,
                             }).Select(x => new RelatorioCirurgiasFaturadas
                             {
-                                A3Nome = x.Key.Login,
+                                A3Nome = x.Key.Login.Trim(),
                                 Nf = x.Key.NF,
                                 Total = x.Sum(c => c.Total),
                             }).ToList();
@@ -3154,7 +3154,7 @@ namespace SGID.Pages.DashBoards
                                                          x.Num,
                                                      }).Select(x => new RelatorioCirurgiasFaturar
                                                      {
-                                                         Login = x.Key.Login,
+                                                         Login = x.Key.Login.Trim(),
                                                          Num = x.Key.Num,
                                                          Valor = x.Sum(c => c.Valor)
                                                      }).ToList();
@@ -3195,7 +3195,7 @@ namespace SGID.Pages.DashBoards
                                 x.A1Xgrinte
                             }).Select(x => new RelatorioCirurgiasFaturadas
                             {
-                                A3Nome = x.Key.Login,
+                                A3Nome = x.Key.Login.Trim(),
                                 Nf = x.Key.NF,
                                 Total = x.Sum(c => c.Total),
                                 Linha = x.Key.A1Xgrinte
@@ -3395,7 +3395,7 @@ namespace SGID.Pages.DashBoards
                                                             Vendedor = x.Key.Vendedor,
                                                             TipoCliente = x.Key.TipoCliente,
                                                             CodigoCliente = x.Key.CodigoCliente,
-                                                            Login = x.Key.Login,
+                                                            Login = x.Key.Login.Trim(),
                                                             Gestor = x.Key.Gestor,
                                                             DataPedido = x.Key.DataPedido
                                                         }).ToList();
@@ -3526,7 +3526,7 @@ namespace SGID.Pages.DashBoards
                                                      x.Num,
                                                  }).Select(x => new RelatorioCirurgiasFaturar
                                                  {
-                                                     Login = x.Key.Login,
+                                                     Login = x.Key.Login.Trim(),
                                                      Num = x.Key.Num,
                                                      Valor = x.Sum(c => c.Valor)
                                                  }).ToList();
@@ -3564,7 +3564,7 @@ namespace SGID.Pages.DashBoards
                                 x.NF,
                             }).Select(x => new RelatorioCirurgiasFaturadas
                             {
-                                A3Nome = x.Key.Login,
+                                A3Nome = x.Key.Login.Trim(),
                                 Nf = x.Key.NF,
                                 Total = x.Sum(c => c.Total),
                             }).ToList();
@@ -3775,7 +3775,7 @@ namespace SGID.Pages.DashBoards
                                                      x.Num,
                                                  }).Select(x => new RelatorioCirurgiasFaturar
                                                  {
-                                                     Login = x.Key.Login,
+                                                     Login = x.Key.Login.Trim(),
                                                      Num = x.Key.Num,
                                                      Valor = x.Sum(c => c.Valor)
                                                  }).ToList();
@@ -3814,7 +3814,7 @@ namespace SGID.Pages.DashBoards
                                 x.A1Xgrinte
                             }).Select(x => new RelatorioCirurgiasFaturadas
                             {
-                                A3Nome = x.Key.Login,
+                                A3Nome = x.Key.Login.Trim(),
                                 Nf = x.Key.NF,
                                 Total = x.Sum(c => c.Total),
                                 Linha = x.Key.A1Xgrinte
@@ -4013,7 +4013,7 @@ namespace SGID.Pages.DashBoards
                                                             Vendedor = x.Key.Vendedor,
                                                             TipoCliente = x.Key.TipoCliente,
                                                             CodigoCliente = x.Key.CodigoCliente,
-                                                            Login = x.Key.Login,
+                                                            Login = x.Key.Login.Trim(),
                                                             Gestor = x.Key.Gestor,
                                                             DataPedido = x.Key.DataPedido
                                                         }).ToList();

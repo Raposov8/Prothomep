@@ -373,7 +373,7 @@ namespace SGID.Pages.Account.RH
                                                 Vendedor = x.Key.Vendedor,
                                                 TipoCliente = x.Key.TipoCliente,
                                                 CodigoCliente = x.Key.CodigoCliente,
-                                                Login = x.Key.Login,
+                                                Login = x.Key.Login.Trim(),
                                                 Gestor = x.Key.Gestor,
                                                 DataPedido = x.Key.DataPedido,
                                                 Empresa = x.Key.Empresa
@@ -779,7 +779,7 @@ namespace SGID.Pages.Account.RH
                                                   Vendedor = x.Key.Vendedor,
                                                   TipoCliente = x.Key.TipoCliente,
                                                   CodigoCliente = x.Key.CodigoCliente,
-                                                  Login = x.Key.Login,
+                                                  Login = x.Key.Login.Trim(),
                                                   Gestor = x.Key.Gestor,
                                                   DataPedido = x.Key.DataPedido,
                                                   Empresa = x.Key.Empresa
@@ -1247,7 +1247,7 @@ namespace SGID.Pages.Account.RH
                             }
                             else
                             {
-                                if(usuario == "FABIANA.MACCHIA")
+                                if(usuario == "ADRIANA.SOUZA")
                                 {
                                     var teste = "";
                                 }
@@ -1671,7 +1671,7 @@ namespace SGID.Pages.Account.RH
                                                 Vendedor = x.Key.Vendedor,
                                                 TipoCliente = x.Key.TipoCliente,
                                                 CodigoCliente = x.Key.CodigoCliente,
-                                                Login = x.Key.Login,
+                                                Login = x.Key.Login.Trim(),
                                                 Gestor = x.Key.Gestor,
                                                 DataPedido = x.Key.DataPedido,
                                                 Empresa = x.Key.Empresa
@@ -1782,7 +1782,7 @@ namespace SGID.Pages.Account.RH
                                                   Vendedor = x.Key.Vendedor,
                                                   TipoCliente = x.Key.TipoCliente,
                                                   CodigoCliente = x.Key.CodigoCliente,
-                                                  Login = x.Key.Login,
+                                                  Login = x.Key.Login.Trim(),
                                                   Gestor = x.Key.Gestor,
                                                   DataPedido = x.Key.DataPedido
                                               }).ToList();
@@ -2077,7 +2077,7 @@ namespace SGID.Pages.Account.RH
                                                 Vendedor = x.Key.Vendedor,
                                                 TipoCliente = x.Key.TipoCliente,
                                                 CodigoCliente = x.Key.CodigoCliente,
-                                                Login = x.Key.Login,
+                                                Login = x.Key.Login.Trim(),
                                                 Gestor = x.Key.Gestor,
                                                 DataPedido = x.Key.DataPedido,
                                                 Empresa = x.Key.Empresa
@@ -2188,7 +2188,7 @@ namespace SGID.Pages.Account.RH
                                                   Vendedor = x.Key.Vendedor,
                                                   TipoCliente = x.Key.TipoCliente,
                                                   CodigoCliente = x.Key.CodigoCliente,
-                                                  Login = x.Key.Login,
+                                                  Login = x.Key.Login.Trim(),
                                                   Gestor = x.Key.Gestor,
                                                   DataPedido = x.Key.DataPedido
                                               }).ToList();

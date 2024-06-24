@@ -25,5 +25,6 @@ namespace SGID.Data.ViewModel
         public string? Contratacao { get; set; }
         public string? NomeSub { get; set; }
         public string? CargoSub { get; set; }
+        public bool Cancelado { get; set; }
     }
 }

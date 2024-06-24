@@ -565,17 +565,17 @@ namespace SGID.Pages.Cirurgias
 
                 #endregion
 
-                if(User.IsInRole("Estoque"))
-                {
-                    if(agendamento.Empresa == "01")
-                    {
-                        return LocalRedirect("/logistica/ListarLogistica/01/1");  
-                    }
-                    else
-                    {
-                        return LocalRedirect("/logistica/ListarLogistica/03/1");
-                    }
-                }
+                //if(User.IsInRole("Estoque"))
+                //{
+                //    if(agendamento.Empresa == "01")
+                //    {
+                //        return LocalRedirect("/logistica/ListarLogistica/01/1");  
+                //    }
+                //    else
+                //    {
+                //        return LocalRedirect("/logistica/ListarLogistica/03/1");
+                //    }
+                //}
 
                 return LocalRedirect("/dashboards/dashboard/3");
             }

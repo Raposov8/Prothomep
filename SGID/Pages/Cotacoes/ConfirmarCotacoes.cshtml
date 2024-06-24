@@ -170,6 +170,44 @@
                     </div>
                     <br />
                     <div class="row">
+                        <div class="col-md-12 Titulo">INCLUIR PRODUTO(S)</div>
+                        <div class="panel">
+                            <div class="panel-body">
+                                <table id="Produto" name="Produto" class="table table-striped table-bordered" cellspacing="0" width="100%">
+                                    <thead>
+                                        <tr style="background-color:#5b9bd5; color:white;">
+                                            <th class="text-center">
+                                                Código
+                                            </th>
+                                            <th class="text-center">
+                                                Descrição
+                                            </th>
+                                            <th class="text-center">
+                                                Qtd.
+                                            </th>
+                                           
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var data in Model.Produtos)
+                                        {
+                                            <tr>
+                                                <td class="text-center">
+                                                    @data.Item
+                                                </td>
+                                                <td class="text-center">
+                                                    @data.Produtos
+                                                </td>
+                                                <td class="text-center">
+                                                    @data.Und
+                                                </td>
+                                            </tr>
+                                            count++;
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
                         <div class="col-md-12 Titulo">INCLUIR PATRIMONIO(S)</div>
                         <div class="panel">
                             <div class="panel-body">

@@ -19,6 +19,7 @@ namespace SGID.Data.ViewModel
         public string? Produto { get; set; }
         public string? Descricao { get; set; }
         public int Quantidade { get; set; }
+        public string? Armazem { get; set; }
         public DateTime? DataOcorrencia { get; set; }
         public string? Problema { get; set; }
         public string? Acao { get; set; }
