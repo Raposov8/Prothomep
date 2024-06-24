@@ -221,17 +221,17 @@
                 })
             })
 
-            $("#Obs").on('change', function () {
+            $("#Obs").on('input', function () {
+
+                this.value = this.value.toUpperCase()
 
                 var texto = $(this).val();
 
-                if (texto.length >= 300) 
-                {
+                if (texto.length >= 300) {
                     $("#Salvar").removeClass("invisivel");
                     $("#Salvar").addClass("visivel");
-                } 
-                else
-                {
+                }
+                else {
                     $("#Salvar").addClass("invisivel");
                     $("#Salvar").removeClass("visivel");
                 }

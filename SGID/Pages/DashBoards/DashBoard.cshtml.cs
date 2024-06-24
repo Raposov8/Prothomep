@@ -10,6 +10,7 @@ using SGID.Data.Models;
 using Microsoft.AspNetCore.Authorization;
 using SGID.Models.DTO;
 using Microsoft.IdentityModel.Tokens;
+using DocumentFormat.OpenXml.Office2010.Excel;
 
 namespace SGID.Pages.DashBoards
 {
@@ -377,8 +378,6 @@ namespace SGID.Pages.DashBoards
                     agendamento.VendedorLogin = ProtheusDenuo.Sa3010s.FirstOrDefault(x => x.A3Cod == Codigo).A3Xlogin;
                 }
 
-
-
                 SGID.Agendamentos.Add(agendamento);
                 SGID.SaveChanges();
 
@@ -406,6 +405,19 @@ namespace SGID.Pages.DashBoards
                     };
 
                     SGID.PatrimoniosAgendamentos.Add(ProdXAgenda);
+                    SGID.SaveChanges();
+                });
+
+                AvulsosAntigo.ForEach(avulso =>
+                {
+                    var avulso2 = new AvulsosAgendamento
+                    {
+                        AgendamentoId = agendamento.Id,
+                        Produto = avulso.Produto,
+                        Quantidade = avulso.Quantidade
+                    };
+
+                    SGID.AvulsosAgendamento.Add(avulso2);
                     SGID.SaveChanges();
                 });
 

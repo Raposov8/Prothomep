@@ -216,7 +216,7 @@
                                 {
                                     <a class="rejeicao" data-id="@data.Id"><i class="fa-regular fa-circle-xmark" style="color:red"></i></a>
                                 }
-                                @if (data.DataCirurgia != null && data.StatusPedido != 3 && data.StatusPedido != 7)
+                                @if (data.StatusPedido != 3 && data.StatusPedido != 4 && data.StatusPedido != 7)
                                 {
                                     <a onclick="aceite(@data.Id)"><i class="fa-regular fa-circle-check" style="color:green"></i></a>
                                 }
