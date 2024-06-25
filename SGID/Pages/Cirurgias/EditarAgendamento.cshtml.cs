@@ -325,7 +325,7 @@ namespace SGID.Pages.Cirurgias
 
                         produto.Quantidade = produtoUpdate.Und;
                         produto.ValorUnitario = produtoUpdate.PrcUnid;
-                        produto.ValorTotal = produtoUpdate.VlrTotal;
+                        produto.ValorTotal = produtoUpdate.Und * produtoUpdate.PrcUnid;
 
                         SGID.ProdutosAgendamentos.Update(produto);
                         SGID.SaveChanges();
@@ -347,7 +347,7 @@ namespace SGID.Pages.Cirurgias
                         CodigoProduto = produto.Item,
                         Quantidade = produto.Und,
                         ValorUnitario = produto.PrcUnid,
-                        ValorTotal = produto.VlrTotal,
+                        ValorTotal = produto.Und * produto.PrcUnid,
                         CodigoTabela = CodTabela
                     };
 

@@ -506,7 +506,7 @@ namespace SGID.Pages.Cirurgias
                             CodigoProduto = produto.Item,
                             Quantidade = produto.Und,
                             ValorUnitario = produto.PrcUnid,
-                            ValorTotal = produto.VlrTotal,
+                            ValorTotal = produto.Und * produto.PrcUnid,
                             CodigoTabela = Agendamento.CodTabela,
                         };
 
