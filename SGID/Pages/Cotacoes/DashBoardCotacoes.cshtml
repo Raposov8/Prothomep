@@ -25,7 +25,14 @@
         <h4>Cotações</h4>
     </div>
     <div class="col-md-6">
-        <a href="/cirurgias/novoagendamento/03" class="float-end" style="text-decoration:none;"><i class="fa-regular fa-calendar-days"></i> Novo Orçamento</a>
+        @if (User.Identity.Name.Split("@")[1].ToUpper() == "INTERMEDIC.COM.BR")
+        {
+            <a href="/emergencia/emergencia/01" class="float-end" style="text-decoration:none;"><i class="fa-regular fa-calendar-days"></i> Nova Emergencia</a>
+        }
+        else
+        {
+            <a href="/emergencia/emergencia/03" class="float-end" style="text-decoration:none;"><i class="fa-regular fa-calendar-days"></i> Nova Emergencia</a>
+        }
     </div>
 </div>
 

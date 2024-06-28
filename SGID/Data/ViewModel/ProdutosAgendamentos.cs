@@ -11,7 +11,7 @@ namespace SGID.Data.ViewModel
         public int AgendamentoId { get; set; }
         public Agendamentos Agendamento { get; set; }
         public string CodigoProduto { get; set; }
-        public string CodigoTabela { get; set; }
+        public string? CodigoTabela { get; set; }
         public double Quantidade { get; set; }
         public double ValorUnitario { get; set; }
         public double ValorTotal { get; set; }

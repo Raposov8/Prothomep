@@ -45,41 +45,39 @@ namespace SGID.Pages.DashBoards
         }
         public IActionResult OnGet(int id)
         {
+                Total = SGID.Agendamentos.Where(x=> x.Tipo != 1 && x.Tipo != 2 && x.Tipo != 4).Count();
 
-            
-                Total = SGID.Agendamentos.Count();
+                PendenteComercial = SGID.Agendamentos.Where(x => ((x.StatusCotacao == 0 && x.StatusPedido == 1) || x.StatusPedido == 2) && x.Tipo != 1 && x.Tipo != 2 && x.Tipo != 4).Count();
 
-                PendenteComercial = SGID.Agendamentos.Where(x => (x.StatusCotacao == 0 && x.StatusPedido == 1) || x.StatusPedido == 2).Count();
+                RetornoCliente = SGID.Agendamentos.Where(x => x.StatusPedido == 6 && x.Tipo != 1 && x.Tipo != 2 && x.Tipo != 4).Count();
 
-                RetornoCliente = SGID.Agendamentos.Where(x => x.StatusPedido == 6).Count();
+                Respondidas = SGID.Agendamentos.Where(x => x.StatusPedido == 5 && x.Tipo != 1 && x.Tipo != 2 && x.Tipo != 4).Count();
 
-                Respondidas = SGID.Agendamentos.Where(x => x.StatusPedido == 5).Count();
+                NRespondidas = SGID.Agendamentos.Where(x => x.StatusPedido == 0 && x.Tipo != 1 && x.Tipo != 2 && x.Tipo != 4).Count();
 
-                NRespondidas = SGID.Agendamentos.Where(x => x.StatusPedido == 0).Count();
+                Aprovadas = SGID.Agendamentos.Where(x => (x.StatusPedido == 3 || x.StatusPedido == 7) && x.Tipo != 1 && x.Tipo != 2 && x.Tipo != 4).Count();
 
-                Aprovadas = SGID.Agendamentos.Where(x => (x.StatusPedido == 3 || x.StatusPedido == 7)).Count();
+                Perdidas = SGID.Agendamentos.Where(x => x.StatusPedido == 4 && x.Tipo != 1 && x.Tipo != 2 && x.Tipo != 4).Count();
 
-                Perdidas = SGID.Agendamentos.Where(x => x.StatusPedido == 4).Count();
-
-                Emergencia = SGID.Agendamentos.Where(x => x.Tipo == 1).Count();
+                Emergencia = SGID.Agendamentos.Where(x => x.Tipo == 1 || x.Tipo == 2).Count();
 
                 Agendamentos = id switch
                 {
                     //Pendente Comercial Ida e volta da cotação
-                    1 => SGID.Agendamentos.Where(x => (x.StatusCotacao == 0 && x.StatusPedido == 1) || x.StatusPedido == 2).OrderByDescending(x => x.DataCirurgia).ToList(),
+                    1 => SGID.Agendamentos.Where(x => ((x.StatusCotacao == 0 && x.StatusPedido == 1) || x.StatusPedido == 2) && x.Tipo != 1 && x.Tipo != 2 && x.Tipo != 4).OrderByDescending(x => x.DataCirurgia).ToList(),
                     //Retorno Cliente
-                    2 => SGID.Agendamentos.Where(x => x.StatusPedido == 6).OrderByDescending(x => x.DataCirurgia).ToList(),
+                    2 => SGID.Agendamentos.Where(x => x.StatusPedido == 6 && x.Tipo != 1 && x.Tipo != 2 && x.Tipo != 4).OrderByDescending(x => x.DataCirurgia).ToList(),
                     //NRespondidas
-                    3 => SGID.Agendamentos.Where(x => x.StatusPedido == 0).OrderByDescending(x => x.DataCirurgia).ToList(),
+                    3 => SGID.Agendamentos.Where(x => x.StatusPedido == 0 && x.Tipo != 1 && x.Tipo != 2 && x.Tipo != 4).OrderByDescending(x => x.DataCirurgia).ToList(),
                     //Aprovadas
-                    4 => SGID.Agendamentos.Where(x => x.StatusPedido == 3 || x.StatusPedido == 7).OrderByDescending(x => x.DataCirurgia).ToList(),
+                    4 => SGID.Agendamentos.Where(x => (x.StatusPedido == 3 || x.StatusPedido == 7) && x.Tipo != 1 && x.Tipo != 2 && x.Tipo != 4).OrderByDescending(x => x.DataCirurgia).ToList(),
                     //Perdidas
-                    5 => SGID.Agendamentos.Where(x => x.StatusPedido == 4).OrderByDescending(x => x.DataCirurgia).ToList(),
+                    5 => SGID.Agendamentos.Where(x => x.StatusPedido == 4 && x.Tipo != 1 && x.Tipo != 2 && x.Tipo != 4).OrderByDescending(x => x.DataCirurgia).ToList(),
                     //Emergencia
-                    6 => SGID.Agendamentos.Where(x => x.Tipo == 1).OrderByDescending(x => x.DataCirurgia).ToList(),
+                    6 => SGID.Agendamentos.Where(x => x.Tipo == 1 || x.Tipo == 2).OrderByDescending(x => x.DataCirurgia).ToList(),
                     //Respondidas
-                    7 => SGID.Agendamentos.Where(x => x.StatusPedido == 5).OrderByDescending(x => x.DataCirurgia).ToList(),
-                    _ => SGID.Agendamentos.OrderByDescending(x => x.DataCirurgia).ToList(),
+                    7 => SGID.Agendamentos.Where(x => x.StatusPedido == 5 && x.Tipo != 1 && x.Tipo != 2 && x.Tipo != 4).OrderByDescending(x => x.DataCirurgia).ToList(),
+                    _ => SGID.Agendamentos.Where(x => x.Tipo != 1 && x.Tipo != 2 && x.Tipo != 4).OrderByDescending(x => x.DataCirurgia).ToList(),
                 };
 
                 Rejeicoes = SGID.RejeicaoMotivos.ToList();

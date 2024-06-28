@@ -1207,7 +1207,6 @@ namespace SGID.Pages.Account.RH
 
                             if (dataini <= 20240231)
                             {
-
                                 time.Faturado += resultadoInter.Where(x => x.Login == usuario).Sum(x => x.Total) - DevolucaoInter.Where(x => x.Login == usuario).Sum(x => x.Total);
                                 time.Faturado += resultadoDenuo.Where(x => x.Login == usuario).Sum(x => x.Total) - DevolucaoDenuo.Where(x => x.Login == usuario).Sum(x => x.Total);
                                 if (usuario == "MICHEL.SAMPAIO")
@@ -1247,11 +1246,6 @@ namespace SGID.Pages.Account.RH
                             }
                             else
                             {
-                                if(usuario == "ADRIANA.SOUZA")
-                                {
-                                    var teste = "";
-                                }
-
                                 time.Faturado += resultadoInter.Where(x => x.Login == usuario && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total) - DevolucaoInter.Where(x => x.Login == usuario && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total);
                                 time.Faturado += resultadoDenuo.Where(x => x.Login == usuario && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total) - DevolucaoDenuo.Where(x => x.Login == usuario && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total);
                                 time.Faturado += BaixaLicitacoesDenuo.Where(x => Convert.ToInt32(x.DataPedido) > 20240231 && (x.CodigoCliente == "000011" || x.CodigoCliente == "000012") && x.Login == usuario).Sum(x => x.TotalBaixado);

@@ -16,6 +16,16 @@
     <div class="col-md-6">
         <h4>Logística</h4>
     </div>
+    <div class="col-md-6">
+        @if (Model.Empresa == "01")
+        {
+            <a href="/emergencia/emergencia/01" class="float-end" style="text-decoration:none;"><i class="fa-regular fa-calendar-days"></i> Nova Emergencia</a>
+        }
+        else
+        {
+            <a href="/emergencia/emergencia/03" class="float-end" style="text-decoration:none;"><i class="fa-regular fa-calendar-days"></i> Nova Emergencia</a>
+        }
+    </div>
 </div>
 
 <!-- Cards -->

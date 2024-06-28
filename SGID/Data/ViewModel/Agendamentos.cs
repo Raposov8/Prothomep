@@ -14,10 +14,10 @@ namespace SGID.Data.ViewModel
         //Protheus
         public string Empresa { get; set; }
         public string Cliente { get; set; }
-        public string CodCondPag { get; set; }
-        public string CondPag { get; set; }
-        public string CodTabela { get; set; }
-        public string Tabela { get; set; }
+        public string? CodCondPag { get; set; }
+        public string? CondPag { get; set; }
+        public string? CodTabela { get; set; }
+        public string? Tabela { get; set; }
         public string Vendedor { get; set; }
         public string VendedorLogin { get; set; }
         public string Medico { get; set; }

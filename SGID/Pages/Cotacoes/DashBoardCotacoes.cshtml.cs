@@ -20,6 +20,7 @@ namespace SGID.Pages.Cotacoes
         public int Logistica { get; set; }
         public int Canceladas { get; set; }
         public string Empresa { get; set; }
+        public bool HorarioEmergencia { get; set; }
 
         public DashBoardCotacoesModel(ApplicationDbContext sgid)
         {
@@ -248,6 +249,13 @@ namespace SGID.Pages.Cotacoes
                 NRespondidas = SGID.Agendamentos.Where(x => x.StatusCotacao == 0 && x.StatusPedido == 2 && x.VendedorLogin == user).Count();
                 Logistica = SGID.Agendamentos.Where(x => x.StatusPedido == 7 && x.StatusLogistica <= 6 && x.StatusLogistica >= 2 && x.VendedorLogin == user).Count();
                 Canceladas = SGID.Agendamentos.Where(x =>  x.StatusPedido == 4 && x.VendedorLogin == user).Count();
+            }
+
+            var Data = DateTime.Now;
+
+            if(Data.Hour < 7 || Data.Hour > 18)
+            {
+                HorarioEmergencia = true;
             }
 
             Rejeicoes = SGID.RejeicaoMotivos.ToList();
