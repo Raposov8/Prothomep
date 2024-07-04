@@ -424,6 +424,8 @@ namespace SGID.Pages.Cotacoes
 
                     Agendamento.DataCirurgia = DataCirurgia;
                     Agendamento.DataEntrega = Entrega;
+                    Agendamento.UsuarioComercialAprova = User.Identity.Name.Split("@")[0].ToUpper();
+                    Agendamento.DataComercialAprova = DateTime.Now;
 
                     Agendamento.StatusLogistica = 2;
 

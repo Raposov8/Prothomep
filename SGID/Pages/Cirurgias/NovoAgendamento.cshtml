@@ -832,7 +832,7 @@
             })
 
         $("#AdicionarPatri").click(function () {
-            var codigo = $("#Agendamento_CodPatri").val();
+                var codigo = $("#CodPatri").val();
             var empresa = $("#Agendamento_Empresa").val();
             var chamadaUrl = `/cirurgias/novoagendamento/01?handler=AdicionarPatri&&Empresa=${empresa}&&Codigo=${codigo}`
             $.ajax({

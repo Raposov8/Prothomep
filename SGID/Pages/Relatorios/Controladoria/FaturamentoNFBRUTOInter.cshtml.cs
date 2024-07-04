@@ -269,6 +269,7 @@ namespace SGID.Pages.Relatorios.Controladoria
                             }
 
                             NovoRelatorio.Total += d.Total.Value;
+                            
                         });
 
                         Relatorio.Add(NovoRelatorio);

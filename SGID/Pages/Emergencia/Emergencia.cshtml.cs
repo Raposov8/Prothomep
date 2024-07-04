@@ -119,7 +119,8 @@ namespace SGID.Pages.Emergencia
                         Procedimento = Agendamento.Procedimento,
                         Autorizado = Agendamento.Autorizado,
                         Indicacao = Agendamento.Indicacao,
-                        StatusPedido = 3,
+                        StatusPedido = 7,
+                        StatusLogistica = 0,
                         UsuarioCriacao = User.Identity.Name.Split("@")[0].ToUpper()
                     };
 
@@ -219,11 +220,11 @@ namespace SGID.Pages.Emergencia
 
                     #endregion
 
-                    var link = $"https://gidd.com.br/cotacoes/confirmarcotacao/{agendamento.Id}";
+                    /*var link = $"https://gidd.com.br/cotacoes/confirmarcotacao/{agendamento.Id}";
 
                     try
                     {
-                        /*#region Email
+                        #region Email
 
                         string VendedorEmail = "";
                         List<string> GestorEmail = new List<string>();
@@ -292,13 +293,13 @@ namespace SGID.Pages.Emergencia
 
                         client.Send(mail);
 
-                        #endregion*/
+                        #endregion
                     }
                     catch (Exception e)
                     {
                         string user = User.Identity.Name.Split("@")[0].ToUpper();
                         Logger.Log(e, SGID, "Emergencia Email", user);
-                    }
+                    }*/
 
                     return LocalRedirect("/dashboards/dashboard/0");
             }

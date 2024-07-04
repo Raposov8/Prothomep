@@ -53,8 +53,7 @@ namespace SGID.Pages.Relatorios.SubDistribuidor
                                  Nreduz = SA10.A1Nome,
                                  Utpoper = SC50.C5Liberok,
                                  Fabricante = SB10.B1Fabric
-                             }
-                            ).ToList();
+                             }).ToList();
 
                 Relatorio = lista;
 

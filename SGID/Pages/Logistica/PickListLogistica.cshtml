@@ -23,9 +23,6 @@
                 <div class="form-group col-md-3">
                     Hospital de Entrega: @Model.Agendamento.Hospital
                 </div>
-                <div class="form-group col-md-3">
-                    Data Agendamento: 
-                </div>
                 <br />
                 <div class="form-group col-md-3">
                     Data Cirurgia: @Model.Agendamento.DataCirurgia.Value.ToString("dd/MM/yyyy HH:mm")
@@ -60,11 +57,14 @@
             <table id="Produto" name="Produto" class="table table-striped table-bordered" cellspacing="0" width="100%">
                 <thead>
                     <tr>
-                        <th class="text-center" colspan="3">
+                        <th class="text-center" colspan="4">
                             Procedimentos Cirurgicos
                         </th>
                     </tr>
                     <tr>
+                        <th class="text-center">
+                            Patrimonio
+                        </th>
                         <th class="text-center">
                             Produto
                         </th>
@@ -81,6 +81,7 @@
                     {
 
                         <tr>
+                            <td></td>
                             <td> @data.Item </td>
                             <td> @data.Produtos </td>
                             <td> @data.Und</td>
@@ -98,6 +99,7 @@
                     @foreach(var data in Model.Avulsos)
                     {
                         <tr>
+                            <td></td>
                             <td> @data.Item </td>
                             <td> @data.Produtos </td>
                             <td> @data.Und</td>

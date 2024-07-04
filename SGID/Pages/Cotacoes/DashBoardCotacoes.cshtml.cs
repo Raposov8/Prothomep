@@ -258,6 +258,8 @@ namespace SGID.Pages.Cotacoes
                 HorarioEmergencia = true;
             }
 
+            HorarioEmergencia = true;
+
             Rejeicoes = SGID.RejeicaoMotivos.ToList();
         }
     }
