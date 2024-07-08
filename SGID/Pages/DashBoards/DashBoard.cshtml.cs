@@ -34,6 +34,7 @@ namespace SGID.Pages.DashBoards
         public int Aprovadas { get; set; }
         public int Perdidas { get; set; }
         public int Emergencia { get; set; }
+        public int Permanente { get; set; }
 
         public DashBoardModel(ILogger<DashBoardModel> logger, ApplicationDbContext sgid, TOTVSDENUOContext protheusDenuo, TOTVSINTERContext protheusInter, IWebHostEnvironment wEB)
         {
@@ -60,8 +61,10 @@ namespace SGID.Pages.DashBoards
                 Perdidas = SGID.Agendamentos.Where(x => x.StatusPedido == 4 && x.Tipo != 1 && x.Tipo != 2 && x.Tipo != 4).Count();
 
                 Emergencia = SGID.Agendamentos.Where(x => x.Tipo == 1 || x.Tipo == 2).Count();
+                
+                Permanente = SGID.Agendamentos.Where(x => x.Tipo == 4 && x.StatusLogistica != 6).Count();
 
-                Agendamentos = id switch
+            Agendamentos = id switch
                 {
                     //Pendente Comercial Ida e volta da cotação
                     1 => SGID.Agendamentos.Where(x => ((x.StatusCotacao == 0 && x.StatusPedido == 1) || x.StatusPedido == 2) && x.Tipo != 1 && x.Tipo != 2 && x.Tipo != 4).OrderByDescending(x => x.DataCirurgia).ToList(),
@@ -77,6 +80,9 @@ namespace SGID.Pages.DashBoards
                     6 => SGID.Agendamentos.Where(x => x.Tipo == 1 || x.Tipo == 2).OrderByDescending(x => x.DataCirurgia).ToList(),
                     //Respondidas
                     7 => SGID.Agendamentos.Where(x => x.StatusPedido == 5 && x.Tipo != 1 && x.Tipo != 2 && x.Tipo != 4).OrderByDescending(x => x.DataCirurgia).ToList(),
+                    //Permanente
+                    8 => SGID.Agendamentos.Where(x => x.Tipo == 4 && x.StatusLogistica != 6).OrderByDescending(x => x.DataCirurgia).ToList(),
+
                     _ => SGID.Agendamentos.Where(x => x.Tipo != 1 && x.Tipo != 2 && x.Tipo != 4).OrderByDescending(x => x.DataCirurgia).ToList(),
                 };
 

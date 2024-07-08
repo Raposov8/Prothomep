@@ -487,6 +487,10 @@ namespace SGID.Pages.Cirurgias
 
                     }
 
+                    if(Agendamento.Tipo== 1 || Agendamento.Tipo == 2 || Agendamento.Tipo == 4)
+                    {
+                        agendamento.StatusPedido = 3;
+                    }
 
                     SGID.Agendamentos.Add(agendamento);
                     SGID.SaveChanges();
