@@ -26,11 +26,26 @@
             <label>Ano</label>
             <input type="text" class="form-control" id="Ano" name="Ano" placeholder="Ano" value="@Model.Ano" />
         </div>
-
         <div class="form-group mx-sm-3 mb-2 col-lg-1">
-            <label></label>
+            <label>-</label>
             <button type="submit" class="btn btn-primary mb-2">Pesquisar</button>
         </div>
+
+        @if (User.IsInRole("ComercialDuo") || User.IsInRole("Admin"))
+        {
+            if (Model.Empresa == "01")
+            {
+                <div class="form-group mx-sm-3 mb-2 col-lg-5">
+                    <a href="/Dashboards/dashboardgestorcomercial/03" class="float-end" style="text-decoration:none;">Ir Para DENUO</a>
+                </div>
+            }
+            else
+            {
+                <div class="form-group mx-sm-3 mb-2 col-lg-5">
+                    <a href="/Dashboards/dashboardgestorcomercial/01" class="float-end" style="text-decoration:none;">Ir Para INTERMEDIC</a>
+                </div>
+            }
+        }
     </div>
 }
 

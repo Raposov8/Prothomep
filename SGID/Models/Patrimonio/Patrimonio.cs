@@ -1,4 +1,6 @@
-﻿namespace SGID.Models.Patrimonio
+﻿using DocumentFormat.OpenXml.Office.CoverPageProps;
+
+namespace SGID.Models.Patrimonio
 {
     public class Patrimonio
     {
@@ -10,5 +12,8 @@
         //Itens Faltantes
         public string CodPatri { get; set; }
         public double QuantFalt { get; set; }
+
+        public string DescPatri { get; set; }
+        public string Bloqueio { get; set; }
     }
 }

@@ -24,7 +24,6 @@
     <None Remove="Pages\Relatorios\Diretoria\NovaPasta\**" />
   </ItemGroup>
 
-
   <ItemGroup>
     <None Include="..\.editorconfig" Link=".editorconfig" />
   </ItemGroup>
@@ -68,6 +67,14 @@
   </ItemGroup>
 
   <ProjectExtensions><VisualStudio><UserProperties appsettings_1json__JsonSchema="" libman_1json__JsonSchema="" /></VisualStudio></ProjectExtensions>
+
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Pages\Formularios\Patrimonio\RelatorioTodosItensPatrimonios.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="Pages\Formularios\Patrimonio\RelatorioTodosItensPatrimonios.cshtml" />
+  </ItemGroup>
 
 
 

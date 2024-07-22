@@ -22,7 +22,7 @@ namespace SGID.Pages.Cirurgias
 
         public Agendamentos Agendamento { get; set; }
         public List<Produto> Produtos { get; set; }
-        public List<Patrimonio> Patris { get; set; }
+        public List<Patrimonio> Patrimonios { get; set; }
         public List<ObsAgendamento> Observacoes { get; set; } = new List<ObsAgendamento>();
         public NovoAgendamento Novo { get; set; } = new NovoAgendamento();
         public string Anexo1 { get; set; }
@@ -81,7 +81,7 @@ namespace SGID.Pages.Cirurgias
             }
 
             Produtos = new List<Produto>();
-            Patris = new List<Patrimonio>();
+            Patrimonios = new List<Patrimonio>();
 
             if (Agendamento.Empresa == "01")
             {
@@ -157,7 +157,7 @@ namespace SGID.Pages.Cirurgias
                                 }).First();
 
 
-                    Patris.Add(view);
+                    Patrimonios.Add(view);
                 });
             }
             else
@@ -245,7 +245,7 @@ namespace SGID.Pages.Cirurgias
                                 }).First();
 
 
-                    Patris.Add(view);
+                    Patrimonios.Add(view);
                 });
             }
         }

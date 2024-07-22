@@ -75,7 +75,6 @@ namespace SGID.Pages
             }
             else if (User.IsInRole("Admin") || User.IsInRole("GestorVenda") || User.IsInRole("Venda") || User.IsInRole("Diretoria"))
             {
-
                 return LocalRedirect($"/dashboards/DashBoard/{id}");
             }
             else if (User.IsInRole("GestorComercial"))

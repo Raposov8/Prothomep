@@ -10,6 +10,9 @@
     {
         Layout = "_LayoutNovo";
     }
+
+    var countPatri = 0;
+    var countAvulso = 0;
 }
 
 <div class="row">
@@ -49,6 +52,7 @@
                         <select type="text" class="form-control" id="Status" name="Status">
                             <option value="1">CONCLUÍDA</option>
                             <option value="2">INTERROMPIDA</option>
+                            <option value="3">RETIRADA DE MATERIAL</option>
                         </select>
                     </div>
                     <div class="form-group col-md-3">
@@ -59,11 +63,39 @@
                         <label>Hospital</label>
                         <input type="text" class="form-control" id="Hospital" name="Hospital" value="@Model.Agendamento.Hospital" />
                     </div>
+                    <div class="form-group col-md-3">
+                        <label>Especialidade</label>
+                        <select type="text" class="form-control" id="Especialidade" name="Especialidade">
+                            <option value="Bucomaxilo">Bucomaxilo</option>
+                            <option value="Coluna">Coluna</option>
+                            <option value="Cabeca e pescoco">Cabeça e pescoço</option>
+                            <option value="Neuro">Neuro</option>
+                            <option value="Ortopedia">Ortopedia</option>
+                            <option value="Toracica">Torácica</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label>Localidade</label>
+                        <input type="text" class="form-control" id="Localidade" name="Localidade" />
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label>Final de semana?</label>
+                        <select type="text" class="form-control" id="Semana" name="Semana" >
+                            <option value="Dia de Semana">Dia de Semana</option>
+                            <option value="Final de Semana">Final de Semana</option>
+                            <option value="Feriado">Feriado</option>
+                        </select>
+                    </div>
                 </div>
                 <div class="row">
                     <div class="form-group col-md-6">
                         <label>Procedimento Executados</label>
-                        <textarea type="text" class="form-control" id="Procedimento" name="Procedimento"></textarea>
+                        <select type="text" class="form-control" id="Procedimento" name="Procedimento">
+                            @foreach(var data in Model.Procedimento)
+                            {
+                                <option value="@data">@data</option>
+                            }
+                        </select>
                     </div>
                     <div class="form-group col-md-6">
                         <label>Observação de Intercorrência</label>
@@ -103,10 +135,58 @@
                 </div>
                 <br />
                 <div class="row">
-                    <div class="col-md-12 Titulo">INCLUIR PRODUTO(S)</div>
+                    <div class="col-md-12 Titulo">PATRIMONIO(S)</div>
                     <div class="panel">
                         <div class="panel-body">
-                            <table id="Produto" name="Produto" class="table table-striped table-bordered" cellspacing="0" width="100%">
+                            <table id="Patrimonio" name="Patrimonio" class="table table-striped table-bordered" cellspacing="0" width="100%">
+                                <thead>
+                                    <tr style="background-color:#5b9bd5; color:white;">
+                                        <th class="text-center">
+                                            Código
+                                        </th>
+                                        <th class="text-center">
+                                            Descrição
+                                        </th>
+                                        <th class="text-center">
+                                            KitBas
+                                        </th>
+                                        <th class="text-center">
+                                            Ação
+                                            
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var data in Model.Patrimonios)
+                                    {
+                                        <tr>
+                                            <td class="text-center">
+                                                @data.Codigo
+                                                <input type="hidden" id="Patris[@countPatri].Codigo" name="Patris[@countPatri].Codigo" value="@data.Codigo" />
+                                            </td>
+                                            <td class="text-center">
+                                                @data.Descri
+                                                <input type="hidden" id="Patris[@countPatri].Descri" name="Patris[@countPatri].Descri" value="@data.Descri" />
+                                            </td>
+                                            <td class="text-center">
+                                                @data.KitBas
+                                                <input type="hidden" id="Patris[@countPatri].KitBas" name="Patris[@countPatri].KitBas" value="@data.KitBas" />
+                                            </td>
+                                            <td class="text-center">
+                                               
+                                            </td>
+                                        </tr>
+                                        countPatri++;
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <br />
+                    <div class="col-md-12 Titulo">AVULSO(S)</div>
+                    <div class="panel">
+                        <div class="panel-body">
+                            <table id="Avulsos" name="Avulsos" class="table table-striped table-bordered" cellspacing="0" width="100%">
                                 <thead>
                                     <tr style="background-color:#5b9bd5; color:white;">
                                         <th class="text-center">
@@ -120,12 +200,32 @@
                                         </th>
                                         <th class="text-center">
                                             Ação
-                                            <a class="details" data-id="10" data-toggle="modal" data-target="#details-modal"><i class="fa-solid fa-circle-plus" style="color:green"></i></a>
+                                            
                                         </th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    
+                                    @foreach (var data in Model.Avulsos)
+                                    {
+                                        <tr>
+                                            <td class="text-center">
+                                                @data.Item
+                                                <input type="hidden" id="Avulsos[@countAvulso].Item" name="Avulsos[@countAvulso].Item" value="@data.Item" />
+                                            </td>
+                                            <td class="text-center">
+                                                @data.Produtos
+                                                <input type="hidden" id="Avulsos[@countAvulso].Produtos" name="Avulsos[@countAvulso].Produtos" value="@data.Produtos" />
+                                            </td>
+                                            <td class="text-center">
+                                                @data.Und
+                                                <input type="hidden" id="Avulsos[@countAvulso].Und" name="Avulsos[@countAvulso].Und" value="@data.Und" />
+                                            </td>
+                                            <td class="text-center">
+                                                
+                                            </td>
+                                        </tr>
+                                        countAvulso++;
+                                    }
                                 </tbody>
                             </table>
                         </div>
@@ -182,6 +282,8 @@
             //Inicializador
             var count = 0;
             $("#Hora").mask("00:00");
+
+            $('#Procedimento').val(teste2.replace('&#xAA;', 'ª').replace('&#xC7;', 'Ç').replace('&#xC3;', 'Ã'));
 
             $("#Anexos01").change(function(){
                 $("#IconAnexo01").removeClass("Vermelho")

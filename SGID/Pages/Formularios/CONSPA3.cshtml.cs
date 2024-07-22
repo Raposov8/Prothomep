@@ -58,7 +58,7 @@ namespace SGID.Pages.Formularios
                 Relatorio = (from PA30 in ProtheusDenuo.Pa3010s
                              join SB10 in ProtheusDenuo.Sb1010s on PA30.Pa3Produt equals SB10.B1Cod
                              where PA30.DELET != "*" && SB10.DELET != "*"
-                             && PA30.Pa3Codigo == Patrimonio
+                             && PA30.Pa3Codigo == Patrimonio && PA30.Pa3Filial=="03"
                              orderby PA30.Pa3Produt,PA30.Pa3Lote
                              select new DISPPA3
                              {
@@ -71,8 +71,6 @@ namespace SGID.Pages.Formularios
                              }
                              ).ToList();
             }
-
-            
 
             return Page();
         }

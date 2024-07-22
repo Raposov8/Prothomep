@@ -103,5 +103,20 @@ namespace SGID.Pages.DashBoards
 
             return new JsonResult("");
         }
+
+        public JsonResult OnGetDadosCirurgia(int IdAgendamento)
+        {
+            var Dados = SGID.DadosCirurgias.FirstOrDefault(x => x.AgendamentoId == IdAgendamento);
+
+            var DadosAnexos = SGID.AnexosDadosCirurgias.Where(x => x.DadosCirurgiaId == Dados.Id).Select(x => x.AnexoCam).ToList();
+
+            var Agenda = new
+            {
+                Dados,
+                DadosAnexos
+            };
+
+            return new JsonResult(Agenda);
+        }
     }
 }

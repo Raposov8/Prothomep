@@ -57,6 +57,7 @@ namespace SGID.Pages.Formularios.Patrimonio
                              join PA10 in ProtheusDenuo.Pa1010s on new { Codigo = PA20.Pa2Codigo, Filial = PA20.Pa2Filial } equals new { Codigo = PA10.Pa1Codigo, Filial = PA10.Pa1Filial }
                              where PA20.DELET != "*" && SB10.DELET != "*"  && PA20.Pa2Qtdkit > PA20.Pa2Qtdpat
                              && PA10.DELET != "*" && PA10.Pa1Msblql != "1"
+                             && PA10.Pa1Filial == "03"
                              orderby PA20.Pa2Codigo
                              select new Models.Patrimonio.Patrimonio
                              {
@@ -100,6 +101,7 @@ namespace SGID.Pages.Formularios.Patrimonio
                                  join PA10 in ProtheusDenuo.Pa1010s on new { Codigo = PA20.Pa2Codigo, Filial = PA20.Pa2Filial } equals new { Codigo = PA10.Pa1Codigo, Filial = PA10.Pa1Filial }
                                  where PA20.DELET != "*" && SB10.DELET != "*" && PA20.Pa2Qtdkit > PA20.Pa2Qtdpat
                                  && PA10.DELET != "*" && PA10.Pa1Msblql != "1"
+                                 && PA10.Pa1Filial == "03"
                                  orderby PA20.Pa2Codigo
                                  select new Models.Patrimonio.Patrimonio
                                  {
