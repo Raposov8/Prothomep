@@ -61,7 +61,7 @@ namespace SGID.Pages.Relatorios.RH
                                      from a in Rs.DefaultIfEmpty()
                                      where SC50.DELET != "*" && SC60.DELET != "*" && SA10.DELET != "*" && SA10.A1Msblql != "1" && SB10.DELET != "*" && SA30.DELET != "*" && c.DELET != "*"
                                      && a.DELET != "*" && SC50.C5Liberok != "E" && (int)(object)SC50.C5XDtcir >= (int)(object)DataInicio.ToString("yyyy/MM/dd").Replace("/", "") && (int)(object)SC50.C5XDtcir <= (int)(object)DataFim.ToString("yyyy/MM/dd").Replace("/", "")
-                                     && (SA30.A3Xlogin == user || SA30.A3Xlogsup == user) && SC50.C5Utpoper == "F" && SA10.A1Cgc != "04715053000140" && SA10.A1Cgc != "04715053000220" && SA10.A1Cgc != "01390500000140"
+                                     && (SA30.A3Xlogin == user || SA30.A3Xlogsup == user) && (SC50.C5Utpoper == "F" || SC50.C5Utpoper == "K") && SA10.A1Cgc != "04715053000140" && SA10.A1Cgc != "04715053000220" && SA10.A1Cgc != "01390500000140"
                                      select new RelatorioCirurgiasValorizadas
                                      {
                                          DTCirurgia = $"{SC50.C5XDtcir.Substring(6, 2)}/{SC50.C5XDtcir.Substring(4, 2)}/{SC50.C5XDtcir.Substring(0, 4)}",
@@ -111,7 +111,7 @@ namespace SGID.Pages.Relatorios.RH
                                      from a in Rs.DefaultIfEmpty()
                                      where SC50.DELET != "*" && SC60.DELET != "*" && SA10.DELET != "*" && SA10.A1Msblql != "1" && SB10.DELET != "*" && SA30.DELET != "*" && c.DELET != "*"
                                      && a.DELET != "*" && SC50.C5Liberok != "E" && (int)(object)SC50.C5XDtcir >= (int)(object)DataInicio.ToString("yyyy/MM/dd").Replace("/", "") && (int)(object)SC50.C5XDtcir <= (int)(object)DataFim.ToString("yyyy/MM/dd").Replace("/", "")
-                                     && SC50.C5Utpoper == "F" && SA10.A1Cgc != "04715053000140" && SA10.A1Cgc != "04715053000220" && SA10.A1Cgc != "01390500000140"
+                                     && (SC50.C5Utpoper == "F" || SC50.C5Utpoper == "K") && SA10.A1Cgc != "04715053000140" && SA10.A1Cgc != "04715053000220" && SA10.A1Cgc != "01390500000140"
                                      select new RelatorioCirurgiasValorizadas
                                      {
                                          DTCirurgia = $"{SC50.C5XDtcir.Substring(6, 2)}/{SC50.C5XDtcir.Substring(4, 2)}/{SC50.C5XDtcir.Substring(0, 4)}",
@@ -161,7 +161,7 @@ namespace SGID.Pages.Relatorios.RH
                                  from a in Rs.DefaultIfEmpty()
                                  where SC50.DELET != "*" && SC60.DELET != "*" && SA10.DELET != "*" && SA10.A1Msblql != "1" && SB10.DELET != "*" && SA30.DELET != "*" && c.DELET != "*"
                                  && a.DELET != "*" && SC50.C5Liberok != "E" && (int)(object)SC50.C5XDtcir >= (int)(object)DataInicio.ToString("yyyy/MM/dd").Replace("/", "") && (int)(object)SC50.C5XDtcir <= (int)(object)DataFim.ToString("yyyy/MM/dd").Replace("/", "")
-                                 && SC50.C5Utpoper == "F" && SA10.A1Cgc != "04715053000140" && SA10.A1Cgc != "04715053000220" && SA10.A1Cgc != "01390500000140"
+                                 && (SC50.C5Utpoper == "F" || SC50.C5Utpoper == "K") && SA10.A1Cgc != "04715053000140" && SA10.A1Cgc != "04715053000220" && SA10.A1Cgc != "01390500000140"
                                  select new RelatorioCirurgiasValorizadas
                                  {
                                      DTCirurgia = $"{SC50.C5XDtcir.Substring(6, 2)}/{SC50.C5XDtcir.Substring(4, 2)}/{SC50.C5XDtcir.Substring(0, 4)}",
@@ -232,7 +232,7 @@ namespace SGID.Pages.Relatorios.RH
                                      from a in Rs.DefaultIfEmpty()
                                      where SC50.DELET != "*" && SC60.DELET != "*" && SA10.DELET != "*" && SA10.A1Msblql != "1" && SB10.DELET != "*" && SA30.DELET != "*" && c.DELET != "*"
                                      && a.DELET != "*" && SC50.C5Liberok != "E" && (int)(object)SC50.C5XDtcir >= (int)(object)DataInicio.ToString("yyyy/MM/dd").Replace("/", "") && (int)(object)SC50.C5XDtcir <= (int)(object)DataFim.ToString("yyyy/MM/dd").Replace("/", "")
-                                     && (SA30.A3Xlogin == user || SA30.A3Xlogsup == user) && SC50.C5Utpoper == "F" && SA10.A1Cgc != "04715053000140" && SA10.A1Cgc != "04715053000220" && SA10.A1Cgc != "01390500000140"
+                                     && (SA30.A3Xlogin == user || SA30.A3Xlogsup == user) && (SC50.C5Utpoper == "F" || SC50.C5Utpoper == "K") && SA10.A1Cgc != "04715053000140" && SA10.A1Cgc != "04715053000220" && SA10.A1Cgc != "01390500000140"
                                      select new RelatorioCirurgiasValorizadas
                                      {
                                          DTCirurgia = $"{SC50.C5XDtcir.Substring(6, 2)}/{SC50.C5XDtcir.Substring(4, 2)}/{SC50.C5XDtcir.Substring(0, 4)}",
@@ -282,7 +282,7 @@ namespace SGID.Pages.Relatorios.RH
                                      from a in Rs.DefaultIfEmpty()
                                      where SC50.DELET != "*" && SC60.DELET != "*" && SA10.DELET != "*" && SA10.A1Msblql != "1" && SB10.DELET != "*" && SA30.DELET != "*" && c.DELET != "*"
                                      && a.DELET != "*" && SC50.C5Liberok != "E" && (int)(object)SC50.C5XDtcir >= (int)(object)DataInicio.ToString("yyyy/MM/dd").Replace("/", "") && (int)(object)SC50.C5XDtcir <= (int)(object)DataFim.ToString("yyyy/MM/dd").Replace("/", "")
-                                     && SC50.C5Utpoper == "F" && SA10.A1Cgc != "04715053000140" && SA10.A1Cgc != "04715053000220" && SA10.A1Cgc != "01390500000140"
+                                     && (SC50.C5Utpoper == "F" || SC50.C5Utpoper == "K") && SA10.A1Cgc != "04715053000140" && SA10.A1Cgc != "04715053000220" && SA10.A1Cgc != "01390500000140"
                                      select new RelatorioCirurgiasValorizadas
                                      {
                                          DTCirurgia = $"{SC50.C5XDtcir.Substring(6, 2)}/{SC50.C5XDtcir.Substring(4, 2)}/{SC50.C5XDtcir.Substring(0, 4)}",
@@ -323,7 +323,7 @@ namespace SGID.Pages.Relatorios.RH
                                  from a in Rs.DefaultIfEmpty()
                                  where SC50.DELET != "*" && SC60.DELET != "*" && SA10.DELET != "*" && SA10.A1Msblql != "1" && SB10.DELET != "*" && SA30.DELET != "*" && c.DELET != "*"
                                  && a.DELET != "*" && SC50.C5Liberok != "E" && (int)(object)SC50.C5XDtcir >= (int)(object)DataInicio.ToString("yyyy/MM/dd").Replace("/", "") && (int)(object)SC50.C5XDtcir <= (int)(object)DataFim.ToString("yyyy/MM/dd").Replace("/", "")
-                                 && SC50.C5Utpoper == "F" && SA10.A1Cgc != "04715053000140" && SA10.A1Cgc != "04715053000220" && SA10.A1Cgc != "01390500000140"
+                                 && (SC50.C5Utpoper == "F" || SC50.C5Utpoper == "K") && SA10.A1Cgc != "04715053000140" && SA10.A1Cgc != "04715053000220" && SA10.A1Cgc != "01390500000140"
                                  select new RelatorioCirurgiasValorizadas
                                  {
                                      DTCirurgia = $"{SC50.C5XDtcir.Substring(6, 2)}/{SC50.C5XDtcir.Substring(4, 2)}/{SC50.C5XDtcir.Substring(0, 4)}",

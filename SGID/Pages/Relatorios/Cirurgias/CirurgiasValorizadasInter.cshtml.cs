@@ -50,7 +50,7 @@ namespace SGID.Pages.Relatorios.Cirurgias
                              from a in Rs.DefaultIfEmpty()
                              where SC50.DELET != "*" && SC60.DELET != "*" && SA10.DELET != "*" && SA10.A1Msblql != "1" && SB10.DELET != "*" && SA30.DELET != "*" && c.DELET != "*"
                              && a.DELET != "*" && SC50.C5Liberok != "E" && (int)(object)SC50.C5XDtcir >= (int)(object)DataInicio.ToString("yyyy/MM/dd").Replace("/", "") && (int)(object)SC50.C5XDtcir <= (int)(object)DataFim.ToString("yyyy/MM/dd").Replace("/", "")
-                             && (SA30.A3Xlogin == user || SA30.A3Xlogsup == user) && SC50.C5Utpoper == "F" && SA10.A1Cgc != "04715053000140" && SA10.A1Cgc != "04715053000220" && SA10.A1Cgc != "01390500000140"
+                             && (SA30.A3Xlogin == user || SA30.A3Xlogsup == user) && (SC50.C5Utpoper == "F" || SC50.C5Utpoper == "K") && SA10.A1Cgc != "04715053000140" && SA10.A1Cgc != "04715053000220" && SA10.A1Cgc != "01390500000140"
                              orderby SC50.C5XDtcir descending
                              select new RelatorioCirurgiasValorizadas
                              {
