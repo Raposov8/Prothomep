@@ -55,7 +55,7 @@ namespace SGID.Pages.Cotacoes
                         }
                     case 4:
                         {
-                            Agendamentos = SGID.Agendamentos.Where(x => x.StatusPedido == 7 && x.StatusLogistica == 1).OrderByDescending(x => x.Id).ToList();
+                            Agendamentos = SGID.Agendamentos.Where(x => x.StatusPedido == 7 && (x.StatusLogistica == 0 || x.StatusLogistica == 1)).OrderByDescending(x => x.Id).ToList();
                             break;
                         }
                     case 5:

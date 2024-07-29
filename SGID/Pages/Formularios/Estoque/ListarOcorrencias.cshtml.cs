@@ -86,7 +86,11 @@ namespace SGID.Pages.Formularios.Estoque
                 {
                     email = ProtheusInter.Sa3010s.FirstOrDefault(x => x.A3Nome == Ocorrencia.Vendedor)?.A3Email;
 
-                    if (email.Contains(";"))
+                    if (email == null)
+                    {
+                        email = "ricardo.bassanese@intermedic.com.br";
+                    }
+                    else if (email.Contains(";"))
                     {
                         email = email.Split(";")[0];
                     }
@@ -95,7 +99,11 @@ namespace SGID.Pages.Formularios.Estoque
                 {
                     email = ProtheusDenuo.Sa3010s.FirstOrDefault(x => x.A3Nome == Ocorrencia.Vendedor)?.A3Email;
 
-                    if (email.Contains(";"))
+                    if (email == null)
+                    {
+                        email = "ricardo.bassanese@intermedic.com.br";
+                    }
+                    else if (email.Contains(";"))
                     {
                         email = email.Split(";")[0];
                     }

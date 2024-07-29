@@ -13,7 +13,7 @@
     }
 }
 
-<h2>Deletar</h2>
+<h2>Desativar</h2>
 
 <h3>Você tem certeza que deseja Desativar @Model.Input.UserName</h3>
 <div>
@@ -22,6 +22,8 @@
     {
         @Html.AntiForgeryToken()
         <dl class="dl-horizontal">
+            @Html.HiddenFor(model => model.Input.Id)
+            @Html.HiddenFor(model => model.Input.UserName)
             <dt>
                 @Html.DisplayNameFor(model => model.Input.UserName)
             </dt>
@@ -40,7 +42,7 @@
         
 
         <div class="form-actions no-color">
-            <input type="submit" value="Deletar" class="btn btn-default" /> |
+            <input type="submit" value="Salvar" class="btn btn-default" /> |
             <a href="/account/rh/listartime">Voltar</a>
         </div>
     }

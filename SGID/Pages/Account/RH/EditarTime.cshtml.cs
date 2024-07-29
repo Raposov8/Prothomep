@@ -88,7 +88,7 @@ namespace SGID.Pages.Account.RH
             return Page();
         }
 
-        public async Task<IActionResult> OnPostAsync(string GerenProd = "0", params string[] SelectedLinhas)
+        public async Task<IActionResult> OnPostAsync(string GerenProd = "NAO", params string[] SelectedLinhas)
         {
             try
             {
@@ -116,6 +116,14 @@ namespace SGID.Pages.Account.RH
                 usuario.Porcentagem = Editar.Porcentagem;
                 usuario.PorcentagemSeg = Editar.PorcentagemSegun;
                 usuario.GerenProd = GerenProd;
+
+                if(GerenProd == "NAO")
+                {
+                    var linhas = _db.TimeProdutos.Where(x => x.TimeId == usuario.Id).ToList();
+
+                    linhas.ForEach(x => _db.TimeProdutos.Remove(x));
+                    _db.SaveChanges();
+                }
                 usuario.PorcentagemGenProd = Editar.PorcentagemProd;
                 usuario.Teto = Editar.Teto;
                 usuario.Salario = Editar.Salario;

@@ -14,13 +14,13 @@ namespace SGID.Pages.Account.RH
         private readonly UserManager<UserInter> _userManager;
         private readonly ApplicationDbContext _db;
 
+        [BindProperty]
         public Delete Input { get; set; }
 
         public DeleteTimeModel(UserManager<UserInter> userManager, ApplicationDbContext db)
         {
             _userManager = userManager;
             _db = db;
-            Input = new();
         }
 
         public async Task<ActionResult> OnGet(int id)
@@ -35,8 +35,7 @@ namespace SGID.Pages.Account.RH
                 Input = new Delete
                 {
                     Id = Integrante.Id,
-                    UserName = user.UserName,
-                    IdUsuario = user.Id
+                    UserName = Integrante.Integrante,
                 };
 
 
@@ -59,7 +58,7 @@ namespace SGID.Pages.Account.RH
                 {
                     var Integrante = _db.Times.FirstOrDefault(x => x.Id == id);
 
-                    var user = await _userManager.FindByIdAsync(Integrante.IdUsuario);
+                    //var user = await _userManager.FindByIdAsync(Integrante.IdUsuario);
 
                     Integrante.Status = false;
                     Integrante.Desativar = Input.DataDesativacao;
@@ -83,8 +82,7 @@ namespace SGID.Pages.Account.RH
             public int Id { get; set; }
             public string UserName { get; set; }
 
-            public DateTime DataDesativacao { get; set; }
-            public string IdUsuario { get; set; }
+            public DateTime? DataDesativacao { get; set; }
         }
     }
 }

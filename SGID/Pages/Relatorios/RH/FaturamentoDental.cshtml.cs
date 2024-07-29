@@ -57,7 +57,7 @@ namespace SGID.Pages.Relatorios.RH
                                  join SC50 in Protheus.Sc5010s on new { Filial = SC60.C6Filial, Num = SC60.C6Num, Cli = SC60.C6Cli, Loja = SC60.C6Loja } equals new { Filial = SC50.C5Filial, Num = SC50.C5Num, Cli = SC50.C5Cliente, Loja = SC50.C5Lojacli }
                                  join SA30 in Protheus.Sa3010s on SC50.C5Vend1 equals SA30.A3Cod into sr
                                  from c in sr.DefaultIfEmpty()
-                                 where SD20.DELET != "*" && SA10.DELET != "*" && SA10.A1Msblql != "1" && SB10.DELET != "*" && SF20.DELET != "*"
+                                 where SD20.DELET != "*" && SA10.DELET != "*" && SB10.DELET != "*" && SF20.DELET != "*"
                                  && SC60.DELET != "*" && SC50.DELET != "*" && c.DELET != "*" &&
                                  (((int)(object)SD20.D2Cf >= 5102 && (int)(object)SD20.D2Cf <= 5114)
                                  || ((int)(object)SD20.D2Cf >= 6102 && (int)(object)SD20.D2Cf <= 6114)
@@ -224,7 +224,7 @@ namespace SGID.Pages.Relatorios.RH
                                  join SC50 in Protheus.Sc5010s on new { Filial = SC60.C6Filial, Num = SC60.C6Num, Cli = SC60.C6Cli, Loja = SC60.C6Loja } equals new { Filial = SC50.C5Filial, Num = SC50.C5Num, Cli = SC50.C5Cliente, Loja = SC50.C5Lojacli }
                                  join SA30 in Protheus.Sa3010s on SC50.C5Vend1 equals SA30.A3Cod into sr
                                  from c in sr.DefaultIfEmpty()
-                                 where SD20.DELET != "*" && SA10.DELET != "*" && SA10.A1Msblql != "1" && SB10.DELET != "*" && SF20.DELET != "*"
+                                 where SD20.DELET != "*" && SA10.DELET != "*" && SB10.DELET != "*" && SF20.DELET != "*"
                                  && SC60.DELET != "*" && SC50.DELET != "*" && c.DELET != "*" &&
                                  (((int)(object)SD20.D2Cf >= 5102 && (int)(object)SD20.D2Cf <= 5114)
                                  || ((int)(object)SD20.D2Cf >= 6102 && (int)(object)SD20.D2Cf <= 6114)
@@ -413,7 +413,7 @@ namespace SGID.Pages.Relatorios.RH
                                  join SC50 in Protheus.Sc5010s on new { Filial = SC60.C6Filial, Num = SC60.C6Num, Cli = SC60.C6Cli, Loja = SC60.C6Loja } equals new { Filial = SC50.C5Filial, Num = SC50.C5Num, Cli = SC50.C5Cliente, Loja = SC50.C5Lojacli }
                                  join SA30 in Protheus.Sa3010s on SC50.C5Vend1 equals SA30.A3Cod into sr
                                  from c in sr.DefaultIfEmpty()
-                                 where SD20.DELET != "*" && SA10.DELET != "*" && SA10.A1Msblql != "1" && SB10.DELET != "*" && SF20.DELET != "*"
+                                 where SD20.DELET != "*" && SA10.DELET != "*" && SB10.DELET != "*" && SF20.DELET != "*"
                                  && SC60.DELET != "*" && SC50.DELET != "*" && c.DELET != "*" &&
                                  (((int)(object)SD20.D2Cf >= 5102 && (int)(object)SD20.D2Cf <= 5114)
                                  || ((int)(object)SD20.D2Cf >= 6102 && (int)(object)SD20.D2Cf <= 6114)
@@ -580,7 +580,7 @@ namespace SGID.Pages.Relatorios.RH
                                  join SC50 in Protheus.Sc5010s on new { Filial = SC60.C6Filial, Num = SC60.C6Num, Cli = SC60.C6Cli, Loja = SC60.C6Loja } equals new { Filial = SC50.C5Filial, Num = SC50.C5Num, Cli = SC50.C5Cliente, Loja = SC50.C5Lojacli }
                                  join SA30 in Protheus.Sa3010s on SC50.C5Vend1 equals SA30.A3Cod into sr
                                  from c in sr.DefaultIfEmpty()
-                                 where SD20.DELET != "*" && SA10.DELET != "*" && SA10.A1Msblql != "1" && SB10.DELET != "*" && SF20.DELET != "*"
+                                 where SD20.DELET != "*" && SA10.DELET != "*" && SB10.DELET != "*" && SF20.DELET != "*"
                                  && SC60.DELET != "*" && SC50.DELET != "*" && c.DELET != "*" &&
                                  (((int)(object)SD20.D2Cf >= 5102 && (int)(object)SD20.D2Cf <= 5114)
                                  || ((int)(object)SD20.D2Cf >= 6102 && (int)(object)SD20.D2Cf <= 6114)

@@ -40,7 +40,6 @@ namespace SGID.Pages.Account.RH
             {
                 if (ModelState.IsValid)
                 {
-                    
                     var integrante = Input.Email;
 
                         var time = new TimeDental
@@ -48,7 +47,7 @@ namespace SGID.Pages.Account.RH
                             DataCriacao = DateTime.Now,
                             Status = true,
                             Lider = "MARCOS.PARRA",
-                            Integrante = integrante,
+                            Integrante = integrante.Split("@")[0],
                             Meta = Input.Meta,
                             Porcentagem = Input.Porcentagem,
                             PorcentagemSeg = Input.PorcentagemSegun,

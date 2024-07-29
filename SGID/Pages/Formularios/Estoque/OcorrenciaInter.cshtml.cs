@@ -32,6 +32,8 @@ namespace SGID.Pages.Formularios.Estoque
             };
 
             Vendedores = ProtheusInter.Sa3010s.Where(x => x.DELET != "*" && x.A3Msblql != "1").Select(x => x.A3Nome).ToList();
+
+            Vendedores.AddRange(ProtheusInter.Pah010s.Where(x => x.DELET != "*" && x.PahMsblql != "1" && x.PahCodins != "000").Select(x => x.PahNome).ToList());
         }
 
         public IActionResult OnPost(string Cliente,string Hospital, string Medico, string Paciente, string Agendamento, DateTime? Cirurgia,

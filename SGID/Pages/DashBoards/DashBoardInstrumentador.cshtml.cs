@@ -34,7 +34,6 @@ namespace SGID.Pages.DashBoards
             }
             else
             {
-
                 MeusAgendamentos = SGID.Agendamentos.Where(x => x.StatusPedido == 7).Count();
             }
         }
@@ -90,7 +89,6 @@ namespace SGID.Pages.DashBoards
             {
                 string user = User.Identity.Name.Split("@")[0].ToUpper();
                 Logger.Log(e, SGID, "DashBoardInstrumentador, Events", user);
-
             }
 
             return new JsonResult("");

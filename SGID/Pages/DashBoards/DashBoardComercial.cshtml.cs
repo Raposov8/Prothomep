@@ -2100,21 +2100,21 @@ namespace SGID.Pages.DashBoards
                         #region BaixaLicitacoes
 
                         var BaixaLicitacoes = (from SE50 in ProtheusDenuo.Se5010s
-                                               join SE10 in ProtheusDenuo.Se1010s on new { PRE = SE50.E5Prefixo, Num = SE50.E5Numero, Par = SE50.E5Parcela, Tipo = SE50.E5Tipo, Cliente = SE50.E5Cliente, Loja = SE50.E5Loja }
-                                               equals new { PRE = SE10.E1Prefixo, Num = SE10.E1Num, Par = SE10.E1Parcela, Tipo = SE10.E1Tipo, Cliente = SE10.E1Cliente, Loja = SE10.E1Loja }
+                                               join SE10 in ProtheusDenuo.Se1010s on new { Filial = SE50.E5Filial, PRE = SE50.E5Prefixo, Num = SE50.E5Numero, Par = SE50.E5Parcela, Tipo = SE50.E5Tipo, Cliente = SE50.E5Cliente, Loja = SE50.E5Loja }
+                                               equals new { Filial = SE10.E1Filial, PRE = SE10.E1Prefixo, Num = SE10.E1Num, Par = SE10.E1Parcela, Tipo = SE10.E1Tipo, Cliente = SE10.E1Cliente, Loja = SE10.E1Loja }
                                                join SA10 in ProtheusDenuo.Sa1010s on SE50.E5Cliente equals SA10.A1Cod
-                                               join SC50 in ProtheusDenuo.Sc5010s on SE10.E1Pedido equals SC50.C5Num
+                                               join SC50 in ProtheusDenuo.Sc5010s on new { Filial = SE10.E1Filial, Pedido = SE10.E1Pedido } equals new { Filial = SC50.C5Filial, Pedido = SC50.C5Num }
                                                join SA30 in ProtheusDenuo.Sa3010s on SC50.C5Vend1 equals SA30.A3Cod
                                                join SD20 in ProtheusDenuo.Sd2010s on new { Filial = SC50.C5Filial, Num = SC50.C5Num } equals new { Filial = SD20.D2Filial, Num = SD20.D2Pedido }
-                                               where SE50.DELET != "*" && SE10.DELET != "*" && SE50.E5Recpag == "R"
+                                               where SE50.DELET != "*" && SE10.DELET != "*" && SE50.E5Recpag == "R" && SC50.DELET != "*" && SD20.DELET != "*"
                                                && (SE50.E5Tipodoc == "VL" || SE50.E5Tipodoc == "RA")
                                                && (SE50.E5Naturez == "111001" || SE50.E5Naturez == "111004" || SE50.E5Naturez == "111006")
                                                && (SE50.E5Banco == "001" || SE50.E5Banco == "237" || SE50.E5Banco == "341")
                                                && (int)(object)SE50.E5Data >= (int)(object)DataInicio
                                                && (int)(object)SE50.E5Data <= (int)(object)DataFim
                                                && (SA10.A1Xgrinte == "000011" || SA10.A1Xgrinte == "000012")
-                                               && (int)(object)SD20.D2Emissao >= 20240301
                                                && SA30.A3Xlogin == user
+                                               && (int)(object)SD20.D2Emissao > 20240231
                                                select new RelatorioAreceberBaixa
                                                {
                                                    Prefixo = SE50.E5Prefixo,
@@ -2144,7 +2144,8 @@ namespace SGID.Pages.DashBoards
                                                    CodigoCliente = SA10.A1Xgrinte,
                                                    Login = SA30.A3Xlogin,
                                                    Gestor = SA30.A3Xlogsup,
-                                                   DataPedido = SD20.D2Emissao
+                                                   DataPedido = SD20.D2Emissao,
+                                                   Empresa = "DENUO"
                                                }).GroupBy(x => new
                                                {
                                                    x.Prefixo,
@@ -2174,7 +2175,8 @@ namespace SGID.Pages.DashBoards
                                                    x.CodigoCliente,
                                                    x.Login,
                                                    x.Gestor,
-                                                   x.DataPedido
+                                                   x.DataPedido,
+                                                   x.Empresa
                                                }).Select(x => new RelatorioAreceberBaixa
                                                {
                                                    Prefixo = x.Key.Prefixo,
@@ -2204,7 +2206,8 @@ namespace SGID.Pages.DashBoards
                                                    CodigoCliente = x.Key.CodigoCliente,
                                                    Login = x.Key.Login.Trim(),
                                                    Gestor = x.Key.Gestor,
-                                                   DataPedido = x.Key.DataPedido
+                                                   DataPedido = x.Key.DataPedido,
+                                                   Empresa = x.Key.Empresa
                                                }).ToList();
 
                         #endregion

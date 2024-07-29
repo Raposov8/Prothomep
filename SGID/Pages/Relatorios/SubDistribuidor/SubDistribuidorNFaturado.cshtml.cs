@@ -78,7 +78,7 @@ namespace SGID.Pages.Relatorios.SubDistribuidor
                              join SC60 in Protheus.Sc6010s on new { Filial = SC50.C5Filial, Num = SC50.C5Num } equals new { Filial = SC60.C6Filial, Num = SC60.C6Num }
                              join SB10 in Protheus.Sb1010s on SC60.C6Produto equals SB10.B1Cod
                              join SA30 in Protheus.Sa3010s on SC50.C5Vend1 equals SA30.A3Cod
-                             where SC50.DELET != "*" && SA10.DELET != "*" && SA10.A1Msblql != "1" && SC60.DELET != "*" &&
+                             where SC50.DELET != "*" && SA10.DELET != "*" && SC60.DELET != "*" &&
                              SA30.DELET != "*" && SB10.DELET != "*" && SA10.A1Clinter == "S" && SC50.C5Nota == "" &&
                              SC60.C6Qtdven - SC60.C6Qtdent != 0
                              orderby SA10.A1Nome, SC50.C5Emissao
@@ -128,7 +128,7 @@ namespace SGID.Pages.Relatorios.SubDistribuidor
                              join SC60 in Protheus.Sc6010s on new { Filial = SC50.C5Filial, Num = SC50.C5Num } equals new { Filial = SC60.C6Filial, Num = SC60.C6Num }
                              join SB10 in Protheus.Sb1010s on SC60.C6Produto equals SB10.B1Cod
                              join SA30 in Protheus.Sa3010s on SC50.C5Vend1 equals SA30.A3Cod
-                             where SC50.DELET != "*" && SA10.DELET != "*" && SA10.A1Msblql != "1" && SC60.DELET != "*" &&
+                             where SC50.DELET != "*" && SA10.DELET != "*" && SC60.DELET != "*" &&
                              SA30.DELET != "*" && SA10.A1Clinter == "S" && SC50.C5Nota == "" &&
                              SC60.C6Qtdven - SC60.C6Qtdent != 0
                              orderby SA10.A1Nome, SC50.C5Emissao

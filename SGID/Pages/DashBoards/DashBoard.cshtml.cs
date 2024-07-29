@@ -240,6 +240,8 @@ namespace SGID.Pages.DashBoards
 
             agendamento.StatusPedido = 3;
             agendamento.DataAlteracao = DateTime.Now;
+            agendamento.UsuarioAprova = User.Identity.Name.Split("@")[0].ToUpper();
+            agendamento.DataAprova = DateTime.Now;
             SGID.Agendamentos.Update(agendamento);
             SGID.SaveChanges();
 

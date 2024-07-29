@@ -64,7 +64,10 @@ namespace SGID.Data.ViewModel
         public string? UsuarioComercialAprova { get; set; }
         public DateTime? DataComercialAprova { get; set; }
 
-        
+        //ADM APROVA
+        public string? UsuarioAprova { get; set; }
+        public DateTime? DataAprova { get; set; }
+
         //Rejeição
         public string? UsuarioRejeicao { get; set; }
         public string? MotivoRejeicao { get; set; }

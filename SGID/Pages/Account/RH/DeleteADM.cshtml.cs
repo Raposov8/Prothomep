@@ -14,6 +14,7 @@ namespace SGID.Pages.Account.RH
         private readonly UserManager<UserInter> _userManager;
         private readonly ApplicationDbContext _db;
 
+        [BindProperty]
         public Delete Input { get; set; }
 
         public DeleteADMModel(UserManager<UserInter> userManager, ApplicationDbContext db)

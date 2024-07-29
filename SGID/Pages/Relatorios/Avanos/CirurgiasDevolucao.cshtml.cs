@@ -46,7 +46,7 @@ namespace SGID.Pages.Relatorios.Avanos
                              join SA30 in Protheus.Sa3010s on SF20.F2Vend1 equals SA30.A3Cod
                              join SA10 in Protheus.Sa1010s on new { Forn = SD10.D1Fornece, Loja = SD10.D1Loja } equals new { Forn = SA10.A1Cod, Loja = SA10.A1Loja }
                              join SB10 in Protheus.Sb1010s on SD10.D1Cod equals SB10.B1Cod
-                             where SD10.DELET != "*" && SF20.DELET != "*" && SA10.DELET != "*" && SA10.A1Msblql != "1" && SB10.DELET != "*" && SA30.DELET != "*"
+                             where SD10.DELET != "*" && SF20.DELET != "*" && SA10.DELET != "*" && SB10.DELET != "*" && SA30.DELET != "*"
                              && SA30.A3Xunnego != "000008" && (SD10.D1Cf == "1202" || SD10.D1Cf == "2202" || SD10.D1Cf == "3202" || SD10.D1Cf == "1553" || SD10.D1Cf == "2553")
                              && SB10.B1Ugrpint == "082"
                              && SC50.C5Utpoper == "F"
@@ -148,7 +148,7 @@ namespace SGID.Pages.Relatorios.Avanos
                              join SA30 in Protheus.Sa3010s on SF20.F2Vend1 equals SA30.A3Cod
                              join SA10 in Protheus.Sa1010s on new { Forn = SD10.D1Fornece, Loja = SD10.D1Loja } equals new { Forn = SA10.A1Cod, Loja = SA10.A1Loja }
                              join SB10 in Protheus.Sb1010s on SD10.D1Cod equals SB10.B1Cod
-                             where SD10.DELET != "*" && SF20.DELET != "*" && SA10.DELET != "*" && SA10.A1Msblql != "1" && SB10.DELET != "*" && SA30.DELET != "*"
+                             where SD10.DELET != "*" && SF20.DELET != "*" && SA10.DELET != "*" && SB10.DELET != "*" && SA30.DELET != "*"
                              && SA30.A3Xunnego != "000008" && (SD10.D1Cf == "1202" || SD10.D1Cf == "2202" || SD10.D1Cf == "3202" || SD10.D1Cf == "1553" || SD10.D1Cf == "2553")
                              && SB10.B1Ugrpint == "082"
                              && SC50.C5Utpoper == "F"
