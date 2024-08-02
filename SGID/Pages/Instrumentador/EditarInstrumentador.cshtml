@@ -163,7 +163,7 @@
 
          var teste = '@Model.Instrumentador.ServCon'
 
-         $('#ServCon').val(teste.replace('&#xAA;', 'ª').replace('&#xC7;', 'Ç').replace('&#xC3;', 'Ã'))
+            $('#ServCon').val(teste.replace('&#xAA;', 'ª').replace('&#xC7;', 'Ç').replace('&#xC3;', 'Ã').replace('&#x2B;', '+'))
 
         @if (Model.Instrumentador.Tipo != null)
         {

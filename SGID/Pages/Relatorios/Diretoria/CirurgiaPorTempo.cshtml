@@ -163,13 +163,13 @@
 {
     <script>
         $(document).ready(function () {
-            var NReduz = '@Model.Cliente'.replace('&#xC7;', 'Ç').replace('&#xC3;', 'Ã').replace('&#xD5;', 'Õ')
+            var NReduz = '@Model.Cliente'.replace('&#xC7;', 'Ç').replace('&#xC3;', 'Ã').replace('&#xD5;', 'Õ').replace('&#x2B;', '+')
             $('#NReduz').val(NReduz);
 
-            var Empresa = '@Model.Empresa'.replace('&#xC7;', 'Ç').replace('&#xC3;', 'Ã').replace('&#xD5;', 'Õ')
+            var Empresa = '@Model.Empresa'.replace('&#xC7;', 'Ç').replace('&#xC3;', 'Ã').replace('&#xD5;', 'Õ').replace('&#x2B;', '+')
             $('#Empresa').val(Empresa);
 
-            var Valor = '@Model.Valor'.replace('&#xC7;', 'Ç').replace('&#xC3;', 'Ã').replace('&#xD5;', 'Õ')
+            var Valor = '@Model.Valor'.replace('&#xC7;', 'Ç').replace('&#xC3;', 'Ã').replace('&#xD5;', 'Õ').replace('&#x2B;', '+')
             $('#Valor').val(Valor);
         })
     </script>

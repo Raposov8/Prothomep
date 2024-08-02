@@ -448,7 +448,7 @@
 
             var teste2 = "@Model.Agendamento.Procedimento"
 
-            $('#Procedimento').val(teste2.replace('&#xAA;', 'ª').replace('&#xC7;', 'Ç').replace('&#xC3;', 'Ã'));
+            $('#Procedimento').val(teste2.replace('&#xAA;', 'ª').replace('&#xC7;', 'Ç').replace('&#xC3;', 'Ã').replace('&#x2B;', '+'));
 
             @if(Model.Agendamento.DataCirurgia != null)
             {

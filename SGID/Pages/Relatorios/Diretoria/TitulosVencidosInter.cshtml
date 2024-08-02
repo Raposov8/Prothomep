@@ -116,13 +116,13 @@
 {
     <script>
         $(document).ready(function () {
-            var NReduz = '@Model.Cliente'.replace('&#xC7;', 'Ç').replace('&#xC3;', 'Ã').replace('&#xD5;', 'Õ')
+            var NReduz = '@Model.Cliente'.replace('&#xC7;', 'Ç').replace('&#xC3;', 'Ã').replace('&#xD5;', 'Õ').replace('&#x2B;', '+')
             $('#NReduz').val(NReduz);
 
-            var Tempo = '@Model.Tempo'.replace('&#xC7;', 'Ç').replace('&#xC3;', 'Ã').replace('&#xD5;', 'Õ')
+            var Tempo = '@Model.Tempo'.replace('&#xC7;', 'Ç').replace('&#xC3;', 'Ã').replace('&#xD5;', 'Õ').replace('&#x2B;', '+')
             $('#Tempo').val(Tempo);
 
-            var Revelia = '@Model.Revelia'.replace('&#xC7;', 'Ç').replace('&#xC3;', 'Ã').replace('&#xD5;', 'Õ')
+            var Revelia = '@Model.Revelia'.replace('&#xC7;', 'Ç').replace('&#xC3;', 'Ã').replace('&#xD5;', 'Õ').replace('&#x2B;', '+')
             $('#Revelia').val(Revelia);
         })
     </script>

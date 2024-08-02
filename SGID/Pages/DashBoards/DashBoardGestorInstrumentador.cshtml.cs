@@ -28,27 +28,27 @@ namespace SGID.Pages.DashBoards
             Agendamentos = id switch
             {
                 //Cirurgias há Sinalizar
-                0 => SGID.Agendamentos.Where(x => x.StatusPedido == 7 && x.StatusInstrumentador == 0).ToList(),
-                //Cirurgias Aguardando Instrumentador
-                1 => SGID.Agendamentos.Where(x => x.StatusPedido == 7 && x.StatusInstrumentador == 1).ToList(),
-                //Em Cirurgia
-                2 => SGID.Agendamentos.Where(x => x.StatusPedido == 7 && x.StatusInstrumentador == 2).ToList(),
-                //Concluidas
-                3 => SGID.Agendamentos.Where(x => x.StatusPedido == 7 && x.StatusInstrumentador == 3).ToList(),
-                //Canceladas
-                _ => SGID.Agendamentos.Where(x => x.StatusPedido == 7 && x.StatusInstrumentador == 4).ToList(),
+                0 => SGID.Agendamentos.Where(x => (x.StatusPedido == 3 || x.StatusPedido == 7 ) && x.StatusInstrumentador == 0).ToList(),
+                //Cirurgias Aguardando Instrumentador                 
+                1 => SGID.Agendamentos.Where(x => (x.StatusPedido == 3 || x.StatusPedido == 7) && x.StatusInstrumentador == 1).ToList(),
+                //Em Cirurgia                                         
+                2 => SGID.Agendamentos.Where(x => (x.StatusPedido == 3 || x.StatusPedido == 7) && x.StatusInstrumentador == 2).ToList(),
+                //Concluidas                                          
+                3 => SGID.Agendamentos.Where(x => (x.StatusPedido == 3 || x.StatusPedido == 7) && x.StatusInstrumentador == 3).ToList(),
+                //Canceladas                                          
+                _ => SGID.Agendamentos.Where(x => (x.StatusPedido == 3 || x.StatusPedido == 7) && x.StatusInstrumentador == 4).ToList(),
             };
 
 
-            Cirurgias = SGID.Agendamentos.Where(x => x.StatusPedido == 7 && x.StatusInstrumentador == 0).Count();
+            Cirurgias = SGID.Agendamentos.Where(x => (x.StatusPedido == 3 || x.StatusPedido == 7) && x.StatusInstrumentador == 0).Count();
 
-            Agendadas = SGID.Agendamentos.Where(x => x.StatusPedido == 7 && x.StatusInstrumentador == 1).Count();
+            Agendadas = SGID.Agendamentos.Where(x => (x.StatusPedido == 3 || x.StatusPedido == 7) && x.StatusInstrumentador == 1).Count();
 
-            Andamentos = SGID.Agendamentos.Where(x => x.StatusPedido == 7 && x.StatusInstrumentador == 2).Count();
+            Andamentos = SGID.Agendamentos.Where(x => (x.StatusPedido == 3 || x.StatusPedido == 7) && x.StatusInstrumentador == 2).Count();
 
-            Concluidas = SGID.Agendamentos.Where(x => x.StatusPedido == 7 && x.StatusInstrumentador == 3).Count();
+            Concluidas = SGID.Agendamentos.Where(x => (x.StatusPedido == 3 || x.StatusPedido == 7) && x.StatusInstrumentador == 3).Count();
 
-            Canceladas = SGID.Agendamentos.Where(x => x.StatusPedido == 7 && x.StatusInstrumentador == 4).Count();
+            Canceladas = SGID.Agendamentos.Where(x => (x.StatusPedido == 3 || x.StatusPedido == 7) && x.StatusInstrumentador == 4).Count();
         }
 
         public JsonResult OnGetInstrumentador(string Empresa)

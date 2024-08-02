@@ -83,7 +83,6 @@ namespace SGID.Pages.Account.RH
             public int Id { get; set; }
             public string UserName { get; set; }
             public DateTime DataDesativacao { get; set; }
-            public string IdUsuario { get; set; }
         }
     }
 }

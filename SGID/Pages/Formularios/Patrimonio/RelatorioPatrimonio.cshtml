@@ -116,7 +116,7 @@
 @section Scripts{
     <script>
         $(document).ready(function () {
-            var patri = '@Model.Patrimonio'.replace('&#xC7;', 'Ç').replace('&#xC3;', 'Ã')
+            var patri = '@Model.Patrimonio'.replace('&#xC7;', 'Ç').replace('&#xC3;', 'Ã').replace('&#x2B;', '+')
             $('#Patrimonio').val(patri);
         })
     </script>

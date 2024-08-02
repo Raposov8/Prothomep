@@ -283,7 +283,7 @@
             var count = 0;
             $("#Hora").mask("00:00");
 
-            $('#Procedimento').val(teste2.replace('&#xAA;', 'ª').replace('&#xC7;', 'Ç').replace('&#xC3;', 'Ã'));
+            $('#Procedimento').val(teste2.replace('&#xAA;', 'ª').replace('&#xC7;', 'Ç').replace('&#xC3;', 'Ã').replace('&#x2B;', '+'));
 
             $("#Anexos01").change(function(){
                 $("#IconAnexo01").removeClass("Vermelho")
