@@ -62,7 +62,7 @@ namespace SGID.Pages.Relatorios.AdmVendas
                                  ClienteEntrega = SC5.C5Nomclie,
                                  Medico = SC5.C5XNmmed,
                                  Convenio = SC5.C5XNmpla,
-                                 Cirurgia = SC5.C5XDtcir,
+                                 Cirurgia = Convert.ToInt32(SC5.C5XDtcir),
                                  Hoje = "",
                                  Dias = 0,
                                  Anging = "",
@@ -129,13 +129,11 @@ namespace SGID.Pages.Relatorios.AdmVendas
                 {
                     x.Hoje = data.ToString("dd/MM/yyyy");
 
-                    var check = int.TryParse(x.Cirurgia, out int result);
+                    var check = int.TryParse(x.Cirurgia.ToString(), out int result);
 
                     if (check)
                     {
-                        x.Dias = (int)(data - Convert.ToDateTime($"{x.Cirurgia.Substring(4, 2)}/{x.Cirurgia.Substring(6, 2)}/{x.Cirurgia.Substring(0, 4)}")).TotalDays;
-
-                        x.Cirurgia = $"{x.Cirurgia.Substring(6, 2)}/{x.Cirurgia.Substring(4, 2)}/{x.Cirurgia.Substring(0, 4)}";
+                        x.Dias = (int)(data - Convert.ToDateTime($"{x.Cirurgia.ToString().Substring(4, 2)}/{x.Cirurgia.ToString().Substring(6, 2)}/{x.Cirurgia.ToString().Substring(0, 4)}")).TotalDays;
                     }
 
                     var check2 = int.TryParse(x.DataValorizacao, out int result2);
@@ -218,7 +216,7 @@ namespace SGID.Pages.Relatorios.AdmVendas
                                  ClienteEntrega = SC5.C5Nomclie,
                                  Medico = SC5.C5XNmmed,
                                  Convenio = SC5.C5XNmpla,
-                                 Cirurgia = SC5.C5XDtcir,
+                                 Cirurgia = Convert.ToInt32(SC5.C5XDtcir),
                                  Hoje = "",
                                  Dias = 0,
                                  Anging = "",
@@ -290,13 +288,11 @@ namespace SGID.Pages.Relatorios.AdmVendas
                 {
                     x.Hoje = data.ToString("dd/MM/yyyy");
 
-                    var check = int.TryParse(x.Cirurgia, out int result);
+                    var check = int.TryParse(x.Cirurgia.ToString(), out int result);
 
                     if (check)
                     {
-                        x.Dias = (int)(data - Convert.ToDateTime($"{x.Cirurgia.Substring(4, 2)}/{x.Cirurgia.Substring(6, 2)}/{x.Cirurgia.Substring(0, 4)}")).TotalDays;
-
-                        x.Cirurgia = $"{x.Cirurgia.Substring(6, 2)}/{x.Cirurgia.Substring(4, 2)}/{x.Cirurgia.Substring(0, 4)}";
+                        x.Dias = (int)(data - Convert.ToDateTime($"{x.Cirurgia.ToString().Substring(4, 2)}/{x.Cirurgia.ToString().Substring(6, 2)}/{x.Cirurgia.ToString().Substring(0, 4)}")).TotalDays;
                     }
 
                     var check2 = int.TryParse(x.DataValorizacao, out int result2);
@@ -387,7 +383,7 @@ namespace SGID.Pages.Relatorios.AdmVendas
                                  ClienteEntrega = SC5.C5Nomclie,
                                  Medico = SC5.C5XNmmed,
                                  Convenio = SC5.C5XNmpla,
-                                 Cirurgia = SC5.C5XDtcir,
+                                 Cirurgia = Convert.ToInt32(SC5.C5XDtcir),
                                  Hoje = "",
                                  Dias = 0,
                                  Anging = "",
@@ -459,13 +455,11 @@ namespace SGID.Pages.Relatorios.AdmVendas
                 {
                     x.Hoje = data.ToString("dd/MM/yyyy");
 
-                    var check = int.TryParse(x.Cirurgia, out int result);
+                    var check = int.TryParse(x.Cirurgia.ToString(), out int result);
 
                     if (check)
                     {
-                        x.Dias = (int)(data - Convert.ToDateTime($"{x.Cirurgia.Substring(4, 2)}/{x.Cirurgia.Substring(6, 2)}/{x.Cirurgia.Substring(0, 4)}")).TotalDays;
-
-                        x.Cirurgia = $"{x.Cirurgia.Substring(6, 2)}/{x.Cirurgia.Substring(4, 2)}/{x.Cirurgia.Substring(0, 4)}";
+                        x.Dias = (int)(data - Convert.ToDateTime($"{x.Cirurgia.ToString().Substring(4, 2)} / {x.Cirurgia.ToString().Substring(6, 2)} / {x.Cirurgia.ToString().Substring(0, 4)}")).TotalDays;
                     }
 
                     var check2 = int.TryParse(x.DataValorizacao, out int result2);

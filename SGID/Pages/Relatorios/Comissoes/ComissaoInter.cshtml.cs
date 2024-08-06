@@ -43,7 +43,7 @@ namespace SGID.Pages.Relatorios.Comissoes
                          join SC50 in Protheus.Sc5010s on new { Filial = SD20.D2Filial, Num = SD20.D2Pedido } equals new { Filial = SC50.C5Filial, Num = SC50.C5Num }
                          join SX50GRP in Protheus.Sx5010s on new { Chave = SA10.A1Xgrinte, Tabela = "Z3" } equals new { Chave = SX50GRP.X5Chave, Tabela = SX50GRP.X5Tabela }
                          join SX50UNN in Protheus.Sx5010s on new { Chave = SC50.C5Xunnego, Tabela = "Z8" } equals new { Chave = SX50UNN.X5Chave, Tabela = SX50UNN.X5Tabela }
-                         where SD20.DELET != "*" && SA10.DELET != "*" && SA10.A1Msblql != "1" && SB10.DELET != "*" && SC50.DELET != "*" && SX50GRP.DELET != "*" && SX50UNN.DELET != "*" && 
+                         where SD20.DELET != "*" && SA10.DELET != "*" && SB10.DELET != "*" && SC50.DELET != "*" && SX50GRP.DELET != "*" && SX50UNN.DELET != "*" && 
                          (int)(object)SD20.D2Emissao >= (int)(object)DataInicio.ToString("yyyy/MM/dd").Replace("/","") && (int)(object)SD20.D2Emissao <= (int)(object)DataFim.ToString("yyyy/MM/dd").Replace("/", "")
                          && SD20.D2Quant > 0 && ((int)(object)SD20.D2Cf >= 5102 && (int)(object)SD20.D2Cf <= 5114 || (int)(object)SD20.D2Cf >= 6102 && (int)(object)SD20.D2Cf <= 6114
                          || (int)(object)SD20.D2Cf >= 7102 && (int)(object)SD20.D2Cf <= 7114 || cfs.Contains(SD20.D2Cf))
@@ -148,7 +148,7 @@ namespace SGID.Pages.Relatorios.Comissoes
                              join SC50 in Protheus.Sc5010s on new { Filial = SD20.D2Filial, Num = SD20.D2Pedido } equals new { Filial = SC50.C5Filial, Num = SC50.C5Num }
                              join SX50GRP in Protheus.Sx5010s on new { Chave = SA10.A1Xgrinte, Tabela = "Z3" } equals new { Chave = SX50GRP.X5Chave, Tabela = SX50GRP.X5Tabela }
                              join SX50UNN in Protheus.Sx5010s on new { Chave = SC50.C5Xunnego, Tabela = "Z8" } equals new { Chave = SX50UNN.X5Chave, Tabela = SX50UNN.X5Tabela }
-                             where SD20.DELET != "*" && SA10.DELET != "*" && SA10.A1Msblql != "1" && SB10.DELET != "*" && SC50.DELET != "*" && SX50GRP.DELET != "*" && SX50UNN.DELET != "*" &&
+                             where SD20.DELET != "*" && SA10.DELET != "*" && SB10.DELET != "*" && SC50.DELET != "*" && SX50GRP.DELET != "*" && SX50UNN.DELET != "*" &&
                              (int)(object)SD20.D2Emissao >= (int)(object)DataInicio.ToString("yyyy/MM/dd").Replace("/", "") && (int)(object)SD20.D2Emissao <= (int)(object)DataFim.ToString("yyyy/MM/dd").Replace("/", "")
                              && SD20.D2Quant > 0 && ((int)(object)SD20.D2Cf >= 5102 && (int)(object)SD20.D2Cf <= 5114 || (int)(object)SD20.D2Cf >= 6102 && (int)(object)SD20.D2Cf <= 6114
                              || (int)(object)SD20.D2Cf >= 7102 && (int)(object)SD20.D2Cf <= 7114 || cfs.Contains(SD20.D2Cf))

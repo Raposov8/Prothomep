@@ -18,11 +18,13 @@ namespace SGID.Pages.Relatorios.Diretoria
         public List<RelatorioCirurgiaAFaturar> RelatorioInter { get; set; } = new List<RelatorioCirurgiaAFaturar>();
         public List<string> Pedidos { get; set; } = new List<string>();
         public List<string> Clientes { get; set; } = new List<string>();
+
+        public List<string> Grupos { get; set; } = new List<string>();
         public double Total { get; set; }
         public string Anging { get; set; }
         public string Cliente { get; set; }
         public string Empresa { get; set; }
-        public string Valor { get; set; }
+        public string Grupo { get; set; }
 
         public CirurgiaPorTempoModel(TOTVSDENUOContext context, ApplicationDbContext sgid,TOTVSINTERContext inter)
         {
@@ -63,12 +65,12 @@ namespace SGID.Pages.Relatorios.Diretoria
                              select new RelatorioCirurgiaAFaturar
                              {
                                  Vendedor = SC5.C5Nomvend,
-                                 Cliente = a.X5Descri == null ? SC5.C5Nomcli:a.X5Descri,
+                                 Cliente = SC5.C5Nomcli,
                                  GrupoCliente = a.X5Descri,
                                  ClienteEntrega = SC5.C5Nomclie,
                                  Medico = SC5.C5XNmmed,
                                  Convenio = SC5.C5XNmpla,
-                                 Cirurgia = SC5.C5XDtcir,
+                                 Cirurgia = Convert.ToInt32(SC5.C5XDtcir),
                                  Hoje = "",
                                  Dias = 0,
                                  Anging = "",
@@ -155,12 +157,12 @@ namespace SGID.Pages.Relatorios.Diretoria
                                   select new RelatorioCirurgiaAFaturar
                                   {
                                       Vendedor = SC5.C5Nomvend,
-                                      Cliente = a.X5Descri == null ? SC5.C5Nomcli : a.X5Descri,
+                                      Cliente = SC5.C5Nomcli,
                                       GrupoCliente = a.X5Descri,
                                       ClienteEntrega = SC5.C5Nomclie,
                                       Medico = SC5.C5XNmmed,
                                       Convenio = SC5.C5XNmpla,
-                                      Cirurgia = SC5.C5XDtcir,
+                                      Cirurgia = Convert.ToInt32(SC5.C5XDtcir),
                                       Hoje = "",
                                       Dias = 0,
                                       Anging = "",
@@ -233,7 +235,7 @@ namespace SGID.Pages.Relatorios.Diretoria
 
                     var Data = Convert.ToInt32(ago.ToString("yyyy/MM/dd").Replace("/", ""));
 
-                    Relatorio = Relatorio.Where(x => x.Emissao >= Data).ToList();
+                    Relatorio = Relatorio.Where(x => x.Cirurgia >= Data).ToList();
                 }
                 else if (id == "2")
                 {
@@ -243,7 +245,7 @@ namespace SGID.Pages.Relatorios.Diretoria
                     var Data = Convert.ToInt32(ago.ToString("yyyy/MM/dd").Replace("/", ""));
                     var Data2 = Convert.ToInt32(After.ToString("yyyy/MM/dd").Replace("/", ""));
 
-                    Relatorio = Relatorio.Where(x => x.Emissao >= Data && x.Emissao < Data2).ToList();
+                    Relatorio = Relatorio.Where(x => x.Cirurgia >= Data && x.Cirurgia < Data2).ToList();
                 }
                 else
                 {
@@ -251,12 +253,11 @@ namespace SGID.Pages.Relatorios.Diretoria
 
                     var Data = Convert.ToInt32(ago.ToString("yyyy/MM/dd").Replace("/", ""));
 
-                    Relatorio = Relatorio.Where(x => x.Emissao < Data).ToList();
+                    Relatorio = Relatorio.Where(x => x.Cirurgia < Data).ToList();
                 }
 
+                Grupos = Relatorio.Where(x=> x.GrupoCliente !="" && x.GrupoCliente!=null).Select(x => x.GrupoCliente).Distinct().ToList();
                 Clientes = Relatorio.Select(x => x.Cliente).Distinct().ToList();
-
-                this.Valor = "1";
 
                 var data = DateTime.Now;
 
@@ -264,13 +265,11 @@ namespace SGID.Pages.Relatorios.Diretoria
                 {
                     x.Hoje = data.ToString("dd/MM/yyyy");
 
-                    var check = int.TryParse(x.Cirurgia, out int result);
+                    var check = int.TryParse(x.Cirurgia.ToString(), out int result);
 
                     if (check)
                     {
-                        x.Dias = (int)(data - Convert.ToDateTime($"{x.Cirurgia.Substring(4, 2)}/{x.Cirurgia.Substring(6, 2)}/{x.Cirurgia.Substring(0, 4)}")).TotalDays;
-
-                        x.Cirurgia = $"{x.Cirurgia.Substring(6, 2)}/{x.Cirurgia.Substring(4, 2)}/{x.Cirurgia.Substring(0, 4)}";
+                        x.Dias = (int)(data - Convert.ToDateTime($"{x.Cirurgia.ToString().Substring(4, 2)}/{x.Cirurgia.ToString().Substring(6, 2)}/{x.Cirurgia.ToString().Substring(0, 4)}")).TotalDays;
                     }
 
                     var check2 = int.TryParse(x.DataValorizacao, out int result2);
@@ -304,7 +303,7 @@ namespace SGID.Pages.Relatorios.Diretoria
                     Total += x.Valor;
                 });
                 
-                Relatorio = Relatorio.OrderBy(x => x.Cliente).ThenByDescending(x => x.Valor).ToList();
+                Relatorio = Relatorio.OrderBy(x => x.Dias).ToList();
             }
             catch (Exception e)
             {
@@ -313,7 +312,7 @@ namespace SGID.Pages.Relatorios.Diretoria
             }
         }
 
-        public IActionResult OnPost(string id, string NReduz,string Empresa,string Valor)
+        public IActionResult OnPost(string id, string NReduz, string Grupo, string Empresa)
         {
             try
             {
@@ -345,12 +344,12 @@ namespace SGID.Pages.Relatorios.Diretoria
                              select new RelatorioCirurgiaAFaturar
                              {
                                  Vendedor = SC5.C5Nomvend,
-                                 Cliente = a.X5Descri == null ? SC5.C5Nomcli : a.X5Descri,
+                                 Cliente =  SC5.C5Nomcli,
                                  GrupoCliente = a.X5Descri,
                                  ClienteEntrega = SC5.C5Nomclie,
                                  Medico = SC5.C5XNmmed,
                                  Convenio = SC5.C5XNmpla,
-                                 Cirurgia = SC5.C5XDtcir,
+                                 Cirurgia = Convert.ToInt32(SC5.C5XDtcir),
                                  Hoje = "",
                                  Dias = 0,
                                  Anging = "",
@@ -437,12 +436,12 @@ namespace SGID.Pages.Relatorios.Diretoria
                                   select new RelatorioCirurgiaAFaturar
                                   {
                                       Vendedor = SC5.C5Nomvend,
-                                      Cliente = a.X5Descri == null ? SC5.C5Nomcli : a.X5Descri,
+                                      Cliente = SC5.C5Nomcli,
                                       GrupoCliente = a.X5Descri,
                                       ClienteEntrega = SC5.C5Nomclie,
                                       Medico = SC5.C5XNmmed,
                                       Convenio = SC5.C5XNmpla,
-                                      Cirurgia = SC5.C5XDtcir,
+                                      Cirurgia = Convert.ToInt32(SC5.C5XDtcir),
                                       Hoje = "",
                                       Dias = 0,
                                       Anging = "",
@@ -515,7 +514,7 @@ namespace SGID.Pages.Relatorios.Diretoria
 
                     var Data = Convert.ToInt32(ago.ToString("yyyy/MM/dd").Replace("/", ""));
 
-                    Relatorio = Relatorio.Where(x => x.Emissao >= Data).ToList();
+                    Relatorio = Relatorio.Where(x => x.Cirurgia >= Data).ToList();
                 }
                 else if (id == "2")
                 {
@@ -525,7 +524,7 @@ namespace SGID.Pages.Relatorios.Diretoria
                     var Data = Convert.ToInt32(ago.ToString("yyyy/MM/dd").Replace("/", ""));
                     var Data2 = Convert.ToInt32(After.ToString("yyyy/MM/dd").Replace("/", ""));
 
-                    Relatorio = Relatorio.Where(x => x.Emissao >= Data && x.Emissao < Data2).ToList();
+                    Relatorio = Relatorio.Where(x => x.Cirurgia >= Data && x.Cirurgia < Data2).ToList();
                 }
                 else
                 {
@@ -533,15 +532,28 @@ namespace SGID.Pages.Relatorios.Diretoria
 
                     var Data = Convert.ToInt32(ago.ToString("yyyy/MM/dd").Replace("/", ""));
 
-                    Relatorio = Relatorio.Where(x => x.Emissao < Data).ToList();
+                    Relatorio = Relatorio.Where(x => x.Cirurgia < Data).ToList();
+                }
+
+                Grupos = Relatorio.Where(x => x.GrupoCliente != "" && x.GrupoCliente != null).Select(x => x.GrupoCliente).Distinct().ToList();
+                
+                if (Grupo != null)
+                {
+                    Clientes = Relatorio.Where(x=> x.GrupoCliente == Grupo).Select(x => x.Cliente).Distinct().ToList();
+                    this.Grupo = Grupo;
+                    Relatorio = Relatorio.Where(x => x.GrupoCliente == Grupo).ToList();
                 }
 
                 Clientes = Relatorio.Select(x => x.Cliente).Distinct().ToList();
-
-                Cliente = NReduz;
+                
                 if (NReduz != null)
                 {
-                    Relatorio = Relatorio.Where(x => x.Cliente == NReduz).ToList();
+                    var registro = Relatorio.FirstOrDefault(x => x.Cliente == NReduz);
+                    if (registro?.GrupoCliente == Grupo) 
+                    {
+                        Cliente = NReduz;
+                        Relatorio = Relatorio.Where(x => x.Cliente == NReduz).ToList();
+                    }
                 }
 
                 var data = DateTime.Now;
@@ -555,13 +567,11 @@ namespace SGID.Pages.Relatorios.Diretoria
                 {
                     x.Hoje = data.ToString("dd/MM/yyyy");
 
-                    var check = int.TryParse(x.Cirurgia, out int result);
+                    var check = int.TryParse(x.Cirurgia.ToString(), out int result);
 
                     if (check)
                     {
-                        x.Dias = (int)(data - Convert.ToDateTime($"{x.Cirurgia.Substring(4, 2)}/{x.Cirurgia.Substring(6, 2)}/{x.Cirurgia.Substring(0, 4)}")).TotalDays;
-
-                        x.Cirurgia = $"{x.Cirurgia.Substring(6, 2)}/{x.Cirurgia.Substring(4, 2)}/{x.Cirurgia.Substring(0, 4)}";
+                        x.Dias = (int)(data - Convert.ToDateTime($"{x.Cirurgia.ToString().Substring(4, 2)}/{x.Cirurgia.ToString().Substring(6, 2)}/{x.Cirurgia.ToString().Substring(0, 4)}")).TotalDays;
                     }
 
                     var check2 = int.TryParse(x.DataValorizacao, out int result2);
@@ -595,17 +605,8 @@ namespace SGID.Pages.Relatorios.Diretoria
                     Total += x.Valor;
                 });
 
-                Relatorio = Relatorio.OrderBy(x => x.DataEmissao).ToList();
+                Relatorio = Relatorio.OrderBy(x => x.Dias).ToList();
 
-                this.Valor = Valor;
-                if(Valor == "2")
-                {
-                    Relatorio = Relatorio.OrderBy(x => x.Cliente).ThenBy(x => x.Valor).ToList();
-                }
-                else
-                {
-                    Relatorio = Relatorio.OrderBy(x => x.Cliente).ThenByDescending(x => x.Valor).ToList();
-                }
             }
             catch (Exception e)
             {
@@ -648,12 +649,12 @@ namespace SGID.Pages.Relatorios.Diretoria
                              select new RelatorioCirurgiaAFaturar
                              {
                                  Vendedor = SC5.C5Nomvend,
-                                 Cliente = a.X5Descri == null ? SC5.C5Nomcli : a.X5Descri,
+                                 Cliente = SC5.C5Nomcli,
                                  GrupoCliente = a.X5Descri,
                                  ClienteEntrega = SC5.C5Nomclie,
                                  Medico = SC5.C5XNmmed,
                                  Convenio = SC5.C5XNmpla,
-                                 Cirurgia = SC5.C5XDtcir,
+                                 Cirurgia = Convert.ToInt32(SC5.C5XDtcir),
                                  Hoje = "",
                                  Dias = 0,
                                  Anging = "",
@@ -740,12 +741,12 @@ namespace SGID.Pages.Relatorios.Diretoria
                                   select new RelatorioCirurgiaAFaturar
                                   {
                                       Vendedor = SC5.C5Nomvend,
-                                      Cliente = a.X5Descri == null ? SC5.C5Nomcli : a.X5Descri,
+                                      Cliente = SC5.C5Nomcli,
                                       GrupoCliente = a.X5Descri,
                                       ClienteEntrega = SC5.C5Nomclie,
                                       Medico = SC5.C5XNmmed,
                                       Convenio = SC5.C5XNmpla,
-                                      Cirurgia = SC5.C5XDtcir,
+                                      Cirurgia = Convert.ToInt32(SC5.C5XDtcir),
                                       Hoje = "",
                                       Dias = 0,
                                       Anging = "",
@@ -818,7 +819,7 @@ namespace SGID.Pages.Relatorios.Diretoria
 
                     var Data = Convert.ToInt32(ago.ToString("yyyy/MM/dd").Replace("/", ""));
 
-                    Relatorio = Relatorio.Where(x => x.Emissao >= Data).ToList();
+                    Relatorio = Relatorio.Where(x => x.Cirurgia >= Data).ToList();
                 }
                 else if (id == "2")
                 {
@@ -828,7 +829,7 @@ namespace SGID.Pages.Relatorios.Diretoria
                     var Data = Convert.ToInt32(ago.ToString("yyyy/MM/dd").Replace("/", ""));
                     var Data2 = Convert.ToInt32(After.ToString("yyyy/MM/dd").Replace("/", ""));
 
-                    Relatorio = Relatorio.Where(x => x.Emissao >= Data && x.Emissao < Data2).ToList();
+                    Relatorio = Relatorio.Where(x => x.Cirurgia >= Data && x.Cirurgia < Data2).ToList();
                 }
                 else
                 {
@@ -836,35 +837,37 @@ namespace SGID.Pages.Relatorios.Diretoria
 
                     var Data = Convert.ToInt32(ago.ToString("yyyy/MM/dd").Replace("/", ""));
 
-                    Relatorio = Relatorio.Where(x => x.Emissao < Data).ToList();
+                    Relatorio = Relatorio.Where(x => x.Cirurgia < Data).ToList();
                 }
-
-                Clientes = Relatorio.Select(x => x.Cliente).Distinct().ToList();
 
                 Cliente = NReduz;
                 if (NReduz != null)
                 {
                     Relatorio = Relatorio.Where(x => x.Cliente == NReduz).ToList();
                 }
+               
+                this.Grupo = Grupo;
+                if (Grupo != null)
+                {
+                    Relatorio = Relatorio.Where(x => x.GrupoCliente == Grupo).ToList();
+                }
+
+                var data = DateTime.Now;
                 this.Empresa = Empresa;
                 if (Empresa != null)
                 {
                     Relatorio = Relatorio.Where(x => x.Empresa == Empresa).ToList();
                 }
 
-                var data = DateTime.Now;
-
                 Relatorio.ForEach(x =>
                 {
                     x.Hoje = data.ToString("dd/MM/yyyy");
 
-                    var check = int.TryParse(x.Cirurgia, out int result);
+                    var check = int.TryParse(x.Cirurgia.ToString(), out int result);
 
                     if (check)
                     {
-                        x.Dias = (int)(data - Convert.ToDateTime($"{x.Cirurgia.Substring(4, 2)}/{x.Cirurgia.Substring(6, 2)}/{x.Cirurgia.Substring(0, 4)}")).TotalDays;
-
-                        x.Cirurgia = $"{x.Cirurgia.Substring(6, 2)}/{x.Cirurgia.Substring(4, 2)}/{x.Cirurgia.Substring(0, 4)}";
+                        x.Dias = (int)(data - Convert.ToDateTime($"{x.Cirurgia.ToString().Substring(4, 2)}/{x.Cirurgia.ToString().Substring(6, 2)}/{x.Cirurgia.ToString().Substring(0, 4)}")).TotalDays;
                     }
 
                     var check2 = int.TryParse(x.DataValorizacao, out int result2);
@@ -895,19 +898,11 @@ namespace SGID.Pages.Relatorios.Diretoria
                     {
                         x.Anging = "MAIS DE 120";
                     }
-
                     Total += x.Valor;
                 });
 
-                this.Valor = Valor;
-                if (Valor == "2")
-                {
-                    Relatorio = Relatorio.OrderBy(x => x.Cliente).ThenBy(x => x.Valor).ToList();
-                }
-                else
-                {
-                    Relatorio = Relatorio.OrderBy(x => x.Cliente).ThenByDescending(x => x.Valor).ToList();
-                }
+                Relatorio = Relatorio.OrderBy(x => x.Dias).ToList();
+                
 
                 using ExcelPackage package = new ExcelPackage();
                 package.Workbook.Worksheets.Add("Cirurgias A Faturar");

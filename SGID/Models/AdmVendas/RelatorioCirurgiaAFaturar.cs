@@ -10,7 +10,7 @@ namespace SGID.Models.AdmVendas
         public string ClienteEntrega { get; set; }
         public string Medico { get; set; }
         public string Convenio { get; set; }
-        public string Cirurgia { get; set; }
+        public int Cirurgia { get; set; }
         public string Hoje { get; set; }
         public int Dias { get; set; }
         public string Anging { get; set; }

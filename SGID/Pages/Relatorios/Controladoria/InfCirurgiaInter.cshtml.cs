@@ -37,7 +37,7 @@ namespace SGID.Pages.Relatorios.Controladoria
                 Relatorio = (from PAC10 in Protheus.Pac010s
                              join SA10 in Protheus.Sa1010s on new { Cod = PAC10.PacClient, Loj = PAC10.PacLojent } equals new { Cod = SA10.A1Cod, Loj = SA10.A1Loja }
                              join SC50 in Protheus.Sc5010s on new { Filial = PAC10.PacFilial, Numpro = PAC10.PacNumpro } equals new { Filial = SC50.C5Filial, Numpro = SC50.C5Uproces }
-                             where PAC10.DELET != "*" && SA10.DELET != "*" && SA10.A1Msblql != "1" && SC50.DELET != "*" && PAC10.PacNumage == Numage
+                             where PAC10.DELET != "*" && SA10.DELET != "*" && SC50.DELET != "*" && PAC10.PacNumage == Numage
                              && (SC50.C5Utpoper != "T" && SC50.C5Utpoper != "F")
                              select new RelatorioInfCirurgia
                              {
@@ -71,7 +71,7 @@ namespace SGID.Pages.Relatorios.Controladoria
                 Relatorio = (from PAC10 in Protheus.Pac010s
                              join SA10 in Protheus.Sa1010s on new { Cod = PAC10.PacClient, Loj = PAC10.PacLojent } equals new { Cod = SA10.A1Cod, Loj = SA10.A1Loja }
                              join SC50 in Protheus.Sc5010s on new { Filial = PAC10.PacFilial, Numpro = PAC10.PacNumpro } equals new { Filial = SC50.C5Filial, Numpro = SC50.C5Uproces }
-                             where PAC10.DELET != "*" && SA10.DELET != "*" && SA10.A1Msblql != "1" && SC50.DELET != "*" && PAC10.PacNumage == Nmage
+                             where PAC10.DELET != "*" && SA10.DELET != "*" && SC50.DELET != "*" && PAC10.PacNumage == Nmage
                              && (SC50.C5Utpoper != "T" && SC50.C5Utpoper != "F")
                              select new RelatorioInfCirurgia
                              {

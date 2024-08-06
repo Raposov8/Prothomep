@@ -42,7 +42,7 @@ namespace SGID.Pages.Relatorios.Estoque
                              from P1 in Sr.DefaultIfEmpty()
                              join DA401 in Protheus.Da4010s on PAC10.PacMotent equals DA401.Da4Cod into Pr
                              from P2 in Pr.DefaultIfEmpty()
-                             where PAC10.DELET != "*" && P2.DELET != "*" && P1.DELET != "*" && SA10.DELET != "*" && SA10.A1Msblql != "1"
+                             where PAC10.DELET != "*" && P2.DELET != "*" && P1.DELET != "*" && SA10.DELET != "*"
                              && (int)(object)PAC10.PacDtcir >= (int)(object)DataInicio.ToString("yyyy/MM/dd").Replace("/", "") && (int)(object)PAC10.PacDtcir <= (int)(object)DataFim.ToString("yyyy/MM/dd").Replace("/", "")
                              select new RelatorioExpedicaoRetirada
                              {
@@ -88,7 +88,7 @@ namespace SGID.Pages.Relatorios.Estoque
                              from P1 in Sr.DefaultIfEmpty()
                              join DA401 in Protheus.Da4010s on PAC10.PacMotent equals DA401.Da4Cod into Pr
                              from P2 in Pr.DefaultIfEmpty()
-                             where PAC10.DELET != "*" && P2.DELET != "*" && P1.DELET != "*" && SA10.DELET != "*" && SA10.A1Msblql != "1"
+                             where PAC10.DELET != "*" && P2.DELET != "*" && P1.DELET != "*" && SA10.DELET != "*"
                              && (int)(object)PAC10.PacDtcir >= (int)(object)DataInicio.ToString("yyyy/MM/dd").Replace("/", "") && (int)(object)PAC10.PacDtcir <= (int)(object)DataFim.ToString("yyyy/MM/dd").Replace("/", "")
                              select new RelatorioExpedicaoRetirada
                              {

@@ -51,7 +51,7 @@ namespace SGID.Pages.Relatorios.Controladoria
                                      join SB10 in Protheus.Sb1010s on SD20.D2Cod equals SB10.B1Cod
                                      join SF20 in Protheus.Sf2010s on new { Filial = SD20.D2Filial, Doc = SD20.D2Doc, Serie = SD20.D2Serie, Cliente = SD20.D2Cliente, Loja = SD20.D2Loja } equals new { Filial = SF20.F2Filial, Doc = SF20.F2Doc, Serie = SF20.F2Serie, Cliente = SF20.F2Cliente, Loja = SF20.F2Loja }
                                      join SC50 in Protheus.Sc5010s on new { Pedido = SD20.D2Pedido, Filial = SD20.D2Filial, Cliente = SD20.D2Cliente, Loja = SD20.D2Loja } equals new { Pedido = SC50.C5Num, Filial = SC50.C5Filial, Cliente = SC50.C5Cliente, Loja = SC50.C5Lojacli }
-                                     where SD20.DELET != "*" && SA10.DELET != "*" && SA10.A1Msblql != "1" && SB10.DELET != "*" && SF20.DELET != "*" && SC50.DELET != "*" &&
+                                     where SD20.DELET != "*" && SA10.DELET != "*" && SB10.DELET != "*" && SF20.DELET != "*" && SC50.DELET != "*" &&
                                      (((int)(object)SD20.D2Cf >= 5102 && (int)(object)SD20.D2Cf <= 5114) || ((int)(object)SD20.D2Cf >= 6102 && (int)(object)SD20.D2Cf <= 6114)
                                      || ((int)(object)SD20.D2Cf >= 7102 && (int)(object)SD20.D2Cf <= 7114) || CF.Contains((int)(object)SD20.D2Cf))
                                      && (int)(object)SD20.D2Emissao >= InicioAno && (int)(object)SD20.D2Emissao <= FimAno && SD20.D2Quant != 0
@@ -146,7 +146,7 @@ namespace SGID.Pages.Relatorios.Controladoria
                                       from A in Sr.DefaultIfEmpty()
                                       join SA10 in Protheus.Sa1010s on new { Forne = SD10.D1Fornece, Loja = SD10.D1Loja } equals new { Forne = SA10.A1Cod, Loja = SA10.A1Loja }
                                       join SB10 in Protheus.Sb1010s on SD10.D1Cod equals SB10.B1Cod
-                                      where SD10.DELET != "*" && A.DELET != "*" && SA10.DELET != "*" && SA10.A1Msblql != "1" && SB10.DELET != "*"
+                                      where SD10.DELET != "*" && A.DELET != "*" && SA10.DELET != "*" && SB10.DELET != "*"
                                       && CfNe.Contains((int)(object)SD10.D1Cf) && (int)(object)SD10.D1Dtdigit >= InicioAno && (int)(object)SD10.D1Dtdigit <= FimAno
                                       select new
                                       {
@@ -309,7 +309,7 @@ namespace SGID.Pages.Relatorios.Controladoria
                                      join SB10 in Protheus.Sb1010s on SD20.D2Cod equals SB10.B1Cod
                                      join SF20 in Protheus.Sf2010s on new { Filial = SD20.D2Filial, Doc = SD20.D2Doc, Serie = SD20.D2Serie, Cliente = SD20.D2Cliente, Loja = SD20.D2Loja } equals new { Filial = SF20.F2Filial, Doc = SF20.F2Doc, Serie = SF20.F2Serie, Cliente = SF20.F2Cliente, Loja = SF20.F2Loja }
                                      join SC50 in Protheus.Sc5010s on new { Pedido = SD20.D2Pedido, Filial = SD20.D2Filial, Cliente = SD20.D2Cliente, Loja = SD20.D2Loja } equals new { Pedido = SC50.C5Num, Filial = SC50.C5Filial, Cliente = SC50.C5Cliente, Loja = SC50.C5Lojacli }
-                                     where SD20.DELET != "*" && SA10.DELET != "*" && SA10.A1Msblql != "1" && SB10.DELET != "*" && SF20.DELET != "*" && SC50.DELET != "*" &&
+                                     where SD20.DELET != "*" && SA10.DELET != "*" && SB10.DELET != "*" && SF20.DELET != "*" && SC50.DELET != "*" &&
                                      (((int)(object)SD20.D2Cf >= 5102 && (int)(object)SD20.D2Cf <= 5114) || ((int)(object)SD20.D2Cf >= 6102 && (int)(object)SD20.D2Cf <= 6114)
                                      || ((int)(object)SD20.D2Cf >= 7102 && (int)(object)SD20.D2Cf <= 7114) || CF.Contains((int)(object)SD20.D2Cf))
                                      && (int)(object)SD20.D2Emissao >= InicioAno && (int)(object)SD20.D2Emissao <= FimAno && SD20.D2Quant != 0
@@ -404,7 +404,7 @@ namespace SGID.Pages.Relatorios.Controladoria
                                       from A in Sr.DefaultIfEmpty()
                                       join SA10 in Protheus.Sa1010s on new { Forne = SD10.D1Fornece, Loja = SD10.D1Loja } equals new { Forne = SA10.A1Cod, Loja = SA10.A1Loja }
                                       join SB10 in Protheus.Sb1010s on SD10.D1Cod equals SB10.B1Cod
-                                      where SD10.DELET != "*" && A.DELET != "*" && SA10.DELET != "*" && SA10.A1Msblql != "1" && SB10.DELET != "*"
+                                      where SD10.DELET != "*" && A.DELET != "*" && SA10.DELET != "*" && SB10.DELET != "*"
                                       && CfNe.Contains((int)(object)SD10.D1Cf) && (int)(object)SD10.D1Dtdigit >= InicioAno && (int)(object)SD10.D1Dtdigit <= FimAno
                                       select new
                                       {

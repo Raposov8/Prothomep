@@ -393,7 +393,7 @@ namespace SGID.Pages.Account.RH
                              join SC50 in ProtheusInter.Sc5010s on new { Filial = SE10.E1Filial, Pedido = SE10.E1Pedido } equals new { Filial = SC50.C5Filial, Pedido = SC50.C5Num }
                              join SA30 in ProtheusInter.Sa3010s on SC50.C5Vend1 equals SA30.A3Cod
                              join SD20 in ProtheusInter.Sd2010s on new { Filial = SC50.C5Filial, Num = SC50.C5Num } equals new { Filial = SD20.D2Filial, Num = SD20.D2Pedido }
-                             where SE50.DELET != "*" && SE10.DELET != "*" && SE50.E5Recpag == "R" && SA10.DELET != "*" && SA10.A1Msblql != "1"
+                             where SE50.DELET != "*" && SE10.DELET != "*" && SE50.E5Recpag == "R" && SA10.DELET != "*"
                              && (SE50.E5Tipodoc == "VL" || SE50.E5Tipodoc == "RA")
                              && (SE50.E5Naturez == "111001" || SE50.E5Naturez == "111004" || SE50.E5Naturez == "111006")
                              && (SE50.E5Banco == "001" || SE50.E5Banco == "237" || SE50.E5Banco == "341")
@@ -805,7 +805,7 @@ namespace SGID.Pages.Account.RH
                                               join SC50 in ProtheusDenuo.Sc5010s on new { Filial = SE10.E1Filial, Pedido = SE10.E1Pedido } equals new { Filial = SC50.C5Filial, Pedido = SC50.C5Num }
                                               join SA30 in ProtheusDenuo.Sa3010s on SC50.C5Vend1 equals SA30.A3Cod
                                               join SD20 in ProtheusDenuo.Sd2010s on new { Filial = SC50.C5Filial, Num = SC50.C5Num } equals new { Filial = SD20.D2Filial, Num = SD20.D2Pedido }
-                                              where SE50.DELET != "*" && SE10.DELET != "*" && SE50.E5Recpag == "R" && SA10.DELET != "*" && SA10.A1Msblql != "1"
+                                              where SE50.DELET != "*" && SE10.DELET != "*" && SE50.E5Recpag == "R" && SA10.DELET != "*"
                                               && (SE50.E5Tipodoc == "VL" || SE50.E5Tipodoc == "RA")
                                               && (SE50.E5Naturez == "111001" || SE50.E5Naturez == "111004" || SE50.E5Naturez == "111006")
                                               && (SE50.E5Banco == "001" || SE50.E5Banco == "237" || SE50.E5Banco == "341")
@@ -1701,7 +1701,7 @@ namespace SGID.Pages.Account.RH
                                               join SC50 in ProtheusInter.Sc5010s on new { Filial = SE10.E1Filial, Pedido = SE10.E1Pedido } equals new { Filial = SC50.C5Filial, Pedido = SC50.C5Num }
                                               join SA30 in ProtheusInter.Sa3010s on SC50.C5Vend1 equals SA30.A3Cod
                                               join SD20 in ProtheusInter.Sd2010s on new { Filial = SC50.C5Filial, Num = SC50.C5Num } equals new { Filial = SD20.D2Filial, Num = SD20.D2Pedido }
-                                              where SE50.DELET != "*" && SE10.DELET != "*" && SE50.E5Recpag == "R" && SA10.DELET != "*" && SA10.A1Msblql != "1"
+                                              where SE50.DELET != "*" && SE10.DELET != "*" && SE50.E5Recpag == "R" && SA10.DELET != "*"
                                               && (SE50.E5Tipodoc == "VL" || SE50.E5Tipodoc == "RA")
                                               && (SE50.E5Naturez == "111001" || SE50.E5Naturez == "111004" || SE50.E5Naturez == "111006")
                                               && (SE50.E5Banco == "001" || SE50.E5Banco == "237" || SE50.E5Banco == "341")
@@ -2113,7 +2113,7 @@ namespace SGID.Pages.Account.RH
                                               join SC50 in ProtheusDenuo.Sc5010s on new { Filial = SE10.E1Filial, Pedido = SE10.E1Pedido } equals new { Filial = SC50.C5Filial, Pedido = SC50.C5Num }
                                               join SA30 in ProtheusDenuo.Sa3010s on SC50.C5Vend1 equals SA30.A3Cod
                                               join SD20 in ProtheusDenuo.Sd2010s on new { Filial = SC50.C5Filial, Num = SC50.C5Num } equals new { Filial = SD20.D2Filial, Num = SD20.D2Pedido }
-                                              where SE50.DELET != "*" && SE10.DELET != "*" && SE50.E5Recpag == "R" && SA10.DELET != "*" && SA10.A1Msblql != "1"
+                                              where SE50.DELET != "*" && SE10.DELET != "*" && SE50.E5Recpag == "R" && SA10.DELET != "*" 
                                               && (SE50.E5Tipodoc == "VL" || SE50.E5Tipodoc == "RA")
                                               && (SE50.E5Naturez == "111001" || SE50.E5Naturez == "111004" || SE50.E5Naturez == "111006")
                                               && (SE50.E5Banco == "001" || SE50.E5Banco == "237" || SE50.E5Banco == "341")

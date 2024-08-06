@@ -43,7 +43,7 @@ namespace SGID.Pages.Relatorios.Controladoria
                              join SF20 in Protheus.Sf2010s on new { Filial = SD20.D2Filial, Doc = SD20.D2Doc, Serie = SD20.D2Serie, Cliente = SD20.D2Cliente, Loja = SD20.D2Loja } equals new { Filial = SF20.F2Filial, Doc = SF20.F2Doc, Serie = SF20.F2Serie, Cliente = SF20.F2Cliente, Loja = SF20.F2Loja }
                              join SA10 in Protheus.Sa1010s on new { Cod = SD20.D2Cliente, Loja = SD20.D2Loja } equals new { Cod = SA10.A1Cod, Loja = SA10.A1Loja }
                              join SC50 in Protheus.Sc5010s on new { Filial = SD20.D2Filial, Num = SD20.D2Pedido } equals new { Filial = SC50.C5Filial, Num = SC50.C5Num }
-                             where SD20.DELET != "*" && SF20.DELET != "*" && SA10.DELET != "*" && SA10.A1Msblql != "1" && SC50.DELET != "*" && SF20.F2Tipo != "B"
+                             where SD20.DELET != "*" && SF20.DELET != "*" && SA10.DELET != "*" && SC50.DELET != "*" && SF20.F2Tipo != "B"
                              && SF20.F2Tipo != "D" && (int)(object)SD20.D2Emissao >= (int)(object)DataInicio.ToString("yyyy/MM/dd").Replace("/", "") && (int)(object)SD20.D2Emissao <= (int)(object)DataFim.ToString("yyyy/MM/dd").Replace("/", "") &&
                              (SD20.D2Cf == "5908" || SD20.D2Cf == "5949" || SD20.D2Cf == "6908" || SD20.D2Cf == "6949")
                              select new SINIEF
@@ -206,7 +206,7 @@ namespace SGID.Pages.Relatorios.Controladoria
                              join SF20 in Protheus.Sf2010s on new { Filial = SD20.D2Filial, Doc = SD20.D2Doc, Serie = SD20.D2Serie, Cliente = SD20.D2Cliente, Loja = SD20.D2Loja } equals new { Filial = SF20.F2Filial, Doc = SF20.F2Doc, Serie = SF20.F2Serie, Cliente = SF20.F2Cliente, Loja = SF20.F2Loja }
                              join SA10 in Protheus.Sa1010s on new { Cod = SD20.D2Cliente, Loja = SD20.D2Loja } equals new { Cod = SA10.A1Cod, Loja = SA10.A1Loja }
                              join SC50 in Protheus.Sc5010s on new { Filial = SD20.D2Filial, Num = SD20.D2Pedido } equals new { Filial = SC50.C5Filial, Num = SC50.C5Num }
-                             where SD20.DELET != "*" && SF20.DELET != "*" && SA10.DELET != "*" && SA10.A1Msblql != "1" && SC50.DELET != "*" && SF20.F2Tipo != "B"
+                             where SD20.DELET != "*" && SF20.DELET != "*" && SA10.DELET != "*" && SC50.DELET != "*" && SF20.F2Tipo != "B"
                              && SF20.F2Tipo != "D" && (int)(object)SD20.D2Emissao >= (int)(object)DataInicio.ToString("yyyy/MM/dd").Replace("/", "") && (int)(object)SD20.D2Emissao <= (int)(object)DataFim.ToString("yyyy/MM/dd").Replace("/", "") &&
                              (SD20.D2Cf == "5908" || SD20.D2Cf == "5949" || SD20.D2Cf == "6908" || SD20.D2Cf == "6949")
                              select new SINIEF
