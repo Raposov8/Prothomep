@@ -1,11 +1,8 @@
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using SGID.Models.Controladoria.FaturamentoNF;
 using SGID.Models;
 using SGID.Models.Denuo;
 using SGID.Models.Inter;
 using SGID.Models.Diretoria;
-using System.Linq;
 
 namespace SGID.Pages.Relatorios.Diretoria
 {

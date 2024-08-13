@@ -26,13 +26,11 @@ namespace SGID.Data
         public DbSet<AnexosDadosCirurgia> AnexosDadosCirurgias { get; set; }
         public DbSet<DadosCirugiasProdutos> DadosCirugiasProdutos { get; set; }
 
-
         //Comercial Cotações
         public DbSet<AvulsosAgendamento> AvulsosAgendamento { get; set; }
         public DbSet<Procedimento> Procedimentos { get; set; }
 
         //Comercial Visitas
-
         public DbSet<Visitas> Visitas { get; set; }
         public DbSet<VisitaCliente> VisitaClientes { get; set; }
 
@@ -40,13 +38,11 @@ namespace SGID.Data
         public DbSet<SolicitacaoAcesso> SolicitacaoAcessos { get; set; }
         public DbSet<AcessoTermo> AcessoTermos { get; set; }
 
-
         //Estoque
         public DbSet<FormularioAvulso> FormularioAvulsos { get; set; }
         public DbSet<FormularioAvulsoXProdutos> FormularioAvulsoXProdutos { get; set; }
         public DbSet<Ocorrencia> Ocorrencias { get; set; }
         public DbSet<AgendamentoCheck> AgendamentoChecks { get; set; }
-
 
         //Comissões
         public DbSet<Time> Times { get; set; }
@@ -56,7 +52,6 @@ namespace SGID.Data
 
         //Inventario
         public DbSet<Dispositivo> Dispositivos { get; set; }
-
         public DbSet<UsuarioDispositivo> UsuarioDispositivos { get; set; } 
 
         //Sistema

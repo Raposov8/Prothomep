@@ -11,7 +11,6 @@ using SGID.Models.Diretoria;
 using SGID.Models.RH;
 using SGID.Data.ViewModel;
 using SGID.Models.Financeiro;
-using SGID.Models.Controladoria.FaturamentoNF;
 
 namespace SGID.Pages.DashBoards
 {
@@ -671,6 +670,7 @@ namespace SGID.Pages.DashBoards
                                               from c in Sr.DefaultIfEmpty()
                                               where SC5.DELET != "*" && SC6.C6Filial == SC5.C5Filial && SC6.C6Num == SC5.C5Num
                                               && SC6.C6Nota == ""
+                                              && SC5.C5Nota == ""
                                               && SC6.C6Blq != "R"
                                               && SC6.DELET != "*"
                                               && SF4.F4Codigo == SC6.C6Tes
@@ -703,6 +703,7 @@ namespace SGID.Pages.DashBoards
                                               from c in Sr.DefaultIfEmpty()
                                               where SC5.DELET != "*" && SC6.C6Filial == SC5.C5Filial && SC6.C6Num == SC5.C5Num
                                               && SC6.C6Nota == ""
+                                              && SC5.C5Nota == ""
                                               && SC6.C6Blq != "R"
                                               && SC6.DELET != "*"
                                               && SF4.F4Codigo == SC6.C6Tes
@@ -844,7 +845,6 @@ namespace SGID.Pages.DashBoards
                 });
 
                 #endregion 
-
 
                 var valores = new
                 {

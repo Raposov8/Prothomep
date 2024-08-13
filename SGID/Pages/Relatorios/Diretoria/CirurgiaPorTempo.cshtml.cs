@@ -52,6 +52,7 @@ namespace SGID.Pages.Relatorios.Diretoria
                              from a in Se.DefaultIfEmpty()
                              where SC5.DELET != "*" && SC6.C6Filial == SC5.C5Filial && SC6.C6Num == SC5.C5Num && a.DELET!="*"
                              && SC6.C6Nota == ""
+                             && SC5.C5Nota == ""
                              && SC6.C6Blq != "R"
                              && SC6.DELET != "*"
                              && SF4.F4Codigo == SC6.C6Tes
@@ -144,6 +145,7 @@ namespace SGID.Pages.Relatorios.Diretoria
                                   from a in Se.DefaultIfEmpty()
                                   where SC5.DELET != "*" && SC6.C6Filial == SC5.C5Filial && SC6.C6Num == SC5.C5Num && a.DELET != "*"
                                   && SC6.C6Nota == ""
+                                  && SC5.C5Nota == ""
                                   && SC6.C6Blq != "R"
                                   && SC6.DELET != "*"
                                   && SF4.F4Codigo == SC6.C6Tes
@@ -265,9 +267,9 @@ namespace SGID.Pages.Relatorios.Diretoria
                 {
                     x.Hoje = data.ToString("dd/MM/yyyy");
 
-                    var check = int.TryParse(x.Cirurgia.ToString(), out int result);
+                    var check = x.Cirurgia;
 
-                    if (check)
+                    if (check != 0)
                     {
                         x.Dias = (int)(data - Convert.ToDateTime($"{x.Cirurgia.ToString().Substring(4, 2)}/{x.Cirurgia.ToString().Substring(6, 2)}/{x.Cirurgia.ToString().Substring(0, 4)}")).TotalDays;
                     }
@@ -331,6 +333,7 @@ namespace SGID.Pages.Relatorios.Diretoria
                              from a in Se.DefaultIfEmpty()
                              where SC5.DELET != "*" && SC6.C6Filial == SC5.C5Filial && SC6.C6Num == SC5.C5Num && a.DELET != "*"
                              && SC6.C6Nota == ""
+                             && SC5.C5Nota == ""
                              && SC6.C6Blq != "R"
                              && SC6.DELET != "*"
                              && SF4.F4Codigo == SC6.C6Tes
@@ -423,6 +426,7 @@ namespace SGID.Pages.Relatorios.Diretoria
                                   from a in Se.DefaultIfEmpty()
                                   where SC5.DELET != "*" && SC6.C6Filial == SC5.C5Filial && SC6.C6Num == SC5.C5Num && a.DELET != "*"
                                   && SC6.C6Nota == ""
+                                  && SC5.C5Nota == ""
                                   && SC6.C6Blq != "R"
                                   && SC6.DELET != "*"
                                   && SF4.F4Codigo == SC6.C6Tes
@@ -549,7 +553,16 @@ namespace SGID.Pages.Relatorios.Diretoria
                 if (NReduz != null)
                 {
                     var registro = Relatorio.FirstOrDefault(x => x.Cliente == NReduz);
-                    if (registro?.GrupoCliente == Grupo) 
+                    if (Grupo != null)
+                    {
+                        if (registro?.GrupoCliente == Grupo)
+                        {
+                            Cliente = NReduz;
+                            Relatorio = Relatorio.Where(x => x.Cliente == NReduz).ToList();
+
+                        }
+                    }
+                    else
                     {
                         Cliente = NReduz;
                         Relatorio = Relatorio.Where(x => x.Cliente == NReduz).ToList();
@@ -567,9 +580,9 @@ namespace SGID.Pages.Relatorios.Diretoria
                 {
                     x.Hoje = data.ToString("dd/MM/yyyy");
 
-                    var check = int.TryParse(x.Cirurgia.ToString(), out int result);
+                    var check = x.Cirurgia;
 
-                    if (check)
+                    if (check != 0)
                     {
                         x.Dias = (int)(data - Convert.ToDateTime($"{x.Cirurgia.ToString().Substring(4, 2)}/{x.Cirurgia.ToString().Substring(6, 2)}/{x.Cirurgia.ToString().Substring(0, 4)}")).TotalDays;
                     }
@@ -617,7 +630,7 @@ namespace SGID.Pages.Relatorios.Diretoria
             return Page();
         }
 
-        public IActionResult OnPostExport(string id, string NReduz, string Empresa, string Valor)
+        public IActionResult OnPostExport(string id, string NReduz, string Empresa, string Grupo)
         {
             try
             {
@@ -636,6 +649,7 @@ namespace SGID.Pages.Relatorios.Diretoria
                              from a in Se.DefaultIfEmpty()
                              where SC5.DELET != "*" && SC6.C6Filial == SC5.C5Filial && SC6.C6Num == SC5.C5Num && a.DELET != "*"
                              && SC6.C6Nota == ""
+                             && SC5.C5Nota == ""
                              && SC6.C6Blq != "R"
                              && SC6.DELET != "*"
                              && SF4.F4Codigo == SC6.C6Tes
@@ -728,6 +742,7 @@ namespace SGID.Pages.Relatorios.Diretoria
                                   from a in Se.DefaultIfEmpty()
                                   where SC5.DELET != "*" && SC6.C6Filial == SC5.C5Filial && SC6.C6Num == SC5.C5Num && a.DELET != "*"
                                   && SC6.C6Nota == ""
+                                  && SC5.C5Nota == ""
                                   && SC6.C6Blq != "R"
                                   && SC6.DELET != "*"
                                   && SF4.F4Codigo == SC6.C6Tes
@@ -840,17 +855,33 @@ namespace SGID.Pages.Relatorios.Diretoria
                     Relatorio = Relatorio.Where(x => x.Cirurgia < Data).ToList();
                 }
 
-                Cliente = NReduz;
-                if (NReduz != null)
-                {
-                    Relatorio = Relatorio.Where(x => x.Cliente == NReduz).ToList();
-                }
-               
                 this.Grupo = Grupo;
                 if (Grupo != null)
                 {
                     Relatorio = Relatorio.Where(x => x.GrupoCliente == Grupo).ToList();
                 }
+
+                Cliente = NReduz;
+                if (NReduz != null)
+                {
+                    var registro = Relatorio.FirstOrDefault(x => x.Cliente == NReduz);
+                    if (Grupo != null)
+                    {
+                        if (registro?.GrupoCliente == Grupo)
+                        {
+                            Cliente = NReduz;
+                            Relatorio = Relatorio.Where(x => x.Cliente == NReduz).ToList();
+
+                        }
+                    }
+                    else
+                    {
+                        Cliente = NReduz;
+                        Relatorio = Relatorio.Where(x => x.Cliente == NReduz).ToList();
+                    }
+                }
+
+                
 
                 var data = DateTime.Now;
                 this.Empresa = Empresa;
@@ -863,12 +894,13 @@ namespace SGID.Pages.Relatorios.Diretoria
                 {
                     x.Hoje = data.ToString("dd/MM/yyyy");
 
-                    var check = int.TryParse(x.Cirurgia.ToString(), out int result);
+                    var check = x.Cirurgia;
 
-                    if (check)
+                    if (check != 0)
                     {
                         x.Dias = (int)(data - Convert.ToDateTime($"{x.Cirurgia.ToString().Substring(4, 2)}/{x.Cirurgia.ToString().Substring(6, 2)}/{x.Cirurgia.ToString().Substring(0, 4)}")).TotalDays;
                     }
+                    
 
                     var check2 = int.TryParse(x.DataValorizacao, out int result2);
 

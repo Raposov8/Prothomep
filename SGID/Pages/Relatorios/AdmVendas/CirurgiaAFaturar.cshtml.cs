@@ -46,6 +46,7 @@ namespace SGID.Pages.Relatorios.AdmVendas
                              from a in Se.DefaultIfEmpty()
                              where SC5.DELET != "*" && SC6.C6Filial == SC5.C5Filial && SC6.C6Num == SC5.C5Num && a.DELET != "*"
                              && SC6.C6Nota == ""
+                             && SC5.C5Nota == ""
                              && SC6.C6Blq != "R"
                              && SC6.DELET != "*"
                              && SF4.F4Codigo == SC6.C6Tes
@@ -199,6 +200,7 @@ namespace SGID.Pages.Relatorios.AdmVendas
                              from a in Se.DefaultIfEmpty()
                              where SC5.DELET != "*" && SC6.C6Filial == SC5.C5Filial && SC6.C6Num == SC5.C5Num && a.DELET != "*"
                              && SC6.C6Nota == ""
+                             && SC5.C5Nota == ""
                              && SC6.C6Blq != "R"
                              && SC6.DELET != "*"
                              && SF4.F4Codigo == SC6.C6Tes
@@ -366,6 +368,7 @@ namespace SGID.Pages.Relatorios.AdmVendas
                              from a in Se.DefaultIfEmpty()
                              where SC5.DELET != "*" && SC6.C6Filial == SC5.C5Filial && SC6.C6Num == SC5.C5Num && a.DELET != "*"
                              && SC6.C6Nota == ""
+                             && SC5.C5Nota == ""
                              && SC6.C6Blq != "R"
                              && SC6.DELET != "*"
                              && SF4.F4Codigo == SC6.C6Tes

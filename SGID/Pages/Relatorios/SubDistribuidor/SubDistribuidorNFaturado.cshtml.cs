@@ -37,8 +37,10 @@ namespace SGID.Pages.Relatorios.SubDistribuidor
                              join SB10 in Protheus.Sb1010s on SC60.C6Produto equals SB10.B1Cod
                              join SA30 in Protheus.Sa3010s on SC50.C5Vend1 equals SA30.A3Cod
                              where SC50.DELET != "*" && SA10.DELET != "*" && SC60.DELET != "*" &&
-                             SA30.DELET != "*" && SB10.DELET != "*" && SA10.A1Clinter == "S" && SC50.C5Nota == "" &&
+                             SA30.DELET != "*" && SB10.DELET != "*" && SA10.A1Clinter == "S" &&
                              SC60.C6Qtdven - SC60.C6Qtdent != 0
+                             && SA10.A1Msblql != "1"
+                             && SC50.C5Nota == ""
                              orderby SA10.A1Nome, SC50.C5Emissao
                              select new RelatorioSubDistribuidor
                              {
@@ -79,8 +81,10 @@ namespace SGID.Pages.Relatorios.SubDistribuidor
                              join SB10 in Protheus.Sb1010s on SC60.C6Produto equals SB10.B1Cod
                              join SA30 in Protheus.Sa3010s on SC50.C5Vend1 equals SA30.A3Cod
                              where SC50.DELET != "*" && SA10.DELET != "*" && SC60.DELET != "*" &&
-                             SA30.DELET != "*" && SB10.DELET != "*" && SA10.A1Clinter == "S" && SC50.C5Nota == "" &&
+                             SA30.DELET != "*" && SB10.DELET != "*" && SA10.A1Clinter == "S" &&
                              SC60.C6Qtdven - SC60.C6Qtdent != 0
+                             && SA10.A1Msblql != "1"
+                             && SC50.C5Nota == ""
                              orderby SA10.A1Nome, SC50.C5Emissao
                              select new RelatorioSubDistribuidor
                              {
@@ -129,8 +133,10 @@ namespace SGID.Pages.Relatorios.SubDistribuidor
                              join SB10 in Protheus.Sb1010s on SC60.C6Produto equals SB10.B1Cod
                              join SA30 in Protheus.Sa3010s on SC50.C5Vend1 equals SA30.A3Cod
                              where SC50.DELET != "*" && SA10.DELET != "*" && SC60.DELET != "*" &&
-                             SA30.DELET != "*" && SA10.A1Clinter == "S" && SC50.C5Nota == "" &&
+                             SA30.DELET != "*" && SA10.A1Clinter == "S"  &&
                              SC60.C6Qtdven - SC60.C6Qtdent != 0
+                             && SA10.A1Msblql != "1"
+                             && SC50.C5Nota == ""
                              orderby SA10.A1Nome, SC50.C5Emissao
                              select new RelatorioSubDistribuidor
                              {

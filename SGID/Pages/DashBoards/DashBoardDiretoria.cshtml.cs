@@ -153,7 +153,7 @@ namespace SGID.Pages.DashBoards
                                          from SF4 in ProtheusInter.Sf4010s
                                          from SB1 in ProtheusInter.Sb1010s
                                          where SC5.DELET != "*" && SC6.C6Filial == SC5.C5Filial && SC6.C6Num == SC5.C5Num
-                                         && SC6.C6Nota == "" && SC6.C6Blq != "R" && SC6.DELET != "*"
+                                         && SC6.C6Nota == "" && SC5.C5Nota == "" && SC6.C6Blq != "R" && SC6.DELET != "*"
                                          && SF4.F4Codigo == SC6.C6Tes && SF4.F4Duplic == "S" && SF4.DELET != "*" && SA1.A1Cod == SC5.C5Cliente
                                          && SA1.A1Loja == SC5.C5Lojacli && SA1.DELET != "*" && SA3.A3Cod == SC5.C5Vend1 && SA3.DELET != "*"
                                          && (SC5.C5Utpoper == "F" || SC5.C5Utpoper == "T") && SB1.DELET != "*" && SC6.C6Produto == SB1.B1Cod
@@ -247,7 +247,7 @@ namespace SGID.Pages.DashBoards
                                               from SF4 in ProtheusDenuo.Sf4010s
                                               from SB1 in ProtheusDenuo.Sb1010s
                                               where SC5.DELET != "*" && SC6.C6Filial == SC5.C5Filial && SC6.C6Num == SC5.C5Num
-                                              && SC6.C6Nota == "" && SC6.C6Blq != "R" && SC6.DELET != "*"
+                                              && SC6.C6Nota == "" && SC5.C5Nota == "" && SC6.C6Blq != "R" && SC6.DELET != "*"
                                               && SF4.F4Codigo == SC6.C6Tes && SF4.F4Duplic == "S" && SF4.DELET != "*" && SA1.A1Cod == SC5.C5Cliente
                                               && SA1.A1Loja == SC5.C5Lojacli && SA1.DELET != "*" && SA3.A3Cod == SC5.C5Vend1 && SA3.DELET != "*"
                                               && (SC5.C5Utpoper == "F" || SC5.C5Utpoper == "T") && SB1.DELET != "*" && SC6.C6Produto == SB1.B1Cod
@@ -465,7 +465,7 @@ namespace SGID.Pages.DashBoards
                                          from SF4 in ProtheusInter.Sf4010s
                                          from SB1 in ProtheusInter.Sb1010s
                                          where SC5.DELET != "*" && SC6.C6Filial == SC5.C5Filial && SC6.C6Num == SC5.C5Num
-                                         && SC6.C6Nota == "" && SC6.C6Blq != "R" && SC6.DELET != "*"
+                                         && SC6.C6Nota == "" && SC5.C5Nota == "" && SC6.C6Blq != "R" && SC6.DELET != "*"
                                          && SF4.F4Codigo == SC6.C6Tes && SF4.F4Duplic == "S" && SF4.DELET != "*" && SA1.A1Cod == SC5.C5Cliente
                                          && SA1.A1Loja == SC5.C5Lojacli && SA1.DELET != "*" && SA3.A3Cod == SC5.C5Vend1 && SA3.DELET != "*"
                                          && (SC5.C5Utpoper == "F" || SC5.C5Utpoper == "T") && SB1.DELET != "*" && SC6.C6Produto == SB1.B1Cod
@@ -553,7 +553,7 @@ namespace SGID.Pages.DashBoards
                                               from SF4 in ProtheusDenuo.Sf4010s
                                               from SB1 in ProtheusDenuo.Sb1010s
                                               where SC5.DELET != "*" && SC6.C6Filial == SC5.C5Filial && SC6.C6Num == SC5.C5Num
-                                              && SC6.C6Nota == "" && SC6.C6Blq != "R" && SC6.DELET != "*"
+                                              && SC6.C6Nota == "" && SC5.C5Nota == "" && SC6.C6Blq != "R" && SC6.DELET != "*"
                                               && SF4.F4Codigo == SC6.C6Tes && SF4.F4Duplic == "S" && SF4.DELET != "*" && SA1.A1Cod == SC5.C5Cliente
                                               && SA1.A1Loja == SC5.C5Lojacli && SA1.DELET != "*" && SA3.A3Cod == SC5.C5Vend1 && SA3.DELET != "*"
                                               && (SC5.C5Utpoper == "F" || SC5.C5Utpoper == "T") && SB1.DELET != "*" && SC6.C6Produto == SB1.B1Cod

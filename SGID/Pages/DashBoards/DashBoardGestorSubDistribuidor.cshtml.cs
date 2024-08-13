@@ -365,8 +365,10 @@ namespace SGID.Pages.DashBoards
                                             join SB10 in ProtheusInter.Sb1010s on SC60.C6Produto equals SB10.B1Cod
                                             join SA30 in ProtheusInter.Sa3010s on SC50.C5Vend1 equals SA30.A3Cod
                                             where SC50.DELET != "*" && SA10.DELET != "*" && SC60.DELET != "*" &&
-                                            SA30.DELET != "*" && SB10.DELET != "*" && SA10.A1Clinter == "S" && SC50.C5Nota == "" &&
-                                            SC60.C6Qtdven - SC60.C6Qtdent != 0
+                                            SA30.DELET != "*" && SB10.DELET != "*" && SA10.A1Clinter == "S" && SC50.C5Nota == ""
+                                            && SA10.A1Msblql != "1"
+                                            && SC50.C5Nota == ""
+                                            && SC60.C6Qtdven - SC60.C6Qtdent != 0
                                             && SA10.A1Cgc.Substring(0, 8) != "04715053"
                                             orderby SA10.A1Nome, SC50.C5Emissao
                                             select (SC60.C6Qtdven - SC60.C6Qtdent) * SC60.C6Prcven
@@ -384,8 +386,10 @@ namespace SGID.Pages.DashBoards
                                             join SB10 in ProtheusDenuo.Sb1010s on SC60.C6Produto equals SB10.B1Cod
                                             join SA30 in ProtheusDenuo.Sa3010s on SC50.C5Vend1 equals SA30.A3Cod
                                             where SC50.DELET != "*" && SA10.DELET != "*" && SC60.DELET != "*" &&
-                                            SA30.DELET != "*" && SB10.DELET != "*" && SA10.A1Clinter == "S" && SC50.C5Nota == "" &&
-                                            SC60.C6Qtdven - SC60.C6Qtdent != 0
+                                            SA30.DELET != "*" && SB10.DELET != "*" && SA10.A1Clinter == "S" && SC50.C5Nota == ""
+                                            && SA10.A1Msblql != "1"
+                                            && SC50.C5Nota == ""
+                                            && SC60.C6Qtdven - SC60.C6Qtdent != 0
                                             orderby SA10.A1Nome, SC50.C5Emissao
                                             select (SC60.C6Qtdven - SC60.C6Qtdent) * SC60.C6Prcven
                              ).Sum();

@@ -132,7 +132,15 @@
                         <td>@Html.DisplayFor(model => data.Medico)</td>
                         <td>@Html.DisplayFor(model => data.Convenio)</td>
                         <td>
-                            @data.Cirurgia.ToString().Substring(6, 2)/@data.Cirurgia.ToString().Substring(4, 2)/@data.Cirurgia.ToString().Substring(0, 4)
+                            @if(data.Cirurgia !=0)
+                            {
+                                @:@data.Cirurgia.ToString().Substring(6, 2)/@data.Cirurgia.ToString().Substring(4, 2)/@data.Cirurgia.ToString().Substring(0, 4)
+                            }
+                            else
+                            {
+                                @:SEM DATA DE CIRURGIA
+                            }
+                            
                         </td>
                         <td>@Html.DisplayFor(model => data.DataValorizacao)</td>
                         <td>@Html.DisplayFor(model => data.Hoje)</td>
