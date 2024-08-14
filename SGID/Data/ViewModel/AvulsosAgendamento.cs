@@ -12,5 +12,6 @@ namespace SGID.Data.ViewModel
         public Agendamentos Agendamento { get; set; }
         public string Produto { get; set; }
         public double Quantidade { get; set; }
+        public string Lote { get; set; }
     }
 }

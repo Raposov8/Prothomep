@@ -468,4 +468,10 @@ public partial class Sf1010
     public string F1Cliprop { get; set; } = null!;
 
     public string F1Ljclipr { get; set; } = null!;
+
+    public string F1Sereltr { get; set; } = null!;
+
+    public string F1Gf { get; set; } = null!;
+
+    public string F1ItRoma { get; set; } = null!;
 }

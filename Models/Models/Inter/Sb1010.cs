@@ -680,4 +680,6 @@ public partial class Sb1010
     public string B1Xtuss { get; set; } = null!;
 
     public string B1Apopro { get; set; } = null!;
+
+    public string B1Codsec { get; set; } = null!;
 }

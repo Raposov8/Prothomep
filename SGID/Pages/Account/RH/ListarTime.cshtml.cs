@@ -992,8 +992,8 @@ namespace SGID.Pages.Account.RH
                                 {
                                     #region RegrasNovas
                                     time.Faturado += resultadoInter.Where(x => x.Login == usuario && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total) - DevolucaoInter.Where(x => x.Login == usuario && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total);
-                                    time.Faturado += BaixaLicitacoesInter.Where(x => Convert.ToInt32(x.DataPedido) > 20240231 && (x.CodigoCliente == "000011" || x.CodigoCliente == "000012") && x.Login == usuario).Sum(x => x.TotalBaixado);
-                                    time.Faturado += RelatorioKamikazeInter.Where(x=> x.Login == usuario).Sum(x => x.TotalBaixado);
+                                    time.Baixa += BaixaLicitacoesInter.Where(x => Convert.ToInt32(x.DataPedido) > 20240231 && (x.CodigoCliente == "000011" || x.CodigoCliente == "000012") && x.Login == usuario).Sum(x => x.TotalBaixado);
+                                    time.Baixa += RelatorioKamikazeInter.Where(x=> x.Login == usuario).Sum(x => x.TotalBaixado);
 
                                     time.FaturadoEquipe += resultadoInter.Where(x => x.Gestor == usuario && x.DOR != "082" && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total) - DevolucaoInter.Where(x => x.Gestor == usuario && x.DOR != "082" && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total);
                                     time.FaturadoEquipe += BaixaLicitacoesInter.Where(x => Convert.ToInt32(x.DataPedido) > 20240231 && (x.CodigoCliente == "000011" || x.CodigoCliente == "000012") && x.Gestor == usuario).Sum(x => x.TotalBaixado);
@@ -1029,10 +1029,10 @@ namespace SGID.Pages.Account.RH
                                     #endregion
                                 }
 
-                                time.Comissao = time.Faturado * (time.User.Porcentagem / 100);
+                                time.Comissao = (time.Faturado + time.Baixa) * (time.User.Porcentagem / 100);
                                 time.ComissaoEquipe = time.FaturadoEquipe * (time.User.PorcentagemSeg / 100);
                                 time.ComissaoProduto = time.FaturadoProduto * (time.User.PorcentagemGenProd / 100);
-                                if (time.Faturado > 0 || time.FaturadoEquipe > 0 || time.FaturadoProduto > 0)
+                                if (time.Faturado > 0 || time.Baixa > 0 || time.FaturadoEquipe > 0 || time.FaturadoProduto > 0)
                                 {
                                     Usuarios.Add(time);
                                 }
@@ -1041,27 +1041,27 @@ namespace SGID.Pages.Account.RH
                             else if (x.TipoFaturamento != "S")
                             {
 
-                                time.Faturado = BaixaLicitacoesInter.Where(x => x.CodigoCliente == "000011" || x.CodigoCliente == "000012").Sum(x => x.TotalBaixado);
+                                time.Baixa = BaixaLicitacoesInter.Where(x => x.CodigoCliente == "000011" || x.CodigoCliente == "000012").Sum(x => x.TotalBaixado);
 
-                                time.Comissao = time.Faturado * (time.User.Porcentagem / 100);
+                                time.Comissao = time.Baixa * (time.User.Porcentagem / 100);
 
 
                                 time.Linha = "LICITA함ES";
 
 
-                                if (time.Faturado > 0)
+                                if (time.Baixa > 0)
                                 {
                                     Usuarios.Add(time);
                                 }
                             }
                             else
                             {
-                                time.Faturado = BaixaSubInter.Where(x => x.TipoCliente == "S").Sum(x => x.TotalBaixado);
+                                time.Baixa = BaixaSubInter.Where(x => x.TipoCliente == "S").Sum(x => x.TotalBaixado);
 
-                                time.Comissao = time.Faturado * (time.User.Porcentagem / 100);
+                                time.Comissao = time.Baixa * (time.User.Porcentagem / 100);
                                 time.Linha = "SUBDISTRIBUIDOR";
 
-                                if(time.Faturado > 0)
+                                if(time.Baixa > 0)
                                 {
                                     Usuarios.Add(time);
                                 }
@@ -1120,8 +1120,8 @@ namespace SGID.Pages.Account.RH
                                 else
                                 {
                                     time.Faturado += resultadoDenuo.Where(x => x.Login == usuario && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total) - DevolucaoDenuo.Where(x => x.Login == usuario && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total);
-                                    time.Faturado += BaixaLicitacoesDenuo.Where(x => Convert.ToInt32(x.DataPedido) > 20240231 && (x.CodigoCliente == "000011" || x.CodigoCliente == "000012") && x.Login == usuario).Sum(x => x.TotalBaixado);
-                                    time.Faturado += RelatorioKamikazeDenuo.Where(x => x.Login == usuario).Sum(x => x.TotalBaixado);
+                                    time.Baixa += BaixaLicitacoesDenuo.Where(x => Convert.ToInt32(x.DataPedido) > 20240231 && (x.CodigoCliente == "000011" || x.CodigoCliente == "000012") && x.Login == usuario).Sum(x => x.TotalBaixado);
+                                    time.Baixa += RelatorioKamikazeDenuo.Where(x => x.Login == usuario).Sum(x => x.TotalBaixado);
 
                                     time.FaturadoEquipe += resultadoDenuo.Where(x => x.Gestor == usuario && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total) - DevolucaoDenuo.Where(x => x.Gestor == usuario && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total);
                                     time.FaturadoEquipe += BaixaLicitacoesDenuo.Where(x => Convert.ToInt32(x.DataPedido) > 20240231 && (x.CodigoCliente == "000011" || x.CodigoCliente == "000012") && x.Gestor == usuario).Sum(x => x.TotalBaixado);
@@ -1156,32 +1156,32 @@ namespace SGID.Pages.Account.RH
                                     });
                                 }
 
-                                time.Comissao = time.Faturado * (time.User.Porcentagem / 100);
+                                time.Comissao = (time.Faturado + time.Baixa) * (time.User.Porcentagem / 100);
                                 time.ComissaoEquipe = time.FaturadoEquipe * (time.User.PorcentagemSeg / 100);
                                 time.ComissaoProduto = time.FaturadoProduto * (time.User.PorcentagemGenProd / 100);
                             }
                             else if (x.TipoFaturamento != "S")
                             {
 
-                                time.Faturado = BaixaLicitacoesDenuo.Where(x => x.CodigoCliente == "000011" || x.CodigoCliente == "000012").Sum(x => x.TotalBaixado);
+                                time.Baixa = BaixaLicitacoesDenuo.Where(x => x.CodigoCliente == "000011" || x.CodigoCliente == "000012").Sum(x => x.TotalBaixado);
 
-                                time.Comissao = time.Faturado * (time.User.Porcentagem / 100);
+                                time.Comissao = time.Baixa * (time.User.Porcentagem / 100);
 
                                 time.Linha = "LICITA함ES";
 
-                                if (time.Faturado > 0)
+                                if (time.Baixa > 0)
                                 {
                                     Usuarios.Add(time);
                                 }
                             }
                             else
                             {
-                                time.Faturado = BaixaSubDenuo.Where(x => x.TipoCliente == "S").Sum(x => x.TotalBaixado);
+                                time.Baixa = BaixaSubDenuo.Where(x => x.TipoCliente == "S").Sum(x => x.TotalBaixado);
 
-                                time.Comissao = time.Faturado * (time.User.Porcentagem / 100);
+                                time.Comissao = time.Baixa * (time.User.Porcentagem / 100);
                                 time.Linha = "SUBDISTRIBUIDOR";
 
-                                if (time.Faturado > 0)
+                                if (time.Baixa > 0)
                                 {
                                     Usuarios.Add(time);
                                 }
@@ -1257,17 +1257,25 @@ namespace SGID.Pages.Account.RH
                             }
                             else
                             {
-                                if (usuario == "LEONARDO.BRITO" || usuario == "ARTEMIO.COSTA")
-                                {
-                                    var teste = "ANDRE.SALES";
-                                }
+                                //if (usuario == "TAMIRES.SILVA")
+                                //{
+                                //    var teste = resultadoDenuo.Where(x=> x.Login == usuario).ToList()
+                                //    var teste1 = resultadoInter.Where(x => x.Login == usuario && (x.Codigo != "000011" && x.Codigo != "000012")).ToList();
+                                //    var teste7 = DevolucaoInter.Where(x => x.Login == usuario && (x.Codigo != "000011" && x.Codigo != "000012")).ToList();
+                                //    var teste2 = resultadoDenuo.Where(x => x.Login == usuario && (x.Codigo != "000011" && x.Codigo != "000012")).ToList();
+                                //    var teste8 = DevolucaoDenuo.Where(x => x.Login == usuario && (x.Codigo != "000011" && x.Codigo != "000012")).ToList();
+                                //    var teste3 = BaixaLicitacoesDenuo.Where(x => Convert.ToInt32(x.DataPedido) > 20240231 && (x.CodigoCliente == "000011" || x.CodigoCliente == "000012") && x.Login == usuario).ToList();
+                                //    var teste4 = BaixaLicitacoesInter.Where(x => Convert.ToInt32(x.DataPedido) > 20240231 && (x.CodigoCliente == "000011" || x.CodigoCliente == "000012") && x.Login == usuario).ToList();
+                                //    var teste5 = RelatorioKamikazeDenuo.Where(x => x.Login == usuario).ToList();
+                                //    var teste6 = RelatorioKamikazeInter.Where(x => x.Login == usuario).ToList();
+                                //}
 
                                 time.Faturado += resultadoInter.Where(x => x.Login == usuario && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total) - DevolucaoInter.Where(x => x.Login == usuario && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total);
                                 time.Faturado += resultadoDenuo.Where(x => x.Login == usuario && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total) - DevolucaoDenuo.Where(x => x.Login == usuario && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total);
-                                time.Faturado += BaixaLicitacoesDenuo.Where(x => Convert.ToInt32(x.DataPedido) > 20240231 && (x.CodigoCliente == "000011" || x.CodigoCliente == "000012") && x.Login == usuario).Sum(x => x.TotalBaixado);
-                                time.Faturado += BaixaLicitacoesInter.Where(x => Convert.ToInt32(x.DataPedido) > 20240231 && (x.CodigoCliente == "000011" || x.CodigoCliente == "000012") && x.Login == usuario).Sum(x => x.TotalBaixado);
-                                time.Faturado += RelatorioKamikazeDenuo.Where(x => x.Login == usuario).Sum(x => x.TotalBaixado);
-                                time.Faturado += RelatorioKamikazeInter.Where(x => x.Login == usuario).Sum(x => x.TotalBaixado);
+                                time.Baixa += BaixaLicitacoesDenuo.Where(x => Convert.ToInt32(x.DataPedido) > 20240231 && (x.CodigoCliente == "000011" || x.CodigoCliente == "000012") && x.Login == usuario).Sum(x => x.TotalBaixado);
+                                time.Baixa += BaixaLicitacoesInter.Where(x => Convert.ToInt32(x.DataPedido) > 20240231 && (x.CodigoCliente == "000011" || x.CodigoCliente == "000012") && x.Login == usuario).Sum(x => x.TotalBaixado);
+                                time.Baixa += RelatorioKamikazeDenuo.Where(x => x.Login == usuario).Sum(x => x.TotalBaixado);
+                                time.Baixa += RelatorioKamikazeInter.Where(x => x.Login == usuario).Sum(x => x.TotalBaixado);
 
                                 time.FaturadoEquipe += resultadoInter.Where(x => x.Gestor == usuario && x.DOR != "082" && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total) - DevolucaoInter.Where(x => x.Gestor == usuario && x.DOR != "082" && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total);
                                 time.FaturadoEquipe += resultadoDenuo.Where(x => x.Gestor == usuario && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total) - DevolucaoDenuo.Where(x => x.Gestor == usuario && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total);
@@ -1315,7 +1323,7 @@ namespace SGID.Pages.Account.RH
                                 
                             }
 
-                            time.Comissao = time.Faturado * (time.User.Porcentagem / 100);
+                            time.Comissao = (time.Faturado + time.Baixa) * (time.User.Porcentagem / 100);
                             time.ComissaoEquipe = time.FaturadoEquipe * (time.User.PorcentagemSeg / 100);
                             time.ComissaoProduto = time.FaturadoProduto * (time.User.PorcentagemGenProd / 100);
                             Usuarios.Add(time);
@@ -1323,20 +1331,17 @@ namespace SGID.Pages.Account.RH
                         }
                         else if (x.TipoFaturamento != "S")
                         {
+                            time.Baixa = BaixaLicitacoesDenuo.Where(x => x.CodigoCliente == "000011" || x.CodigoCliente == "000012").Sum(x => x.TotalBaixado) + BaixaLicitacoesInter.Where(x => x.CodigoCliente == "000011" || x.CodigoCliente == "000012").Sum(x => x.TotalBaixado);
 
-
-                            time.Faturado = BaixaLicitacoesDenuo.Where(x => x.CodigoCliente == "000011" || x.CodigoCliente == "000012").Sum(x => x.TotalBaixado) + BaixaLicitacoesInter.Where(x => x.CodigoCliente == "000011" || x.CodigoCliente == "000012").Sum(x => x.TotalBaixado);
-
-                            time.Comissao = time.Faturado * (time.User.Porcentagem / 100);
+                            time.Comissao = time.Baixa * (time.User.Porcentagem / 100);
 
                             Usuarios.Add(time);
                         }
                         else
                         {
+                            time.Baixa = BaixaSubDenuo.Where(x => x.TipoCliente == "S").Sum(x => x.TotalBaixado) + BaixaSubInter.Where(x => x.TipoCliente == "S").Sum(x => x.TotalBaixado);
 
-                            time.Faturado = BaixaSubDenuo.Where(x => x.TipoCliente == "S").Sum(x => x.TotalBaixado) + BaixaSubInter.Where(x => x.TipoCliente == "S").Sum(x => x.TotalBaixado);
-
-                            time.Comissao = time.Faturado * (time.User.Porcentagem / 100);
+                            time.Comissao = time.Baixa * (time.User.Porcentagem / 100);
 
                             Usuarios.Add(time);
                         }
@@ -2321,8 +2326,8 @@ namespace SGID.Pages.Account.RH
                                 else
                                 {
                                     time.Faturado += resultadoInter.Where(x => x.Login == usuario && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total) - DevolucaoInter.Where(x => x.Login == usuario && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total);
-                                    time.Faturado += BaixaLicitacoesInter.Where(x => Convert.ToInt32(x.DataPedido) > 20240231 && (x.CodigoCliente == "000011" || x.CodigoCliente == "000012") && x.Login == usuario).Sum(x => x.TotalBaixado);
-                                    time.Faturado += RelatorioKamikazeInter.Where(x => x.Login == usuario).Sum(x => x.TotalBaixado);
+                                    time.Baixa += BaixaLicitacoesInter.Where(x => Convert.ToInt32(x.DataPedido) > 20240231 && (x.CodigoCliente == "000011" || x.CodigoCliente == "000012") && x.Login == usuario).Sum(x => x.TotalBaixado);
+                                    time.Baixa += RelatorioKamikazeInter.Where(x => x.Login == usuario).Sum(x => x.TotalBaixado);
 
                                     time.FaturadoEquipe += resultadoInter.Where(x => x.Gestor == usuario && x.DOR != "082" && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total) - DevolucaoInter.Where(x => x.Gestor == usuario && x.DOR != "082" && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total);
                                     time.FaturadoEquipe += BaixaLicitacoesInter.Where(x => Convert.ToInt32(x.DataPedido) > 20240231 && (x.CodigoCliente == "000011" || x.CodigoCliente == "000012") && x.Gestor == usuario).Sum(x => x.TotalBaixado);
@@ -2357,10 +2362,10 @@ namespace SGID.Pages.Account.RH
                                     });
                                 }
 
-                                time.Comissao = time.Faturado * (time.User.Porcentagem / 100);
+                                time.Comissao = (time.Faturado + time.Baixa) * (time.User.Porcentagem / 100);
                                 time.ComissaoEquipe = time.FaturadoEquipe * (time.User.PorcentagemSeg / 100);
                                 time.ComissaoProduto = time.FaturadoProduto * (time.User.PorcentagemGenProd / 100);
-                                if (time.Faturado > 0 || time.FaturadoEquipe > 0 || time.FaturadoProduto > 0)
+                                if (time.Faturado > 0 || time.Baixa > 0 || time.FaturadoEquipe > 0 || time.FaturadoProduto > 0)
                                 {
                                     Usuarios.Add(time);
                                 }
@@ -2369,27 +2374,27 @@ namespace SGID.Pages.Account.RH
                             else if (x.TipoFaturamento != "S")
                             {
 
-                                time.Faturado = BaixaLicitacoesInter.Where(x => x.CodigoCliente == "000011" || x.CodigoCliente == "000012").Sum(x => x.TotalBaixado);
+                                time.Baixa = BaixaLicitacoesInter.Where(x => x.CodigoCliente == "000011" || x.CodigoCliente == "000012").Sum(x => x.TotalBaixado);
 
-                                time.Comissao = time.Faturado * (time.User.Porcentagem / 100);
+                                time.Comissao = time.Baixa * (time.User.Porcentagem / 100);
 
 
                                 time.Linha = "LICITA함ES";
 
 
-                                if (time.Faturado > 0)
+                                if (time.Baixa > 0)
                                 {
                                     Usuarios.Add(time);
                                 }
                             }
                             else
                             {
-                                time.Faturado = BaixaSubInter.Where(x => x.TipoCliente == "S").Sum(x => x.TotalBaixado);
+                                time.Baixa = BaixaSubInter.Where(x => x.TipoCliente == "S").Sum(x => x.TotalBaixado);
 
-                                time.Comissao = time.Faturado * (time.User.Porcentagem / 100);
+                                time.Comissao = time.Baixa * (time.User.Porcentagem / 100);
                                 time.Linha = "SUBDISTRIBUIDOR";
 
-                                if (time.Faturado > 0)
+                                if (time.Baixa > 0)
                                 {
                                     Usuarios.Add(time);
                                 }
@@ -2448,8 +2453,8 @@ namespace SGID.Pages.Account.RH
                                 else
                                 {
                                     time.Faturado += resultadoDenuo.Where(x => x.Login == usuario && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total) - DevolucaoDenuo.Where(x => x.Login == usuario && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total);
-                                    time.Faturado += BaixaLicitacoesDenuo.Where(x => Convert.ToInt32(x.DataPedido) > 20231231 && (x.CodigoCliente == "000011" || x.CodigoCliente == "000012") && x.Login == usuario).Sum(x => x.TotalBaixado);
-                                    time.Faturado += RelatorioKamikazeDenuo.Where(x => x.Login == usuario).Sum(x => x.TotalBaixado);
+                                    time.Baixa += BaixaLicitacoesDenuo.Where(x => Convert.ToInt32(x.DataPedido) > 20231231 && (x.CodigoCliente == "000011" || x.CodigoCliente == "000012") && x.Login == usuario).Sum(x => x.TotalBaixado);
+                                    time.Baixa += RelatorioKamikazeDenuo.Where(x => x.Login == usuario).Sum(x => x.TotalBaixado);
 
                                     time.FaturadoEquipe += resultadoDenuo.Where(x => x.Gestor == usuario && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total) - DevolucaoDenuo.Where(x => x.Gestor == usuario  && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total);
                                     time.FaturadoEquipe += BaixaLicitacoesDenuo.Where(x => Convert.ToInt32(x.DataPedido) > 20231231 && (x.CodigoCliente == "000011" || x.CodigoCliente == "000012") && x.Gestor == usuario).Sum(x => x.TotalBaixado);
@@ -2485,10 +2490,10 @@ namespace SGID.Pages.Account.RH
 
                                     
 
-                                    time.Comissao = time.Faturado * (time.User.Porcentagem / 100);
+                                    time.Comissao = (time.Faturado + time.Baixa) * (time.User.Porcentagem / 100);
                                     time.ComissaoEquipe = time.FaturadoEquipe * (time.User.PorcentagemSeg / 100);
                                     time.ComissaoProduto = time.FaturadoProduto * (time.User.PorcentagemGenProd / 100);
-                                    if (time.Faturado > 0 || time.FaturadoEquipe > 0 || time.FaturadoProduto > 0)
+                                    if (time.Faturado > 0 || time.Baixa > 0 || time.FaturadoEquipe > 0 || time.FaturadoProduto > 0)
                                     {
                                         Usuarios.Add(time);
                                     }
@@ -2497,25 +2502,25 @@ namespace SGID.Pages.Account.RH
                             else if (x.TipoFaturamento != "S")
                             {
 
-                                time.Faturado = BaixaLicitacoesDenuo.Where(x => x.CodigoCliente == "000011" || x.CodigoCliente == "000012").Sum(x => x.TotalBaixado);
+                                time.Baixa = BaixaLicitacoesDenuo.Where(x => x.CodigoCliente == "000011" || x.CodigoCliente == "000012").Sum(x => x.TotalBaixado);
 
-                                time.Comissao = time.Faturado * (time.User.Porcentagem / 100);
+                                time.Comissao = time.Baixa * (time.User.Porcentagem / 100);
 
                                 time.Linha = "LICITA함ES";
 
-                                if (time.Faturado > 0)
+                                if (time.Baixa > 0)
                                 {
                                     Usuarios.Add(time);
                                 }
                             }
                             else
                             {
-                                time.Faturado = BaixaSubDenuo.Where(x => x.TipoCliente == "S").Sum(x => x.TotalBaixado);
+                                time.Baixa = BaixaSubDenuo.Where(x => x.TipoCliente == "S").Sum(x => x.TotalBaixado);
 
-                                time.Comissao = time.Faturado * (time.User.Porcentagem / 100);
+                                time.Comissao = time.Baixa * (time.User.Porcentagem / 100);
                                 time.Linha = "SUBDISTRIBUIDOR";
 
-                                if (time.Faturado > 0)
+                                if (time.Baixa > 0)
                                 {
                                     Usuarios.Add(time);
                                 }
@@ -2596,10 +2601,10 @@ namespace SGID.Pages.Account.RH
                             {
                                 time.Faturado += resultadoInter.Where(x => x.Login == usuario && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total) - DevolucaoInter.Where(x => x.Login == usuario && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total);
                                 time.Faturado += resultadoDenuo.Where(x => x.Login == usuario && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total) - DevolucaoDenuo.Where(x => x.Login == usuario && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total);
-                                time.Faturado += BaixaLicitacoesDenuo.Where(x => Convert.ToInt32(x.DataPedido) > 20240231 && (x.CodigoCliente == "000011" || x.CodigoCliente == "000012") && x.Login == usuario).Sum(x => x.TotalBaixado);
-                                time.Faturado += BaixaLicitacoesInter.Where(x => Convert.ToInt32(x.DataPedido) > 20240231 && (x.CodigoCliente == "000011" || x.CodigoCliente == "000012") && x.Login == usuario).Sum(x => x.TotalBaixado);
-                                time.Faturado += RelatorioKamikazeDenuo.Where(x => x.Login == usuario).Sum(x => x.TotalBaixado);
-                                time.Faturado += RelatorioKamikazeInter.Where(x => x.Login == usuario).Sum(x => x.TotalBaixado);
+                                time.Baixa += BaixaLicitacoesDenuo.Where(x => Convert.ToInt32(x.DataPedido) > 20240231 && (x.CodigoCliente == "000011" || x.CodigoCliente == "000012") && x.Login == usuario).Sum(x => x.TotalBaixado);
+                                time.Baixa += BaixaLicitacoesInter.Where(x => Convert.ToInt32(x.DataPedido) > 20240231 && (x.CodigoCliente == "000011" || x.CodigoCliente == "000012") && x.Login == usuario).Sum(x => x.TotalBaixado);
+                                time.Baixa += RelatorioKamikazeDenuo.Where(x => x.Login == usuario).Sum(x => x.TotalBaixado);
+                                time.Baixa += RelatorioKamikazeInter.Where(x => x.Login == usuario).Sum(x => x.TotalBaixado);
 
 
                                 time.FaturadoEquipe += resultadoInter.Where(x => x.Gestor == usuario && x.DOR != "082" && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total) - DevolucaoInter.Where(x => x.Gestor == usuario && x.DOR != "082" && (x.Codigo != "000011" && x.Codigo != "000012")).Sum(x => x.Total);
@@ -2654,18 +2659,18 @@ namespace SGID.Pages.Account.RH
                         {
 
 
-                            time.Faturado = BaixaLicitacoesDenuo.Where(x => x.CodigoCliente == "000011" || x.CodigoCliente == "000012").Sum(x => x.TotalBaixado) + BaixaLicitacoesInter.Where(x => x.CodigoCliente == "000011" || x.CodigoCliente == "000012").Sum(x => x.TotalBaixado);
+                            time.Baixa = BaixaLicitacoesDenuo.Where(x => x.CodigoCliente == "000011" || x.CodigoCliente == "000012").Sum(x => x.TotalBaixado) + BaixaLicitacoesInter.Where(x => x.CodigoCliente == "000011" || x.CodigoCliente == "000012").Sum(x => x.TotalBaixado);
 
-                            time.Comissao = time.Faturado * (time.User.Porcentagem / 100);
+                            time.Comissao = time.Baixa * (time.User.Porcentagem / 100);
 
                             Usuarios.Add(time);
                         }
                         else
                         {
 
-                            time.Faturado = BaixaSubDenuo.Where(x => x.TipoCliente == "S").Sum(x => x.TotalBaixado) + BaixaSubInter.Where(x => x.TipoCliente == "S").Sum(x => x.TotalBaixado);
+                            time.Baixa = BaixaSubDenuo.Where(x => x.TipoCliente == "S").Sum(x => x.TotalBaixado) + BaixaSubInter.Where(x => x.TipoCliente == "S").Sum(x => x.TotalBaixado);
 
-                            time.Comissao = time.Faturado * (time.User.Porcentagem / 100);
+                            time.Comissao = time.Baixa * (time.User.Porcentagem / 100);
 
                             Usuarios.Add(time);
                         }
@@ -2692,7 +2697,7 @@ namespace SGID.Pages.Account.RH
                             }
                             else
                             {
-                                sheet.Cells[id, 2].Value = time.Faturado;
+                                sheet.Cells[id, 2].Value = time.Faturado + time.Baixa;
                             }
 
                             sheet.Cells[id, 2].Style.Numberformat.Format = "#,##0.00;(#,##0.00)";
@@ -2710,7 +2715,7 @@ namespace SGID.Pages.Account.RH
                             }
                             else
                             {
-                                sheet.Cells[id, 4].Value = $"{string.Format("{0:0.00}", (((time.Faturado + time.FaturadoProduto) / (time.User.Meta / 12)) * 100))} %";
+                                sheet.Cells[id, 4].Value = $"{string.Format("{0:0.00}", (((time.Faturado + time.Baixa + time.FaturadoProduto) / (time.User.Meta / 12)) * 100))} %";
                             }
 
                             sheet.Cells[id, 5].Value = time.Comissao;

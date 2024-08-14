@@ -74,4 +74,6 @@ public partial class Sw1010
     public string W1DtCanc { get; set; } = null!;
 
     public string W1Motcanc { get; set; } = null!;
+
+    public string W1Naturez { get; set; } = null!;
 }

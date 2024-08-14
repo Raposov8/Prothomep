@@ -58,6 +58,8 @@
                 <tr>
                     <th class="text-center">Representantes</th>
                     <th class="text-center">Faturado @Model.Mes</th>
+                    <th class="text-center">Recebimento @Model.Mes</th>
+                    <th class="text-center">Total @Model.Mes</th>
                     <th class="text-center">Comissão @Model.Mes</th>
                     <th class="text-center">Faturado Equipe @Model.Mes</th>
                     <th class="text-center">Comissão sobre a Equipe @Model.Mes</th>
@@ -75,6 +77,12 @@
                         </td>
                         <td class="text-center">
                             R$ @string.Format("{0:N2}", item.Faturado)
+                        </td>
+                        <td class="text-center">
+                            R$ @string.Format("{0:N2}", item.Baixa)
+                        </td>
+                        <td class="text-center">
+                            R$ @string.Format("{0:N2}", item.Baixa + item.Faturado)
                         </td>
                         <td class="text-center">
                             R$ @string.Format("{0:N2}", item.Comissao)

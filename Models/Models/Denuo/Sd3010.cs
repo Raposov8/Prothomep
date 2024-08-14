@@ -238,4 +238,6 @@ public partial class Sd3010
     public string D3Lojadoc { get; set; } = null!;
 
     public string D3Father { get; set; } = null!;
+
+    public string D3Pneu { get; set; } = null!;
 }

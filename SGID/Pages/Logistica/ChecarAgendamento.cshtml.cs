@@ -89,7 +89,7 @@ namespace SGID.Pages.Logistica
             if (Agendamento.Empresa == "01")
             {
                 //Intermedic
-                Crm = ProtheusInter.Sa1010s.FirstOrDefault(x => x.A1Nome == Agendamento.Medico).A1Crm;
+                Crm = ProtheusInter.Sa1010s.FirstOrDefault(x => x.A1Nome == Agendamento.Medico)?.A1Crm;
                 codigos.ForEach(x =>
                 {
                     var produto = (from SB10 in ProtheusInter.Sb1010s
@@ -193,7 +193,7 @@ namespace SGID.Pages.Logistica
             else
             {
                 //Denuo
-                Crm = ProtheusDenuo.Sa1010s.FirstOrDefault(x => x.A1Nome == Agendamento.Medico).A1Crm;
+                Crm = ProtheusDenuo.Sa1010s.FirstOrDefault(x => x.A1Nome == Agendamento.Medico)?.A1Crm;
                 codigos.ForEach(x =>
                 {
                     var produto = (from SB10 in ProtheusDenuo.Sb1010s

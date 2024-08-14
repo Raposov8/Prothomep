@@ -64,4 +64,8 @@ public partial class Se4010
     public string E4Msblql { get; set; } = null!;
 
     public string E4Tpay { get; set; } = null!;
+
+    public string E4Paggrr { get; set; } = null!;
+
+    public string E4Grrnf { get; set; } = null!;
 }

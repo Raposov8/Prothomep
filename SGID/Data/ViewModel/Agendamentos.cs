@@ -76,6 +76,10 @@ namespace SGID.Data.ViewModel
         //Logistica
         public string? UsuarioLogistica { get; set; }
         public DateTime? DataLogistica { get; set; }
+
+        //Logistica Loteamento
+        public string? UsuarioLoteamento { get; set; }
+        public DateTime? DataLoteamento { get; set; }
         public int StatusLogistica { get; set; }
         public string? MediaEntrega { get; set; }
         public DateTime? DataEntrega { get; set; }

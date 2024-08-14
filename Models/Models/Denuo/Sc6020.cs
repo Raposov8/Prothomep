@@ -400,4 +400,8 @@ public partial class Sc6020
     public string C6Obsfisc { get; set; } = null!;
 
     public string C6Obscont { get; set; } = null!;
+
+    public string C6Natren { get; set; } = null!;
+
+    public string C6Indsus { get; set; } = null!;
 }

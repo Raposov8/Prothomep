@@ -456,4 +456,10 @@ public partial class Sc5010
     public string C5Numext { get; set; } = null!;
 
     public DateTime? STAMP { get; set; }
+
+    public string C5Coment { get; set; } = null!;
+
+    public string C5Obsfcmp { get; set; } = null!;
+
+    public string C5Obsfisc { get; set; } = null!;
 }

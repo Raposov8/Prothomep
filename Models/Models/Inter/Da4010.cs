@@ -128,4 +128,6 @@ public partial class Da4010
     public string Da4Applog { get; set; } = null!;
 
     public string Da4Pais { get; set; } = null!;
+
+    public string Da4Email { get; set; } = null!;
 }

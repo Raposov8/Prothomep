@@ -562,4 +562,8 @@ public partial class Sra010
     public string RaTipinf { get; set; } = null!;
 
     public string RaDtrec { get; set; } = null!;
+
+    public string RaXcnpj { get; set; } = null!;
+
+    public string RaXrazao { get; set; } = null!;
 }

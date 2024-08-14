@@ -20,10 +20,4 @@ public partial class Pah010
     public int RECNO { get; set; }
 
     public string PahMsblql { get; set; } = null!;
-
-    public string PahTipocontrato { get; set; } = null!;
-
-    public string PahObs { get; set; } = null!;
-
-    public string PahImagem { get; set; } = null!;
 }

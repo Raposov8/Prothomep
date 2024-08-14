@@ -59,6 +59,8 @@ public partial class TOTVSDENUOContext : DbContext
 
     public virtual DbSet<Sb8010> Sb8010s { get; set; }
 
+    public virtual DbSet<Sbf010> Sbf010s { get; set; }
+
     public virtual DbSet<Sbm010> Sbm010s { get; set; }
 
     public virtual DbSet<Sc5010> Sc5010s { get; set; }
@@ -525,6 +527,11 @@ public partial class TOTVSDENUOContext : DbContext
                 .IsUnicode(false)
                 .HasDefaultValueSql("('        ')")
                 .HasColumnName("DA4_DTVCNH");
+            entity.Property(e => e.Da4Email)
+                .HasMaxLength(30)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('                              ')")
+                .HasColumnName("DA4_EMAIL");
             entity.Property(e => e.Da4End)
                 .HasMaxLength(40)
                 .IsUnicode(false)
@@ -6030,9 +6037,9 @@ public partial class TOTVSDENUOContext : DbContext
                 .HasDefaultValueSql("('         ')")
                 .HasColumnName("B1_CCCUSTO");
             entity.Property(e => e.B1Cest)
-                .HasMaxLength(9)
+                .HasMaxLength(7)
                 .IsUnicode(false)
-                .HasDefaultValueSql("('         ')")
+                .HasDefaultValueSql("('       ')")
                 .HasColumnName("B1_CEST");
             entity.Property(e => e.B1Cfem)
                 .HasMaxLength(1)
@@ -7386,9 +7393,9 @@ public partial class TOTVSDENUOContext : DbContext
                 .HasDefaultValueSql("('         ')")
                 .HasColumnName("B1_CCCUSTO");
             entity.Property(e => e.B1Cest)
-                .HasMaxLength(9)
+                .HasMaxLength(7)
                 .IsUnicode(false)
-                .HasDefaultValueSql("('         ')")
+                .HasDefaultValueSql("('       ')")
                 .HasColumnName("B1_CEST");
             entity.Property(e => e.B1Cfem)
                 .HasMaxLength(1)
@@ -9072,6 +9079,95 @@ public partial class TOTVSDENUOContext : DbContext
             entity.Property(e => e.RECDEL).HasColumnName("R_E_C_D_E_L_");
         });
 
+        modelBuilder.Entity<Sbf010>(entity =>
+        {
+            entity.HasKey(e => e.RECNO).HasName("SBF010_PK");
+
+            entity.ToTable("SBF010");
+
+            entity.HasIndex(e => new { e.BfFilial, e.BfLocal, e.BfLocaliz, e.BfProduto, e.BfNumseri, e.BfLotectl, e.BfNumlote, e.RECNO, e.DELET }, "SBF0101").HasFillFactor(80);
+
+            entity.HasIndex(e => new { e.BfFilial, e.BfProduto, e.BfLocal, e.BfLotectl, e.BfNumlote, e.BfPrior, e.BfLocaliz, e.BfNumseri, e.RECNO, e.DELET }, "SBF0102").HasFillFactor(80);
+
+            entity.HasIndex(e => new { e.BfFilial, e.BfNumseri, e.RECNO, e.DELET }, "SBF0103").HasFillFactor(80);
+
+            entity.HasIndex(e => new { e.BfFilial, e.BfProduto, e.BfNumseri, e.RECNO, e.DELET }, "SBF0104").HasFillFactor(80);
+
+            entity.HasIndex(e => new { e.BfFilial, e.BfProduto, e.BfEstfis, e.BfLocaliz, e.RECNO, e.DELET }, "SBF0105").HasFillFactor(80);
+
+            entity.HasIndex(e => new { e.BfFilial, e.BfLocal, e.BfLocaliz, e.BfEstfis, e.BfProduto, e.BfNumseri, e.BfLotectl, e.BfNumlote, e.RECNO, e.DELET }, "SBF0106").HasFillFactor(80);
+
+            entity.Property(e => e.RECNO)
+                .ValueGeneratedNever()
+                .HasColumnName("R_E_C_N_O_");
+            entity.Property(e => e.BfDataven)
+                .HasMaxLength(8)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('        ')")
+                .HasColumnName("BF_DATAVEN");
+            entity.Property(e => e.BfDinvent)
+                .HasMaxLength(8)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('        ')")
+                .HasColumnName("BF_DINVENT");
+            entity.Property(e => e.BfEmpen2).HasColumnName("BF_EMPEN2");
+            entity.Property(e => e.BfEmpenho).HasColumnName("BF_EMPENHO");
+            entity.Property(e => e.BfEstfis)
+                .HasMaxLength(6)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('      ')")
+                .HasColumnName("BF_ESTFIS");
+            entity.Property(e => e.BfFilial)
+                .HasMaxLength(2)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('  ')")
+                .HasColumnName("BF_FILIAL");
+            entity.Property(e => e.BfLocal)
+                .HasMaxLength(2)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('  ')")
+                .HasColumnName("BF_LOCAL");
+            entity.Property(e => e.BfLocaliz)
+                .HasMaxLength(15)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('               ')")
+                .HasColumnName("BF_LOCALIZ");
+            entity.Property(e => e.BfLotectl)
+                .HasMaxLength(10)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('          ')")
+                .HasColumnName("BF_LOTECTL");
+            entity.Property(e => e.BfNumlote)
+                .HasMaxLength(6)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('      ')")
+                .HasColumnName("BF_NUMLOTE");
+            entity.Property(e => e.BfNumseri)
+                .HasMaxLength(20)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('                    ')")
+                .HasColumnName("BF_NUMSERI");
+            entity.Property(e => e.BfPrior)
+                .HasMaxLength(3)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('   ')")
+                .HasColumnName("BF_PRIOR");
+            entity.Property(e => e.BfProduto)
+                .HasMaxLength(15)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('               ')")
+                .HasColumnName("BF_PRODUTO");
+            entity.Property(e => e.BfQemppre).HasColumnName("BF_QEMPPRE");
+            entity.Property(e => e.BfQepre2).HasColumnName("BF_QEPRE2");
+            entity.Property(e => e.BfQtsegum).HasColumnName("BF_QTSEGUM");
+            entity.Property(e => e.BfQuant).HasColumnName("BF_QUANT");
+            entity.Property(e => e.DELET)
+                .HasMaxLength(1)
+                .IsUnicode(false)
+                .HasDefaultValueSql("(' ')")
+                .HasColumnName("D_E_L_E_T_");
+        });
+
         modelBuilder.Entity<Sbm010>(entity =>
         {
             entity.HasKey(e => e.RECNO).HasName("SBM010_PK");
@@ -9365,6 +9461,11 @@ public partial class TOTVSDENUOContext : DbContext
                 .IsUnicode(false)
                 .HasDefaultValueSql("('      ')")
                 .HasColumnName("C5_CODVGLP");
+            entity.Property(e => e.C5Coment)
+                .HasMaxLength(254)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('                                                                                                                                                                                                                                                              ')")
+                .HasColumnName("C5_COMENT");
             entity.Property(e => e.C5Comis1).HasColumnName("C5_COMIS1");
             entity.Property(e => e.C5Comis2).HasColumnName("C5_COMIS2");
             entity.Property(e => e.C5Comis3).HasColumnName("C5_COMIS3");
@@ -9616,9 +9717,9 @@ public partial class TOTVSDENUOContext : DbContext
                 .HasDefaultValueSql("('      ')")
                 .HasColumnName("C5_MDPLANI");
             entity.Property(e => e.C5Mennota)
-                .HasMaxLength(145)
+                .HasMaxLength(200)
                 .IsUnicode(false)
-                .HasDefaultValueSql("('                                                                                                                                                 ')")
+                .HasDefaultValueSql("('                                                                                                                                                                                                        ')")
                 .HasColumnName("C5_MENNOTA");
             entity.Property(e => e.C5Menpad)
                 .HasMaxLength(3)
@@ -9712,6 +9813,16 @@ public partial class TOTVSDENUOContext : DbContext
                 .IsUnicode(false)
                 .HasDefaultValueSql("('          ')")
                 .HasColumnName("C5_OBRA");
+            entity.Property(e => e.C5Obsfcmp)
+                .HasMaxLength(20)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('                    ')")
+                .HasColumnName("C5_OBSFCMP");
+            entity.Property(e => e.C5Obsfisc)
+                .HasMaxLength(60)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('                                                            ')")
+                .HasColumnName("C5_OBSFISC");
             entity.Property(e => e.C5Ok)
                 .HasMaxLength(2)
                 .IsUnicode(false)
@@ -10368,6 +10479,11 @@ public partial class TOTVSDENUOContext : DbContext
                 .IsUnicode(false)
                 .HasDefaultValueSql("('      ')")
                 .HasColumnName("C5_CODVGLP");
+            entity.Property(e => e.C5Coment)
+                .HasMaxLength(254)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('                                                                                                                                                                                                                                                              ')")
+                .HasColumnName("C5_COMENT");
             entity.Property(e => e.C5Comis1).HasColumnName("C5_COMIS1");
             entity.Property(e => e.C5Comis2).HasColumnName("C5_COMIS2");
             entity.Property(e => e.C5Comis3).HasColumnName("C5_COMIS3");
@@ -11321,9 +11437,9 @@ public partial class TOTVSDENUOContext : DbContext
                 .HasDefaultValueSql("('      ')")
                 .HasColumnName("C6_CODLPRE");
             entity.Property(e => e.C6Codrom)
-                .HasMaxLength(6)
+                .HasMaxLength(10)
                 .IsUnicode(false)
-                .HasDefaultValueSql("('      ')")
+                .HasDefaultValueSql("('          ')")
                 .HasColumnName("C6_CODROM");
             entity.Property(e => e.C6Comis1).HasColumnName("C6_COMIS1");
             entity.Property(e => e.C6Comis2).HasColumnName("C6_COMIS2");
@@ -11493,6 +11609,11 @@ public partial class TOTVSDENUOContext : DbContext
                 .IsUnicode(false)
                 .HasDefaultValueSql("('      ')")
                 .HasColumnName("C6_IDENTB6");
+            entity.Property(e => e.C6Indsus)
+                .HasMaxLength(14)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('              ')")
+                .HasColumnName("C6_INDSUS");
             entity.Property(e => e.C6Introt)
                 .HasMaxLength(1)
                 .IsUnicode(false)
@@ -11623,6 +11744,11 @@ public partial class TOTVSDENUOContext : DbContext
                 .IsUnicode(false)
                 .HasDefaultValueSql("(' ')")
                 .HasColumnName("C6_MOTDED");
+            entity.Property(e => e.C6Natren)
+                .HasMaxLength(5)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('     ')")
+                .HasColumnName("C6_NATREN");
             entity.Property(e => e.C6Nfded)
                 .HasMaxLength(9)
                 .IsUnicode(false)
@@ -12186,9 +12312,9 @@ public partial class TOTVSDENUOContext : DbContext
                 .HasDefaultValueSql("('      ')")
                 .HasColumnName("C6_CODLPRE");
             entity.Property(e => e.C6Codrom)
-                .HasMaxLength(6)
+                .HasMaxLength(10)
                 .IsUnicode(false)
-                .HasDefaultValueSql("('      ')")
+                .HasDefaultValueSql("('          ')")
                 .HasColumnName("C6_CODROM");
             entity.Property(e => e.C6Comis1).HasColumnName("C6_COMIS1");
             entity.Property(e => e.C6Comis2).HasColumnName("C6_COMIS2");
@@ -12358,6 +12484,11 @@ public partial class TOTVSDENUOContext : DbContext
                 .IsUnicode(false)
                 .HasDefaultValueSql("('      ')")
                 .HasColumnName("C6_IDENTB6");
+            entity.Property(e => e.C6Indsus)
+                .HasMaxLength(14)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('              ')")
+                .HasColumnName("C6_INDSUS");
             entity.Property(e => e.C6Introt)
                 .HasMaxLength(1)
                 .IsUnicode(false)
@@ -12486,6 +12617,11 @@ public partial class TOTVSDENUOContext : DbContext
                 .IsUnicode(false)
                 .HasDefaultValueSql("(' ')")
                 .HasColumnName("C6_MOTDED");
+            entity.Property(e => e.C6Natren)
+                .HasMaxLength(5)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('     ')")
+                .HasColumnName("C6_NATREN");
             entity.Property(e => e.C6Nfded)
                 .HasMaxLength(9)
                 .IsUnicode(false)
@@ -13998,6 +14134,8 @@ public partial class TOTVSDENUOContext : DbContext
 
             entity.HasIndex(e => new { e.D2Filial, e.D2Ctarec, e.RECNO, e.DELET }, "SD2010K");
 
+            entity.HasIndex(e => new { e.D2Filial, e.D2Prodfin, e.RECNO, e.DELET }, "SD2010N");
+
             entity.HasIndex(e => new { e.D2Filial, e.D2Doc, e.D2Serie, e.D2Cliente, e.D2Loja, e.D2Item, e.RECDEL }, "SD2010_UNQ")
                 .IsUnique()
                 .HasFillFactor(80);
@@ -14156,9 +14294,9 @@ public partial class TOTVSDENUOContext : DbContext
                 .HasDefaultValueSql("('      ')")
                 .HasColumnName("D2_CODLPRE");
             entity.Property(e => e.D2Codrom)
-                .HasMaxLength(6)
+                .HasMaxLength(10)
                 .IsUnicode(false)
-                .HasDefaultValueSql("('      ')")
+                .HasDefaultValueSql("('          ')")
                 .HasColumnName("D2_CODROM");
             entity.Property(e => e.D2Comis1).HasColumnName("D2_COMIS1");
             entity.Property(e => e.D2Comis2).HasColumnName("D2_COMIS2");
@@ -15131,6 +15269,11 @@ public partial class TOTVSDENUOContext : DbContext
             entity.Property(e => e.D3Perimp).HasColumnName("D3_PERIMP");
             entity.Property(e => e.D3Pmacnut).HasColumnName("D3_PMACNUT");
             entity.Property(e => e.D3Pmicnut).HasColumnName("D3_PMICNUT");
+            entity.Property(e => e.D3Pneu)
+                .HasMaxLength(16)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('                ')")
+                .HasColumnName("D3_PNEU");
             entity.Property(e => e.D3Potenci).HasColumnName("D3_POTENCI");
             entity.Property(e => e.D3Projpms)
                 .HasMaxLength(10)
@@ -17570,6 +17713,11 @@ public partial class TOTVSDENUOContext : DbContext
                 .IsUnicode(false)
                 .HasDefaultValueSql("('      ')")
                 .HasColumnName("E4_FORMA");
+            entity.Property(e => e.E4Grrnf)
+                .HasMaxLength(1)
+                .IsUnicode(false)
+                .HasDefaultValueSql("(' ')")
+                .HasColumnName("E4_GRRNF");
             entity.Property(e => e.E4Infer).HasColumnName("E4_INFER");
             entity.Property(e => e.E4Ipi)
                 .HasMaxLength(1)
@@ -17587,6 +17735,11 @@ public partial class TOTVSDENUOContext : DbContext
                 .IsUnicode(false)
                 .HasDefaultValueSql("(' ')")
                 .HasColumnName("E4_MSBLQL");
+            entity.Property(e => e.E4Paggrr)
+                .HasMaxLength(1)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('F')")
+                .HasColumnName("E4_PAGGRR");
             entity.Property(e => e.E4Percom).HasColumnName("E4_PERCOM");
             entity.Property(e => e.E4Plano)
                 .HasMaxLength(3)
@@ -18415,6 +18568,11 @@ public partial class TOTVSDENUOContext : DbContext
                 .IsUnicode(false)
                 .HasDefaultValueSql("('                              ')")
                 .HasColumnName("ED_DESCRIC");
+            entity.Property(e => e.EdDesfat)
+                .HasMaxLength(1)
+                .IsUnicode(false)
+                .HasDefaultValueSql("(' ')")
+                .HasColumnName("ED_DESFAT");
             entity.Property(e => e.EdDtfccz)
                 .HasMaxLength(8)
                 .IsUnicode(false)
@@ -18956,6 +19114,11 @@ public partial class TOTVSDENUOContext : DbContext
                 .HasDefaultValueSql("('      ')")
                 .HasColumnName("F1_FORRET");
             entity.Property(e => e.F1Frete).HasColumnName("F1_FRETE");
+            entity.Property(e => e.F1Gf)
+                .HasMaxLength(2)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('  ')")
+                .HasColumnName("F1_GF");
             entity.Property(e => e.F1Gnr)
                 .HasMaxLength(6)
                 .IsUnicode(false)
@@ -19044,6 +19207,11 @@ public partial class TOTVSDENUOContext : DbContext
             entity.Property(e => e.F1Ipi).HasColumnName("F1_IPI");
             entity.Property(e => e.F1Irrf).HasColumnName("F1_IRRF");
             entity.Property(e => e.F1Iss).HasColumnName("F1_ISS");
+            entity.Property(e => e.F1ItRoma)
+                .HasMaxLength(9)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('         ')")
+                .HasColumnName("F1_IT_ROMA");
             entity.Property(e => e.F1Ljclipr)
                 .HasMaxLength(2)
                 .IsUnicode(false)
@@ -19244,6 +19412,11 @@ public partial class TOTVSDENUOContext : DbContext
                 .HasDefaultValueSql("('   ')")
                 .HasColumnName("F1_SDOCORI");
             entity.Property(e => e.F1Seguro).HasColumnName("F1_SEGURO");
+            entity.Property(e => e.F1Sereltr)
+                .HasMaxLength(3)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('   ')")
+                .HasColumnName("F1_SERELTR");
             entity.Property(e => e.F1Serie)
                 .HasMaxLength(3)
                 .IsUnicode(false)
@@ -19857,9 +20030,9 @@ public partial class TOTVSDENUOContext : DbContext
             entity.Property(e => e.F2Icmsdif).HasColumnName("F2_ICMSDIF");
             entity.Property(e => e.F2Icmsret).HasColumnName("F2_ICMSRET");
             entity.Property(e => e.F2Idcce)
-                .HasMaxLength(54)
+                .HasMaxLength(55)
                 .IsUnicode(false)
-                .HasDefaultValueSql("('                                                      ')")
+                .HasDefaultValueSql("('                                                       ')")
                 .HasColumnName("F2_IDCCE");
             entity.Property(e => e.F2Idcle)
                 .HasMaxLength(12)
@@ -22048,9 +22221,9 @@ public partial class TOTVSDENUOContext : DbContext
                 .HasDefaultValueSql("('   ')")
                 .HasColumnName("F4_TESP3");
             entity.Property(e => e.F4Texto)
-                .HasMaxLength(40)
+                .HasMaxLength(100)
                 .IsUnicode(false)
-                .HasDefaultValueSql("('                                        ')")
+                .HasDefaultValueSql("('                                                                                                    ')")
                 .HasColumnName("F4_TEXTO");
             entity.Property(e => e.F4Tipo)
                 .HasMaxLength(1)
@@ -24389,6 +24562,16 @@ public partial class TOTVSDENUOContext : DbContext
                 .IsUnicode(false)
                 .HasDefaultValueSql("('  ')")
                 .HasColumnName("RA_VIEMRAI");
+            entity.Property(e => e.RaXcnpj)
+                .HasMaxLength(14)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('              ')")
+                .HasColumnName("RA_XCNPJ");
+            entity.Property(e => e.RaXrazao)
+                .HasMaxLength(99)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('                                                                                                   ')")
+                .HasColumnName("RA_XRAZAO");
             entity.Property(e => e.RaZonasec)
                 .HasMaxLength(8)
                 .IsUnicode(false)
@@ -25576,7 +25759,7 @@ public partial class TOTVSDENUOContext : DbContext
 
             entity.HasIndex(e => new { e.W0Filial, e.W0Dt, e.RECNO, e.DELET }, "SW00102").HasFillFactor(80);
 
-            entity.HasIndex(e => new { e.W0Filial, e.W0Sikit, e.RECNO, e.DELET }, "SW00103").HasFillFactor(80);
+            entity.HasIndex(e => new { e.W0Filial, e.W0Sikit, e.RECNO, e.DELET }, "SW00103");
 
             entity.HasIndex(e => new { e.W0Filial, e.W0Solic, e.RECNO, e.DELET }, "SW00104");
 
@@ -25695,9 +25878,9 @@ public partial class TOTVSDENUOContext : DbContext
                 .HasDefaultValueSql("(' ')")
                 .HasColumnName("W0_SIAUTO");
             entity.Property(e => e.W0Sikit)
-                .HasMaxLength(30)
+                .HasMaxLength(15)
                 .IsUnicode(false)
-                .HasDefaultValueSql("('                              ')")
+                .HasDefaultValueSql("('               ')")
                 .HasColumnName("W0_SIKIT");
             entity.Property(e => e.W0Solic)
                 .HasMaxLength(40)
@@ -25825,6 +26008,11 @@ public partial class TOTVSDENUOContext : DbContext
                 .IsUnicode(false)
                 .HasDefaultValueSql("('                                                  ')")
                 .HasColumnName("W1_MOTCANC");
+            entity.Property(e => e.W1Naturez)
+                .HasMaxLength(10)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('          ')")
+                .HasColumnName("W1_NATUREZ");
             entity.Property(e => e.W1NrConc)
                 .HasMaxLength(6)
                 .IsUnicode(false)

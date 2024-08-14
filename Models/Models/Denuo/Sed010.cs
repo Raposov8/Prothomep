@@ -232,4 +232,6 @@ public partial class Sed010
     public string EdJurverb { get; set; } = null!;
 
     public string EdNatren { get; set; } = null!;
+
+    public string EdDesfat { get; set; } = null!;
 }

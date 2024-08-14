@@ -11,12 +11,13 @@ namespace SGID.Models.DTO
         public string? Validade { get; set; }
         public string? Marca { get; set; }
         public double Und { get; set; }
+        public string Lote { get; set; }
         public double PrcUnid { get; set; }
         public string? SegUnd { get; set; }
         public double Descon { get; set; }
         public double VlrTotal { get; set; }
         public string? TipoOp { get; set; }
-        public string? Lote { get; set; }
         public string? Check { get; set; }
+        public List<string> Lotes { get; set; }
     }
 }

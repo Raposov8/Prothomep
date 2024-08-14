@@ -635,8 +635,6 @@ public partial class Sb1020
 
     public string B1Grpcst { get; set; } = null!;
 
-    public string B1Cest { get; set; } = null!;
-
     public double B1Afasemt { get; set; }
 
     public double B1Aimamt { get; set; }
@@ -658,4 +656,6 @@ public partial class Sb1020
     public string B1Qtdser { get; set; } = null!;
 
     public string B1Apopro { get; set; } = null!;
+
+    public string B1Cest { get; set; } = null!;
 }

@@ -74,4 +74,6 @@ public partial class Sw1010
     public string W1C3Num { get; set; } = null!;
 
     public string W1Condpg { get; set; } = null!;
+
+    public string W1Naturez { get; set; } = null!;
 }

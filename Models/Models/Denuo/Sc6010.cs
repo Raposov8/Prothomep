@@ -404,4 +404,8 @@ public partial class Sc6010
     public string C6Obscont { get; set; } = null!;
 
     public DateTime? STAMP { get; set; }
+
+    public string C6Natren { get; set; } = null!;
+
+    public string C6Indsus { get; set; } = null!;
 }

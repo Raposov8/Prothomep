@@ -430,4 +430,6 @@ public partial class Sc5020
     public string? C5Coda1u { get; set; }
 
     public string C5Numext { get; set; } = null!;
+
+    public string C5Coment { get; set; } = null!;
 }

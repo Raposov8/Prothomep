@@ -428,4 +428,6 @@ public partial class Sf3010
     public double F3Basefun { get; set; }
 
     public double F3Descfis { get; set; }
+
+    public double F3Aliqipi { get; set; }
 }

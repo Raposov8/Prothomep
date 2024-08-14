@@ -238,4 +238,6 @@ public partial class Sd3010
     public string D3Numsa { get; set; } = null!;
 
     public string D3Itemsa { get; set; } = null!;
+
+    public string D3Pneu { get; set; } = null!;
 }
