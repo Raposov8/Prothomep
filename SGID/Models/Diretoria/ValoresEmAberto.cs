@@ -4,5 +4,6 @@
     {
         public string Nome { get; set; }
         public double Valor { get; set; }
+        public string Link { get; set; }
     }
 }

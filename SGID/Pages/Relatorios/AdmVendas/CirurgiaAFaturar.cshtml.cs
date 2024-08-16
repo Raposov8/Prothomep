@@ -44,7 +44,7 @@ namespace SGID.Pages.Relatorios.AdmVendas
                              from c in Sr.DefaultIfEmpty()
                              join SX5 in Protheus.Sx5010s on new { Grupo = SA1.A1Xgrinte, Filial = SC5.C5Filial, Tabela = "Z3" } equals new { Grupo = SX5.X5Chave, Filial = SX5.X5Filial, Tabela = SX5.X5Tabela } into Se
                              from a in Se.DefaultIfEmpty()
-                             where SC5.DELET != "*" && SC6.C6Filial == SC5.C5Filial && SC6.C6Num == SC5.C5Num && a.DELET != "*"
+                             where SC5.DELET != "*" && SC6.C6Filial == SC5.C5Filial && SC6.C6Num == SC5.C5Num
                              && SC6.C6Nota == ""
                              && SC5.C5Nota == ""
                              && SC6.C6Blq != "R"
@@ -56,7 +56,6 @@ namespace SGID.Pages.Relatorios.AdmVendas
                              && (SC5.C5Utpoper == "F" || SC5.C5Utpoper == "T")
                              && SB1.DELET != "*" && SC6.C6Produto == SB1.B1Cod
                              && SA1.A1Cgc != "04715053000140" && SA1.A1Cgc != "04715053000220" && SA1.A1Cgc != "01390500000140"
-                             orderby SC5.C5Num, SC5.C5Emissao descending
                              select new RelatorioCirurgiaAFaturar
                              {
                                  Vendedor = SC5.C5Nomvend,
@@ -78,51 +77,54 @@ namespace SGID.Pages.Relatorios.AdmVendas
                                  DataEnvRA = " / / ",
                                  DataRecRA = " / / ",
                                  DataValorizacao = SC5.C5Xdtval,
+                                 Emissao = Convert.ToInt32(SC5.C5Emissao)
                              }
-                             ).GroupBy(x => new
-                             {
-                                 x.Vendedor,
-                                 x.Cliente,
-                                 x.GrupoCliente,
-                                 x.ClienteEntrega,
-                                 x.Medico,
-                                 x.Convenio,
-                                 x.Cirurgia,
-                                 x.Hoje,
-                                 x.Dias,
-                                 x.Anging,
-                                 x.Paciente,
-                                 x.Matric,
-                                 x.INPART,
-                                 x.PVFaturamento,
-                                 x.Status,
-                                 x.DataEnvRA,
-                                 x.DataRecRA,
-                                 x.DataValorizacao
-                             })
-                             .Select(x => new RelatorioCirurgiaAFaturar
-                             {
-                                 Vendedor = x.Key.Vendedor,
-                                 Cliente = x.Key.Cliente,
-                                 GrupoCliente = x.Key.GrupoCliente,
-                                 ClienteEntrega = x.Key.ClienteEntrega,
-                                 Medico = x.Key.Medico,
-                                 Convenio = x.Key.Convenio,
-                                 Cirurgia = x.Key.Cirurgia,
-                                 Hoje = x.Key.Hoje,
-                                 Dias = x.Key.Dias,
-                                 Anging = x.Key.Anging,
-                                 Paciente = x.Key.Paciente,
-                                 Matric = x.Key.Matric,
-                                 INPART = x.Key.INPART,
-                                 Valor = x.Sum(c => c.Valor),
-                                 PVFaturamento = x.Key.PVFaturamento,
-                                 Status = x.Key.Status,
-                                 DataEnvRA = x.Key.DataEnvRA,
-                                 DataRecRA = x.Key.DataRecRA,
-                                 DataValorizacao = x.Key.DataValorizacao
-
-                             }).ToList();
+                        ).GroupBy(x => new
+                        {
+                            x.Vendedor,
+                            x.Cliente,
+                            x.GrupoCliente,
+                            x.ClienteEntrega,
+                            x.Medico,
+                            x.Convenio,
+                            x.Cirurgia,
+                            x.Hoje,
+                            x.Dias,
+                            x.Anging,
+                            x.Paciente,
+                            x.Matric,
+                            x.INPART,
+                            x.PVFaturamento,
+                            x.Status,
+                            x.DataEnvRA,
+                            x.DataRecRA,
+                            x.DataValorizacao,
+                            x.Emissao
+                        })
+                        .Select(x => new RelatorioCirurgiaAFaturar
+                        {
+                            Vendedor = x.Key.Vendedor,
+                            Cliente = x.Key.Cliente,
+                            GrupoCliente = x.Key.GrupoCliente,
+                            ClienteEntrega = x.Key.ClienteEntrega,
+                            Medico = x.Key.Medico,
+                            Convenio = x.Key.Convenio,
+                            Cirurgia = x.Key.Cirurgia,
+                            Hoje = x.Key.Hoje,
+                            Dias = x.Key.Dias,
+                            Anging = x.Key.Anging,
+                            Paciente = x.Key.Paciente,
+                            Matric = x.Key.Matric,
+                            INPART = x.Key.INPART,
+                            Valor = x.Sum(c => c.Valor),
+                            PVFaturamento = x.Key.PVFaturamento,
+                            Status = x.Key.Status,
+                            DataEnvRA = x.Key.DataEnvRA,
+                            DataRecRA = x.Key.DataRecRA,
+                            DataValorizacao = x.Key.DataValorizacao,
+                            Empresa = "DENUO",
+                            Emissao = x.Key.Emissao
+                        }).ToList();
 
                 Clientes = Relatorio.Select(x => x.Cliente).Distinct().ToList();
 
@@ -132,9 +134,9 @@ namespace SGID.Pages.Relatorios.AdmVendas
                 {
                     x.Hoje = data.ToString("dd/MM/yyyy");
 
-                    var check = int.TryParse(x.Cirurgia.ToString(), out int result);
+                    var check = x.Cirurgia;
 
-                    if (check)
+                    if (check != 0)
                     {
                         x.Dias = (int)(data - Convert.ToDateTime($"{x.Cirurgia.ToString().Substring(4, 2)}/{x.Cirurgia.ToString().Substring(6, 2)}/{x.Cirurgia.ToString().Substring(0, 4)}")).TotalDays;
                     }
@@ -232,51 +234,54 @@ namespace SGID.Pages.Relatorios.AdmVendas
                                  DataEnvRA = " / / ",
                                  DataRecRA = " / / ",
                                  DataValorizacao = SC5.C5Xdtval,
+                                 Emissao = Convert.ToInt32(SC5.C5Emissao)
                              }
-                            ).GroupBy(x => new
-                            {
-                                x.Vendedor,
-                                x.Cliente,
-                                x.GrupoCliente,
-                                x.ClienteEntrega,
-                                x.Medico,
-                                x.Convenio,
-                                x.Cirurgia,
-                                x.Hoje,
-                                x.Dias,
-                                x.Anging,
-                                x.Paciente,
-                                x.Matric,
-                                x.INPART,
-                                x.PVFaturamento,
-                                x.Status,
-                                x.DataEnvRA,
-                                x.DataRecRA,
-                                x.DataValorizacao
-                            })
-                            .Select(x => new RelatorioCirurgiaAFaturar
-                            {
-                                Vendedor = x.Key.Vendedor,
-                                Cliente = x.Key.Cliente,
-                                GrupoCliente = x.Key.GrupoCliente,
-                                ClienteEntrega = x.Key.ClienteEntrega,
-                                Medico = x.Key.Medico,
-                                Convenio = x.Key.Convenio,
-                                Cirurgia = x.Key.Cirurgia,
-                                Hoje = x.Key.Hoje,
-                                Dias = x.Key.Dias,
-                                Anging = x.Key.Anging,
-                                Paciente = x.Key.Paciente,
-                                Matric = x.Key.Matric,
-                                INPART = x.Key.INPART,
-                                Valor = x.Sum(c => c.Valor),
-                                PVFaturamento = x.Key.PVFaturamento,
-                                Status = x.Key.Status,
-                                DataEnvRA = x.Key.DataEnvRA,
-                                DataRecRA = x.Key.DataRecRA,
-                                DataValorizacao = x.Key.DataValorizacao
-
-                            }).ToList();
+                        ).GroupBy(x => new
+                        {
+                            x.Vendedor,
+                            x.Cliente,
+                            x.GrupoCliente,
+                            x.ClienteEntrega,
+                            x.Medico,
+                            x.Convenio,
+                            x.Cirurgia,
+                            x.Hoje,
+                            x.Dias,
+                            x.Anging,
+                            x.Paciente,
+                            x.Matric,
+                            x.INPART,
+                            x.PVFaturamento,
+                            x.Status,
+                            x.DataEnvRA,
+                            x.DataRecRA,
+                            x.DataValorizacao,
+                            x.Emissao
+                        })
+                        .Select(x => new RelatorioCirurgiaAFaturar
+                        {
+                            Vendedor = x.Key.Vendedor,
+                            Cliente = x.Key.Cliente,
+                            GrupoCliente = x.Key.GrupoCliente,
+                            ClienteEntrega = x.Key.ClienteEntrega,
+                            Medico = x.Key.Medico,
+                            Convenio = x.Key.Convenio,
+                            Cirurgia = x.Key.Cirurgia,
+                            Hoje = x.Key.Hoje,
+                            Dias = x.Key.Dias,
+                            Anging = x.Key.Anging,
+                            Paciente = x.Key.Paciente,
+                            Matric = x.Key.Matric,
+                            INPART = x.Key.INPART,
+                            Valor = x.Sum(c => c.Valor),
+                            PVFaturamento = x.Key.PVFaturamento,
+                            Status = x.Key.Status,
+                            DataEnvRA = x.Key.DataEnvRA,
+                            DataRecRA = x.Key.DataRecRA,
+                            DataValorizacao = x.Key.DataValorizacao,
+                            Empresa = "DENUO",
+                            Emissao = x.Key.Emissao
+                        }).ToList();
 
                 if (Cliente != null && Cliente != "")
                 {
@@ -291,9 +296,9 @@ namespace SGID.Pages.Relatorios.AdmVendas
                 {
                     x.Hoje = data.ToString("dd/MM/yyyy");
 
-                    var check = int.TryParse(x.Cirurgia.ToString(), out int result);
+                    var check = x.Cirurgia;
 
-                    if (check)
+                    if (check != 0)
                     {
                         x.Dias = (int)(data - Convert.ToDateTime($"{x.Cirurgia.ToString().Substring(4, 2)}/{x.Cirurgia.ToString().Substring(6, 2)}/{x.Cirurgia.ToString().Substring(0, 4)}")).TotalDays;
                     }
@@ -400,51 +405,54 @@ namespace SGID.Pages.Relatorios.AdmVendas
                                  DataEnvRA = " / / ",
                                  DataRecRA = " / / ",
                                  DataValorizacao = SC5.C5Xdtval,
+                                 Emissao = Convert.ToInt32(SC5.C5Emissao)
                              }
-                            ).GroupBy(x => new
-                            {
-                                x.Vendedor,
-                                x.Cliente,
-                                x.GrupoCliente,
-                                x.ClienteEntrega,
-                                x.Medico,
-                                x.Convenio,
-                                x.Cirurgia,
-                                x.Hoje,
-                                x.Dias,
-                                x.Anging,
-                                x.Paciente,
-                                x.Matric,
-                                x.INPART,
-                                x.PVFaturamento,
-                                x.Status,
-                                x.DataEnvRA,
-                                x.DataRecRA,
-                                x.DataValorizacao
-                            })
-                            .Select(x => new RelatorioCirurgiaAFaturar
-                            {
-                                Vendedor = x.Key.Vendedor,
-                                Cliente = x.Key.Cliente,
-                                GrupoCliente = x.Key.GrupoCliente,
-                                ClienteEntrega = x.Key.ClienteEntrega,
-                                Medico = x.Key.Medico,
-                                Convenio = x.Key.Convenio,
-                                Cirurgia = x.Key.Cirurgia,
-                                Hoje = x.Key.Hoje,
-                                Dias = x.Key.Dias,
-                                Anging = x.Key.Anging,
-                                Paciente = x.Key.Paciente,
-                                Matric = x.Key.Matric,
-                                INPART = x.Key.INPART,
-                                Valor = x.Sum(c => c.Valor),
-                                PVFaturamento = x.Key.PVFaturamento,
-                                Status = x.Key.Status,
-                                DataEnvRA = x.Key.DataEnvRA,
-                                DataRecRA = x.Key.DataRecRA,
-                                DataValorizacao = x.Key.DataValorizacao
-
-                            }).ToList();
+                        ).GroupBy(x => new
+                        {
+                            x.Vendedor,
+                            x.Cliente,
+                            x.GrupoCliente,
+                            x.ClienteEntrega,
+                            x.Medico,
+                            x.Convenio,
+                            x.Cirurgia,
+                            x.Hoje,
+                            x.Dias,
+                            x.Anging,
+                            x.Paciente,
+                            x.Matric,
+                            x.INPART,
+                            x.PVFaturamento,
+                            x.Status,
+                            x.DataEnvRA,
+                            x.DataRecRA,
+                            x.DataValorizacao,
+                            x.Emissao
+                        })
+                        .Select(x => new RelatorioCirurgiaAFaturar
+                        {
+                            Vendedor = x.Key.Vendedor,
+                            Cliente = x.Key.Cliente,
+                            GrupoCliente = x.Key.GrupoCliente,
+                            ClienteEntrega = x.Key.ClienteEntrega,
+                            Medico = x.Key.Medico,
+                            Convenio = x.Key.Convenio,
+                            Cirurgia = x.Key.Cirurgia,
+                            Hoje = x.Key.Hoje,
+                            Dias = x.Key.Dias,
+                            Anging = x.Key.Anging,
+                            Paciente = x.Key.Paciente,
+                            Matric = x.Key.Matric,
+                            INPART = x.Key.INPART,
+                            Valor = x.Sum(c => c.Valor),
+                            PVFaturamento = x.Key.PVFaturamento,
+                            Status = x.Key.Status,
+                            DataEnvRA = x.Key.DataEnvRA,
+                            DataRecRA = x.Key.DataRecRA,
+                            DataValorizacao = x.Key.DataValorizacao,
+                            Empresa = "DENUO",
+                            Emissao = x.Key.Emissao
+                        }).ToList();
 
                 if (Cliente != null && Cliente != "")
                 {
@@ -459,9 +467,9 @@ namespace SGID.Pages.Relatorios.AdmVendas
                 {
                     x.Hoje = data.ToString("dd/MM/yyyy");
 
-                    var check = int.TryParse(x.Cirurgia.ToString(), out int result);
+                    var check = x.Cirurgia;
 
-                    if (check)
+                    if (check != 0)
                     {
                         x.Dias = (int)(data - Convert.ToDateTime($"{x.Cirurgia.ToString().Substring(4, 2)}/{x.Cirurgia.ToString().Substring(6, 2)}/{x.Cirurgia.ToString().Substring(0, 4)}")).TotalDays;
                     }

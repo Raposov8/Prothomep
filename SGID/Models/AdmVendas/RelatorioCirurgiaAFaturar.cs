@@ -26,5 +26,6 @@ namespace SGID.Models.AdmVendas
         public string DataEmissao { get; set; }
         public string Empresa { get; set; }
         public int Emissao { get; set; }
+        public string StatusAgen { get; set; }
     }
 }

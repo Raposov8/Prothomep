@@ -1,7 +1,7 @@
-﻿@page "{id}"
-@model SGID.Pages.Relatorios.Diretoria.CirurgiaPorTempoModel
+﻿@page "{empresa}/{Mes}/{Ano}"
+@model SGID.Pages.Relatorios.Diretoria.CirurgiasValorizadasModel
 @{
-    ViewData["Title"] = "Relatorio Cirurgias a Faturar";
+    ViewData["Title"] = "Relatorio Cirurgias a Valorizadas";
     if (User.IsInRole("Diretoria") && !User.IsInRole("Admin"))
     {
         Layout = "_LayoutDiretoria";
@@ -36,14 +36,6 @@
                 }
             </select>
         </div>
-        <div class="form-group mx-sm-3 mb-2 col-lg-3">
-            <label>Empresa</label>
-            <select type="text" class="form-control" id="Empresa" name="Empresa" placeholder="Empresa">
-                <option value="">TODOS....</option>
-                <option value="INTERMEDIC">INTERMEDIC</option>
-                <option value="DENUO">DENUO</option>
-            </select>
-        </div>
         <div class="form-group mx-sm-3 mb-2 col-lg-1">
             <button type="submit" class="btn btn-primary mb-2">Pesquisar</button>
         </div>
@@ -59,64 +51,49 @@
             <thead>
                 <tr>
                     <th class="text-center">
-                        EMPRESA
+                        Data Cirurgia
                     </th>
                     <th class="text-center">
-                        VENDEDOR
+                        Filial
                     </th>
                     <th class="text-center">
-                        CLIENTE FAT
+                        Num. Pedido
                     </th>
                     <th class="text-center">
-                        GRUPO CLIENTE
+                        Agendamento
                     </th>
                     <th class="text-center">
-                        CLIENTE ENTREGA
+                        Tipo
                     </th>
                     <th class="text-center">
-                        MEDICO
+                        Vendedor
                     </th>
                     <th class="text-center">
-                        CONVENIO
+                        Médico
                     </th>
                     <th class="text-center">
-                        CIRURGIA
+                        Paciente
                     </th>
                     <th class="text-center">
-                        DATA VALORIZADA
+                        Cliente Entrega
                     </th>
                     <th class="text-center">
-                        HOJE
+                        Convênio
                     </th>
                     <th class="text-center">
-                        DIAS
+                        QTD Pedido
                     </th>
                     <th class="text-center">
-                        ANGING
+                        QTD Faturada
                     </th>
                     <th class="text-center">
-                        PACIENTE
+                        Total Pedido
                     </th>
                     <th class="text-center">
-                        MATRIC
+                        Total Fat.
                     </th>
                     <th class="text-center">
-                        INPART
-                    </th>
-                    <th class="text-center">
-                        VALOR TOTAL
-                    </th>
-                    <th class="text-center">
-                        PVFATURA
-                    </th>
-                    <th class="text-center">
-                        STATUS
-                    </th>
-                    <th class="text-center">
-                        DATA ENV. RAH
-                    </th>
-                    <th class="text-center">
-                        DATA REC. RAH
+                        Faturado ?
                     </th>
                 </tr>
             </thead>
@@ -124,44 +101,36 @@
                 @foreach (var data in Model.Relatorio)
                 {
                     <tr>
-                        <td>@Html.DisplayFor(model => data.Empresa)</td>
+                        <td>@Html.DisplayFor(model => data.DTCirurgia)</td>
+                        <td>@Html.DisplayFor(model => data.Filial)</td>
+                        <td>@Html.DisplayFor(model => data.NumPedido)</td>
+                        <td>@Html.DisplayFor(model => data.Agendamento)</td>
+                        <td>@Html.DisplayFor(model => data.TipoOper)</td>
                         <td>@Html.DisplayFor(model => data.Vendedor)</td>
-                        <td>@Html.DisplayFor(model => data.Cliente)</td>
-                        <td>@Html.DisplayFor(model => data.GrupoCliente)</td>
-                        <td>@Html.DisplayFor(model => data.ClienteEntrega)</td>
                         <td>@Html.DisplayFor(model => data.Medico)</td>
-                        <td>@Html.DisplayFor(model => data.Convenio)</td>
-                        <td>
-                            @if(data.Cirurgia !=0)
-                            {
-                                @:@data.Cirurgia.ToString().Substring(6, 2)/@data.Cirurgia.ToString().Substring(4, 2)/@data.Cirurgia.ToString().Substring(0, 4)
-                            }
-                            else
-                            {
-                                @:SEM DATA DE CIRURGIA
-                            }
-                            
-                        </td>
-                        <td>@Html.DisplayFor(model => data.DataValorizacao)</td>
-                        <td>@Html.DisplayFor(model => data.Hoje)</td>
-                        <td>@Html.DisplayFor(model => data.Dias)</td>
-                        <td>@Html.DisplayFor(model => data.Anging)</td>
                         <td>@Html.DisplayFor(model => data.Paciente)</td>
-                        <td>@Html.DisplayFor(model => data.Matric)</td>
-                        <td>@Html.DisplayFor(model => data.INPART)</td>
-                        <td>@string.Format("{0:N2}", data.Valor)</td>
-                        <td>@Html.DisplayFor(model => data.PVFaturamento)</td>
-                        <td>@Html.DisplayFor(model => data.Status)</td>
-                        <td>@Html.DisplayFor(model => data.DataEnvRA)</td>
-                        <td>@Html.DisplayFor(model => data.DataRecRA)</td>
+                        <td>@Html.DisplayFor(model => data.ClienteEnt)</td>
+                        <td>@Html.DisplayFor(model => data.Convenio)</td>
+                        <td>@string.Format("{0}", data.QTDPedido)</td>
+                        <td>@string.Format("{0}", data.QTDFaturada)</td>
+                        <td>@string.Format("{0:N2}", data.TotalPedido)</td>
+                        <td>@string.Format("{0:N2}", data.TotalFat)</td>
+                        <td>@Html.DisplayFor(model => data.Faturado)</td>
                     </tr>
                 }
-                <tr>
-                    <td colspan="13"></td>
-                    <td>Total:</td>
-                    <td>@string.Format("{0:N2}", Model.Total)</td>
-                </tr>
             </tbody>
+            <tfoot>
+                @if (Model.Relatorio.Count > 0)
+                {
+                    <tr>
+                        <td colspan="10">Total Geral</td>
+                        <td class="text-center">@string.Format("{0}", Model.Relatorio.Sum(x=> x.QTDPedido))</td>
+                        <td class="text-center">@string.Format("{0}", Model.Relatorio.Sum(x=> x.QTDFaturada))</td>
+                        <td class="text-center">@string.Format("{0:N2}", Model.Relatorio.Sum(x=> x.TotalPedido))</td>
+                        <td class="text-center">@string.Format("{0:N2}", Model.Relatorio.Sum(x=> x.TotalFat))</td>
+                    </tr>
+                }
+            </tfoot>
         </table>
     </div>
 </div>
@@ -172,9 +141,6 @@
         $(document).ready(function () {
             var NReduz = '@Model.Cliente'.replace('&#xC7;', 'Ç').replace('&#xC3;', 'Ã').replace('&#xD5;', 'Õ').replace('&#x2B;', '+').replace("&#x27;", "'")
             $('#NReduz').val(NReduz);
-
-            var Empresa = '@Model.Empresa'.replace('&#xC7;', 'Ç').replace('&#xC3;', 'Ã').replace('&#xD5;', 'Õ').replace('&#x2B;', '+').replace("&#x27;", "'")
-            $('#Empresa').val(Empresa);
 
             var Grupo = '@Model.Grupo'.replace('&#xC7;', 'Ç').replace('&#xC3;', 'Ã').replace('&#xD5;', 'Õ').replace('&#x2B;', '+').replace("&#x27;", "'")
             $('#Grupo').val(Grupo);

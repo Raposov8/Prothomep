@@ -127,7 +127,14 @@
                         <td>@Html.DisplayFor(model => data.Medico)</td>
                         <td>@Html.DisplayFor(model => data.Convenio)</td>
                         <td>
-                            @data.Cirurgia.ToString().Substring(6, 2)/@data.Cirurgia.ToString().Substring(4, 2)/@data.Cirurgia.ToString().Substring(0, 4)
+                            @if(data.Cirurgia != null && data.Cirurgia != 0)
+                            {
+                                @: @data.Cirurgia.ToString().Substring(6, 2)/@data.Cirurgia.ToString().Substring(4, 2)/@data.Cirurgia.ToString().Substring(0, 4)
+                            }
+                            else
+                            {
+                                @: SEM DATA
+                            }
                         </td>
                         <td>@Html.DisplayFor(model => data.Hoje)</td>
                         <td>@Html.DisplayFor(model => data.Dias)</td>
@@ -144,9 +151,9 @@
                     </tr>
                 }
                 <tr>
-                    <td colspan="13"></td>
+                    <td colspan="12"></td>
                     <td>Total:</td>
-                    <td>@string.Format("{0:N2}", Model.Total)</td>
+                    <td>@string.Format("{0:N2}", Model.Relatorio.Sum(x=> x.Valor))</td>
                 </tr>
             </tbody>
         </table>

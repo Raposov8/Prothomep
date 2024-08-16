@@ -258,7 +258,7 @@ namespace SGID.Pages.Relatorios.Diretoria
                     Relatorio = Relatorio.Where(x => x.Cirurgia < Data).ToList();
                 }
 
-                Grupos = Relatorio.Where(x=> x.GrupoCliente !="" && x.GrupoCliente!=null).Select(x => x.GrupoCliente).Distinct().ToList();
+                Grupos = Relatorio.Where(x=> x.GrupoCliente != "" && x.GrupoCliente!=null).Select(x => x.GrupoCliente).Distinct().ToList();
                 Clientes = Relatorio.Select(x => x.Cliente).Distinct().ToList();
 
                 var data = DateTime.Now;

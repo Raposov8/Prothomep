@@ -158,6 +158,12 @@
     </div>
 </div>
 
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div id="GraficoValorizado" style="height:400px;"></div>
+    </div>
+</div>
+
 <div class="row">
     <div class="row justify-content-center">
         <div class="col-md-6"><text style="cursor: default; user-select: none; -webkit-font-smoothing: antialiased; font-family: Roboto; font-size: 16px;color:#757575">TITULOS VENCIDOS</text></div>
@@ -261,11 +267,12 @@
         var grafico = [];
         var grafico2 = [];
         var grafico3 = [];
+        var grafico4 = [];
 
         grafico.push(['UNIDADES DE NEGOCIOS', 'Valores', { role: 'style' }]);
         grafico2.push(['UNIDADES DE NEGOCIOS', 'Valores']);
         grafico2.push(['MESES', 'Valores', { role: 'style' }]);
-
+        grafico4.push(['UNIDADES DE NEGOCIOS', 'Valores', { role: 'style' }]);
 
         function move(obj) {
             let elem = document.getElementById("greenBar");
@@ -351,6 +358,30 @@
             chart.draw(data, options);
         }
 
+        function drawChart4() {
+
+            var data = google.visualization.arrayToDataTable(
+                grafico4
+            );
+
+            var options = {
+                title: 'CIRURGIAS VALORIZADAS',
+                legend: { position: "none" },
+            };
+
+            var chart = new google.visualization.PieChart(document.getElementById('GraficoValorizado'));
+
+            google.visualization.events.addListener(chart, 'select', function (e) {
+                var selection = chart.getSelection();
+                if (selection.length) {
+                    var row = selection[0].row;
+                    let link = data.getValue(row, 2);
+                    window.open(link, '_blank');
+                }
+            });
+
+            chart.draw(data, options);
+        }
     </script>
     <script>
         $(document).ready(function () {
@@ -590,6 +621,36 @@
                         $("#VencidosInter>tbody").append(linha);
 
                         //$("#TitulosInter").setAttribute('href', `/relatorios/diretoria/TitulosVencidosInter?handler=data&&Mes=${Mes}&&Ano=${Ano}`)
+                    }
+                })
+
+                var chamadaUrl6 = `/dashboards/dashboardmetas?handler=Valorizados&&Mes=${Mes}&&Ano=${Ano}`
+
+                $.ajax({
+                    url: chamadaUrl6,
+                    type: "POST",
+                    contentType: "application/json;",
+                    dataType: 'json',
+                    headers: {
+                        "RequestVerificationToken": $('input:hidden[name="__RequestVerificationToken"]').val()
+                    },
+                    success: function (data) {
+
+                        grafico4 = [];
+
+                        var numero = 1;
+
+                        grafico4.push(['UNIDADES DE NEGOCIOS', 'Valores','link']);
+
+                        data.valores.forEach(x => {
+
+                            grafico4.push([x.nome, x.valor,x.link]);
+                            numero++;
+                        })
+
+                        //$('#TOTAL').html(`<div style="color:#3366cc"><b>Total: ${data.linhasValor.toLocaleString('pt-BR', formato)}</b></div>`);
+
+                        drawChart4()
                     }
                 })
 

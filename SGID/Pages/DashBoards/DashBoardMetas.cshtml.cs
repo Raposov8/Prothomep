@@ -11,6 +11,8 @@ using SGID.Models.Diretoria;
 using SGID.Models.RH;
 using SGID.Data.ViewModel;
 using SGID.Models.Financeiro;
+using SGID.Models.AdmVendas;
+using RelatorioCirurgiasValorizadas = SGID.Models.AdmVendas.RelatorioCirurgiasValorizadas;
 
 namespace SGID.Pages.DashBoards
 {
@@ -22,8 +24,8 @@ namespace SGID.Pages.DashBoards
         private TOTVSINTERContext ProtheusInter { get; set; }
 
         public List<ValoresEmAberto> ValoresEmAberto { get; set; } = new List<ValoresEmAberto>();
-
         public List<ValoresEmAberto> Faturamento { get; set; } = new List<ValoresEmAberto>();
+        public List<ValoresEmAberto> Valorizados { get; set; } = new List<ValoresEmAberto>();
 
         #region Comissoes
 
@@ -551,7 +553,7 @@ namespace SGID.Pages.DashBoards
 
                 Faturamento.Add(new ValoresEmAberto { Nome = "SUB DENUO", Valor = FaturadoSubDenuo.Sum(c => c.Total) });
 
-                #endregion*/
+                #endregion
 
 
                 #endregion
@@ -606,10 +608,6 @@ namespace SGID.Pages.DashBoards
                     }
 
                 });
-
-
-
-
 
                 var LinhasTela = new List<RelatorioFaturamentoLinhas>
                 {
@@ -668,6 +666,8 @@ namespace SGID.Pages.DashBoards
                                               join SB1 in ProtheusInter.Sb1010s on SC6.C6Produto equals SB1.B1Cod
                                               join SUA in ProtheusInter.Sua010s on SC5.C5Uproces equals SUA.UaNum into Sr
                                               from c in Sr.DefaultIfEmpty()
+                                              join SX5 in ProtheusInter.Sx5010s on new { Grupo = SA1.A1Xgrinte, Filial = SC5.C5Filial, Tabela = "Z3" } equals new { Grupo = SX5.X5Chave, Filial = SX5.X5Filial, Tabela = SX5.X5Tabela } into Se
+                                              from a in Se.DefaultIfEmpty()
                                               where SC5.DELET != "*" && SC6.C6Filial == SC5.C5Filial && SC6.C6Num == SC5.C5Num
                                               && SC6.C6Nota == ""
                                               && SC5.C5Nota == ""
@@ -680,16 +680,77 @@ namespace SGID.Pages.DashBoards
                                               && (SC5.C5Utpoper == "F" || SC5.C5Utpoper == "T")
                                               && SB1.DELET != "*" && SC6.C6Produto == SB1.B1Cod
                                               && SA1.A1Cgc != "04715053000140" && SA1.A1Cgc != "04715053000220" && SA1.A1Cgc != "01390500000140"
-                                              select new
+                                              select new RelatorioCirurgiaAFaturar
                                               {
-                                                  SA3.A3Xdescun,
-                                                  SC6.C6Valor,
-                                                  C5Emissao = Convert.ToInt32(SC5.C5XDtcir),
-                                                  c.UaXstatus
+                                                  Vendedor = SC5.C5Nomvend,
+                                                  Cliente = SC5.C5Nomcli,
+                                                  GrupoCliente = a.X5Descri,
+                                                  ClienteEntrega = SC5.C5Nomclie,
+                                                  Medico = SC5.C5XNmmed,
+                                                  Convenio = SC5.C5XNmpla,
+                                                  Cirurgia = Convert.ToInt32(SC5.C5XDtcir),
+                                                  Hoje = "",
+                                                  Dias = 0,
+                                                  Anging = "",
+                                                  Paciente = SC5.C5XNmpac,
+                                                  Matric = "",
+                                                  INPART = "",
+                                                  Valor = SC6.C6Valor,
+                                                  PVFaturamento = SC5.C5Num,
+                                                  Status = c.UaXstatus,
+                                                  DataEnvRA = " / / ",
+                                                  DataRecRA = " / / ",
+                                                  DataValorizacao = SC5.C5Xdtval,
+                                                  Emissao = Convert.ToInt32(SC5.C5Emissao)
                                               }
-                                         ).ToList();
+                        ).GroupBy(x => new
+                        {
+                            x.Vendedor,
+                            x.Cliente,
+                            x.GrupoCliente,
+                            x.ClienteEntrega,
+                            x.Medico,
+                            x.Convenio,
+                            x.Cirurgia,
+                            x.Hoje,
+                            x.Dias,
+                            x.Anging,
+                            x.Paciente,
+                            x.Matric,
+                            x.INPART,
+                            x.PVFaturamento,
+                            x.Status,
+                            x.DataEnvRA,
+                            x.DataRecRA,
+                            x.DataValorizacao,
+                            x.Emissao
+                        })
+                        .Select(x => new RelatorioCirurgiaAFaturar
+                        {
+                            Vendedor = x.Key.Vendedor,
+                            Cliente = x.Key.Cliente,
+                            GrupoCliente = x.Key.GrupoCliente,
+                            ClienteEntrega = x.Key.ClienteEntrega,
+                            Medico = x.Key.Medico,
+                            Convenio = x.Key.Convenio,
+                            Cirurgia = x.Key.Cirurgia,
+                            Hoje = x.Key.Hoje,
+                            Dias = x.Key.Dias,
+                            Anging = x.Key.Anging,
+                            Paciente = x.Key.Paciente,
+                            Matric = x.Key.Matric,
+                            INPART = x.Key.INPART,
+                            Valor = x.Sum(c => c.Valor),
+                            PVFaturamento = x.Key.PVFaturamento,
+                            Status = x.Key.Status,
+                            DataEnvRA = x.Key.DataEnvRA,
+                            DataRecRA = x.Key.DataRecRA,
+                            DataValorizacao = x.Key.DataValorizacao,
+                            Empresa = "INTERMEDIC",
+                            Emissao = x.Key.Emissao
+                        }).ToList();
 
-                ValoresEmAberto.Add(new ValoresEmAberto { Nome = "INTERMEDIC", Valor = resultadoEmAbertoInter.Where(x=> x.UaXstatus != "C").Sum(x=> x.C6Valor) });
+                ValoresEmAberto.Add(new ValoresEmAberto { Nome = "INTERMEDIC", Valor = resultadoEmAbertoInter.Where(x=> x.Status != "C").Sum(x=> x.Valor) });
                 #endregion
 
                 #region Denuo
@@ -701,6 +762,8 @@ namespace SGID.Pages.DashBoards
                                               join SB1 in ProtheusDenuo.Sb1010s on SC6.C6Produto equals SB1.B1Cod
                                               join SUA in ProtheusDenuo.Sua010s on SC5.C5Uproces equals SUA.UaNum into Sr
                                               from c in Sr.DefaultIfEmpty()
+                                              join SX5 in ProtheusDenuo.Sx5010s on new { Grupo = SA1.A1Xgrinte, Filial = SC5.C5Filial, Tabela = "Z3" } equals new { Grupo = SX5.X5Chave, Filial = SX5.X5Filial, Tabela = SX5.X5Tabela } into Se
+                                              from a in Se.DefaultIfEmpty()
                                               where SC5.DELET != "*" && SC6.C6Filial == SC5.C5Filial && SC6.C6Num == SC5.C5Num
                                               && SC6.C6Nota == ""
                                               && SC5.C5Nota == ""
@@ -713,17 +776,77 @@ namespace SGID.Pages.DashBoards
                                               && (SC5.C5Utpoper == "F" || SC5.C5Utpoper == "T")
                                               && SB1.DELET != "*" && SC6.C6Produto == SB1.B1Cod
                                               && SA1.A1Cgc != "04715053000140" && SA1.A1Cgc != "04715053000220" && SA1.A1Cgc != "01390500000140"
-                                              select new
+                                              select new RelatorioCirurgiaAFaturar
                                               {
-                                                  SA3.A3Xdescun,
-                                                  SC6.C6Valor,
-                                                  C5Emissao = Convert.ToInt32(SC5.C5XDtcir),
-                                                  c.UaXstatus
+                                                  Vendedor = SC5.C5Nomvend,
+                                                  Cliente = SC5.C5Nomcli,
+                                                  GrupoCliente = a.X5Descri,
+                                                  ClienteEntrega = SC5.C5Nomclie,
+                                                  Medico = SC5.C5XNmmed,
+                                                  Convenio = SC5.C5XNmpla,
+                                                  Cirurgia = Convert.ToInt32(SC5.C5XDtcir),
+                                                  Hoje = "",
+                                                  Dias = 0,
+                                                  Anging = "",
+                                                  Paciente = SC5.C5XNmpac,
+                                                  Matric = "",
+                                                  INPART = "",
+                                                  Valor = SC6.C6Valor,
+                                                  PVFaturamento = SC5.C5Num,
+                                                  Status = c.UaXstatus,
+                                                  DataEnvRA = " / / ",
+                                                  DataRecRA = " / / ",
+                                                  DataValorizacao = SC5.C5Xdtval,
+                                                  Emissao = Convert.ToInt32(SC5.C5Emissao)
                                               }
-                                              )
-                                              .ToList();
+                        ).GroupBy(x => new
+                        {
+                            x.Vendedor,
+                            x.Cliente,
+                            x.GrupoCliente,
+                            x.ClienteEntrega,
+                            x.Medico,
+                            x.Convenio,
+                            x.Cirurgia,
+                            x.Hoje,
+                            x.Dias,
+                            x.Anging,
+                            x.Paciente,
+                            x.Matric,
+                            x.INPART,
+                            x.PVFaturamento,
+                            x.Status,
+                            x.DataEnvRA,
+                            x.DataRecRA,
+                            x.DataValorizacao,
+                            x.Emissao
+                        })
+                        .Select(x => new RelatorioCirurgiaAFaturar
+                        {
+                            Vendedor = x.Key.Vendedor,
+                            Cliente = x.Key.Cliente,
+                            GrupoCliente = x.Key.GrupoCliente,
+                            ClienteEntrega = x.Key.ClienteEntrega,
+                            Medico = x.Key.Medico,
+                            Convenio = x.Key.Convenio,
+                            Cirurgia = x.Key.Cirurgia,
+                            Hoje = x.Key.Hoje,
+                            Dias = x.Key.Dias,
+                            Anging = x.Key.Anging,
+                            Paciente = x.Key.Paciente,
+                            Matric = x.Key.Matric,
+                            INPART = x.Key.INPART,
+                            Valor = x.Sum(c => c.Valor),
+                            PVFaturamento = x.Key.PVFaturamento,
+                            Status = x.Key.Status,
+                            DataEnvRA = x.Key.DataEnvRA,
+                            DataRecRA = x.Key.DataRecRA,
+                            DataValorizacao = x.Key.DataValorizacao,
+                            Empresa = "DENUO",
+                            Emissao = x.Key.Emissao
+                        }).ToList();
 
-                ValoresEmAberto.Add(new ValoresEmAberto { Nome = "DENUO", Valor = resultadoEmAbertoDenuo.Where(x => x.UaXstatus != "C").Sum(x=>x.C6Valor) });
+                ValoresEmAberto.Add(new ValoresEmAberto { Nome = "DENUO", Valor = resultadoEmAbertoDenuo.Where(x => x.Status != "C").Sum(x=>x.Valor) });
                 #endregion
 
                 #region Dental
@@ -787,15 +910,15 @@ namespace SGID.Pages.DashBoards
                 #endregion
 
                 #region BOXS
-                var LinhasValor = new List<RelatorioFaturamentoLinhas>();
+                var LinhasValor = new List<RelatorioFaturamentoLinhas>
+                {
+                    new RelatorioFaturamentoLinhas { Nome = "ATÉ 3 MESES" },
+                    new RelatorioFaturamentoLinhas { Nome = "3 A 9 MESES" },
+                    new RelatorioFaturamentoLinhas { Nome = "MAIS DE 9 MESES" }
+                };
 
-
-                LinhasValor.Add(new RelatorioFaturamentoLinhas { Nome = "ATÉ 3 MESES" });
-                LinhasValor.Add(new RelatorioFaturamentoLinhas { Nome = "3 A 9 MESES" });
-                LinhasValor.Add(new RelatorioFaturamentoLinhas { Nome = "MAIS DE 9 MESES" });
-
-                resultadoEmAbertoInter = resultadoEmAbertoInter.Where(x => x.UaXstatus != "C").ToList();
-                resultadoEmAbertoDenuo = resultadoEmAbertoDenuo.Where(x => x.UaXstatus != "C").ToList();
+                resultadoEmAbertoInter = resultadoEmAbertoInter.Where(x => x.Status != "C").ToList();
+                resultadoEmAbertoDenuo = resultadoEmAbertoDenuo.Where(x => x.Status != "C").ToList();
 
                 var resultado = resultadoEmAbertoInter.Concat(resultadoEmAbertoDenuo).ToList();
 
@@ -808,9 +931,9 @@ namespace SGID.Pages.DashBoards
 
                         var Data = Convert.ToInt32(ago.ToString("yyyy/MM/dd").Replace("/", ""));
 
-                        var Resultado2 = resultado.Where(x => x.C5Emissao >= Data).ToList();
+                        var Resultado2 = resultado.Where(x => x.Cirurgia >= Data).ToList();
 
-                        x.Faturamento = Resultado2.Sum(x=> x.C6Valor);
+                        x.Faturamento = Resultado2.Sum(x=> x.Valor);
 
                         x.Estilo = "#097609";
                     }
@@ -822,9 +945,9 @@ namespace SGID.Pages.DashBoards
                         var Data = Convert.ToInt32(ago.ToString("yyyy/MM/dd").Replace("/", ""));
                         var Data2 = Convert.ToInt32(After.ToString("yyyy/MM/dd").Replace("/", ""));
 
-                        var Resultado2 = resultado.Where(x => x.C5Emissao >= Data && x.C5Emissao < Data2).ToList();
+                        var Resultado2 = resultado.Where(x => x.Cirurgia >= Data && x.Cirurgia < Data2).ToList();
 
-                        x.Faturamento = Resultado2.Sum(x => x.C6Valor);
+                        x.Faturamento = Resultado2.Sum(x => x.Valor);
 
                         x.Estilo = "#ED8205";
                     }
@@ -834,14 +957,12 @@ namespace SGID.Pages.DashBoards
 
                         var Data = Convert.ToInt32(ago.ToString("yyyy/MM/dd").Replace("/", ""));
 
-                        var Resultado2 = resultado.Where(x => x.C5Emissao < Data).ToList();
+                        var Resultado2 = resultado.Where(x => x.Cirurgia < Data).ToList();
 
-                        x.Faturamento = Resultado2.Sum(x => x.C6Valor);
+                        x.Faturamento = Resultado2.Sum(x => x.Valor);
 
                         x.Estilo = "#B80101";
-
                     }
-
                 });
 
                 #endregion 
@@ -851,7 +972,7 @@ namespace SGID.Pages.DashBoards
                     Valores = ValoresEmAberto,
                     ValorTotal = ValoresEmAberto.Sum(x => x.Valor),
                     Linhas = LinhasValor,
-                    LinhasValor = resultado.Sum(x => x.C6Valor)
+                    LinhasValor = resultado.Sum(x => x.Valor)
                 };
 
                 return new JsonResult(valores);
@@ -864,6 +985,203 @@ namespace SGID.Pages.DashBoards
                 return new JsonResult("");
             }
         
+        }
+
+        public JsonResult OnPostValorizados(string Mes, string Ano)
+        {
+
+            try
+            {
+                string user = User.Identity.Name.Split("@")[0].ToUpper();
+                string[] CF = new string[] { "5551", "6551", "6107", "6109" };
+
+                string DataInicio = $"{Ano}0101";
+
+                string DataFim = $"{Ano}1231";
+                switch (Mes)
+                {
+                    case "13":
+                        {
+                            #region Parametros
+
+                            DataInicio = $"{Ano}0101";
+
+                            DataFim = $"{Ano}1231";
+                            #endregion
+                            break;
+                        }
+                    case "14":
+                        {
+                            #region Parametros
+
+                            DataInicio = $"{Ano}0101";
+
+                            DataFim = $"{Ano}0331";
+                            #endregion
+                            break;
+                        }
+                    case "15":
+                        {
+                            #region Parametros
+
+                            DataInicio = $"{Ano}0401";
+
+                            DataFim = $"{Ano}0631";
+                            #endregion
+                            break;
+                        }
+                    case "16":
+                        {
+                            #region Parametros
+
+                            DataInicio = $"{Ano}0701";
+
+                            DataFim = $"{Ano}0931";
+                            #endregion
+                            break;
+                        }
+                    case "17":
+                        {
+                            #region Parametros
+
+                            DataInicio = $"{Ano}1001";
+
+                            DataFim = $"{Ano}1231";
+                            #endregion
+                            break;
+                        }
+                    case "18":
+                        {
+                            #region Parametros
+
+                            DataInicio = $"{Ano}0101";
+
+                            DataFim = $"{Ano}0631";
+                            #endregion
+                            break;
+                        }
+                    case "19":
+                        {
+                            #region Parametros
+
+                            DataInicio = $"{Ano}0701";
+
+                            DataFim = $"{Ano}1231";
+                            #endregion
+                            break;
+                        }
+                    default:
+                        {
+                            #region Parametros
+                            DataInicio = $"{Ano}{Mes}01";
+
+                            DataFim = $"{Ano}{Mes}31";
+
+                            #endregion
+
+                            break;
+                        }
+                }
+
+                #region Valorizado
+
+                #region Intermedic
+                var ResultadoIntermedic = (from SC50 in ProtheusInter.Sc5010s
+                             join SC60 in ProtheusInter.Sc6010s on new { Filial = SC50.C5Filial, Num = SC50.C5Num } equals new { Filial = SC60.C6Filial, Num = SC60.C6Num }
+                             join SA10 in ProtheusInter.Sa1010s on new { Cliente = SC50.C5Cliente, Loja = SC50.C5Lojacli } equals new { Cliente = SA10.A1Cod, Loja = SA10.A1Loja }
+                             join SB10 in ProtheusInter.Sb1010s on SC60.C6Produto equals SB10.B1Cod
+                             join SA30 in ProtheusInter.Sa3010s on SC50.C5Vend1 equals SA30.A3Cod
+                             join PA10 in ProtheusInter.Pa1010s on new { Filial = SC60.C6Filial, Patrim = SC60.C6Upatrim } equals new { Filial = PA10.Pa1Filial, Patrim = PA10.Pa1Codigo } into Sr
+                             from c in Sr.DefaultIfEmpty()
+                             join SUA10 in ProtheusInter.Sua010s on new { Filial = SC50.C5Filial, Proces = SC50.C5Uproces } equals new { Filial = SUA10.UaFilial, Proces = SUA10.UaNum } into Rs
+                             from a in Rs.DefaultIfEmpty()
+                             where SC50.DELET != "*" && SC60.DELET != "*" && SA10.DELET != "*" && SB10.DELET != "*" && SA30.DELET != "*" && c.DELET != "*"
+                             && a.DELET != "*" && SC50.C5Liberok != "E" && (int)(object)SC50.C5XDtcir >= (int)(object)DataInicio && (int)(object)SC50.C5XDtcir <= (int)(object)DataFim
+                             && (SC50.C5Utpoper == "F" || SC50.C5Utpoper == "K") && SA10.A1Cgc != "04715053000140" && SA10.A1Cgc != "04715053000220" && SA10.A1Cgc != "01390500000140"
+                             select new RelatorioCirurgiasValorizadas
+                             {
+                                 DTCirurgia = $"{SC50.C5XDtcir.Substring(6, 2)}/{SC50.C5XDtcir.Substring(4, 2)}/{SC50.C5XDtcir.Substring(0, 4)}",
+                                 Filial = SC50.C5Filial,
+                                 NumPedido = SC50.C5Num,
+                                 Agendamento = a.UaUnumage,
+                                 TipoOper = SC50.C5Utpoper == "F" ? "FATURAMENTO DE CIRURGIAS" : SC50.C5Utpoper == "V" ? "VENDA PARA SUB-DISTRIBUIDOR" : "OUTROS",
+                                 Vendedor = SC50.C5Nomvend,
+                                 Medico = SC50.C5XNmmed,
+                                 Paciente = SC50.C5XNmpac,
+                                 ClienteEnt = SC50.C5XNmpla,
+                                 NumPatrim = SC60.C6Upatrim,
+                                 Patrimonio = c.Pa1Despat ?? "SEM PATRIMONIO",
+                                 Produto = SC60.C6Produto,
+                                 DescProd = SB10.B1Desc,
+                                 QTDPedido = SC60.C6Qtdven,
+                                 QTDFaturada = SC60.C6Qtdent,
+                                 VLUnitario = SC60.C6Prcven,
+                                 TotalPedido = SC60.C6Valor,
+                                 TotalFat = SC60.C6Qtdent * SC60.C6Prcven,
+                                 Faturado = SC50.C5Nota != "" || (SC50.C5Liberok == "E" && SC50.C5Blq == "") ? "S" : "N"
+
+                             }).OrderBy(x => x.Vendedor).ToList();
+
+                Valorizados.Add(new ValoresEmAberto { Nome = "INTERMEDIC", Valor = ResultadoIntermedic.Sum(x => x.TotalPedido),Link= $"/relatorios/diretoria/cirurgiasvalorizadas/01/{Mes}/{Ano}" });
+                #endregion
+
+                #region Denuo
+                var ResultadoDenuo = (from SC50 in ProtheusDenuo.Sc5010s
+                                      join SC60 in ProtheusDenuo.Sc6010s on new { Filial = SC50.C5Filial, Num = SC50.C5Num } equals new { Filial = SC60.C6Filial, Num = SC60.C6Num }
+                                      join SA10 in ProtheusDenuo.Sa1010s on new { Cliente = SC50.C5Cliente, Loja = SC50.C5Lojacli } equals new { Cliente = SA10.A1Cod, Loja = SA10.A1Loja }
+                                      join SB10 in ProtheusDenuo.Sb1010s on SC60.C6Produto equals SB10.B1Cod
+                                      join SA30 in ProtheusDenuo.Sa3010s on SC50.C5Vend1 equals SA30.A3Cod
+                                      join PA10 in ProtheusDenuo.Pa1010s on new { Filial = SC60.C6Filial, Patrim = SC60.C6Upatrim } equals new { Filial = PA10.Pa1Filial, Patrim = PA10.Pa1Codigo } into Sr
+                                      from c in Sr.DefaultIfEmpty()
+                                      join SUA10 in ProtheusDenuo.Sua010s on new { Filial = SC50.C5Filial, Proces = SC50.C5Uproces } equals new { Filial = SUA10.UaFilial, Proces = SUA10.UaNum } into Rs
+                                      from a in Rs.DefaultIfEmpty()
+                                      where SC50.DELET != "*" && SC60.DELET != "*" && SA10.DELET != "*" && SB10.DELET != "*" && SA30.DELET != "*" && c.DELET != "*"
+                                      && a.DELET != "*" && SC50.C5Liberok != "E" && (int)(object)SC50.C5XDtcir >= (int)(object)DataInicio && (int)(object)SC50.C5XDtcir <= (int)(object)DataFim
+                                      && (SC50.C5Utpoper == "F" || SC50.C5Utpoper == "K") && SA10.A1Cgc != "04715053000140" && SA10.A1Cgc != "04715053000220" && SA10.A1Cgc != "01390500000140"
+                                      select new RelatorioCirurgiasValorizadas
+                                      {
+                                          DTCirurgia = $"{SC50.C5XDtcir.Substring(6, 2)}/{SC50.C5XDtcir.Substring(4, 2)}/{SC50.C5XDtcir.Substring(0, 4)}",
+                                          Filial = SC50.C5Filial,
+                                          NumPedido = SC50.C5Num,
+                                          Agendamento = a.UaUnumage,
+                                          TipoOper = SC50.C5Utpoper == "F" ? "FATURAMENTO DE CIRURGIAS" : SC50.C5Utpoper == "V" ? "VENDA PARA SUB-DISTRIBUIDOR" : "OUTROS",
+                                          Vendedor = SC50.C5Nomvend,
+                                          Medico = SC50.C5XNmmed,
+                                          Paciente = SC50.C5XNmpac,
+                                          ClienteEnt = SC50.C5XNmpla,
+                                          NumPatrim = SC60.C6Upatrim,
+                                          Patrimonio = c.Pa1Despat ?? "SEM PATRIMONIO",
+                                          Produto = SC60.C6Produto,
+                                          DescProd = SB10.B1Desc,
+                                          QTDPedido = SC60.C6Qtdven,
+                                          QTDFaturada = SC60.C6Qtdent,
+                                          VLUnitario = SC60.C6Prcven,
+                                          TotalPedido = SC60.C6Valor,
+                                          TotalFat = SC60.C6Qtdent * SC60.C6Prcven,
+                                          Faturado = SC50.C5Nota != "" || (SC50.C5Liberok == "E" && SC50.C5Blq == "") ? "S" : "N"
+                                      }).OrderBy(x => x.Vendedor).ToList();
+
+                Valorizados.Add(new ValoresEmAberto { Nome = "DENUO", Valor = ResultadoDenuo.Sum(x => x.TotalPedido),Link= $"/relatorios/diretoria/cirurgiasvalorizadas/03/{Mes}/{Ano}" });
+                #endregion
+
+                #endregion
+
+                var valores = new
+                {
+                    Valores = Valorizados,
+                    ValorTotal = Valorizados.Sum(x => x.Valor),
+                };
+
+                return new JsonResult(valores);
+            }
+            catch (Exception ex)
+            {
+                string user = User.Identity.Name.Split("@")[0].ToUpper();
+                Logger.Log(ex, SGID, "DashBoardMetas Valorizados", user);
+
+                return new JsonResult("");
+            }
+
         }
 
         public JsonResult OnPostVencidos(string Mes, string Ano)
