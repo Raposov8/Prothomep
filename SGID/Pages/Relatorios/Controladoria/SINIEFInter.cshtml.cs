@@ -45,7 +45,8 @@ namespace SGID.Pages.Relatorios.Controladoria
                              join SC50 in Protheus.Sc5010s on new { Filial = SD20.D2Filial, Num = SD20.D2Pedido } equals new { Filial = SC50.C5Filial, Num = SC50.C5Num }
                              where SD20.DELET != "*" && SF20.DELET != "*" && SA10.DELET != "*" && SC50.DELET != "*" && SF20.F2Tipo != "B"
                              && SF20.F2Tipo != "D" && (int)(object)SD20.D2Emissao >= (int)(object)DataInicio.ToString("yyyy/MM/dd").Replace("/", "") && (int)(object)SD20.D2Emissao <= (int)(object)DataFim.ToString("yyyy/MM/dd").Replace("/", "") &&
-                             (SD20.D2Cf == "5908" || SD20.D2Cf == "5949" || SD20.D2Cf == "6908" || SD20.D2Cf == "6949")
+                             (SD20.D2Cf == "5908" || SD20.D2Cf == "5949" || SD20.D2Cf == "6908" || SD20.D2Cf == "6949"
+                             || SD20.D2Cf == "5917" || SD20.D2Cf == "6917")
                              select new SINIEF
                              {
                                  Filial = SD20.D2Filial,
@@ -207,7 +208,8 @@ namespace SGID.Pages.Relatorios.Controladoria
                              join SC50 in Protheus.Sc5010s on new { Filial = SD20.D2Filial, Num = SD20.D2Pedido } equals new { Filial = SC50.C5Filial, Num = SC50.C5Num }
                              where SD20.DELET != "*" && SF20.DELET != "*" && SA10.DELET != "*" && SC50.DELET != "*" && SF20.F2Tipo != "B"
                              && SF20.F2Tipo != "D" && (int)(object)SD20.D2Emissao >= (int)(object)DataInicio.ToString("yyyy/MM/dd").Replace("/", "") && (int)(object)SD20.D2Emissao <= (int)(object)DataFim.ToString("yyyy/MM/dd").Replace("/", "") &&
-                             (SD20.D2Cf == "5908" || SD20.D2Cf == "5949" || SD20.D2Cf == "6908" || SD20.D2Cf == "6949")
+                             (SD20.D2Cf == "5908" || SD20.D2Cf == "5949" || SD20.D2Cf == "6908" || SD20.D2Cf == "6949"
+                             || SD20.D2Cf == "5917" || SD20.D2Cf == "6917")
                              select new SINIEF
                              {
                                  Filial = SD20.D2Filial,

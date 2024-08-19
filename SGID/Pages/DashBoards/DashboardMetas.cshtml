@@ -371,14 +371,14 @@
 
             var chart = new google.visualization.PieChart(document.getElementById('GraficoValorizado'));
 
-            google.visualization.events.addListener(chart, 'select', function (e) {
-                var selection = chart.getSelection();
-                if (selection.length) {
-                    var row = selection[0].row;
-                    let link = data.getValue(row, 2);
-                    window.open(link, '_blank');
-                }
-            });
+            //google.visualization.events.addListener(chart, 'select', function (e) {
+            //    var selection = chart.getSelection();
+            //    if (selection.length) {
+            //        var row = selection[0].row;
+            //        let link = data.getValue(row, 2);
+            //        window.open(link, '_blank');
+            //    }
+            //});
 
             chart.draw(data, options);
         }

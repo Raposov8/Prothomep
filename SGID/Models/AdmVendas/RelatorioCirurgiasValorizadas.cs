@@ -26,5 +26,6 @@
         public double TotalPedido { get; set; }
         public double TotalFat { get; set; }
         public string Faturado { get; set; }
+        public string Emissao { get; set; }
     }
 }

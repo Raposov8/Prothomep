@@ -391,8 +391,8 @@ namespace SGID.Pages.Relatorios.Diretoria
                                               VLUnitario = SC60.C6Prcven,
                                               TotalPedido = SC60.C6Valor,
                                               TotalFat = SC60.C6Qtdent * SC60.C6Prcven,
-                                              Faturado = SC50.C5Nota != "" || (SC50.C5Liberok == "E" && SC50.C5Blq == "") ? "S" : "N"
-
+                                              Faturado = SC50.C5Nota != "" || (SC50.C5Liberok == "E" && SC50.C5Blq == "") ? "S" : "N",
+                                              Emissao = SC50.C5Emissao
                                           }).GroupBy(x => new
                                           {
                                               x.DTCirurgia,
@@ -404,7 +404,8 @@ namespace SGID.Pages.Relatorios.Diretoria
                                               x.Medico,
                                               x.Paciente,
                                               x.ClienteEnt,
-                                              x.Faturado
+                                              x.Faturado,
+                                              x.Emissao
                                           });
 
                     Relatorio = RelatorioInter.Select(x => new RelatorioCirurgiasValorizadas
@@ -422,7 +423,8 @@ namespace SGID.Pages.Relatorios.Diretoria
                         QTDFaturada = x.Sum(c => c.QTDFaturada),
                         TotalPedido = x.Sum(c => c.TotalPedido),
                         TotalFat = x.Sum(c => c.TotalFat),
-                        Faturado = x.Key.Faturado
+                        Faturado = x.Key.Faturado,
+                        Emissao = $"{x.Key.Emissao.Substring(6, 2)}/{x.Key.Emissao.Substring(4, 2)}/{x.Key.Emissao.Substring(0, 4)}"
                     }).OrderBy(x => x.Vendedor).ToList();
                 }
                 else
@@ -455,8 +457,8 @@ namespace SGID.Pages.Relatorios.Diretoria
                                               VLUnitario = SC60.C6Prcven,
                                               TotalPedido = SC60.C6Valor,
                                               TotalFat = SC60.C6Qtdent * SC60.C6Prcven,
-                                              Faturado = SC50.C5Nota != "" || (SC50.C5Liberok == "E" && SC50.C5Blq == "") ? "S" : "N"
-
+                                              Faturado = SC50.C5Nota != "" || (SC50.C5Liberok == "E" && SC50.C5Blq == "") ? "S" : "N",
+                                              Emissao = SC50.C5Emissao
                                           }).GroupBy(x => new
                                           {
                                               x.DTCirurgia,
@@ -468,7 +470,8 @@ namespace SGID.Pages.Relatorios.Diretoria
                                               x.Medico,
                                               x.Paciente,
                                               x.ClienteEnt,
-                                              x.Faturado
+                                              x.Faturado,
+                                              x.Emissao
                                           });
 
 
@@ -487,7 +490,8 @@ namespace SGID.Pages.Relatorios.Diretoria
                         QTDFaturada = x.Sum(c => c.QTDFaturada),
                         TotalPedido = x.Sum(c => c.TotalPedido),
                         TotalFat = x.Sum(c => c.TotalFat),
-                        Faturado = x.Key.Faturado
+                        Faturado = x.Key.Faturado,
+                        Emissao = $"{x.Key.Emissao.Substring(6, 2)}/{x.Key.Emissao.Substring(4, 2)}/{x.Key.Emissao.Substring(0, 4)}"
                     }).OrderBy(x => x.Vendedor).ToList();
                 }
 

@@ -133,11 +133,11 @@
                 {
                     <tr>
                         <td colspan="14">Total Geral</td>
-                        <td class="text-center">@string.Format("{0}", Model.QtdPedido)</td>
-                        <td class="text-center">@string.Format("{0}", Model.QtdFaturada)</td>
-                        <td class="text-center">@string.Format("{0:N2}", Model.VlUnitario)</td>
-                        <td class="text-center">@string.Format("{0:N2}", Model.TotalPedido)</td>
-                        <td class="text-center">@string.Format("{0:N2}", Model.TotalFat)</td>
+                        <td class="text-center">@string.Format("{0}", Model.Relatorio.Sum(x=> x.QTDPedido))</td>
+                        <td class="text-center">@string.Format("{0}", Model.Relatorio.Sum(x => x.QTDFaturada))</td>
+                        <td class="text-center">@string.Format("{0:N2}", Model.Relatorio.Sum(x=> x.VLUnitario))</td>
+                        <td class="text-center">@string.Format("{0:N2}", Model.Relatorio.Sum(x=> x.TotalPedido))</td>
+                        <td class="text-center">@string.Format("{0:N2}", Model.Relatorio.Sum(x=> x.TotalFat))</td>
                     </tr>
                 }
             </tfoot>
