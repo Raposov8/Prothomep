@@ -40,5 +40,7 @@
         public string TipoCirur { get; set; }
         public string LicitacaoCodigo { get; set; }
 
+        //Comercial
+        public string Faturamento { get; set; }
     }
 }

@@ -29,5 +29,6 @@
         public string Medico { get; set; }
 
         public string Fornecedor { get; set; }
+        public string Faturamento { get; set; }
     }
 }
