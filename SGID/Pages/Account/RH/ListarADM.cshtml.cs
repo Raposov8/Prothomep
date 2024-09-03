@@ -53,7 +53,7 @@ namespace SGID.Pages.Account.RH
                 Mes = date.ToString("MMMM").ToUpper();
                 string DataInicio = data + "01";
                 string DataFim = data + "31";
-                int[] CF = new int[] { 5551, 6551, 6107, 6109, 5117, 6117 };
+                int[] CF = new int[] { 5551, 6551, 6107, 6109, 6117 };
 
                 #region INTERMEDIC
 
@@ -366,7 +366,7 @@ namespace SGID.Pages.Account.RH
                 this.Mes = date.ToString("MMMM").ToUpper();
                 string DataInicio = data + "01";
                 string DataFim = data + "31";
-                int[] CF = new int[] { 5551, 6551, 6107, 6109, 5117, 6117 };
+                int[] CF = new int[] { 5551, 6551, 6107, 6109, 6117 };
 
                 #region INTERMEDIC
 

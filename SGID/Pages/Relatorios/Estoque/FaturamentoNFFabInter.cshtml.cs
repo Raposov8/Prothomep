@@ -42,7 +42,7 @@ namespace SGID.Pages.Relatorios.Estoque
                 int Inicio = Convert.ToInt32($"{Ano}0101");
                 int Fim = Convert.ToInt32($"{Ano}1231");
 
-                var CF = new int[] { 5551, 6551, 6107, 6109, 5117, 6117 };
+                var CF = new int[] { 5551, 6551, 6107, 6109, 6117 };
                 var CfNe = new int[] { 1202, 1553, 2202, 2553 };
 
                 #region Faturado
@@ -1918,7 +1918,7 @@ namespace SGID.Pages.Relatorios.Estoque
                 int Inicio = Convert.ToInt32($"{Ano}0101");
                 int Fim = Convert.ToInt32($"{Ano}1231");
 
-                var CF = new int[] { 5551, 6551, 6107, 6109, 5117, 6117 };
+                var CF = new int[] { 5551, 6551, 6107, 6109, 6117 };
                 var CfNe = new int[] { 1202, 1553, 2202, 2553 };
 
                 #region Faturado

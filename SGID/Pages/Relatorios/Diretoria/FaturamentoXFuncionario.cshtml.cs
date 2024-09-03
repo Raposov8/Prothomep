@@ -65,7 +65,7 @@ namespace SGID.Pages.Relatorios.Diretoria
             string data = date.ToString("yyyy/MM").Replace("/", "");
             string DataInicio = data + "01";
             string DataFim = data + "31";
-            int[] CF = new int[] { 5551, 6551, 6107, 6109, 5117, 6117 };
+            int[] CF = new int[] { 5551, 6551, 6107, 6109, 6117 };
 
             var dataini = Convert.ToInt32(DataInicio);
             var cf = new[] { "5551", "6551", "6107", "6109" };
@@ -3076,7 +3076,7 @@ namespace SGID.Pages.Relatorios.Diretoria
             string data = date.ToString("yyyy/MM").Replace("/", "");
             string DataInicio = data + "01";
             string DataFim = data + "31";
-            int[] CF = new int[] { 5551, 6551, 6107, 6109, 5117, 6117 };
+            int[] CF = new int[] { 5551, 6551, 6107, 6109, 6117 };
 
             var dataini = Convert.ToInt32(DataInicio);
             var cf = new[] { "5551", "6551", "6107", "6109" };
@@ -6190,7 +6190,7 @@ namespace SGID.Pages.Relatorios.Diretoria
                 string data = date.ToString("yyyy/MM").Replace("/", "");
                 string DataInicio = data + "01";
                 string DataFim = data + "31";
-                int[] CF = new int[] { 5551, 6551, 6107, 6109, 5117, 6117 };
+                int[] CF = new int[] { 5551, 6551, 6107, 6109, 6117 };
 
                 var dataini = Convert.ToInt32(DataInicio);
                 var cf = new[] { "5551", "6551", "6107", "6109" };

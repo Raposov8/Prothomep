@@ -32,7 +32,7 @@ namespace SGID.Pages.Relatorios.Financeiro
                 Inicio = DataInicio;
                 Fim = DataFim;
 
-                var CF = new int[] { 5551, 6551, 6107, 6109, 5117, 6117,5922 };
+                var CF = new int[] { 5551, 6551, 6107, 6109,6117,5922 };
                 var CfNe = new int[] {1202, 1553, 2202, 2553 };
 
                 Relatorios = (from SF20 in Protheus.Sf2010s
@@ -120,7 +120,7 @@ namespace SGID.Pages.Relatorios.Financeiro
                 Inicio = DataInicio;
                 Fim = DataFim;
 
-                var CF = new int[] { 5551, 6551, 6107, 6109, 5117, 6117,5922 };
+                var CF = new int[] { 5551, 6551, 6107, 6109,6117,5922 };
                 var CfNe = new int[] { 1202, 1553, 2202, 2553, 3202 };
 
                 Relatorios = (from SF20 in Protheus.Sf2010s

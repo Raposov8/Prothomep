@@ -1485,7 +1485,7 @@ namespace SGID.Pages.DashBoards
                     }
             }
 
-            int[] CF = new int[] { 5551, 6551, 6107, 6109, 5117, 6117 };
+            int[] CF = new int[] { 5551, 6551, 6107, 6109, 6117 };
 
             var cf = new[] { "5551", "6551", "6107", "6109" };
 
