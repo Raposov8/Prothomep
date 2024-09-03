@@ -2421,6 +2421,5 @@ namespace SGID.Pages.DashBoards
                 return new JsonResult("");
             }
         }
-
     }
 }

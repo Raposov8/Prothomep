@@ -15,5 +15,6 @@
         public string Utpoper { get; set; }
 
         public string Fabricante { get; set; }
+        public double Moeda { get; set; }
     }
 }

@@ -523,8 +523,15 @@ namespace SGID.Pages.DashBoards
                                         {
                                             Total = SD10.D2Total,
                                             Descon = SD10.D2Descon,
+                                            Moeda = SC50.C5Moeda
                                         }).ToList();
+
                 var dolar = ProtheusInter.Sm2010s.Where(x => x.DELET != "*" && x.M2Moeda2 != 0).OrderByDescending(x => x.M2Data).FirstOrDefault();
+
+                var ValorDolar = FaturadoSubInter.Where(x => x.Moeda == 2).Sum(x => x.Total) * dolar.M2Moeda2;
+
+                var Valor = FaturadoSubInter.Where(x => x.Moeda == 1).Sum(x => x.Total);
+
                 Faturamento.Add(new ValoresEmAberto { Nome = "SUB INTER", Valor = FaturadoSubInter.Sum(c => c.Total) });
                 #endregion
 
@@ -546,10 +553,14 @@ namespace SGID.Pages.DashBoards
                                         {
                                             Total = SD10.D2Total,
                                             Descon = SD10.D2Descon,
-
+                                            Moeda = SC50.C5Moeda
                                         }).ToList();
 
                 var dolar2 = ProtheusDenuo.Sm2010s.Where(x => x.DELET != "*" && x.M2Moeda2 != 0).OrderByDescending(x => x.M2Data).FirstOrDefault();
+
+                var ValorDolar2 = FaturadoSubDenuo.Where(x => x.Moeda == 2).Sum(x => x.Total) * dolar2.M2Moeda2;
+
+                var Valor2 = FaturadoSubDenuo.Where(x => x.Moeda == 1).Sum(x => x.Total);
 
                 Faturamento.Add(new ValoresEmAberto { Nome = "SUB DENUO", Valor = FaturadoSubDenuo.Sum(c => c.Total) });
 
@@ -881,12 +892,20 @@ namespace SGID.Pages.DashBoards
                                             SA10.A1Msblql != "1" && SC60.C6Qtdven - SC60.C6Qtdent != 0
                                             && SA10.A1Cgc.Substring(0, 8) != "04715053"
                                             orderby SA10.A1Nome, SC50.C5Emissao
-                                            select (SC60.C6Qtdven - SC60.C6Qtdent) * SC60.C6Prcven
-                             ).Sum();
+                                            select new
+                                            {
+                                                Valor = (SC60.C6Qtdven - SC60.C6Qtdent) * SC60.C6Prcven,
+                                                Moeda = SC50.C5Moeda
+                                            }
+                                            ).ToList();
 
                 var dolar = ProtheusInter.Sm2010s.Where(x => x.DELET != "*" && x.M2Moeda2 != 0).OrderByDescending(x => x.M2Data).FirstOrDefault();
 
-                ValoresEmAberto.Add(new ValoresEmAberto { Nome = "SUB INTER", Valor = SubdistribuidorInter * dolar.M2Moeda2 });
+                var ValorDolar = SubdistribuidorInter.Where(x=> x.Moeda == 2).Sum(x=> x.Valor) * dolar.M2Moeda2;
+
+                var Valor = SubdistribuidorInter.Where(x => x.Moeda == 1).Sum(x => x.Valor);
+
+                ValoresEmAberto.Add(new ValoresEmAberto { Nome = "SUB INTER", Valor = ValorDolar + Valor });
                 #endregion
 
                 #region Sub Denuo
@@ -899,12 +918,20 @@ namespace SGID.Pages.DashBoards
                                             SA30.DELET != "*" && SA10.A1Clinter == "S" && SC50.C5Nota == "" &&
                                             SA10.A1Msblql != "1" && SC60.C6Qtdven - SC60.C6Qtdent != 0
                                             orderby SA10.A1Nome, SC50.C5Emissao
-                                            select (SC60.C6Qtdven - SC60.C6Qtdent) * SC60.C6Prcven
-                             ).Sum();
+                                            select new
+                                            {
+                                                Valor = (SC60.C6Qtdven - SC60.C6Qtdent) * SC60.C6Prcven,
+                                                Moeda = SC50.C5Moeda
+                                            }
+                                            ).ToList();
 
                 var dolar2 = ProtheusDenuo.Sm2010s.Where(x => x.DELET != "*" && x.M2Moeda2 != 0).OrderByDescending(x => x.M2Data).FirstOrDefault();
 
-                ValoresEmAberto.Add(new ValoresEmAberto { Nome = "SUB DENUO", Valor = SubdistribuidorDenuo * dolar2.M2Moeda2 });
+                var ValorDolar2 = SubdistribuidorDenuo.Where(x => x.Moeda == 2).Sum(x => x.Valor) * dolar2.M2Moeda2;
+
+                var Valor2 = SubdistribuidorDenuo.Where(x => x.Moeda == 1).Sum(x => x.Valor);
+
+                ValoresEmAberto.Add(new ValoresEmAberto { Nome = "SUB DENUO", Valor = ValorDolar2 + Valor2 });
                 #endregion
 
                 #endregion
