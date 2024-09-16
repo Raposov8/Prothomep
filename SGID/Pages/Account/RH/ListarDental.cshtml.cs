@@ -297,7 +297,7 @@ namespace SGID.Pages.Account.RH
 
                     if (time.User.TipoComissao == "M")
                     {
-                        time.Faturado += Faturamento.Where(x => x.A3_LOGIN.Trim() == usuario).Sum(x => x.D2_TOTAL) + Devolucao.Where(x => x.Login == usuario).Sum(x => x.Total);
+                        time.Faturado += Faturamento.Where(x => x.A3_LOGIN.Trim() == usuario).Sum(x => x.D2_TOTAL) + Devolucao.Where(x => x.Login.Trim() == usuario).Sum(x => x.Total);
                         time.Faturado += BaixaSubDenuo.Where(x => x.Login.Trim() == usuario).Sum(x => x.TotalBaixado);
 
 
@@ -323,7 +323,7 @@ namespace SGID.Pages.Account.RH
                     else if (usuario != "MARCOS.PARRA")
                     {
 
-                        time.Faturado += Faturamento.Where(x => x.A3_LOGIN.Trim().Trim() == usuario).Sum(x => x.D2_TOTAL) + Devolucao.Where(x => x.Login.Trim() == usuario).Sum(x => x.Total);
+                        time.Faturado += Faturamento.Where(x => x.A3_LOGIN.Trim() == usuario).Sum(x => x.D2_TOTAL) + Devolucao.Where(x => x.Login.Trim() == usuario).Sum(x => x.Total);
 
                         time.Faturado += BaixaSubDenuo.Where(x => x.Login.Trim() == usuario).Sum(x => x.TotalBaixado);
 
@@ -506,11 +506,11 @@ namespace SGID.Pages.Account.RH
                                            SD10.D1Valipi,
                                            SD10.D1Valicm,
                                            SC50.C5Vend1,
-                                           SC50.C5Nomvend,
                                            SD10.D1Valdesc,
                                            SD10.D1Dtdigit,
                                            SA10.A1Est,
                                            SA10.A1Mun,
+                                           SA30.A3Nome,
                                            SA30.A3Xlogin
                                        })
                                           .GroupBy(x => new
@@ -529,7 +529,7 @@ namespace SGID.Pages.Account.RH
                                               x.D2Doc,
                                               x.D2Emissao,
                                               x.C5Vend1,
-                                              x.C5Nomvend,
+                                              x.A3Nome,
                                               x.A3Xlogin
                                           });
 
@@ -541,7 +541,7 @@ namespace SGID.Pages.Account.RH
                     EmissaoOrig = $"{x.Key.D2Emissao.Substring(6, 2)}/{x.Key.D2Emissao.Substring(4, 2)}/{x.Key.D2Emissao.Substring(0, 4)}",
                     NFOrig = x.Key.D2Doc,
                     CodVend = x.Key.C5Vend1,
-                    Vendedor = x.Key.C5Nomvend,
+                    Vendedor = x.Key.A3Nome,
                     Cliente = x.Key.A1Nome,
                     Total = -(x.Sum(c => c.D1Total) - x.Sum(c => c.D1Valdesc) + x.Sum(c => c.D1Valipi)),
                     Login = x.Key.A3Xlogin
@@ -616,7 +616,7 @@ namespace SGID.Pages.Account.RH
 
                     if (time.User.TipoComissao == "M")
                     {
-                        time.Faturado += Faturamento.Where(x => x.A3_LOGIN.Trim() == usuario).Sum(x => x.D2_TOTAL) + Devolucao.Where(x => x.Login == usuario).Sum(x => x.Total);
+                        time.Faturado += Faturamento.Where(x => x.A3_LOGIN.Trim() == usuario).Sum(x => x.D2_TOTAL) + Devolucao.Where(x => x.Login.Trim() == usuario).Sum(x => x.Total);
                         time.Faturado += BaixaSubDenuo.Where(x => x.Login.Trim() == usuario).Sum(x => x.TotalBaixado);
 
 
@@ -633,22 +633,19 @@ namespace SGID.Pages.Account.RH
                             time.Comissao += (time.Faturado- valorEtapa1) * (time.User.PorcentagemEtapaDois / 100);
 
                         }
-
-                       
                         
-                            Usuarios.Add(time);
+                        Usuarios.Add(time);
                         
                     }
                     else if (usuario != "MARCOS.PARRA")
                     {
 
-                        time.Faturado += Faturamento.Where(x => x.A3_LOGIN.Trim() == usuario).Sum(x => x.D2_TOTAL) + Devolucao.Where(x => x.Login == usuario).Sum(x => x.Total);
+                        time.Faturado += Faturamento.Where(x => x.A3_LOGIN.Trim() == usuario).Sum(x => x.D2_TOTAL) + Devolucao.Where(x => x.Login.Trim() == usuario).Sum(x => x.Total);
                         time.Faturado += BaixaSubDenuo.Where(x => x.Login.Trim() == usuario).Sum(x => x.TotalBaixado);
 
                         time.Comissao = time.Faturado * (time.User.Porcentagem / 100);
                         
-                        
-                            Usuarios.Add(time);
+                        Usuarios.Add(time);
                         
                     }
                     else
@@ -832,11 +829,11 @@ namespace SGID.Pages.Account.RH
                                            SD10.D1Valipi,
                                            SD10.D1Valicm,
                                            SC50.C5Vend1,
-                                           SC50.C5Nomvend,
                                            SD10.D1Valdesc,
                                            SD10.D1Dtdigit,
                                            SA10.A1Est,
                                            SA10.A1Mun,
+                                           SA30.A3Nome,
                                            SA30.A3Xlogin
                                        })
                                           .GroupBy(x => new
@@ -855,7 +852,7 @@ namespace SGID.Pages.Account.RH
                                               x.D2Doc,
                                               x.D2Emissao,
                                               x.C5Vend1,
-                                              x.C5Nomvend,
+                                              x.A3Nome,
                                               x.A3Xlogin
                                           });
 
@@ -867,7 +864,7 @@ namespace SGID.Pages.Account.RH
                     EmissaoOrig = $"{x.Key.D2Emissao.Substring(6, 2)}/{x.Key.D2Emissao.Substring(4, 2)}/{x.Key.D2Emissao.Substring(0, 4)}",
                     NFOrig = x.Key.D2Doc,
                     CodVend = x.Key.C5Vend1,
-                    Vendedor = x.Key.C5Nomvend,
+                    Vendedor = x.Key.A3Nome,
                     Cliente = x.Key.A1Nome,
                     Total = -(x.Sum(c => c.D1Total) - x.Sum(c => c.D1Valdesc) + x.Sum(c => c.D1Valipi)),
                     Login = x.Key.A3Xlogin

@@ -51,6 +51,12 @@ namespace SGID.Pages.Relatorios.RH
                 this.Fim = Fim;
 
                 var user = User.Identity.Name.Split("@")[0].ToUpper();
+                var user2 = "1";
+
+                if (user == "ANDRE.SALES")
+                {
+                    user2 = "RONAN.JOVINO";
+                }
 
                 if (Empresa == "01")
                 {
@@ -136,7 +142,7 @@ namespace SGID.Pages.Relatorios.RH
                                               where SC50.DELET != "*" && SC60.DELET != "*" && SA10.DELET != "*" && SB10.DELET != "*" && SA30.DELET != "*" && c.DELET != "*"
                                               && a.DELET != "*" && SC50.C5Liberok != "E" && (int)(object)SC50.C5XDtcir >= (int)(object)DataInicio && (int)(object)SC50.C5XDtcir <= (int)(object)DataFim
                                               && (SC50.C5Utpoper == "F" || SC50.C5Utpoper == "K") && SA10.A1Cgc != "04715053000140" && SA10.A1Cgc != "04715053000220" && SA10.A1Cgc != "01390500000140"
-                                              && (SA30.A3Xlogin == user || SA30.A3Xlogsup == user)
+                                              && (SA30.A3Xlogin == user || SA30.A3Xlogsup == user || SA30.A3Xlogsup == user2)
                                               select new RelatorioCirurgiasValorizadas
                                               {
                                                   DTCirurgia = SC50.C5XDtcir,
@@ -284,6 +290,12 @@ namespace SGID.Pages.Relatorios.RH
                 string DataFim = Fim.ToString("yyyy/MM/dd").Replace("/", "");
 
                 var user = User.Identity.Name.Split("@")[0].ToUpper();
+                var user2 = "1";
+
+                if (user == "ANDRE.SALES")
+                {
+                    user2 = "RONAN.JOVINO";
+                }
 
                 if (Empresa == "01")
                 {
@@ -369,7 +381,7 @@ namespace SGID.Pages.Relatorios.RH
                                               where SC50.DELET != "*" && SC60.DELET != "*" && SA10.DELET != "*" && SB10.DELET != "*" && SA30.DELET != "*" && c.DELET != "*"
                                               && a.DELET != "*" && SC50.C5Liberok != "E" && (int)(object)SC50.C5XDtcir >= (int)(object)DataInicio && (int)(object)SC50.C5XDtcir <= (int)(object)DataFim
                                               && (SC50.C5Utpoper == "F" || SC50.C5Utpoper == "K") && SA10.A1Cgc != "04715053000140" && SA10.A1Cgc != "04715053000220" && SA10.A1Cgc != "01390500000140"
-                                              && (SA30.A3Xlogin == user || SA30.A3Xlogsup == user)
+                                              && (SA30.A3Xlogin == user || SA30.A3Xlogsup == user || SA30.A3Xlogsup == user2)
                                               select new RelatorioCirurgiasValorizadas
                                               {
                                                   DTCirurgia = SC50.C5XDtcir,

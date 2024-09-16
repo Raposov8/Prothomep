@@ -277,7 +277,12 @@ namespace SGID.Pages.DashBoards
                         }
                         else
                         {
-                            var vendedores = ProtheusInter.Sa3010s.Where(x => (x.A3Xlogsup == user || x.A3Xlogin == user) && x.DELET != "*" && x.A3Msblql != "1").Select(x => new
+                            if (user == "ANDRE.SALES")
+                            {
+                                user2 = "RONAN.JOVINO";
+                            }
+
+                            var vendedores = ProtheusInter.Sa3010s.Where(x => (x.A3Xlogsup == user || x.A3Xlogin == user || x.A3Xlogin == user2) && x.DELET != "*" && x.A3Msblql != "1").Select(x => new
                             {
                                 x.A3Nome,
                                 x.A3Xlogin,
@@ -2900,6 +2905,8 @@ namespace SGID.Pages.DashBoards
                     {
                         if (Convert.ToInt32(DataInicio) < 20240228)
                         {
+
+
                             var vendedores = ProtheusInter.Sa3010s.Where(x => (x.A3Xlogsup == user || x.A3Xlogin == user) && x.DELET != "*" && x.A3Msblql != "1").Select(x => new
                             {
                                 x.A3Nome,
@@ -3126,7 +3133,14 @@ namespace SGID.Pages.DashBoards
                         }
                         else
                         {
-                            var vendedores = ProtheusInter.Sa3010s.Where(x => (x.A3Xlogsup == user || x.A3Xlogin == user) && x.DELET != "*" && x.A3Msblql != "1").Select(x => new
+                            var user2 = "1";
+
+                            if (user == "ANDRE.SALES")
+                            {
+                                user2 = "RONAN.JOVINO";
+                            }
+
+                            var vendedores = ProtheusInter.Sa3010s.Where(x => (x.A3Xlogsup == user || x.A3Xlogin == user || x.A3Xlogsup == user2) && x.DELET != "*" && x.A3Msblql != "1").Select(x => new
                             {
                                 x.A3Nome,
                                 x.A3Xlogin,
@@ -4525,6 +4539,11 @@ namespace SGID.Pages.DashBoards
                             #region Gestor
 
                             if (user == "ARTEMIO.COSTA") user = "LEONARDO.BRITO";
+
+                            if (user == "ANDRE.SALES")
+                            {
+                                user2 = "RONAN.JOVINO";
+                            }
 
                             var vendedores = ProtheusDenuo.Sa3010s.Where(x => (x.A3Xlogsup == user || x.A3Xlogin == user) && x.DELET != "*").Select(x => new
                             {

@@ -40,6 +40,12 @@ namespace SGID.Pages.Relatorios.RH
                 Relatorio = new List<RelatorioDevolucaoFat>();
 
                 var user = User.Identity.Name.Split("@")[0].ToUpper();
+                var user2 = "1";
+
+                if (user == "ANDRE.SALES")
+                {
+                    user2 = "RONAN.JOVINO";
+                }
 
                 if (User.IsInRole("GestorComercial"))
                 {
@@ -59,8 +65,8 @@ namespace SGID.Pages.Relatorios.RH
                                      && SA30.A3Xunnego != "000008" && (SD10.D1Cf == "1202" || SD10.D1Cf == "2202" || SD10.D1Cf == "3202" || SD10.D1Cf == "1553" || SD10.D1Cf == "2553")
                                      && (int)(object)SD10.D1Dtdigit >= (int)(object)DataInicio.ToString("yyyy/MM/dd").Replace("/", "") && (int)(object)SD10.D1Dtdigit <= (int)(object)DataFim.ToString("yyyy/MM/dd").Replace("/", "")
                                      && SC50.C5Utpoper == "F"
-                                     && (int)(object)SD10.D1Dtdigit >= 20200801 && (SA30.A3Xlogin == user || SA30.A3Xlogsup == user)
-                                    orderby SA30.A3Nome
+                                     && (int)(object)SD10.D1Dtdigit >= 20200801 && (SA30.A3Xlogin == user || SA30.A3Xlogsup == user || SA30.A3Xlogsup == user2)
+                                     orderby SA30.A3Nome
                                      select new
                                      {
                                          SD10.D1Filial,
@@ -299,6 +305,12 @@ namespace SGID.Pages.Relatorios.RH
                 Relatorio = new List<RelatorioDevolucaoFat>();
 
                 var user = User.Identity.Name.Split("@")[0].ToUpper();
+                var user2 = "1";
+
+                if (user == "ANDRE.SALES")
+                {
+                    user2 = "RONAN.JOVINO";
+                }
 
                 if (User.IsInRole("GestorComercial"))
                 {
@@ -318,7 +330,7 @@ namespace SGID.Pages.Relatorios.RH
                                      && SA30.A3Xunnego != "000008" && (SD10.D1Cf == "1202" || SD10.D1Cf == "2202" || SD10.D1Cf == "3202" || SD10.D1Cf == "1553" || SD10.D1Cf == "2553")
                                      && (int)(object)SD10.D1Dtdigit >= (int)(object)DataInicio.ToString("yyyy/MM/dd").Replace("/", "") && (int)(object)SD10.D1Dtdigit <= (int)(object)DataFim.ToString("yyyy/MM/dd").Replace("/", "")
                                      && SC50.C5Utpoper == "F"
-                                     && (int)(object)SD10.D1Dtdigit >= 20200801 && (SA30.A3Xlogin == user || SA30.A3Xlogsup == user)
+                                     && (int)(object)SD10.D1Dtdigit >= 20200801 && (SA30.A3Xlogin == user || SA30.A3Xlogsup == user || SA30.A3Xlogsup == user2)
                                      orderby SA30.A3Nome
                                      select new
                                      {

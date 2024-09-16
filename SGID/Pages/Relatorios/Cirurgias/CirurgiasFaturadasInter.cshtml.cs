@@ -38,6 +38,12 @@ namespace SGID.Pages.Relatorios.Cirurgias
 
                 int[] CF = new int[] { 5551, 6551, 6107, 6109 };
                 var user = User.Identity.Name.Split("@")[0].ToUpper();
+                var user2 = "1";
+
+                if (user == "ANDRE.SALES")
+                {
+                    user2 = "RONAN.JOVINO";
+                }
 
                 var query = (from SD20 in Protheus.Sd2010s
                              join SA10 in Protheus.Sa1010s on new { Cod = SD20.D2Cliente, Loja = SD20.D2Loja } equals new { Cod = SA10.A1Cod, Loja = SA10.A1Loja }
@@ -149,6 +155,12 @@ namespace SGID.Pages.Relatorios.Cirurgias
                 Relatorio = new List<RelatorioCirurgiasFaturadas>();
                 int[] CF = new int[] { 5551, 6551, 6107, 6109 };
                 var user = User.Identity.Name.Split("@")[0].ToUpper();
+                var user2 = "1";
+
+                if (user == "ANDRE.SALES")
+                {
+                    user2 = "RONAN.JOVINO";
+                }
 
                 var query = (from SD20 in Protheus.Sd2010s
                              join SA10 in Protheus.Sa1010s on new { Cod = SD20.D2Cliente, Loja = SD20.D2Loja } equals new { Cod = SA10.A1Cod, Loja = SA10.A1Loja }

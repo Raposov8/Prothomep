@@ -38,6 +38,12 @@ namespace SGID.Pages.Relatorios.Cirurgias
                 Fim = DataFim;
 
                 string user = User.Identity.Name.Split("@")[0].ToUpper();
+                var user2 = "1";
+
+                if (user == "ANDRE.SALES")
+                {
+                    user2 = "RONAN.JOVINO";
+                }
 
                 Relatorio = (from SC50 in Protheus.Sc5010s
                              join SC60 in Protheus.Sc6010s on new { Filial = SC50.C5Filial, Num = SC50.C5Num } equals new { Filial = SC60.C6Filial, Num = SC60.C6Num }
@@ -108,6 +114,12 @@ namespace SGID.Pages.Relatorios.Cirurgias
                 Fim = DataFim;
 
                 string user = User.Identity.Name.Split("@")[0].ToUpper();
+                var user2 = "1";
+
+                if (user == "ANDRE.SALES")
+                {
+                    user2 = "RONAN.JOVINO";
+                }
 
                 Relatorio = (from SC50 in Protheus.Sc5010s
                              join SC60 in Protheus.Sc6010s on new { Filial = SC50.C5Filial, Num = SC50.C5Num } equals new { Filial = SC60.C6Filial, Num = SC60.C6Num }

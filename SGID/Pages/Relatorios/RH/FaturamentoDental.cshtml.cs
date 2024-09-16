@@ -405,6 +405,7 @@ namespace SGID.Pages.Relatorios.RH
                 var cf = new[] { "5551", "6551", "6107", "6109" };
                 if (vende == "" || vende == null)
                 {
+                    #region Faturamento
                     var query = (from SD20 in Protheus.Sd2010s
                                  join SA10 in Protheus.Sa1010s on new { Cod = SD20.D2Cliente, Loja = SD20.D2Loja } equals new { Cod = SA10.A1Cod, Loja = SA10.A1Loja }
                                  join SB10 in Protheus.Sb1010s on SD20.D2Cod equals SB10.B1Cod
@@ -502,8 +503,9 @@ namespace SGID.Pages.Relatorios.RH
                         D2_VALICM = x.Sum(c => c.D2_VALICM),
                         D2_DESCON = x.Sum(c => c.D2_DESCON),
                     }).OrderBy(x => x.A3_NOME).ToList();
+                    #endregion
 
-
+                    #region Devolucao
                     var CfDevolucao = new string[] { "1202", "2202", "3202", "1553", "2553" };
 
                     var queryDevolucao = (from SD10 in Protheus.Sd1010s
@@ -511,6 +513,7 @@ namespace SGID.Pages.Relatorios.RH
                                           join SD20 in Protheus.Sd2010s on new { Filial = SD10.D1Filial, Doc = SD10.D1Nfori, Serie = SD10.D1Seriori, Fornece = SD10.D1Fornece, Loja = SD10.D1Loja, Item = SD10.D1Itemori } equals new { Filial = SD20.D2Filial, Doc = SD20.D2Doc, Serie = SD20.D2Serie, Fornece = SD20.D2Cliente, Loja = SD20.D2Loja, Item = SD20.D2Item }
                                           join SC50 in Protheus.Sc5010s on new { Filial = SD20.D2Filial, Num = SD20.D2Pedido } equals new { Filial = SC50.C5Filial, Num = SC50.C5Num }
                                           join SA10 in Protheus.Sa1010s on new { Fornece = SD10.D1Fornece, Loja = SD10.D1Loja } equals new { Fornece = SA10.A1Cod, Loja = SA10.A1Loja }
+                                          join SA30 in Protheus.Sa3010s on SC50.C5Vend1 equals SA30.A3Cod
                                           join SB10 in Protheus.Sb1010s on SD10.D1Cod equals SB10.B1Cod
                                           where SD10.DELET != "*" && SF20.DELET != "*" && SD20.DELET != "*" && SA10.DELET != "*" && SB10.DELET != "*" && SC50.DELET != "*"
                                           && CfDevolucao.Contains(SD10.D1Cf) && SC50.C5Xtipopv == "D"
@@ -532,11 +535,11 @@ namespace SGID.Pages.Relatorios.RH
                                               SD10.D1Valipi,
                                               SD10.D1Valicm,
                                               SC50.C5Vend1,
-                                              SC50.C5Nomvend,
                                               SD10.D1Valdesc,
                                               SD10.D1Dtdigit,
                                               SA10.A1Est,
-                                              SA10.A1Mun
+                                              SA10.A1Mun,
+                                              SA30.A3Nome,
                                           })
                                           .GroupBy(x => new
                                           {
@@ -554,7 +557,7 @@ namespace SGID.Pages.Relatorios.RH
                                               x.D2Doc,
                                               x.D2Emissao,
                                               x.C5Vend1,
-                                              x.C5Nomvend
+                                              x.A3Nome
                                           });
 
                     Devolucao = queryDevolucao.Select(x => new RelatorioDevolucaoDental
@@ -565,29 +568,31 @@ namespace SGID.Pages.Relatorios.RH
                         EmissaoOrig = $"{x.Key.D2Emissao.Substring(6, 2)}/{x.Key.D2Emissao.Substring(4, 2)}/{x.Key.D2Emissao.Substring(0, 4)}",
                         NFOrig = x.Key.D2Doc,
                         CodVend = x.Key.C5Vend1,
-                        Vendedor = x.Key.C5Nomvend,
+                        Vendedor = x.Key.A3Nome,
                         Cliente = x.Key.A1Nome,
                         Total = -(x.Sum(c => c.D1Total) - x.Sum(c => c.D1Valdesc) + x.Sum(c => c.D1Valipi)),
                     }).OrderBy(x => x.Vendedor).ToList();
+                    #endregion
                 }
                 else
                 {
+                    #region Faturamento
                     var query = (from SD20 in Protheus.Sd2010s
                                  join SA10 in Protheus.Sa1010s on new { Cod = SD20.D2Cliente, Loja = SD20.D2Loja } equals new { Cod = SA10.A1Cod, Loja = SA10.A1Loja }
                                  join SB10 in Protheus.Sb1010s on SD20.D2Cod equals SB10.B1Cod
                                  join SF20 in Protheus.Sf2010s on new { Filial = SD20.D2Filial, Doc = SD20.D2Doc, Serie = SD20.D2Serie, Cliente = SD20.D2Cliente, Loja = SD20.D2Loja } equals new { Filial = SF20.F2Filial, Doc = SF20.F2Doc, Serie = SF20.F2Serie, Cliente = SF20.F2Cliente, Loja = SF20.F2Loja }
                                  join SC60 in Protheus.Sc6010s on new { Filial = SD20.D2Filial, Num = SD20.D2Pedido, Cli = SD20.D2Cliente, Loja = SD20.D2Loja, Item = SD20.D2Itempv, Cod = SD20.D2Cod } equals new { Filial = SC60.C6Filial, Num = SC60.C6Num, Cli = SC60.C6Cli, Loja = SC60.C6Loja, Item = SC60.C6Item, Cod = SC60.C6Produto }
                                  join SC50 in Protheus.Sc5010s on new { Filial = SC60.C6Filial, Num = SC60.C6Num, Cli = SC60.C6Cli, Loja = SC60.C6Loja } equals new { Filial = SC50.C5Filial, Num = SC50.C5Num, Cli = SC50.C5Cliente, Loja = SC50.C5Lojacli }
-                                 join SA30 in Protheus.Sa3010s on SC50.C5Vend1 equals SA30.A3Cod into sr
-                                 from c in sr.DefaultIfEmpty()
+                                 join SA30 in Protheus.Sa3010s on SC50.C5Vend1 equals SA30.A3Cod
                                  where SD20.DELET != "*" && SA10.DELET != "*" && SB10.DELET != "*" && SF20.DELET != "*"
-                                 && SC60.DELET != "*" && SC50.DELET != "*" && c.DELET != "*" &&
+                                 && SC60.DELET != "*" && SC50.DELET != "*" && SA30.DELET != "*" &&
                                  (((int)(object)SD20.D2Cf >= 5102 && (int)(object)SD20.D2Cf <= 5114)
                                  || ((int)(object)SD20.D2Cf >= 6102 && (int)(object)SD20.D2Cf <= 6114)
                                  || ((int)(object)SD20.D2Cf >= 7102 && (int)(object)SD20.D2Cf <= 7114)
                                  || cf.Contains(SD20.D2Cf)) && (int)(object)SD20.D2Emissao >= (int)(object)DataInicio.ToString("yyyy/MM/dd").Replace("/", "")
                                  && (int)(object)SD20.D2Emissao <= (int)(object)DataFim.ToString("yyyy/MM/dd").Replace("/", "") && SD20.D2Quant != 0 && SC50.C5Xtipopv == "D" && SA10.A1Clinter != "S" && SA10.A1Cgc != "04715053000140"
-                                 && SA10.A1Cgc != "04715053000220" && SA10.A1Cgc != "01390500000140" && c.A3Nome == vende
+                                 && SA10.A1Cgc != "04715053000220" && SA10.A1Cgc != "01390500000140"
+                                 && SA30.A3Nome == vende
                                  select new RelatorioFaturamentoDental
                                  {
                                      D2_FILIAL = SD20.D2Filial,
@@ -602,7 +607,7 @@ namespace SGID.Pages.Relatorios.RH
                                      C5_UNUMAGE = SC50.C5Unumage,
                                      C5_EMISSAO = SC50.C5Emissao,
                                      C5_VEND1 = SC50.C5Vend1,
-                                     A3_NOME = c.A3Nome,
+                                     A3_NOME = SA30.A3Nome,
                                      C5_X_DTCIR = SC50.C5XDtcir,
                                      C5_X_NMMED = SC50.C5XNmmed,
                                      C5_X_NMPAC = SC50.C5XNmpac,
@@ -669,8 +674,9 @@ namespace SGID.Pages.Relatorios.RH
                         D2_VALICM = x.Sum(c => c.D2_VALICM),
                         D2_DESCON = x.Sum(c => c.D2_DESCON),
                     }).OrderBy(x => x.A3_NOME).ToList();
+                    #endregion
 
-
+                    #region Devolucao
                     var CfDevolucao = new string[] { "1202", "2202", "3202", "1553", "2553" };
 
                     var queryDevolucao = (from SD10 in Protheus.Sd1010s
@@ -678,12 +684,13 @@ namespace SGID.Pages.Relatorios.RH
                                           join SD20 in Protheus.Sd2010s on new { Filial = SD10.D1Filial, Doc = SD10.D1Nfori, Serie = SD10.D1Seriori, Fornece = SD10.D1Fornece, Loja = SD10.D1Loja, Item = SD10.D1Itemori } equals new { Filial = SD20.D2Filial, Doc = SD20.D2Doc, Serie = SD20.D2Serie, Fornece = SD20.D2Cliente, Loja = SD20.D2Loja, Item = SD20.D2Item }
                                           join SC50 in Protheus.Sc5010s on new { Filial = SD20.D2Filial, Num = SD20.D2Pedido } equals new { Filial = SC50.C5Filial, Num = SC50.C5Num }
                                           join SA10 in Protheus.Sa1010s on new { Fornece = SD10.D1Fornece, Loja = SD10.D1Loja } equals new { Fornece = SA10.A1Cod, Loja = SA10.A1Loja }
+                                          join SA30 in Protheus.Sa3010s on SC50.C5Vend1 equals SA30.A3Cod
                                           join SB10 in Protheus.Sb1010s on SD10.D1Cod equals SB10.B1Cod
                                           where SD10.DELET != "*" && SF20.DELET != "*" && SD20.DELET != "*" && SA10.DELET != "*" && SB10.DELET != "*" && SC50.DELET != "*"
                                           && CfDevolucao.Contains(SD10.D1Cf) && SC50.C5Xtipopv == "D"
                                           && (int)(object)SD10.D1Dtdigit >= (int)(object)DataInicio.ToString("yyyy/MM/dd").Replace("/", "")
                                           && (int)(object)SD10.D1Dtdigit <= (int)(object)DataFim.ToString("yyyy/MM/dd").Replace("/", "")
-                                          && SC50.C5Nomvend == vende
+                                          && SA30.A3Nome == vende
                                           select new
                                           {
                                               SD10.D1Filial,
@@ -700,11 +707,11 @@ namespace SGID.Pages.Relatorios.RH
                                               SD10.D1Valipi,
                                               SD10.D1Valicm,
                                               SC50.C5Vend1,
-                                              SC50.C5Nomvend,
                                               SD10.D1Valdesc,
                                               SD10.D1Dtdigit,
                                               SA10.A1Est,
-                                              SA10.A1Mun
+                                              SA10.A1Mun,
+                                              SA30.A3Nome,
                                           })
                                           .GroupBy(x => new
                                           {
@@ -722,7 +729,7 @@ namespace SGID.Pages.Relatorios.RH
                                               x.D2Doc,
                                               x.D2Emissao,
                                               x.C5Vend1,
-                                              x.C5Nomvend
+                                              x.A3Nome
                                           });
 
                     Devolucao = queryDevolucao.Select(x => new RelatorioDevolucaoDental
@@ -733,10 +740,11 @@ namespace SGID.Pages.Relatorios.RH
                         EmissaoOrig = $"{x.Key.D2Emissao.Substring(6, 2)}/{x.Key.D2Emissao.Substring(4, 2)}/{x.Key.D2Emissao.Substring(0, 4)}",
                         NFOrig = x.Key.D2Doc,
                         CodVend = x.Key.C5Vend1,
-                        Vendedor = x.Key.C5Nomvend,
+                        Vendedor = x.Key.A3Nome,
                         Cliente = x.Key.A1Nome,
                         Total = -(x.Sum(c => c.D1Total) - x.Sum(c => c.D1Valdesc) + x.Sum(c => c.D1Valipi)),
                     }).OrderBy(x => x.Vendedor).ToList();
+                    #endregion
                 }
 
 

@@ -30,6 +30,12 @@ namespace SGID.Pages.Relatorios.Cirurgias
             {
 
                 var user = User.Identity.Name.Split("@")[0].ToUpper();
+                var user2 = "1";
+
+                if (user == "ANDRE.SALES")
+                {
+                    user2 = "RONAN.JOVINO";
+                }
 
                 Relatorio = (from SC5 in Protheus.Sc5010s
                              from SC6 in Protheus.Sc6010s
@@ -88,6 +94,12 @@ namespace SGID.Pages.Relatorios.Cirurgias
             try
             {
                 var user = User.Identity.Name.Split("@")[0].ToUpper();
+                var user2 = "1";
+
+                if (user == "ANDRE.SALES")
+                {
+                    user2 = "RONAN.JOVINO";
+                }
 
                 Relatorio = (from SC5 in Protheus.Sc5010s
                              from SC6 in Protheus.Sc6010s

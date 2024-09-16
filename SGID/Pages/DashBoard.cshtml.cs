@@ -107,7 +107,7 @@ namespace SGID.Pages
             }
             else if (User.IsInRole("Patrimonio"))
             {
-                return LocalRedirect("/formularios/patrimonio/relatoriopatrimonio/01");
+                return LocalRedirect("/formularios/patrimonio/relatoriopatrimonio/03");
             }
             else
             {

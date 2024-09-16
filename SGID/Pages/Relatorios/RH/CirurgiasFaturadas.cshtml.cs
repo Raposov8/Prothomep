@@ -38,6 +38,12 @@ namespace SGID.Pages.Relatorios.RH
 
                 int[] CF = new int[] { 5551, 6551, 6107, 6109 };
                 var user = User.Identity.Name.Split("@")[0].ToUpper();
+                var user2 = "1";
+
+                if (user == "ANDRE.SALES")
+                {
+                    user2 = "RONAN.JOVINO";
+                }
 
                 //&& (SA10.A1Xgrinte != "000011" || SA10.A1Xgrinte != "000012")
 
@@ -57,7 +63,7 @@ namespace SGID.Pages.Relatorios.RH
                                      && ((int)(object)SD20.D2Cf >= 5102 && (int)(object)SD20.D2Cf <= 5114 || (int)(object)SD20.D2Cf >= 6102 && (int)(object)SD20.D2Cf <= 6114 ||
                                      (int)(object)SD20.D2Cf >= 7102 && (int)(object)SD20.D2Cf <= 7114 || CF.Contains((int)(object)SD20.D2Cf)) && ((int)(object)SD20.D2Emissao >= (int)(object)DataInicio.ToString("yyyy/MM/dd").Replace("/", "") && (int)(object)SD20.D2Emissao <= (int)(object)DataFim.ToString("yyyy/MM/dd").Replace("/", ""))
                                      && SD20.D2Quant != 0 && (SC50.C5Utpoper == "F" || SC50.C5Utpoper == "K") && SC50.C5Xtipopv != "D" && SA10.A1Clinter != "S" && SA10.A1Cgc != "04715053000140" && SA10.A1Cgc != "04715053000220" && SA10.A1Cgc != "01390500000140" && (int)(object)SD20.D2Emissao >= 20200701
-                                     && (SA30.A3Xlogin == user || SA30.A3Xlogsup == user)
+                                     && (SA30.A3Xlogin == user || SA30.A3Xlogsup == user || SA30.A3Xlogsup == user2)
                                      select new
                                      {
                                          Filial = SD20.D2Filial,
@@ -350,6 +356,12 @@ namespace SGID.Pages.Relatorios.RH
                 Relatorio = new List<RelatorioCirurgiasFaturadas>();
                 int[] CF = new int[] { 5551, 6551, 6107, 6109 };
                 var user = User.Identity.Name.Split("@")[0].ToUpper();
+                var user2 = "1";
+
+                if (user == "ANDRE.SALES")
+                {
+                    user2 = "RONAN.JOVINO";
+                }
 
                 if (User.IsInRole("GestorComercial"))
                 {
@@ -367,7 +379,7 @@ namespace SGID.Pages.Relatorios.RH
                                      && ((int)(object)SD20.D2Cf >= 5102 && (int)(object)SD20.D2Cf <= 5114 || (int)(object)SD20.D2Cf >= 6102 && (int)(object)SD20.D2Cf <= 6114 ||
                                      (int)(object)SD20.D2Cf >= 7102 && (int)(object)SD20.D2Cf <= 7114 || CF.Contains((int)(object)SD20.D2Cf)) && ((int)(object)SD20.D2Emissao >= (int)(object)DataInicio.ToString("yyyy/MM/dd").Replace("/", "") && (int)(object)SD20.D2Emissao <= (int)(object)DataFim.ToString("yyyy/MM/dd").Replace("/", ""))
                                      && SD20.D2Quant != 0 && (SC50.C5Utpoper == "F" || SC50.C5Utpoper == "K") && SC50.C5Xtipopv != "D" && SA10.A1Clinter != "S" && SA10.A1Cgc != "04715053000140" && SA10.A1Cgc != "04715053000220" && SA10.A1Cgc != "01390500000140" && (int)(object)SD20.D2Emissao >= 20200701
-                                     && (SA30.A3Xlogin == user || SA30.A3Xlogsup == user)
+                                     && (SA30.A3Xlogin == user || SA30.A3Xlogsup == user || SA30.A3Xlogsup == user2)
                                      select new
                                      {
                                          Filial = SD20.D2Filial,
