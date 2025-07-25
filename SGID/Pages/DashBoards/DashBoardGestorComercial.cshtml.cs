@@ -36,6 +36,7 @@ namespace SGID.Pages.DashBoards
             try
             {
                 string user = User.Identity.Name.Split("@")[0].ToUpper();
+                string user2 = User.Identity.Name.Split("@")[0].ToUpper();
                 string data = DateTime.Now.ToString("yyyy/MM").Replace("/", "");
                 string DataInicio = data + "01";
                 string DataFim = data + "31";
@@ -2893,6 +2894,7 @@ namespace SGID.Pages.DashBoards
             try
             {
                 string user = User.Identity.Name.Split("@")[0].ToUpper();
+                string user2 = User.Identity.Name.Split("@")[0].ToUpper();
                 string DataInicio = $"{Ano}{Mes}01";
                 string DataFim = $"{Ano}{Mes}31";
                 int[] CF = new int[] { 5551, 6551, 6107, 6109 };
@@ -3133,8 +3135,7 @@ namespace SGID.Pages.DashBoards
                         }
                         else
                         {
-                            var user2 = "1";
-
+                            
                             if (user == "ANDRE.SALES")
                             {
                                 user2 = "RONAN.JOVINO";
