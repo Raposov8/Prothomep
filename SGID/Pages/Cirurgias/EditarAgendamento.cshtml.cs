@@ -85,7 +85,7 @@ namespace SGID.Pages.Cirurgias
 
             if (Agendamento.Empresa == "01")
             {
-                //Intermedic
+                //J&J
                 Novo = new NovoAgendamento
                 {
                     Clientes = ProtheusInter.Sa1010s.Where(x => x.DELET != "*" && x.A1Msblql != "1" && (x.A1Clinter == "C" || x.A1Clinter == "H" || x.A1Clinter == "M")).OrderBy(x => x.A1Nome).Select(x => x.A1Nreduz).ToList(),
@@ -104,7 +104,7 @@ namespace SGID.Pages.Cirurgias
 
                 codigos.ForEach(x =>
                 {
-                    //Intermedic
+                    //J&J
                     var produto = (from SB10 in ProtheusInter.Sb1010s
                                    where SB10.B1Cod == x.produto && SB10.B1Msblql != "1"
                                    && SB10.DELET != "*"
@@ -162,7 +162,7 @@ namespace SGID.Pages.Cirurgias
             }
             else
             {
-                //Denuo
+                  //FLOWMED
 
                 Novo = new NovoAgendamento
                 {
@@ -191,7 +191,7 @@ namespace SGID.Pages.Cirurgias
 
                 codigos.ForEach(x =>
                 {
-                    //Denuo
+                      //FLOWMED
                     var produto = (from SB10 in ProtheusDenuo.Sb1010s
                                    where SB10.B1Cod == x.produto && SB10.B1Msblql != "1"
                                    && SB10.DELET != "*"
@@ -292,12 +292,12 @@ namespace SGID.Pages.Cirurgias
 
                 if (Empresa == "01")
                 {
-                    //Intermedic
+                    //J&J
                     agendamento.VendedorLogin = ProtheusInter.Sa3010s.FirstOrDefault(x => x.A3Nreduz == Vendedor).A3Xlogin;
                 }
                 else
                 {
-                    //Denuo
+                      //FLOWMED
                     agendamento.VendedorLogin = ProtheusDenuo.Sa3010s.FirstOrDefault(x => x.A3Nreduz == Vendedor).A3Xlogin;
                 }
 

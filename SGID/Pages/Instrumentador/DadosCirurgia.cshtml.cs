@@ -64,7 +64,7 @@ namespace SGID.Pages.Instrumentador
             Avulsos = new List<Produto>();
             if (Agendamento.Empresa == "01")
             {
-                //Intermedic
+                //J&J
                 codigos.ForEach(x =>
                 {
                     var produto = (from SB10 in INTER.Sb1010s
@@ -166,7 +166,7 @@ namespace SGID.Pages.Instrumentador
             }
             else
             {
-                //Denuo
+                  //FLOWMED
                 codigos.ForEach(x =>
                 {
                     var produto = (from SB10 in DENUO.Sb1010s

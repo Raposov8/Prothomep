@@ -41,7 +41,7 @@ namespace SGID.Pages.Emergencia
 
             if (id == "01")
             {
-                //Intermedic
+                //J&J
                 Novo = new NovoAgendamento
                 {
                     Clientes = ProtheusInter.Sa1010s.Where(x => x.DELET != "*" && x.A1Msblql != "1" && (x.A1Clinter == "C" || x.A1Clinter == "H" || x.A1Clinter == "M")).OrderBy(x => x.A1Nome).Select(x => x.A1Nreduz).ToList(),
@@ -60,7 +60,7 @@ namespace SGID.Pages.Emergencia
             }
             else
             {
-                //Denuo
+                  //FLOWMED
                 Novo = new NovoAgendamento
                 {
                     Clientes = ProtheusDenuo.Sa1010s.Where(x => x.DELET != "*" && x.A1Msblql != "1" && (x.A1Clinter == "C" || x.A1Clinter == "H" || x.A1Clinter == "M")).OrderBy(x => x.A1Nome).Select(x => x.A1Nreduz).ToList(),
@@ -127,13 +127,13 @@ namespace SGID.Pages.Emergencia
 
                     if (Agendamento.Empresa == "01")
                     {
-                        //Intermedic
+                        //J&J
                         agendamento.VendedorLogin = ProtheusInter.Sa3010s.FirstOrDefault(x => x.A3Nreduz == Agendamento.Vendedor).A3Xlogin;
 
                     }
                     else
                     {
-                        //Denuo
+                          //FLOWMED
                         agendamento.VendedorLogin = ProtheusDenuo.Sa3010s.FirstOrDefault(x => x.A3Nreduz == Agendamento.Vendedor).A3Xlogin;
 
                     }
@@ -235,7 +235,7 @@ namespace SGID.Pages.Emergencia
                             VendedorEmail = vendedor?.A3Email;
                             if (!vendedor.A3Xlogsup.IsNullOrEmpty())
                             {
-                                GestorEmail.Add(vendedor.A3Xlogsup.ToLower().Trim() + "@prothomep.com.br");
+                                GestorEmail.Add(vendedor.A3Xlogsup.ToLower().Trim() + "@flowmeds.com.br");
                             }
                         }
                         else
@@ -244,12 +244,12 @@ namespace SGID.Pages.Emergencia
                             VendedorEmail = vendedor?.A3Email;
                             if (!vendedor.A3Xlogsup.IsNullOrEmpty())
                             {
-                                GestorEmail.Add(vendedor.A3Xlogsup.ToLower().Trim() + "@prothomep.com.br");
+                                GestorEmail.Add(vendedor.A3Xlogsup.ToLower().Trim() + "@flowmeds.com.br");
                             }
 
-                            if (GestorEmail.Contains("leonardo.brito@prothomep.com.br"))
+                            if (GestorEmail.Contains("leonardo.brito@flowmeds.com.br"))
                             {
-                                GestorEmail.Add("artemio.costa@prothomep.com.br");
+                                GestorEmail.Add("artemio.costa@flowmeds.com.br");
                             }
                         }
 
@@ -275,17 +275,17 @@ namespace SGID.Pages.Emergencia
                         SmtpClient client = new SmtpClient();
                         client.Host = "smtp.office365.com";
                         client.EnableSsl = true;
-                        client.Credentials = new System.Net.NetworkCredential("ti@prothomep.com.br", "interadm2018!*");
+                        client.Credentials = new System.Net.NetworkCredential("ti@flowmeds.com.br", "interadm2018!*");
                         MailMessage mail = new MailMessage();
-                        mail.Sender = new MailAddress("ti@prothomep.com.br", "GID");
-                        mail.From = new MailAddress("ti@prothomep.com.br", "GID");
+                        mail.Sender = new MailAddress("ti@flowmeds.com.br", "GID");
+                        mail.From = new MailAddress("ti@flowmeds.com.br", "GID");
                         mail.To.Add(new MailAddress($"{VendedorEmail}", "RECEBEDOR"));
 
                         GestorEmail.Where(x => !x.IsNullOrEmpty()).ToList().ForEach(x =>
                         {
                             mail.CC.Add(new MailAddress($"{x}", "COPIA"));
                         });
-                        mail.Bcc.Add(new MailAddress("andre.souza@prothomep.com.br", "ANDRE SOUZA"));
+                        mail.Bcc.Add(new MailAddress("andre.souza@flowmeds.com.br", "ANDRE SOUZA"));
                         mail.Subject = $"Emergencia Nº {agendamento.Id} - {Agendamento.Paciente}";
                         mail.Body = mensagem;
                         mail.IsBodyHtml = true;

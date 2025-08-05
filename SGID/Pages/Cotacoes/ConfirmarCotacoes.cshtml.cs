@@ -85,7 +85,7 @@ namespace SGID.Pages.Cotacoes
             Avulsos = new List<Produto>();
             if (Agendamento.Empresa == "01")
             {
-                //Intermedic
+                //J&J
                 Crm = ProtheusInter.Sa1010s.FirstOrDefault(x => x.A1Nome == Agendamento.Medico)?.A1Crm;
                 codigos.ForEach(x =>
                 {
@@ -189,7 +189,7 @@ namespace SGID.Pages.Cotacoes
             }
             else
             {
-                //Denuo
+                  //FLOWMED
                 Crm = ProtheusDenuo.Sa1010s.FirstOrDefault(x => x.A1Nome == Agendamento.Medico)?.A1Crm;
                 codigos.ForEach(x =>
                 {

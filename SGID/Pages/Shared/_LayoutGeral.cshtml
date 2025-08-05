@@ -32,7 +32,7 @@
                 </label>
             </div>
             <div class="col-2 col-sm-2 col-md-2">
-                <img src="/imagens/logo.png" alt="Protho Logo" height="66" width="120"/>
+                <img src="/imagens/logo.png" alt="FlowMed Logo" height="78" width="250"/>
             </div>
             <div class="col-2 col-sm-2 col-md-2">
                 <ul class="navbar-nav flex-grow-1">
@@ -389,7 +389,7 @@
                      <ul class="list-unstyled fw-normal pb-1 small">
                             @if (User.IsInRole("Admin") || User.IsInRole("Comercial"))
                             {
-                                @if (User.Identity.Name.Split("@")[1] == "prothomep.com.br" || User.IsInRole("Admin") || User.IsInRole("ComercialDuo"))
+                                @if (User.Identity.Name.Split("@")[1] == "flowmeds.com.br" || User.IsInRole("Admin") || User.IsInRole("ComercialDuo"))
                                 {
                                     <li class="nav-item dropdown">
                                         <a class="nav-link align-items-center rounded dropdown-toggle" data-bs-toggle="collapse"
@@ -407,7 +407,7 @@
                                         </div>
                                     </li>
                                 }
-                                @if (User.Identity.Name.Split("@")[1] == "prothomep.com.br" || User.IsInRole("Admin") || User.IsInRole("ComercialDuo"))
+                                @if (User.Identity.Name.Split("@")[1] == "flowmeds.com.br" || User.IsInRole("Admin") || User.IsInRole("ComercialDuo"))
                                 {
                                     <li class="nav-item dropdown">
                                         <a class="nav-link align-items-center rounded dropdown-toggle" data-bs-toggle="collapse"
@@ -429,7 +429,7 @@
                             }
                             @if (User.IsInRole("Admin") || User.IsInRole("GestorComercial") || User.IsInRole("Diretoria"))
                             {
-                                @if (User.Identity.Name.Split("@")[1] == "prothomep.com.br" || User.IsInRole("Admin") || User.IsInRole("Diretoria"))
+                                @if (User.Identity.Name.Split("@")[1] == "flowmeds.com.br" || User.IsInRole("Admin") || User.IsInRole("Diretoria"))
                                 {
                                     <li class="nav-item dropdown">
                                         <a class="nav-link align-items-center rounded dropdown-toggle" data-bs-toggle="collapse"
@@ -445,12 +445,12 @@
                                         </div>
                                     </li>
                                 }
-                                @if (User.Identity.Name.Split("@")[1] == "prothomep.com.br" || User.IsInRole("Admin") || User.IsInRole("Diretoria"))
+                                @if (User.Identity.Name.Split("@")[1] == "flowmeds.com.br" || User.IsInRole("Admin") || User.IsInRole("Diretoria"))
                                 {
                                     <li class="nav-item dropdown">
                                         <a class="nav-link align-items-center rounded dropdown-toggle" data-bs-toggle="collapse"
                                     data-bs-target="#comercialinter2-collapse" aria-expanded="false">
-                                           Gestor Comercial Inter
+                                           Gestor Comercial 
                                         </a>
                                         <div class="collapse" id="comercialinter2-collapse">
                                             <ul class="list-unstyled fw-normal pb-1 small">

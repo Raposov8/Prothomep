@@ -258,7 +258,7 @@ namespace SGID.Pages.DashBoards
                     VendedorEmail = vendedor?.A3Email;
                     if (!vendedor.A3Xlogsup.IsNullOrEmpty())
                     {
-                        GestorEmail.Add(vendedor.A3Xlogsup.ToLower().Trim() + "@prothomep.com.br");
+                        GestorEmail.Add(vendedor.A3Xlogsup.ToLower().Trim() + "@flowmeds.com.br");
                     }
                 }
                 else
@@ -267,12 +267,12 @@ namespace SGID.Pages.DashBoards
                     VendedorEmail = vendedor?.A3Email;
                     if (!vendedor.A3Xlogsup.IsNullOrEmpty())
                     {
-                        GestorEmail.Add(vendedor.A3Xlogsup.ToLower().Trim() + "@prothomep.com.br");
+                        GestorEmail.Add(vendedor.A3Xlogsup.ToLower().Trim() + "@flowmeds.com.br");
                     }
 
-                    if (GestorEmail.Contains("leonardo.brito@prothomep.com.br"))
+                    if (GestorEmail.Contains("leonardo.brito@flowmeds.com.br"))
                     {
-                        GestorEmail.Add("artemio.costa@prothomep.com.br");
+                        GestorEmail.Add("artemio.costa@flowmeds.com.br");
                     }
                 }
 
@@ -297,16 +297,16 @@ namespace SGID.Pages.DashBoards
                 SmtpClient client = new SmtpClient();
                 client.Host = "smtp.office365.com";
                 client.EnableSsl = true;
-                client.Credentials = new System.Net.NetworkCredential("ti@prothomep.com.br", "interadm2018!*");
+                client.Credentials = new System.Net.NetworkCredential("ti@flowmeds.com.br", "interadm2018!*");
                 MailMessage mail = new MailMessage();
-                mail.Sender = new MailAddress("ti@prothomep.com.br", "GID");
-                mail.From = new MailAddress("ti@prothomep.com.br", "GID");
+                mail.Sender = new MailAddress("ti@flowmeds.com.br", "GID");
+                mail.From = new MailAddress("ti@flowmeds.com.br", "GID");
                 mail.To.Add(new MailAddress($"{VendedorEmail}", "RECEBEDOR"));
                 GestorEmail.Where(x => !x.IsNullOrEmpty()).ToList().ForEach(x =>
                 {
                     mail.CC.Add(new MailAddress($"{x}", "COPIA"));
                 });
-                mail.Bcc.Add(new MailAddress("andre.souza@prothomep.com.br", "ANDRE SOUZA"));
+                mail.Bcc.Add(new MailAddress("andre.souza@flowmeds.com.br", "ANDRE SOUZA"));
                 mail.Subject = $"Orçamento Nº {agendamento.Id} - {agendamento.Paciente}";
                 mail.Body = mensagem;
                 mail.IsBodyHtml = true;
@@ -371,14 +371,14 @@ namespace SGID.Pages.DashBoards
 
                 if (AgendamentoAntigo.Empresa == "01")
                 {
-                    //Intermedic
+                    //J&J
                     var Codigo = ProtheusInter.Sa1010s.FirstOrDefault(x => x.A1Nome == AgendamentoAntigo.Medico && x.A1Clinter == "M" && x.DELET != "*" && x.A1Msblql != "1")?.A1Vend;
 
                     agendamento.VendedorLogin = ProtheusInter.Sa3010s.FirstOrDefault(x => x.A3Cod == Codigo).A3Xlogin;
                 }
                 else
                 {
-                    //Denuo
+                      //FLOWMED
                     var Codigo = ProtheusDenuo.Sa1010s.FirstOrDefault(x => x.A1Nome == AgendamentoAntigo.Medico && x.A1Clinter == "M" && x.DELET != "*" && x.A1Msblql != "1")?.A1Vend;
 
                     agendamento.VendedorLogin = ProtheusDenuo.Sa3010s.FirstOrDefault(x => x.A3Cod == Codigo).A3Xlogin;
@@ -500,11 +500,11 @@ namespace SGID.Pages.DashBoards
                     {
                         Host = "smtp.office365.com",
                         EnableSsl = true,
-                        Credentials = new System.Net.NetworkCredential("ti@prothomep.com.br", "interadm2018!*")
+                        Credentials = new System.Net.NetworkCredential("ti@flowmeds.com.br", "interadm2018!*")
                     };
                     MailMessage mail = new MailMessage();
-                    mail.Sender = new MailAddress("ti@prothomep.com.br", "ENVIADOR");
-                    mail.From = new MailAddress("ti@prothomep.com.br", "ENVIADOR");
+                    mail.Sender = new MailAddress("ti@flowmeds.com.br", "ENVIADOR");
+                    mail.From = new MailAddress("ti@flowmeds.com.br", "ENVIADOR");
                     mail.To.Add(new MailAddress($"{VendedorEmail}", "RECEBEDOR"));
                     mail.Subject = $"Novo Orçamento Nº {agendamento.Id} - {agendamento.Paciente}";
                     mail.Body = mensagem;

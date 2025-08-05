@@ -88,7 +88,7 @@ namespace SGID.Pages.Logistica
             Avulsos = new List<Produto>();
             if (Agendamento.Empresa == "01")
             {
-                //Intermedic
+                //J&J
                 Crm = ProtheusInter.Sa1010s.FirstOrDefault(x => x.A1Nome == Agendamento.Medico)?.A1Crm;
                 codigos.ForEach(x =>
                 {
@@ -192,7 +192,7 @@ namespace SGID.Pages.Logistica
             }
             else
             {
-                //Denuo
+                  //FLOWMED
                 Crm = ProtheusDenuo.Sa1010s.FirstOrDefault(x => x.A1Nome == Agendamento.Medico)?.A1Crm;
                 codigos.ForEach(x =>
                 {
@@ -410,7 +410,7 @@ namespace SGID.Pages.Logistica
                         VendedorEmail = vendedor?.A3Email;
                         if (!vendedor.A3Xlogsup.IsNullOrEmpty())
                         {
-                            GestorEmail.Add(vendedor.A3Xlogsup.ToLower().Trim() + "@prothomep.com.br");
+                            GestorEmail.Add(vendedor.A3Xlogsup.ToLower().Trim() + "@flowmeds.com.br");
                         }
                     }
                     else
@@ -419,12 +419,12 @@ namespace SGID.Pages.Logistica
                         VendedorEmail = vendedor?.A3Email;
                         if (!vendedor.A3Xlogsup.IsNullOrEmpty())
                         {
-                            GestorEmail.Add(vendedor.A3Xlogsup.ToLower().Trim() + "@prothomep.com.br");
+                            GestorEmail.Add(vendedor.A3Xlogsup.ToLower().Trim() + "@flowmeds.com.br");
                         }
 
-                        if (GestorEmail.Contains("leonardo.brito@prothomep.com.br"))
+                        if (GestorEmail.Contains("leonardo.brito@flowmeds.com.br"))
                         {
-                            GestorEmail.Add("artemio.costa@prothomep.com.br");
+                            GestorEmail.Add("artemio.costa@flowmeds.com.br");
                         }
                     }
 
@@ -446,16 +446,16 @@ namespace SGID.Pages.Logistica
                     SmtpClient client = new SmtpClient();
                     client.Host = "smtp.office365.com";
                     client.EnableSsl = true;
-                    client.Credentials = new System.Net.NetworkCredential("ti@prothomep.com.br", "interadm2018!*");
+                    client.Credentials = new System.Net.NetworkCredential("ti@flowmeds.com.br", "interadm2018!*");
                     MailMessage mail = new MailMessage();
-                    mail.Sender = new MailAddress("ti@prothomep.com.br", "GID");
-                    mail.From = new MailAddress("ti@prothomep.com.br", "GID");
+                    mail.Sender = new MailAddress("ti@flowmeds.com.br", "GID");
+                    mail.From = new MailAddress("ti@flowmeds.com.br", "GID");
                     mail.To.Add(new MailAddress($"{VendedorEmail}", "RECEBEDOR"));
                     GestorEmail.Where(x => !x.IsNullOrEmpty()).ToList().ForEach(x =>
                     {
                         mail.CC.Add(new MailAddress($"{x}", "COPIA"));
                     });
-                    mail.Bcc.Add(new MailAddress("andre.souza@prothomep.com.br", "ANDRE SOUZA"));
+                    mail.Bcc.Add(new MailAddress("andre.souza@flowmeds.com.br", "ANDRE SOUZA"));
                     mail.Subject = $"Orçamento Nº {Agendamento.Id} - {Agendamento.Paciente}";
                     mail.Body = mensagem;
                     mail.IsBodyHtml = true;

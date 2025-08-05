@@ -50,7 +50,7 @@ namespace SGID.Pages.Cirurgias
 
             if (Agendamento.Empresa == "01")
             {
-                //Intermedic
+                //J&J
 
                 codigos.ForEach(x =>
                 {
@@ -96,7 +96,7 @@ namespace SGID.Pages.Cirurgias
             }
             else
             {
-                //Denuo
+                  //FLOWMED
                 codigos.ForEach(x =>
                 {
                     var produto = (from SB10 in ProtheusDenuo.Sb1010s

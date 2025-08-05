@@ -91,7 +91,7 @@ namespace SGID.Pages.Estoque
                 if (Empresa == "01")
                 {
 
-                    //Intermedic
+                    //J&J
                     var produto = (from SB10 in ProtheusInter.Sb1010s
                                    where SB10.B1Cod == Codigo.ToUpper() && SB10.B1Msblql != "1"
                                    && SB10.DELET != "*"
@@ -119,7 +119,7 @@ namespace SGID.Pages.Estoque
                 }
                 else
                 {
-                    //Denuo
+                      //FLOWMED
 
                     var produto = (from SB10 in ProtheusDenuo.Sb1010s
                                    where SB10.B1Cod == Codigo.ToUpper() && SB10.B1Msblql != "1"

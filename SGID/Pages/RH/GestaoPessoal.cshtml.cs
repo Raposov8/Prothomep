@@ -94,14 +94,14 @@ namespace SGID.Pages.RH
                 {
                     Host = "smtp.office365.com",
                     EnableSsl = true,
-                    Credentials = new System.Net.NetworkCredential("ti@prothomep.com.br", "interadm2018!*")
+                    Credentials = new System.Net.NetworkCredential("ti@flowmeds.com.br", "interadm2018!*")
                 };
 
                 MailMessage mail = new MailMessage();
-                mail.Sender = new MailAddress("ti@prothomep.com.br", "ENVIADOR");
-                mail.From = new MailAddress("ti@prothomep.com.br", "ENVIADOR");
-                mail.To.Add(new MailAddress("acessos@prothomep.com.br", "RECEBEDOR"));
-                mail.CC.Add(new MailAddress("rh@prothomep.com.br"));
+                mail.Sender = new MailAddress("ti@flowmeds.com.br", "ENVIADOR");
+                mail.From = new MailAddress("ti@flowmeds.com.br", "ENVIADOR");
+                mail.To.Add(new MailAddress("acessos@flowmeds.com.br", "RECEBEDOR"));
+                mail.CC.Add(new MailAddress("rh@flowmeds.com.br"));
                 mail.Subject = "Solicitação de Acesso";
                 mail.Body = mensagem;
                 mail.IsBodyHtml = true;
