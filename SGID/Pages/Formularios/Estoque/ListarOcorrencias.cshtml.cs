@@ -88,7 +88,7 @@ namespace SGID.Pages.Formularios.Estoque
 
                     if (email == null)
                     {
-                        email = "ricardo.bassanese@intermedic.com.br";
+                        email = "ricardo.bassanese@prothomep.com.br";
                     }
                     else if (email.Contains(";"))
                     {
@@ -101,7 +101,7 @@ namespace SGID.Pages.Formularios.Estoque
 
                     if (email == null)
                     {
-                        email = "ricardo.bassanese@intermedic.com.br";
+                        email = "ricardo.bassanese@prothomep.com.br";
                     }
                     else if (email.Contains(";"))
                     {
@@ -117,29 +117,29 @@ namespace SGID.Pages.Formularios.Estoque
                 SmtpClient client = new SmtpClient();
                 client.Host = "smtp.office365.com";
                 client.EnableSsl = true;
-                client.Credentials = new System.Net.NetworkCredential("ti@intermedic.com.br", "interadm2018!*");
+                client.Credentials = new System.Net.NetworkCredential("ti@prothomep.com.br", "interadm2018!*");
                 MailMessage mail = new MailMessage();
-                mail.Sender = new MailAddress("ti@intermedic.com.br", "ENVIADOR");
-                mail.From = new MailAddress("ti@intermedic.com.br", "ENVIADOR");
+                mail.Sender = new MailAddress("ti@prothomep.com.br", "ENVIADOR");
+                mail.From = new MailAddress("ti@prothomep.com.br", "ENVIADOR");
                 mail.To.Add(new MailAddress(email, "RECEBEDOR"));
 
                 if(Ocorrencia.Empresa == "01")
                 {
-                    mail.CC.Add(new MailAddress("estoque@intermedic.com.br", "estoque"));
-                    mail.CC.Add(new MailAddress("qualidade@intermedic.com.br", "qualidade"));
-                    mail.CC.Add(new MailAddress("comercial@intermedic.com.br", "comercial"));
+                    mail.CC.Add(new MailAddress("estoque@prothomep.com.br", "estoque"));
+                    mail.CC.Add(new MailAddress("qualidade@prothomep.com.br", "qualidade"));
+                    mail.CC.Add(new MailAddress("comercial@prothomep.com.br", "comercial"));
 
                 }
                 else
                 {
-                    mail.CC.Add(new MailAddress("estoque@denuo.com.br", "Estoque Denuo"));
-                    mail.CC.Add(new MailAddress("qualidade@denuo.com.br", "qualidade"));
-                    mail.CC.Add(new MailAddress("comercial@denuo.com.br", "comercial"));
+                    mail.CC.Add(new MailAddress("estoque@prothomep.com.br", "Estoque Denuo"));
+                    mail.CC.Add(new MailAddress("qualidade@prothomep.com.br", "qualidade"));
+                    mail.CC.Add(new MailAddress("comercial@prothomep.com.br", "comercial"));
                 }
                 
                 
-                mail.CC.Add(new MailAddress("agendamento@intermedic.com.br", "Agendamento Intermedic"));
-                mail.CC.Add(new MailAddress("admvendas@intermedic.com.br", "Adm Vendas"));
+                mail.CC.Add(new MailAddress("agendamento@prothomep.com.br", "Agendamento Intermedic"));
+                mail.CC.Add(new MailAddress("admvendas@prothomep.com.br", "Adm Vendas"));
                 
                 mail.Subject = $"Ocorrência Nº {Id}";
                 mail.Body = mensagem;
