@@ -3,8 +3,8 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="user-scalable = yes" />
-    <link rel="icon" href="~/favicon.ico"/>
-    <title>SGID - @ViewData["Title"]</title>
+    <link rel="icon" href="/imagens/icon.ico"/>
+    <title>PROTHOMEP - @ViewData["Title"]</title>
 
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700&amp;subset=latin" rel="stylesheet">
     <!--<script src="https://kit.fontawesome.com/dd769b6891.js" crossorigin="anonymous"></script>-->
@@ -32,7 +32,7 @@
                 </label>
             </div>
             <div class="col-2 col-sm-2 col-md-2">
-                <img src="/imagens/gid.png" alt="GID Logo" height="66" width="120"/>
+                <img src="/imagens/logo.png" alt="Protho Logo" height="66" width="120"/>
             </div>
             <div class="col-2 col-sm-2 col-md-2">
                 <ul class="navbar-nav flex-grow-1">
@@ -72,13 +72,13 @@
                @if(User.IsInRole("Admin") || User.IsInRole("Diretoria"))
                {
                     <li>
-                       <a class="nav-link" href="/dashboards/DashBoardMetas"><i class="fa-solid fa-clipboard-user"></i>DashBoard Diretoria</a>
+                       <a class="nav-link" href="/dashboards/DashBoardMetas"><i class="fa-solid fa-clipboard-user"></i>Gestão</a>
                     </li>
                }
                @if(User.IsInRole("Admin") || User.IsInRole("Diretoria") || User.IsInRole("GestorSubDistribuidor"))
                {
                    <li>
-                       <a class="nav-link" href="/dashboards/DashBoardGestorSubDistribuidor"><i class="fa-solid fa-clipboard-user"></i>DashBoard SubDistribuidor</a>
+                       <a class="nav-link" href="/dashboards/DashBoardGestorSubDistribuidor"><i class="fa-solid fa-clipboard-user"></i>Gestão SubDistribuidor</a>
                    </li>
                }
                @if(User.IsInRole("Admin") || User.IsInRole("GestorVenda") || User.IsInRole("Venda") || User.IsInRole("Diretoria"))
@@ -190,18 +190,18 @@
                                     </a>
                                     <div class="collapse" id="comissoes-collapse">
                                         <ul class="list-unstyled fw-normal pb-1 small">
-                                            <li><a class="nav-link" href="/relatorios/comissoes/comissao">Comissões Denuo</a></li>
-                                            <li><a class="nav-link" href="/relatorios/comissoes/comissaointer">Comissões Inter</a></li>
+                                            <li><a class="nav-link" href="/relatorios/comissoes/comissao">Comissões</a></li>
+                                            @* <li><a class="nav-link" href="/relatorios/comissoes/comissaointer">Comissões Inter</a></li> *@
                                         </ul>
                                     </div>
                                 </li>
                                 <li><a class="nav-link" href="/relatorios/vexpenses/relatoriodespesas">Despesas VExpenses</a></li>
-                                <li><a class="nav-link" href="/relatorios/financeiro/receitabruta">Check Margem Denuo</a></li>
-                                <li><a class="nav-link" href="/relatorios/financeiro/receitabrutainter">Check Margem Inter</a></li>
-                                <li><a class="nav-link" href="/relatorios/financeiro/BaixaAReceber">A Receber Baixa Denuo</a></li>
-                                <li><a class="nav-link" href="/relatorios/financeiro/BaixaAReceberInter">A Receber Baixa Inter</a></li>
-                                <li><a class="nav-link" href="/relatorios/estoque/giroestoque">Giro Estoque Denuo</a></li>
-                                <li><a class="nav-link" href="/relatorios/estoque/giroestoqueinter">Giro Estoque Inter</a></li>
+                                <li><a class="nav-link" href="/relatorios/financeiro/receitabruta">Check Margem </a></li>
+                             @*    <li><a class="nav-link" href="/relatorios/financeiro/receitabrutainter">Check Margem Inter</a></li> *@
+                                <li><a class="nav-link" href="/relatorios/financeiro/BaixaAReceber">A Receber Baixa </a></li>
+@*                                 <li><a class="nav-link" href="/relatorios/financeiro/BaixaAReceberInter">A Receber Baixa Inter</a></li> *@
+                                <li><a class="nav-link" href="/relatorios/estoque/giroestoque">Giro Estoque </a></li>@* 
+                                <li><a class="nav-link" href="/relatorios/estoque/giroestoqueinter">Giro Estoque Inter</a></li> *@
                             </ul>
                         </div>
                     </li>
@@ -275,8 +275,8 @@
                         </a>
                         <div class="collapse" id="estoque-collapse">
                             <ul class="list-unstyled fw-normal pb-1 small">
-                                <li><a class="nav-link" href="/estoque/formularioavulso/01">Vale Material Intermedic</a></li>
-                                <li><a class="nav-link" href="/estoque/formularioavulso/03">Vale Material Denuo</a></li>
+                                @* <li><a class="nav-link" href="/estoque/formularioavulso/01">Vale Material</a></li> *@
+                                <li><a class="nav-link" href="/estoque/formularioavulso/03">Vale Material </a></li>
                                 @if (User.IsInRole("Admin") || User.IsInRole("GestorEstoque") || User.IsInRole("Diretoria"))
                                 {
                                     <li><a class="nav-link" href="/estoque/listarformulariosavulsos/">Listar Vales Materiais</a></li>
@@ -294,7 +294,7 @@
                                  <li class="nav-item dropdown">
                                      <a class="nav-link align-items-center rounded dropdown-toggle" data-bs-toggle="collapse"
                                          data-bs-target="#logisticadenuo-collapse" aria-expanded="false">
-                                         Logistica Denuo
+                                         Logistica 
                                      </a>
                                      <div class="collapse" id="logisticadenuo-collapse">
                                          <ul class="list-unstyled fw-normal pb-1 small">
@@ -329,8 +329,8 @@
                         <div class="collapse" id="ocorrencias-collapse">
                             <ul class="list-unstyled fw-normal pb-1 small">
                                 <li><a class="nav-link" href="/formularios/estoque/listarocorrencias">Listar Ocorrências</a></li>
-                                <li><a class="nav-link" href="/formularios/estoque/ocorrencia">Nova Ocorrência Denuo</a></li>
-                                <li><a class="nav-link" href="/formularios/estoque/ocorrenciainter">Nova Ocorrência Inter</a></li>
+                                <li><a class="nav-link" href="/formularios/estoque/ocorrencia">Nova Ocorrência</a></li>
+                                @* <li><a class="nav-link" href="/formularios/estoque/ocorrenciainter">Nova Ocorrência Inter</a></li> *@
                             </ul>
                         </div>
                     </li>
@@ -355,8 +355,8 @@
                         </a>
                         <div class="collapse" id="importar-collapse">
                             <ul class="list-unstyled fw-normal pb-1 small">
-                                <li><a class="nav-link" href="/importacao/importarcsv">Importar Csv Denuo</a></li>
-                                <li><a class="nav-link" href="/importacao/importarcsvinter">Importar Csv Inter</a></li>
+                                <li><a class="nav-link" href="/importacao/importarcsv">Importar Csv</a></li>
+                                @* <li><a class="nav-link" href="/importacao/importarcsvinter">Importar Csv Inter</a></li> *@
                             </ul>
                         </div>
                     </li> 
@@ -370,7 +370,7 @@
                         </a>
                         <div class="collapse" id="qualidade-collapse">
                             <ul class="list-unstyled fw-normal pb-1 small">
-                                <li><a class="nav-link" href="/qualidade/importarprodutos">Importar Produtos Denuo</a></li>
+                                <li><a class="nav-link" href="/qualidade/importarprodutos">Importar Produtos</a></li>
                                 <li><a class="nav-link" href="/qualidade/importarprodutosinter">Importar Produtos Inter</a></li>
                                 @if(User.IsInRole("Admin"))
                                 {
@@ -389,25 +389,25 @@
                      <ul class="list-unstyled fw-normal pb-1 small">
                             @if (User.IsInRole("Admin") || User.IsInRole("Comercial"))
                             {
-                                @if (User.Identity.Name.Split("@")[1] == "denuo.com.br" || User.IsInRole("Admin") || User.IsInRole("ComercialDuo"))
+                                @if (User.Identity.Name.Split("@")[1] == "prothomep.com.br" || User.IsInRole("Admin") || User.IsInRole("ComercialDuo"))
                                 {
                                     <li class="nav-item dropdown">
                                         <a class="nav-link align-items-center rounded dropdown-toggle" data-bs-toggle="collapse"
                                    data-bs-target="#comercialdenuo-collapse" aria-expanded="false">
-                                            Comercial Denuo
+                                            Comercial
                                         </a>
                                         <div class="collapse" id="comercialdenuo-collapse">
                                             <ul class="list-unstyled fw-normal pb-1 small">
-                                                <li><a class="nav-link" href="/relatorios/comercial/nfs">NFS Denuo</a></li>
-                                                <li><a class="nav-link" href="/relatorios/cirurgias/cirurgiasafaturar/">Cirurgias a Faturar Denuo</a></li>
-                                                <li><a class="nav-link" href="/relatorios/cirurgias/cirurgiasdevolucaofatvendedor/">Cirurgias Devolução Fat Denuo</a></li>
-                                                <li><a class="nav-link" href="/relatorios/cirurgias/cirurgiasfaturadas/">Cirurgias Faturadas Denuo</a></li>
-                                                <li><a class="nav-link" href="/relatorios/cirurgias/cirurgiasvalorizadas/">Cirurgias Valorizadas Denuo</a></li>
+                                                <li><a class="nav-link" href="/relatorios/comercial/nfs">NFS </a></li>
+                                                <li><a class="nav-link" href="/relatorios/cirurgias/cirurgiasafaturar/">Cirurgias a Faturar</a></li>
+                                                <li><a class="nav-link" href="/relatorios/cirurgias/cirurgiasdevolucaofatvendedor/">Cirurgias Devolução Fat </a></li>
+                                                <li><a class="nav-link" href="/relatorios/cirurgias/cirurgiasfaturadas/">Cirurgias Faturadas </a></li>
+                                                <li><a class="nav-link" href="/relatorios/cirurgias/cirurgiasvalorizadas/">Cirurgias Valorizadas </a></li>
                                             </ul>
                                         </div>
                                     </li>
                                 }
-                                @if (User.Identity.Name.Split("@")[1] == "intermedic.com.br" || User.IsInRole("Admin") || User.IsInRole("ComercialDuo"))
+                                @if (User.Identity.Name.Split("@")[1] == "prothomep.com.br" || User.IsInRole("Admin") || User.IsInRole("ComercialDuo"))
                                 {
                                     <li class="nav-item dropdown">
                                         <a class="nav-link align-items-center rounded dropdown-toggle" data-bs-toggle="collapse"
@@ -429,23 +429,23 @@
                             }
                             @if (User.IsInRole("Admin") || User.IsInRole("GestorComercial") || User.IsInRole("Diretoria"))
                             {
-                                @if (User.Identity.Name.Split("@")[1] == "denuo.com.br" || User.IsInRole("Admin") || User.IsInRole("Diretoria"))
+                                @if (User.Identity.Name.Split("@")[1] == "prothomep.com.br" || User.IsInRole("Admin") || User.IsInRole("Diretoria"))
                                 {
                                     <li class="nav-item dropdown">
                                         <a class="nav-link align-items-center rounded dropdown-toggle" data-bs-toggle="collapse"
                                    data-bs-target="#comercialdenuo2-collapse" aria-expanded="false">
-                                            Gestor Comercial Denuo
+                                            Gestor Comercial 
                                         </a>
                                         <div class="collapse" id="comercialdenuo2-collapse">
                                             <ul class="list-unstyled fw-normal pb-1 small">
-                                            <li><a class="nav-link teste" href="/relatorios/rh/cirurgiasdevolucaofat">Cirurgias Devolução Fat Denuo</a></li>
-                                            <li><a class="nav-link teste" href="/relatorios/rh/cirurgiasfaturadas">Cirurgias Faturadas Denuo</a></li>
-                                            <li><a class="nav-link teste" href="/relatorios/rh/cirurgiasvalorizadas">Cirurgias Valorizadas Denuo</a></li>
+                                            <li><a class="nav-link teste" href="/relatorios/rh/cirurgiasdevolucaofat">Cirurgias Devolução Fat </a></li>
+                                            @* <li><a class="nav-link teste" href="/relatorios/rh/cirurgiasfaturadas">Cirurgias Faturadas Denuo</a></li>
+                                            <li><a class="nav-link teste" href="/relatorios/rh/cirurgiasvalorizadas">Cirurgias Valorizadas Denuo</a></li> *@
                                             </ul>
                                         </div>
                                     </li>
                                 }
-                                @if (User.Identity.Name.Split("@")[1] == "intermedic.com.br" || User.IsInRole("Admin") || User.IsInRole("Diretoria"))
+                                @if (User.Identity.Name.Split("@")[1] == "prothomep.com.br" || User.IsInRole("Admin") || User.IsInRole("Diretoria"))
                                 {
                                     <li class="nav-item dropdown">
                                         <a class="nav-link align-items-center rounded dropdown-toggle" data-bs-toggle="collapse"
@@ -454,9 +454,9 @@
                                         </a>
                                         <div class="collapse" id="comercialinter2-collapse">
                                             <ul class="list-unstyled fw-normal pb-1 small">
-                                            <li><a class="nav-link teste" href="/relatorios/rh/cirurgiasdevolucaofatinter">Cirurgias Devolução Inter</a></li>
-                                            <li><a class="nav-link teste" href="/relatorios/rh/cirurgiasfaturadasinter">Cirurgias Faturadas Inter</a></li>
-                                            <li><a class="nav-link teste" href="/relatorios/rh/cirurgiasvalorizadasinter">Cirurgias Valorizadas Inter</a></li>
+                                            <li><a class="nav-link teste" href="/relatorios/rh/cirurgiasdevolucaofatinter">Cirurgias Devolução</a></li>
+                                            <li><a class="nav-link teste" href="/relatorios/rh/cirurgiasfaturadasinter">Cirurgias Faturadas</a></li>
+                                            <li><a class="nav-link teste" href="/relatorios/rh/cirurgiasvalorizadasinter">Cirurgias Valorizadas</a></li>
                                             </ul>
                                         </div>
                                     </li>
@@ -467,30 +467,30 @@
                                 <li class="nav-item dropdown">
                                     <a class="nav-link align-items-center rounded dropdown-toggle" data-bs-toggle="collapse"
                                    data-bs-target="#controladoriadenuo-collapse" aria-expanded="false">
-                                        Controladoria Denuo
+                                        Controladoria 
                                     </a>
                                     <div class="collapse" id="controladoriadenuo-collapse">
                                         <ul class="list-unstyled fw-normal pb-1 small">
-                                            <li><a class="nav-link" href="/relatorios/controladoria/conserto/">Conserto Denuo</a></li>
-                                            <li><a class="nav-link" href="/relatorios/controladoria/demonstracao/">Demonstração Denuo</a></li>
-                                            <li><a class="nav-link" href="/relatorios/controladoria/faturamentonf/">Faturamento NF Denuo</a></li>
-                                            <li><a class="nav-link" href="/relatorios/controladoria/faturamentonfbruto/">Faturamento NF BRUTO Denuo</a></li>
-                                            <li><a class="nav-link" href="/relatorios/controladoria/infcirurgia/">Inf Cirurgia Denuo</a></li>
-                                            <li><a class="nav-link" href="/relatorios/controladoria/ncm/">NCM Denuo</a></li>
-                                            <li><a class="nav-link" href="/relatorios/controladoria/nfentrada/">NF Entrada Denuo</a></li>
-                                            <li><a class="nav-link" href="/relatorios/controladoria/retornosefaz/">Retorno Sefaz Denuo</a></li>
-                                            <li><a class="nav-link" href="/relatorios/controladoria/sinief/">SINIEF Denuo</a></li>
-                                            <li><a class="nav-link" href="/relatorios/controladoria/sd1/">SD1 Denuo</a></li>
-                                            <li><a class="nav-link" href="/relatorios/controladoria/sd2/">SD2 Denuo</a></li>
+                                            <li><a class="nav-link" href="/relatorios/controladoria/conserto/">Conserto </a></li>
+                                            <li><a class="nav-link" href="/relatorios/controladoria/demonstracao/">Demonstração </a></li>
+                                            <li><a class="nav-link" href="/relatorios/controladoria/faturamentonf/">Faturamento NF </a></li>
+                                            <li><a class="nav-link" href="/relatorios/controladoria/faturamentonfbruto/">Faturamento NF BRUTO </a></li>
+                                            <li><a class="nav-link" href="/relatorios/controladoria/infcirurgia/">Inf Cirurgia </a></li>
+                                            <li><a class="nav-link" href="/relatorios/controladoria/ncm/">NCM </a></li>
+                                            <li><a class="nav-link" href="/relatorios/controladoria/nfentrada/">NF Entrada </a></li>
+                                            <li><a class="nav-link" href="/relatorios/controladoria/retornosefaz/">Retorno Sefaz </a></li>
+                                            <li><a class="nav-link" href="/relatorios/controladoria/sinief/">SINIEF </a></li>
+                                            <li><a class="nav-link" href="/relatorios/controladoria/sd1/">SD1 </a></li>
+                                            <li><a class="nav-link" href="/relatorios/controladoria/sd2/">SD2 </a></li>
                                         </ul>
                                     </div>
                                 </li>
                                 <li class="nav-item dropdown">
                                     <a class="nav-link align-items-center rounded dropdown-toggle" data-bs-toggle="collapse"
                                    data-bs-target="#controladoriainter-collapse" aria-expanded="false">
-                                        Controladoria Inter
+                                        Controladoria 
                                     </a>
-                                    <div class="collapse" id="controladoriainter-collapse">
+                           @*          <div class="collapse" id="controladoriainter-collapse">
                                         <ul class="list-unstyled fw-normal pb-1 small">
                                             <li><a class="nav-link" href="/relatorios/controladoria/consertointer/">Conserto Inter</a></li>
                                             <li><a class="nav-link" href="/relatorios/controladoria/demonstracaointer/">Demonstração Inter</a></li>
@@ -505,7 +505,7 @@
                                             <li><a class="nav-link" href="/relatorios/controladoria/sd2inter/">SD2 Inter</a></li>
 
                                         </ul>
-                                    </div>
+                                    </div> *@
                                 </li>
                             }
                             @if (User.IsInRole("Admin") || User.IsInRole("GestorVenda") || User.IsInRole("Venda") || User.IsInRole("Diretoria"))
@@ -517,18 +517,18 @@
                                     </a>
                                     <div class="collapse" id="admvendas1-collapse">
                                         <ul class="list-unstyled fw-normal pb-1 small">
-                                            <li><a class="nav-link teste" href="/relatorios/rh/CirurgiaAFaturar">Cirugias A Faturar Denuo</a></li>
-                                            <li><a class="nav-link teste" href="/relatorios/rh/CirurgiaAFaturarInter">Cirugias A Faturar Inter</a></li>
-                                            <li><a class="nav-link teste" href="/relatorios/rh/CirurgiasDevolucaoFat">Cirurgias Devolução Denuo</a></li>
-                                            <li><a class="nav-link teste" href="/relatorios/rh/CirurgiasDevolucaoFatInter">Cirurgias Devolução Inter</a></li>
-                                            <li><a class="nav-link teste" href="/relatorios/admvendas/CirurgiasFaturadas">Cirurgias Faturadas Denuo</a></li>
-                                            <li><a class="nav-link teste" href="/relatorios/admvendas/CirurgiasFaturadasInter">Cirurgias Faturadas Inter</a></li>
-                                            <li><a class="nav-link teste" href="/relatorios/rh/CirurgiasValorizadas">Cirugias Valorizadas Denuo</a></li>
-                                            <li><a class="nav-link teste" href="/relatorios/rh/CirurgiasValorizadasInterr">Cirugias Valorizadas Inter</a></li>
-                                            <li><a class="nav-link teste" href="/relatorios/admvendas/pedidostriagem">Pedidos Triagem Denuo</a></li>
-                                            <li><a class="nav-link teste" href="/relatorios/admvendas/pedidostriageminter">Pedidos Triagem Inter</a></li>
-                                            <li><a class="nav-link teste" href="/relatorios/admvendas/cadastromedicos/1">Cadastros Médicos Denuo</a></li>
-                                            <li><a class="nav-link teste" href="/relatorios/cirurgias/cadastrosmedicosinter/1">Cadastros Médicos Inter</a></li>
+                                            <li><a class="nav-link teste" href="/relatorios/rh/CirurgiaAFaturar">Cirugias A Faturar </a></li>
+                                       @*      <li><a class="nav-link teste" href="/relatorios/rh/CirurgiaAFaturarInter">Cirugias A Faturar Inter</a></li> *@
+                                            <li><a class="nav-link teste" href="/relatorios/rh/CirurgiasDevolucaoFat">Cirurgias Devolução </a></li>@* 
+                                            <li><a class="nav-link teste" href="/relatorios/rh/CirurgiasDevolucaoFatInter">Cirurgias Devolução Inter</a></li> *@
+                                            <li><a class="nav-link teste" href="/relatorios/admvendas/CirurgiasFaturadas">Cirurgias Faturadas </a></li>@* 
+                                            <li><a class="nav-link teste" href="/relatorios/admvendas/CirurgiasFaturadasInter">Cirurgias Faturadas Inter</a></li> *@
+                                            <li><a class="nav-link teste" href="/relatorios/rh/CirurgiasValorizadas">Cirugias Valorizadas </a></li>@* 
+                                            <li><a class="nav-link teste" href="/relatorios/rh/CirurgiasValorizadasInterr">Cirugias Valorizadas Inter</a></li> *@
+                                            <li><a class="nav-link teste" href="/relatorios/admvendas/pedidostriagem">Pedidos Triagem </a></li>@* 
+                                            <li><a class="nav-link teste" href="/relatorios/admvendas/pedidostriageminter">Pedidos Triagem Inter</a></li> *@
+                                            <li><a class="nav-link teste" href="/relatorios/admvendas/cadastromedicos/1">Cadastros Médicos </a></li>
+                                         @*    <li><a class="nav-link teste" href="/relatorios/cirurgias/cadastrosmedicosinter/1">Cadastros Médicos Inter</a></li> *@
                                         </ul>
                                     </div>
                                 </li>
@@ -542,23 +542,23 @@
                                     </a>
                                     <div class="collapse" id="rh2-collapse">
                                         <ul class="list-unstyled fw-normal pb-1 small">
-                                            <li><a class="nav-link teste" href="/relatorios/rh/cirurgiasdevolucaofat">Cirurgias Devolução Fat Denuo</a></li>
-                                            <li><a class="nav-link teste" href="/relatorios/rh/cirurgiasdevolucaofatinter">Cirurgias Devolução Inter</a></li>
-                                            <li><a class="nav-link teste" href="/relatorios/rh/cirurgiasfaturadas">Cirurgias Faturadas Denuo</a></li>
-                                            <li><a class="nav-link teste" href="/relatorios/rh/cirurgiasfaturadasinter">Cirurgias Faturadas Inter</a></li>
-                                            <li><a class="nav-link teste" href="/relatorios/rh/cirurgiasvalorizadas">Cirurgias Valorizadas Denuo</a></li>
-                                            <li><a class="nav-link teste" href="/relatorios/rh/cirurgiasvalorizadasinter">Cirurgias Valorizadas Inter</a></li>
-                                            <li><a class="nav-link teste" href="/relatorios/rh/cirurgiaafaturar">Cirurgias A Faturar Denuo</a></li>
-                                            <li><a class="nav-link teste" href="/relatorios/rh/cirurgiaafaturarinter">Cirurgias A Faturar Inter</a></li>
-                                            <li><a class="nav-link teste" href="/relatorios/subdistribuidor">Sub Distribuidor Faturado Denuo</a></li>
-                                            <li><a class="nav-link" href="/relatorios/subdistribuidorFaturadoInter">Sub Distribuidor Faturado Intermedic</a></li>
-                                            <li><a class="nav-link" href="/relatorios/rh/faturamentodental">Faturamento Dental</a></li>
-                                            <li><a class="nav-link" href="/relatorios/rh/BaixaSubDistribuidor">Baixa SubDistribuidor Denuo</a></li>
-                                            <li><a class="nav-link" href="/relatorios/rh/BaixaSubDistribuidorInter">Baixa SubDistribuidor Inter</a></li>
-                                            <li><a class="nav-link" href="/relatorios/rh/BaixaLicitacoes">Baixa Licitações Denuo</a></li>
-                                            <li><a class="nav-link" href="/relatorios/rh/BaixaLicitacoesInter">Baixa Licitações Inter</a></li>
-                                            <li><a class="nav-link" href="/relatorios/rh/FaturamentoLicitacoesInter">Faturamento Licitacoes Intermedic</a></li>
-                                            <li><a class="nav-link" href="/relatorios/rh/FaturamentoLicitacoes">Faturamento Licitacoes Denuo</a></li>
+                                            <li><a class="nav-link teste" href="/relatorios/rh/cirurgiasdevolucaofat">Cirurgias Devolução Fat </a></li>
+@*                                             <li><a class="nav-link teste" href="/relatorios/rh/cirurgiasdevolucaofatinter">Cirurgias Devolução Inter</a></li> *@
+                                            <li><a class="nav-link teste" href="/relatorios/rh/cirurgiasfaturadas">Cirurgias Faturadas </a></li>@* 
+                                            <li><a class="nav-link teste" href="/relatorios/rh/cirurgiasfaturadasinter">Cirurgias Faturadas Inter</a></li> *@
+                                            <li><a class="nav-link teste" href="/relatorios/rh/cirurgiasvalorizadas">Cirurgias Valorizadas </a></li>@* 
+                                            <li><a class="nav-link teste" href="/relatorios/rh/cirurgiasvalorizadasinter">Cirurgias Valorizadas Inter</a></li> *@
+                                            <li><a class="nav-link teste" href="/relatorios/rh/cirurgiaafaturar">Cirurgias A Faturar </a></li>@* 
+                                            <li><a class="nav-link teste" href="/relatorios/rh/cirurgiaafaturarinter">Cirurgias A Faturar Inter</a></li> *@
+                                            <li><a class="nav-link teste" href="/relatorios/subdistribuidor">Sub Distribuidor Faturado </a></li>
+@*                                             <li><a class="nav-link" href="/relatorios/subdistribuidorFaturadoInter">Sub Distribuidor Faturado Intermedic</a></li> *@
+                                            @* <li><a class="nav-link" href="/relatorios/rh/faturamentodental">Faturamento Dental</a></li> *@
+                                            <li><a class="nav-link" href="/relatorios/rh/BaixaSubDistribuidor">Baixa SubDistribuidor </a></li>
+                                           @*  <li><a class="nav-link" href="/relatorios/rh/BaixaSubDistribuidorInter">Baixa SubDistribuidor Inter</a></li> *@
+                                            <li><a class="nav-link" href="/relatorios/rh/BaixaLicitacoes">Baixa Licitações </a></li>
+                                           @*  <li><a class="nav-link" href="/relatorios/rh/BaixaLicitacoesInter">Baixa Licitações Inter</a></li>
+                                            <li><a class="nav-link" href="/relatorios/rh/FaturamentoLicitacoesInter">Faturamento Licitacoes Intermedic</a></li> *@
+                                            <li><a class="nav-link" href="/relatorios/rh/FaturamentoLicitacoes">Faturamento Licitacoes </a></li>
                                         </ul>
                                     </div>
                                 </li>
@@ -572,7 +572,7 @@
                                             <li><a class="nav-link teste" href="/relatorios/avanos/cirurgiasdevolucao">Cirurgias Devolução Fat</a></li>
                                             <li><a class="nav-link teste" href="/relatorios/avanos/cirurgiasfaturadas">Cirurgias Faturadas</a></li>
                                             <li><a class="nav-link teste" href="/relatorios/avanos/cirurgiasvalorizadas">Cirurgias Valorizadas</a></li>
-                                            <li><a class="nav-link" href="/relatorios/avanos/faturamentodental">Faturamento Dental</a></li>
+                                            @* <li><a class="nav-link" href="/relatorios/avanos/faturamentodental">Faturamento Dental</a></li> *@
                                         </ul>
                                     </div>
                                 </li>
@@ -587,28 +587,28 @@
                                     <div class="collapse" id="estoque2-collapse">
                                         <ul class="list-unstyled fw-normal pb-1 small">
                                             <li><a class="nav-link" href="/relatorios/estoque/ocorrencias">Ocorrências</a></li>
-                                            <li><a class="nav-link" href="/relatorios/estoque/expedicaoretirada">Expedição Retirada Denuo</a></li>
-                                            <li><a class="nav-link" href="/relatorios/estoque/expedicaoretiradainter">Expedição Retirada Inter</a></li>
-                                            <li><a class="nav-link" href="/relatorios/estoque/pa3">PA3</a></li>
+                                            <li><a class="nav-link" href="/relatorios/estoque/expedicaoretirada">Expedição Retirada</a></li>
+                                            @* <li><a class="nav-link" href="/relatorios/estoque/expedicaoretiradainter">Expedição Retirada Inter</a></li> *@
+                                            @* <li><a class="nav-link" href="/relatorios/estoque/pa3">PA3</a></li> *@
                                             <li><a class="nav-link" href="/relatorios/estoque/poderterceiros">Poder Terceiros</a></li>
-                                            <li><a class="nav-link" href="/relatorios/estoque/saldoestoque">Saldo Estoque Denuo</a></li>
-                                            <li><a class="nav-link" href="/relatorios/estoque/saldoestoqueinter">Saldo Estoque Inter</a></li>
-                                            <li><a class="nav-link" href="/relatorios/estoque/faturamentonffab">Faturamento NF Fabricante Denuo</a></li>
-                                            <li><a class="nav-link" href="/relatorios/estoque/faturamentonffabinter">Faturamento NF Fabricante Inter</a></li>
-                                            <li><a class="nav-link" href="/relatorios/estoque/Armazem10">Armazem 10 Denuo</a></li>
-                                            <li><a class="nav-link" href="/relatorios/estoque/Armazem10Inter">Armazem 10 Inter</a></li>
-                                            <li><a class="nav-link" href="/relatorios/estoque/giroestoque">Giro Estoque Denuo</a></li>
-                                            <li><a class="nav-link" href="/relatorios/estoque/giroestoqueinter">Giro Estoque Inter</a></li>
-                                            <li><a class="nav-link" href="/relatorios/subdistribuidor">Sub Distribuidor Faturado Denuo</a></li>
-                                            <li><a class="nav-link" href="/relatorios/subdistribuidorNFaturado">Sub Distribuidor Não Faturado Denuo</a></li>
-                                            <li><a class="nav-link" href="/relatorios/subdistribuidorFaturadoInter">Sub Distribuidor Faturado Intermedic</a></li>
-                                            <li><a class="nav-link" href="/relatorios/subdistribuidorNFaturadoInter">Sub Distribuidor Não Faturado Intermedic</a></li>
-                                            <li><a class="nav-link teste" href="/relatorios/admvendas/pedidostriagem">Pedidos Triagem Denuo</a></li>
-                                            <li><a class="nav-link teste" href="/relatorios/admvendas/pedidostriageminter">Pedidos Triagem Inter</a></li>
-                                            <li><a class="nav-link teste" href="/relatorios/admvendas/cadastromedicos/1">Cadastros Médicos Denuo</a></li>
-                                            <li><a class="nav-link teste" href="/relatorios/cirurgias/cadastrosmedicosinter/1">Cadastros Médicos Inter</a></li>
-                                            <li><a class="nav-link teste" href="/relatorios/rh/cirurgiasvalorizadas">Cirurgias Valorizadas Denuo</a></li>
-                                            <li><a class="nav-link teste" href="/relatorios/rh/cirurgiasvalorizadasinter">Cirurgias Valorizadas Inter</a></li>
+                                            <li><a class="nav-link" href="/relatorios/estoque/saldoestoque">Saldo Estoque </a></li>
+@*                                             <li><a class="nav-link" href="/relatorios/estoque/saldoestoqueinter">Saldo Estoque Inter</a></li> *@
+                                            <li><a class="nav-link" href="/relatorios/estoque/faturamentonffab">Faturamento NF Fabricante </a></li>@* 
+                                            <li><a class="nav-link" href="/relatorios/estoque/faturamentonffabinter">Faturamento NF Fabricante Inter</a></li> *@
+@*                                             <li><a class="nav-link" href="/relatorios/estoque/Armazem10">Armazem 10 </a></li>
+                                            <li><a class="nav-link" href="/relatorios/estoque/Armazem10Inter">Armazem 10 Inter</a></li> *@
+                                            <li><a class="nav-link" href="/relatorios/estoque/giroestoque">Giro Estoque </a></li>
+@*                                             <li><a class="nav-link" href="/relatorios/estoque/giroestoqueinter">Giro Estoque Inter</a></li> *@
+                                            <li><a class="nav-link" href="/relatorios/subdistribuidor">Sub Distribuidor Faturado </a></li>
+                                            <li><a class="nav-link" href="/relatorios/subdistribuidorNFaturado">Sub Distribuidor Não Faturado </a></li>
+                                            @* <li><a class="nav-link" href="/relatorios/subdistribuidorFaturadoInter">Sub Distribuidor Faturado Intermedic</a></li>
+                                            <li><a class="nav-link" href="/relatorios/subdistribuidorNFaturadoInter">Sub Distribuidor Não Faturado Intermedic</a></li> *@
+                                            <li><a class="nav-link teste" href="/relatorios/admvendas/pedidostriagem">Pedidos Triagem </a></li>@* 
+                                            <li><a class="nav-link teste" href="/relatorios/admvendas/pedidostriageminter">Pedidos Triagem Inter</a></li> *@
+                                            <li><a class="nav-link teste" href="/relatorios/admvendas/cadastromedicos/1">Cadastros Médicos </a></li>
+@*                                             <li><a class="nav-link teste" href="/relatorios/cirurgias/cadastrosmedicosinter/1">Cadastros Médicos Inter</a></li> *@
+                                            <li><a class="nav-link teste" href="/relatorios/rh/cirurgiasvalorizadas">Cirurgias Valorizadas </a></li>
+                                          @*   <li><a class="nav-link teste" href="/relatorios/rh/cirurgiasvalorizadasinter">Cirurgias Valorizadas Inter</a></li> *@
                                         </ul>
                                     </div>
                                 </li>
@@ -623,12 +623,12 @@
                                     <div class="collapse" id="financeiro2-collapse">
                                         <ul class="list-unstyled fw-normal pb-1 small">
                                             <li><a class="nav-link" href="/relatorios/financeiro/pagomes">Pago Mes</a></li>
-                                            <li><a class="nav-link" href="/relatorios/financeiro/apagarsemana">A Pagar Semana Denuo</a></li>
-                                            <li><a class="nav-link" href="/relatorios/financeiro/apagarsemanainter">A Pagar Semana Inter</a></li>
-                                            <li><a class="nav-link" href="/relatorios/financeiro/apagarmes">A Pagar Mes Denuo</a></li>
-                                            <li><a class="nav-link" href="/relatorios/financeiro/apagarmesinter">A Pagar Mes Inter</a></li>
-                                            <li><a class="nav-link" href="/relatorios/financeiro/apagarmesp">A Pagar Mes P Denuo</a></li>
-                                            <li><a class="nav-link" href="/relatorios/financeiro/apagarmespinter">A Pagar Mes P Inter</a></li>
+                                            <li><a class="nav-link" href="/relatorios/financeiro/apagarsemana">A Pagar Semana </a></li>
+@*                                             <li><a class="nav-link" href="/relatorios/financeiro/apagarsemanainter">A Pagar Semana Inter</a></li> *@
+                                            <li><a class="nav-link" href="/relatorios/financeiro/apagarmes">A Pagar Mes </a></li>
+@*                                             <li><a class="nav-link" href="/relatorios/financeiro/apagarmesinter">A Pagar Mes Inter</a></li> *@
+                                            <li><a class="nav-link" href="/relatorios/financeiro/apagarmesp">A Pagar Mes P </a></li>
+                                          @*   <li><a class="nav-link" href="/relatorios/financeiro/apagarmespinter">A Pagar Mes P Inter</a></li> *@
                                         </ul>
                                     </div>
                                 </li>
@@ -643,10 +643,10 @@
                                     <div class="collapse" id="qualidade-collapse">
                                         <ul class="list-unstyled fw-normal pb-1 small">
                                             <li><a class="nav-link" href="/relatorios/estoque/poderterceiros">Poder Terceiros</a></li>
-                                            <li><a class="nav-link" href="/relatorios/qualidade/registroxprodutos">Registro x Produtos Denuo</a></li>
-                                            <li><a class="nav-link" href="/relatorios/qualidade/registroxprodutosinter">Registro x Produtos Inter</a></li>
-                                            <li><a class="nav-link" href="/relatorios/qualidade/validadepermanente">Validade Permanente Denuo</a></li>
-                                            <li><a class="nav-link" href="/relatorios/qualidade/validadepermanenteinter">Validade Permanente Inter</a></li>
+                                            <li><a class="nav-link" href="/relatorios/qualidade/registroxprodutos">Registro x Produtos </a></li>
+                                   @*          <li><a class="nav-link" href="/relatorios/qualidade/registroxprodutosinter">Registro x Produtos Inter</a></li> *@
+                                            <li><a class="nav-link" href="/relatorios/qualidade/validadepermanente">Validade Permanente </a></li>
+                                     @*        <li><a class="nav-link" href="/relatorios/qualidade/validadepermanenteinter">Validade Permanente Inter</a></li> *@
                                         </ul>
                                     </div>
                                 </li>
@@ -660,7 +660,7 @@
                                     </a>
                                     <div class="collapse" id="dental-collapse">
                                         <ul class="list-unstyled fw-normal pb-1 small">
-                                            <li><a class="nav-link" href="/relatorios/estoque/giroestoque">Giro Estoque Denuo</a></li>
+                                            <li><a class="nav-link" href="/relatorios/estoque/giroestoque">Giro Estoque </a></li>
                                         </ul>
                                     </div>
                                 </li>
@@ -674,22 +674,22 @@
                                     </a>
                                     <div class="collapse" id="gerencial-collapse">
                                         <ul class="list-unstyled fw-normal pb-1 small">
-                                            <li><a class="nav-link" href="/relatorios/controladoria/faturamentonf/">Faturamento NF Denuo</a></li>
-                                            <li><a class="nav-link" href="/relatorios/controladoria/faturamentonfinter/">Faturamento NF Inter</a></li>
-                                            <li><a class="nav-link" href="/relatorios/estoque/faturamentonffab">Faturamento NF Fabricante Denuo</a></li>
-                                            <li><a class="nav-link" href="/relatorios/estoque/faturamentonffabinter">Faturamento NF Fabricante Inter</a></li>
-                                            <li><a class="nav-link" href="/relatorios/rh/cirurgiasvalorizadas">Cirurgias Valorizadas Denuo</a></li>
-                                            <li><a class="nav-link" href="/relatorios/rh/cirurgiasvalorizadasinter">Cirurgias Valorizadas Inter</a></li>
-                                            <li><a class="nav-link" href="/relatorios/subdistribuidor">Sub Distribuidor Faturado Denuo</a></li>
-                                            <li><a class="nav-link" href="/relatorios/subdistribuidorNFaturado">Sub Distribuidor Não Faturado Denuo</a></li>
-                                            <li><a class="nav-link" href="/relatorios/subdistribuidorFaturadoInter">Sub Distribuidor Faturado Intermedic</a></li>
-                                            <li><a class="nav-link" href="/relatorios/subdistribuidorNFaturadoInter">Sub Distribuidor Não Faturado Intermedic</a></li>
-                                            <li><a class="nav-link" href="/relatorios/gerencial/tabelas">Tabelas Denuo</a></li>
-                                            <li><a class="nav-link" href="/relatorios/gerencial/tabelasinter">Tabelas Inter</a></li>
-                                            <li><a class="nav-link" href="/relatorios/gerencial/tabelasprodncadastrados">Tabelas Prod Não Cadastrados Denuo</a></li>
-                                            <li><a class="nav-link" href="/relatorios/gerencial/tabelasprodncadastradosinter">Tabelas Prod Não Cadastrados Inter</a></li>
-                                            <li><a class="nav-link" href="/relatorios/gerencial/cirurgiasnfaturadas">Cirurgias Não Faturadas Denuo</a></li>
-                                            <li><a class="nav-link" href="/relatorios/gerencial/cirurgiasnfaturadasinter">Cirurgias Não Faturadas Inter</a></li>
+                                            <li><a class="nav-link" href="/relatorios/controladoria/faturamentonf/">Faturamento NF </a></li>
+                                          @*   <li><a class="nav-link" href="/relatorios/controladoria/faturamentonfinter/">Faturamento NF Inter</a></li> *@
+                                            <li><a class="nav-link" href="/relatorios/estoque/faturamentonffab">Faturamento NF Fabricante </a></li>@* 
+                                            <li><a class="nav-link" href="/relatorios/estoque/faturamentonffabinter">Faturamento NF Fabricante Inter</a></li> *@
+                                            <li><a class="nav-link" href="/relatorios/rh/cirurgiasvalorizadas">Cirurgias Valorizadas </a></li>
+@*                                             <li><a class="nav-link" href="/relatorios/rh/cirurgiasvalorizadasinter">Cirurgias Valorizadas Inter</a></li> *@
+                                            <li><a class="nav-link" href="/relatorios/subdistribuidor">Sub Distribuidor Faturado </a></li>
+                                            <li><a class="nav-link" href="/relatorios/subdistribuidorNFaturado">Sub Distribuidor Não Faturado </a></li>
+@*                                             <li><a class="nav-link" href="/relatorios/subdistribuidorFaturadoInter">Sub Distribuidor Faturado Intermedic</a></li> *@
+                                            @* <li><a class="nav-link" href="/relatorios/subdistribuidorNFaturadoInter">Sub Distribuidor Não Faturado Intermedic</a></li> *@
+                                            <li><a class="nav-link" href="/relatorios/gerencial/tabelas">Tabelas </a></li>
+                                            @* <li><a class="nav-link" href="/relatorios/gerencial/tabelasinter">Tabelas Inter</a></li> *@
+                                            <li><a class="nav-link" href="/relatorios/gerencial/tabelasprodncadastrados">Tabelas Prod Não Cadastrados </a></li>
+@*                                             <li><a class="nav-link" href="/relatorios/gerencial/tabelasprodncadastradosinter">Tabelas Prod Não Cadastrados Inter</a></li> *@
+                                            <li><a class="nav-link" href="/relatorios/gerencial/cirurgiasnfaturadas">Cirurgias Não Faturadas </a></li>@* 
+                                            <li><a class="nav-link" href="/relatorios/gerencial/cirurgiasnfaturadasinter">Cirurgias Não Faturadas Inter</a></li> *@
                                         </ul>
                                     </div>
                                 </li>
@@ -703,14 +703,14 @@
                                     </a>
                                     <div class="collapse" id="subdistribuidor-collapse">
                                         <ul class="list-unstyled fw-normal pb-1 small">
-                                            <li><a class="nav-link" href="/relatorios/subdistribuidor">Sub Distribuidor Faturado Denuo</a></li>
-                                            <li><a class="nav-link" href="/relatorios/subdistribuidorNFaturado">Sub Distribuidor Não Faturado Denuo</a></li>
-                                            <li><a class="nav-link" href="/relatorios/subdistribuidorFaturadoInter">Sub Distribuidor Faturado Intermedic</a></li>
-                                            <li><a class="nav-link" href="/relatorios/subdistribuidorNFaturadoInter">Sub Distribuidor Não Faturado Intermedic</a></li>
-                                            <li><a class="nav-link" href="/relatorios/subdistribuidor/subdistribuidorporfabricante">Sub Distribuidor Por Fabricante Denuo</a></li>
-                                            <li><a class="nav-link" href="/relatorios/subdistribuidor/subdistribuidorporfabricanteinter">Sub Distribuidor Por Fabricante Intermedic</a></li>
-                                            <li><a class="nav-link" href="/relatorios/estoque/saldoestoque">Saldo Estoque Denuo</a></li>
-                                            <li><a class="nav-link" href="/relatorios/estoque/saldoestoqueinter">Saldo Estoque Inter</a></li>
+                                            <li><a class="nav-link" href="/relatorios/subdistribuidor">Sub Distribuidor Faturado </a></li>
+                                            <li><a class="nav-link" href="/relatorios/subdistribuidorNFaturado">Sub Distribuidor Não Faturado </a></li>
+                                          @*   <li><a class="nav-link" href="/relatorios/subdistribuidorFaturadoInter">Sub Distribuidor Faturado Intermedic</a></li>
+                                            <li><a class="nav-link" href="/relatorios/subdistribuidorNFaturadoInter">Sub Distribuidor Não Faturado Intermedic</a></li> *@
+                                            <li><a class="nav-link" href="/relatorios/subdistribuidor/subdistribuidorporfabricante">Sub Distribuidor Por Fabricante </a></li>
+                                       @*      <li><a class="nav-link" href="/relatorios/subdistribuidor/subdistribuidorporfabricanteinter">Sub Distribuidor Por Fabricante Intermedic</a></li> *@
+                                            <li><a class="nav-link" href="/relatorios/estoque/saldoestoque">Saldo Estoque </a></li>
+                                            @* <li><a class="nav-link" href="/relatorios/estoque/saldoestoqueinter">Saldo Estoque Inter</a></li> *@
                                         </ul>
                                     </div>
                                 </li>
@@ -734,8 +734,8 @@
                                     </a>
                                     <div class="collapse" id="saldoestoque-collapse">
                                         <ul class="list-unstyled fw-normal pb-1 small">
-                                            <li><a class="nav-link" href="/relatorios/estoque/saldoestoque">Saldo Estoque Denuo</a></li>
-                                            <li><a class="nav-link" href="/relatorios/estoque/saldoestoqueinter">Saldo Estoque Inter</a></li>
+                                            <li><a class="nav-link" href="/relatorios/estoque/saldoestoque">Saldo Estoque </a></li>@* 
+                                            <li><a class="nav-link" href="/relatorios/estoque/saldoestoqueinter">Saldo Estoque Inter</a></li> *@
                                         </ul>
                                     </div>
                                 </li>
@@ -746,8 +746,8 @@
                                     </a>
                                     <div class="collapse" id="patrimonio-collapse">
                                         <ul class="list-unstyled fw-normal pb-1 small">
-                                            <li><a class="nav-link" href="/formularios/patrimonio/relatoriopatrimonio/03">Consulta Por Kit Base Denuo</a></li>
-                                            <li><a class="nav-link" href="/formularios/patrimonio/relatoriopatrimonio/01">Consulta Por Kit Base Intermedic</a></li>
+                                            <li><a class="nav-link" href="/formularios/patrimonio/relatoriopatrimonio/03">Consulta Por Kit Base </a></li>
+@*                                             <li><a class="nav-link" href="/formularios/patrimonio/relatoriopatrimonio/01">Consulta Por Kit Base Intermedic</a></li> *@
                                         </ul>
                                     </div>
                                 </li>
@@ -758,8 +758,8 @@
                                     </a>
                                     <div class="collapse" id="req30-collapse">
                                         <ul class="list-unstyled fw-normal pb-1 small">
-                                            <li><a class="nav-link" href="/formularios/req30/03" target="_blank">Itens Faltantes Denuo</a></li>
-                                            <li><a class="nav-link" href="/formularios/req30/01" target="_blank">Itens Faltantes Intermedic</a></li>
+                                            <li><a class="nav-link" href="/formularios/req30/03" target="_blank">Itens Faltantes </a></li>
+                                            @* <li><a class="nav-link" href="/formularios/req30/01" target="_blank">Itens Faltantes Intermedic</a></li> *@
                                         </ul>
                                     </div>
                                 </li>
@@ -771,8 +771,8 @@
                                     </a>
                                     <div class="collapse" id="conspa3-collapse">
                                         <ul class="list-unstyled fw-normal pb-1 small">
-                                            <li><a class="nav-link" href="/formularios/conspa3/03" target="_blank">Consulta Por Patrimônio Denuo</a></li>
-                                            <li><a class="nav-link" href="/formularios/conspa3/01" target="_blank">Consulta Por Patrimônio Intermedic</a></li>
+                                            <li><a class="nav-link" href="/formularios/conspa3/03" target="_blank">Consulta Por Patrimônio</a></li>
+@*                                             <li><a class="nav-link" href="/formularios/conspa3/01" target="_blank">Consulta Por Patrimônio Intermedic</a></li> *@
                                         </ul>
                                     </div>
                                 </li>
@@ -783,8 +783,8 @@
                                     </a>
                                     <div class="collapse" id="disppatrt-collapse">
                                         <ul class="list-unstyled fw-normal pb-1 small">
-                                            <li><a class="nav-link" href="/formularios/RelatorioPatrimonioTodos/03" target="_blank">Consulta Todos Patrimônios  Denuo</a></li>
-                                            <li><a class="nav-link" href="/formularios/RelatorioPatrimonioTodos/01" target="_blank">Consulta Todos Patrimônios  Intermedic</a></li>
+                                            <li><a class="nav-link" href="/formularios/RelatorioPatrimonioTodos/03" target="_blank">Consulta Todos Patrimônios </a></li>
+@*                                             <li><a class="nav-link" href="/formularios/RelatorioPatrimonioTodos/01" target="_blank">Consulta Todos Patrimônios  Intermedic</a></li> *@
                                         </ul>
                                     </div>
                                 </li>
@@ -795,8 +795,8 @@
                                     </a>
                                     <div class="collapse" id="req09-collapse">
                                         <ul class="list-unstyled fw-normal pb-1 small">
-                                            <li><a class="nav-link" href="/formularios/patrimonio/RelatorioItensFaltantes/03" target="_blank">Relatorio Itens Faltantes Denuo</a></li>
-                                            <li><a class="nav-link" href="/formularios/patrimonio/RelatorioItensFaltantes/01" target="_blank">Relatorio Itens Faltantes Intermedic</a></li>
+                                            <li><a class="nav-link" href="/formularios/patrimonio/RelatorioItensFaltantes/03" target="_blank">Relatorio Itens Faltantes </a></li>
+                                            @* <li><a class="nav-link" href="/formularios/patrimonio/RelatorioItensFaltantes/01" target="_blank">Relatorio Itens Faltantes Intermedic</a></li> *@
                                         </ul>
                                     </div>
                                 </li>
@@ -819,8 +819,8 @@
                        </a>
                        <div class="collapse" id="Medicos-collapse">
                            <ul class="list-unstyled fw-normal pb-1 small">
-                               <li><a class="nav-link teste" href="/Utilitarios/ListarCRMInter">Medicos Sem CRM Inter</a></li>
-                               <li><a class="nav-link teste" href="/Utilitarios/ListarCRMDenuo">Medicos Sem CRM Denuo</a></li>
+@*                                <li><a class="nav-link teste" href="/Utilitarios/ListarCRMInter">Medicos Sem CRM </a></li> *@
+                               <li><a class="nav-link teste" href="/Utilitarios/ListarCRM">Medicos Sem CRM</a></li>
                            </ul>
                        </div>
                    </li>

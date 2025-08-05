@@ -74,12 +74,12 @@ namespace SGID.Pages.RH
             SmtpClient client = new SmtpClient();
             client.Host = "smtp.office365.com";
             client.EnableSsl = true;
-            client.Credentials = new System.Net.NetworkCredential("ti@intermedic.com.br", "interadm2018!*");
+            client.Credentials = new System.Net.NetworkCredential("ti@prothomep.com.br", "interadm2018!*");
             MailMessage mail = new MailMessage();
-            mail.Sender = new MailAddress("ti@intermedic.com.br", "ENVIADOR");
-            mail.From = new MailAddress("ti@intermedic.com.br", "ENVIADOR");
-            mail.To.Add(new MailAddress("acessos@intermedic.com.br", "RECEBEDOR"));
-            mail.CC.Add(new MailAddress("rh@intermedic.com.br"));
+            mail.Sender = new MailAddress("ti@prothomep.com.br", "ENVIADOR");
+            mail.From = new MailAddress("ti@prothomep.com.br", "ENVIADOR");
+            mail.To.Add(new MailAddress("acessos@prothomep.com.br", "RECEBEDOR"));
+            mail.CC.Add(new MailAddress("rh@prothomep.com.br"));
             mail.Subject = "Cancelamento de Solicitação de Acesso";
             mail.Body = mensagem;
             mail.IsBodyHtml = true;

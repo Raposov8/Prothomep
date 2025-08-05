@@ -1,7 +1,7 @@
 ﻿@page
 @model SGID.Pages.Relatorios.Estoque.GiroEstoqueModel
 @{
-    ViewData["Title"] = "Relatorio Saldo Estoque Denuo";
+    ViewData["Title"] = "Relatorio Saldo Estoque";
     if (User.IsInRole("Diretoria") && !User.IsInRole("Admin"))
     {
         Layout = "_LayoutDiretoria";

@@ -592,7 +592,7 @@ namespace SGID.Pages.Cirurgias
                             VendedorEmail = vendedor?.A3Email;
                             if (!vendedor.A3Xlogsup.IsNullOrEmpty())
                             {
-                                GestorEmail.Add(vendedor.A3Xlogsup.ToLower().Trim() + "@intermedic.com.br");
+                                GestorEmail.Add(vendedor.A3Xlogsup.ToLower().Trim() + "@prothomep.com.br");
                             }
                         }
                         else
@@ -601,12 +601,12 @@ namespace SGID.Pages.Cirurgias
                             VendedorEmail = vendedor?.A3Email;
                             if (!vendedor.A3Xlogsup.IsNullOrEmpty())
                             {
-                                GestorEmail.Add(vendedor.A3Xlogsup.ToLower().Trim() + "@denuo.com.br");
+                                GestorEmail.Add(vendedor.A3Xlogsup.ToLower().Trim() + "@prothomep.com.br");
                             }
 
-                            if (GestorEmail.Contains("leonardo.brito@denuo.com.br"))
+                            if (GestorEmail.Contains("leonardo.brito@prothomep.com.br"))
                             {
-                                GestorEmail.Add("artemio.costa@denuo.com.br");
+                                GestorEmail.Add("artemio.costa@prothomep.com.br");
                             }
                         }
 
@@ -632,17 +632,17 @@ namespace SGID.Pages.Cirurgias
                         SmtpClient client = new SmtpClient();
                         client.Host = "smtp.office365.com";
                         client.EnableSsl = true;
-                        client.Credentials = new System.Net.NetworkCredential("ti@intermedic.com.br", "interadm2018!*");
+                        client.Credentials = new System.Net.NetworkCredential("ti@prothomep.com.br", "interadm2018!*");
                         MailMessage mail = new MailMessage();
-                        mail.Sender = new MailAddress("ti@intermedic.com.br", "GID");
-                        mail.From = new MailAddress("ti@intermedic.com.br", "GID");
+                        mail.Sender = new MailAddress("ti@prothomep.com.br", "GID");
+                        mail.From = new MailAddress("ti@prothomep.com.br", "GID");
                         mail.To.Add(new MailAddress($"{VendedorEmail}", "RECEBEDOR"));
 
                         GestorEmail.Where(x=> !x.IsNullOrEmpty()).ToList().ForEach(x =>
                         {
                             mail.CC.Add(new MailAddress($"{x}", "COPIA"));
                         });
-                        mail.Bcc.Add(new MailAddress("andre.souza@intermedic.com.br","ANDRE SOUZA"));
+                        mail.Bcc.Add(new MailAddress("andre.souza@prothomep.com.br","ANDRE SOUZA"));
                         mail.Subject = $"Novo Orçamento Nº {agendamento.Id} - {Agendamento.Paciente}";
                         mail.Body = mensagem;
                         mail.IsBodyHtml = true;

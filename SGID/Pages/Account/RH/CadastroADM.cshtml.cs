@@ -95,12 +95,12 @@ namespace SGID.Pages.Account.RH
                             SmtpClient client = new SmtpClient();
                             client.Host = "smtp.office365.com";
                             client.EnableSsl = true;
-                            client.Credentials = new System.Net.NetworkCredential("ti@intermedic.com.br", "interadm2018!*");
+                            client.Credentials = new System.Net.NetworkCredential("ti@prothomep.com.br", "interadm2018!*");
                             MailMessage mail = new MailMessage();
-                            mail.Sender = new MailAddress("ti@intermedic.com.br", "ENVIADOR");
-                            mail.From = new MailAddress("ti@intermedic.com.br", "ENVIADOR");
+                            mail.Sender = new MailAddress("ti@prothomep.com.br", "ENVIADOR");
+                            mail.From = new MailAddress("ti@prothomep.com.br", "ENVIADOR");
                             mail.To.Add(new MailAddress(Input.Email, "RECEBEDOR"));
-                            mail.CC.Add(new MailAddress("ti@intermedic.com.br"));
+                            mail.CC.Add(new MailAddress("ti@prothomep.com.br"));
                             mail.Subject = "Solicita��o de Acesso";
                             mail.Body = mensagem;
                             mail.IsBodyHtml = true;
